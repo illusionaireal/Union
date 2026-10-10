@@ -23,6 +23,8 @@
 
 本地 9/9 通过。GitHub Actions 配置 Ubuntu/Windows 双平台；远程结果以对应提交的 Actions 为准，不从本地结果推断通过。
 
+首轮 Windows CI 因 Git 自动转换 CRLF 导致文档原文比对失败；新增 `.gitattributes` 固定文本 LF，并将 baseline 快照标记为不转换字节。已在 `core.autocrlf=true` 的临时 Git 检出中复现验证：五份快照字节相同，目录检查和 9 项测试全部通过。最终远程结果见 [PR #9 的检查](https://github.com/illusionaireal/Union/pull/9/checks)。
+
 ## 证据边界
 
 SQLite 的本地事务、受信任测试 Policy 和独立 Mock 数据库，不能证明 PostgreSQL 行权限、生产认证、Temporal 持久执行、真实提供方幂等、沙箱或签名服务已经可用。没有真实支付、模型、营销或链上调用。未完成资金/权限第二工程角色复核；本记录不关闭 PLAN-002 或 ENG-004/005/006。
