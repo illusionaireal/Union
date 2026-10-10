@@ -1,0 +1,45 @@
+{
+  "repository": "illusionaireal/Union",
+  "issues": [
+    {
+      "id": "PLAN-001",
+      "number": 1,
+      "url": "https://github.com/illusionaireal/Union/issues/1"
+    },
+    {
+      "id": "PLAN-002",
+      "number": 2,
+      "url": "https://github.com/illusionaireal/Union/issues/2"
+    },
+    {
+      "id": "PLAN-003",
+      "number": 3,
+      "url": "https://github.com/illusionaireal/Union/issues/3"
+    },
+    {
+      "id": "PLAN-004",
+      "number": 4,
+      "url": "https://github.com/illusionaireal/Union/issues/4"
+    },
+    {
+      "id": "PLAN-005",
+      "number": 5,
+      "url": "https://github.com/illusionaireal/Union/issues/5"
+    },
+    {
+      "id": "PLAN-006",
+      "number": 6,
+      "url": "https://github.com/illusionaireal/Union/issues/6"
+    },
+    {
+      "id": "OPS-014",
+      "number": 7,
+      "url": "https://github.com/illusionaireal/Union/issues/7"
+    },
+    {
+      "id": "OPS-016",
+      "number": 8,
+      "url": "https://github.com/illusionaireal/Union/issues/8"
+    }
+  ]
+}
