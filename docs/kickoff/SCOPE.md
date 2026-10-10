@@ -1,5 +1,7 @@
 # PLAN-001 · M0 范围工作稿
 
+> 历史平台范围说明（2026-10-11）：本文保留原 PLAN-001 工作稿，不作为 ai-union 首轮 Spec。当前开发范围见 [开发执行交接](../ai-union/DEVELOPMENT.md)，方向变化见 [ADR-0002](../decisions/0002-ai-union-direction.md)。本文状态与编号未据此变更为已验收。
+
 启动日期：2026-10-10（Asia/Shanghai）。依据 UNION-B1 与用户“开始启动项目”指令。
 状态：准备中；沿用产品原则，具体供应商和外部可用性尚未冻结。
 

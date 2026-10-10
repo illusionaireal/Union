@@ -1,43 +1,64 @@
-# UNION
+# UNION / ai-union
 
-为 AI 自主公司提供成立、运行、展示与财务基础设施。
+**用户给出目标，ai-union 自行形成组织、开展行动，并根据结果持续调整。**
 
-AI 在授权范围内选择机会、制作产品、获客和交付；投资人出资、观察及按条款领取分配；Union 按明示规则支付平台服务费用。
+首版目标：**“一个持续经营线上内容品牌的 AI 内容工作室。”** 岗位、成员、经营策略和内容流程由组织在授权资源内形成；成员执行循环复用现有 Agent，开发重点是组织层 loop。
 
-**当前阶段：M0 开工准备与离线技术小验证。** 尚无可运行的经营平台、真实支付或投资募集。候选九十天计划仍待实际人员、预算和技术验证确认。
+## 两条项目线
 
-## 开始开发
+| 项目 | 目标与当前安排 |
+| --- | --- |
+| **ai-union** | 构建围绕共同目标协作的 AI 组织。当前优先实现“组织启动与首次协作”，验证目标、组织形成、行动、成果及后续决定的闭环 |
+| **UNION 平台** | 为组织提供创建、托管、观察、接入等服务。保留独立规划，按 ai-union 实际需要评估已有工程资产 |
 
-使用 `.nvmrc` 指定的 Node.js 24.19.0（本验证使用 Node 内置 SQLite 和 TypeScript 类型擦除）：
+两个项目在产品与计划上拆分，本次仍在同一仓库记录。平台未来可由 ai-union 运作并设置技术委员会，不给每个组织预装相同的委员会或岗位。
+
+**当前状态：产品与治理方向已确认，进入首个开发迭代的工程收敛阶段。仓库尚未实现新的组织运行系统，也没有真实 Agent 试跑、内容经营或首版验收证据。** 现有代码仍是旧平台的离线动作安全实验。
+
+## 从这里开始
+
+1. [当前状态与下一步](docs/ai-union/STATUS.md)：做成了什么、未做什么、下一步是什么。
+2. [章程治理与组织架构 v0.6](docs/ai-union/DESIGN.md)：产品定义、董事会与章程、岗位驱动、组织 loop、上下文与记忆。
+3. [开发执行交接 v1.0](docs/ai-union/DEVELOPMENT.md)：新 session 启动指令、首轮 Spec、实施顺序、TDD、Agent 评测与完成定义。
+4. [ADR-0002：拆分项目与调整开发主线](docs/decisions/0002-ai-union-direction.md)：本次决定及对旧路线的影响。
+
+开发方法为 **轻量 SPEC + 核心机制 TDD + Agent 评测 + 完整闭环迭代**。先核查执行器和工程条件，再形成 `001-org-bootstrap` 的 Spec、Plan、Tasks 并实现。不要从旧平台任务表直接继承开发顺序。
+
+## 已确认的运行原则
+
+- 董事会保留最终控制权；治理边界属于章程，董事会可按现行程序修订。经营层在生效授权内自主运行。
+- 岗位决定职责、权限与上下文；成员可以兼岗，正式知识和成果由组织或工作持有，能够交接。
+- human-free 是描述性特征，不是零人工的资格或验收门槛。
+- 首阶段以商业组织为对象。长期追求覆盖各类费用并自维持；融资与经营收入分开记录。
+- 首版需有真实对外交付、可核验外部反馈和下一轮实际行动，收入和盈利先作为观察指标。
+
+开发规范与组织运行章程分别管理。上述产品机制不替代真实账号、渠道、工具和预算的配置与授权。
+
+## 检查已有工程资产
+
+以下命令检查旧平台计划与离线实验，**尚不是 ai-union 的启动或验收命令**。使用 `.nvmrc` 指定的 Node.js 24.19.0：
 
 ```sh
 npm ci
 npm run check
 ```
 
-没有第三方依赖，无需账号或 API Key；检查不产生真实支出。`npm test` 会创建临时数据库和子进程，退出时清理。Node 可能输出 SQLite 实验性 API 提示。当前测试执行 TypeScript，但未设置完整静态类型检查；生产工程将在 ENG-001 锁定编译器和依赖。
+现有工程没有第三方依赖，不需要账号或 API Key，不产生真实支出。`npm test` 使用临时数据库和子进程，退出时清理。Node 可能输出 SQLite 实验性 API 提示。当前测试执行 TypeScript，但尚未配置完整静态类型检查。
 
-## 项目入口
+`spikes/action-safety` 验证动作授权、整数预算预约、并发争用、幂等参数绑定及模拟外部动作的查询恢复。它可以按需要复用，不代替组织能力、PostgreSQL/Temporal、身份认证、沙箱或生产支付验收。资金与权限实现仍需另一工程角色复核后才能采用。
 
-- [启动状态与下一步](docs/kickoff/STATUS.md)
-- [MVP 范围与验收场景](docs/kickoff/SCOPE.md)
-- [技术验证决定及限制](docs/decisions/0001-offline-action-spike.md)
-- [任务目录：82 个唯一编号](docs/kickoff/tasks.json)
-- [GitHub 首批任务映射](docs/kickoff/github-issues.json)
-- [项目方案](docs/baseline/UNION项目方案.md)
-- [核心工程任务](docs/baseline/ISSUES.md)
-- [运营方案](docs/baseline/OPERATIONS_PLAN.md)
-- [规划与运营任务](docs/baseline/OPERATIONS_ISSUES.md)
-- [启动路书](docs/baseline/UNION_项目启动路书_v0.1.md)
+## 旧平台材料
 
-五份输入文件作为 UNION-B1 原始快照保存；其中“未开始”是归档时状态。后续进度以启动状态、GitHub Issues 和测试证据为准，基线修改需记录版本与原因。
+- [原 M0 状态与任务映射](docs/kickoff/STATUS.md)
+- [原范围草案](docs/kickoff/SCOPE.md) · [离线验证记录](docs/kickoff/VALIDATION.md)
+- [ADR-0001：离线动作实验](docs/decisions/0001-offline-action-spike.md)
+- [82 项原任务目录](docs/kickoff/tasks.json) · [首批 GitHub Issues 映射](docs/kickoff/github-issues.json)
+- [原项目方案](docs/baseline/UNION项目方案.md) · [工程任务](docs/baseline/ISSUES.md)
+- [运营方案](docs/baseline/OPERATIONS_PLAN.md) · [规划与运营任务](docs/baseline/OPERATIONS_ISSUES.md)
+- [原启动路书](docs/baseline/UNION_项目启动路书_v0.1.md)
 
-## 当前验证
-
-`spikes/action-safety` 验证动作授权、整数预算的原子预约、并发争用、幂等参数绑定，以及模拟外部服务成功后进程崩溃的查询恢复。模拟服务使用独立 SQLite 文件，与本地事务分开。
-
-它不替代 PostgreSQL/Temporal、身份认证、沙箱或生产支付验收。资金与权限实现需另一工程角色复核后才能用于后续环境。
+五份 UNION-B1 输入快照、PLAN/OPS/ENG 编号和原验证证据保留。原 M0 门槛继续用于原平台范围，不作为新组织原型的统一前置条件；本次不据此关闭旧任务或宣称其验收完成。
 
 ## 许可与公开范围
 
-仓库现有可见性为 public。当前公开内容是用户指定的规划材料与离线验证。开源许可证、贡献权利及正式披露范围仍在 OPS-016 决定；未附加未经决定的开源授权。请勿提交密钥、客户资料或真实资金凭据。
+仓库保持现有 public 可见性。未改变开源许可证或贡献权利安排，未附加未经决定的开源授权。请勿提交密钥、客户资料或真实资金凭据。
