@@ -1,11 +1,28 @@
-# UNION repository instructions
+# UNION / ai-union repository instructions
 
-- Read README.md and docs/kickoff/STATUS.md first; baseline documents are in docs/baseline.
-- Preserve PLAN/OPS/ENG identifiers. Baseline files are historical inputs; record execution status separately.
-- Stay within M0 scoped experiments until PLAN-001–006 are accepted with evidence. Preparing code does not complete ENG tasks.
-- AI runs the Union business; investors do not approve daily operations. Separate platform work from business intervention.
-- Keep mock, testnet, and real funds distinct. No real payment, marketing, model spending, signing, or external deployment is enabled by this spike.
-- Amounts use integer minor units with explicit currency. Unknown external results retain reservations and require lookup.
+## Active direction and source of truth
+
+- Read README.md, docs/ai-union/STATUS.md, and docs/ai-union/DEVELOPMENT.md first. Use docs/ai-union/DESIGN.md for product and governance context and ADR-0002 for the transition from the original platform plan.
+- The user has confirmed the ai-union direction: goal-driven organization formation, real collaboration, persistent state, and subsequent action. Reuse existing Agent execution loops; prioritize the organization loop.
+- Keep ai-union and the UNION platform as separate product and planning tracks. Do not inherit the legacy payment/platform task order for the organization prototype.
+- Treat confirmed product decisions as requirements. Concrete schemas, modules, libraries and deployment choices remain engineering proposals until selected and recorded.
+- Use lightweight Spec -> Plan -> Tasks -> Implement, TDD for critical deterministic mechanisms, and real Agent evaluations for organizational capability. Do not stop at a plan when implementation is requested and feasible.
+
+## Product and governance
+
+- Do not hard-code content-industry roles, member counts beyond the two-member minimum, audiences, channels, or production workflows. These emerge within configured resources.
+- The board retains ultimate control. Governance boundaries belong to the versioned runtime charter and may be amended through the currently effective procedure. Routine operations are autonomous within effective authorization.
+- Runtime charters are distinct from developer instructions or a Spec Kit development constitution. Runtime charter changes do not grant host access or permission to rewrite the runtime.
+- Positions drive duties, permissions and context. Keep member identity separate from execution sessions; preserve organizational knowledge, artifacts and responsibility across handoffs.
+- Human-free is descriptive, not a zero-human requirement. Report human participation, actual outcomes, costs and uncertainty honestly.
+- Distinguish implementation completion, a real-model prototype run, and the first release's real delivery/feedback/next-action acceptance. Mock outputs and role dialogue do not establish these outcomes.
+
+## Historical assets and validation
+
+- Preserve PLAN/OPS/ENG identifiers and docs/baseline snapshots. Record new execution status in docs/ai-union/STATUS.md and iteration artifacts; do not silently close or rewrite old task history.
+- The legacy PLAN-001–006/M0 gate applies to the original platform scope and production adoption of that work. It is not a prerequisite for the separately authorized ai-union prototype development. Preparing code does not complete legacy ENG tasks.
+- Keep mock, testnet and real funds distinct. Existing documentation and the offline spike do not enable real payments, marketing, model spending, signing or external deployment. Use actual configured permissions and explicit resource limits for real runs; carry forward existing user authorization.
+- Amounts use integer minor units with explicit currency. Unknown external results retain reservations and require lookup in the existing action-safety implementation.
 - Money and authorization changes require another engineering role's review before adoption. Tests alone do not satisfy that review.
-- Run npm run check before proposing changes. Record limitations and do not present SQLite tests as PostgreSQL/Temporal validation.
-- Do not change repository visibility or choose an open-source license without an explicit project decision.
+- Run npm run check before proposing changes. It currently checks historical plan integrity and the offline action-safety tests; do not present it as organization-loop or PostgreSQL/Temporal validation.
+- Do not change repository visibility or choose an open-source license without an explicit project decision. Never commit credentials or customer data.
