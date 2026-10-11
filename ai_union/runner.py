@@ -1,0 +1,88 @@
+"""Bounded event-driven dispatcher. No fixed CEO or content production pipeline."""
+import fcntl
+import time
+from contextlib import contextmanager
+
+from .engine import Rejected
+from .executor import ExecutionFailure
+
+
+@contextmanager
+def exclusive(engine):
+    with (engine.root / "runner.lock").open("a") as f:
+        try:
+            fcntl.flock(f.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError as e:
+            raise Rejected("此组织已有运行进程；不能并行启动第二个派发器") from e
+        try:
+            yield
+        finally:
+            fcntl.flock(f.fileno(), fcntl.LOCK_UN)
+
+
+def step(engine, executor):
+    engine.wake_due()
+    ready = engine.ready_work()
+    state = engine.state()
+    if any(r["status"] in ("unknown", "running") for r in engine.runs()):
+        return {"action": "blocked", "reason": "未知或在途执行需要核对"}
+    if state["phase"] != "bootstrap" and not ready and not engine.events(True):
+        return {"action": "wait", "reason": "没有待办或新事件", "next_review_at": engine.status()["next_review_at"]}
+    package = engine.begin_work(ready[0], executor.name) if ready and state["phase"] != "bootstrap" else engine.begin_decision(executor.name)
+    usage = {}
+    try:
+        result, usage = executor.execute(package)
+        if package["kind"] == "decision":
+            engine.finish_decision(package["run_id"], result, usage)
+        else:
+            engine.finish_work(package["run_id"], result, usage)
+        return {"action": package["kind"], "run_id": package["run_id"], "work_id": package.get("work_id"), "executor": executor.name}
+    except (ExecutionFailure, Rejected, OSError, ValueError) as e:
+        engine.fail_run(package["run_id"], str(e), unknown=getattr(e, "unknown", False), usage=usage)
+        return {"action": "blocked", "run_id": package["run_id"], "reason": str(e)}
+    except BaseException:
+        engine.fail_run(package["run_id"], "执行被中断；先核对结果", unknown=True)
+        raise
+
+
+def run(engine, executor, max_steps):
+    if type(max_steps) is not int or not 1 <= max_steps <= 10000:
+        raise Rejected("必须提供有限正整数步数")
+    actions = []
+    with exclusive(engine):
+        engine.recover()
+        for _ in range(max_steps):
+            try:
+                action = step(engine, executor)
+            except Rejected as e:
+                action = {"action": "blocked", "reason": str(e)}
+            actions.append(action)
+            if action["action"] in ("wait", "blocked"):
+                break
+    return actions
+
+
+def watch(engine, executor, max_steps, max_seconds, poll_seconds=1):
+    """Wait for external/due events without model calls. Lifetime is bounded between calls."""
+    if type(max_steps) is not int or not 1 <= max_steps <= 10000 or type(max_seconds) is not int or not 1 <= max_seconds <= 86400:
+        raise Rejected("watch 必须提供有限的调用步数和运行秒数")
+    deadline = time.monotonic() + max_seconds
+    actions = []
+    calls = 0
+    with exclusive(engine):
+        engine.recover()
+        while calls < max_steps and time.monotonic() < deadline:
+            try:
+                action = step(engine, executor)
+            except Rejected as e:
+                action = {"action": "blocked", "reason": str(e)}
+            if action["action"] == "wait":
+                remaining = deadline - time.monotonic()
+                if remaining > 0:
+                    time.sleep(min(poll_seconds, remaining))
+                continue
+            actions.append(action)
+            if action["action"] == "blocked":
+                break
+            calls += 1
+    return actions or [{"action": "wait", "reason": "等待期间没有新事件"}]
