@@ -1,0 +1,37 @@
+{
+  "checked_at": "2026-10-12T00:15:13.899706+08:00",
+  "upstream_main": "e11c389366814060ea4475a359c9b62036ccd176",
+  "branch": "feat/ai-union-runtime-console-handoff",
+  "python_tests": 25,
+  "legacy_tests": 9,
+  "legacy_plan": {
+    "tasks": 82,
+    "dependencies": 181,
+    "baseline_files": 5
+  },
+  "browser_checks": {
+    "observation": {
+      "report": "evidence/design/browser-validation.json",
+      "checks": 48,
+      "status": "passed"
+    },
+    "operations": {
+      "report": "evidence/design/console-validation.json",
+      "checks": 32,
+      "status": "passed"
+    },
+    "single_html": {
+      "report": "evidence/site/single-file-validation.json",
+      "checks": 43,
+      "status": "passed"
+    }
+  },
+  "real_model_calls": 0,
+  "remote_ci_verified": false,
+  "real_console_service_verified": false,
+  "direct_file_navigation_verified": false,
+  "artifacts": {
+    "ai-union-progress.html": "7ede06770c0b5a0f57cc34d1505544ee65e2f56a12988c6f02ec23cc89c41b36",
+    "ai-union-dashboard-prototype.html": "b16800c9bc26a1e5c9e137228448aca27559952169b47551c3b42cc4db6bc642"
+  }
+}

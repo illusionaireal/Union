@@ -1,11 +1,15 @@
 name: mechanism-tests
 on: [push, pull_request]
+permissions:
+  contents: read
 jobs:
   unittest:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: python -m unittest discover -v
+      - name: Mechanisms and fresh fixture CLI loop
+        run: python scripts/validate.py --root .union/ci-fixture --output .union/ci-evidence

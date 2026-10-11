@@ -1,6 +1,8 @@
-# UNION
+# UNION / ai-union
 
-为 AI 自主公司提供成立、运行、展示与财务基础设施。
+**用户给出目标，ai-union 自行形成组织、开展行动，并根据结果持续调整。**
+
+首版目标：一个持续经营线上内容品牌的 AI 内容工作室。成员执行循环复用现有 Agent，开发重点是组织层运行。
 
 当前实现：ai-union 首个迭代“组织启动与首次协作”的本地运行时。Python 3.11+、SQLite、CLI；无运行时第三方依赖。支持目标、版本化章程、临时启动授权、组织决定、岗位与任职、依赖工作、文本成果、后续行动、交接、等待唤醒、重启核对和资源记录。
 
@@ -11,6 +13,34 @@
 产品与设计基线：[统一 PRD v0.2](docs/PRD.md)、[产品设计说明](docs/product-design.md)、[操作工作台单 HTML 原型](ai-union-dashboard-prototype.html)、[软件复用与 AI 适配](docs/software-reuse.md)。原型支持七视图、操作表单与预览、回执、有限 fixture 步骤、详情及异常情景。48 项观察交互与 32 项操作交互检查通过；仅模拟浏览器内状态，未连接真实组织服务，模型调用为 0。
 
 业务事实与交易能力优先复用 ERP／CRM／文件／发布等已有系统；ai-union 负责 AI 成员、授权、组织决定、责任、执行与恢复。当前未接入这些业务系统，也不为抽象的 AI 企业预先重建 ERP、CRM 或 MES。
+
+## 从这里接手
+
+1. [当前状态](docs/ai-union/STATUS.md)与[工程交接](HANDOFF.md)：已实现范围、明确缺口和下一步。
+2. [新环境开发与验证](docs/DEVELOPMENT.md)：从新克隆仓库重建模拟场景、运行测试和生成单 HTML，不依赖前一个环境。
+3. [PRD](docs/PRD.md)、[产品设计](docs/product-design.md)与[004 操作工作台待办](specs/004-organization-console/tasks.md)：当前 P0 产品范围及验收。
+4. [治理设计依据](docs/ai-union/DESIGN.md)、[最初开发交接](docs/ai-union/DEVELOPMENT.md)与[ADR-0002](docs/decisions/0002-ai-union-direction.md)：产品与路线背景；当前进度以 STATUS／HANDOFF 为准。
+
+## 两条项目线
+
+
+| 项目 | 目标与当前安排 |
+| --- | --- |
+| **ai-union** | 构建围绕共同目标协作的 AI 组织。当前优先实现“组织启动与首次协作”，验证目标、组织形成、行动、成果及后续决定的闭环 |
+| **UNION 平台** | 为组织提供创建、托管、观察、接入等服务。保留独立规划，按 ai-union 实际需要评估已有工程资产 |
+
+两个项目在产品与计划上拆分，本次仍在同一仓库记录。平台未来可由 ai-union 运作并设置技术委员会，不给每个组织预装相同的委员会或岗位。
+
+## 已确认的运行原则
+
+
+- 董事会保留最终控制权；治理边界属于章程，董事会可按现行程序修订。经营层在生效授权内自主运行。
+- 岗位决定职责、权限与上下文；成员可以兼岗，正式知识和成果由组织或工作持有，能够交接。
+- human-free 是描述性特征，不是零人工的资格或验收门槛。
+- 首阶段以商业组织为对象。长期追求覆盖各类费用并自维持；融资与经营收入分开记录。
+- 首版需有真实对外交付、可核验外部反馈和下一轮实际行动，收入和盈利先作为观察指标。
+
+开发规范与组织运行章程分别管理。上述产品机制不替代真实账号、渠道、工具和预算的配置与授权。
 
 ## 运行与查看
 
@@ -101,3 +131,33 @@ python3 -m ai_union --root .union/real resources \
 `site/index.html` 提供中文开发进展、可逐步播放的模拟协作、成果查看及交互架构图。它展示验证快照，浏览器操作不启动模型、不修改组织状态。
 
 `site/` 保留可编辑源文件。更新公开数据后，运行 `python3 scripts/build_single_html.py` 重新生成单文件。Cloudflare Pages 发布准备与当前凭据/网络阻塞见 [docs/site.md](docs/site.md)；实际浏览器验证与截图见 [evidence/site](evidence/site/)。
+
+## 检查旧平台工程资产
+
+
+以下命令检查旧平台计划与离线实验，**尚不是 ai-union 的启动或验收命令**。使用 `.nvmrc` 指定的 Node.js 24.19.0：
+
+```sh
+npm ci
+npm run check
+```
+
+旧平台实验没有第三方依赖，不需要账号或 API Key，不产生真实支出。`npm test` 使用临时数据库和子进程，退出时清理。Node 可能输出 SQLite 实验性 API 提示。当前测试执行 TypeScript，但尚未配置完整静态类型检查。
+
+`spikes/action-safety` 验证动作授权、整数预算预约、并发争用、幂等参数绑定及模拟外部动作的查询恢复。它可以按需要复用，不代替组织能力、PostgreSQL/Temporal、身份认证、沙箱或生产支付验收。资金与权限实现仍需另一工程角色复核后才能采用。
+
+## 旧平台材料
+
+- [原 M0 状态与任务映射](docs/kickoff/STATUS.md)
+- [原范围草案](docs/kickoff/SCOPE.md) · [离线验证记录](docs/kickoff/VALIDATION.md)
+- [ADR-0001：离线动作实验](docs/decisions/0001-offline-action-spike.md)
+- [82 项原任务目录](docs/kickoff/tasks.json) · [首批 GitHub Issues 映射](docs/kickoff/github-issues.json)
+- [原项目方案](docs/baseline/UNION项目方案.md) · [工程任务](docs/baseline/ISSUES.md)
+- [运营方案](docs/baseline/OPERATIONS_PLAN.md) · [规划与运营任务](docs/baseline/OPERATIONS_ISSUES.md)
+- [原启动路书](docs/baseline/UNION_项目启动路书_v0.1.md)
+
+五份 UNION-B1 输入快照、PLAN/OPS/ENG 编号和原验证证据保留。原 M0 门槛继续用于原平台范围，不作为新组织原型的统一前置条件；本次不据此关闭旧任务或宣称其验收完成。
+
+## 许可与公开范围
+
+仓库保持现有 public 可见性。未改变开源许可证或贡献权利安排，未附加未经决定的开源授权。请勿提交密钥、客户资料或真实资金凭据。

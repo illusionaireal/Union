@@ -4,7 +4,7 @@
 
 ## 单 HTML 交付
 
-用户随后要求改为单 HTML，交付文件为仓库根目录 `ai-union-progress.html`（63,113 字节）。样式、脚本、图标、验证快照及三份成果全部内置；成果和验证摘要通过内置文本生成下载链接，运行时不读取其他文件。仅需分发此文件，`site/` 是编辑源文件。
+用户随后要求改为单 HTML，交付文件为仓库根目录 `ai-union-progress.html`（63,107 字节）。样式、脚本、图标、验证快照及三份成果全部内置；成果和验证摘要通过内置文本生成下载链接，运行时不读取其他文件。仅需分发此文件，`site/` 是编辑源文件。
 
 ```bash
 python3 scripts/build_site_data.py
@@ -40,13 +40,13 @@ python3 scripts/build_site_data.py
 python3 -m http.server 8765 --bind 127.0.0.1 --directory site
 ```
 
-也可以解压交付的 `ai-union-progress-site.zip`，通过任意静态 HTTP 服务器查看。该网站只需要静态文件；不用安装 ai-union 运行时应用或模型执行器。Cloudflare Pages 和其他静态托管都能承载它。当前云浏览器的管理策略禁止 `file://` 导航，直接文件打开未验证；不要将它报告为已通过的离线检查。
+如需 ZIP，可从仓库根目录执行 `python3 -m zipfile -c /tmp/ai-union-progress-site.zip site` 重新生成，解压后通过任意静态 HTTP 服务器查看。Git 不保存旧环境的临时 ZIP。该网站只需要静态文件；不用安装 ai-union 运行时应用或模型执行器。Cloudflare Pages 和其他静态托管都能承载它。当前云浏览器的管理策略禁止 `file://` 导航，直接文件打开未验证；不要将它报告为已通过的离线检查。
 
 ## 验证
 
 真实 Chromium 浏览器执行 37 项交互检查：阶段跳转、依赖状态、播放暂停、重置、后续任务、成果切换和下载、Escape 关闭窗口、六架构模块、键盘操作、公开数据及 1440/800/390/320 像素宽度。测试应用与 Cloudflare `_headers` 相同的 CSP，未出现 JavaScript/CSP 错误或资源加载失败。
 
-工具：playwright-core 1.64.0，系统 Chromium。工具安装于 `/tmp/union-site-tools`，不是网站依赖；未来任务可能需要重新安装。
+工具：playwright-core 1.64.0，系统 Chromium。完整的新环境安装步骤见 [开发说明](DEVELOPMENT.md)；下方 `/tmp/union-site-tools` 是旧验证目录，可通过 `UNION_PLAYWRIGHT_MODULE` 替换。工具不是网站依赖。
 
 ```bash
 UNION_PLAYWRIGHT_MODULE=/tmp/union-site-tools/node_modules/playwright-core \

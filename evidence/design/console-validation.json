@@ -1,6 +1,6 @@
 {
   "status": "passed",
-  "checked_at": "2026-10-11T15:55:28.848Z",
+  "checked_at": "2026-10-11T16:13:47.137Z",
   "scope": "offline design interactions only; no server authorization, durable jobs or real runtime verification",
   "browser": "151.0.7922.173",
   "checks": [
