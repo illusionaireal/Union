@@ -110,12 +110,13 @@ from pathlib import Path
 args=sys.argv
 assert args[args.index('--sandbox')+1]=='read-only'
 assert '--ignore-user-config' in args
+assert args[args.index('--model')+1]=='test-model'
 assert 'shell_tool' in args and 'multi_agent' in args
 sys.stdin.read()
 Path(args[args.index('--output-last-message')+1]).write_text(json.dumps({'status':'delivered','summary':'test','artifacts':[{'name':'a.txt','content':'adapter test'}]}))
 print(json.dumps({'type':'turn.completed','usage':{'input_tokens':12,'output_tokens':7}}))
 ''')
-        ex = CodexExecutor(self.root, command=fake)
+        ex = CodexExecutor(self.root, command=fake, model="test-model")
         result, usage = ex.execute(self.package())
         self.assertEqual(result["artifacts"][0]["content"], "adapter test")
         self.assertEqual(usage["output_tokens"], 7)

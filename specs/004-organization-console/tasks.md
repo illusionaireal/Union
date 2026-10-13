@@ -8,5 +8,6 @@
 - [x] W5 有限后台作业、与 CLI 共用进程锁、事务内暂停检查、宿主 owner 及心跳；未知结果保留占用。
 - [x] W6 单 HTML 实际前端，七视图、预览取消、回执、冲突保留输入、超时查询与断开恢复。
 - [x] W7 47 项 Python、45 项真实 HTTP／Chromium 浏览器检查；C01–C09 与 A01–A10 证据及独立工程复核已保存。
+- [x] W8 组织设置保存默认模型、启动覆盖与执行器参数传递；C10、53 项 Python／53 项浏览器检查及独立 review 见 [模型设置增量](../../evidence/004-organization-console/model-settings-2026-10-13/README.md)。真实模型未调用。
 
 本轮完成的是本地 fixture 服务验收。证据及逐项映射见 [004 验收记录](../../evidence/004-organization-console/README.md)，运行见 [工作台说明](../../docs/CONSOLE.md)。真实模型、经营反馈及公开部署未验收。

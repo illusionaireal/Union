@@ -4,6 +4,8 @@
 
 ## 已完成与证据
 
+本日后续增量已补齐管理后台模型设置：组织默认、启动覆盖、持久回执与 CLI 一致性；53 项 Python／53 项浏览器检查通过，真实模型调用 0。[增量证据与复盘](../../evidence/004-organization-console/model-settings-2026-10-13/README.md)、[独立 review](../reviews/2026-10-13-model-settings.md)。下表保留原交付分项。
+
 | 范围 | 已有内容 | 证据 |
 | --- | --- | --- |
 | 组织机制 | Python／SQLite／CLI：章程、组织形成、决定、任职、依赖工作、成果、后续行动、交接、修章、等待与核对 | [001 规格与任务](../../specs/001-org-bootstrap/tasks.md)、25 项机制／接口测试。 |

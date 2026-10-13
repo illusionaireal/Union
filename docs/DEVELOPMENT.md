@@ -4,7 +4,7 @@
 
 ## 1. 读取顺序与当前任务
 
-先读 [当前状态](ai-union/STATUS.md)、[工程交接](../HANDOFF.md)、[PRD v0.2](PRD.md)和[产品设计](product-design.md)。[004 组织操作工作台](../specs/004-organization-console/tasks.md)的 W2–W7 及 [003 观察模块](../specs/003-runtime-dashboard/spec.md)已完成本地 fixture 验收；后续从真实执行器的有限试跑缺口继续，不重做已完成原型与服务。
+先读 [当前状态](ai-union/STATUS.md)、[工程交接](../HANDOFF.md)、[PRD v0.2](PRD.md)和[产品设计](product-design.md)。[004 组织操作工作台](../specs/004-organization-console/tasks.md)的 W2–W8 及 [003 观察模块](../specs/003-runtime-dashboard/spec.md)已完成本地 fixture 验收；后续从真实执行器的有限试跑缺口继续，不重做已完成原型与服务。
 
 已实现 Python 本地运行时和 CLI、静态展示页、操作设计原型，以及实际工作台的会话、读写服务与持久暂停。真实模型调用为 0；本地 fixture 使用不需要模型凭据。运行入口及恢复见 [CONSOLE.md](CONSOLE.md)。
 
@@ -16,7 +16,7 @@ python -m ai_union.server --root .union/console --port 8766 --open
 
 ## 2. 工具和首次验证
 
-运行时使用 Python 3.11+ 与 SQLite 标准库；Linux 互斥使用 `fcntl`，Windows 使用 `msvcrt`。本次 Windows／Python 3.13.14 通过 47 项测试，先前 Linux／Python 3.12.14 的 25 项记录仍保留；新代码的 Linux 实机与远端 CI 结果未取得。无需 pip 包、数据库服务或 API Key。Windows 将下文 `python3` 换成 `python`。
+运行时使用 Python 3.11+ 与 SQLite 标准库；Linux 互斥使用 `fcntl`，Windows 使用 `msvcrt`。本次 Windows／Python 3.13.14 通过 53 项测试，先前 Linux／Python 3.12.14 的 25 项记录仍保留；新代码的 Linux 实机与远端 CI 结果未取得。无需 pip 包、数据库服务或 API Key。Windows 将下文 `python3` 换成 `python`。
 
 旧平台检查和浏览器工具使用 `.nvmrc` 指定的 Node.js 24.19.0。安装对应版本后，从仓库根目录执行：
 
@@ -40,13 +40,13 @@ python3 -m ai_union --root .union/first-fixture status
 python3 -m ai_union --root .union/first-fixture context --work-id work-followup
 ```
 
-脚本预期退出 0，包含当前 47 项机制／接口／服务测试与 CLI 场景，得到 2 名成员、3 项工作、3 份模拟文本成果和 6 次 fixture 调用。内部 `evaluate` 返回 3 表示模拟结果，脚本按此预期检查；不要将其修改为真实通过。
+脚本预期退出 0，包含当前 53 项机制／接口／服务测试与 CLI 场景，得到 2 名成员、3 项工作、3 份模拟文本成果和 6 次 fixture 调用。内部 `evaluate` 返回 3 表示模拟结果，脚本按此预期检查；不要将其修改为真实通过。
 
 不依赖 `.union/validated-final`、`/tmp` 目录、旧登录、进程或端口。新环境自己生成 fixture；数据库、`board.key` 和私有执行记录留在被忽略的 `.union/`，只有公开证据进入 Git。
 
 ## 4. 原型与浏览器验证
 
-实际工作台生成：`python scripts/build_console.py`；真实 HTTP 浏览器验收：`node scripts/check_console.cjs`，45 项通过。安装 Playwright 与浏览器变量见 [CONSOLE.md](CONSOLE.md)，证据在 `evidence/004-organization-console/`。以下命令继续用于独立的历史设计原型与展示页，不替代实际服务验收。
+实际工作台生成：`python scripts/build_console.py`；真实 HTTP 浏览器验收：`node scripts/check_console.cjs`，53 项通过。安装 Playwright 与浏览器变量见 [CONSOLE.md](CONSOLE.md)，证据在 `evidence/004-organization-console/`。以下命令继续用于独立的历史设计原型与展示页，不替代实际服务验收。
 
 入口为 `ai-union-progress.html`（进展展示）和 `ai-union-dashboard-prototype.html`（组织操作设计）。后者沿用文件名，现含七视图和操作流程。两者均可单独分发，不连接真实组织服务。源文件在 `site/` 和 `design/dashboard/`。
 
@@ -88,6 +88,7 @@ python3 -m http.server 8765 --bind 127.0.0.1 --directory site
 | 已完成 | 003 观察服务及 [review](../specs/003-runtime-dashboard/review.md) 两项修复 | 活跃执行不误报；同版本事件／用量更新、乱序及恢复通过 A01–A10。 |
 | 已完成 | 004 W4–W5 幂等命令、作业与持久暂停意图 | 暂停停止新派发并等待在途回执；未知结果核对，不退款或盲目重派。 |
 | 已完成 | 004 W6–W7 前端接入实际服务 | 浏览器 fixture 闭环及 C01–C09，证据见 [004](../evidence/004-organization-console/README.md)。 |
+| 已完成 | 004 W8 管理后台模型设置及启动覆盖 | C10、CLI 模型与资源并发校验及独立 review，见 [模型设置增量](../evidence/004-organization-console/model-settings-2026-10-13/README.md)。 |
 | 5 | 有限真实 Agent 与业务接入 | 明确调用范围和费用未知条件后记录 E1/E2；真实交付／反馈另需渠道。 |
 
 `runner.exclusive` 同时保护 CLI 与网页运行、管理变更。暂停意图已持久化，并在调用预约事务内检查；仍不支持远程取消确认。ERP／CRM 等按 [软件复用方案](software-reuse.md)接入。
@@ -96,4 +97,4 @@ python3 -m http.server 8765 --bind 127.0.0.1 --directory site
 
 ## 6. 可直接交给下一开发者的任务
 
-> 阅读 AGENTS.md、STATUS、HANDOFF、CONSOLE.md 与 004 验收记录，核对工作区及当前实现。W2–W7 和观察模块的本地 fixture 范围已完成，不从原型重做。下一优先事项是有限真实执行器烟雾及 E1/E2：先核对执行器版本和实际登录、既有调用授权与额度；只有在明确有限范围及费用未知条件后才调用。使用独立组织，保留所有失败、费用不确定性和实际成果。缺少真实条件时如实记录，不把 fixture 验收当真实能力。另核对 Linux／远端 CI 结果。真实对外交付、反馈及部署继续按各自授权处理。
+> 阅读 AGENTS.md、STATUS、HANDOFF、CONSOLE.md 与 004 验收记录，核对工作区及当前实现。W2–W8 和观察模块的本地 fixture 范围已完成，不从原型重做。下一优先事项是有限真实执行器烟雾及 E1/E2：先核对执行器版本和实际登录、既有调用授权与额度；只有在明确有限范围及费用未知条件后才调用。使用独立组织，保留所有失败、费用不确定性和实际成果。缺少真实条件时如实记录，不把 fixture 验收当真实能力。另核对 Linux／远端 CI 结果。真实对外交付、反馈及部署继续按各自授权处理。

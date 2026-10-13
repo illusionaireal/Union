@@ -25,11 +25,19 @@ def main():
     thread.start()
     gate = threading.Event()
     gate.set()
-    mode = {"unknown": False}
+    mode = {"unknown": False, "codex_double": False}
+    model_arguments = []
     original = app.executor_factory
 
     def factory(e, data):
-        executor = original(e, data)
+        if data["executor"] == "codex":
+            if not mode["codex_double"]:
+                raise ValueError("Real model calls are forbidden in this harness")
+            executor = FixtureExecutor(fixture[len(e.runs()):])
+            executor.model = data.get("model")
+            model_arguments.append(executor.model)
+        else:
+            executor = original(e, data)
         execute = executor.execute
         def controlled(package):
             gate.wait(15)
@@ -53,6 +61,10 @@ def main():
             if op == "hold": gate.clear()
             elif op == "release": gate.set()
             elif op == "unknown": mode["unknown"] = True
+            elif op == "enable_codex_double":
+                mode["codex_double"] = True
+                app.enable_codex = True
+            elif op == "model_arguments": result["models"] = model_arguments
             elif op == "event": e.add_event(command["id"], "opinion", {"source": "browser-test", "simulated": True, "content": command["id"]})
             elif op == "unconfirmed": result["run_id"] = e.begin_decision("fixture")["run_id"]
             elif op == "recover":

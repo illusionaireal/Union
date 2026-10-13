@@ -8,7 +8,7 @@
 
 这是组织层原型。经营策略和岗位由执行器输出形成，代码不预置内容工作流。尚无真实模型闭环验收、对外发布或市场反馈证据，也没有经营平台、支付或投资募集。
 
-**P0 本地组织工作台已接入实际服务，fixture 验收通过。** 浏览器可创建、有限运行、暂停派发、提交事件、调整资源、修章和核对执行；Dashboard 读取实际持久记录。47 项 Python 测试、45 项实际服务浏览器检查通过，真实模型调用仍为 0。范围见 [004](specs/004-organization-console/spec.md) 与 [003](specs/003-runtime-dashboard/spec.md)，证据见 [工作台验收](evidence/004-organization-console/README.md)。
+**P0 本地组织工作台已接入实际服务，fixture 验收通过。** 浏览器可创建、有限运行、暂停派发、提交事件、调整资源、修章和核对执行；Dashboard 读取实际持久记录。53 项 Python 测试、53 项实际服务浏览器检查通过，真实模型调用仍为 0。范围见 [004](specs/004-organization-console/spec.md) 与 [003](specs/003-runtime-dashboard/spec.md)，证据见 [工作台验收](evidence/004-organization-console/README.md)。
 
 本轮实现、review、验证与复盘见 [单页完成报告](ai-union-completion-report.html)，可离线打开。2026-10-13 的最终复验记录单独保存，历史结果保留。
 
@@ -88,7 +88,7 @@ python3 -m ai_union --root .union/real run \
 python3 -m ai_union --root .union/real evaluate --output .union/real/evaluation.json
 ```
 
-只有明确接受有限调用下费用未知后才执行真实 run。默认资源为累计最多 8 次调用、每次最多 180 秒；实际 token 由 CLI 回执记录，金额标为 unknown。CLI 不提供已核实的生成 token 或金额硬上限；设置金额硬上限时此适配器拒绝调用。模型可用 `--model` 指定；省略用 CLI 默认，具体模型信息以私有执行记录为准。不能保证 8 次调用必然完成真实评测；失败不重置额度或抹除记录。
+只有明确接受有限调用下费用未知后才执行真实 run。默认资源为累计最多 8 次调用、每次最多 180 秒；实际 token 由 CLI 回执记录，金额标为 unknown。CLI 不提供已核实的生成 token 或金额硬上限；设置金额硬上限时此适配器拒绝调用。模型可在网页“组织设置 → 模型设置”保存，也可用 `--model` 指定；省略参数使用组织默认，组织未设置时由 CLI 选择默认，具体模型信息以私有执行记录为准。不能保证 8 次调用必然完成真实评测；失败不重置额度或抹除记录。
 
 运行时不开放真实发布工具。Codex 在独立目录、只读沙箱中运行，关闭用户配置、shell、多 Agent 工具、apps、plugins、hooks 和 web search。上下文与结构化响应通过 stdin/文件传递，产物由宿主校验后保存。工具限制的配置与回执检测已通过接口替身测试；真实版本的行为仍须试跑核验。操作系统访问控制是本地信任边界，适配器不是恶意程序的隔离容器。
 

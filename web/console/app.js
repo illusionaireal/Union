@@ -4,7 +4,7 @@
   const esc = value => String(value ?? "").replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
   const pretty = value => esc(JSON.stringify(value, null, 2));
   const pages = {overview:["总览","组织总览","从当前行动，到下一轮决定。"],members:["成员与岗位","成员与岗位","稳定身份、明确责任，以及可以延续的协作。"],tasks:["工作","工作与依赖","每项工作都有责任人、依据与可追溯的结果。"],artifacts:["成果","组织成果","读取实际文件，核对版本与来源。"],activity:["活动","事件与决定","当前安排如何形成，后续行动因何发生。"],resources:["执行与资源","执行与资源","调用有边界，未知费用如实显示。"],settings:["组织设置","组织设置与回执","采用规则、调整资源，并确认操作结果。"]};
-  const titles = {create:"创建并采用组织",start:"启动／继续有限运行",pause:"暂停新的派发",event:"提交组织事件",resources:"调整资源",amend:"修订组织章程",reconcile:"核对未知执行"};
+  const titles = {create:"创建并采用组织",start:"启动／继续有限运行",pause:"暂停新的派发",event:"提交组织事件",resources:"调整资源",model:"设置默认模型",amend:"修订组织章程",reconcile:"核对未知执行"};
   const labels = {bootstrap:"组织尚未形成",execute_work:"等待派发工作",decide:"等待组织决定",wait:"等待新事件",running:"协作进行中",unconfirmed:"执行活性未确认",unknown:"执行待核对",blocked:"运行受阻",paused:"派发已暂停",pause_requested:"暂停已请求，等待在途回执",needs_review:"执行待核对",dependent:"等待依赖",pending:"待执行",delivered:"已交付",failed:"执行失败",cancelled:"已取消",reconciled:"已核对",accepted:"已受理",rejected:"已拒绝",succeeded:"已完成",idle:"无在途执行",enabled:"允许派发"};
   const sourceName = source => ({fixture:"Fixture · 模拟",real:"真实执行记录",mixed:"模拟与真实混合",not_run:"尚未执行"}[source] || source);
   const defaultCharter = {text:"本地有限组织试验。组织在已配置资源内形成岗位和协作；无对外发布或支付权限。",allowed_operations:["create_member","create_position","update_position","assign","set_policy","create_work","handoff","pause_work","resume_work","cancel_work","update_work","wait","set_strategy","record_memory"],allowed_tools:["produce_artifact"],reserved_matters:["goal","resources","charter","funding","dissolution"],board_can_amend:true};
@@ -85,7 +85,7 @@
       if(data.execution_state==="unknown")return "执行结果未知，请先核对";
       if(data.budget.blocked_reason)return data.budget.blocked_reason;
     }
-    if(["amend","resources","reconcile"].includes(kind) && data.host_activity.confirmed)return "先暂停派发并等待在途回执";
+    if(["amend","resources","model","reconcile"].includes(kind) && data.host_activity.confirmed)return "先暂停派发并等待在途回执";
     if(kind==="amend" && !data.charter.board_can_amend)return "现行章程不允许此修订入口";
     if(kind==="reconcile" && !data.runs.some(r=>r.status==="unknown"))return "仅能核对已确认 unknown 的执行";
     return "";
@@ -129,7 +129,7 @@
     return data.receipts.map(r=>`<article class="command-receipt"><div>${link("receipt",r.id,titles[r.kind] || r.kind)}${badge(r.status)}</div><p>${esc(r.message)}</p><small>${esc(r.id)} · ${esc(r.actor)} · 基准 v${r.base_version} · ${esc(r.created_at)}</small></article>`).join("") || empty("暂无操作回执","提交操作后在此查询结果。");
   }
   function settingsView() {
-    return `<div class="cards-grid">${panel("已采用章程 · v"+data.organization.charter_version,`<p class="charter-copy">${esc(data.charter.text)}</p><p>文本成果工具：${data.charter.allowed_tools.includes("produce_artifact") ? "允许" : "未授权"} · 当前修章入口：${data.charter.board_can_amend ? "允许" : "不允许"}</p>${commandButton("amend","预览修章")}<details><summary>受支持规则</summary><pre>${pretty(data.charter)}</pre></details>`)}${panel("资源与异常处理",`<p>已占用 ${data.budget.calls_reserved} / ${data.budget.max_calls} 次调用</p><p>单次 ${data.organization.resources.timeout_seconds} 秒；金额费用未知。</p>${commandButton("resources","调整资源")}${commandButton("reconcile","核对未知执行")}`)}</div>${panel("操作回执",receiptRows())}`;
+    return `${panel("模型设置",`<p>Codex 默认模型：<strong id="configured-model">${esc(data.execution_config?.codex_model || "CLI 默认（未指定）")}</strong></p><p class="form-note">${session.executors.includes("codex") ? "真实执行器已由宿主启用；启动时可覆盖本次模型。" : "宿主尚未启用 Codex；可先保存模型，当前仍使用 Fixture 模拟。"} 保存不调用模型，也不验证模型可用性。</p>${commandButton("model","设置默认模型")}`)}<div class="cards-grid">${panel("已采用章程 · v"+data.organization.charter_version,`<p class="charter-copy">${esc(data.charter.text)}</p><p>文本成果工具：${data.charter.allowed_tools.includes("produce_artifact") ? "允许" : "未授权"} · 当前修章入口：${data.charter.board_can_amend ? "允许" : "不允许"}</p>${commandButton("amend","预览修章")}<details><summary>受支持规则</summary><pre>${pretty(data.charter)}</pre></details>`)}${panel("资源与异常处理",`<p>已占用 ${data.budget.calls_reserved} / ${data.budget.max_calls} 次调用</p><p>单次 ${data.organization.resources.timeout_seconds} 秒；金额费用未知。</p>${commandButton("resources","调整资源")}${commandButton("reconcile","核对未知执行")}`)}</div>${panel("操作回执",receiptRows())}`;
   }
   function render() {
     const focus=document.activeElement?.id, start=document.activeElement?.selectionStart;
@@ -174,10 +174,17 @@
   const field = (name,label,value="",type="text",extra="") => `<label class="operation-field">${esc(label)}<input name="${name}" type="${type}" value="${esc(value)}" ${extra} required></label>`;
   const area = (name,label,value="",rows=3) => `<label class="operation-field">${esc(label)}<textarea name="${name}" rows="${rows}" required maxlength="100000">${esc(value)}</textarea></label>`;
   const reason = () => area("reason","操作理由与核对依据");
+  const modelField = label => `<label class="operation-field">${esc(label)}<input name="model" value="${esc(data.execution_config?.codex_model || "")}" maxlength="128" placeholder="留空使用 CLI 默认" autocomplete="off" spellcheck="false"></label>`;
+  function updateModelField() {
+    const input=$("operation-form").querySelector('[name="model"]');
+    const executor=$("operation-form").querySelector('[name="executor"]');
+    if(input && executor) { input.disabled=executor.value!=="codex"; input.closest("label").hidden=input.disabled; }
+  }
   const rules = charter => area("charter_text","章程正文",charter.text)+`<details><summary>受支持的规则字段</summary>${area("charter_rules","组织操作、工具、保留事项与修章入口",JSON.stringify({allowed_operations:charter.allowed_operations,allowed_tools:charter.allowed_tools,reserved_matters:charter.reserved_matters,board_can_amend:charter.board_can_amend},null,2),8)}<p class="form-note">只接受已实现的规则字段；正文不隐式授予权限。</p></details>`;
   function form(kind) {
     if(kind==="create")return field("name","组织名称","我的试验组织","text",'maxlength="200"')+area("goal","组织目标","一个持续经营线上内容品牌的 AI 内容工作室。")+field("board_name","章程采用人","本机发起人（本地测试采用）","text",'maxlength="200"')+rules(defaultCharter)+field("max_calls","累计调用上限",8,"number",'min="1" max="10000"')+field("timeout_seconds","单次超时（秒）",180,"number",'min="1" max="3600"');
-    if(kind==="start")return `<p class="form-note">已占用 ${data.budget.calls_reserved} / ${data.budget.max_calls} 次；每次最多 ${data.organization.resources.timeout_seconds} 秒。${data.execution_state==="unconfirmed" ? "持久执行活性未确认：启动入口先取得互斥锁并检查原执行；遗留执行将进入 unknown，不会重派。" : ""}</p><label class="operation-field">执行器<select name="executor">${session.executors.map(e=>`<option value="${e}">${e==="fixture" ? "Fixture · 确定性模拟" : "Codex · 真实执行器，费用未知"}</option>`).join("")}</select></label>`+field("max_steps","本次最多执行步数",Math.min(8,data.budget.max_calls-data.budget.calls_reserved),"number",`min="1" max="${data.budget.max_calls-data.budget.calls_reserved}"`)+field("max_seconds","等待新事件窗口（秒，0 表示不持续等待）",0,"number",'min="0" max="86400"')+`<label class="check-field"><input type="checkbox" name="allow_unknown_cost">明确接受本次有限真实调用的费用未知条件。Fixture 不调用模型。</label>`;
+    if(kind==="start")return `<p class="form-note">已占用 ${data.budget.calls_reserved} / ${data.budget.max_calls} 次；每次最多 ${data.organization.resources.timeout_seconds} 秒。${data.execution_state==="unconfirmed" ? "持久执行活性未确认：启动入口先取得互斥锁并检查原执行；遗留执行将进入 unknown，不会重派。" : ""}</p><label class="operation-field">执行器<select name="executor">${session.executors.map(e=>`<option value="${e}">${e==="fixture" ? "Fixture · 确定性模拟" : "Codex · 真实执行器，费用未知"}</option>`).join("")}</select></label>`+modelField("本次模型（可覆盖组织默认值）")+field("max_steps","本次最多执行步数",Math.min(8,data.budget.max_calls-data.budget.calls_reserved),"number",`min="1" max="${data.budget.max_calls-data.budget.calls_reserved}"`)+field("max_seconds","等待新事件窗口（秒，0 表示不持续等待）",0,"number",'min="0" max="86400"')+`<label class="check-field"><input type="checkbox" name="allow_unknown_cost">明确接受本次有限真实调用的费用未知条件。Fixture 不调用模型。</label>`;
+    if(kind==="model")return modelField("该组织的 Codex 默认模型")+`<p class="form-note">填写执行器支持的模型 ID；留空恢复 CLI 默认。这里不接收 API 地址或密钥，保存后不发起连接测试或模型调用。</p>`+reason();
     if(kind==="pause")return '<p class="form-note">提交后停止新的派发；在途调用仍需等待回执。暂停不代表远程执行已取消，未知结果需要核对。</p>';
     if(kind==="event")return `<label class="operation-field">事件类型<select name="kind"><option value="opinion">发起人意见</option><option value="fact">事实记录</option><option value="external_feedback">外部反馈</option></select></label>`+field("event_id","来源事件或回执 ID",crypto.randomUUID())+area("content","事件内容")+field("source","可核验来源")+`<label class="operation-field">来源标记<select name="simulated"><option value="true">模拟资料</option><option value="false">真实来源声明，仍需核验</option></select></label><p class="form-note">意见与反馈进入事件循环，不直接覆盖正式工作。</p>`;
     if(kind==="resources")return `<p class="form-note">已有 ${data.budget.calls_reserved} 次调用占用不会返还。当前上限 ${data.budget.max_calls} 次，单次 ${data.organization.resources.timeout_seconds} 秒。</p>`+field("max_calls","新的累计调用上限",data.budget.max_calls,"number",`min="${Math.max(1,data.budget.calls_reserved)}" max="10000"`)+field("timeout_seconds","新的单次超时（秒）",data.organization.resources.timeout_seconds,"number",'min="1" max="3600"')+reason();
@@ -189,6 +196,7 @@
     if(blocked(kind))return notify(blocked(kind));
     draft={kind,orgId:kind==="create" ? null : orgId,submitted:false,request:null};
     $("operation-title").textContent=titles[kind]; $("operation-fields").innerHTML=form(kind);
+    updateModelField();
     $("operation-form").hidden=false; $("operation-result").hidden=true; $("operation-error").hidden=true;
     $("operation-preview").hidden=true; $("commit-operation").hidden=true;
     $("operation-dialog").showModal();
@@ -202,7 +210,8 @@
       return {name:values.name,goal:values.goal,board_name:values.board_name,resources,charter:{...JSON.parse(values.charter_rules),text:values.charter_text}};
     }
     if(kind==="amend")return {charter:{...JSON.parse(values.charter_rules),text:values.charter_text},reason:values.reason};
-    if(kind==="start")return {executor:values.executor,max_steps:Number(values.max_steps),max_seconds:Number(values.max_seconds),allow_unknown_cost:values.allow_unknown_cost==="on"};
+    if(kind==="model")return {model:values.model.trim() || null,reason:values.reason};
+    if(kind==="start")return {executor:values.executor,model:values.executor==="codex" ? values.model.trim() || null : null,max_steps:Number(values.max_steps),max_seconds:Number(values.max_seconds),allow_unknown_cost:values.allow_unknown_cost==="on"};
     if(kind==="event")return {...values,simulated:values.simulated==="true"};
     return values;
   }
@@ -213,9 +222,10 @@
       if(draft.orgId && draft.orgId!==orgId)throw new Error("组织已切换，请关闭后重新选择操作");
       const value=readForm();
       if(Object.values(value).some(v=>typeof v==="string" && !v.trim()))throw new Error("必填内容不能只包含空格");
+      if(value.model && !/^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$/.test(value.model))throw new Error("模型 ID 格式不正确；请填写模型名称或留空使用 CLI 默认");
       if(draft.kind==="start" && value.executor==="codex" && !value.allow_unknown_cost)throw new Error("请明确接受本次有限调用的费用未知条件");
       draft.request={id:crypto.randomUUID(),kind:draft.kind,organization_id:draft.orgId,base_version:draft.kind==="create" ? null : data.organization.version,data:value};
-      const previous=draft.kind==="resources" ? data.organization.resources : draft.kind==="amend" ? data.charter : null;
+      const previous=draft.kind==="resources" ? data.organization.resources : draft.kind==="amend" ? data.charter : draft.kind==="model" ? data.execution_config : null;
       $("operation-preview").innerHTML=`<h3>${esc(titles[draft.kind])} · 提交预览</h3><p>目标：${esc(draft.orgId || "新组织")} · 基准版本 ${draft.request.base_version ?? "新建"}</p>${previous ? `<p>当前采用</p><pre class="detail-data">${pretty(previous)}</pre><p>拟采用</p>` : ""}<pre class="detail-data">${pretty(value)}</pre>${draft.kind==="amend" ? `<p>受影响的未完成工作：${works().filter(w=>!["delivered","cancelled"].includes(w.status)).map(w=>esc(w.title)).join("、") || "无"}。撤回文本工具后相关未完成工作暂停。</p>` : ""}<small>只有服务器回执确认后，操作才生效。取消不会提交。</small>`;
       $("operation-preview").hidden=false; $("commit-operation").hidden=false; $("commit-operation").disabled=false; $("operation-error").hidden=true;
     } catch(error) { showError(errorText(error)); $("commit-operation").hidden=true; }
@@ -285,6 +295,7 @@
     if(event.target.closest("#operation-fields") && draft && !draft.submitted) { draft.request=null;$("operation-preview").hidden=true;$("commit-operation").hidden=true; }
   });
   document.addEventListener("change",event=>{
+    if(event.target.name==="executor")updateModelField();
     if(event.target.id==="work-filter") { workFilter=event.target.value;filterWork(); }
     if(event.target.id==="member-filter") { memberFilter=event.target.value;filterWork(); }
     if(event.target.id==="org-select") { epoch++;orgId=event.target.value;data=null;connected=false;offset=0;lastSequence=-1;detailSerial++;$("detail-dialog").close();render();refresh(); }

@@ -1,5 +1,11 @@
 # 当前工程交接
 
+## 2026-10-13：管理后台模型设置
+
+用户要求补齐后台模型配置。现在可在“组织设置 → 模型设置”按组织保存／清除 Codex 默认模型，启动时覆盖本次值；回执固定 `requested_model`。CLI 省略 `--model` 时同样沿用组织默认，模型解析与金额硬上限检查都在派发锁内执行，避免并发设置竞态。保存不启用 Codex、不调用模型，实际使用说明见 [CONSOLE.md](docs/CONSOLE.md)。
+
+最终验证为 53 项 Python、53 项 HTTP／Chromium 检查及 Node 24.19.0 历史检查；[新证据](evidence/004-organization-console/model-settings-2026-10-13/README.md)与[独立 review](docs/reviews/2026-10-13-model-settings.md)单独保存。真实模型仍未调用；原 W2–W7 结果保留。
+
 ## 2026-10-13：最终复验与完成报告
 
 独立 review 的六项发现已修正或复核完成。当前 Windows／Python 3.13.14 再次通过 47 项测试、45 项实际浏览器检查，Node 24.19.0 历史检查通过；新证据位于 `evidence/004-organization-console/2026-10-13/`。已完成 A01–A10／C01–C09 映射、文档一致性同步和[单页 HTML 报告](ai-union-completion-report.html)，报告离线可读并支持复制启动命令及打印。

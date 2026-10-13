@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-13T02:52:50.596Z",
+  "browser": "154.0.8037.99",
+  "offline_file_open": true,
+  "widths": [
+    {
+      "width": 1440,
+      "no_overflow": true
+    },
+    {
+      "width": 390,
+      "no_overflow": true
+    },
+    {
+      "width": 320,
+      "no_overflow": true
+    }
+  ],
+  "metrics": [
+    "53通过",
+    "53通过",
+    "9通过"
+  ],
+  "copy_feedback": "启动命令已复制。",
+  "print_button": true,
+  "keyboard_details": true,
+  "print_pages": 2,
+  "links_checked": 3,
+  "uncaught_errors": [],
+  "network_requests": 0,
+  "report_sha256": "5736ffe79d5fd0c246e5b1cab8c4e8eb9dea3094a961797014ae6b99f60b2b13"
+}

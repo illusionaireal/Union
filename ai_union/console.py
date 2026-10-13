@@ -10,7 +10,7 @@ from contextlib import closing, contextmanager, nullcontext
 from pathlib import Path
 
 from .activity import activity
-from .engine import Engine, Rejected, encoded, identifier, now, require, text, uid, validate_charter, validate_resources
+from .engine import Engine, Rejected, encoded, identifier, model_name, now, require, text, uid, validate_charter, validate_resources
 from .executor import CodexExecutor, FixtureExecutor
 from .locking import file_lock
 from .observation import snapshot
@@ -162,7 +162,7 @@ class Console:
         require(session["role"] == "board", "观察者不能提交操作")
         require(isinstance(request, dict) and set(request) == {"id", "organization_id", "base_version", "kind", "data"}, "无效命令字段")
         identifier(request["id"])
-        require(request["kind"] in ("create", "event", "resources", "amend", "reconcile", "start", "pause"), "不支持的命令")
+        require(request["kind"] in ("create", "event", "resources", "model", "amend", "reconcile", "start", "pause"), "不支持的命令")
         require(isinstance(request["data"], dict), "命令数据必须为对象")
         require(len(encoded(request)) <= 200000, "命令过大")
         receipt = {k: request[k] for k in ("id", "organization_id", "base_version", "kind")}
@@ -175,7 +175,7 @@ class Console:
             prior = self._existing(cx, request)
         if prior:
             return prior
-        guard = exclusive(e) if request["kind"] in ("start", "resources", "amend", "reconcile") else nullcontext()
+        guard = exclusive(e) if request["kind"] in ("start", "resources", "model", "amend", "reconcile") else nullcontext()
         acquired = False
         transferred = False
         try:
@@ -191,6 +191,8 @@ class Console:
                         require(type(request["base_version"]) is int and request["base_version"] == state["version"], "版本冲突；刷新并重新预览，输入已保留")
                         result = self._execute(e, request)
                     receipt.update(status="accepted" if request["kind"] == "start" else "succeeded", message="有限运行已受理" if request["kind"] == "start" else "操作已保存")
+                    if request["kind"] == "start":
+                        receipt.update(executor=request["data"]["executor"], requested_model=getattr(result, "model", None))
                 except (Rejected, KeyError, TypeError) as error:
                     receipt.update(status="rejected", message=str(error) if isinstance(error, Rejected) else "命令字段缺失或类型不正确")
                 cx.execute("INSERT INTO commands VALUES(?,?,?)", (request["id"], encoded(request), encoded(receipt)))
@@ -269,9 +271,9 @@ class Console:
     def _execute(self, e, request):
         kind, data = request["kind"], request["data"]
         fields = {"event": {"event_id", "kind", "content", "source", "simulated"}, "pause": set(),
-                  "resources": {"resources", "reason"}, "amend": {"charter", "reason"},
-                  "reconcile": {"run_id", "resolution", "reason"}, "start": {"executor", "max_steps", "max_seconds", "allow_unknown_cost"}}
-        optional = {"event": {"event_id"}, "start": {"max_seconds", "allow_unknown_cost"}}
+                  "resources": {"resources", "reason"}, "model": {"model", "reason"}, "amend": {"charter", "reason"},
+                  "reconcile": {"run_id", "resolution", "reason"}, "start": {"executor", "model", "max_steps", "max_seconds", "allow_unknown_cost"}}
+        optional = {"event": {"event_id"}, "start": {"model", "max_seconds", "allow_unknown_cost"}}
         require(set(data) <= fields[kind] and fields[kind] - optional.get(kind, set()) <= set(data), "命令字段缺失或不支持")
         if kind == "pause":
             e.set_paused(True)
@@ -294,9 +296,12 @@ class Console:
             if data["executor"] == "codex":
                 require(self.enable_codex and data.get("allow_unknown_cost") is True, "宿主未启用 Codex 或未接受有限调用费用未知")
                 require("max_cost" not in state["resources"], "此执行器不支持金额硬上限")
+                model = model_name(data.get("model", state.get("execution_config", {}).get("codex_model")))
             else:
                 require(data["executor"] == "fixture" and self.fixture is not None, "执行器未配置")
-            executor = self.executor_factory(e, data)
+                require(data.get("model") in (None, ""), "Fixture 不使用真实模型；请清空本次模型")
+                model = None
+            executor = self.executor_factory(e, data | {"model": model})
             e.set_paused(False)
             return executor
         else:
@@ -307,12 +312,14 @@ class Console:
                 e.configure_resources(key, data["resources"], data["reason"])
             elif kind == "amend":
                 e.amend(key, data["charter"], data["reason"])
+            elif kind == "model":
+                e.configure_model(key, data["model"], data["reason"])
             else:
                 e.reconcile(key, data["run_id"], data["resolution"], data["reason"])
 
     def _executor(self, e, data):
         if data["executor"] == "codex":
-            return CodexExecutor(e.root)
+            return CodexExecutor(e.root, model=data.get("model"))
         used = len([r for r in e.runs() if r["executor"] == "fixture"])
         return FixtureExecutor(copy.deepcopy(self.fixture[used:]))
 

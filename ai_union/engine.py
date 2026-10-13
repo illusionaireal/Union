@@ -31,6 +31,14 @@ def require(ok, reason):
         raise Rejected(reason)
 
 
+def model_name(value):
+    if value is None or value == "":
+        return None
+    require(isinstance(value, str) and re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}", value) is not None,
+            "模型名称需为 1–128 位字母、数字或 . _ : / -，且以字母或数字开头；留空使用 CLI 默认")
+    return value
+
+
 def encoded(value):
     return json.dumps(value, ensure_ascii=False, sort_keys=True, allow_nan=False)
 
@@ -418,6 +426,17 @@ class Engine:
             s["resources"] = resources
             s["version"] += 1
             self._event(cx, "resources_updated", {"board": board, "reason": reason, "resources": resources})
+            self._save(cx, s)
+
+    def configure_model(self, board_key, model, reason):
+        model = model_name(model)
+        text(reason, "模型设置依据")
+        with self.transaction() as cx:
+            board = self._board(cx, board_key)
+            s = self._state(cx)
+            s["execution_config"] = {"codex_model": model}
+            s["version"] += 1
+            self._event(cx, "model_configured", {"board": board, "reason": reason, "model": model})
             self._save(cx, s)
 
     def _read_artifact(self, a):

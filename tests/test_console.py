@@ -94,6 +94,127 @@ class ConsoleTests(unittest.TestCase):
         self.assertEqual(self.command("amend", {"charter": CHARTER, "reason": "test"})["status"], "rejected")
         self.assertEqual(self.e.state()["charter_version"], 2)
 
+    def test_model_configuration_is_versioned_scoped_and_persistent(self):
+        original = self.e.state()["version"]
+        data = {"model": "test-model-a", "reason": "test configuration only"}
+        receipt = self.command("model", data, request_id="model-setting", version=original)
+        self.assertEqual(receipt["status"], "succeeded")
+        self.assertEqual(self.command("model", data, request_id="model-setting", version=original), receipt)
+        self.assertEqual(self.e.state()["version"], original + 1)
+        self.assertEqual(snapshot(self.e)["execution_config"]["codex_model"], "test-model-a")
+        self.assertEqual(self.e.runs(), [])
+        self.assertEqual(self.command("model", data | {"model": "stale-model"}, version=original)["status"], "rejected")
+        with self.assertRaises(Rejected):
+            self.command("model", data, session=self.observer)
+        with self.assertRaises(Rejected):
+            self.e.configure_model("not-the-board-key", "test-model-b", "test")
+        other = self.command("create", {"name": "other", "goal": "test", "board_name": "test", "charter": CHARTER, "resources": RESOURCES}, org_id=None)
+        self.assertIsNone(self.app.observe(self.board, other["organization_id"])["execution_config"]["codex_model"])
+        self.app.close()
+        self.app = Console(self.app.root, fixture=FIXTURE)
+        self.addCleanup(self.app.close)
+        self.board = self.app.new_session("board")
+        self.assertEqual(self.app.observe(self.board, self.org)["execution_config"]["codex_model"], "test-model-a")
+
+    def test_model_configuration_rejects_invalid_input_and_running_changes(self):
+        for model in (42, [], "--config", "name\nsecret", "x" * 129):
+            with self.subTest(model=model):
+                self.assertEqual(self.command("model", {"model": model, "reason": "test"})["status"], "rejected")
+        with exclusive(self.e):
+            self.assertEqual(self.command("model", {"model": "test-model", "reason": "test"})["status"], "rejected")
+        self.assertEqual(self.e.state()["version"], 0)
+        self.command("model", {"model": "test-model", "reason": "test"})
+        self.assertEqual(self.command("model", {"model": "", "reason": "restore CLI default"})["status"], "succeeded")
+        self.assertIsNone(snapshot(self.e)["execution_config"]["codex_model"])
+
+    def test_saved_model_and_per_run_override_reach_executor_without_enabling_it(self):
+        self.command("model", {"model": "test-model-a", "reason": "test"})
+        data = {"executor": "codex", "max_steps": 1, "allow_unknown_cost": True}
+        self.assertEqual(self.command("start", data)["status"], "rejected")
+        self.app.enable_codex = True
+        self.assertEqual(self.command("start", data | {"allow_unknown_cost": False})["status"], "rejected")
+        calls = 0
+        def double(root, model=None):
+            nonlocal calls
+            executor = FixtureExecutor(copy.deepcopy(FIXTURE[calls:]))
+            calls += 1
+            executor.model = model
+            return executor
+        with patch("ai_union.console.CodexExecutor", side_effect=double) as factory:
+            first = None
+            for values, model in (({}, "test-model-a"), ({"model": "test-model-b"}, "test-model-b"), ({"model": None}, None)):
+                receipt = self.command("start", data | values)
+                first = first or receipt
+                self.assertEqual(receipt["status"], "accepted")
+                self.app.join_jobs()
+                self.assertEqual(factory.call_args.kwargs["model"], model)
+                self.assertEqual(self.app.receipt(self.board, self.org, receipt["id"])["requested_model"], model)
+            self.command("model", {"model": "test-model-c", "reason": "new default after run"})
+            replay = self.command("start", data, request_id=first["id"], version=first["base_version"])
+            self.assertEqual(replay["requested_model"], "test-model-a")
+            self.assertEqual(factory.call_count, 3)
+        self.assertEqual(snapshot(self.e)["execution_config"]["codex_model"], "test-model-c")
+        self.assertEqual(self.command("start", {"executor": "fixture", "max_steps": 1, "model": "test-model-a"})["status"], "rejected")
+
+    def test_cli_uses_organization_model_unless_explicitly_overridden(self):
+        from ai_union.cli import main
+        import io
+        self.command("model", {"model": "test-model-a", "reason": "CLI defaults"})
+        base = ["--root", str(self.e.root), "run", "--executor", "codex", "--max-steps", "1", "--allow-unknown-cost"]
+        def no_dispatch(engine, factory, max_steps):
+            with exclusive(engine):
+                factory()
+            return [{"action": "wait"}]
+        with patch("ai_union.cli.CodexExecutor") as factory, patch("ai_union.cli.run", side_effect=no_dispatch), patch("sys.stdout", new_callable=io.StringIO):
+            factory.return_value.name = "codex"
+            for extra, expected in (([], "test-model-a"), (["--model", "test-model-b"], "test-model-b"), (["--model", ""], None)):
+                self.assertEqual(main(base + extra), 0)
+                self.assertEqual(factory.call_args.kwargs["model"], expected)
+        self.assertEqual(self.e.runs(), [])
+
+    def test_cli_run_and_watch_resolve_model_after_acquiring_dispatch_lock(self):
+        from ai_union import cli, runner
+        import io
+        calls = []
+        def double(root, model=None):
+            with self.assertRaises(Rejected):
+                with exclusive(self.e):
+                    pass
+            executor = FixtureExecutor(copy.deepcopy(FIXTURE[len(calls):]))
+            calls.append(model)
+            return executor
+        for cmd in ("run", "watch"):
+            self.command("model", {"model": "old-model", "reason": "initial default"})
+            original = getattr(runner, cmd)
+            def interleaved(engine, factory, *args):
+                self.command("model", {"model": "new-model", "reason": "saved before dispatcher lock"})
+                return original(engine, factory, *args)
+            argv = ["--root", str(self.e.root), cmd, "--executor", "codex", "--max-steps", "1", "--allow-unknown-cost"]
+            if cmd == "watch":
+                argv += ["--max-seconds", "1"]
+            with patch("ai_union.cli.CodexExecutor", side_effect=double), patch.object(cli, cmd, side_effect=interleaved), patch("sys.stdout", new_callable=io.StringIO):
+                self.assertEqual(cli.main(argv), 0)
+        self.assertEqual(calls, ["new-model", "new-model"])
+
+    def test_cli_rechecks_money_cap_after_acquiring_dispatch_lock(self):
+        from ai_union import cli, runner
+        import io
+        for cmd in ("run", "watch"):
+            self.command("resources", {"resources": RESOURCES, "reason": "reset test cap"})
+            original = getattr(runner, cmd)
+            def interleaved(engine, factory, *args):
+                with exclusive(self.e):
+                    key = (self.e.root / "board.key").read_text(encoding="utf-8").strip()
+                    self.e.configure_resources(key, RESOURCES | {"max_cost": 100, "cost_reserve_per_call": 1}, "test cap added before lock")
+                return original(engine, factory, *args)
+            argv = ["--root", str(self.e.root), cmd, "--executor", "codex", "--max-steps", "1", "--allow-unknown-cost"]
+            if cmd == "watch":
+                argv += ["--max-seconds", "1"]
+            with patch("ai_union.cli.CodexExecutor") as factory, patch.object(cli, cmd, side_effect=interleaved), patch("sys.stderr", new_callable=io.StringIO):
+                self.assertEqual(cli.main(argv), 2)
+                factory.assert_not_called()
+        self.assertEqual(self.e.runs(), [])
+
     def test_slow_execution_pause_is_durable_and_stops_next_dispatch(self):
         entered, release = threading.Event(), threading.Event()
         class Slow(FixtureExecutor):

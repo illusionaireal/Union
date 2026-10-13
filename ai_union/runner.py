@@ -53,6 +53,8 @@ def run(engine, executor, max_steps):
         raise Rejected("必须提供有限正整数步数")
     actions = []
     with exclusive(engine), activity(engine):
+        # A factory resolves mutable host settings only after the dispatch lock is held.
+        executor = executor() if callable(executor) else executor
         engine.recover()
         for _ in range(max_steps):
             try:
@@ -73,6 +75,7 @@ def watch(engine, executor, max_steps, max_seconds, poll_seconds=1):
     actions = []
     calls = 0
     with exclusive(engine), activity(engine):
+        executor = executor() if callable(executor) else executor
         engine.recover()
         while calls < max_steps and time.monotonic() < deadline:
             try:

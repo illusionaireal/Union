@@ -99,6 +99,13 @@ async function waitFor(page,predicate){await page.waitForFunction(predicate,null
   await host.send({op:'corrupt',org,id:aid});await page.locator('[data-nav="artifacts"]').click();await page.locator(`[data-detail="artifact"][data-id="${aid}"]`).click();await page.getByText(/成果不可用/).waitFor();
   check('A05: corrupted asset fails visibly without download',await page.locator('#detail-body [download]').count()===0);await page.keyboard.press('Escape');await host.send({op:'restore'});
   await page.locator('[data-nav="settings"]').click();
+  await command(page,'model',async form=>{await form.locator('[name="model"]').fill('test-model-a');await form.locator('[name="reason"]').fill('浏览器测试保存模型，不发起真实调用');});await closeOperation(page);await fresh(page);
+  check('C10: model settings persist without dispatch or enabling a real executor',(await snap(page)).execution_config.codex_model==='test-model-a' && (await snap(page)).budget.calls_reserved===6);
+  await page.reload();await waitConnected(page);await page.locator('[data-nav="settings"]').click();
+  check('C10: saved model is visible after page reload',await page.locator('#configured-model').textContent()==='test-model-a');
+  await command(page,'model',async form=>{await form.locator('[name="model"]').fill('');await form.locator('[name="reason"]').fill('测试清除默认模型');});await closeOperation(page);await fresh(page);
+  check('C10: clearing the model restores CLI default',(await snap(page)).execution_config.codex_model===null);
+  await command(page,'model',async form=>{await form.locator('[name="model"]').fill('test-model-a');await form.locator('[name="reason"]').fill('保存重启验证的模型');});await closeOperation(page);await fresh(page);
   await command(page,'resources',async form=>{await form.locator('[name="max_calls"]').fill('12');await form.locator('[name="reason"]').fill('浏览器测试追加有限调用，保留既有占用');});await closeOperation(page);await fresh(page);
   check('C04: resource change preserves six consumed calls',(await snap(page)).budget.calls_reserved===6 && (await snap(page)).budget.max_calls===12);
   await command(page,'amend',async form=>{await form.locator('[name="charter_text"]').fill('本地有限协作，修章记录测试；不授权外部发布。');await form.locator('[name="reason"]').fill('验证受信修章与旧版本依据');});await closeOperation(page);await fresh(page);
@@ -161,14 +168,26 @@ async function waitFor(page,predicate){await page.waitForFunction(predicate,null
   const observerContext=await browser.newContext({viewport:{width:390,height:844}});const observer=await observerContext.newPage();await observer.goto(host.observer_url);await waitConnected(observer);
   const forbidden=await observer.evaluate(async()=>{const response=await fetch('/api/commands',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});return response.status;});
   check('C05: observer bypassing disabled buttons gets HTTP 403',forbidden===403);
+  await observer.locator('[data-nav="settings"]').click();
+  check('C10: observer can read model configuration but cannot change it',await observer.locator('#configured-model').textContent()==='test-model-a' && await observer.locator('[data-command="model"]').isDisabled());
   const mobile=await context.newPage();await mobile.setViewportSize({width:390,height:844});await mobile.goto(host.origin);await waitConnected(mobile);
   await mobile.locator('[data-nav="settings"]').click();await command(mobile,'event',async form=>{await form.locator('[name="content"]').fill('手机端模拟意见');await form.locator('[name="source"]').fill('mobile-test');});await closeOperation(mobile);await fresh(mobile);
   check('C09: mobile completes a persistent command',(await snap(mobile)).events.some(e=>e.data.source==='mobile-test'));
   await mobile.screenshot({path:path.join(output,'settings-390.png'),fullPage:true});
   for(const width of [1024,390,320]){await mobile.setViewportSize({width,height:844});check(`A08/C09: no document overflow at ${width}px`,await mobile.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));}
   // Keep a response from another real organization in flight while switching back.
+  await page.bringToFront();
   await command(page,'create',async form=>{await form.locator('[name="name"]').fill('独立隔离组织');await form.locator('[name="goal"]').fill('仅验证组织隔离，不运行模型');});await closeOperation(page);await fresh(page);
   const second=(await snap(page)).organization.id;
+  check('C10: a new organization does not inherit another organization model',(await snap(page)).execution_config.codex_model===null);
+  await command(page,'model',async form=>{await form.locator('[name="model"]').fill('test-model-c');await form.locator('[name="reason"]').fill('独立组织的测试模型');});await closeOperation(page);
+  await host.send({op:'enable_codex_double'});await fresh(page);
+  await command(page,'start',async form=>{
+    await form.locator('[name="executor"]').selectOption('codex');
+    check('C10: start form displays the saved model',await form.locator('[name="model"]').inputValue()==='test-model-c');
+    await form.locator('[name="model"]').fill('test-model-d');await form.locator('[name="max_steps"]').fill('1');await form.locator('[name="allow_unknown_cost"]').check();
+  });await closeOperation(page);await fresh(page);
+  check('C10: per-run model override reaches the executor double and receipt',(await host.send({op:'model_arguments'})).models[0]==='test-model-d' && (await snap(page)).receipts.some(r=>r.kind==='start' && r.requested_model==='test-model-d') && (await snap(page)).execution_config.codex_model==='test-model-c');
   let releaseOrganization,organizationCaptured;const organizationGate=new Promise(resolve=>releaseOrganization=resolve),captured=new Promise(resolve=>organizationCaptured=resolve);
   await page.route('**/api/snapshot?**',async route=>{
     if(new URL(route.request().url()).searchParams.get('organization_id')!==second)return route.continue();
@@ -182,6 +201,7 @@ async function waitFor(page,predicate){await page.waitForFunction(predicate,null
   const oldInstance=(await snap(page)).service_instance,port=Number(new URL(host.origin).port);await host.stop();host=await startHost(port);
   await fresh(page).catch(()=>{});await page.getByText('连接断开',{exact:true}).waitFor();check('A10/C05: restarted host rejects old session',await page.locator('[data-command="event"]').isDisabled());
   await page.goto(host.board_url);await waitConnected(page);check('A10: fresh host session reads a new instance with persisted data',(await snap(page)).service_instance!==oldInstance && Object.keys((await snap(page)).organization.artifacts).length===3);
+  check('C10: organization model survives service restart',(await snap(page)).execution_config.codex_model==='test-model-a');
   check('browser has no uncaught JavaScript errors',errors.length===0);
   const digest=file=>createHash('sha256').update(fs.readFileSync(file)).digest('hex');
   fs.writeFileSync(path.join(output,'browser-validation.json'),JSON.stringify({date:new Date().toISOString(),simulated:true,real_model_calls:0,checks:checks.map(name=>({name,passed:true})),browser:await browser.version(),node:process.version,platform:process.platform,console_sha256:digest(path.join(root,'ai-union-console.html')),script_sha256:digest(__filename)},null,2));
