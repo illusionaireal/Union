@@ -1,0 +1,30 @@
+{
+  "date": "2026-10-13T02:20:27.187Z",
+  "browser": "154.0.8037.99",
+  "offline_file_open": true,
+  "widths": [
+    {
+      "width": 1440,
+      "no_overflow": true
+    },
+    {
+      "width": 390,
+      "no_overflow": true
+    },
+    {
+      "width": 320,
+      "no_overflow": true
+    }
+  ],
+  "metrics": [
+    "47通过",
+    "45通过",
+    "9通过"
+  ],
+  "copy_feedback": "启动命令已复制。",
+  "print_button": true,
+  "keyboard_details": true,
+  "print_pages": 2,
+  "uncaught_errors": [],
+  "network_requests": 0
+}

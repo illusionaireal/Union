@@ -1,6 +1,6 @@
 # ai-union 当前状态
 
-更新：2026-10-12（北京时间）。本地组织运行时已实现；P0 组织操作工作台的规格与原型已完成，实际服务待实现。
+更新：2026-10-13（北京时间）。本地组织运行时及 P0 操作工作台已实现；实际服务的 fixture 最终复验通过。真实 Agent 与首版经营闭环未验收。实现、review、验证与复盘见 [单页完成报告](../../ai-union-completion-report.html)。
 
 ## 已完成与证据
 
@@ -12,12 +12,12 @@
 | 高保真原型 | 单 HTML 七视图，创建、运行、暂停、事件、资源、修章、核对与回执的模拟交互 | [操作原型](../../ai-union-dashboard-prototype.html)、48 项观察与 32 项操作交互检查。 |
 | 进展展示 | 单 HTML 进展、模拟演示、成果与架构 | [展示页](../../ai-union-progress.html)、43 项单文件浏览器检查。 |
 | 开发交接 | 新环境复现、任务顺序、已知问题、源码、生成器和 CI | [开发说明](../DEVELOPMENT.md)、[完整交接](../../HANDOFF.md)。 |
+| 实际工作台 | 本机会话、同源 HTTP、版本化幂等命令、运行作业、持久暂停、一致观察、单 HTML 七视图 | [004 验收](../../evidence/004-organization-console/README.md)：47 项 Python、45 项实际浏览器检查；[独立工程复核](../reviews/2026-10-12-console.md)。 |
 
 ## 尚未完成
 
-- 工作台真实会话、观察与命令 API、幂等回执、运行管理和持久暂停协议。
-- 003 review 中活跃执行误报待核对、组织版本不覆盖所有数据变化两项修复及 A01–A10 验收。
-- 实际操作前端与 C01–C09 验收；浏览器原型通过不等于后端已实现。
+- 新增代码在 Linux 实机与远端 CI 的结果尚未取得；本轮实测为 Windows／Python 3.13.14、Chrome 和 Node 24.19.0。CI 已加入 Windows 机制验证。
+- 创建过程跨文件存储失败时保持 unknown，需要宿主核对分配目录；不自动重建或重放。
 - 真实 Codex 组织形成、协作与后续行动试跑，E1/E2 及真实执行器 E3/E4。
 - 真实交付、可核验反馈、经营闭环、ERP／CRM 集成，以及 Cloudflare 发布。
 
@@ -25,7 +25,7 @@
 
 ## 下一步
 
-**继续 [004 W2–W7](../../specs/004-organization-console/tasks.md)，复用 [003 观察模块](../../specs/003-runtime-dashboard/tasks.md)。** 按 [新环境说明](../DEVELOPMENT.md)复现测试与 fixture，再开发真实接口、运行控制和前端。当前任务不需要真实模型预算或 Cloudflare 凭据。
+**下一优先事项：在明确有限调用范围与费用未知条件后，用独立组织完成真实执行器烟雾及 E1/E2。** [004 W2–W7](../../specs/004-organization-console/tasks.md)与 [003 观察模块](../../specs/003-runtime-dashboard/tasks.md)的本地 fixture 范围已完成。可立即按 [工作台说明](../CONSOLE.md)启动使用，无需模型凭据。
 
 最初开发交接 [DEVELOPMENT.md](DEVELOPMENT.md)保留首轮目标；不再按其“尚未开始”的历史描述重做工程。后续状态以本文、HANDOFF 和迭代 Tasks 为准。
 

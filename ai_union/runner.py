@@ -1,26 +1,29 @@
 """Bounded event-driven dispatcher. No fixed CEO or content production pipeline."""
-import fcntl
 import time
 from contextlib import contextmanager
 
 from .engine import Rejected
 from .executor import ExecutionFailure
+from .locking import file_lock
+from .activity import activity
 
 
 @contextmanager
 def exclusive(engine):
-    with (engine.root / "runner.lock").open("a") as f:
-        try:
-            fcntl.flock(f.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
-        except BlockingIOError as e:
-            raise Rejected("此组织已有运行进程；不能并行启动第二个派发器") from e
-        try:
-            yield
-        finally:
-            fcntl.flock(f.fileno(), fcntl.LOCK_UN)
+    guard = file_lock(engine.root / "runner.lock")
+    try:
+        guard.__enter__()
+    except OSError as e:
+        raise Rejected("此组织已有运行进程；不能并行启动第二个派发器") from e
+    try:
+        yield
+    finally:
+        guard.__exit__(None, None, None)
 
 
 def step(engine, executor):
+    if engine.paused():
+        return {"action": "paused", "reason": "派发已暂停"}
     engine.wake_due()
     ready = engine.ready_work()
     state = engine.state()
@@ -49,7 +52,7 @@ def run(engine, executor, max_steps):
     if type(max_steps) is not int or not 1 <= max_steps <= 10000:
         raise Rejected("必须提供有限正整数步数")
     actions = []
-    with exclusive(engine):
+    with exclusive(engine), activity(engine):
         engine.recover()
         for _ in range(max_steps):
             try:
@@ -57,7 +60,7 @@ def run(engine, executor, max_steps):
             except Rejected as e:
                 action = {"action": "blocked", "reason": str(e)}
             actions.append(action)
-            if action["action"] in ("wait", "blocked"):
+            if action["action"] in ("wait", "blocked", "paused"):
                 break
     return actions
 
@@ -69,7 +72,7 @@ def watch(engine, executor, max_steps, max_seconds, poll_seconds=1):
     deadline = time.monotonic() + max_seconds
     actions = []
     calls = 0
-    with exclusive(engine):
+    with exclusive(engine), activity(engine):
         engine.recover()
         while calls < max_steps and time.monotonic() < deadline:
             try:
@@ -82,7 +85,7 @@ def watch(engine, executor, max_steps, max_seconds, poll_seconds=1):
                     time.sleep(min(poll_seconds, remaining))
                 continue
             actions.append(action)
-            if action["action"] == "blocked":
+            if action["action"] in ("blocked", "paused"):
                 break
             calls += 1
     return actions or [{"action": "wait", "reason": "等待期间没有新事件"}]

@@ -41,7 +41,8 @@ class CodexExecutor:
         folder.mkdir(mode=0o700)
         (folder / "schema.json").write_text(encoded(DECISION_SCHEMA if package["kind"] == "decision" else WORK_SCHEMA), encoding="utf-8")
         (folder / "package.json").write_text(encoded(package), encoding="utf-8")
-        argv = [self.command, "exec", "--ignore-user-config", "--ephemeral", "--skip-git-repo-check",
+        command = [self.command] if isinstance(self.command, str) else list(self.command)
+        argv = command + ["exec", "--ignore-user-config", "--ephemeral", "--skip-git-repo-check",
                 "--sandbox", "read-only", "--color", "never", "--json",
                 "--output-schema", str(folder / "schema.json"), "--output-last-message", str(folder / "result.json"),
                 "-c", 'web_search="disabled"', "-c", 'approval_policy="never"']
@@ -62,7 +63,7 @@ class CodexExecutor:
             proc.stdin.close()
         except OSError as e:
             if 'proc' in locals() and proc.poll() is None:
-                os.killpg(proc.pid, signal.SIGTERM)
+                proc.terminate() if os.name == "nt" else os.killpg(proc.pid, signal.SIGTERM)
                 proc.wait(timeout=2)
             out.close()
             err.close()
@@ -99,10 +100,10 @@ class CodexExecutor:
         proc = job["process"]
         if proc.poll() is None:
             try:
-                os.killpg(proc.pid, signal.SIGTERM)
+                proc.terminate() if os.name == "nt" else os.killpg(proc.pid, signal.SIGTERM)
                 proc.wait(timeout=2)
             except subprocess.TimeoutExpired:
-                os.killpg(proc.pid, signal.SIGKILL)
+                proc.kill() if os.name == "nt" else os.killpg(proc.pid, signal.SIGKILL)
                 proc.wait(timeout=2)
             except ProcessLookupError:
                 proc.wait()

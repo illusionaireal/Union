@@ -1,0 +1,192 @@
+{
+  "date": "2026-10-13T02:18:42.570Z",
+  "simulated": true,
+  "real_model_calls": 0,
+  "checks": [
+    {
+      "name": "C05: one-time host session establishes board role",
+      "passed": true
+    },
+    {
+      "name": "A01: fresh service has a clear empty state",
+      "passed": true
+    },
+    {
+      "name": "C01: cancelled creation does not create an organization",
+      "passed": true
+    },
+    {
+      "name": "C01: invalid input is preserved with a field error",
+      "passed": true
+    },
+    {
+      "name": "C01: browser creation persists goal, adoption and resources",
+      "passed": true
+    },
+    {
+      "name": "A09: live slow decision is running, not reconciliation",
+      "passed": true
+    },
+    {
+      "name": "A03: begin_decision adds reservation at unchanged organization version",
+      "passed": true
+    },
+    {
+      "name": "C03: pause acknowledged while awaiting in-flight receipt",
+      "passed": true
+    },
+    {
+      "name": "C03: pause stops next dispatch and retains first receipt",
+      "passed": true
+    },
+    {
+      "name": "A04: dependent work retains a distinct waiting reason",
+      "passed": true
+    },
+    {
+      "name": "C02/A02: browser fixture completes two members, three works, three artifacts",
+      "passed": true
+    },
+    {
+      "name": "A02/D06: fixture origin and unknown costs retained",
+      "passed": true
+    },
+    {
+      "name": "A02: task search has empty state",
+      "passed": true
+    },
+    {
+      "name": "A02: member filter follows stored ownership",
+      "passed": true
+    },
+    {
+      "name": "A02: work detail links real dependency and artifact",
+      "passed": true
+    },
+    {
+      "name": "A05: download returns actual verified content",
+      "passed": true
+    },
+    {
+      "name": "A08: native detail dialog closes by keyboard",
+      "passed": true
+    },
+    {
+      "name": "A05: corrupted asset fails visibly without download",
+      "passed": true
+    },
+    {
+      "name": "C04: resource change preserves six consumed calls",
+      "passed": true
+    },
+    {
+      "name": "C04: amendment changes charter version",
+      "passed": true
+    },
+    {
+      "name": "C08: event retains provenance and simulation flag",
+      "passed": true
+    },
+    {
+      "name": "C04/C09: version conflict preserves input and requires a new preview",
+      "passed": true
+    },
+    {
+      "name": "C07: timeout queries the original receipt without a second POST",
+      "passed": true
+    },
+    {
+      "name": "C07: late transport failure cannot overwrite a confirmed success",
+      "passed": true
+    },
+    {
+      "name": "C07: reloading does not repeat a submitted command",
+      "passed": true
+    },
+    {
+      "name": "A03: automatic refresh includes same-version event",
+      "passed": true
+    },
+    {
+      "name": "A03/A10: late same-version response cannot overwrite newer snapshot",
+      "passed": true
+    },
+    {
+      "name": "A10: snapshot timeout keeps the last success time and marks data stale",
+      "passed": true
+    },
+    {
+      "name": "A10: snapshot reads recover after a timed-out request",
+      "passed": true
+    },
+    {
+      "name": "A06: disconnection marks retained data stale and disables writes",
+      "passed": true
+    },
+    {
+      "name": "A06: reconnect refreshes data and enables permitted actions",
+      "passed": true
+    },
+    {
+      "name": "C03/C06: injected unknown is not stopped or retried",
+      "passed": true
+    },
+    {
+      "name": "C06: explicit reconciliation keeps call reservations",
+      "passed": true
+    },
+    {
+      "name": "A09: persistent running without host evidence is unconfirmed",
+      "passed": true
+    },
+    {
+      "name": "A09: host recovery makes uncertainty explicit",
+      "passed": true
+    },
+    {
+      "name": "A04: exhausted call quota is visible and blocks further start",
+      "passed": true
+    },
+    {
+      "name": "C05: observer bypassing disabled buttons gets HTTP 403",
+      "passed": true
+    },
+    {
+      "name": "C09: mobile completes a persistent command",
+      "passed": true
+    },
+    {
+      "name": "A08/C09: no document overflow at 1024px",
+      "passed": true
+    },
+    {
+      "name": "A08/C09: no document overflow at 390px",
+      "passed": true
+    },
+    {
+      "name": "A08/C09: no document overflow at 320px",
+      "passed": true
+    },
+    {
+      "name": "A01/A10: switching organizations rejects a late response from the former organization",
+      "passed": true
+    },
+    {
+      "name": "A10/C05: restarted host rejects old session",
+      "passed": true
+    },
+    {
+      "name": "A10: fresh host session reads a new instance with persisted data",
+      "passed": true
+    },
+    {
+      "name": "browser has no uncaught JavaScript errors",
+      "passed": true
+    }
+  ],
+  "browser": "154.0.8037.99",
+  "node": "v24.19.0",
+  "platform": "win32",
+  "console_sha256": "9e2967c37d071a1237253822b947212073cd26ce9c3a12774954996f848cec68",
+  "script_sha256": "28fb92ead915c73e7b810b9a9e492549074bdf022479d0d6dfd397ebd54b5837"
+}

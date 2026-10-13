@@ -5,9 +5,8 @@ import json
 import subprocess
 import sys
 import tempfile
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from zoneinfo import ZoneInfo
 
 REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO))
@@ -38,7 +37,7 @@ def main():
     ]
     records = []
     for label, cmd, expected in commands:
-        result = subprocess.run([sys.executable, *cmd], cwd=REPO, capture_output=True, text=True)
+        result = subprocess.run([sys.executable, "-X", "utf8", *cmd], cwd=REPO, capture_output=True, text=True, encoding="utf-8")
         (output / (label + ".log")).write_text(result.stdout + result.stderr, encoding="utf-8")
         records.append({"command": ["python3", *cmd], "exit_code": result.returncode,
                         "expected_exit_code": expected, "log": label + ".log"})
@@ -60,7 +59,7 @@ def main():
              if p.is_file() and p.suffix in (".py", ".json")]
     snapshot = {str(path.relative_to(REPO)): hashlib.sha256(path.read_bytes()).hexdigest() for path in sorted(files)}
     source = REPO / "docs/inputs/AI_UNION_开发执行交接文档_v1.0.md"
-    summary = {"date": datetime.now(ZoneInfo("Asia/Shanghai")).isoformat(),
+    summary = {"date": datetime.now(timezone(timedelta(hours=8))).isoformat(),
                "base_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=REPO, text=True).strip(),
                "branch": subprocess.check_output(["git", "branch", "--show-current"], cwd=REPO, text=True).strip(),
                "python": sys.version.split()[0], "model_calls": 0,

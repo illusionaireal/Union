@@ -1,5 +1,6 @@
 import json
 import os
+import sys
 import threading
 import time
 import tempfile
@@ -22,7 +23,7 @@ class Integration(unittest.TestCase):
         self.e = init(self.temp.name)
 
     def test_whole_fixture_loop_and_restart_are_explicitly_simulated(self):
-        fixture = json.loads((REPO / "examples/fixture.json").read_text())
+        fixture = json.loads((REPO / "examples/fixture.json").read_text(encoding="utf-8"))
         actions = run(self.e, FixtureExecutor(fixture), 8)
         self.assertEqual(actions[-1]["action"], "wait")
         restarted = Engine(self.e.root)
@@ -70,7 +71,7 @@ class Integration(unittest.TestCase):
         self.assertFalse(self.e.runs())
 
     def test_waiting_process_wakes_for_external_event_without_idle_calls(self):
-        fixture = json.loads((REPO / "examples/fixture.json").read_text())
+        fixture = json.loads((REPO / "examples/fixture.json").read_text(encoding="utf-8"))
         run(self.e, FixtureExecutor(fixture), 8)
         before = len(self.e.runs())
         response = [{"issue": "new evidence", "rationale": "wait for further input", "expected_effect": "wait",
@@ -97,7 +98,7 @@ class CodexContract(unittest.TestCase):
         cmd = self.root / "fake_codex"
         cmd.write_text("#!/usr/bin/env python3\n" + body)
         cmd.chmod(0o700)
-        return str(cmd)
+        return [sys.executable, str(cmd)]
 
     def package(self):
         return {"run_id": "test-run", "kind": "work", "timeout_seconds": 2,

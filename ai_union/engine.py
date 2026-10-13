@@ -8,8 +8,9 @@ import json
 import math
 import re
 import sqlite3
+import threading
 import uuid
-from contextlib import contextmanager
+from contextlib import closing, contextmanager
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -87,6 +88,7 @@ class Engine:
     def __init__(self, root):
         self.root = Path(root).resolve()
         self.db = self.root / "state.sqlite3"
+        self._local = threading.local()
         require(self.db.is_file(), "组织尚未初始化")
 
     @classmethod
@@ -107,7 +109,7 @@ class Engine:
                  "members": {}, "positions": {}, "assignments": {}, "policy": {},
                  "work": {}, "artifacts": {}, "memory": [], "strategy": [], "wakeups": [],
                  "resources": copy.deepcopy(resources)}
-        with sqlite3.connect(db) as cx:
+        with closing(sqlite3.connect(db)) as cx, cx:
             cx.executescript("""
                 PRAGMA journal_mode=WAL;
                 CREATE TABLE state (id INTEGER PRIMARY KEY CHECK(id=1), data TEXT NOT NULL);
@@ -128,17 +130,51 @@ class Engine:
 
     @contextmanager
     def transaction(self):
+        existing = getattr(self._local, "connection", None)
+        if existing is not None:
+            savepoint = "nested_" + uuid.uuid4().hex
+            existing.execute("SAVEPOINT " + savepoint)
+            try:
+                yield existing
+                existing.execute("RELEASE " + savepoint)
+            except BaseException:
+                existing.execute("ROLLBACK TO " + savepoint)
+                existing.execute("RELEASE " + savepoint)
+                raise
+            return
         cx = sqlite3.connect(self.db, timeout=10)
         cx.row_factory = sqlite3.Row
         try:
             cx.execute("BEGIN IMMEDIATE")
+            self._local.connection = cx
             yield cx
             cx.commit()
         except BaseException:
             cx.rollback()
             raise
         finally:
+            self._local.connection = None
             cx.close()
+
+    @contextmanager
+    def read_transaction(self):
+        with closing(sqlite3.connect(self.db.as_uri() + "?mode=ro", uri=True, timeout=10)) as cx:
+            cx.row_factory = sqlite3.Row
+            cx.execute("PRAGMA query_only=ON")
+            cx.execute("BEGIN")
+            yield cx
+
+    def paused(self, cx=None):
+        if cx is None:
+            with self.read_transaction() as connection:
+                return self.paused(connection)
+        row = cx.execute("SELECT value FROM meta WHERE key='dispatch_paused'").fetchone()
+        return bool(row and row[0] == "true")
+
+    def set_paused(self, value):
+        require(type(value) is bool, "暂停意图必须为布尔值")
+        with self.transaction() as cx:
+            cx.execute("INSERT OR REPLACE INTO meta VALUES('dispatch_paused',?)", (encoded(value),))
 
     def _state(self, cx):
         return json.loads(cx.execute("SELECT data FROM state WHERE id=1").fetchone()[0])
@@ -442,10 +478,12 @@ class Engine:
                 "estimated_cost_reserved": calls * reserve if reserve is not None else None, "blocked_reason": reason}
 
     def _reserve(self, cx, s, kind, executor, package, work_id=None):
+        require(not self.paused(cx), "派发已暂停；请由受信入口继续")
         budget = self._budget(cx, s)
         require(budget["blocked_reason"] is None, budget["blocked_reason"])
         rid = package.get("run_id") or uid("run")
         package.update(run_id=rid, kind=kind, timeout_seconds=s["resources"]["timeout_seconds"])
+        package["host_owner"] = getattr(self._local, "host_owner", None)
         cx.execute("INSERT INTO runs(id,kind,work_id,executor,status,package,started_at) VALUES(?,?,?,?,?,?,?)",
                    (rid, kind, work_id, executor, "running", encoded(package), now()))
         return package
@@ -461,6 +499,7 @@ class Engine:
             c = self._charter(cx, s["charter_version"])
             require("produce_artifact" in c["allowed_tools"] and "produce_artifact" in s["positions"][w["position_id"]]["permissions"], "当前规则未授权本地成果工具")
             w["status"] = "running"
+            w.pop("summary", None)
             w["run_id"] = uid("run")
             s["version"] += 1
             bundle = self._context(cx, s, work_id)
@@ -573,7 +612,7 @@ class Engine:
                 w = s["work"][r["work_id"]]
                 if w["run_id"] == run_id:
                     w["status"] = "needs_review" if unknown else "failed"
-                    w["summary"] = reason
+                    w["summary"] = "执行结果未知，需要核对" if unknown else "执行失败；请在宿主核对私有执行记录"
             s["version"] += 1
             self._event(cx, "execution_unknown" if unknown else "execution_failed", {"run_id": run_id, "reason": reason})
             self._save(cx, s)
@@ -633,25 +672,5 @@ class Engine:
             return [dict(r) | {"data": json.loads(r["data"])} for r in cx.execute("SELECT * FROM decisions ORDER BY rowid")]
 
     def status(self):
-        with self.transaction() as cx:
-            s = self._state(cx)
-            budget = self._budget(cx, s)
-        unknown = [r["id"] for r in self.runs() if r["status"] in ("unknown", "running")]
-        ready = self.ready_work()
-        pending = self.events(True)
-        blocked = [w["id"] + ": " + w.get("summary", w["status"]) for w in s["work"].values() if w["status"] in ("blocked", "failed", "needs_review", "paused")]
-        for w in s["work"].values():
-            unmet = [d for d in w["dependencies"] if s["work"][d]["status"] != "delivered"]
-            if w["status"] == "pending" and unmet:
-                blocked.append(w["id"] + ": 等待依赖 " + ", ".join(unmet))
-        if budget["blocked_reason"]:
-            blocked.append(budget["blocked_reason"])
-        if unknown:
-            blocked.append("需要核对执行：" + ", ".join(unknown))
-        next_step = "bootstrap" if s["phase"] == "bootstrap" else ("execute_work" if ready else ("decide" if pending else "wait"))
-        if budget["blocked_reason"] or unknown:
-            next_step = "blocked"
-        wake_times = [w["until"] for w in s["wakeups"] if not w["fired"]]
-        return {"organization": s, "budget": budget, "ready_work": ready, "pending_events": len(pending),
-                "next_step": next_step, "blocked_reasons": blocked,
-                "next_review_at": min(wake_times, key=instant) if wake_times else None}
+        from .observation import snapshot
+        return snapshot(self)

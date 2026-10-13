@@ -8,7 +8,17 @@
 
 这是组织层原型。经营策略和岗位由执行器输出形成，代码不预置内容工作流。尚无真实模型闭环验收、对外发布或市场反馈证据，也没有经营平台、支付或投资募集。
 
-**P0 产品为可操作的组织工作台，真实网页服务尚未实现。** 首版覆盖创建、有限运行、暂停派发、事件、资源、修章与执行核对；Dashboard 是观察模块。操作需求与验收见 [004-organization-console](specs/004-organization-console/spec.md)，观察要求见 [003-runtime-dashboard](specs/003-runtime-dashboard/spec.md)，下一步见 [操作工作台待办](specs/004-organization-console/tasks.md)。
+**P0 本地组织工作台已接入实际服务，fixture 验收通过。** 浏览器可创建、有限运行、暂停派发、提交事件、调整资源、修章和核对执行；Dashboard 读取实际持久记录。47 项 Python 测试、45 项实际服务浏览器检查通过，真实模型调用仍为 0。范围见 [004](specs/004-organization-console/spec.md) 与 [003](specs/003-runtime-dashboard/spec.md)，证据见 [工作台验收](evidence/004-organization-console/README.md)。
+
+本轮实现、review、验证与复盘见 [单页完成报告](ai-union-completion-report.html)，可离线打开。2026-10-13 的最终复验记录单独保存，历史结果保留。
+
+从仓库根目录启动（Windows 用 `python`，Linux 可用 `python3`）：
+
+```sh
+python -m ai_union.server --root .union/console --port 8766 --open
+```
+
+浏览器从本机一次性链接建立发起人会话，默认仅配置 fixture。前端为 [ai-union-console.html](ai-union-console.html)，需要同源服务；操作、会话和恢复说明见 [工作台使用说明](docs/CONSOLE.md)。
 
 产品与设计基线：[统一 PRD v0.2](docs/PRD.md)、[产品设计说明](docs/product-design.md)、[操作工作台单 HTML 原型](ai-union-dashboard-prototype.html)、[软件复用与 AI 适配](docs/software-reuse.md)。原型支持七视图、操作表单与预览、回执、有限 fixture 步骤、详情及异常情景。48 项观察交互与 32 项操作交互检查通过；仅模拟浏览器内状态，未连接真实组织服务，模型调用为 0。
 
