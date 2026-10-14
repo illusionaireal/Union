@@ -2,6 +2,9 @@
   "name": "union",
   "version": "0.0.0",
   "private": true,
+  "workspaces": [
+    "web/console"
+  ],
   "type": "module",
   "description": "UNION M0 kickoff and offline action-safety spike",
   "engines": {
@@ -10,6 +13,12 @@
   "scripts": {
     "test": "node --test tests/*.test.ts",
     "check:plan": "node scripts/check-plan.mjs",
-    "check": "npm run check:plan && npm test"
+    "check": "npm run check:plan && npm test && npm run check:console",
+    "check:console": "npm run typecheck --workspace @union/console && npm run test --workspace @union/console && npm run build:console",
+    "build:console": "npm run build --workspace @union/console",
+    "dev:console": "npm run dev --workspace @union/console",
+    "test:browser": "node scripts/check_console.cjs",
+    "start": "node scripts/start-console.mjs",
+    "dev": "node scripts/start-console.mjs --watch"
   }
 }

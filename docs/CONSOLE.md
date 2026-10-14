@@ -1,14 +1,15 @@
 # 本地组织工作台
 
-从仓库根目录运行。使用 Python 3.11+，不需要安装 Python 包。Windows 可用 `python`，Linux 可用 `python3`。
+更新：2026-10-14。使用 Node 24.19.0 和 Python 3.11+，不需要 Python 第三方包。从仓库根目录首次安装，然后一条命令构建并启动：
 
-```powershell
-python -m ai_union.server --root .union/console --port 8766 --open
+```sh
+npm ci --ignore-scripts
+npm start -- --root .union/console --port 8766 --open
 ```
 
-服务仅监听 `127.0.0.1`。`--open` 打开一次性发起人启动链接；随后在浏览器完成创建、预览采用、有限运行和管理。默认仅配置 fixture，不产生模型调用。创建不自动运行，已有组织不会覆盖。
+Linux 默认 `python3`，Windows 默认 `python`，可设置 `UNION_PYTHON`。已有构建时可继续直接运行 `python -m ai_union.server --open`。服务只监听本机，`--open` 打开一次性发起人链接；默认仅配置 fixture，创建不会自动运行。
 
-前端为根目录的 `ai-union-console.html`，源文件在 `web/console/`。直接双击 HTML 没有会话和实时服务，应显示断开；正常使用通过本机服务打开。原 `ai-union-dashboard-prototype.html` 仍是独立的离线设计原型。
+正式前端是 `web/console/` 的 React + TypeScript + Vite 工程，构建目录由 Python 同源提供。七个页面支持直接访问、刷新和前进后退；架构及开发模式见 [FRONTEND.md](FRONTEND.md)。单 HTML 原型和报告继续独立保留，根目录 `ai-union-console.html` 是旧实现归档，不是默认启动页面。
 
 ## 本机会话
 
@@ -56,22 +57,13 @@ CLI 的 `run`／`watch` 省略 `--model` 时也使用该组织保存的默认值
 
 ## 验证
 
-```powershell
-python -X utf8 -m unittest discover -v
-python -X utf8 scripts/build_console.py
+```sh
 npm run check
+python3 -m unittest discover -v
+python3 scripts/check_console_start.py
+UNION_CHROMIUM_PATH=/usr/bin/chromium UNION_PYTHON=python3 npm run test:browser
 ```
 
-浏览器检查启动自己的临时真实服务，并通过私有 stdin 注入慢执行、未知结果与文件篡改；生产 HTTP 不含这些测试控制。先安装开发工具（不属于运行时依赖）：
+Playwright Core 已由锁文件安装；Windows 用环境变量指定 Chrome 路径，Linux 可以使用系统 Chromium，或安装 Playwright 的 Chromium。默认结果写入被忽略的 `.union/frontend-browser-evidence/`，用 `UNION_CONSOLE_EVIDENCE` 指定新的公开证据目录，不覆盖历史。浏览器检查使用临时真实服务与明确的模拟执行器；故障控制只走私有 stdin，HTTP 不暴露测试入口。
 
-```powershell
-npm install --prefix .union/browser-tools --no-save --package-lock=false playwright-core@1.64.0
-$env:UNION_CHROMIUM_PATH = 'C:/Program Files/Google/Chrome/Application/chrome.exe'
-node scripts/check_console.cjs
-```
-
-Linux 使用 `UNION_CHROMIUM_PATH` 指向实际 Chromium，`UNION_PYTHON=python3`。模块不在默认目录时设置 `UNION_PLAYWRIGHT_MODULE`；新一轮验证可用 `UNION_CONSOLE_EVIDENCE` 指向新证据目录，避免覆盖旧记录。
-
-证据见 [004 验收记录](../evidence/004-organization-console/README.md)，授权与持久化的独立复核见 [工程审阅](reviews/2026-10-12-console.md)。`npm run check` 只核对旧平台历史计划和动作安全实验，不表示组织能力或 PostgreSQL／Temporal 已验证。
-
-实现、review、验证与复盘的简版见 [单页完成报告](../ai-union-completion-report.html)。2026-10-13 的最终结果保存在新的日期目录中，不覆盖前序验证。
+最新前端工程验证见 [005](../evidence/005-frontend-engineering/README.md)，004 历史记录和授权/持久化 review 继续保留。`npm run check` 现在包含前端类型检查、交互测试和生产构建，同时保留旧平台历史计划与动作安全检查；不表示真实组织能力或 PostgreSQL/Temporal 已验证。

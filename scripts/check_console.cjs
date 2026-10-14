@@ -1,5 +1,5 @@
 // Real HTTP + Chromium acceptance. No real model calls; fault injection stays on private stdin.
-const {chromium}=require(process.env.UNION_PLAYWRIGHT_MODULE || '../.union/browser-tools/node_modules/playwright-core');
+const {chromium}=require(process.env.UNION_PLAYWRIGHT_MODULE || 'playwright-core');
 const fs=require('node:fs');
 const path=require('node:path');
 const os=require('node:os');
@@ -8,10 +8,10 @@ const readline=require('node:readline');
 const assert=require('node:assert/strict');
 const {createHash}=require('node:crypto');
 const root=path.resolve(__dirname,'..');
-const output=path.resolve(process.env.UNION_CONSOLE_EVIDENCE || path.join(root,'evidence/004-organization-console'));
+const output=path.resolve(process.env.UNION_CONSOLE_EVIDENCE || path.join(root,'.union/frontend-browser-evidence'));
 const temp=fs.mkdtempSync(path.join(os.tmpdir(),'union-console-browser-'));
 const checks=[], errors=[];
-let host, browser;
+let host, browser, page;
 const check=(label,value=true)=>{assert.ok(value,label);checks.push(label);};
 const python=process.env.UNION_PYTHON || 'python';
 async function startHost(port=0){
@@ -47,9 +47,9 @@ async function waitFor(page,predicate){await page.waitForFunction(predicate,null
 (async()=>{
   fs.mkdirSync(output,{recursive:true});
   host=await startHost();
-  browser=await chromium.launch({executablePath:process.env.UNION_CHROMIUM_PATH || 'C:/Program Files/Google/Chrome/Application/chrome.exe',headless:true});
+  browser=await chromium.launch({executablePath:process.env.UNION_CHROMIUM_PATH || (process.platform==='win32' ? 'C:/Program Files/Google/Chrome/Application/chrome.exe' : chromium.executablePath()),headless:true});
   const context=await browser.newContext({viewport:{width:1440,height:1000},acceptDownloads:true});
-  const page=await context.newPage();
+  page=await context.newPage();
   page.on('pageerror',error=>errors.push(error.message));
   await page.goto(host.board_url);await waitConnected(page);
   check('C05: one-time host session establishes board role',await page.locator('#role-label').textContent()==='本机发起人');
@@ -58,6 +58,7 @@ async function waitFor(page,predicate){await page.waitForFunction(predicate,null
   await page.locator('#cancel-operation').click();
   check('C01: cancelled creation does not create an organization',(await page.locator('#org-select option').count())===1 && !(await page.locator('#org-select').inputValue()));
   await page.locator('[data-command="create"]').click();
+  await page.locator('[name="goal"]').fill('围绕一个明确的测试目标形成组织，交付可核验成果。');
   await page.locator('[name="name"]').fill('   ');await page.locator('#preview-operation').click();
   check('C01: invalid input is preserved with a field error',await page.locator('#operation-error').isVisible() && await page.locator('[name="name"]').inputValue()==='   ');
   await page.locator('[name="name"]').fill('浏览器协作试验');await page.locator('#preview-operation').click();await page.locator('#commit-operation').click();
@@ -84,9 +85,27 @@ async function waitFor(page,predicate){await page.waitForFunction(predicate,null
   check('C02/A02: browser fixture completes two members, three works, three artifacts',Object.keys(complete.organization.members).length===2 && Object.keys(complete.organization.work).length===3 && Object.keys(complete.organization.artifacts).length===3 && complete.runs.length===6);
   check('A02/D06: fixture origin and unknown costs retained',complete.source==='fixture' && complete.budget.cost_status==='unknown');
   await page.screenshot({path:path.join(output,'overview-1440.png'),fullPage:true});
+  const frontend=await page.request.get(host.origin+'/settings');
+  check('F05: deep routes serve the built SPA with a strict same-origin CSP',frontend.ok() && frontend.headers()['content-security-policy'].includes("script-src 'self'") && !frontend.headers()['content-security-policy'].includes('unsafe-inline') && (await frontend.text()).includes('/assets/'));
+  check('F03: one-time launch credential is removed from the address bar',!page.url().includes('launch='));
+  await page.locator('[data-nav="tasks"]').click();await page.waitForURL('**/tasks?**');
+  await page.locator('[data-nav="members"]').click();await page.waitForURL('**/members?**');
+  await page.goBack();await page.waitForURL('**/tasks?**');
+  check('F02: browser back restores the previous route',await page.locator('#page-title').textContent()==='工作与依赖');
+  await page.goForward();await page.waitForURL('**/members?**');
+  check('F02: browser forward restores the next route',await page.locator('#page-title').textContent()==='成员与岗位');
+  await page.locator('[data-command="event"]').click();
+  await page.locator('[name="content"]').fill('轮询期间未提交的表单');await page.locator('[name="content"]').focus();
+  const reservedBefore=complete.budget.calls_reserved;
+  const draftSequence=Number((await page.locator('#snapshot-meta').textContent()).match(/快照 (\d+)/)[1]);
+  await page.waitForFunction(sequence=>Number(document.querySelector('#snapshot-meta').textContent.match(/快照 (\d+)/)?.[1])>sequence,draftSequence);
+  check('F04: refreshed data preserves draft input and focus',await page.locator('[name="content"]').inputValue()==='轮询期间未提交的表单' && await page.locator('[name="content"]').evaluate(el=>el===document.activeElement));
+  await closeOperation(page);
+  check('F04: closing the draft submits no event or model call',!(await snap(page)).events.some(e=>e.data.content==='轮询期间未提交的表单') && (await snap(page)).budget.calls_reserved===reservedBefore);
   await page.locator('[data-nav="tasks"]').click();
   await page.locator('#task-search').fill('not-a-task');check('A02: task search has empty state',await page.getByText('没有匹配的工作',{exact:true}).isVisible());
   await page.locator('[data-clear]').click();await page.locator('#member-filter').selectOption('member-two');
+  await waitFor(page,()=>document.querySelectorAll('#filtered-work [data-detail="work"]').length>=2);
   check('A02: member filter follows stored ownership',await page.locator('#filtered-work [data-detail="work"]').count()>=2);
   await page.locator('#task-search').fill('work-followup');await page.locator('#filtered-work [data-detail="work"]').first().click();
   check('A02: work detail links real dependency and artifact',await page.locator('#detail-body [data-detail="artifact"]').count()===1);
@@ -95,6 +114,8 @@ async function waitFor(page,predicate){await page.waitForFunction(predicate,null
   const downloadedText=fs.readFileSync(await downloaded.path(),'utf8');
   check('A05: download returns actual verified content',downloadedText.includes('模拟') || downloadedText.includes('Fixture'));
   await page.keyboard.press('Escape');check('A08: native detail dialog closes by keyboard',!(await page.locator('#detail-dialog').isVisible()));
+  await page.reload();await waitConnected(page);
+  check('F02: deep route reload retains combined task filters',new URL(page.url()).pathname==='/tasks' && await page.locator('#task-search').inputValue()==='work-followup' && await page.locator('#member-filter').inputValue()==='member-two');
   const aid=Object.keys(complete.organization.artifacts)[0];
   await host.send({op:'corrupt',org,id:aid});await page.locator('[data-nav="artifacts"]').click();await page.locator(`[data-detail="artifact"][data-id="${aid}"]`).click();await page.getByText(/成果不可用/).waitFor();
   check('A05: corrupted asset fails visibly without download',await page.locator('#detail-body [download]').count()===0);await page.keyboard.press('Escape');await host.send({op:'restore'});
@@ -204,6 +225,8 @@ async function waitFor(page,predicate){await page.waitForFunction(predicate,null
   check('C10: organization model survives service restart',(await snap(page)).execution_config.codex_model==='test-model-a');
   check('browser has no uncaught JavaScript errors',errors.length===0);
   const digest=file=>createHash('sha256').update(fs.readFileSync(file)).digest('hex');
-  fs.writeFileSync(path.join(output,'browser-validation.json'),JSON.stringify({date:new Date().toISOString(),simulated:true,real_model_calls:0,checks:checks.map(name=>({name,passed:true})),browser:await browser.version(),node:process.version,platform:process.platform,console_sha256:digest(path.join(root,'ai-union-console.html')),script_sha256:digest(__filename)},null,2));
+  const dist=path.join(root,'web/console/dist');
+  const assets=['index.html',...fs.readdirSync(path.join(dist,'assets')).map(name=>'assets/'+name)];
+  fs.writeFileSync(path.join(output,'browser-validation.json'),JSON.stringify({date:new Date().toISOString(),simulated:true,real_model_calls:0,checks:checks.map(name=>({name,passed:true})),browser:await browser.version(),node:process.version,platform:process.platform,frontend_assets:Object.fromEntries(assets.map(name=>[name,digest(path.join(dist,name))])),script_sha256:digest(__filename)},null,2));
   console.log(JSON.stringify({passed:checks.length,real_model_calls:0,evidence:output}));
-})().catch(error=>{fs.mkdirSync(output,{recursive:true});fs.writeFileSync(path.join(output,'browser-failure.json'),JSON.stringify({message:error.stack,checks,errors},null,2));console.error(error.stack);process.exitCode=1;}).finally(async()=>{if(browser)await browser.close();if(host && host.child.exitCode===null)await host.stop().catch(()=>host.child.kill());});
+})().catch(async error=>{fs.mkdirSync(output,{recursive:true});fs.writeFileSync(path.join(output,'browser-failure.json'),JSON.stringify({message:error.stack,checks,errors},null,2));if(page){await page.screenshot({path:path.join(output,'browser-failure.png'),fullPage:true}).catch(()=>{});fs.writeFileSync(path.join(output,'browser-failure-view.txt'),await page.locator('body').innerText().catch(()=>''));}console.error(error.stack);process.exitCode=1;}).finally(async()=>{if(browser)await browser.close();if(host && host.child.exitCode===null)await host.stop().catch(()=>host.child.kill());});

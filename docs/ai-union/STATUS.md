@@ -1,10 +1,12 @@
 # ai-union 当前状态
 
-更新：2026-10-13（北京时间）。本地组织运行时及 P0 操作工作台已实现；实际服务的 fixture 最终复验通过。真实 Agent 与首版经营闭环未验收。实现、review、验证与复盘见 [单页完成报告](../../ai-union-completion-report.html)。
+更新：2026-10-14（北京时间）。本地组织运行时及 P0 操作工作台已实现；实际服务的 fixture 最终复验通过。真实 Agent 与首版经营闭环未验收。实现、review、验证与复盘见 [单页完成报告](../../ai-union-completion-report.html)。
 
 ## 已完成与证据
 
-本日后续增量已补齐管理后台模型设置：组织默认、启动覆盖、持久回执与 CLI 一致性；53 项 Python／53 项浏览器检查通过，真实模型调用 0。[增量证据与复盘](../../evidence/004-organization-console/model-settings-2026-10-13/README.md)、[独立 review](../reviews/2026-10-13-model-settings.md)。下表保留原交付分项。
+正式工作台已按用户要求迁移到 React + TypeScript + Vite：七页路由、URL 筛选、查询/轮询、操作表单与回执分模块维护，Python 同源提供构建；首次 `npm ci` 后 `npm start -- --open` 一条命令启动。[005 证据](../../evidence/005-frontend-engineering/README.md)：Linux 下 55 项 Python、10 项前端、60 项实际浏览器、5 项启动检查通过，历史 Node 9 项继续通过。真实模型调用 0。
+
+本日后续增量已补齐管理后台模型设置：组织默认、启动覆盖、持久回执与 CLI 一致性；53 项 Python／53 项浏览器检查通过，真实模型调用 0。[增量证据与复盘](../../evidence/004-organization-console/model-settings-2026-10-13/README.md)、[独立 review](../reviews/2026-10-13-model-settings.md)。下表保留原交付分项，005 接续其前端。
 
 | 范围 | 已有内容 | 证据 |
 | --- | --- | --- |
@@ -18,7 +20,7 @@
 
 ## 尚未完成
 
-- 新增代码在 Linux 实机与远端 CI 的结果尚未取得；本轮实测为 Windows／Python 3.13.14、Chrome 和 Node 24.19.0。CI 已加入 Windows 机制验证。
+- React 迁移已在 Linux／Python 3.12.14／Chromium／Node 24.19.0 验证；Windows 迁移实机与远端 CI 结果尚未取得，CI 已配置两平台工程检查及 Linux 浏览器验收。
 - 创建过程跨文件存储失败时保持 unknown，需要宿主核对分配目录；不自动重建或重放。
 - 真实 Codex 组织形成、协作与后续行动试跑，E1/E2 及真实执行器 E3/E4。
 - 真实交付、可核验反馈、经营闭环、ERP／CRM 集成，以及 Cloudflare 发布。
@@ -26,6 +28,8 @@
 没有真实收入、融资、盈利或自维持证据。本机曾发现的 Codex 登录不保证新环境可用。金额与授权逻辑生产采用前仍需独立工程复核。
 
 ## 下一步
+
+005 前端工程已完成，使用与架构见 [FRONTEND.md](../FRONTEND.md)。
 
 **下一优先事项：在明确有限调用范围与费用未知条件后，用独立组织完成真实执行器烟雾及 E1/E2。** [004 W2–W7](../../specs/004-organization-console/tasks.md)与 [003 观察模块](../../specs/003-runtime-dashboard/tasks.md)的本地 fixture 范围已完成。可立即按 [工作台说明](../CONSOLE.md)启动使用，无需模型凭据。
 

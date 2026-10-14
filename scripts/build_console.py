@@ -1,4 +1,4 @@
-"""Build a single-file live console; includes no organization data or credentials."""
+"""Reproduce the archived 004 single HTML. The current app uses npm run build:console."""
 import base64
 from pathlib import Path
 from build_single_html import csp_hash, replace_once
@@ -7,7 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def main():
-    source = ROOT / "web/console"
+    source = ROOT / "design/console-legacy"
     css = (ROOT / "design/dashboard/styles.css").read_text(encoding="utf-8") + "\n" + (source / "styles.css").read_text(encoding="utf-8")
     app = (source / "app.js").read_text(encoding="utf-8")
     if "</script" in app.lower() or "</style" in css.lower():

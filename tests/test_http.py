@@ -94,3 +94,47 @@ class HTTPTests(unittest.TestCase):
         self.assertEqual(status, 200)
         self.assertEqual(content.decode("utf-8"), e._read_artifact(e.state()["artifacts"][aid]))
         self.assertIn("attachment", headers["Content-Disposition"])
+
+    def test_spa_routes_and_assets_are_public_same_origin_only(self):
+        static = Path(self.temp.name) / 'frontend'
+        (static / 'assets').mkdir(parents=True)
+        (static / 'index.html').write_text('<!doctype html><div id="root"></div>', encoding='utf-8')
+        (static / 'assets' / 'app-test.js').write_text('export const built = true;', encoding='utf-8')
+        (static / 'assets' / 'app-test.css').write_text('body{margin:0}', encoding='utf-8')
+        self.server.static_dir = static.resolve()
+        self.server.document = static / 'index.html'
+        for path in ('/', '/overview', '/members', '/tasks?organization=example', '/artifacts', '/activity', '/resources', '/settings'):
+            with self.subTest(path=path):
+                status, body, headers = self.request('GET', path, cookie=False)
+                self.assertEqual(status, 200)
+                self.assertIn(b'id="root"', body)
+                self.assertIn("script-src 'self'", headers['Content-Security-Policy'])
+                self.assertIn("frame-ancestors 'none'", headers['Content-Security-Policy'])
+                self.assertNotIn('unsafe-inline', headers['Content-Security-Policy'])
+        for path, mime in (('/assets/app-test.js', 'text/javascript'), ('/assets/app-test.css', 'text/css')):
+            status, body, headers = self.request('GET', path, cookie=False)
+            self.assertEqual(status, 200)
+            self.assertTrue(headers['Content-Type'].startswith(mime))
+            self.assertEqual(headers['X-Content-Type-Options'], 'nosniff')
+        self.assertEqual(self.request('GET', '/settings', headers={'Host': 'evil.example'}, cookie=False)[0], 403)
+        self.assertEqual(self.request('GET', '/assets/app-test.js', headers={'Sec-Fetch-Site': 'cross-site'}, cookie=False)[0], 403)
+        self.assertEqual(self.request('GET', '/api/snapshot', cookie=False)[0], 401)
+
+    def test_static_missing_traversal_and_private_files_never_fall_back_to_html(self):
+        static = Path(self.temp.name) / 'frontend'
+        (static / 'assets').mkdir(parents=True)
+        (static / 'index.html').write_text('app shell', encoding='utf-8')
+        (static / 'board.key').write_text('private-sentinel', encoding='utf-8')
+        (Path(self.temp.name) / 'outside.js').write_text('outside-sentinel', encoding='utf-8')
+        self.server.static_dir = static.resolve()
+        self.server.document = static / 'index.html'
+        for path in ('/assets/missing.js', '/board.key', '/src/main.tsx', '/missing-route', '/assets/../board.key',
+                     '/assets/%2e%2e/board.key', '/assets/%2e%2e/%2e%2e/outside.js', '/assets/%5c..%5cboard.key',
+                     '/assets/null%00.js', '/assets/'):
+            with self.subTest(path=path):
+                status, body, headers = self.request('GET', path, cookie=False)
+                self.assertEqual(status, 404)
+                self.assertNotIn('sentinel', json.dumps(body))
+                self.assertTrue(headers['Content-Type'].startswith('application/json'))
+        self.server.document.unlink()
+        self.assertEqual(self.request('GET', '/settings', cookie=False)[0], 503)
