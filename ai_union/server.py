@@ -15,14 +15,17 @@ from .engine import Rejected, encoded, require
 from .observation import artifact
 
 REPO = Path(__file__).resolve().parents[1]
+SPA_ROUTES = {"/", "/overview", "/members", "/tasks", "/artifacts", "/activity", "/resources", "/settings"}
+STATIC_CSP = "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; font-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
 
 
 class Server(ThreadingHTTPServer):
     daemon_threads = True
 
-    def __init__(self, app, port=0, document=None):
+    def __init__(self, app, port=0, document=None, static_dir=None):
         self.app = app
-        self.document = document or REPO / "ai-union-console.html"
+        self.static_dir = Path(static_dir or REPO / "web/console/dist").resolve()
+        self.document = Path(document) if document else self.static_dir / "index.html"
         super().__init__(("127.0.0.1", port), Handler)
         self.origin = f"http://127.0.0.1:{self.server_port}"
         self.cookie_name = "union_" + app.instance[-12:]
@@ -71,6 +74,32 @@ class Handler(BaseHTTPRequestHandler):
         origin = self.headers.get("Origin")
         require(origin == self.server.origin if write else origin in (None, self.server.origin), "请求来源不允许")
 
+    def static(self, path):
+        """Only built assets and explicit SPA routes; never fall back for unknown files."""
+        from urllib.parse import unquote
+        decoded = unquote(path)
+        if decoded in SPA_ROUTES:
+            try:
+                content = self.server.document.read_bytes()
+                match = re.search(rb'<meta http-equiv="Content-Security-Policy" content="([^"]+)"', content)
+                policy = match[1].decode() + "; frame-ancestors 'none'" if match else STATIC_CSP
+                return self.send(200, content, "text/html; charset=utf-8", {"Content-Security-Policy": policy})
+            except OSError:
+                return self.send(503, {"error": "前端尚未生成；从仓库根目录运行 npm run build:console 或 npm start"})
+        if "\\" in decoded or "\x00" in decoded or ".." in decoded.split("/"):
+            return self.send(404, {"error": "资源不存在"})
+        if not (decoded.startswith("/assets/") or decoded == "/favicon.svg"):
+            return self.send(404, {"error": "资源不存在"})
+        root = self.server.static_dir
+        target = (root / decoded.lstrip("/")).resolve()
+        mime = {".js": "text/javascript; charset=utf-8", ".css": "text/css; charset=utf-8", ".svg": "image/svg+xml", ".woff2": "font/woff2"}.get(target.suffix)
+        if not target.is_relative_to(root) or not mime:
+            return self.send(404, {"error": "资源不存在"})
+        try:
+            return self.send(200, target.read_bytes(), mime, {"Content-Security-Policy": STATIC_CSP})
+        except OSError:
+            return self.send(404, {"error": "资源不存在"})
+
     def handle_api(self, write=False):
         try:
             self.transport(write)
@@ -79,14 +108,8 @@ class Handler(BaseHTTPRequestHandler):
         app = self.server.app
         path = urlsplit(self.path)
         query = parse_qs(path.query)
-        if not write and path.path == "/":
-            try:
-                content = self.server.document.read_bytes()
-                match = re.search(rb'<meta http-equiv="Content-Security-Policy" content="([^"]+)"', content)
-                headers = {"Content-Security-Policy": match[1].decode() + "; frame-ancestors 'none'"} if match else {}
-                return self.send(200, content, "text/html; charset=utf-8", headers)
-            except OSError:
-                return self.send(503, {"error": "前端尚未生成；运行 scripts/build_console.py"})
+        if not write and not (path.path == "/api" or path.path.startswith("/api/")):
+            return self.static(path.path)
         if write and path.path == "/api/session":
             try:
                 require(self.headers.get("Content-Length", "0") == "0", "会话交换不接收请求体")
@@ -113,6 +136,8 @@ class Handler(BaseHTTPRequestHandler):
             if path.path == "/api/session":
                 return self.send(200, app.session_info(token))
             org_id = query.get("organization_id", [None])[0]
+            if path.path == "/api/model-connections":
+                return self.send(200, app.model_connections(token, org_id))
             if path.path == "/api/snapshot":
                 return self.send(200, app.observe(token, org_id, int(query.get("offset", [0])[0])))
             if path.path == "/api/receipts":
@@ -148,9 +173,10 @@ def main(argv=None):
     p.add_argument("--port", type=int, default=8766)
     p.add_argument("--fixture", default=str(REPO / "examples/fixture.json"))
     p.add_argument("--enable-codex", action="store_true", help="允许网页选择 Codex；不会自动调用")
+    p.add_argument("--disable-api", action="store_true", help="禁用 API 配置和调用入口")
     p.add_argument("--open", action="store_true", help="在本机浏览器打开一次性发起人会话")
     args = p.parse_args(argv)
-    app = Console(args.root, json.loads(Path(args.fixture).read_text(encoding="utf-8")), args.enable_codex)
+    app = Console(args.root, json.loads(Path(args.fixture).read_text(encoding="utf-8")), args.enable_codex, enable_api=not args.disable_api)
     server = Server(app, args.port)
     access = {role: server.origin + "/#launch=" + app.ticket(role) for role in ("board", "observer")}
     path = app.root / "local-access.json"

@@ -24,7 +24,8 @@ def snapshot(engine, offset=0, limit=50):
             package = json.loads(r.pop("package"))
             r["member_id"] = package.get("member_id", package.get("actor"))
             r["usage"] = json.loads(r["usage"]) if r["usage"] else None
-            r["simulated"] = r["executor"] == "fixture"
+            r["simulated"] = r["executor"] == "fixture" or (r["executor"] == "api" and package.get("execution", {}).get("transport_source") == "local_test")
+            r["execution"] = pick(package.get("execution", {}), "connection_id connection_revision protocol requested_model transport_source")
             r["host_confirmed"] = live["confirmed"] and package.get("host_owner") == live["owner"]
             r["display_status"] = ("running" if r["host_confirmed"] else "unconfirmed") if r["status"] == "running" else r["status"]
             runs.append(r)
@@ -80,7 +81,8 @@ def snapshot(engine, offset=0, limit=50):
             next_step = "paused"
         wakes = [w["until"] for w in state["wakeups"] if not w["fired"]]
         return {"organization": organization, "charter": charter, "budget": budget, "ready_work": ready,
-                "execution_config": {"codex_model": state.get("execution_config", {}).get("codex_model")},
+                "execution_config": {"codex_model": state.get("execution_config", {}).get("codex_model"),
+                                     "api_connection_id": state.get("execution_config", {}).get("api_connection_id")},
                 "pending_events": pending, "next_step": next_step, "blocked_reasons": blocked,
                 "next_review_at": min(wakes, key=instant) if wakes else None, "collected_at": now(),
                 "execution_state": execution, "dispatch_state": dispatch, "host_activity": live,

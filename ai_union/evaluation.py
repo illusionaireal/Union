@@ -1,12 +1,34 @@
 """Objective checks over actual records; scripted fixtures cannot pass a real eval."""
+import json
+
 from .engine import Rejected, now
+
+
+def simulated_run(run):
+    return run["executor"] not in ("codex", "api") or (run["executor"] == "api" and run["package"].get("execution", {}).get("transport_source") != "provider_api")
+
+
+def execution_receipt(engine, run):
+    folder = engine.root / "executions" / run["id"]
+    if not (run["status"] == "delivered" and run["usage"] is not None and (folder / "result.json").is_file()):
+        return False
+    if run["executor"] == "codex":
+        return True
+    try:
+        receipt = json.loads((folder / "receipt.json").read_text(encoding="utf-8"))
+        expected = run["package"]["execution"]
+        return receipt.get("transport_source") == "provider_api" and all(receipt.get(k) == expected[k] for k in
+            ("connection_id", "connection_revision", "protocol", "requested_model")) and bool(receipt.get("response_id") or receipt.get("provider_request_id"))
+    except (ValueError, OSError, KeyError):
+        return False
 
 
 def evaluate(engine):
     s = engine.state()
-    runs = engine.runs()
+    # A paid connection test is accounting evidence, never organizational capability evidence.
+    runs = [r for r in engine.runs() if r["kind"] != "connection_test"]
     work_runs = [r for r in runs if r["kind"] == "work" and r["status"] == "delivered"]
-    real_runs = [r for r in runs if r["executor"] == "codex"]
+    real_runs = [r for r in runs if not simulated_run(r)]
     checks = {}
     errors = []
     checks["organization_formed"] = s["phase"] == "active" and len(s["members"]) >= 2
@@ -41,11 +63,9 @@ def evaluate(engine):
             if r["work_id"] in new_work and r["started_at"] > d["created_at"]:
                 followups.append({"decision_id": d["id"], "work_id": r["work_id"], "run_id": r["id"], "evidence_refs": proposal["evidence_refs"]})
     checks["evidence_to_followup_action"] = bool(followups)
-    simulated = any(r["executor"] != "codex" for r in runs)
+    simulated = any(simulated_run(r) for r in runs)
     checks["real_executor_only"] = bool(real_runs) and not simulated
-    checks["real_executor_receipts"] = bool(real_runs) and all(
-        r["status"] == "delivered" and r["usage"] is not None and
-        (engine.root / "executions" / r["id"] / "result.json").is_file() for r in real_runs)
+    checks["real_executor_receipts"] = bool(real_runs) and all(execution_receipt(engine, r) for r in real_runs)
     mechanism = all(v for k, v in checks.items() if k not in ("real_executor_only", "real_executor_receipts"))
     return {"evaluated_at": now(), "status": "passed" if all(checks.values()) else ("simulated" if simulated and mechanism else "incomplete"),
             "real_agent_verified": all(checks.values()), "mechanism_scenario_passed": mechanism,

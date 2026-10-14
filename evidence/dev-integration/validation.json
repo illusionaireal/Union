@@ -1,0 +1,27 @@
+{
+  "verified_at": "2026-10-14T17:44:12.368481+08:00",
+  "target_branch": "dev",
+  "main_unchanged": "e11c389366814060ea4475a359c9b62036ccd176",
+  "sources": {
+    "feat/ai-union-runtime-console-handoff": "cd6d06238b8bc79637b725f0041c9c32770f9352",
+    "feat/real-model-api": "6ce24b75e8cdcd3c60b4b5ee2091350d95845d3d",
+    "feat/react-typescript-console": "8179d6ee176360184ad159ffb6b3db4b53bb2bb4"
+  },
+  "python_tests_passed": 78,
+  "frontend_tests_passed": 12,
+  "historical_tests_passed": 9,
+  "typecheck": "passed",
+  "production_build": "passed",
+  "startup_checks_passed": 5,
+  "browser_status": "not_run: Chromium download returned invalid ZIP",
+  "real_provider_calls": 0,
+  "independent_review": "passed",
+  "code_sha256": {
+    "ai_union/server.py": "47dee2bcab26f8b23d1d266b870529d70a8b8d149d3b01413b57c099f13e8305",
+    "web/console/src/api/types.ts": "d3e6b03f0b0aa13790fb538caf19fa03b460b3278d9af3ed6bde0210cf2b19a8",
+    "web/console/src/features/commands/model.ts": "ec5d760d55144e6717b12c1d54f1ef9df5dfad5672a2af48ce80d93e21d6b710",
+    "web/console/src/features/commands/fields.tsx": "fd518217b26b6919c3b8e07a2a2b9561b829e54c491edcc44118a095af26a86f",
+    "web/console/src/features/commands/receipts.ts": "bff392d8b6f4c1fd2d714701d13864e5c2f49424e64686c6c9278267c8421974",
+    "web/console/src/pages/Settings.tsx": "891cdef7c6ddf7b03f92a41b1aaff772102f54eb4ea3df67e2082b109a1c8fe7"
+  }
+}

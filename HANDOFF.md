@@ -1,5 +1,31 @@
 # 当前工程交接
 
+## 2026-10-14：统一 dev 集成分支
+
+已将运行时工作台 `cd6d062`、真实 API `6ce24b7`、React 前端 `8179d6e` 整合到 `dev`，保留源分支历史，`main` 不变。冲突涉及 README、交接和状态文档，保留两侧成果与证据。Python 服务同时提供 React 构建及新增 API 路由。
+
+API 配置/绑定/连接测试沿用 [API_MODELS.md](docs/API_MODELS.md) 的 CLI 和 HTTP 契约；React 运行表单可选择已经绑定的默认 API 连接，专门的连接管理表单仍由后续前端工作接入。整合后的检查记录见 [dev 集成验证](evidence/dev-integration/README.md)。
+
+## 2026-10-14：React 前端工程
+
+用户要求完成 React + TypeScript + Vite 正式工作台，已在 `feat/react-typescript-console` 接续远端 `cd6d062`，保留其 Python/SQLite/会话/命令能力。七页、URL 筛选、TanStack Query 读取与轮询、操作表单/预览/回执以及详情分别维护。Vite 产物由 Python 同源提供，首次 `npm ci --ignore-scripts` 后运行 `npm start -- --root .union/console --port 8766 --open`；开发观察模式见 [FRONTEND.md](docs/FRONTEND.md)。
+
+已验证 Linux／Python 3.12.14／Node 24.19.0／Chromium：55 项 Python、10 项前端、60 项实际 HTTP/浏览器、5 项启动检查及 9 项旧动作检查通过。新证据位于 [005](evidence/005-frontend-engineering/README.md)，原验证与独立 review 保留。真实模型调用 0；没有 Sites/Figma/Canva 可调用工具，没有外部站点或设计平台发布。
+
+旧实际单 HTML `ai-union-console.html` 和源码 `design/console-legacy/` 归档；设计演示、进展和完成报告仍保留。正式入口读取 `web/console/dist/`，构建不提交，新克隆必须安装/构建。不要重新把正式应用拼装回单 HTML。
+
+迁移验收修正了连续筛选 URL 更新的竞态，以及数据库离线暂停导致错误连接状态的问题；断网禁用写操作，命令不排队，已确认回执不被晚到错误覆盖。Windows 迁移及远端 CI 结果尚未取得。下一业务任务仍是明确有限调用范围后的真实执行器烟雾/E1/E2，以及独立渠道/反馈验收。
+
+## 2026-10-13：真实 API 后端升级
+
+用户授权后端真实 API 升级并提交代码，前端由另一位同事实施。本次基于 `cd6d062`，独立分支 `feat/real-model-api`，不修改前端源码或生成 HTML。
+
+新增版本化私有 API 配置、组织默认绑定、实际连接测试、Chat Completions 执行器、CLI 和受信 HTTP 命令。密钥不进入工作包、正式状态、事件、命令日志或回执；配置命令只保存完整参数指纹。连接测试预约一次调用，保留原暂停状态，不消费业务事件。运行固定连接版本，unknown 不自动重试，金额仍为未知。
+
+前端同事从 [API_MODELS.md](docs/API_MODELS.md) 第 2 节接入 `GET /api/model-connections`、`api_connection`、`api_binding`、`api_test` 与 `start.executor=api`。读取列表仅限董事会会话，写操作沿用原幂等命令、基准版本和回执协议。页面应保存配置后刷新版本；API 运行选择连接，不提交 Codex `model`。
+
+新证据见 [005](evidence/005-real-model-api/README.md)。本地 HTTP 替身完整协作闭环为 simulated；评估现已接受真实 API 证据，并排除连接测试与回环服务。缺少用户配置的供应商密钥，真实供应商烟雾及 E1/E2 继续待验证。历史验证结果和文档记录保持各自日期含义。
+
 ## 2026-10-13：管理后台模型设置
 
 用户要求补齐后台模型配置。现在可在“组织设置 → 模型设置”按组织保存／清除 Codex 默认模型，启动时覆盖本次值；回执固定 `requested_model`。CLI 省略 `--model` 时同样沿用组织默认，模型解析与金额硬上限检查都在派发锁内执行，避免并发设置竞态。保存不启用 Codex、不调用模型，实际使用说明见 [CONSOLE.md](docs/CONSOLE.md)。

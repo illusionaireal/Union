@@ -8,27 +8,32 @@
 
 这是组织层原型。经营策略和岗位由执行器输出形成，代码不预置内容工作流。尚无真实模型闭环验收、对外发布或市场反馈证据，也没有经营平台、支付或投资募集。
 
-**P0 本地组织工作台已接入实际服务，fixture 验收通过。** 浏览器可创建、有限运行、暂停派发、提交事件、调整资源、修章和核对执行；Dashboard 读取实际持久记录。53 项 Python 测试、53 项实际服务浏览器检查通过，真实模型调用仍为 0。范围见 [004](specs/004-organization-console/spec.md) 与 [003](specs/003-runtime-dashboard/spec.md)，证据见 [工作台验收](evidence/004-organization-console/README.md)。
+**P0 本地组织工作台已接入实际服务，fixture 验收通过。** 浏览器可创建、有限运行、暂停派发、提交事件、调整资源、修章和核对执行；Dashboard 读取实际持久记录。正式前端已迁移到 React + TypeScript + Vite，七页路由、服务端数据管理、操作表单和回执分别维护。最新验证见 [005 前端工程](evidence/005-frontend-engineering/README.md)，真实模型调用仍为 0。范围见 [004](specs/004-organization-console/spec.md) 与 [003](specs/003-runtime-dashboard/spec.md)，证据见 [工作台验收](evidence/004-organization-console/README.md)。
 
 本轮实现、review、验证与复盘见 [单页完成报告](ai-union-completion-report.html)，可离线打开。2026-10-13 的最终复验记录单独保存，历史结果保留。
 
-从仓库根目录启动（Windows 用 `python`，Linux 可用 `python3`）：
+从仓库根目录首次安装，然后一条命令构建并启动（Node 24.19.0、Python 3.11+）：
 
 ```sh
-python -m ai_union.server --root .union/console --port 8766 --open
+npm ci --ignore-scripts
+npm start -- --root .union/console --port 8766 --open
 ```
 
-浏览器从本机一次性链接建立发起人会话，默认仅配置 fixture。前端为 [ai-union-console.html](ai-union-console.html)，需要同源服务；操作、会话和恢复说明见 [工作台使用说明](docs/CONSOLE.md)。
+浏览器从本机一次性链接建立发起人会话，默认仅配置 fixture。正式源码在 [web/console](web/console)，Vite 构建由 Python 同源提供；[工程与架构](docs/FRONTEND.md)、[工作台使用说明](docs/CONSOLE.md)包含开发、操作和恢复流程。原单 HTML 保留为演示及历史资料。
 
-产品与设计基线：[统一 PRD v0.2](docs/PRD.md)、[产品设计说明](docs/product-design.md)、[操作工作台单 HTML 原型](ai-union-dashboard-prototype.html)、[软件复用与 AI 适配](docs/software-reuse.md)。原型支持七视图、操作表单与预览、回执、有限 fixture 步骤、详情及异常情景。48 项观察交互与 32 项操作交互检查通过；仅模拟浏览器内状态，未连接真实组织服务，模型调用为 0。
+**真实模型 API 后端已接入。** 可配置 OpenAI-compatible API 根地址、模型、私有密钥、输出模式、输出上限与超时，绑定组织默认连接，通过 CLI 或受信 HTTP 命令测试连接及执行。无需 Codex CLI；配置本身不调用模型。React 工作台已整合；API 连接管理表单仍待接入，当前通过 CLI／HTTP 配置和绑定。运行步骤与完整前端契约见 [API_MODELS.md](docs/API_MODELS.md)，实现范围见 [005](specs/005-real-model-api/spec.md)。当前证据来自本地 HTTP 替身，真实供应商调用仍为 0。
+
+产品与设计基线：[统一 PRD v0.3](docs/PRD.md)、[产品设计说明](docs/product-design.md)、[操作工作台单 HTML 原型](ai-union-dashboard-prototype.html)、[软件复用与 AI 适配](docs/software-reuse.md)。原型支持七视图、操作表单与预览、回执、有限 fixture 步骤、详情及异常情景。48 项观察交互与 32 项操作交互检查通过；仅模拟浏览器内状态，未连接真实组织服务，模型调用为 0。
 
 业务事实与交易能力优先复用 ERP／CRM／文件／发布等已有系统；ai-union 负责 AI 成员、授权、组织决定、责任、执行与恢复。当前未接入这些业务系统，也不为抽象的 AI 企业预先重建 ERP、CRM 或 MES。
+
+开发集成入口为 `dev` 分支，包含运行时、真实 API 后端和 React 工作台；[集成验证](evidence/dev-integration/README.md)记录本次合并范围。
 
 ## 从这里接手
 
 1. [当前状态](docs/ai-union/STATUS.md)与[工程交接](HANDOFF.md)：已实现范围、明确缺口和下一步。
-2. [新环境开发与验证](docs/DEVELOPMENT.md)：从新克隆仓库重建模拟场景、运行测试和生成单 HTML，不依赖前一个环境。
-3. [PRD](docs/PRD.md)、[产品设计](docs/product-design.md)与[004 操作工作台待办](specs/004-organization-console/tasks.md)：当前 P0 产品范围及验收。
+2. [新环境开发与验证](docs/DEVELOPMENT.md)：从新克隆仓库重建模拟场景、运行工程检查、构建工作台和生成独立演示，不依赖前一个环境。
+3. [PRD](docs/PRD.md)、[产品设计](docs/product-design.md)与[005 前端工程待办](specs/005-frontend-engineering/tasks.md)：当前 P0 产品范围及验收。
 4. [治理设计依据](docs/ai-union/DESIGN.md)、[最初开发交接](docs/ai-union/DEVELOPMENT.md)与[ADR-0002](docs/decisions/0002-ai-union-direction.md)：产品与路线背景；当前进度以 STATUS／HANDOFF 为准。
 
 ## 两条项目线
@@ -145,7 +150,7 @@ python3 -m ai_union --root .union/real resources \
 ## 检查旧平台工程资产
 
 
-以下命令检查旧平台计划与离线实验，**尚不是 ai-union 的启动或验收命令**。使用 `.nvmrc` 指定的 Node.js 24.19.0：
+以下命令保留旧平台计划与离线实验检查，并加入 React 前端类型、测试及构建检查；组织机制和实际浏览器验收另见上面的开发说明。使用 `.nvmrc` 指定的 Node.js 24.19.0：
 
 ```sh
 npm ci

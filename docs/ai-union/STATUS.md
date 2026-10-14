@@ -1,10 +1,16 @@
 # ai-union 当前状态
 
-更新：2026-10-13（北京时间）。本地组织运行时及 P0 操作工作台已实现；实际服务的 fixture 最终复验通过。真实 Agent 与首版经营闭环未验收。实现、review、验证与复盘见 [单页完成报告](../../ai-union-completion-report.html)。
+更新：2026-10-14（北京时间）。本地组织运行时及 P0 操作工作台已实现；实际服务的 fixture 最终复验通过。真实 Agent 与首版经营闭环未验收。实现、review、验证与复盘见 [单页完成报告](../../ai-union-completion-report.html)。
 
 ## 已完成与证据
 
-本日后续增量已补齐管理后台模型设置：组织默认、启动覆盖、持久回执与 CLI 一致性；53 项 Python／53 项浏览器检查通过，真实模型调用 0。[增量证据与复盘](../../evidence/004-organization-console/model-settings-2026-10-13/README.md)、[独立 review](../reviews/2026-10-13-model-settings.md)。下表保留原交付分项。
+运行时、真实 API 与 React 前端已整合到 `dev`，`main` 保持原状态；当前合并验证见 [dev 集成](../../evidence/dev-integration/README.md)。
+
+正式工作台已按用户要求迁移到 React + TypeScript + Vite：七页路由、URL 筛选、查询/轮询、操作表单与回执分模块维护，Python 同源提供构建；首次 `npm ci` 后 `npm start -- --open` 一条命令启动。[005 证据](../../evidence/005-frontend-engineering/README.md)：Linux 下 55 项 Python、10 项前端、60 项实际浏览器、5 项启动检查通过，历史 Node 9 项继续通过。真实模型调用 0。
+
+2026-10-13 后续后端升级：可配置真实 Chat Completions API、私有密钥、默认连接及一次连接测试；CLI 与 HTTP 共用执行链路，真实 API 已纳入评估。API 后端与 React 前端已合入 dev，连接管理表单仍待接入，可先使用 CLI／HTTP 配置。范围见 [005](../../specs/005-real-model-api/spec.md)，运行与前端接口见 [API_MODELS.md](../API_MODELS.md)，新证据见 [005 验证](../../evidence/005-real-model-api/README.md)。真实供应商调用仍为 0。
+
+本日后续增量已补齐管理后台模型设置：组织默认、启动覆盖、持久回执与 CLI 一致性；53 项 Python／53 项浏览器检查通过，真实模型调用 0。[增量证据与复盘](../../evidence/004-organization-console/model-settings-2026-10-13/README.md)、[独立 review](../reviews/2026-10-13-model-settings.md)。下表保留原交付分项，005 接续其前端。
 
 | 范围 | 已有内容 | 证据 |
 | --- | --- | --- |
@@ -18,7 +24,7 @@
 
 ## 尚未完成
 
-- 新增代码在 Linux 实机与远端 CI 的结果尚未取得；本轮实测为 Windows／Python 3.13.14、Chrome 和 Node 24.19.0。CI 已加入 Windows 机制验证。
+- React 迁移已在 Linux／Python 3.12.14／Chromium／Node 24.19.0 验证；Windows 迁移实机与远端 CI 结果尚未取得，CI 已配置两平台工程检查及 Linux 浏览器验收。
 - 创建过程跨文件存储失败时保持 unknown，需要宿主核对分配目录；不自动重建或重放。
 - 真实 Codex 组织形成、协作与后续行动试跑，E1/E2 及真实执行器 E3/E4。
 - 真实交付、可核验反馈、经营闭环、ERP／CRM 集成，以及 Cloudflare 发布。
@@ -27,7 +33,9 @@
 
 ## 下一步
 
-**下一优先事项：在明确有限调用范围与费用未知条件后，用独立组织完成真实执行器烟雾及 E1/E2。** [004 W2–W7](../../specs/004-organization-console/tasks.md)与 [003 观察模块](../../specs/003-runtime-dashboard/tasks.md)的本地 fixture 范围已完成。可立即按 [工作台说明](../CONSOLE.md)启动使用，无需模型凭据。
+005 前端工程已完成，使用与架构见 [FRONTEND.md](../FRONTEND.md)。
+
+**下一优先事项：配置用户的 API 凭据，在有限调用范围与费用未知条件下，用独立组织完成真实 API 烟雾及 E1/E2；前端按新增契约接入。** [004 W2–W7](../../specs/004-organization-console/tasks.md)与 [003 观察模块](../../specs/003-runtime-dashboard/tasks.md)的本地 fixture 范围已完成。可立即按 [工作台说明](../CONSOLE.md)启动原工作台，或按 [API 说明](../API_MODELS.md)从 CLI 开展真实测试。
 
 最初开发交接 [DEVELOPMENT.md](DEVELOPMENT.md)保留首轮目标；不再按其“尚未开始”的历史描述重做工程。后续状态以本文、HANDOFF 和迭代 Tasks 为准。
 

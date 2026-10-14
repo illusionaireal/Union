@@ -1,0 +1,71 @@
+{
+  "verified_at": "2026-10-14T08:10:41.467476+08:00",
+  "baseline_commit": "cd6d06238b8bc79637b725f0041c9c32770f9352",
+  "branch": "feat/real-model-api",
+  "python": "3.12.14",
+  "node": "v24.19.0",
+  "python_tests": {
+    "passed": 76,
+    "api_tests": 23,
+    "failed": 0
+  },
+  "npm_check": {
+    "exit_code": 0,
+    "legacy_tests_passed": 9,
+    "plan_tasks": 82,
+    "plan_dependencies": 181
+  },
+  "fresh_fixture_cli": [
+    {
+      "label": "tests",
+      "exit_code": 0,
+      "expected_exit_code": 0
+    },
+    {
+      "label": "init",
+      "exit_code": 0,
+      "expected_exit_code": 0
+    },
+    {
+      "label": "fixture-run",
+      "exit_code": 0,
+      "expected_exit_code": 0
+    },
+    {
+      "label": "status",
+      "exit_code": 0,
+      "expected_exit_code": 0
+    },
+    {
+      "label": "followup-context",
+      "exit_code": 0,
+      "expected_exit_code": 0
+    },
+    {
+      "label": "evaluation",
+      "exit_code": 3,
+      "expected_exit_code": 3
+    },
+    {
+      "label": "restart-wait",
+      "exit_code": 0,
+      "expected_exit_code": 0
+    }
+  ],
+  "real_provider_calls": 0,
+  "provider_validation": "not_run: no project provider credential configured",
+  "http_test_transport_source": "local_test",
+  "frontend_changed": false,
+  "independent_review": "passed; docs/reviews/2026-10-13-real-model-api.md",
+  "code_sha256": {
+    "ai_union/cli.py": "caa9c46605d135be45c0fd09440ea7dcce7d8e83e33113d251d12dbed17fd892",
+    "ai_union/console.py": "98bfdc9ca68ae09d4af5c48b34f1d2147db28b98726eb789a67bf9a025275653",
+    "ai_union/engine.py": "0e6108e68b1958c878e975eee33183112f34e1bd6520cecbd14c03133a57540e",
+    "ai_union/evaluation.py": "0f572f557ebe85052869b06399cd970bfbe86439c1376967127665f93d8b5870",
+    "ai_union/model_api.py": "e4995e362a027f0b22ec4faa8dc11fcbe0c56e8dbaf66835ef9a645891cc6759",
+    "ai_union/observation.py": "10a4985ae4c6e45e7cd9d83b0658b94af2b2a27da040109320a0dd5a1672bb22",
+    "ai_union/runner.py": "7f7cd6ed7733c5b9f5f115e2b7ba9036604aa984604627e470c54e17d16fe183",
+    "ai_union/server.py": "9e7e4a41a0d540ae943fd3fac47d707a8b78e63004fea032b2f750ac65a09b6a",
+    "tests/test_model_api.py": "db2ba2caeffdb486b7b64ccaf8c8118a297b6ed7bbd6fb811bd9df868f949b7b"
+  }
+}
