@@ -14,11 +14,12 @@ from .engine import Engine, Rejected, encoded, identifier, model_name, now, requ
 from .executor import CodexExecutor, FixtureExecutor
 from .locking import file_lock
 from .observation import snapshot
-from .runner import exclusive, step
+from .runner import exclusive, step, test_connection
+from .model_api import APIExecutor, bind_connection, configure_connection, list_connections, resolve_connection, stored_command, reject_saved_secrets
 
 
 class Console:
-    def __init__(self, root, fixture=None, enable_codex=False):
+    def __init__(self, root, fixture=None, enable_codex=False, enable_api=True):
         self.root = Path(root).resolve()
         self.root.mkdir(parents=True, exist_ok=True)
         self._guard = file_lock(self.root / "console.lock")
@@ -32,6 +33,7 @@ class Console:
         self.sequence = 0
         self.fixture = fixture
         self.enable_codex = enable_codex
+        self.enable_api = enable_api
         self.executor_factory = self._executor
         self.closed = False
         with self.catalog() as cx:
@@ -117,7 +119,13 @@ class Console:
                     state = e._state(cx)
                     orgs.append({"id": state["id"], "name": state["name"]})
         return {"role": session["role"], "organizations": orgs, "service_instance": self.instance,
-                "executors": (["fixture"] if self.fixture is not None else []) + (["codex"] if self.enable_codex else [])}
+                "executors": (["fixture"] if self.fixture is not None else []) + (["codex"] if self.enable_codex else []) + (["api"] if self.enable_api else [])}
+
+    def model_connections(self, token, org_id):
+        require(self.session(token)["role"] == "board", "观察者不能读取 API 连接配置")
+        e = self.engine(token, org_id)
+        return {"connections": list_connections(e), "api_enabled": self.enable_api,
+                "api_connection_id": e.state().get("execution_config", {}).get("api_connection_id")}
 
     def observe(self, token, org_id, offset=0):
         e = self.engine(token, org_id)
@@ -158,11 +166,12 @@ class Console:
         return receipt
 
     def command(self, token, request):
+        request = copy.deepcopy(request)
         session = self.session(token)
         require(session["role"] == "board", "观察者不能提交操作")
         require(isinstance(request, dict) and set(request) == {"id", "organization_id", "base_version", "kind", "data"}, "无效命令字段")
         identifier(request["id"])
-        require(request["kind"] in ("create", "event", "resources", "model", "amend", "reconcile", "start", "pause"), "不支持的命令")
+        require(request["kind"] in ("create", "event", "resources", "model", "amend", "reconcile", "start", "pause", "api_connection", "api_binding", "api_test"), "不支持的命令")
         require(isinstance(request["data"], dict), "命令数据必须为对象")
         require(len(encoded(request)) <= 200000, "命令过大")
         receipt = {k: request[k] for k in ("id", "organization_id", "base_version", "kind")}
@@ -171,18 +180,24 @@ class Console:
             require(session["organizations"] is None, "此会话没有创建组织权限")
             return self._create(request, receipt)
         e = self.engine(token, request["organization_id"])
+        public_input = copy.deepcopy(request)
+        if request["kind"] == "api_connection":
+            public_input["data"].pop("api_key", None)
         with e.read_transaction() as cx:
-            prior = self._existing(cx, request)
+            reject_saved_secrets(cx, public_input)
+        persisted = stored_command(request)
+        with e.read_transaction() as cx:
+            prior = self._existing(cx, persisted)
         if prior:
             return prior
-        guard = exclusive(e) if request["kind"] in ("start", "resources", "model", "amend", "reconcile") else nullcontext()
+        guard = exclusive(e) if request["kind"] in ("start", "resources", "model", "amend", "reconcile", "api_connection", "api_binding", "api_test") else nullcontext()
         acquired = False
         transferred = False
         try:
             guard.__enter__()
             acquired = True
             with e.transaction() as cx:
-                prior = self._existing(cx, request)
+                prior = self._existing(cx, persisted)
                 if prior:
                     return prior
                 try:
@@ -190,16 +205,22 @@ class Console:
                         state = e._state(cx)
                         require(type(request["base_version"]) is int and request["base_version"] == state["version"], "版本冲突；刷新并重新预览，输入已保留")
                         result = self._execute(e, request)
-                    receipt.update(status="accepted" if request["kind"] == "start" else "succeeded", message="有限运行已受理" if request["kind"] == "start" else "操作已保存")
-                    if request["kind"] == "start":
-                        receipt.update(executor=request["data"]["executor"], requested_model=getattr(result, "model", None))
+                    job_command = request["kind"] in ("start", "api_test")
+                    receipt.update(status="accepted" if job_command else "succeeded", message="有限调用已受理" if job_command else "操作已保存")
+                    if job_command:
+                        receipt.update(executor="api" if request["kind"] == "api_test" else request["data"]["executor"], requested_model=getattr(result, "model", None))
+                        if hasattr(result, "metadata"):
+                            receipt["execution"] = result.metadata
+                    elif request["kind"] == "api_connection":
+                        receipt["connection"] = result
                 except (Rejected, KeyError, TypeError) as error:
                     receipt.update(status="rejected", message=str(error) if isinstance(error, Rejected) else "命令字段缺失或类型不正确")
-                cx.execute("INSERT INTO commands VALUES(?,?,?)", (request["id"], encoded(request), encoded(receipt)))
+                cx.execute("INSERT INTO commands VALUES(?,?,?)", (request["id"], encoded(persisted), encoded(receipt)))
             if receipt["status"] == "accepted":
                 try:
                     with self.mutex:
-                        thread = threading.Thread(target=self._job, args=(e, request, result, guard), daemon=False)
+                        target = self._probe_job if request["kind"] == "api_test" else self._job
+                        thread = threading.Thread(target=target, args=(e, request, result, guard), daemon=False)
                         thread.start()
                         self.jobs.append(thread)
                         transferred = True
@@ -209,16 +230,17 @@ class Console:
                     receipt.update(status="rejected", ended_at=now(),
                                    message="宿主无法启动运行作业；未派发调用，已暂停派发。请保留回执，待宿主恢复后重新启动。")
                     with e.transaction() as cx:
-                        e.set_paused(True)
+                        if request["kind"] == "start":
+                            e.set_paused(True)
                         cx.execute("UPDATE commands SET receipt=? WHERE id=?", (encoded(receipt), request["id"]))
             return receipt
         except Rejected as error:
             with e.transaction() as cx:
-                prior = self._existing(cx, request)
+                prior = self._existing(cx, persisted)
                 if prior:
                     return prior
                 receipt.update(status="rejected", message=str(error))
-                cx.execute("INSERT INTO commands VALUES(?,?,?)", (request["id"], encoded(request), encoded(receipt)))
+                cx.execute("INSERT INTO commands VALUES(?,?,?)", (request["id"], encoded(persisted), encoded(receipt)))
             return receipt
         finally:
             if acquired and not transferred:
@@ -272,8 +294,11 @@ class Console:
         kind, data = request["kind"], request["data"]
         fields = {"event": {"event_id", "kind", "content", "source", "simulated"}, "pause": set(),
                   "resources": {"resources", "reason"}, "model": {"model", "reason"}, "amend": {"charter", "reason"},
-                  "reconcile": {"run_id", "resolution", "reason"}, "start": {"executor", "model", "max_steps", "max_seconds", "allow_unknown_cost"}}
-        optional = {"event": {"event_id"}, "start": {"model", "max_seconds", "allow_unknown_cost"}}
+                  "reconcile": {"run_id", "resolution", "reason"}, "start": {"executor", "model", "connection_id", "max_steps", "max_seconds", "allow_unknown_cost"},
+                  "api_connection": {"connection_id", "config", "api_key", "reason"}, "api_binding": {"connection_id", "reason"},
+                  "api_test": {"connection_id", "allow_unknown_cost"}}
+        optional = {"event": {"event_id"}, "start": {"model", "connection_id", "max_seconds", "allow_unknown_cost"},
+                    "api_connection": {"api_key"}, "api_test": {"connection_id"}}
         require(set(data) <= fields[kind] and fields[kind] - optional.get(kind, set()) <= set(data), "命令字段缺失或不支持")
         if kind == "pause":
             e.set_paused(True)
@@ -283,8 +308,8 @@ class Console:
             require(type(data["simulated"]) is bool, "事件需要显式布尔模拟标记")
             require(data["kind"] in ("opinion", "fact", "external_feedback"), "不支持此输入事件类型")
             e.add_event(data.get("event_id", request["id"]), data["kind"], {k: data[k] for k in ("content", "source", "simulated")})
-        elif kind == "start":
-            require(type(data["max_steps"]) is int and 1 <= data["max_steps"] <= 10000, "运行需要有限正整数步数")
+        elif kind in ("start", "api_test"):
+            require(type(data.get("max_steps", 1)) is int and 1 <= data.get("max_steps", 1) <= 10000, "运行需要有限正整数步数")
             require(type(data.get("max_seconds", 0)) is int and 0 <= data.get("max_seconds", 0) <= 86400, "等待窗口必须为 0–86400 秒")
             require(type(data.get("allow_unknown_cost", False)) is bool, "费用确认必须为布尔值")
             state = e.state()
@@ -292,8 +317,19 @@ class Console:
                 budget = e._budget(cx, state)
                 require(not budget["blocked_reason"], budget["blocked_reason"])
             require(not any(r["status"] == "unknown" for r in e.runs()), "执行结果未知；先核对原执行")
-            require(data["max_steps"] <= budget["max_calls"] - budget["calls_reserved"], "本次步数超过剩余调用额度")
-            if data["executor"] == "codex":
+            require(data.get("max_steps", 1) <= budget["max_calls"] - budget["calls_reserved"], "本次步数超过剩余调用额度")
+            executor_name = "api" if kind == "api_test" else data["executor"]
+            require(executor_name == "api" or not data.get("connection_id"), "此执行器不使用 API 连接")
+            if executor_name == "api":
+                require(self.enable_api and data.get("allow_unknown_cost") is True, "宿主未启用 API 或未接受有限调用费用未知")
+                require("max_cost" not in state["resources"], "API 不支持金额硬上限")
+                require(data.get("model") in (None, ""), "API 模型由连接配置固定；请选择或更新连接")
+                connection = resolve_connection(e, data.get("connection_id"))
+                executor = APIExecutor(e.root, connection)
+                if kind == "start":
+                    e.set_paused(False)
+                return executor
+            elif executor_name == "codex":
                 require(self.enable_codex and data.get("allow_unknown_cost") is True, "宿主未启用 Codex 或未接受有限调用费用未知")
                 require("max_cost" not in state["resources"], "此执行器不支持金额硬上限")
                 model = model_name(data.get("model", state.get("execution_config", {}).get("codex_model")))
@@ -314,6 +350,12 @@ class Console:
                 e.amend(key, data["charter"], data["reason"])
             elif kind == "model":
                 e.configure_model(key, data["model"], data["reason"])
+            elif kind == "api_connection":
+                require(self.enable_api, "宿主未启用 API")
+                return configure_connection(e, key, data["connection_id"], data["config"], data["reason"], data.get("api_key"))
+            elif kind == "api_binding":
+                require(self.enable_api, "宿主未启用 API")
+                bind_connection(e, key, data["connection_id"], data["reason"])
             else:
                 e.reconcile(key, data["run_id"], data["resolution"], data["reason"])
 
@@ -322,6 +364,22 @@ class Console:
             return CodexExecutor(e.root, model=data.get("model"))
         used = len([r for r in e.runs() if r["executor"] == "fixture"])
         return FixtureExecutor(copy.deepcopy(self.fixture[used:]))
+
+    def _probe_job(self, e, request, executor, guard):
+        outcome = {"status": "unknown", "message": "连接测试中断；请核对原执行记录"}
+        try:
+            with activity(e):
+                outcome = test_connection(e, executor)
+        except (Rejected, OSError, ValueError):
+            outcome = {"status": "blocked", "message": "连接测试受阻；查看资源和原执行状态"}
+        finally:
+            try:
+                with e.transaction() as cx:
+                    receipt = json.loads(cx.execute("SELECT receipt FROM commands WHERE id=?", (request["id"],)).fetchone()[0])
+                    receipt.update(outcome, ended_at=now())
+                    cx.execute("UPDATE commands SET receipt=? WHERE id=?", (encoded(receipt), request["id"]))
+            finally:
+                guard.__exit__(None, None, None)
 
     def _job(self, e, request, executor, guard):
         actions = []

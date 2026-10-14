@@ -434,7 +434,7 @@ class Engine:
         with self.transaction() as cx:
             board = self._board(cx, board_key)
             s = self._state(cx)
-            s["execution_config"] = {"codex_model": model}
+            s.setdefault("execution_config", {})["codex_model"] = model
             s["version"] += 1
             self._event(cx, "model_configured", {"board": board, "reason": reason, "model": model})
             self._save(cx, s)
@@ -496,8 +496,8 @@ class Engine:
         return {"calls_reserved": calls, "max_calls": r["max_calls"], "cost_status": "unknown",
                 "estimated_cost_reserved": calls * reserve if reserve is not None else None, "blocked_reason": reason}
 
-    def _reserve(self, cx, s, kind, executor, package, work_id=None):
-        require(not self.paused(cx), "派发已暂停；请由受信入口继续")
+    def _reserve(self, cx, s, kind, executor, package, work_id=None, allow_paused=False):
+        require(allow_paused or not self.paused(cx), "派发已暂停；请由受信入口继续")
         budget = self._budget(cx, s)
         require(budget["blocked_reason"] is None, budget["blocked_reason"])
         rid = package.get("run_id") or uid("run")
@@ -507,7 +507,7 @@ class Engine:
                    (rid, kind, work_id, executor, "running", encoded(package), now()))
         return package
 
-    def begin_work(self, work_id, executor):
+    def begin_work(self, work_id, executor, execution=None):
         with self.transaction() as cx:
             s = self._state(cx)
             w = s["work"].get(work_id)
@@ -524,12 +524,14 @@ class Engine:
             bundle = self._context(cx, s, work_id)
             package = {"run_id": w["run_id"], "work_id": work_id, "work_version": w["version"], "member_id": w["member_id"], "position_id": w["position_id"], "assignment_id": w["assignment_id"],
                        "context": bundle["context"], "context_manifest": bundle["manifest"], "tools": ["produce_artifact"]}
+            if execution is not None:
+                package["execution"] = copy.deepcopy(execution)
             self._reserve(cx, s, "work", executor, package, work_id)
             w["run_id"] = package["run_id"]
             self._save(cx, s)
             return package
 
-    def begin_decision(self, executor):
+    def begin_decision(self, executor, execution=None):
         with self.transaction() as cx:
             s = self._state(cx)
             c = self._charter(cx, s["charter_version"])
@@ -542,7 +544,27 @@ class Engine:
             bundle = self._context(cx, s)
             package = {"actor": actor, "assignment_id": assignment, "context": bundle["context"], "context_manifest": bundle["manifest"],
                        "event_ids": [r["id"] for r in bundle["context"]["events"]], "tools": []}
+            if execution is not None:
+                package["execution"] = copy.deepcopy(execution)
             return self._reserve(cx, s, "decision", executor, package)
+
+    def begin_connection_test(self, execution):
+        with self.transaction() as cx:
+            s = self._state(cx)
+            require("max_cost" not in s["resources"], "API 不支持金额硬上限")
+            require(not cx.execute("SELECT 1 FROM runs WHERE status IN ('running','unknown')").fetchone(), "在途或未知执行必须先核对")
+            package = self._reserve(cx, s, "connection_test", "api", {"execution": copy.deepcopy(execution)}, allow_paused=True)
+            s["version"] += 1
+            self._save(cx, s)
+            return package
+
+    def finish_connection_test(self, run_id, result, usage):
+        with self.transaction() as cx:
+            require(self._run(cx, run_id)["kind"] == "connection_test", "执行类型错误")
+            self._settle(cx, run_id, "delivered", result, usage)
+            s = self._state(cx)
+            s["version"] += 1
+            self._save(cx, s)
 
     def _run(self, cx, run_id):
         r = cx.execute("SELECT * FROM runs WHERE id=?", (run_id,)).fetchone()
@@ -554,6 +576,14 @@ class Engine:
         require(r["status"] == "running", "执行已结算或需要核对")
         require(isinstance(usage, dict), "用量必须是对象")
         safe = {k: v for k, v in usage.items() if k in ("input_tokens", "output_tokens", "cached_input_tokens") and type(v) is int and v >= 0}
+        if r["executor"] == "api":
+            for field in ("connection_id", "protocol", "requested_model", "actual_model", "provider_request_id", "response_id", "transport_source"):
+                value = usage.get(field)
+                if isinstance(value, str) and 0 < len(value) <= 256 and all(32 <= ord(c) < 127 for c in value):
+                    safe[field] = value
+            for field in ("connection_revision", "elapsed_ms"):
+                if type(usage.get(field)) is int and usage[field] >= 0:
+                    safe[field] = usage[field]
         safe.update(cost=None, cost_status="unknown")
         cx.execute("UPDATE runs SET status=?,result=?,usage=?,ended_at=? WHERE id=?", (status, encoded(result), encoded(safe), now(), run_id))
 

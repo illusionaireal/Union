@@ -31,7 +31,8 @@ def step(engine, executor):
         return {"action": "blocked", "reason": "未知或在途执行需要核对"}
     if state["phase"] != "bootstrap" and not ready and not engine.events(True):
         return {"action": "wait", "reason": "没有待办或新事件", "next_review_at": engine.status()["next_review_at"]}
-    package = engine.begin_work(ready[0], executor.name) if ready and state["phase"] != "bootstrap" else engine.begin_decision(executor.name)
+    metadata = {"execution": executor.metadata} if hasattr(executor, "metadata") else {}
+    package = engine.begin_work(ready[0], executor.name, **metadata) if ready and state["phase"] != "bootstrap" else engine.begin_decision(executor.name, **metadata)
     usage = {}
     try:
         result, usage = executor.execute(package)
@@ -41,10 +42,26 @@ def step(engine, executor):
             engine.finish_work(package["run_id"], result, usage)
         return {"action": package["kind"], "run_id": package["run_id"], "work_id": package.get("work_id"), "executor": executor.name}
     except (ExecutionFailure, Rejected, OSError, ValueError) as e:
-        engine.fail_run(package["run_id"], str(e), unknown=getattr(e, "unknown", False), usage=usage)
+        engine.fail_run(package["run_id"], str(e), unknown=getattr(e, "unknown", False), usage=getattr(e, "usage", usage))
         return {"action": "blocked", "run_id": package["run_id"], "reason": str(e)}
     except BaseException:
         engine.fail_run(package["run_id"], "执行被中断；先核对结果", unknown=True)
+        raise
+
+
+def test_connection(engine, executor):
+    """Caller holds the dispatch lock and authorizes one charged probe."""
+    engine.recover()
+    package = engine.begin_connection_test(executor.metadata)
+    try:
+        result, usage = executor.execute(package)
+        engine.finish_connection_test(package["run_id"], result, usage)
+        return {"action": "connection_test", "run_id": package["run_id"], "status": "succeeded", "usage": engine.usage()[-1]["usage"]}
+    except (ExecutionFailure, Rejected, OSError, ValueError) as error:
+        engine.fail_run(package["run_id"], str(error), unknown=getattr(error, "unknown", False), usage=getattr(error, "usage", {}))
+        return {"action": "connection_test", "run_id": package["run_id"], "status": "unknown" if getattr(error, "unknown", False) else "failed", "message": str(error)}
+    except BaseException:
+        engine.fail_run(package["run_id"], "连接测试被中断；远程结果未知", unknown=True)
         raise
 
 

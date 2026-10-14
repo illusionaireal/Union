@@ -113,6 +113,8 @@ class Handler(BaseHTTPRequestHandler):
             if path.path == "/api/session":
                 return self.send(200, app.session_info(token))
             org_id = query.get("organization_id", [None])[0]
+            if path.path == "/api/model-connections":
+                return self.send(200, app.model_connections(token, org_id))
             if path.path == "/api/snapshot":
                 return self.send(200, app.observe(token, org_id, int(query.get("offset", [0])[0])))
             if path.path == "/api/receipts":
@@ -148,9 +150,10 @@ def main(argv=None):
     p.add_argument("--port", type=int, default=8766)
     p.add_argument("--fixture", default=str(REPO / "examples/fixture.json"))
     p.add_argument("--enable-codex", action="store_true", help="允许网页选择 Codex；不会自动调用")
+    p.add_argument("--disable-api", action="store_true", help="禁用 API 配置和调用入口")
     p.add_argument("--open", action="store_true", help="在本机浏览器打开一次性发起人会话")
     args = p.parse_args(argv)
-    app = Console(args.root, json.loads(Path(args.fixture).read_text(encoding="utf-8")), args.enable_codex)
+    app = Console(args.root, json.loads(Path(args.fixture).read_text(encoding="utf-8")), args.enable_codex, enable_api=not args.disable_api)
     server = Server(app, args.port)
     access = {role: server.origin + "/#launch=" + app.ticket(role) for role in ("board", "observer")}
     path = app.root / "local-access.json"

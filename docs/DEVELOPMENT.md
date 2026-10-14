@@ -2,6 +2,8 @@
 
 更新：2026-10-13（北京时间）。面向只有 GitHub 仓库、没有上一轮聊天或云环境快照的开发者。最终验收与复盘见 [单页完成报告](../ai-union-completion-report.html)。
 
+同日后续增量：真实 API 后端已在 [005](../specs/005-real-model-api/spec.md) 实现，不需要 Codex CLI。配置、运行与前端接入按 [API_MODELS.md](API_MODELS.md)，验证见 [005](../evidence/005-real-model-api/README.md)。前端工程由独立开发者推进，本次没有修改页面。下文 53 项等数量保留其历史验收含义，当前后端验证以 005 证据为准。
+
 ## 1. 读取顺序与当前任务
 
 先读 [当前状态](ai-union/STATUS.md)、[工程交接](../HANDOFF.md)、[PRD v0.2](PRD.md)和[产品设计](product-design.md)。[004 组织操作工作台](../specs/004-organization-console/tasks.md)的 W2–W8 及 [003 观察模块](../specs/003-runtime-dashboard/spec.md)已完成本地 fixture 验收；后续从真实执行器的有限试跑缺口继续，不重做已完成原型与服务。

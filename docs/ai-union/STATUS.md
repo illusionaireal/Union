@@ -4,6 +4,8 @@
 
 ## 已完成与证据
 
+2026-10-13 后续后端升级：可配置真实 Chat Completions API、私有密钥、默认连接及一次连接测试；CLI 与 HTTP 共用执行链路，真实 API 已纳入评估。前端由独立开发者接入，本次没有改动页面。范围见 [005](../../specs/005-real-model-api/spec.md)，运行与前端接口见 [API_MODELS.md](../API_MODELS.md)，新证据见 [005 验证](../../evidence/005-real-model-api/README.md)。真实供应商调用仍为 0。
+
 本日后续增量已补齐管理后台模型设置：组织默认、启动覆盖、持久回执与 CLI 一致性；53 项 Python／53 项浏览器检查通过，真实模型调用 0。[增量证据与复盘](../../evidence/004-organization-console/model-settings-2026-10-13/README.md)、[独立 review](../reviews/2026-10-13-model-settings.md)。下表保留原交付分项。
 
 | 范围 | 已有内容 | 证据 |
@@ -27,7 +29,7 @@
 
 ## 下一步
 
-**下一优先事项：在明确有限调用范围与费用未知条件后，用独立组织完成真实执行器烟雾及 E1/E2。** [004 W2–W7](../../specs/004-organization-console/tasks.md)与 [003 观察模块](../../specs/003-runtime-dashboard/tasks.md)的本地 fixture 范围已完成。可立即按 [工作台说明](../CONSOLE.md)启动使用，无需模型凭据。
+**下一优先事项：配置用户的 API 凭据，在有限调用范围与费用未知条件下，用独立组织完成真实 API 烟雾及 E1/E2；前端按新增契约接入。** [004 W2–W7](../../specs/004-organization-console/tasks.md)与 [003 观察模块](../../specs/003-runtime-dashboard/tasks.md)的本地 fixture 范围已完成。可立即按 [工作台说明](../CONSOLE.md)启动原工作台，或按 [API 说明](../API_MODELS.md)从 CLI 开展真实测试。
 
 最初开发交接 [DEVELOPMENT.md](DEVELOPMENT.md)保留首轮目标；不再按其“尚未开始”的历史描述重做工程。后续状态以本文、HANDOFF 和迭代 Tasks 为准。
 

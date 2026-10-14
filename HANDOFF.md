@@ -1,5 +1,15 @@
 # 当前工程交接
 
+## 2026-10-13：真实 API 后端升级
+
+用户授权后端真实 API 升级并提交代码，前端由另一位同事实施。本次基于 `cd6d062`，独立分支 `feat/real-model-api`，不修改前端源码或生成 HTML。
+
+新增版本化私有 API 配置、组织默认绑定、实际连接测试、Chat Completions 执行器、CLI 和受信 HTTP 命令。密钥不进入工作包、正式状态、事件、命令日志或回执；配置命令只保存完整参数指纹。连接测试预约一次调用，保留原暂停状态，不消费业务事件。运行固定连接版本，unknown 不自动重试，金额仍为未知。
+
+前端同事从 [API_MODELS.md](docs/API_MODELS.md) 第 2 节接入 `GET /api/model-connections`、`api_connection`、`api_binding`、`api_test` 与 `start.executor=api`。读取列表仅限董事会会话，写操作沿用原幂等命令、基准版本和回执协议。页面应保存配置后刷新版本；API 运行选择连接，不提交 Codex `model`。
+
+新证据见 [005](evidence/005-real-model-api/README.md)。本地 HTTP 替身完整协作闭环为 simulated；评估现已接受真实 API 证据，并排除连接测试与回环服务。缺少用户配置的供应商密钥，真实供应商烟雾及 E1/E2 继续待验证。历史验证结果和文档记录保持各自日期含义。
+
 ## 2026-10-13：管理后台模型设置
 
 用户要求补齐后台模型配置。现在可在“组织设置 → 模型设置”按组织保存／清除 Codex 默认模型，启动时覆盖本次值；回执固定 `requested_model`。CLI 省略 `--model` 时同样沿用组织默认，模型解析与金额硬上限检查都在派发锁内执行，避免并发设置竞态。保存不启用 Codex、不调用模型，实际使用说明见 [CONSOLE.md](docs/CONSOLE.md)。

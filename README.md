@@ -20,6 +20,8 @@ python -m ai_union.server --root .union/console --port 8766 --open
 
 浏览器从本机一次性链接建立发起人会话，默认仅配置 fixture。前端为 [ai-union-console.html](ai-union-console.html)，需要同源服务；操作、会话和恢复说明见 [工作台使用说明](docs/CONSOLE.md)。
 
+**真实模型 API 后端已接入。** 可配置 OpenAI-compatible API 根地址、模型、私有密钥、输出模式、输出上限与超时，绑定组织默认连接，通过 CLI 或受信 HTTP 命令测试连接及执行。无需 Codex CLI；配置本身不调用模型。前端页面由独立开发者接入，本次保留原页面。运行步骤与完整前端契约见 [API_MODELS.md](docs/API_MODELS.md)，实现范围见 [005](specs/005-real-model-api/spec.md)。当前证据来自本地 HTTP 替身，真实供应商调用仍为 0。
+
 产品与设计基线：[统一 PRD v0.2](docs/PRD.md)、[产品设计说明](docs/product-design.md)、[操作工作台单 HTML 原型](ai-union-dashboard-prototype.html)、[软件复用与 AI 适配](docs/software-reuse.md)。原型支持七视图、操作表单与预览、回执、有限 fixture 步骤、详情及异常情景。48 项观察交互与 32 项操作交互检查通过；仅模拟浏览器内状态，未连接真实组织服务，模型调用为 0。
 
 业务事实与交易能力优先复用 ERP／CRM／文件／发布等已有系统；ai-union 负责 AI 成员、授权、组织决定、责任、执行与恢复。当前未接入这些业务系统，也不为抽象的 AI 企业预先重建 ERP、CRM 或 MES。
