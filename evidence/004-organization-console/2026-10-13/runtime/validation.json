@@ -1,0 +1,156 @@
+{
+  "date": "2026-10-13T10:18:13.688192+08:00",
+  "base_commit": "9732983f4582de07ca4df43b668d6795217f459d",
+  "branch": "feat/ai-union-runtime-console-handoff",
+  "python": "3.13.14",
+  "model_calls": 0,
+  "real_agent_status": "not_run: finite real-model authorization not supplied",
+  "commands": [
+    {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-v"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "log": "tests.log"
+    },
+    {
+      "command": [
+        "python3",
+        "-m",
+        "ai_union",
+        "--root",
+        "D:\\Project\\Union\\.union\\reviewed-fixture-20261013",
+        "init",
+        "--name",
+        "validated fixture",
+        "--board-name",
+        "local developer (test adoption)",
+        "--charter",
+        "examples/charter.local.json",
+        "--resources",
+        "examples/resources.local.json"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "log": "init.log"
+    },
+    {
+      "command": [
+        "python3",
+        "-m",
+        "ai_union",
+        "--root",
+        "D:\\Project\\Union\\.union\\reviewed-fixture-20261013",
+        "run",
+        "--executor",
+        "fixture",
+        "--fixture",
+        "examples/fixture.json",
+        "--max-steps",
+        "8"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "log": "fixture-run.log"
+    },
+    {
+      "command": [
+        "python3",
+        "-m",
+        "ai_union",
+        "--root",
+        "D:\\Project\\Union\\.union\\reviewed-fixture-20261013",
+        "status"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "log": "status.log"
+    },
+    {
+      "command": [
+        "python3",
+        "-m",
+        "ai_union",
+        "--root",
+        "D:\\Project\\Union\\.union\\reviewed-fixture-20261013",
+        "context",
+        "--work-id",
+        "work-followup"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "log": "followup-context.log"
+    },
+    {
+      "command": [
+        "python3",
+        "-m",
+        "ai_union",
+        "--root",
+        "D:\\Project\\Union\\.union\\reviewed-fixture-20261013",
+        "evaluate",
+        "--output",
+        "D:\\Project\\Union\\evidence\\004-organization-console\\2026-10-13\\runtime\\fixture-evaluation.json"
+      ],
+      "exit_code": 3,
+      "expected_exit_code": 3,
+      "log": "evaluation.log"
+    },
+    {
+      "command": [
+        "python3",
+        "-m",
+        "ai_union",
+        "--root",
+        "D:\\Project\\Union\\.union\\reviewed-fixture-20261013",
+        "run",
+        "--executor",
+        "fixture",
+        "--fixture",
+        "examples/fixture.json",
+        "--max-steps",
+        "1"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "log": "restart-wait.log"
+    }
+  ],
+  "local_state": "D:\\Project\\Union\\.union\\reviewed-fixture-20261013",
+  "source_sha256": "2c03aa20ec3b333e5b8ec4355b8445adb588cc6f1bfcd10684e5f7b1cbc47589",
+  "workspace_code_snapshot": {
+    "ai_union\\__init__.py": "4b0ebb3b5839115f3310e7391888843b5c7840bd9505bba6485c35c5d4b6f34e",
+    "ai_union\\__main__.py": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d",
+    "ai_union\\activity.py": "a30fb252e90f0d428cea8a156067620d718b7b6552434bec9492c7c2fd0aa87d",
+    "ai_union\\cli.py": "e505ad6e55239220f9016ffb49236217777848aea4981fdb32782b6b49fa416a",
+    "ai_union\\console.py": "a6a9e8c595e9b244cfa913d03ec150715893763035dee9e7b6bfca91ad07cf80",
+    "ai_union\\engine.py": "8021c8aa3b7388e06393730755605ae6869c16cb09f7ae1209b338e71629ff68",
+    "ai_union\\evaluation.py": "cea8e8971f1a94bae903d4ff398ec661dbffb9f635506cd1c7302de661d09d51",
+    "ai_union\\executor.py": "e922a38eb2cdc9bf6ea1ad330972f6bcd0b546d1b77a1285bd742ba551d0d2ff",
+    "ai_union\\locking.py": "72e61882212bf263f632e232486d4f2f700736c9661f822e51d1e9f38ec7787e",
+    "ai_union\\observation.py": "dd93b251278127fe00e9c4cc5ba30c147b6d6f4c97ad9503662564d357fbf428",
+    "ai_union\\protocol.py": "2deebd5a0d668c8d89aaefaf9672acac13c46c93abbafe9add1a490c588d5c42",
+    "ai_union\\runner.py": "7e2c65892d70a9a49f4294585ec256f9eac958be471d889f187e98d52efee802",
+    "ai_union\\server.py": "679be1e5be710d08ef17881daf3b311210754040241f3b46b9e22e6d84595742",
+    "examples\\charter.local.json": "0a4df41ab4a778e8fbc0489faf36bce64e8003642a76840a70c2b0a201051205",
+    "examples\\fixture.json": "836228230fabc1031975f51ead580f99f5a10d2c378c71a685476bdca53650ec",
+    "examples\\resources.local.json": "76192001aa6a414ecb82cffbf562f07f8c60ca31c1dd0c9e1ee05a21ea54c3ae",
+    "scripts\\build_console.py": "f364516a15852691d07a6de91d6b9d2e1ad2655443ec92f5ff78d58935314510",
+    "scripts\\build_dashboard_prototype.py": "fdea6889514ef9e787e1d378a9171153de6abd7019f387b53615414fef03a3ac",
+    "scripts\\build_single_html.py": "e1ce2f3da8f2c47c6bce78af83ba09a59af36ef3a3386c580c63d8ce3608a5bf",
+    "scripts\\build_site_data.py": "0b0b60063d9f7338bee725a294e9aa3bd21a7dcbc09490ddd9643d42213fec9f",
+    "scripts\\validate.py": "3d703b7e92bbab051073e5e129cf634316e1f3d7cdb996a88e409d7dc7c62858",
+    "tests\\__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests\\console_browser_host.py": "8cdb16a4cdf2e5216ba3afdc8094f4d240b02b39723bad2bf1b303ba2fea1127",
+    "tests\\support.py": "1eb954c08a5170f9f89234d7b7b68278bd1680e550f404c8e22aa3eb7b31417c",
+    "tests\\test_console.py": "b47ac57ccbaffe015a811b5ccb8836dc81cdf7726cff3b44e469fbce81c5ccaf",
+    "tests\\test_http.py": "7820cd0da4e4460c9c432d52de621d05af6b3fe6eda891f2d1556b21dfc411fd",
+    "tests\\test_integration.py": "e277306249c412e88976e4bc787f85c1b9f437bfc0b6c60e3035f31e4be2d03e",
+    "tests\\test_mechanisms.py": "8af9b17454ed8a1a6b6e11bac22a58bd70ec10b67812c1a17914c4f3c77cc047"
+  }
+}

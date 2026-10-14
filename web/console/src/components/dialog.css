@@ -1,0 +1,188 @@
+dialog {
+  width: min(680px, calc(100vw - 32px));
+  max-height: calc(100dvh - 40px);
+  padding: 0;
+  border: 1px solid #e3dbea;
+  border-radius: 16px;
+  color: #62546d;
+  background: #fff;
+  box-shadow: 0 28px 90px #32203f38;
+  overflow: auto;
+}
+dialog::backdrop {
+  background: #27213870;
+  backdrop-filter: blur(3px);
+}
+.dialog-inner {
+  padding: 26px;
+}
+.dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 23px;
+}
+.dialog-header h2 {
+  font-size: 20px;
+  margin: 9px 0 0;
+  color: #54425f;
+}
+.icon-button {
+  display: grid;
+  place-items: center;
+  width: 33px;
+  height: 33px;
+  background: #f8f5fa;
+  border: 1px solid #efe8f3;
+  border-radius: 8px;
+  color: #b09abb;
+  flex-shrink: 0;
+}
+.operation-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 16px 0;
+  font-size: 12px;
+  color: #7d638a;
+}
+.operation-field input,
+.operation-field textarea,
+.operation-field select {
+  border: 1px solid #e6ddeb;
+  border-radius: 7px;
+  background: #fff;
+  padding: 11px 12px;
+  color: #655271;
+  min-width: 0;
+  width: 100%;
+  font-size: 12px;
+  line-height: 1.5;
+  resize: vertical;
+}
+.operation-field input::placeholder {
+  color: #c3b3cb;
+}
+.field-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+fieldset {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  min-width: 0;
+}
+.check-field {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  font-size: 11px;
+  line-height: 1.8;
+  color: #846590;
+  margin: 20px 0;
+}
+.check-field input {
+  margin-top: 4px;
+  accent-color: var(--accent);
+}
+.operation-footer {
+  display: flex;
+  gap: 9px;
+  justify-content: flex-end;
+  margin-top: 23px;
+  padding-top: 19px;
+  border-top: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+.operation-error {
+  color: #b67373;
+  background: #fff4f2;
+  border: 1px solid #f3dddb;
+  padding: 12px;
+  border-radius: 7px;
+  font-size: 12px;
+  line-height: 1.8;
+}
+.preview-panel {
+  background: #fcf9ff;
+  border: 1px solid #e8ddee;
+  border-radius: 10px;
+  padding: 17px;
+  margin: 18px 0;
+}
+.preview-panel h3 {
+  font-size: 13px;
+}
+.preview-panel p {
+  font-size: 11px;
+  color: #a58bae;
+  overflow-wrap: anywhere;
+}
+.operation-success {
+  background: #f6faf7;
+  border: 1px solid #deece2;
+  border-radius: 10px;
+  padding: 22px;
+  margin: 15px 0;
+}
+.operation-success h3 {
+  font-size: 17px;
+  line-height: 1.7;
+  margin: 17px 0 8px;
+  color: #75907f;
+}
+.operation-success p {
+  font-size: 11px;
+  line-height: 1.9;
+  color: #97aaa0;
+  overflow-wrap: anywhere;
+}
+#detail-body {
+  overflow-wrap: anywhere;
+}
+#detail-body > p {
+  font-size: 12px;
+  color: #9e85ac;
+}
+#detail-body h3 {
+  font-size: 13px;
+  color: #92779e;
+  margin-top: 23px;
+}
+@media (max-width: 760px) {
+  dialog {
+    width: calc(100vw - 24px);
+    max-height: calc(100dvh - 24px);
+    border-radius: 12px;
+  }
+  .dialog-inner {
+    padding: 20px 16px;
+  }
+  .dialog-header h2 {
+    font-size: 17px;
+  }
+  .operation-field {
+    font-size: 11px;
+  }
+  .operation-field input,
+  .operation-field textarea,
+  .operation-field select {
+    font-size: 13px;
+  }
+  .field-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .operation-footer .button {
+    font-size: 10px;
+  }
+  .preview-panel {
+    padding: 12px;
+  }
+  .operation-success {
+    padding: 17px;
+  }
+}

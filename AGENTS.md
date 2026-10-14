@@ -2,7 +2,7 @@
 
 ## Active direction and source of truth
 
-- Read README.md, docs/ai-union/STATUS.md, and docs/ai-union/DEVELOPMENT.md first. Use docs/ai-union/DESIGN.md for product and governance context and ADR-0002 for the transition from the original platform plan.
+- Read README.md, docs/ai-union/STATUS.md, HANDOFF.md, and docs/DEVELOPMENT.md first. Read docs/PRD.md and docs/product-design.md before user-facing work; current frontend is specs/005-frontend-engineering, continuing specs/004-organization-console with specs/003-runtime-dashboard as its observation module. Read docs/FRONTEND.md for React/TypeScript/Vite setup, architecture and validation. Keep scope, flows, design and acceptance aligned with the latest user decisions. Read specs/001-org-bootstrap for the implemented runtime. Treat docs/ai-union/DEVELOPMENT.md as the original development brief, not a current completion report. Use docs/ai-union/DESIGN.md for product and governance context and ADR-0002 for the transition from the original platform plan.
 - The user has confirmed the ai-union direction: goal-driven organization formation, real collaboration, persistent state, and subsequent action. Reuse existing Agent execution loops; prioritize the organization loop.
 - Keep ai-union and the UNION platform as separate product and planning tracks. Do not inherit the legacy payment/platform task order for the organization prototype.
 - Treat confirmed product decisions as requirements. Concrete schemas, modules, libraries and deployment choices remain engineering proposals until selected and recorded.
@@ -24,5 +24,15 @@
 - Keep mock, testnet and real funds distinct. Existing documentation and the offline spike do not enable real payments, marketing, model spending, signing or external deployment. Use actual configured permissions and explicit resource limits for real runs; carry forward existing user authorization.
 - Amounts use integer minor units with explicit currency. Unknown external results retain reservations and require lookup in the existing action-safety implementation.
 - Money and authorization changes require another engineering role's review before adoption. Tests alone do not satisfy that review.
-- Run npm run check before proposing changes. It currently checks historical plan integrity and the offline action-safety tests; do not present it as organization-loop or PostgreSQL/Temporal validation.
+- Run npm run check before proposing changes. It checks historical plan integrity, the offline action-safety tests, and frontend type/interaction/build checks; do not present it as organization-loop or PostgreSQL/Temporal validation.
 - Do not change repository visibility or choose an open-source license without an explicit project decision. Never commit credentials or customer data.
+
+## Current runtime engineering
+
+- Bind acting identities in the host, validate current authority and versions, and submit state/decisions/dispatch records transactionally.
+- Unknown external execution is a reconciliation condition. Do not silently retry it.
+- Test changes to authority, persistence, handoff, wakeups, accounting and executor protocols with meaningful behavioral tests.
+- Run `python3 -m unittest discover -v` in addition to `npm run check`. CLI operation is `python3 -m ai_union` from the checkout.
+- Fixtures and browser prototypes must be visibly simulated. Real model calls remain 0 until a separately recorded real run; design checks do not establish server-side authorization or durable execution.
+- Do not commit local databases, board keys, authentication material or private executor logs. Preserve archived input bytes and historical evidence; write new validation results to a new directory.
+- Cloud tasks already have an isolated checkout; use it rather than creating worktrees unless the user explicitly asks.

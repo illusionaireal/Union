@@ -1,0 +1,7 @@
+{
+  "status": "blocked",
+  "file_open": false,
+  "reason": "Chromium managed policy: net::ERR_BLOCKED_BY_ADMINISTRATOR for file navigation",
+  "static_http_validation": "37 browser checks passed",
+  "bypass_attempted": false
+}

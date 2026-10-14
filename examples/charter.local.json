@@ -1,0 +1,7 @@
+{
+  "text": "本地首轮测试章程：组织围绕采用的目标开展协作；可在受支持操作内自行形成岗位、任职、任务和内部规则。董事会保留目标、投入与风险边界、章程、融资和解散决定。仅授权本地文本成果，不授权真实发布、资金转移、签约或增加外部工具。章程正文与执行字段由采用人一并确认；不支持的规则需要另行实现。",
+  "allowed_operations": ["create_member", "create_position", "update_position", "assign", "set_policy", "create_work", "handoff", "pause_work", "resume_work", "cancel_work", "update_work", "wait", "set_strategy", "record_memory"],
+  "allowed_tools": ["produce_artifact"],
+  "reserved_matters": ["goal", "resources", "charter", "funding", "dissolution"],
+  "board_can_amend": true
+}

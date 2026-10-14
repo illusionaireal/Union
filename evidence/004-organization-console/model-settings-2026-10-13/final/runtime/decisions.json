@@ -1,0 +1,149 @@
+[
+  {
+    "id": "run-6049b23d442648e4b58d94d412abb555",
+    "actor": "bootstrap",
+    "data": {
+      "base_state_version": 0,
+      "charter_version": 1,
+      "evidence_refs": [],
+      "expected_effect": "产生依赖工作并继续下一轮",
+      "id": "run-6049b23d442648e4b58d94d412abb555",
+      "issue": "确定性回归启动；不是模型自组织结果",
+      "operations": [
+        {
+          "id": "member-one",
+          "name": "Fixture One",
+          "op": "create_member"
+        },
+        {
+          "id": "member-two",
+          "name": "Fixture Two",
+          "op": "create_member"
+        },
+        {
+          "id": "responsibility-one",
+          "mandate": "协调确定性测试",
+          "op": "create_position",
+          "permissions": [
+            "create_work",
+            "wait",
+            "produce_artifact"
+          ],
+          "title": "测试责任一"
+        },
+        {
+          "id": "responsibility-two",
+          "mandate": "消费测试资料",
+          "op": "create_position",
+          "permissions": [
+            "produce_artifact"
+          ],
+          "title": "测试责任二"
+        },
+        {
+          "id": "seat-one",
+          "member_id": "member-one",
+          "op": "assign",
+          "position_id": "responsibility-one"
+        },
+        {
+          "id": "seat-two",
+          "member_id": "member-two",
+          "op": "assign",
+          "position_id": "responsibility-two"
+        },
+        {
+          "decision_position_id": "responsibility-one",
+          "op": "set_policy"
+        },
+        {
+          "hypothesis": "此经营假设仅为模拟 fixture，并非真实市场研究。",
+          "op": "set_strategy"
+        },
+        {
+          "dependencies": [],
+          "id": "work-one",
+          "instruction": "输出带模拟标记的测试资料",
+          "op": "create_work",
+          "position_id": "responsibility-one",
+          "title": "生成模拟资料"
+        },
+        {
+          "dependencies": [
+            "work-one"
+          ],
+          "id": "work-two",
+          "instruction": "引用第一项工作的资料",
+          "op": "create_work",
+          "position_id": "responsibility-two",
+          "title": "使用模拟资料"
+        }
+      ],
+      "policy_version": 0,
+      "rationale": "模拟两成员资料协作，仅验证通用机制"
+    },
+    "status": "accepted",
+    "reason": null,
+    "created_at": "2026-10-13T02:36:05.826835+00:00"
+  },
+  {
+    "id": "run-cde533d0eadb4d53b73c7430b80c591f",
+    "actor": "member-one",
+    "data": {
+      "base_state_version": 5,
+      "charter_version": 1,
+      "evidence_refs": [
+        "work-one",
+        "work-two"
+      ],
+      "expected_effect": "真实执行测试代码中的后续任务；不声称真实 Agent 判断",
+      "id": "run-cde533d0eadb4d53b73c7430b80c591f",
+      "issue": "模拟成果触发下一轮动作",
+      "operations": [
+        {
+          "dependencies": [
+            "work-two"
+          ],
+          "id": "work-followup",
+          "instruction": "保存下一轮记录",
+          "op": "create_work",
+          "position_id": "responsibility-two",
+          "title": "模拟后续动作"
+        }
+      ],
+      "policy_version": 1,
+      "rationale": "依据已交付测试资料，继续补充交接记录"
+    },
+    "status": "accepted",
+    "reason": null,
+    "created_at": "2026-10-13T02:36:05.939190+00:00"
+  },
+  {
+    "id": "run-eb4580924e464eeab7e56cd301affca1",
+    "actor": "member-one",
+    "data": {
+      "base_state_version": 8,
+      "charter_version": 1,
+      "evidence_refs": [
+        "work-followup",
+        "work-one",
+        "work-two"
+      ],
+      "expected_effect": "无事件时不再调用执行器",
+      "id": "run-eb4580924e464eeab7e56cd301affca1",
+      "issue": "当前测试闭环结束，等待新证据",
+      "operations": [
+        {
+          "op": "wait",
+          "reason": "模拟评测完成，等待新输入",
+          "until": "2099-01-01T00:00:00+00:00"
+        }
+      ],
+      "policy_version": 1,
+      "rationale": "不无限自唤醒；等待到期或外部事件"
+    },
+    "status": "accepted",
+    "reason": null,
+    "created_at": "2026-10-13T02:36:06.026491+00:00"
+  }
+]

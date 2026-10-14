@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f8fc">
+  <title>ai-union · 组织工作台</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a href="#main" class="skip">跳转到正文</a>
+  <aside class="sidebar" aria-label="工作台导航">
+    <a href="#overview" class="brand"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M7 10v13a9 9 0 0 0 18 0V10M17 10v13a9 9 0 0 0 18 0V10"/></svg><span>ai-union<span class="brand-dot">.</span></span></a>
+    <label class="workspace-switch"><span class="org-icon">U</span><select id="org-select" aria-label="当前组织"><option value="">尚未选择组织</option></select></label>
+    <div class="nav-caption">组织工作台</div><nav id="navigation"></nav>
+    <div class="sidebar-bottom"><div class="sidebar-note"><span class="mini-icon">◇</span><div><strong>授权边界</strong><p>在章程与资源条件内协作。</p><small>本机组织 · 持久记录</small></div></div><div class="sidebar-footer"><span class="avatar tiny human">人</span><span id="role-label">会话连接中</span></div></div>
+  </aside>
+  <div class="workspace">
+    <header class="topbar"><div class="breadcrumb">组织工作台 <span>/</span><strong id="breadcrumb-page">总览</strong></div><div class="topbar-actions"><span id="source-label" class="source-label">尚未读取数据</span><button id="refresh" class="button secondary compact">↻ 刷新</button></div></header>
+    <main id="main" tabindex="-1">
+      <div class="page-heading"><div><div class="eyebrow">ORGANIZATION WORKSPACE</div><h1 id="page-title">组织总览</h1><p id="page-description">从当前行动，到下一轮决定。</p></div><div class="connection"><span id="connection-dot" class="dot amber"></span><span id="connection-label">正在连接</span><small id="last-updated"></small></div></div>
+      <div id="connection-warning" class="connection-warning" role="status" hidden></div>
+      <section id="console-controls" class="console-controls" aria-label="组织操作"></section>
+      <div id="view"><section class="card console-card"><h2>正在读取组织</h2><p>连接本机服务，读取已保存的目标、工作与成果。</p></section></div>
+      <footer class="data-footer"><span id="snapshot-meta">尚无组织快照</span><span>读取和刷新不派发工作</span></footer>
+    </main>
+  </div>
+  <dialog id="detail-dialog" aria-labelledby="detail-title"><div class="dialog-header"><div><div class="eyebrow">ORGANIZATION / 详情</div><h2 id="detail-title"></h2></div><button id="close-dialog" class="close-button" aria-label="关闭详情">×</button></div><div id="detail-body"></div></dialog>
+  <dialog id="operation-dialog" aria-labelledby="operation-title"><div class="dialog-header"><div><div class="eyebrow">ORGANIZATION / 操作</div><h2 id="operation-title"></h2></div><button id="close-operation" class="close-button" aria-label="关闭操作">×</button></div><form id="operation-form"><div id="operation-fields"></div><p id="operation-error" class="operation-error" role="alert" hidden></p><section id="operation-preview" hidden></section><div class="operation-footer"><button type="button" id="cancel-operation" class="button secondary">取消</button><button type="submit" id="preview-operation" class="button secondary">预览影响</button><button type="button" id="commit-operation" class="button primary" hidden>确认提交</button></div></form><div id="operation-result" role="status" hidden></div></dialog>
+  <div id="toast" class="toast" role="status" hidden></div>
+  <noscript><p>工作台需要 JavaScript 连接本机服务。当前没有实时数据。</p></noscript>
+  <script src="app.js"></script>
+</body>
+</html>

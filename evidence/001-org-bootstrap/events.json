@@ -1,0 +1,83 @@
+[
+  {
+    "id": "event-a1bcca20b5854babb2beb3ff9d75de6b",
+    "kind": "organization_created",
+    "data": {
+      "charter_version": 1
+    },
+    "created_at": "2026-10-10T20:14:10.285804+00:00",
+    "consumed": 1
+  },
+  {
+    "id": "event-562a48a821314b9d9058ab307109e939",
+    "kind": "decision_applied",
+    "data": {
+      "decision_id": "run-6f272541d81b4611ab44479f9d2d8358",
+      "state_version": 1
+    },
+    "created_at": "2026-10-10T20:14:10.343110+00:00",
+    "consumed": 1
+  },
+  {
+    "id": "event-770a6e6844b24faeb33cc98bb1dadb4e",
+    "kind": "work_delivered",
+    "data": {
+      "artifact_ids": [
+        "run-f4e6dd41525642a486b488fe6b9d2cd4-artifact-0"
+      ],
+      "run_id": "run-f4e6dd41525642a486b488fe6b9d2cd4",
+      "summary": "模拟资料已落盘",
+      "work_id": "work-one"
+    },
+    "created_at": "2026-10-10T20:14:10.349391+00:00",
+    "consumed": 1
+  },
+  {
+    "id": "event-40e765a016af4b7e8166e3003a65fcd4",
+    "kind": "work_delivered",
+    "data": {
+      "artifact_ids": [
+        "run-533206016d8e4989b572cad2b019df80-artifact-0"
+      ],
+      "run_id": "run-533206016d8e4989b572cad2b019df80",
+      "summary": "依据 work-one 模拟资料生成依赖成果",
+      "work_id": "work-two"
+    },
+    "created_at": "2026-10-10T20:14:10.355955+00:00",
+    "consumed": 1
+  },
+  {
+    "id": "event-f3d7f79dbfb94a399d550714c2b7a796",
+    "kind": "decision_applied",
+    "data": {
+      "decision_id": "run-758492622a1b473dbd50ea2b15822ca0",
+      "state_version": 6
+    },
+    "created_at": "2026-10-10T20:14:10.363224+00:00",
+    "consumed": 1
+  },
+  {
+    "id": "event-9d237ca6fbc3445eb5e0792fead37602",
+    "kind": "work_delivered",
+    "data": {
+      "artifact_ids": [
+        "run-ca2ae6c8df8d49ffbe78aa9b62d174e1-artifact-0"
+      ],
+      "run_id": "run-ca2ae6c8df8d49ffbe78aa9b62d174e1",
+      "summary": "模拟后续动作已落盘",
+      "work_id": "work-followup"
+    },
+    "created_at": "2026-10-10T20:14:10.370965+00:00",
+    "consumed": 1
+  },
+  {
+    "id": "event-832d06bc9f574e518914a884ed82cb3c",
+    "kind": "decision_applied",
+    "data": {
+      "decision_id": "run-a8965bc67fb740cdaaac3cfe9dbd1dac",
+      "state_version": 9
+    },
+    "created_at": "2026-10-10T20:14:10.378225+00:00",
+    "consumed": 1
+  }
+]

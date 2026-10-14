@@ -1,0 +1,144 @@
+{
+  "date": "2026-10-11T04:14:10.608948+08:00",
+  "base_commit": "24845e3eb3709645356aa835564c67ed60b628bb",
+  "branch": "work",
+  "python": "3.12.14",
+  "model_calls": 0,
+  "real_agent_status": "not_run: finite real-model authorization not supplied",
+  "commands": [
+    {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-v"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "log": "tests.log"
+    },
+    {
+      "command": [
+        "python3",
+        "-m",
+        "ai_union",
+        "--root",
+        "/workspace/Union/.union/validated-final",
+        "init",
+        "--name",
+        "validated fixture",
+        "--board-name",
+        "local developer (test adoption)",
+        "--charter",
+        "examples/charter.local.json",
+        "--resources",
+        "examples/resources.local.json"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "log": "init.log"
+    },
+    {
+      "command": [
+        "python3",
+        "-m",
+        "ai_union",
+        "--root",
+        "/workspace/Union/.union/validated-final",
+        "run",
+        "--executor",
+        "fixture",
+        "--fixture",
+        "examples/fixture.json",
+        "--max-steps",
+        "8"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "log": "fixture-run.log"
+    },
+    {
+      "command": [
+        "python3",
+        "-m",
+        "ai_union",
+        "--root",
+        "/workspace/Union/.union/validated-final",
+        "status"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "log": "status.log"
+    },
+    {
+      "command": [
+        "python3",
+        "-m",
+        "ai_union",
+        "--root",
+        "/workspace/Union/.union/validated-final",
+        "context",
+        "--work-id",
+        "work-followup"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "log": "followup-context.log"
+    },
+    {
+      "command": [
+        "python3",
+        "-m",
+        "ai_union",
+        "--root",
+        "/workspace/Union/.union/validated-final",
+        "evaluate",
+        "--output",
+        "/workspace/Union/evidence/001-org-bootstrap/fixture-evaluation.json"
+      ],
+      "exit_code": 3,
+      "expected_exit_code": 3,
+      "log": "evaluation.log"
+    },
+    {
+      "command": [
+        "python3",
+        "-m",
+        "ai_union",
+        "--root",
+        "/workspace/Union/.union/validated-final",
+        "run",
+        "--executor",
+        "fixture",
+        "--fixture",
+        "examples/fixture.json",
+        "--max-steps",
+        "1"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "log": "restart-wait.log"
+    }
+  ],
+  "local_state": "/workspace/Union/.union/validated-final",
+  "source_sha256": "2c03aa20ec3b333e5b8ec4355b8445adb588cc6f1bfcd10684e5f7b1cbc47589",
+  "workspace_code_snapshot": {
+    "ai_union/__init__.py": "4b0ebb3b5839115f3310e7391888843b5c7840bd9505bba6485c35c5d4b6f34e",
+    "ai_union/__main__.py": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d",
+    "ai_union/cli.py": "e505ad6e55239220f9016ffb49236217777848aea4981fdb32782b6b49fa416a",
+    "ai_union/engine.py": "361b1a19158c23d51169c5ab6e0e3a01ffddd6db741e003172a02f17f99b0c17",
+    "ai_union/evaluation.py": "cea8e8971f1a94bae903d4ff398ec661dbffb9f635506cd1c7302de661d09d51",
+    "ai_union/executor.py": "54f43ab394930868c7834e3b806eef2b890b00cda59276b7c7b6cd7840614486",
+    "ai_union/protocol.py": "2deebd5a0d668c8d89aaefaf9672acac13c46c93abbafe9add1a490c588d5c42",
+    "ai_union/runner.py": "3f6d7efd3fe9ae238d68344c768373fbbcc98046ee2a8e8a8f8330699e39dfc3",
+    "examples/charter.local.json": "0a4df41ab4a778e8fbc0489faf36bce64e8003642a76840a70c2b0a201051205",
+    "examples/fixture.json": "836228230fabc1031975f51ead580f99f5a10d2c378c71a685476bdca53650ec",
+    "examples/resources.local.json": "76192001aa6a414ecb82cffbf562f07f8c60ca31c1dd0c9e1ee05a21ea54c3ae",
+    "scripts/validate.py": "b8ae92e76f1e5761a43ddce1075760cc48677bbd55f7556e8fe2095519ff344c",
+    "tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests/support.py": "1eb954c08a5170f9f89234d7b7b68278bd1680e550f404c8e22aa3eb7b31417c",
+    "tests/test_integration.py": "3998c3362898e1d375af80cb2f7f34a3dc754ca75ba7c536d1c3a14094800470",
+    "tests/test_mechanisms.py": "8af9b17454ed8a1a6b6e11bac22a58bd70ec10b67812c1a17914c4f3c77cc047"
+  }
+}

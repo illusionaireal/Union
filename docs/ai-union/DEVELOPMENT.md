@@ -1,5 +1,7 @@
 # ai-union 开发执行交接文档 v1.0
 
+> 本文保留 2026-10-11 的首轮开发依据。组织运行时与产品原型现已形成；当前进度见 [STATUS.md](STATUS.md)和 [HANDOFF.md](../../HANDOFF.md)，新环境复现及接手任务见 [docs/DEVELOPMENT.md](../DEVELOPMENT.md)。不要将下面的历史“尚未开发”描述当作当前状态。
+
 日期：2026-10-11（北京时间）
 
 用途：新开发 session 从本仓库的 `docs/ai-union/DEVELOPMENT.md` 启动首个开发迭代。

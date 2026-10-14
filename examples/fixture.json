@@ -1,0 +1,37 @@
+[
+  {
+    "issue": "确定性回归启动；不是模型自组织结果",
+    "rationale": "模拟两成员资料协作，仅验证通用机制",
+    "expected_effect": "产生依赖工作并继续下一轮",
+    "evidence_refs": [],
+    "operations": [
+      {"op": "create_member", "id": "member-one", "name": "Fixture One"},
+      {"op": "create_member", "id": "member-two", "name": "Fixture Two"},
+      {"op": "create_position", "id": "responsibility-one", "title": "测试责任一", "mandate": "协调确定性测试", "permissions": ["create_work", "wait", "produce_artifact"]},
+      {"op": "create_position", "id": "responsibility-two", "title": "测试责任二", "mandate": "消费测试资料", "permissions": ["produce_artifact"]},
+      {"op": "assign", "id": "seat-one", "position_id": "responsibility-one", "member_id": "member-one"},
+      {"op": "assign", "id": "seat-two", "position_id": "responsibility-two", "member_id": "member-two"},
+      {"op": "set_policy", "decision_position_id": "responsibility-one"},
+      {"op": "set_strategy", "hypothesis": "此经营假设仅为模拟 fixture，并非真实市场研究。"},
+      {"op": "create_work", "id": "work-one", "title": "生成模拟资料", "instruction": "输出带模拟标记的测试资料", "position_id": "responsibility-one", "dependencies": []},
+      {"op": "create_work", "id": "work-two", "title": "使用模拟资料", "instruction": "引用第一项工作的资料", "position_id": "responsibility-two", "dependencies": ["work-one"]}
+    ]
+  },
+  {"status": "delivered", "summary": "模拟资料已落盘", "artifacts": [{"name": "source.md", "content": "# 模拟资料\n此文件用于验证任务来源和跨成员上下文；没有模型、市场研究或外部发布。"}]},
+  {"status": "delivered", "summary": "依据 work-one 模拟资料生成依赖成果", "artifacts": [{"name": "dependent.md", "content": "# 模拟依赖成果\n依据 work-one/source.md 的模拟资料形成。下一步验证组织决定能派发后续动作。"}]},
+  {
+    "issue": "模拟成果触发下一轮动作",
+    "rationale": "依据已交付测试资料，继续补充交接记录",
+    "expected_effect": "真实执行测试代码中的后续任务；不声称真实 Agent 判断",
+    "evidence_refs": ["$latest_work"],
+    "operations": [{"op": "create_work", "id": "work-followup", "title": "模拟后续动作", "instruction": "保存下一轮记录", "position_id": "responsibility-two", "dependencies": ["work-two"]}]
+  },
+  {"status": "delivered", "summary": "模拟后续动作已落盘", "artifacts": [{"name": "followup.md", "content": "# 模拟后续动作\n前一轮模拟资料触发了组织决定与此工作。没有对外发布或真实反馈。"}]},
+  {
+    "issue": "当前测试闭环结束，等待新证据",
+    "rationale": "不无限自唤醒；等待到期或外部事件",
+    "expected_effect": "无事件时不再调用执行器",
+    "evidence_refs": ["$latest_work"],
+    "operations": [{"op": "wait", "until": "2099-01-01T00:00:00+00:00", "reason": "模拟评测完成，等待新输入"}]
+  }
+]

@@ -1,0 +1,107 @@
+{
+  "network_access_used": false,
+  "runtime_dependencies": [],
+  "wheel_sha256": "25d6f138331e8b8de2e654da0d65ea2cd9e215e19cdaca8cf9bab98dcf01defc",
+  "commands": [
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-m",
+        "pip",
+        "wheel",
+        "--no-deps",
+        "--no-build-isolation",
+        "--no-index",
+        "--no-cache-dir",
+        ".",
+        "--wheel-dir",
+        "/tmp/union-wheel-validation"
+      ],
+      "exit_code": 0,
+      "stdout": "Processing ./.\n  Preparing metadata (pyproject.toml): started\n  Preparing metadata (pyproject.toml): finished with status 'done'\nBuilding wheels for collected packages: ai-union\n  Building wheel for ai-union (pyproject.toml): started\n  Building wheel for ai-union (pyproject.toml): finished with status 'done'\n  Created wheel for ai-union: filename=ai_union-0.1.0-py3-none-any.whl size=23092 sha256=25d6f138331e8b8de2e654da0d65ea2cd9e215e19cdaca8cf9bab98dcf01defc\n  Stored in directory: /tmp/pip-ephem-wheel-cache-7pxklycv/wheels/b1/ed/5e/d69eaa7f02c0536d8c5781369c1ceef7dbab510d34bb49be64\nSuccessfully built ai-union\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-m",
+        "venv",
+        "/tmp/union-installed-final-edt46c_h/venv"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/tmp/union-installed-final-edt46c_h/venv/bin/python",
+        "-m",
+        "pip",
+        "install",
+        "--no-deps",
+        "--no-index",
+        "/tmp/union-wheel-validation/ai_union-0.1.0-py3-none-any.whl"
+      ],
+      "exit_code": 0,
+      "stdout": "Processing /tmp/union-wheel-validation/ai_union-0.1.0-py3-none-any.whl\nInstalling collected packages: ai-union\nSuccessfully installed ai-union-0.1.0\n",
+      "stderr": "WARNING: The directory '/home/agent/.cache/pip' or its parent directory is not owned or is not writable by the current user. The cache has been disabled. Check the permissions and owner of that directory. If executing pip with sudo, you should use sudo's -H flag.\n"
+    },
+    {
+      "command": [
+        "/tmp/union-installed-final-edt46c_h/venv/bin/python",
+        "-c",
+        "import ai_union;print(ai_union.__file__)"
+      ],
+      "exit_code": 0,
+      "stdout": "/tmp/union-installed-final-edt46c_h/venv/lib/python3.12/site-packages/ai_union/__init__.py\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/tmp/union-installed-final-edt46c_h/venv/bin/ai-union",
+        "--root",
+        "/tmp/union-installed-final-edt46c_h/org",
+        "init",
+        "--name",
+        "installed test",
+        "--board-name",
+        "test adoption",
+        "--charter",
+        "/workspace/Union/examples/charter.local.json",
+        "--resources",
+        "/workspace/Union/examples/resources.local.json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"adopted_charter_version\": 1, \"board_key_file\": \"/tmp/union-installed-final-edt46c_h/org/board.key\", \"organization_id\": \"org-572cbfa4bb024197a0f3d4d0bcccd7c0\", \"root\": \"/tmp/union-installed-final-edt46c_h/org\"}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/tmp/union-installed-final-edt46c_h/venv/bin/ai-union",
+        "--root",
+        "/tmp/union-installed-final-edt46c_h/org",
+        "run",
+        "--executor",
+        "fixture",
+        "--fixture",
+        "/workspace/Union/examples/fixture.json",
+        "--max-steps",
+        "8"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"actions\": [{\"action\": \"decision\", \"executor\": \"fixture\", \"run_id\": \"run-88b4340092d44efb82bdbdd0e4d431b4\", \"work_id\": null}, {\"action\": \"work\", \"executor\": \"fixture\", \"run_id\": \"run-b13fac8595e74cf784d91277385ae43f\", \"work_id\": \"work-one\"}, {\"action\": \"work\", \"executor\": \"fixture\", \"run_id\": \"run-71e414666f3447be9fdd063af4698ec5\", \"work_id\": \"work-two\"}, {\"action\": \"decision\", \"executor\": \"fixture\", \"run_id\": \"run-551d67513e824c9ab848e2fd9c70ba63\", \"work_id\": null}, {\"action\": \"work\", \"executor\": \"fixture\", \"run_id\": \"run-ff97e6318ddc4ac69907f3adb7a3ac6d\", \"work_id\": \"work-followup\"}, {\"action\": \"decision\", \"executor\": \"fixture\", \"run_id\": \"run-6fadaeae2d2840f792c5e318dc4eaf7d\", \"work_id\": null}, {\"action\": \"wait\", \"next_review_at\": \"2099-01-01T00:00:00+00:00\", \"reason\": \"没有待办或新事件\"}], \"executor\": \"fixture\", \"simulated\": true, \"status\": {\"blocked_reasons\": [], \"budget\": {\"blocked_reason\": null, \"calls_reserved\": 6, \"cost_status\": \"unknown\", \"estimated_cost_reserved\": null, \"max_calls\": 8}, \"next_review_at\": \"2099-01-01T00:00:00+00:00\", \"next_step\": \"wait\", \"organization\": {\"artifacts\": {\"run-71e414666f3447be9fdd063af4698ec5-artifact-0\": {\"charter_version\": 1, \"commit_charter_version\": 1, \"created_at\": \"2026-10-10T20:14:41.975362+00:00\", \"id\": \"run-71e414666f3447be9fdd063af4698ec5-artifact-0\", \"member_id\": \"member-two\", \"name\": \"dependent.md\", \"path\": \"assets/b9e215dda840dcc09ae273eca401a2f471d9a17c7f97d55d8bed094730cefec0.txt\", \"run_id\": \"run-71e414666f3447be9fdd063af4698ec5\", \"sha256\": \"b9e215dda840dcc09ae273eca401a2f471d9a17c7f97d55d8bed094730cefec0\", \"version\": 1, \"work_id\": \"work-two\", \"work_version\": 1}, \"run-b13fac8595e74cf784d91277385ae43f-artifact-0\": {\"charter_version\": 1, \"commit_charter_version\": 1, \"created_at\": \"2026-10-10T20:14:41.973045+00:00\", \"id\": \"run-b13fac8595e74cf784d91277385ae43f-artifact-0\", \"member_id\": \"member-one\", \"name\": \"source.md\", \"path\": \"assets/8e30a61dafefb0b55ff3393227ca2206b14a62c5bd9d84ff9808d0924b005d08.txt\", \"run_id\": \"run-b13fac8595e74cf784d91277385ae43f\", \"sha256\": \"8e30a61dafefb0b55ff3393227ca2206b14a62c5bd9d84ff9808d0924b005d08\", \"version\": 1, \"work_id\": \"work-one\", \"work_version\": 1}, \"run-ff97e6318ddc4ac69907f3adb7a3ac6d-artifact-0\": {\"charter_version\": 1, \"commit_charter_version\": 1, \"created_at\": \"2026-10-10T20:14:41.980574+00:00\", \"id\": \"run-ff97e6318ddc4ac69907f3adb7a3ac6d-artifact-0\", \"member_id\": \"member-two\", \"name\": \"followup.md\", \"path\": \"assets/76b5ba85ec9c9574d8899cfd57bc0b1d7c27e13a53706c0210dbd170ff4d6eb5.txt\", \"run_id\": \"run-ff97e6318ddc4ac69907f3adb7a3ac6d\", \"sha256\": \"76b5ba85ec9c9574d8899cfd57bc0b1d7c27e13a53706c0210dbd170ff4d6eb5\", \"version\": 1, \"work_id\": \"work-followup\", \"work_version\": 1}}, \"assignments\": {\"seat-one\": {\"active\": true, \"id\": \"seat-one\", \"member_id\": \"member-one\", \"position_id\": \"responsibility-one\"}, \"seat-two\": {\"active\": true, \"id\": \"seat-two\", \"member_id\": \"member-two\", \"position_id\": \"responsibility-two\"}}, \"charter_version\": 1, \"goal\": \"一个持续经营线上内容品牌的 AI 内容工作室。\", \"id\": \"org-572cbfa4bb024197a0f3d4d0bcccd7c0\", \"members\": {\"member-one\": {\"id\": \"member-one\", \"name\": \"Fixture One\"}, \"member-two\": {\"id\": \"member-two\", \"name\": \"Fixture Two\"}}, \"memory\": [], \"name\": \"installed test\", \"phase\": \"active\", \"policy\": {\"decision_position_id\": \"responsibility-one\"}, \"policy_version\": 1, \"positions\": {\"responsibility-one\": {\"id\": \"responsibility-one\", \"mandate\": \"协调确定性测试\", \"permissions\": [\"create_work\", \"wait\", \"produce_artifact\"], \"title\": \"测试责任一\", \"version\": 1}, \"responsibility-two\": {\"id\": \"responsibility-two\", \"mandate\": \"消费测试资料\", \"permissions\": [\"produce_artifact\"], \"title\": \"测试责任二\", \"version\": 1}}, \"resources\": {\"max_calls\": 8, \"timeout_seconds\": 180}, \"strategy\": [{\"hypothesis\": \"此经营假设仅为模拟 fixture，并非真实市场研究。\", \"state_version\": 1, \"version\": 1}], \"version\": 9, \"wakeups\": [{\"fired\": false, \"id\": \"wake-e942999d5ff9448486ca73248df7a8f0\", \"reason\": \"模拟评测完成，等待新输入\", \"until\": \"2099-01-01T00:00:00+00:00\"}], \"work\": {\"work-followup\": {\"artifact_ids\": [\"run-ff97e6318ddc4ac69907f3adb7a3ac6d-artifact-0\"], \"assignment_id\": \"seat-two\", \"dependencies\": [\"work-two\"], \"id\": \"work-followup\", \"instruction\": \"保存下一轮记录\", \"member_id\": \"member-two\", \"position_id\": \"responsibility-two\", \"run_id\": \"run-ff97e6318ddc4ac69907f3adb7a3ac6d\", \"status\": \"delivered\", \"summary\": \"模拟后续动作已落盘\", \"title\": \"模拟后续动作\", \"version\": 1}, \"work-one\": {\"artifact_ids\": [\"run-b13fac8595e74cf784d91277385ae43f-artifact-0\"], \"assignment_id\": \"seat-one\", \"dependencies\": [], \"id\": \"work-one\", \"instruction\": \"输出带模拟标记的测试资料\", \"member_id\": \"member-one\", \"position_id\": \"responsibility-one\", \"run_id\": \"run-b13fac8595e74cf784d91277385ae43f\", \"status\": \"delivered\", \"summary\": \"模拟资料已落盘\", \"title\": \"生成模拟资料\", \"version\": 1}, \"work-two\": {\"artifact_ids\": [\"run-71e414666f3447be9fdd063af4698ec5-artifact-0\"], \"assignment_id\": \"seat-two\", \"dependencies\": [\"work-one\"], \"id\": \"work-two\", \"instruction\": \"引用第一项工作的资料\", \"member_id\": \"member-two\", \"position_id\": \"responsibility-two\", \"run_id\": \"run-71e414666f3447be9fdd063af4698ec5\", \"status\": \"delivered\", \"summary\": \"依据 work-one 模拟资料生成依赖成果\", \"title\": \"使用模拟资料\", \"version\": 1}}}, \"pending_events\": 0, \"ready_work\": []}}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/tmp/union-installed-final-edt46c_h/venv/bin/ai-union",
+        "--root",
+        "/tmp/union-installed-final-edt46c_h/org",
+        "evaluate"
+      ],
+      "exit_code": 3,
+      "stdout": "{\"checks\": {\"artifacts_verified\": true, \"cross_member_artifact_dependency\": true, \"distinct_members_executed\": true, \"evidence_to_followup_action\": true, \"organization_formed\": true, \"real_executor_only\": false, \"real_executor_receipts\": false}, \"cross_member_dependencies\": [{\"dependent_work\": \"work-two\", \"run_id\": \"run-71e414666f3447be9fdd063af4698ec5\", \"source_work\": \"work-one\"}], \"errors\": [], \"evaluated_at\": \"2026-10-10T20:14:42.036676+00:00\", \"external_delivery_verified\": false, \"external_market_feedback_verified\": false, \"followup_actions\": [{\"decision_id\": \"run-551d67513e824c9ab848e2fd9c70ba63\", \"evidence_refs\": [\"work-one\", \"work-two\"], \"run_id\": \"run-ff97e6318ddc4ac69907f3adb7a3ac6d\", \"work_id\": \"work-followup\"}], \"mechanism_scenario_passed\": true, \"real_agent_verified\": false, \"scope\": \"E1/E2 首轮闭环；E3/E4 由独立机制测试验证，未声称模型能力或首版经营验收通过\", \"status\": \"simulated\", \"usage\": [{\"executor\": \"fixture\", \"run_id\": \"run-88b4340092d44efb82bdbdd0e4d431b4\", \"status\": \"delivered\", \"usage\": {\"cost\": null, \"cost_status\": \"unknown\"}}, {\"executor\": \"fixture\", \"run_id\": \"run-b13fac8595e74cf784d91277385ae43f\", \"status\": \"delivered\", \"usage\": {\"cost\": null, \"cost_status\": \"unknown\"}}, {\"executor\": \"fixture\", \"run_id\": \"run-71e414666f3447be9fdd063af4698ec5\", \"status\": \"delivered\", \"usage\": {\"cost\": null, \"cost_status\": \"unknown\"}}, {\"executor\": \"fixture\", \"run_id\": \"run-551d67513e824c9ab848e2fd9c70ba63\", \"status\": \"delivered\", \"usage\": {\"cost\": null, \"cost_status\": \"unknown\"}}, {\"executor\": \"fixture\", \"run_id\": \"run-ff97e6318ddc4ac69907f3adb7a3ac6d\", \"status\": \"delivered\", \"usage\": {\"cost\": null, \"cost_status\": \"unknown\"}}, {\"executor\": \"fixture\", \"run_id\": \"run-6fadaeae2d2840f792c5e318dc4eaf7d\", \"status\": \"delivered\", \"usage\": {\"cost\": null, \"cost_status\": \"unknown\"}}]}\n",
+      "stderr": ""
+    }
+  ]
+}

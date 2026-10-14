@@ -1,4 +1,4 @@
-name: M0 checks
+name: frontend and historical checks
 on:
   push:
   pull_request:
@@ -16,5 +16,31 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
       - run: npm ci --ignore-scripts
       - run: npm run check
+  console-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: npm ci --ignore-scripts
+      - run: npm run build:console
+      - run: python3 scripts/check_console_start.py --output .union/frontend-startup.json
+      - run: npx playwright-core install --with-deps chromium
+      - run: npm run test:browser
+        env:
+          UNION_PYTHON: python3
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: console-browser-evidence
+          path: .union/frontend-browser-evidence

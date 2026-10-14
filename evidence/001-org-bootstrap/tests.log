@@ -1,0 +1,30 @@
+test_out_of_scope_tool_receipt_is_not_accepted (tests.test_integration.CodexContract.test_out_of_scope_tool_receipt_is_not_accepted) ... ok
+test_submit_status_result_and_usage (tests.test_integration.CodexContract.test_submit_status_result_and_usage) ... ok
+test_timeout_is_unknown_and_requires_reconciliation (tests.test_integration.CodexContract.test_timeout_is_unknown_and_requires_reconciliation) ... ok
+test_amount_budget_without_known_reservation_blocks_before_call (tests.test_integration.Integration.test_amount_budget_without_known_reservation_blocks_before_call) ... ok
+test_cannot_run_two_dispatchers (tests.test_integration.Integration.test_cannot_run_two_dispatchers) ... ok
+test_handoff_rejects_previous_executor_receipt (tests.test_integration.Integration.test_handoff_rejects_previous_executor_receipt) ... ok
+test_rejected_agent_output_is_recorded_and_does_not_change_organization (tests.test_integration.Integration.test_rejected_agent_output_is_recorded_and_does_not_change_organization) ... ok
+test_tools_revoked_while_running_rejects_delivery (tests.test_integration.Integration.test_tools_revoked_while_running_rejects_delivery) ... ok
+test_waiting_process_wakes_for_external_event_without_idle_calls (tests.test_integration.Integration.test_waiting_process_wakes_for_external_event_without_idle_calls) ... ok
+test_whole_fixture_loop_and_restart_are_explicitly_simulated (tests.test_integration.Integration.test_whole_fixture_loop_and_restart_are_explicitly_simulated) ... ok
+test_asset_tampering_is_detected (tests.test_mechanisms.Mechanisms.test_asset_tampering_is_detected) ... ok
+test_board_amendment_revokes_new_action_preserves_history (tests.test_mechanisms.Mechanisms.test_board_amendment_revokes_new_action_preserves_history) ... ok
+test_bootstrap_is_temporary_and_cannot_spoof_board (tests.test_mechanisms.Mechanisms.test_bootstrap_is_temporary_and_cannot_spoof_board) ... ok
+test_call_budget_reservation_survives_restart (tests.test_mechanisms.Mechanisms.test_call_budget_reservation_survives_restart) ... ok
+test_crash_recovery_does_not_blindly_execute_again (tests.test_mechanisms.Mechanisms.test_crash_recovery_does_not_blindly_execute_again) ... ok
+test_delivery_has_evidence_and_is_idempotent (tests.test_mechanisms.Mechanisms.test_delivery_has_evidence_and_is_idempotent) ... ok
+test_dependency_cycles_are_rejected (tests.test_mechanisms.Mechanisms.test_dependency_cycles_are_rejected) ... ok
+test_external_events_are_deduplicated (tests.test_mechanisms.Mechanisms.test_external_events_are_deduplicated) ... ok
+test_handoff_changes_pending_responsibility_and_context (tests.test_mechanisms.Mechanisms.test_handoff_changes_pending_responsibility_and_context) ... ok
+test_invalid_batch_rolls_back_and_conflict_is_detected (tests.test_mechanisms.Mechanisms.test_invalid_batch_rolls_back_and_conflict_is_detected) ... ok
+test_malformed_operation_does_not_escape_transaction (tests.test_mechanisms.Mechanisms.test_malformed_operation_does_not_escape_transaction) ... ok
+test_new_charter_cannot_authorize_its_own_adoption (tests.test_mechanisms.Mechanisms.test_new_charter_cannot_authorize_its_own_adoption) ... ok
+test_no_artifact_cannot_be_delivered (tests.test_mechanisms.Mechanisms.test_no_artifact_cannot_be_delivered) ... ok
+test_revised_artifact_retains_original_version (tests.test_mechanisms.Mechanisms.test_revised_artifact_retains_original_version) ... ok
+test_wait_wakes_once_after_restart (tests.test_mechanisms.Mechanisms.test_wait_wakes_once_after_restart) ... ok
+
+----------------------------------------------------------------------
+Ran 25 tests in 0.546s
+
+OK

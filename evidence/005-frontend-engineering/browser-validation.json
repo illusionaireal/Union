@@ -1,0 +1,256 @@
+{
+  "date": "2026-10-14T00:15:52.015Z",
+  "simulated": true,
+  "real_model_calls": 0,
+  "checks": [
+    {
+      "name": "C05: one-time host session establishes board role",
+      "passed": true
+    },
+    {
+      "name": "A01: fresh service has a clear empty state",
+      "passed": true
+    },
+    {
+      "name": "C01: cancelled creation does not create an organization",
+      "passed": true
+    },
+    {
+      "name": "C01: invalid input is preserved with a field error",
+      "passed": true
+    },
+    {
+      "name": "C01: browser creation persists goal, adoption and resources",
+      "passed": true
+    },
+    {
+      "name": "A09: live slow decision is running, not reconciliation",
+      "passed": true
+    },
+    {
+      "name": "A03: begin_decision adds reservation at unchanged organization version",
+      "passed": true
+    },
+    {
+      "name": "C03: pause acknowledged while awaiting in-flight receipt",
+      "passed": true
+    },
+    {
+      "name": "C03: pause stops next dispatch and retains first receipt",
+      "passed": true
+    },
+    {
+      "name": "A04: dependent work retains a distinct waiting reason",
+      "passed": true
+    },
+    {
+      "name": "C02/A02: browser fixture completes two members, three works, three artifacts",
+      "passed": true
+    },
+    {
+      "name": "A02/D06: fixture origin and unknown costs retained",
+      "passed": true
+    },
+    {
+      "name": "F05: deep routes serve the built SPA with a strict same-origin CSP",
+      "passed": true
+    },
+    {
+      "name": "F03: one-time launch credential is removed from the address bar",
+      "passed": true
+    },
+    {
+      "name": "F02: browser back restores the previous route",
+      "passed": true
+    },
+    {
+      "name": "F02: browser forward restores the next route",
+      "passed": true
+    },
+    {
+      "name": "F04: refreshed data preserves draft input and focus",
+      "passed": true
+    },
+    {
+      "name": "F04: closing the draft submits no event or model call",
+      "passed": true
+    },
+    {
+      "name": "A02: task search has empty state",
+      "passed": true
+    },
+    {
+      "name": "A02: member filter follows stored ownership",
+      "passed": true
+    },
+    {
+      "name": "A02: work detail links real dependency and artifact",
+      "passed": true
+    },
+    {
+      "name": "A05: download returns actual verified content",
+      "passed": true
+    },
+    {
+      "name": "A08: native detail dialog closes by keyboard",
+      "passed": true
+    },
+    {
+      "name": "F02: deep route reload retains combined task filters",
+      "passed": true
+    },
+    {
+      "name": "A05: corrupted asset fails visibly without download",
+      "passed": true
+    },
+    {
+      "name": "C10: model settings persist without dispatch or enabling a real executor",
+      "passed": true
+    },
+    {
+      "name": "C10: saved model is visible after page reload",
+      "passed": true
+    },
+    {
+      "name": "C10: clearing the model restores CLI default",
+      "passed": true
+    },
+    {
+      "name": "C04: resource change preserves six consumed calls",
+      "passed": true
+    },
+    {
+      "name": "C04: amendment changes charter version",
+      "passed": true
+    },
+    {
+      "name": "C08: event retains provenance and simulation flag",
+      "passed": true
+    },
+    {
+      "name": "C04/C09: version conflict preserves input and requires a new preview",
+      "passed": true
+    },
+    {
+      "name": "C07: timeout queries the original receipt without a second POST",
+      "passed": true
+    },
+    {
+      "name": "C07: late transport failure cannot overwrite a confirmed success",
+      "passed": true
+    },
+    {
+      "name": "C07: reloading does not repeat a submitted command",
+      "passed": true
+    },
+    {
+      "name": "A03: automatic refresh includes same-version event",
+      "passed": true
+    },
+    {
+      "name": "A03/A10: late same-version response cannot overwrite newer snapshot",
+      "passed": true
+    },
+    {
+      "name": "A10: snapshot timeout keeps the last success time and marks data stale",
+      "passed": true
+    },
+    {
+      "name": "A10: snapshot reads recover after a timed-out request",
+      "passed": true
+    },
+    {
+      "name": "A06: disconnection marks retained data stale and disables writes",
+      "passed": true
+    },
+    {
+      "name": "A06: reconnect refreshes data and enables permitted actions",
+      "passed": true
+    },
+    {
+      "name": "C03/C06: injected unknown is not stopped or retried",
+      "passed": true
+    },
+    {
+      "name": "C06: explicit reconciliation keeps call reservations",
+      "passed": true
+    },
+    {
+      "name": "A09: persistent running without host evidence is unconfirmed",
+      "passed": true
+    },
+    {
+      "name": "A09: host recovery makes uncertainty explicit",
+      "passed": true
+    },
+    {
+      "name": "A04: exhausted call quota is visible and blocks further start",
+      "passed": true
+    },
+    {
+      "name": "C05: observer bypassing disabled buttons gets HTTP 403",
+      "passed": true
+    },
+    {
+      "name": "C10: observer can read model configuration but cannot change it",
+      "passed": true
+    },
+    {
+      "name": "C09: mobile completes a persistent command",
+      "passed": true
+    },
+    {
+      "name": "A08/C09: no document overflow at 1024px",
+      "passed": true
+    },
+    {
+      "name": "A08/C09: no document overflow at 390px",
+      "passed": true
+    },
+    {
+      "name": "A08/C09: no document overflow at 320px",
+      "passed": true
+    },
+    {
+      "name": "C10: a new organization does not inherit another organization model",
+      "passed": true
+    },
+    {
+      "name": "C10: start form displays the saved model",
+      "passed": true
+    },
+    {
+      "name": "C10: per-run model override reaches the executor double and receipt",
+      "passed": true
+    },
+    {
+      "name": "A01/A10: switching organizations rejects a late response from the former organization",
+      "passed": true
+    },
+    {
+      "name": "A10/C05: restarted host rejects old session",
+      "passed": true
+    },
+    {
+      "name": "A10: fresh host session reads a new instance with persisted data",
+      "passed": true
+    },
+    {
+      "name": "C10: organization model survives service restart",
+      "passed": true
+    },
+    {
+      "name": "browser has no uncaught JavaScript errors",
+      "passed": true
+    }
+  ],
+  "browser": "151.0.7922.173",
+  "node": "v24.19.0",
+  "platform": "linux",
+  "frontend_assets": {
+    "index.html": "51e127d258967531792758b861ab937e76e4ba385c382fb0011bc5620ab0db4c",
+    "assets/index-0V5ciOaE.js": "98243ac5e28b12dc4590ea0dd706b6bf0249076cc80125774e2bad831b9e7a25",
+    "assets/index-B7idFPck.css": "0821f12982ad241b532ac09f1bcdb67473f41c7c5cbf5d8b1721c0cfec457bdb"
+  },
+  "script_sha256": "a0b19086e9a9a277b6fc2f7a5a66dfec8fd28a8e52bc6d6eee083c85e2d72ff8"
+}

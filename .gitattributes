@@ -1,3 +1,5 @@
 * text=auto eol=lf
 # Preserve archived input bytes for SHA-256 verification on every platform.
 docs/baseline/*.md -text
+# Uploaded handoff is an immutable input, including Markdown hard breaks.
+docs/inputs/*.md -text -whitespace
