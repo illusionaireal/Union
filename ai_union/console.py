@@ -171,7 +171,7 @@ class Console:
         require(session["role"] == "board", "观察者不能提交操作")
         require(isinstance(request, dict) and set(request) == {"id", "organization_id", "base_version", "kind", "data"}, "无效命令字段")
         identifier(request["id"])
-        require(request["kind"] in ("create", "event", "resources", "model", "amend", "reconcile", "start", "pause", "api_connection", "api_binding", "api_test"), "不支持的命令")
+        require(request["kind"] in ("create", "event", "resources", "model", "amend", "reconcile", "start", "pause", "api_connection", "api_binding", "api_test", "company_usage"), "不支持的命令")
         require(isinstance(request["data"], dict), "命令数据必须为对象")
         require(len(encoded(request)) <= 200000, "命令过大")
         receipt = {k: request[k] for k in ("id", "organization_id", "base_version", "kind")}
@@ -190,7 +190,7 @@ class Console:
             prior = self._existing(cx, persisted)
         if prior:
             return prior
-        guard = exclusive(e) if request["kind"] in ("start", "resources", "model", "amend", "reconcile", "api_connection", "api_binding", "api_test") else nullcontext()
+        guard = exclusive(e) if request["kind"] in ("start", "resources", "model", "amend", "reconcile", "api_connection", "api_binding", "api_test", "company_usage") else nullcontext()
         acquired = False
         transferred = False
         try:
@@ -258,7 +258,11 @@ class Console:
                     return prior
                 cx.execute("INSERT INTO creations VALUES(?,?,?,?)", (request["id"], encoded(request), encoded(receipt), folder))
             try:
-                require(set(data) == {"name", "goal", "board_name", "charter", "resources"}, "创建字段不完整或含不支持的字段")
+                require(set(data) - {"company"} == {"name", "goal", "board_name", "charter", "resources"}, "创建字段不完整或含不支持的字段")
+                if "company" in data:
+                    from .company import validate_config, create
+                    validate_config(data["company"])
+                    require({"submit_chapter", "review_cycle"} <= set(data["charter"]["allowed_operations"]), "小说公司章程须授权模拟投稿与经营复盘")
                 validate_charter(data["charter"])
                 validate_resources(data["resources"])
                 require(set(data["resources"]) == {"max_calls", "timeout_seconds"}, "工作台仅支持调用次数与超时；金额未知")
@@ -275,7 +279,11 @@ class Console:
                 engine = Engine.create(directory, data["name"], data["goal"], data["charter"], data["resources"], data["board_name"], key)
                 with engine.transaction() as cx:
                     self._schema(cx)
-                    org_id = engine._state(cx)["id"]
+                    state = engine._state(cx)
+                    org_id = state["id"]
+                    if "company" in data:
+                        state["company"] = create(data["company"])
+                        engine._save(cx, state)
                 receipt.update(organization_id=org_id, status="succeeded", message="组织已创建并采用章程；尚未启动执行")
                 with self.catalog() as cx:
                     cx.execute("INSERT INTO organizations VALUES(?,?)", (org_id, folder))
@@ -295,10 +303,10 @@ class Console:
         fields = {"event": {"event_id", "kind", "content", "source", "simulated"}, "pause": set(),
                   "resources": {"resources", "reason"}, "model": {"model", "reason"}, "amend": {"charter", "reason"},
                   "reconcile": {"run_id", "resolution", "reason"}, "start": {"executor", "model", "connection_id", "max_steps", "max_seconds", "allow_unknown_cost"},
-                  "api_connection": {"connection_id", "config", "api_key", "reason"}, "api_binding": {"connection_id", "reason"},
-                  "api_test": {"connection_id", "allow_unknown_cost"}}
+                  "api_connection": {"connection_id", "config", "api_key", "reason", "bind_default"}, "api_binding": {"connection_id", "reason"},
+                  "api_test": {"connection_id", "allow_unknown_cost"}, "company_usage": {"run_id", "input_tokens", "output_tokens", "reason"}}
         optional = {"event": {"event_id"}, "start": {"model", "connection_id", "max_seconds", "allow_unknown_cost"},
-                    "api_connection": {"api_key"}, "api_test": {"connection_id"}}
+                    "api_connection": {"api_key", "bind_default"}, "api_test": {"connection_id"}}
         require(set(data) <= fields[kind] and fields[kind] - optional.get(kind, set()) <= set(data), "命令字段缺失或不支持")
         if kind == "pause":
             e.set_paused(True)
@@ -352,7 +360,14 @@ class Console:
                 e.configure_model(key, data["model"], data["reason"])
             elif kind == "api_connection":
                 require(self.enable_api, "宿主未启用 API")
-                return configure_connection(e, key, data["connection_id"], data["config"], data["reason"], data.get("api_key"))
+                require(type(data.get("bind_default", False)) is bool, "默认连接标记须为布尔值")
+                result = configure_connection(e, key, data["connection_id"], data["config"], data["reason"], data.get("api_key"))
+                if data.get("bind_default"):
+                    bind_connection(e, key, data["connection_id"], data["reason"])
+                return result
+            elif kind == "company_usage":
+                from .company import resolve_usage
+                resolve_usage(e, key, data["run_id"], data["input_tokens"], data["output_tokens"], data["reason"])
             elif kind == "api_binding":
                 require(self.enable_api, "宿主未启用 API")
                 bind_connection(e, key, data["connection_id"], data["reason"])
@@ -362,6 +377,9 @@ class Console:
     def _executor(self, e, data):
         if data["executor"] == "codex":
             return CodexExecutor(e.root, model=data.get("model"))
+        if e.state().get("company"):
+            from .novel_demo import NovelDemoExecutor
+            return NovelDemoExecutor()
         used = len([r for r in e.runs() if r["executor"] == "fixture"])
         return FixtureExecutor(copy.deepcopy(self.fixture[used:]))
 

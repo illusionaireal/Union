@@ -1,0 +1,18 @@
+{
+  "date": "2026-10-16",
+  "base_commit": "ed90a179415e10e303dd6941d42c3df0fb0a199f",
+  "python_tests": 91,
+  "novel_mechanism_and_http_tests": 13,
+  "frontend_tests": 14,
+  "historical_node_tests": 9,
+  "console_browser_checks": 61,
+  "novel_browser_checks": 16,
+  "startup_checks": 5,
+  "real_model_calls": 0,
+  "real_market_feedback": false,
+  "human_quality_review": "pending for real model run",
+  "independent_engineering_review": "passed",
+  "browser": "Chromium Headless Shell 134.0.6998.35",
+  "platform": "Linux",
+  "notes": "Local HTTP model double, actual SQLite/HTTP/React flow. Browser checks use explicit Chromium binary; no real provider credentials configured."
+}

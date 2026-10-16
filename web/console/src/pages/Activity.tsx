@@ -1,3 +1,4 @@
+import { CommandButton } from '../features/commands/CommandProvider';
 import { useUrlState } from '../app/url-state';
 import { useWorkspace } from '../app/workspace';
 import { Card, Badge, Empty } from '../components/ui';
@@ -25,7 +26,7 @@ export default function Activity() {
     .filter((r) => filter === 'all' || filter === r.type)
     .sort((a, b) => b.date.localeCompare(a.date));
   return (
-    <Card title="事件与决定">
+    <Card title="事件与决定" action={<CommandButton kind="event" />}>
       <div className="segmented">
         {[
           ['all', '全部'],

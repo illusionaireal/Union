@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { CircleDashed, ArrowUpRight } from 'lucide-react';
 export const labels: Record<string, string> = {
   bootstrap: '组织尚未形成',
+  experiment_complete: '三个经营周期已完成',
   execute_work: '等待派发工作',
   decide: '等待组织决定',
   wait: '等待新事件',

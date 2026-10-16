@@ -2,6 +2,8 @@
 
 ## Active direction and source of truth
 
+- Use `dev` as the ongoing development mainline (user decision 2026-10-15). Current first experience is `specs/006-novel-company`: real model execution, three same-book chapters/cycles, host-owned mock platform/accounting, controlled negative feedback, and human quality review. Do not require real external publishing for this first experiment; that remains a later milestone.
+
 - Read README.md, docs/ai-union/STATUS.md, HANDOFF.md, and docs/DEVELOPMENT.md first. Read docs/PRD.md and docs/product-design.md before user-facing work; current frontend is specs/005-frontend-engineering, continuing specs/004-organization-console with specs/003-runtime-dashboard as its observation module. Read docs/FRONTEND.md for React/TypeScript/Vite setup, architecture and validation. Keep scope, flows, design and acceptance aligned with the latest user decisions. Read specs/001-org-bootstrap for the implemented runtime. Treat docs/ai-union/DEVELOPMENT.md as the original development brief, not a current completion report. Use docs/ai-union/DESIGN.md for product and governance context and ADR-0002 for the transition from the original platform plan.
 - The user has confirmed the ai-union direction: goal-driven organization formation, real collaboration, persistent state, and subsequent action. Reuse existing Agent execution loops; prioritize the organization loop.
 - Keep ai-union and the UNION platform as separate product and planning tracks. Do not inherit the legacy payment/platform task order for the organization prototype.

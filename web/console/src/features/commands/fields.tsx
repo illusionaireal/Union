@@ -1,6 +1,6 @@
 import { useState, type InputHTMLAttributes, type ReactNode } from 'react';
 import type { Charter, CommandKind, Session, Snapshot } from '../../api/types';
-import { defaultCharter } from './model';
+import { defaultCharter, novelCharter } from './model';
 function Field({
   name,
   label,
@@ -74,7 +74,12 @@ export function CommandFields({
   data?: Snapshot;
   session: Session;
 }) {
-  const [executor, setExecutor] = useState(session.executors[0] || 'fixture');
+  const [executor, setExecutor] = useState(
+    data?.execution_config.api_connection_id && session.executors.includes('api')
+      ? 'api'
+      : session.executors[0] || 'fixture',
+  );
+  const [template, setTemplate] = useState('generic');
   const [eventId] = useState(() => crypto.randomUUID());
   const model = (label: string, hidden = false) => (
     <Field
@@ -92,20 +97,81 @@ export function CommandFields({
   if (kind === 'create')
     return (
       <>
-        <Field name="name" label="组织名称" value="我的试验组织" maxLength={200} />
-        <Area name="goal" label="组织目标" />
+        <label className="operation-field">
+          创建类型
+          <select
+            name="company_template"
+            value={template}
+            onChange={(e) => setTemplate(e.target.value)}
+          >
+            <option value="generic">通用组织</option>
+            <option value="novel">小说公司 · 三周期首版</option>
+          </select>
+        </label>
+        <Field
+          key={template + '-name'}
+          name="name"
+          label="组织名称"
+          value={template === 'novel' ? '我的 AI 小说公司' : '我的试验组织'}
+          maxLength={200}
+        />
+        <Area
+          key={template + '-goal'}
+          name="goal"
+          label="组织目标"
+          value={
+            template === 'novel'
+              ? '自主组织团队，创作同一本中文网络小说并连续交付三章；向模拟平台投稿，核算成本，依据反馈调整后续创作。'
+              : ''
+          }
+        />
+        {template === 'novel' && (
+          <>
+            <Field
+              name="initial_budget_minor"
+              label="启动模拟预算（分，10000 = ¥100）"
+              type="number"
+              min={1}
+              max={10000000000}
+              value={10000}
+            />
+            <div className="field-grid">
+              <Field
+                name="input_price_minor_per_million"
+                label="输入单价（分 / 百万 token）"
+                type="number"
+                min={0}
+                max={10000000000}
+                value={100}
+              />
+              <Field
+                name="output_price_minor_per_million"
+                label="输出单价（分 / 百万 token）"
+                type="number"
+                min={0}
+                max={10000000000}
+                value={500}
+              />
+            </div>
+            <p className="form-note">
+              单价是可编辑示例，请按供应商填写。预算为经营试验阈值；真实 API
+              账单另计，单次调用可能使估算余额越限。第二章固定低订阅，用于观察后续调整。
+            </p>
+          </>
+        )}
         <Field
           name="board_name"
           label="章程采用人"
           value="本机发起人（本地测试采用）"
           maxLength={200}
         />
-        <Rules charter={defaultCharter} />
+        <Rules key={template} charter={template === 'novel' ? novelCharter : defaultCharter} />
         <div className="field-grid">
           <Field
             name="max_calls"
+            key={template}
             label="累计调用上限"
-            value={8}
+            value={template === 'novel' ? 32 : 8}
             type="number"
             min={1}
             max={10000}
@@ -166,7 +232,10 @@ export function CommandFields({
           <Field
             name="max_steps"
             label="本次最多执行步数"
-            value={Math.min(8, data.budget.max_calls - data.budget.calls_reserved)}
+            value={Math.min(
+              data.company ? 30 : 8,
+              data.budget.max_calls - data.budget.calls_reserved,
+            )}
             type="number"
             min={1}
             max={data.budget.max_calls - data.budget.calls_reserved}
@@ -182,6 +251,121 @@ export function CommandFields({
           <label className="check-field">
             <input type="checkbox" name="allow_unknown_cost" />
             明确接受本次有限真实调用的费用未知条件。Fixture 不调用模型。
+          </label>
+        </>
+      );
+    case 'api_connection':
+      return (
+        <>
+          <p className="form-note">
+            保存并设为默认连接，不调用模型。密钥仅发送给本机服务；留空保留同一连接原密钥。更换地址时需重新填写。可在下方查看已保存连接的公开配置。
+          </p>
+          <Field
+            name="connection_id"
+            label="连接 ID"
+            value={data.execution_config.api_connection_id || 'primary'}
+            maxLength={80}
+          />
+          <Field name="connection_name" label="连接名称" value="主模型连接" maxLength={100} />
+          <Field
+            name="base_url"
+            label="API 根地址"
+            placeholder="https://your-provider.example/v1"
+            type="url"
+          />
+          <Field name="api_model" label="API 模型 ID" maxLength={128} />
+          <Field
+            name="api_key"
+            label="API Key（留空保留原密钥）"
+            type="password"
+            required={false}
+            autoComplete="new-password"
+            maxLength={4096}
+          />
+          <Select name="response_format" label="结构化输出模式">
+            <option value="json_schema">JSON Schema</option>
+            <option value="json_object">JSON Object（兼容模式）</option>
+          </Select>
+          <Select name="token_limit_field" label="输出上限字段">
+            <option value="max_completion_tokens">max_completion_tokens</option>
+            <option value="max_tokens">max_tokens</option>
+          </Select>
+          <div className="field-grid">
+            <Field
+              name="max_output_tokens"
+              label="最大输出 token"
+              type="number"
+              min={1}
+              max={32768}
+              value={8192}
+            />
+            <Field
+              name="api_timeout"
+              label="API 超时（秒）"
+              type="number"
+              min={1}
+              max={600}
+              value={180}
+            />
+          </div>
+          <Field name="reason" label="配置说明" value="为公司接入真实模型" />
+        </>
+      );
+    case 'api_binding':
+      return (
+        <>
+          <Field
+            name="connection_id"
+            label="连接 ID（留空解绑）"
+            required={false}
+            value={data.execution_config.api_connection_id || ''}
+          />
+          <Reason />
+        </>
+      );
+    case 'company_usage':
+      return (
+        <>
+          <p className="form-note">
+            依据供应商回执补录缺失用量，原调用记录保留。确实未计费时填 0
+            并说明证据；不得把未知费用当作零。未知执行须先核对结果。
+          </p>
+          <Select name="run_id" label="缺失用量的调用">
+            {data.company?.ledger
+              .filter((r) => r.kind === 'model' && r.amount_minor === null)
+              .map((r) => (
+                <option key={r.id} value={r.reference}>
+                  {r.reference}
+                </option>
+              ))}
+          </Select>
+          <Field
+            name="input_tokens"
+            label="核对输入 token"
+            type="number"
+            min={0}
+            max={1000000000}
+          />
+          <Field
+            name="output_tokens"
+            label="核对输出 token"
+            type="number"
+            min={0}
+            max={1000000000}
+          />
+          <Reason />
+        </>
+      );
+    case 'api_test':
+      return (
+        <>
+          <p>
+            测试默认连接 {data.execution_config.api_connection_id}
+            ，占用一次调用额度，保存用量和测试回执。
+          </p>
+          <label className="check-field">
+            <input name="allow_unknown_cost" type="checkbox" />
+            接受一次真实连接测试，费用未知。
           </label>
         </>
       );

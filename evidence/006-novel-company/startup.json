@@ -1,0 +1,12 @@
+{
+  "passed": 5,
+  "checks": [
+    "npm start builds and serves a deep SPA route",
+    "same-origin CSP is present",
+    "built JavaScript asset is served",
+    "private one-time session connects without creating or running an organization",
+    "unknown assets do not return the SPA shell"
+  ],
+  "real_model_calls": 0,
+  "platform": "posix"
+}

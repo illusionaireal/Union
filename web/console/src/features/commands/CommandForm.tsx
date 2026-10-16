@@ -5,7 +5,7 @@ import type { CommandRequest, Receipt } from '../../api/types';
 import { useWorkspace } from '../../app/workspace';
 import { Badge, Json } from '../../components/ui';
 import { CommandFields } from './fields';
-import { blocked, readForm, titles } from './model';
+import { blocked, readForm, titles, publicPreview } from './model';
 import { useCommands, type Draft } from './CommandProvider';
 export function ReceiptView({ receipt, onQuery }: { receipt: Receipt; onQuery: () => void }) {
   return (
@@ -156,7 +156,7 @@ export function CommandForm({ draft, onClose }: { draft: Draft; onClose: () => v
                 <p>拟采用</p>
               </>
             )}
-            <Json value={preview.data} />
+            <Json value={publicPreview(preview.data)} />
             {draft.kind === 'amend' && (
               <p>
                 受影响的未完成工作：

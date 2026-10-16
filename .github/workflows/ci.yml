@@ -39,8 +39,13 @@ jobs:
       - run: npm run test:browser
         env:
           UNION_PYTHON: python3
+      - run: npm run test:novel
+        env:
+          UNION_PYTHON: python3
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: console-browser-evidence
-          path: .union/frontend-browser-evidence
+          path: |
+            .union/frontend-browser-evidence
+            .union/novel-browser-evidence

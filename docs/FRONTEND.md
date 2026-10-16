@@ -1,5 +1,7 @@
 # React 组织工作台工程
 
+2026-10-16 更新：开发主分支 `dev`；小说公司首版已接入网页创建、模型 API 配置并绑定/连接测试、经营周期/章节/账本及缺失用量核对。操作入口按页面职责展示。最新范围和使用步骤见 [NOVEL_COMPANY.md](NOVEL_COMPANY.md)，下文旧迭代记录以此更新为准。
+
 更新：2026-10-14（北京时间）。正式前端位于 `web/console/`，使用 React、TypeScript、Vite、React Router 和 TanStack Query。产品范围见 [005](../specs/005-frontend-engineering/spec.md)，操作及本机会话见 [CONSOLE.md](CONSOLE.md)。
 
 `dev` 已整合真实 API 后端。会话执行器包含 `api`；运行表单正确标识模型 API，仅允许选择已绑定的默认连接，并要求确认有限调用的未知费用。API 配置、绑定和连接测试先通过 [API_MODELS.md](API_MODELS.md) 的 CLI／HTTP 完成，专门的连接管理表单仍待接入。API 回执在设置页显示，恢复只保存请求身份。当前集成验证见 [dev](../evidence/dev-integration/README.md)。

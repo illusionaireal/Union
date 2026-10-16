@@ -50,7 +50,7 @@ def evaluate(engine):
                 cross.append({"source_work": dep, "dependent_work": w["id"], "run_id": r["id"]})
     checks["cross_member_artifact_dependency"] = bool(cross)
     facts = {r["work_id"] for r in work_runs} | set(s["artifacts"])
-    facts |= {e["id"] for e in engine.events() if e["kind"] == "work_delivered"}
+    facts |= {e["id"] for e in engine.events() if e["kind"] in ("work_delivered", "novel_feedback")}
     followups = []
     for d in engine.decisions():
         if d["status"] != "accepted" or d["actor"] == "bootstrap":

@@ -29,8 +29,14 @@ def step(engine, executor):
     state = engine.state()
     if any(r["status"] in ("unknown", "running") for r in engine.runs()):
         return {"action": "blocked", "reason": "未知或在途执行需要核对"}
-    if state["phase"] != "bootstrap" and not ready and not engine.events(True):
+    company = state.get("company")
+    awaiting_review = company and len(company["chapters"]) > len(company["reviews"])
+    if state["phase"] != "bootstrap" and not ready and not engine.events(True) and not awaiting_review:
         return {"action": "wait", "reason": "没有待办或新事件", "next_review_at": engine.status()["next_review_at"]}
+    if company and len(company["reviews"]) >= company["target_cycles"]:
+        return {"action": "wait", "reason": "三个经营周期已完成，等待董事会验收"}
+    if awaiting_review:
+        ready = []  # Feedback must be decided on before pre-planned work is dispatched.
     metadata = {"execution": executor.metadata} if hasattr(executor, "metadata") else {}
     package = engine.begin_work(ready[0], executor.name, **metadata) if ready and state["phase"] != "bootstrap" else engine.begin_decision(executor.name, **metadata)
     usage = {}

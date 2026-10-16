@@ -203,50 +203,56 @@ export function Layout() {
                 : '尚无实时组织数据，请从本机启动链接连接。'}
             </div>
           )}
-          <section id="console-controls" className="console-controls" aria-label="组织操作">
-            <div className="console-buttons">
-              <CommandButton kind="create">
-                <Plus size={15} />
-                新建组织
-              </CommandButton>
-              <CommandButton kind="start" primary>
-                <Play size={14} />
-                启动／继续
-              </CommandButton>
-              <CommandButton kind="pause">
-                <Pause size={14} />
-                暂停派发
-              </CommandButton>
-              <CommandButton kind="event">
-                <MessageSquarePlus size={15} />
-                提交事件
-              </CommandButton>
-              {data?.execution_state === 'unknown' && (
-                <CommandButton kind="reconcile">核对执行</CommandButton>
+          {(page.key === 'overview' ||
+            !data ||
+            pending.some((p) => !p.organization_id || p.organization_id === orgId)) && (
+            <section id="console-controls" className="console-controls" aria-label="组织操作">
+              {(page.key === 'overview' || !data) && (
+                <div className="console-buttons">
+                  <CommandButton kind="create">
+                    <Plus size={15} />
+                    新建组织
+                  </CommandButton>
+                  <CommandButton kind="start" primary>
+                    <Play size={14} />
+                    启动／继续
+                  </CommandButton>
+                  <CommandButton kind="pause">
+                    <Pause size={14} />
+                    暂停派发
+                  </CommandButton>
+                  <CommandButton kind="event">
+                    <MessageSquarePlus size={15} />
+                    提交事件
+                  </CommandButton>
+                  {data?.execution_state === 'unknown' && (
+                    <CommandButton kind="reconcile">核对执行</CommandButton>
+                  )}
+                </div>
               )}
-            </div>
-            <p className="console-hint">
-              {!connected
-                ? '连接后可读取组织；操作前需要取得有效会话与当前快照。'
-                : session?.role === 'observer'
-                  ? '观察者会话：可读取与下载，不能提交组织操作。'
-                  : '操作先预览，再提交。受理后的实际结果保存在操作回执中。'}
-            </p>
-            {pending
-              .filter((p) => !p.organization_id || p.organization_id === orgId)
-              .map((p) => (
-                <p className="pending-note" key={p.id}>
-                  请求 {p.id} 尚待最终回执{' '}
-                  <button
-                    className="text-button"
-                    data-query-receipt={p.id}
-                    onClick={() => inspect(p)}
-                  >
-                    查询原请求
-                  </button>
-                </p>
-              ))}
-          </section>
+              <p className="console-hint">
+                {!connected
+                  ? '连接后可读取组织；操作前需要取得有效会话与当前快照。'
+                  : session?.role === 'observer'
+                    ? '观察者会话：可读取与下载，不能提交组织操作。'
+                    : '操作先预览，再提交。受理后的实际结果保存在操作回执中。'}
+              </p>
+              {pending
+                .filter((p) => !p.organization_id || p.organization_id === orgId)
+                .map((p) => (
+                  <p className="pending-note" key={p.id}>
+                    请求 {p.id} 尚待最终回执{' '}
+                    <button
+                      className="text-button"
+                      data-query-receipt={p.id}
+                      onClick={() => inspect(p)}
+                    >
+                      查询原请求
+                    </button>
+                  </p>
+                ))}
+            </section>
+          )}
           <div id="view">
             {data ? (
               <Outlet />

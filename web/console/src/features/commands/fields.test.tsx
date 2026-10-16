@@ -104,3 +104,49 @@ describe('operation form interactions', () => {
     expect(screen.getByRole('option', { name: '模型 API · 默认连接，费用未知' })).toBeDisabled();
   });
 });
+
+describe('novel company setup', () => {
+  it('adopts the novel charter with integer monetary configuration', () => {
+    render(
+      <form aria-label="操作表单">
+        <CommandFields kind="create" session={session} />
+      </form>,
+    );
+    fireEvent.change(screen.getByLabelText('创建类型'), { target: { value: 'novel' } });
+    const value = readForm('create', screen.getByRole('form') as HTMLFormElement);
+    expect(value).toMatchObject({
+      company: {
+        initial_budget_minor: 10000,
+        input_price_minor_per_million: 100,
+        output_price_minor_per_million: 500,
+      },
+      resources: { max_calls: 32 },
+    });
+    expect((value.charter as { allowed_operations: string[] }).allowed_operations).toContain(
+      'submit_chapter',
+    );
+    expect((value.charter as { allowed_operations: string[] }).allowed_operations).toContain(
+      'review_cycle',
+    );
+  });
+  it('saves and binds API config, retaining a blank key instead of clearing it', async () => {
+    const { publicPreview } = await import('./model');
+    render(
+      <form aria-label="操作表单">
+        <CommandFields kind="api_connection" session={session} data={data} />
+      </form>,
+    );
+    fireEvent.change(screen.getByLabelText('API 根地址'), {
+      target: { value: 'https://example.test/v1' },
+    });
+    fireEvent.change(screen.getByLabelText('API 模型 ID'), { target: { value: 'model-a' } });
+    const form = screen.getByRole('form') as HTMLFormElement;
+    expect(readForm('api_connection', form)).not.toHaveProperty('api_key');
+    fireEvent.change(screen.getByLabelText('API Key（留空保留原密钥）'), {
+      target: { value: 'private-test-key' },
+    });
+    const request = readForm('api_connection', form);
+    expect(request).toMatchObject({ bind_default: true, api_key: 'private-test-key' });
+    expect(JSON.stringify(publicPreview(request))).not.toContain('private-test-key');
+  });
+});

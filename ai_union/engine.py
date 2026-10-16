@@ -17,7 +17,7 @@ from pathlib import Path
 
 OPERATIONS = {"create_member", "create_position", "update_position", "assign", "set_policy", "create_work",
               "handoff", "pause_work", "resume_work", "cancel_work", "update_work",
-              "wait", "set_strategy", "record_memory"}
+              "wait", "set_strategy", "record_memory", "submit_chapter", "review_cycle"}
 TOOLS = {"produce_artifact"}
 ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.-]{0,79}$")
 
@@ -262,7 +262,11 @@ class Engine:
                 require(isinstance(ops, list) and len(ops) <= 100, "操作必须是有界列表")
                 for op in ops:
                     require(isinstance(op, dict) and op.get("op") in permissions, "操作不在当前章程及岗位授权内")
-                    self._operate(s, c, op)
+                    if op["op"] in ("submit_chapter", "review_cycle"):
+                        from .company import operate
+                        operate(self, cx, s, op, d)
+                    else:
+                        self._operate(s, c, op)
                 if actor == "bootstrap":
                     require(len(s["members"]) >= 2, "启动需要至少两名可区分成员")
                     require(len({a["member_id"] for a in s["assignments"].values() if a["active"]}) >= 2, "启动需要至少两名实际任职成员")
@@ -279,7 +283,7 @@ class Engine:
                 # The decision's own bookkeeping event must not cause an endless decision loop.
                 cx.execute("UPDATE events SET consumed=1 WHERE kind='decision_applied' AND json_extract(data,'$.decision_id')=?", (did,))
                 if run_id:
-                    self._settle(cx, run_id, "delivered", d, usage or {})
+                    self._settle(cx, run_id, "delivered", d, usage or {}, s)
                 self._save(cx, s)
                 return s
         except (Rejected, TypeError, KeyError) as error:
@@ -450,6 +454,12 @@ class Engine:
         c = self._charter(cx, s["charter_version"])
         manifest = {"state_version": s["version"], "charter_version": s["charter_version"], "policy_version": s["policy_version"], "artifacts": [], "work": {}}
         ctx = {"observed_at": now(), "organization": {k: s[k] for k in ("id", "name", "goal", "strategy")}, "charter": c, "policy": s["policy"], "memory": s["memory"], "artifacts": [], "resources": s["resources"], "budget": self._budget(cx, s)}
+        if s.get("company"):
+            from .company import view
+            ctx["company"] = view(s)
+            ctx["company"]["published_texts"] = [
+                {"chapter_number": ch["chapter_number"], "content": self._read_artifact(s["artifacts"][ch["artifact_id"]])}
+                for ch in s["company"]["chapters"]]
         if work_id:
             w = s["work"][work_id]
             a = s["assignments"][w["assignment_id"]]
@@ -493,6 +503,13 @@ class Engine:
             reason = "金额上限缺少可核实的单次费用保留值；禁止启动"
         elif "max_cost" in r and (calls + 1) * reserve > r["max_cost"]:
             reason = "可用金额不足以保留下一次调用费用"
+        if s.get("company"):
+            from .company import totals
+            financials = totals(s["company"])
+            if financials["unknown_model_costs"]:
+                reason = reason or "模型用量缺失，成本未知；暂停新调用并核对供应商回执"
+            elif financials["balance_minor"] <= 0:
+                reason = reason or "试验预算已到限；保留进度并停止新派发"
         return {"calls_reserved": calls, "max_calls": r["max_calls"], "cost_status": "unknown",
                 "estimated_cost_reserved": calls * reserve if reserve is not None else None, "blocked_reason": reason}
 
@@ -571,7 +588,7 @@ class Engine:
         require(r is not None, "执行记录不存在")
         return dict(r) | {"package": json.loads(r["package"])}
 
-    def _settle(self, cx, run_id, status, result, usage):
+    def _settle(self, cx, run_id, status, result, usage, state=None):
         r = self._run(cx, run_id)
         require(r["status"] == "running", "执行已结算或需要核对")
         require(isinstance(usage, dict), "用量必须是对象")
@@ -585,6 +602,12 @@ class Engine:
                 if type(usage.get(field)) is int and usage[field] >= 0:
                     safe[field] = usage[field]
         safe.update(cost=None, cost_status="unknown")
+        current = state if state is not None else self._state(cx)
+        if current.get("company"):
+            from .company import charge
+            charge(current["company"], r | {"status": status}, safe)
+            if state is None:
+                self._save(cx, current)
         cx.execute("UPDATE runs SET status=?,result=?,usage=?,ended_at=? WHERE id=?", (status, encoded(result), encoded(safe), now(), run_id))
 
     def finish_decision(self, run_id, result, usage):
@@ -645,7 +668,7 @@ class Engine:
                 w["artifact_ids"].append(aid)
             w.update(status=status, summary=summary)
             s["version"] += 1
-            self._settle(cx, run_id, status, result, usage)
+            self._settle(cx, run_id, status, result, usage, s)
             self._event(cx, "work_" + status, {"work_id": w["id"], "run_id": run_id, "artifact_ids": w["artifact_ids"], "summary": summary})
             self._save(cx, s)
             return s
@@ -656,7 +679,7 @@ class Engine:
             if r["status"] != "running":
                 return
             s = self._state(cx)
-            self._settle(cx, run_id, "unknown" if unknown else "failed", {"reason": reason}, usage or {})
+            self._settle(cx, run_id, "unknown" if unknown else "failed", {"reason": reason}, usage or {}, s)
             if r["work_id"]:
                 w = s["work"][r["work_id"]]
                 if w["run_id"] == run_id:

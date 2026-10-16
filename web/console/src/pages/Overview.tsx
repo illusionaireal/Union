@@ -1,3 +1,4 @@
+import { CompanyPanel } from '../components/Company';
 import { Users, ListChecks, Files, Activity, ArrowRight, Sparkles } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { useWorkspace } from '../app/workspace';
@@ -11,7 +12,11 @@ export default function Overview() {
   const members = Object.values(state.members),
     works = Object.values(state.work),
     artifacts = Object.values(state.artifacts);
-  const stage = d.dispatch_state === 'pause_requested' ? 'pause_requested' : d.next_step;
+  const stage = d.company?.completed
+    ? 'experiment_complete'
+    : d.dispatch_state === 'pause_requested'
+      ? 'pause_requested'
+      : d.next_step;
   const more = (page: string) => (
     <Link className="more-link" to={{ pathname: '/' + page, search }}>
       查看全部 <ArrowRight size={14} />
@@ -43,6 +48,7 @@ export default function Overview() {
   ];
   return (
     <>
+      <CompanyPanel />
       <section className="status-hero">
         <div className="hero-main">
           <div className="eyebrow">
@@ -59,7 +65,9 @@ export default function Overview() {
           <span className="eyebrow">NEXT ACTION</span>
           <h3>让每一步都有依据</h3>
           <p>
-            {d.blocked_reasons.join('；') ||
+            {(d.company?.completed
+              ? '本次试验已停止，等待审读三章正文、衔接与反馈后的实际改变。'
+              : d.blocked_reasons.join('；')) ||
               (d.next_review_at
                 ? '复查时间 ' + d.next_review_at
                 : '按待办与新事件继续；暂无定时复查')}
@@ -94,7 +102,7 @@ export default function Overview() {
               {d.runs
                 .filter((r) => r.status === 'running')
                 .map((r) => r.work_id || '组织决定')
-                .join('、') || labels[d.next_step]}
+                .join('、') || labels[stage]}
             </p>
             <p className="form-note">
               待处理事件 {d.pending_events} 条 · 可派发工作 {d.ready_work.length} 项

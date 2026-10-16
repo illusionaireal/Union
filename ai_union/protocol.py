@@ -15,6 +15,8 @@ def operation(name, fields):
 
 
 OPERATION_SCHEMAS = [
+    operation("submit_chapter", {"artifact_id": STRING, "chapter_number": INTEGER, "book_title": STRING, "title": STRING}),
+    operation("review_cycle", {"chapter_number": INTEGER, "response": STRING, "next_work_ids": STRINGS}),
     operation("create_member", {"id": STRING, "name": STRING}),
     operation("create_position", {"id": STRING, "title": STRING, "mandate": STRING, "permissions": STRINGS}),
     operation("update_position", {"position_id": STRING, "title": STRING, "mandate": STRING, "permissions": STRINGS}),
@@ -50,6 +52,9 @@ def instructions(package):
         "Do not reveal private reasoning; give concise rationale and evidence references. "
         "Your stable member identity is separate from this fresh execution session. "
     )
+    if package.get("context", {}).get("company"):
+        from .company import guidance
+        general += guidance()
     if package["kind"] == "work":
         return general + (
             "Perform the supplied task within the position mandate and current charter. Use dependency "

@@ -25,6 +25,7 @@ export function loadPending(): PendingRequest[] {
           'api_connection',
           'api_binding',
           'api_test',
+          'company_usage',
         ].includes(v.kind),
     );
   } catch {

@@ -174,9 +174,13 @@ def main(argv=None):
     p.add_argument("--fixture", default=str(REPO / "examples/fixture.json"))
     p.add_argument("--enable-codex", action="store_true", help="允许网页选择 Codex；不会自动调用")
     p.add_argument("--disable-api", action="store_true", help="禁用 API 配置和调用入口")
+    p.add_argument("--novel-demo", action="store_true", help="创建并运行明确标识的三周期小说脚本演示，不调用真实模型")
     p.add_argument("--open", action="store_true", help="在本机浏览器打开一次性发起人会话")
     args = p.parse_args(argv)
     app = Console(args.root, json.loads(Path(args.fixture).read_text(encoding="utf-8")), args.enable_codex, enable_api=not args.disable_api)
+    if args.novel_demo:
+        from .novel_demo import seed
+        seed(app)
     server = Server(app, args.port)
     access = {role: server.origin + "/#launch=" + app.ticket(role) for role in ("board", "observer")}
     path = app.root / "local-access.json"

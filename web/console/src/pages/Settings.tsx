@@ -1,3 +1,5 @@
+import { request } from '../api/client';
+import { useQuery } from '@tanstack/react-query';
 import { Cpu, ShieldCheck } from 'lucide-react';
 import { useWorkspace } from '../app/workspace';
 import { Badge, Card, Empty, Json } from '../components/ui';
@@ -5,10 +7,46 @@ import { CommandButton } from '../features/commands/CommandProvider';
 import { titles } from '../features/commands/model';
 import { DetailLink } from '../features/details/Details';
 export default function Settings() {
-  const { data, session } = useWorkspace();
+  const { data, session, orgId, connected } = useWorkspace();
   const d = data!;
+  const connections = useQuery({
+    queryKey: ['model-connections', orgId, d.organization.version],
+    enabled: connected && session?.role === 'board',
+    queryFn: ({ signal }) =>
+      request<{
+        connections: {
+          id: string;
+          revision: number;
+          config: Record<string, unknown>;
+          has_api_key: boolean;
+        }[];
+      }>('/api/model-connections?organization_id=' + encodeURIComponent(orgId), { signal }),
+    retry: false,
+  });
   return (
     <>
+      <Card title="模型 API · 首次配置">
+        <p>
+          配置连接 → 测试一次 → 在总览启动公司。当前默认：
+          <strong>{d.execution_config.api_connection_id || '尚未配置'}</strong>
+        </p>
+        <div className="detail-links">
+          <CommandButton kind="api_connection" primary>
+            配置并使用 API
+          </CommandButton>
+          <CommandButton kind="api_test">测试连接</CommandButton>
+          <CommandButton kind="api_binding">切换默认连接</CommandButton>
+        </div>
+        {connections.isError && <p role="alert">连接配置读取失败，请刷新后重试。</p>}
+        {connections.data?.connections.map((c) => (
+          <details key={c.id}>
+            <summary>
+              {c.id} · v{c.revision} · {c.has_api_key ? '密钥已保存' : '未配置密钥'}
+            </summary>
+            <Json value={c.config} />
+          </details>
+        ))}
+      </Card>
       <Card title="模型设置" action={<Cpu size={20} className="muted" />}>
         <div className="setting-row">
           <div>
@@ -56,6 +94,7 @@ export default function Settings() {
           <div className="detail-links">
             <CommandButton kind="resources" />
             <CommandButton kind="reconcile" />
+            {!!d.company?.totals.unknown_model_costs && <CommandButton kind="company_usage" />}
           </div>
         </Card>
       </div>

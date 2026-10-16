@@ -27,6 +27,9 @@ async function waitConnected(page){await page.getByText('已连接本机服务',
 async function closeOperation(page){if(await page.locator('#operation-dialog').isVisible())await page.locator('#close-operation').click();}
 async function command(page,kind,fill=async()=>{}){
   await closeOperation(page);
+  const target = ['create','start','pause'].includes(kind) ? 'overview' : kind === 'event' ? 'activity' : 'settings';
+  await page.locator(`[data-nav="${target}"]`).click();
+  await page.waitForURL(`**/${target}?**`);
   await page.locator(`[data-command="${kind}"]`).first().click();
   await fill(page.locator('#operation-form'));
   await page.locator('#preview-operation').click();
@@ -94,6 +97,8 @@ async function waitFor(page,predicate){await page.waitForFunction(predicate,null
   check('F02: browser back restores the previous route',await page.locator('#page-title').textContent()==='工作与依赖');
   await page.goForward();await page.waitForURL('**/members?**');
   check('F02: browser forward restores the next route',await page.locator('#page-title').textContent()==='成员与岗位');
+  check('F06: member pages do not repeat unrelated global actions',await page.locator('[data-command]').count()===0);
+  await page.locator('[data-nav="activity"]').click();
   await page.locator('[data-command="event"]').click();
   await page.locator('[name="content"]').fill('轮询期间未提交的表单');await page.locator('[name="content"]').focus();
   const reservedBefore=complete.budget.calls_reserved;
@@ -185,6 +190,7 @@ async function waitFor(page,predicate){await page.waitForFunction(predicate,null
   await host.send({op:'recover',org});await fresh(page);check('A09: host recovery makes uncertainty explicit',(await snap(page)).execution_state==='unknown');
   await page.locator('[data-nav="settings"]').click();
   await command(page,'resources',async form=>{await form.locator('[name="max_calls"]').fill('8');await form.locator('[name="reason"]').fill('验证额度耗尽展示');});await closeOperation(page);await fresh(page);
+  await page.locator('[data-nav="overview"]').click();
   check('A04: exhausted call quota is visible and blocks further start',(await snap(page)).budget.blocked_reason.includes('额度耗尽') && await page.locator('[data-command="start"]').isDisabled());
   const observerContext=await browser.newContext({viewport:{width:390,height:844}});const observer=await observerContext.newPage();await observer.goto(host.observer_url);await waitConnected(observer);
   const forbidden=await observer.evaluate(async()=>{const response=await fetch('/api/commands',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});return response.status;});
@@ -194,6 +200,7 @@ async function waitFor(page,predicate){await page.waitForFunction(predicate,null
   const mobile=await context.newPage();await mobile.setViewportSize({width:390,height:844});await mobile.goto(host.origin);await waitConnected(mobile);
   await mobile.locator('[data-nav="settings"]').click();await command(mobile,'event',async form=>{await form.locator('[name="content"]').fill('手机端模拟意见');await form.locator('[name="source"]').fill('mobile-test');});await closeOperation(mobile);await fresh(mobile);
   check('C09: mobile completes a persistent command',(await snap(mobile)).events.some(e=>e.data.source==='mobile-test'));
+  await mobile.locator('[data-nav="settings"]').click();
   await mobile.screenshot({path:path.join(output,'settings-390.png'),fullPage:true});
   for(const width of [1024,390,320]){await mobile.setViewportSize({width,height:844});check(`A08/C09: no document overflow at ${width}px`,await mobile.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));}
   // Keep a response from another real organization in flight while switching back.

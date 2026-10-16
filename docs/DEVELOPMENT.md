@@ -1,5 +1,7 @@
 # 从新环境接手开发
 
+2026-10-16 更新：开发主分支 `dev`；小说公司首版已接入网页创建、模型 API 配置并绑定/连接测试、经营周期/章节/账本及缺失用量核对。操作入口按页面职责展示。最新范围和使用步骤见 [NOVEL_COMPANY.md](NOVEL_COMPANY.md)，下文旧迭代记录以此更新为准。
+
 更新：2026-10-14（北京时间）。面向只有 GitHub 仓库、没有上一轮聊天或云环境快照的开发者。最终验收与复盘见 [单页完成报告](../ai-union-completion-report.html)。
 
 统一开发入口为 `dev`，整合运行时、真实 API 和 React 前端；当前验证见 [dev 集成](../evidence/dev-integration/README.md)。真实 API 后端见 [005](../specs/005-real-model-api/spec.md)，配置与运行按 [API_MODELS.md](API_MODELS.md)。React 运行表单可选择已绑定的默认 API，连接管理表单仍待接入。下文各日期和数量保留其历史验收含义，不替代当前集成证据。

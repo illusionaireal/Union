@@ -1,0 +1,446 @@
+{
+  "book_title": "借来的明天",
+  "chapters": [
+    {
+      "artifact_id": "run-8a0878622e0346d295897d9ea76e0406-artifact-0",
+      "chapter_number": 1,
+      "decision_id": "run-50a7d31da3bc4286b5edf9b804c34da0",
+      "feedback": "模拟反馈：章节已接收。请核算本轮收支并安排下一步；订阅数不代表实际市场质量。",
+      "feedback_event_id": "novel-feedback-1-b48c8165a3564e35bab453ef6a13144d",
+      "income_minor": 360,
+      "negative_feedback": false,
+      "simulated": true,
+      "submitted_at": "2026-10-16T02:07:26.826561+00:00",
+      "subscriptions": 12,
+      "title": "借来的明天",
+      "work_id": "chapter-1"
+    },
+    {
+      "artifact_id": "run-3080914d06b046d886524232cf7470f8-artifact-0",
+      "chapter_number": 2,
+      "decision_id": "run-443be8055dd74b6e8068272a1bba50f9",
+      "feedback": "受控负面反馈：订阅由 12 降到 2。读者认为冲突出现太晚、叙述像流水账；请自行决定可执行调整，并在下一章落实。",
+      "feedback_event_id": "novel-feedback-2-bc35e4628661417098a7df95a4d8df82",
+      "income_minor": 60,
+      "negative_feedback": true,
+      "simulated": true,
+      "submitted_at": "2026-10-16T02:07:26.848959+00:00",
+      "subscriptions": 2,
+      "title": "不存在的车站",
+      "work_id": "chapter-2"
+    },
+    {
+      "artifact_id": "run-36e3e4fbfe6e412db34938a381e95cb9-artifact-0",
+      "chapter_number": 3,
+      "decision_id": "run-453097b5b9984d50a77e865fc6ebb215",
+      "feedback": "模拟反馈：章节已接收。请核算本轮收支并安排下一步；订阅数不代表实际市场质量。",
+      "feedback_event_id": "novel-feedback-3-739fb83b590d45b5aa081d4bd394d0da",
+      "income_minor": 240,
+      "negative_feedback": false,
+      "simulated": true,
+      "submitted_at": "2026-10-16T02:07:26.871146+00:00",
+      "subscriptions": 8,
+      "title": "我不选",
+      "work_id": "chapter-3"
+    }
+  ],
+  "completed": true,
+  "config": {
+    "initial_budget_minor": 10000,
+    "input_price_minor_per_million": 100,
+    "output_price_minor_per_million": 500
+  },
+  "currency": "CNY",
+  "feedback_actions": [
+    {
+      "chapter_number": 1,
+      "created_at": "2026-10-16T02:07:26.833012+00:00",
+      "decision_id": "run-4fc7cd06a1cf472aaae576eeaf32994e",
+      "delivered_work_ids": [
+        "chapter-2"
+      ],
+      "feedback_event_id": "novel-feedback-1-b48c8165a3564e35bab453ef6a13144d",
+      "next_work_ids": [
+        "chapter-2"
+      ],
+      "next_work_versions": {
+        "chapter-2": 1
+      },
+      "response": "核算本周期模拟收入和估算成本，保留人物与设定，继续下一章。"
+    },
+    {
+      "chapter_number": 2,
+      "created_at": "2026-10-16T02:07:26.856394+00:00",
+      "decision_id": "run-d659399e6fd04bb89a2104d375242402",
+      "delivered_work_ids": [
+        "chapter-3"
+      ],
+      "feedback_event_id": "novel-feedback-2-bc35e4628661417098a7df95a4d8df82",
+      "next_work_ids": [
+        "chapter-3"
+      ],
+      "next_work_versions": {
+        "chapter-3": 1
+      },
+      "response": "固定低订阅不证明市场需求。将第三章开头改为十秒限时威胁，减少行程说明，以角色主动行动解决冲突。"
+    },
+    {
+      "chapter_number": 3,
+      "created_at": "2026-10-16T02:07:26.879054+00:00",
+      "decision_id": "run-73d06d30d3ba4073b60c63c2b5a59a2b",
+      "delivered_work_ids": [],
+      "feedback_event_id": "novel-feedback-3-739fb83b590d45b5aa081d4bd394d0da",
+      "next_work_ids": [],
+      "next_work_versions": {},
+      "response": "三章已交付并完成模拟核算；停止本次试验，等待董事会审读正文与衔接。"
+    }
+  ],
+  "kind": "novel",
+  "ledger": [
+    {
+      "amount_minor": -1,
+      "created_at": "2026-10-16T02:07:26.191335+00:00",
+      "currency": "CNY",
+      "id": "model-run-0173915ab50840f5aae78f71142f40cc",
+      "input_tokens": 23,
+      "kind": "model",
+      "output_tokens": 11,
+      "prices": {
+        "initial_budget_minor": 10000,
+        "input_price_minor_per_million": 100,
+        "output_price_minor_per_million": 500
+      },
+      "reference": "run-0173915ab50840f5aae78f71142f40cc",
+      "run_status": "delivered",
+      "source": "simulated_usage"
+    },
+    {
+      "amount_minor": -1,
+      "created_at": "2026-10-16T02:07:26.802955+00:00",
+      "currency": "CNY",
+      "id": "model-run-caa6b2568b9644c2af42062881ef7cf5",
+      "input_tokens": 1000,
+      "kind": "model",
+      "output_tokens": 300,
+      "prices": {
+        "initial_budget_minor": 10000,
+        "input_price_minor_per_million": 100,
+        "output_price_minor_per_million": 500
+      },
+      "reference": "run-caa6b2568b9644c2af42062881ef7cf5",
+      "run_status": "delivered",
+      "source": "simulated_usage"
+    },
+    {
+      "amount_minor": -1,
+      "created_at": "2026-10-16T02:07:26.813129+00:00",
+      "currency": "CNY",
+      "id": "model-run-6870c3c01e7f4a9db2bf4bcbec5c32ed",
+      "input_tokens": 1200,
+      "kind": "model",
+      "output_tokens": 1000,
+      "prices": {
+        "initial_budget_minor": 10000,
+        "input_price_minor_per_million": 100,
+        "output_price_minor_per_million": 500
+      },
+      "reference": "run-6870c3c01e7f4a9db2bf4bcbec5c32ed",
+      "run_status": "delivered",
+      "source": "simulated_usage"
+    },
+    {
+      "amount_minor": -1,
+      "created_at": "2026-10-16T02:07:26.820190+00:00",
+      "currency": "CNY",
+      "id": "model-run-8a0878622e0346d295897d9ea76e0406",
+      "input_tokens": 1200,
+      "kind": "model",
+      "output_tokens": 1000,
+      "prices": {
+        "initial_budget_minor": 10000,
+        "input_price_minor_per_million": 100,
+        "output_price_minor_per_million": 500
+      },
+      "reference": "run-8a0878622e0346d295897d9ea76e0406",
+      "run_status": "delivered",
+      "source": "simulated_usage"
+    },
+    {
+      "amount_minor": 360,
+      "created_at": "2026-10-16T02:07:26.826570+00:00",
+      "currency": "CNY",
+      "id": "chapter-1-subscription",
+      "kind": "subscription",
+      "reference": "novel-feedback-1-b48c8165a3564e35bab453ef6a13144d",
+      "source": "mock_platform"
+    },
+    {
+      "amount_minor": -20,
+      "created_at": "2026-10-16T02:07:26.826574+00:00",
+      "currency": "CNY",
+      "id": "chapter-1-server",
+      "kind": "server",
+      "reference": "novel-feedback-1-b48c8165a3564e35bab453ef6a13144d",
+      "source": "mock_platform"
+    },
+    {
+      "amount_minor": -22,
+      "created_at": "2026-10-16T02:07:26.826576+00:00",
+      "currency": "CNY",
+      "id": "chapter-1-tax",
+      "kind": "tax",
+      "reference": "novel-feedback-1-b48c8165a3564e35bab453ef6a13144d",
+      "source": "mock_platform"
+    },
+    {
+      "amount_minor": -1,
+      "created_at": "2026-10-16T02:07:26.826913+00:00",
+      "currency": "CNY",
+      "id": "model-run-50a7d31da3bc4286b5edf9b804c34da0",
+      "input_tokens": 1000,
+      "kind": "model",
+      "output_tokens": 300,
+      "prices": {
+        "initial_budget_minor": 10000,
+        "input_price_minor_per_million": 100,
+        "output_price_minor_per_million": 500
+      },
+      "reference": "run-50a7d31da3bc4286b5edf9b804c34da0",
+      "run_status": "delivered",
+      "source": "simulated_usage"
+    },
+    {
+      "amount_minor": -1,
+      "created_at": "2026-10-16T02:07:26.833266+00:00",
+      "currency": "CNY",
+      "id": "model-run-4fc7cd06a1cf472aaae576eeaf32994e",
+      "input_tokens": 1000,
+      "kind": "model",
+      "output_tokens": 300,
+      "prices": {
+        "initial_budget_minor": 10000,
+        "input_price_minor_per_million": 100,
+        "output_price_minor_per_million": 500
+      },
+      "reference": "run-4fc7cd06a1cf472aaae576eeaf32994e",
+      "run_status": "delivered",
+      "source": "simulated_usage"
+    },
+    {
+      "amount_minor": -1,
+      "created_at": "2026-10-16T02:07:26.839982+00:00",
+      "currency": "CNY",
+      "id": "model-run-3080914d06b046d886524232cf7470f8",
+      "input_tokens": 1200,
+      "kind": "model",
+      "output_tokens": 1000,
+      "prices": {
+        "initial_budget_minor": 10000,
+        "input_price_minor_per_million": 100,
+        "output_price_minor_per_million": 500
+      },
+      "reference": "run-3080914d06b046d886524232cf7470f8",
+      "run_status": "delivered",
+      "source": "simulated_usage"
+    },
+    {
+      "amount_minor": 60,
+      "created_at": "2026-10-16T02:07:26.848972+00:00",
+      "currency": "CNY",
+      "id": "chapter-2-subscription",
+      "kind": "subscription",
+      "reference": "novel-feedback-2-bc35e4628661417098a7df95a4d8df82",
+      "source": "mock_platform"
+    },
+    {
+      "amount_minor": -20,
+      "created_at": "2026-10-16T02:07:26.848977+00:00",
+      "currency": "CNY",
+      "id": "chapter-2-server",
+      "kind": "server",
+      "reference": "novel-feedback-2-bc35e4628661417098a7df95a4d8df82",
+      "source": "mock_platform"
+    },
+    {
+      "amount_minor": -4,
+      "created_at": "2026-10-16T02:07:26.848980+00:00",
+      "currency": "CNY",
+      "id": "chapter-2-tax",
+      "kind": "tax",
+      "reference": "novel-feedback-2-bc35e4628661417098a7df95a4d8df82",
+      "source": "mock_platform"
+    },
+    {
+      "amount_minor": -1,
+      "created_at": "2026-10-16T02:07:26.849264+00:00",
+      "currency": "CNY",
+      "id": "model-run-443be8055dd74b6e8068272a1bba50f9",
+      "input_tokens": 1000,
+      "kind": "model",
+      "output_tokens": 300,
+      "prices": {
+        "initial_budget_minor": 10000,
+        "input_price_minor_per_million": 100,
+        "output_price_minor_per_million": 500
+      },
+      "reference": "run-443be8055dd74b6e8068272a1bba50f9",
+      "run_status": "delivered",
+      "source": "simulated_usage"
+    },
+    {
+      "amount_minor": -1,
+      "created_at": "2026-10-16T02:07:26.856666+00:00",
+      "currency": "CNY",
+      "id": "model-run-d659399e6fd04bb89a2104d375242402",
+      "input_tokens": 1000,
+      "kind": "model",
+      "output_tokens": 300,
+      "prices": {
+        "initial_budget_minor": 10000,
+        "input_price_minor_per_million": 100,
+        "output_price_minor_per_million": 500
+      },
+      "reference": "run-d659399e6fd04bb89a2104d375242402",
+      "run_status": "delivered",
+      "source": "simulated_usage"
+    },
+    {
+      "amount_minor": -1,
+      "created_at": "2026-10-16T02:07:26.863331+00:00",
+      "currency": "CNY",
+      "id": "model-run-36e3e4fbfe6e412db34938a381e95cb9",
+      "input_tokens": 1200,
+      "kind": "model",
+      "output_tokens": 1000,
+      "prices": {
+        "initial_budget_minor": 10000,
+        "input_price_minor_per_million": 100,
+        "output_price_minor_per_million": 500
+      },
+      "reference": "run-36e3e4fbfe6e412db34938a381e95cb9",
+      "run_status": "delivered",
+      "source": "simulated_usage"
+    },
+    {
+      "amount_minor": 240,
+      "created_at": "2026-10-16T02:07:26.871156+00:00",
+      "currency": "CNY",
+      "id": "chapter-3-subscription",
+      "kind": "subscription",
+      "reference": "novel-feedback-3-739fb83b590d45b5aa081d4bd394d0da",
+      "source": "mock_platform"
+    },
+    {
+      "amount_minor": -20,
+      "created_at": "2026-10-16T02:07:26.871159+00:00",
+      "currency": "CNY",
+      "id": "chapter-3-server",
+      "kind": "server",
+      "reference": "novel-feedback-3-739fb83b590d45b5aa081d4bd394d0da",
+      "source": "mock_platform"
+    },
+    {
+      "amount_minor": -15,
+      "created_at": "2026-10-16T02:07:26.871162+00:00",
+      "currency": "CNY",
+      "id": "chapter-3-tax",
+      "kind": "tax",
+      "reference": "novel-feedback-3-739fb83b590d45b5aa081d4bd394d0da",
+      "source": "mock_platform"
+    },
+    {
+      "amount_minor": -1,
+      "created_at": "2026-10-16T02:07:26.871458+00:00",
+      "currency": "CNY",
+      "id": "model-run-453097b5b9984d50a77e865fc6ebb215",
+      "input_tokens": 1000,
+      "kind": "model",
+      "output_tokens": 300,
+      "prices": {
+        "initial_budget_minor": 10000,
+        "input_price_minor_per_million": 100,
+        "output_price_minor_per_million": 500
+      },
+      "reference": "run-453097b5b9984d50a77e865fc6ebb215",
+      "run_status": "delivered",
+      "source": "simulated_usage"
+    },
+    {
+      "amount_minor": -1,
+      "created_at": "2026-10-16T02:07:26.879548+00:00",
+      "currency": "CNY",
+      "id": "model-run-73d06d30d3ba4073b60c63c2b5a59a2b",
+      "input_tokens": 1000,
+      "kind": "model",
+      "output_tokens": 300,
+      "prices": {
+        "initial_budget_minor": 10000,
+        "input_price_minor_per_million": 100,
+        "output_price_minor_per_million": 500
+      },
+      "reference": "run-73d06d30d3ba4073b60c63c2b5a59a2b",
+      "run_status": "delivered",
+      "source": "simulated_usage"
+    }
+  ],
+  "platform": {
+    "price_minor": 30,
+    "server_minor": 20,
+    "simulated": true,
+    "subscriptions": [
+      12,
+      2,
+      8
+    ],
+    "tax_basis_points": 600,
+    "version": "novel-mock-v1"
+  },
+  "quality_review": "待人工审读：设定、情节衔接、每章推进、负面反馈后的实际改变。",
+  "reviews": [
+    {
+      "chapter_number": 1,
+      "created_at": "2026-10-16T02:07:26.833012+00:00",
+      "decision_id": "run-4fc7cd06a1cf472aaae576eeaf32994e",
+      "feedback_event_id": "novel-feedback-1-b48c8165a3564e35bab453ef6a13144d",
+      "next_work_ids": [
+        "chapter-2"
+      ],
+      "next_work_versions": {
+        "chapter-2": 1
+      },
+      "response": "核算本周期模拟收入和估算成本，保留人物与设定，继续下一章。"
+    },
+    {
+      "chapter_number": 2,
+      "created_at": "2026-10-16T02:07:26.856394+00:00",
+      "decision_id": "run-d659399e6fd04bb89a2104d375242402",
+      "feedback_event_id": "novel-feedback-2-bc35e4628661417098a7df95a4d8df82",
+      "next_work_ids": [
+        "chapter-3"
+      ],
+      "next_work_versions": {
+        "chapter-3": 1
+      },
+      "response": "固定低订阅不证明市场需求。将第三章开头改为十秒限时威胁，减少行程说明，以角色主动行动解决冲突。"
+    },
+    {
+      "chapter_number": 3,
+      "created_at": "2026-10-16T02:07:26.879054+00:00",
+      "decision_id": "run-73d06d30d3ba4073b60c63c2b5a59a2b",
+      "feedback_event_id": "novel-feedback-3-739fb83b590d45b5aa081d4bd394d0da",
+      "next_work_ids": [],
+      "next_work_versions": {},
+      "response": "三章已交付并完成模拟核算；停止本次试验，等待董事会审读正文与衔接。"
+    }
+  ],
+  "scope": "同一本小说连续三章；第二周期低订阅是受控实验，不能推断市场或质量。",
+  "target_cycles": 3,
+  "totals": {
+    "balance_minor": 10547,
+    "income_minor": 660,
+    "initial_budget_minor": 10000,
+    "model_estimate_minor": 12,
+    "operating_cost_minor": 101,
+    "unknown_model_costs": 0
+  }
+}

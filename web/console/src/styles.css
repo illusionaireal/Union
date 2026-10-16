@@ -1402,3 +1402,88 @@ summary {
     scroll-behavior: auto !important;
   }
 }
+.company-panel {
+  margin-bottom: 24px;
+}
+.company-steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  padding: 16px 0;
+  color: var(--primary, #6558dd);
+}
+.company-finances {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin: 12px 0;
+}
+.company-finances > div {
+  background: #f7f8fc;
+  border-radius: 10px;
+  padding: 16px;
+}
+.company-finances small {
+  display: block;
+  color: #707789;
+  margin-bottom: 8px;
+}
+.company-finances strong {
+  font-size: 25px;
+}
+.company-chapters {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin: 24px 0;
+}
+.company-chapter {
+  border: 1px solid #e6e9f1;
+  border-radius: 12px;
+  padding: 18px;
+  overflow-wrap: anywhere;
+}
+.company-chapter.negative {
+  border-color: #e9bf78;
+  background: #fffcf6;
+}
+.company-chapter p {
+  font-size: 13px;
+  line-height: 1.8;
+}
+.company-complete {
+  padding: 14px;
+  background: #eef7f1;
+  border-radius: 8px;
+  color: #267043;
+}
+.company-ledger {
+  overflow: auto;
+}
+.company-ledger table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.company-ledger th,
+.company-ledger td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #e6e9f1;
+}
+@media (max-width: 1000px) {
+  .company-chapters {
+    grid-template-columns: 1fr;
+  }
+  .company-finances {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 400px) {
+  .company-finances strong {
+    font-size: 20px;
+  }
+  .company-finances > div {
+    padding: 10px;
+  }
+}

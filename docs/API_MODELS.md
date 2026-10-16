@@ -1,5 +1,7 @@
 # 真实模型 API：运行与前端接口
 
+2026-10-16 更新：开发主分支 `dev`；小说公司首版已接入网页创建、模型 API 配置并绑定/连接测试、经营周期/章节/账本及缺失用量核对。操作入口按页面职责展示。最新范围和使用步骤见 [NOVEL_COMPANY.md](NOVEL_COMPANY.md)，下文旧迭代记录以此更新为准。
+
 更新：2026-10-13。后端支持 OpenAI-compatible Chat Completions，通过配置的 API 根地址调用 `/chat/completions`。无需 Codex CLI。前端页面由独立开发者接入；本次未修改 `web/console/` 或生成的 HTML。
 
 2026-10-14：在 `dev` 中与 React 前端整合。已绑定默认 API 可从运行表单选择，API 与 Codex 的名称和模型配置分别表达；API 回执类型、失败状态与查询身份已兼容。连接管理表单仍待接入，配置和绑定按下文 CLI／HTTP 完成。合并验证见 [dev](../evidence/dev-integration/README.md)。

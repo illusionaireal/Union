@@ -73,6 +73,8 @@ def snapshot(engine, offset=0, limit=50):
         if execution == "unconfirmed":
             blocked.append("执行活性未确认；读取不会触发恢复或重派")
         next_step = "bootstrap" if state["phase"] == "bootstrap" else "execute_work" if ready else "decide" if pending else "wait"
+        if state.get("company") and len(state["company"]["chapters"]) > len(state["company"]["reviews"]):
+            next_step = "decide"
         if budget["blocked_reason"] or unknown:
             next_step = "blocked"
         elif running:
@@ -80,7 +82,11 @@ def snapshot(engine, offset=0, limit=50):
         elif paused:
             next_step = "paused"
         wakes = [w["until"] for w in state["wakeups"] if not w["fired"]]
-        return {"organization": organization, "charter": charter, "budget": budget, "ready_work": ready,
+        from .company import view
+        company = view(state)
+        if company and company["completed"] and not running:
+            next_step = "wait"
+        return {"company": company, "organization": organization, "charter": charter, "budget": budget, "ready_work": ready,
                 "execution_config": {"codex_model": state.get("execution_config", {}).get("codex_model"),
                                      "api_connection_id": state.get("execution_config", {}).get("api_connection_id")},
                 "pending_events": pending, "next_step": next_step, "blocked_reasons": blocked,

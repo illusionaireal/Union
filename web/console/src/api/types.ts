@@ -1,7 +1,19 @@
 /** Wire contracts of ai_union.console / observation. No host paths or credentials. */
 export type CommandKind =
-  'create' | 'start' | 'pause' | 'event' | 'resources' | 'model' | 'amend' | 'reconcile';
-export type ReceiptKind = CommandKind | 'api_connection' | 'api_binding' | 'api_test';
+  | 'create'
+  | 'start'
+  | 'pause'
+  | 'event'
+  | 'resources'
+  | 'model'
+  | 'amend'
+  | 'reconcile'
+  | 'api_connection'
+  | 'api_binding'
+  | 'api_test'
+  | 'company_usage';
+export type ReceiptKind =
+  CommandKind | 'api_connection' | 'api_binding' | 'api_test' | 'company_usage';
 export interface Session {
   role: 'board' | 'observer';
   organizations: { id: string; name: string }[];
@@ -117,6 +129,7 @@ export interface PendingRequest {
   kind: ReceiptKind;
 }
 export interface Snapshot {
+  company?: Company | null;
   service_instance: string;
   snapshot_sequence: number;
   organization: {
@@ -157,4 +170,53 @@ export interface Snapshot {
   receipts: Receipt[];
   pagination: { offset: number; limit: number; event_count: number; decision_count: number };
   source: 'fixture' | 'real' | 'mixed' | 'not_run';
+}
+
+export interface Company {
+  kind: 'novel';
+  currency: string;
+  book_title: string | null;
+  target_cycles: number;
+  completed: boolean;
+  scope: string;
+  quality_review: string;
+  chapters: {
+    chapter_number: number;
+    title: string;
+    artifact_id: string;
+    feedback: string;
+    subscriptions: number;
+    income_minor: number;
+    negative_feedback: boolean;
+  }[];
+  reviews: {
+    chapter_number: number;
+    response: string;
+    decision_id: string;
+    next_work_ids: string[];
+  }[];
+  feedback_actions: {
+    chapter_number: number;
+    response: string;
+    decision_id: string;
+    next_work_ids: string[];
+    delivered_work_ids: string[];
+  }[];
+  totals: {
+    initial_budget_minor: number;
+    balance_minor: number;
+    income_minor: number;
+    operating_cost_minor: number;
+    model_estimate_minor: number;
+    unknown_model_costs: number;
+  };
+  ledger: {
+    id: string;
+    kind: string;
+    amount_minor: number | null;
+    source: string;
+    reference: string;
+    input_tokens?: number | null;
+    output_tokens?: number | null;
+  }[];
 }
