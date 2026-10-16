@@ -176,9 +176,7 @@ export default function Models() {
                   </div>
                   <div>
                     <dt>输出模式</dt>
-                    <dd>
-                      {c.config.response_format === 'json_schema' ? 'JSON Schema' : 'JSON Object'}
-                    </dd>
+                    <dd>普通对话与组织工具</dd>
                   </div>
                   <div>
                     <dt>连接状态</dt>

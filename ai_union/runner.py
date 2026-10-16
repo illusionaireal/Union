@@ -47,10 +47,14 @@ def step(engine, executor):
             engine.finish_decision(package["run_id"], result, usage)
         else:
             engine.finish_work(package["run_id"], result, usage)
+        if hasattr(executor, "accepted"):
+            executor.accepted()
         return {"action": package["kind"], "run_id": package["run_id"], "work_id": package.get("work_id"), "executor": executor.name}
     except (ExecutionFailure, Rejected, OSError, ValueError) as e:
         failure = public_failure(getattr(e, "failure", None)) or (runtime_failure(e) if isinstance(e, Rejected) else issue("execution_unknown" if getattr(e, "unknown", False) else "execution_failed"))
         engine.fail_run(package["run_id"], str(e), unknown=getattr(e, "unknown", False), usage=getattr(e, "usage", usage), failure=failure)
+        if hasattr(executor, "feedback") and executor.feedback(package, e):
+            return {"action": "correction", "run_id": package["run_id"], "reason": str(e), "failure": failure}
         return {"action": "blocked", "run_id": package["run_id"], "reason": str(e), "failure": failure}
     except BaseException:
         engine.fail_run(package["run_id"], "执行被中断；先核对结果", unknown=True)
@@ -90,6 +94,8 @@ def run(engine, executor, max_steps):
             actions.append(action)
             if action["action"] in ("wait", "blocked", "paused"):
                 break
+        if actions and actions[-1]["action"] == "correction":
+            actions[-1] = actions[-1] | {"action": "blocked", "reason": "本次调用步数已用完；组织提议尚待修正"}
     return actions
 
 
@@ -117,4 +123,6 @@ def watch(engine, executor, max_steps, max_seconds, poll_seconds=1):
             if action["action"] in ("blocked", "paused"):
                 break
             calls += 1
+    if actions and actions[-1]["action"] == "correction":
+        actions[-1] = actions[-1] | {"action": "blocked", "reason": "本次运行额度或时间已用完；组织提议尚待修正"}
     return actions or [{"action": "wait", "reason": "等待期间没有新事件"}]

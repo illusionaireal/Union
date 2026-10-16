@@ -146,7 +146,12 @@ describe('novel company setup', () => {
       target: { value: 'private-test-key' },
     });
     const request = readForm('api_connection', form);
-    expect(request).toMatchObject({ bind_default: true, api_key: 'private-test-key' });
+    expect(request).toMatchObject({
+      bind_default: true,
+      api_key: 'private-test-key',
+      config: { response_format: 'agent', token_limit_field: 'max_tokens' },
+    });
+    expect(screen.queryByLabelText('结构化输出模式')).not.toBeInTheDocument();
     expect(JSON.stringify(publicPreview(request))).not.toContain('private-test-key');
   });
 });
@@ -183,7 +188,7 @@ describe('saved API connection editing', () => {
     expect(screen.getByLabelText('连接 ID')).toHaveAttribute('readonly');
     expect(screen.getByLabelText('API Key（留空保留原密钥）')).toHaveValue('');
     const saved = readForm('api_connection', screen.getByRole('form') as HTMLFormElement);
-    expect(saved.config).toEqual(connection.config);
+    expect(saved.config).toEqual({ ...connection.config, response_format: 'agent' });
     expect(saved).not.toHaveProperty('api_key');
   });
   it('creates a distinct new connection even when a default is already bound', () => {

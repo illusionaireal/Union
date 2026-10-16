@@ -4,6 +4,8 @@
 
 你给目标和预算，它自行组织团队、开展业务、交付成果，并向你汇报经营情况。开发主分支为 **`dev`**。
 
+**2026-10-17：修正 API 与初始化协议。** API 使用普通对话和按职责提供的组织工具，不再要求每一步返回整包 Schema。连接测试接收普通文本，工作正文直接保存；初始化由模型安排成员与任务，程序维护内部标识、任职与版本。旧 API 连接可继续读取，网页已移除 JSON 输出模式。实现与验证范围见 [009](specs/009-agent-conversation/spec.md)；真实供应商仍须单独验收。
+
 **2026-10-16：整体工作台更新。** 通用公司与已有组织共用新版首页、启动引导和八页导航。左侧 **模型与 API** 可直接新增连接，填写 API 根地址、API Key 和模型；支持编辑公开配置、切换/取消默认连接、连接测试及回执。入口是 `/models`，无需先创建小说公司。小说经营面板保留为可选业务试验。使用与验收见 [007 工作台更新](specs/007-workspace-redesign/spec.md) 和 [前端工程](docs/FRONTEND.md)。
 
 **小说公司首版链路已实现（2026-10-16）**：网页创建公司、配置并测试模型 API；一次启动连续完成计划、创作、mock 投稿、模拟订阅结算与经营复盘。三周期后停止，保存负面反馈到后续交付的证据。工程与本地 HTTP 模拟验收已通过；真实供应商运行与三章人工审读仍待验收。
@@ -29,7 +31,7 @@ npm start -- --root .union/console --port 8766 --open
 
 浏览器从本机一次性链接建立发起人会话，默认仅配置 fixture。正式源码在 [web/console](web/console)，Vite 构建由 Python 同源提供；[工程与架构](docs/FRONTEND.md)、[工作台使用说明](docs/CONSOLE.md)包含开发、操作和恢复流程。原单 HTML 保留为演示及历史资料。
 
-**真实模型 API 后端已接入。** 可配置 OpenAI-compatible API 根地址、模型、私有密钥、输出模式、输出上限与超时，绑定组织默认连接，通过 CLI 或受信 HTTP 命令测试连接及执行。无需 Codex CLI；配置本身不调用模型。React 工作台已整合；API 配置、默认绑定与连接测试已接入网页；CLI／HTTP 入口继续可用。运行步骤与完整前端契约见 [API_MODELS.md](docs/API_MODELS.md)，实现范围见 [005](specs/005-real-model-api/spec.md)。当前证据来自本地 HTTP 替身，真实供应商调用仍为 0。
+**真实模型 API 后端已接入。** 可配置 Chat Completions API 地址、模型、私有密钥、输出上限与超时，绑定组织默认连接，通过普通对话及组织工具执行。无需 Codex CLI；配置本身不调用模型。React 工作台已整合；API 配置、默认绑定与连接测试已接入网页；CLI／HTTP 入口继续可用。运行步骤与当前契约见 [API_MODELS.md](docs/API_MODELS.md)，原实现范围见 [005](specs/005-real-model-api/spec.md)。当前证据来自本地 HTTP 替身，真实供应商调用仍为 0。
 
 产品与设计基线：[统一 PRD v0.3](docs/PRD.md)、[产品设计说明](docs/product-design.md)、[操作工作台单 HTML 原型](ai-union-dashboard-prototype.html)、[软件复用与 AI 适配](docs/software-reuse.md)。原型支持七视图、操作表单与预览、回执、有限 fixture 步骤、详情及异常情景。48 项观察交互与 32 项操作交互检查通过；仅模拟浏览器内状态，未连接真实组织服务，模型调用为 0。
 

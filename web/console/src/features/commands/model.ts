@@ -128,7 +128,7 @@ export function readForm(kind: CommandKind, form: HTMLFormElement): Record<strin
           name: str('connection_name'),
           base_url: str('base_url'),
           model: str('api_model'),
-          response_format: str('response_format'),
+          response_format: 'agent',
           token_limit_field: str('token_limit_field'),
           max_output_tokens: Number(str('max_output_tokens')),
           timeout_seconds: Number(str('api_timeout')),

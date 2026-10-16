@@ -2,7 +2,7 @@
   "name": "My model API",
   "base_url": "https://api.openai.com/v1",
   "model": "your-model-id",
-  "response_format": "json_schema",
+  "response_format": "agent",
   "token_limit_field": "max_completion_tokens",
   "max_output_tokens": 4096,
   "timeout_seconds": 180,

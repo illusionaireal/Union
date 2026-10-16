@@ -1,5 +1,7 @@
 # 真实模型 API：运行与前端接口
 
+2026-10-17：API 改为普通对话与组织工具，不再发送 `response_format` 或整包输出 Schema。连接测试接收普通回复，工作直接保存正文，初始化工具接收成员、职责和首批任务，宿主生成内部标识、任职与版本依据。旧连接无需重建。当前行为见 [009](../specs/009-agent-conversation/spec.md)；Codex CLI 保留原结构化适配器。下文日期段落保留历史记录，当前契约按正文更新。
+
 2026-10-16 更新：开发主分支 `dev`；小说公司首版已接入网页创建、模型 API 配置并绑定/连接测试、经营周期/章节/账本及缺失用量核对。操作入口按页面职责展示。最新范围和使用步骤见 [NOVEL_COMPANY.md](NOVEL_COMPANY.md)，下文旧迭代记录以此更新为准。
 
 更新：2026-10-13。后端支持 OpenAI-compatible Chat Completions，通过配置的 API 根地址调用 `/chat/completions`。无需 Codex CLI。前端页面由独立开发者接入；本次未修改 `web/console/` 或生成的 HTML。
@@ -14,14 +16,14 @@
 python3 -m ai_union --root .union/api-real init --name "真实模型测试" --board-name "发起人（本地测试）" --charter examples/charter.local.json --resources examples/resources.local.json
 ```
 
-复制 `examples/model-api.json` 到私有目录，例如 `.union/api-real/model-api.json`，填写供应商 API 根地址和实际模型 ID。文件不含密钥。配置项必须齐全：
+复制 `examples/model-api.json` 到私有目录，例如 `.union/api-real/model-api.json`，填写供应商 API 地址和实际模型 ID。文件不含密钥。除输出模式字段外，配置项必须齐全：
 
 | 字段 | 含义 |
 | --- | --- |
 | `name` | 连接显示名称，1–100 字符 |
-| `base_url` | API 根地址，例如 `https://api.openai.com/v1`；不含 `/chat/completions`、账号密码、查询参数或片段 |
+| `base_url` | API 根地址或完整 `/chat/completions` 地址；不含账号密码、查询参数或片段 |
 | `model` | 实际模型 ID；首版采用既有 1–128 位模型标识格式 |
-| `response_format` | `json_schema`：严格结构化输出；`json_object`：JSON 模式，仍由宿主验证完整协议 |
+| `response_format` | 可省略，当前值为 `agent`；旧 `json_schema`／`json_object` 自动迁移，不会传给供应商 |
 | `token_limit_field` | `max_completion_tokens` 或 `max_tokens`，按供应商接口选择 |
 | `max_output_tokens` | 1–32768；会传给供应商，实际约束由供应商执行，不等于金额硬上限 |
 | `timeout_seconds` | 1–600；实际单次截止时间取该值与组织资源超时的较小值 |
@@ -42,7 +44,7 @@ Windows 使用 `python`。示例资源累计最多 8 次调用：连接测试使
 
 `--api-key-file` 与 `--api-key-env` 二选一。更新配置时省略这两项沿用已保存密钥；API 地址改变时必须明确重填或使用 `--clear-api-key`。`api-bind` 省略连接 ID 清除默认绑定。`run/watch --connection-id OTHER` 覆盖本次连接；API 模型由选中连接决定，不接受 `--model`。`watch` 同样支持 API，并要求有限 `--max-steps` 与 `--max-seconds`。
 
-连接测试验证实际模型、输出模式和输出上限字段，最多请求 512 个生成 token；它不消费业务事件、不建立岗位、不启动派发，组织原有暂停状态保持。连接测试也可能因推理 token 用尽或模型不支持结构化输出失败；明确调整配置后用新的请求再次测试，不静默降级。
+连接测试发送一次普通对话，接收非空文本即可，不要求 JSON，也不发送工具。它沿用配置的有限输出上限和超时，不消费业务事件、不建立岗位、不启动派发，组织原有暂停状态保持。成功只证明普通对话可用；组织协作还需要模型支持 Chat Completions 工具调用。推理可能占用输出额度，应按供应商选择合适的上限字段和额度。
 
 ## 2. 前端可直接使用的契约
 
@@ -77,7 +79,7 @@ Content-Type: application/json
       "name": "My model API",
       "base_url": "https://api.openai.com/v1",
       "model": "your-model-id",
-      "response_format": "json_schema",
+      "response_format": "agent",
       "token_limit_field": "max_completion_tokens",
       "max_output_tokens": 4096,
       "timeout_seconds": 180,
@@ -108,14 +110,18 @@ Content-Type: application/json
 
 用量记录包含供应商实际返回的 input/output/cached token、实际模型、响应 ID、`x-request-id`、耗时。供应商未提供的 token 不补 0。金额始终为 `cost=null, cost_status=unknown`，不接受未知计费下的金额硬上限。费用计账由后续适配负责，当前只约束调用数、请求输出限制和等待时间。
 
-只发一次非流式请求，不自动重试、不跟随 HTTP 重定向，也不自动探测其它模型或输出模式。TLS 使用系统信任和证书校验；首版不自动使用环境 HTTP 代理，可配置供应商的 HTTPS 网关地址。回环服务可使用 HTTP，但总是标为 `local_test`，不能据此声称真实供应商 E1/E2 通过。
+每条执行记录只发一次非流式请求，不跟随 HTTP 重定向，也不自动探测其它模型。TLS 使用系统信任和证书校验；首版不自动使用环境 HTTP 代理，可配置供应商的 HTTPS 网关地址。回环服务可使用 HTTP，但总是标为 `local_test`，不能据此声称真实供应商 E1/E2 通过。
 
-401/403、429、其它明确 4xx、重定向、截断/拒绝/工具输出和不符合 JSON 协议的结果失败；5xx、发出后断开、整体超时或宿主中断进入 unknown。所有调用保留额度。unknown 阻止新调用，按原核对入口处理，不因为本地线程结束推断供应商取消。
+初始化提示说明目标、章程、预算、职责和开始工作的要求。模型用姓名及任务标题建立分工，宿主生成内部 ID、任职及原始版本依据，再经现有权限检查与事务提交。后续 `update_organization` 只提供当前章程及岗位允许的操作。正常工作直接保存正文；无法完成时可用 `report_blocked` 说明原因。
 
-私有执行目录仍为 `executions/RUN_ID/`，API 路径保存工作包、schema、配置依据、已验证结果和脱敏回执；不保存供应商原始错误正文。API Key 存在组织 `state.sqlite3` 的私有 `model_connections` 表，正式状态只保存绑定 ID。数据库及运行目录不得上传 Git；本地管理员/操作系统是信任边界，Windows 使用用户目录访问控制，未声称提供加密 vault。
+收到完整组织回复但遗漏工具或提议校验失败时，在本次剩余调用额度内反馈具体原因，最多允许一次修正。修正作为新执行占用一次调用并单独记录 token；额度或预算不足就停止，不能把未保存的计划报为成功。正文不会被猜测成可执行命令。
+
+401/403、429、其它明确 4xx、重定向、截断、拒绝及损坏的 API 消息不会自动重发；5xx、发出后断开、整体超时或宿主中断进入 unknown。所有调用保留额度。unknown 阻止新调用，按原核对入口处理，不因为本地线程结束推断供应商取消。
+
+私有执行目录仍为 `executions/RUN_ID/`，API 路径保存工作包、无密钥请求、配置依据、已验证结果和脱敏回执，必要时保存修正反馈；不保存供应商原始错误正文。API Key 存在组织 `state.sqlite3` 的私有 `model_connections` 表，正式状态只保存绑定 ID。数据库及运行目录不得上传 Git；本地管理员/操作系统是信任边界，Windows 使用用户目录访问控制，未声称提供加密 vault。
 
 ## 4. 验证与当前限制
 
 本轮测试使用回环 HTTP 替身，验证传输、额度、持久化、组织协作机制与错误处理；真实付费供应商调用为 0。`evaluate` 已接受 `api` 执行器，但排除连接测试、fixture 和 `local_test`。真实 E1/E2 需要配置用户的凭据和有限资源后另行留存证据；小说发布、订阅和税费 mock 不等于真实市场反馈。
 
-API 兼容性以每个供应商的连接测试及试跑为准。不支持原生 Anthropic、Responses、流式输出、工具调用、远程取消或自动重连。本轮未修改前端页面。
+API 兼容性以每个供应商的普通连接测试及组织工具试跑为准。支持 Chat Completions 工具调用；不支持原生 Anthropic、Responses、流式输出、远程取消或自动重连。网页已去掉结构化输出选择，并标明普通连接与工具协作的区别。

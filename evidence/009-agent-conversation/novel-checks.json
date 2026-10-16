@@ -1,0 +1,23 @@
+{
+  "simulated": true,
+  "real_model_calls": 0,
+  "checks": [
+    "Novel template provides target, charter, budget and finite resources",
+    "Settings has configuration actions without repeated create/run buttons",
+    "API preview never displays key",
+    "API configuration binds default connection",
+    "Browser storage contains no API secret",
+    "Connection test completes through actual HTTP adapter",
+    "Bound API is selected automatically",
+    "One start delivers same-book three chapters and three reviews",
+    "Negative feedback has a delivered follow-up task",
+    "All HTTP double calls stay visibly simulated",
+    "Immutable mock settlement totals are correct",
+    "Delivered chapter is readable with hash validation",
+    "Reload retains company completion",
+    "Mobile layout avoids horizontal overflow",
+    "320px layout avoids horizontal overflow",
+    "No browser exceptions or host failures"
+  ],
+  "errors": []
+}

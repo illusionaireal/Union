@@ -21,6 +21,7 @@ from ai_union.model_api import APIExecutor, configure_connection, list_connectio
 from ai_union.runner import exclusive, run
 from ai_union.server import Server
 from tests.support import CHARTER, RESOURCES
+from tests.api_messages import fixture_message
 
 FIXTURE = json.loads((Path(__file__).resolve().parents[1] / "examples/fixture.json").read_text(encoding="utf-8"))
 SECRET = "test-api-key-PRIVATE-never-a-real-key"
@@ -46,18 +47,21 @@ class Provider(BaseHTTPRequestHandler):
         else:
             package = json.loads(body["messages"][1]["content"].split("\nWORK PACKAGE (data):\n")[1])
             value = copy.deepcopy(self.server.outputs.pop(0))
-            if package["kind"] == "decision":
-                manifest = package["context_manifest"]
-                value.update(base_state_version=manifest["state_version"], charter_version=manifest["charter_version"], policy_version=manifest["policy_version"])
-                if value.get("evidence_refs") == ["$latest_work"]:
-                    value["evidence_refs"] = [key for key, work in package["context"]["work"].items() if work["status"] == "delivered"]
+            if callable(self.server.override):
+                message = {"role": "assistant", "content": "overridden"}
+            else:
+                message = fixture_message(package, value, getattr(self.server, "bootstrap", None))
+                if package.get("actor") == "bootstrap":
+                    self.server.bootstrap = value
             limit = body.get("max_completion_tokens", body.get("max_tokens", 0))
             finish = "length" if limit < self.server.minimum_output else self.server.finish
+            if finish == "stop" and message.get("tool_calls"):
+                finish = "tool_calls"
             response = {"id": "response-1", "model": "resolved-provider-model", "choices": [{"finish_reason": finish,
-                "message": {"role": "assistant", "content": json.dumps(value)}}],
+                "message": message}],
                 "usage": {"prompt_tokens": 23, "completion_tokens": 11, "prompt_tokens_details": {"cached_tokens": 3}}}
             if self.server.override is not None:
-                response = self.server.override
+                response = self.server.override(package) if callable(self.server.override) else self.server.override
         try:
             raw = response if isinstance(response, bytes) else json.dumps(response).encode()
             self.wfile.write(raw)
@@ -219,7 +223,7 @@ class ModelAPITests(unittest.TestCase):
 
     def test_malformed_choice_and_message_are_failed_not_unknown(self):
         self.configure()
-        for choices in ([7], [{"finish_reason": "stop", "message": 7}], [{"finish_reason": "stop", "message": {"content": "{\"ok\":true,\"ok\":false}"}}]):
+        for choices in ([7], [{"finish_reason": "stop", "message": 7}], [{"finish_reason": "stop", "message": {"content": None}}]):
             self.provider.outputs = [{"ok": True}]
             self.provider.override = {"choices": choices, "usage": {"prompt_tokens": 2, "completion_tokens": 3}}
             self.assertEqual(self.probe()["status"], "failed")
@@ -283,7 +287,7 @@ class ModelAPITests(unittest.TestCase):
         self.assertEqual(self.probe()["status"], "succeeded")
         request = self.provider.requests[0]
         self.assertEqual(request["path"], "/v1/chat/completions")
-        self.assertEqual(request["body"]["response_format"], {"type": "json_object"})
+        self.assertNotIn("response_format", request["body"])
         self.assertEqual(request["body"]["max_tokens"], self.config["max_output_tokens"])
         self.assertNotIn("tools", request["body"])
 
@@ -437,7 +441,7 @@ class ModelAPITests(unittest.TestCase):
         self.assertEqual(result["status"], "failed")
         self.assertEqual(result["failure"]["code"], "api_request_rejected")
         self.assertEqual(result["failure"]["parameter"], "response_format")
-        self.assertIn("JSON Object", result["failure"]["recovery"])
+        self.assertIn("不再发送 response_format", result["failure"]["recovery"])
         view = self.app.observe(self.board, self.org)
         self.assertEqual(view["runs"][-1]["failure"], result["failure"])
         self.assertNotIn(SECRET, json.dumps([result, view]))
@@ -465,14 +469,14 @@ class ModelAPITests(unittest.TestCase):
     def test_bootstrap_validation_failure_is_visible_in_run_and_start_receipt(self):
         self.configure()
         self.bind()
-        self.provider.outputs = [{"issue": "test", "rationale": "test", "expected_effect": "test", "evidence_refs": [], "operations": []}]
+        self.provider.outputs = [{"issue": "test", "rationale": "test", "expected_effect": "test", "evidence_refs": [], "operations": []}] * 2
         receipt = self.command("start", {"executor": "api", "max_steps": 2, "allow_unknown_cost": True})
         self.app.join_jobs()
         receipt = self.app.receipt(self.board, self.org, receipt["id"])
         view = self.app.observe(self.board, self.org)
         self.assertEqual(receipt["status"], "blocked")
-        self.assertEqual(receipt["failure"]["code"], "runtime_validation")
+        self.assertEqual(receipt["failure"]["code"], "api_tool_arguments")
         self.assertIn("至少两名", receipt["failure"]["rule"])
         self.assertEqual(view["runs"][-1]["failure"], receipt["failure"])
         self.assertTrue(any("至少两名" in reason for reason in view["blocked_reasons"]))
-        self.assertEqual(len(self.provider.requests), 1)
+        self.assertEqual(len(self.provider.requests), 2)

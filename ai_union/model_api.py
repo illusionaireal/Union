@@ -12,18 +12,17 @@ import time
 from pathlib import Path
 from urllib.parse import urlsplit
 
-from .engine import encoded, identifier, model_name, now, require, text, uid
+from .engine import Rejected, encoded, identifier, model_name, now, require, text, uid
 from .executor import ExecutionFailure
 from .failures import issue
-from .protocol import DECISION_SCHEMA, WORK_SCHEMA, instructions, obj
+from .agent_protocol import compile_tool, instructions, model_input, tools_for, work_result
 
 
-PROBE_SCHEMA = obj({"ok": {"type": "boolean", "enum": [True]}})
 CONFIG_FIELDS = {"name", "base_url", "model", "response_format", "token_limit_field", "max_output_tokens", "timeout_seconds", "enabled"}
 
 
 def validate_config(config):
-    require(isinstance(config, dict) and set(config) == CONFIG_FIELDS, "API 配置字段缺失或不支持")
+    require(isinstance(config, dict) and CONFIG_FIELDS - {"response_format"} <= set(config) <= CONFIG_FIELDS, "API 配置字段缺失或不支持")
     result = copy.deepcopy(config)
     text(result["name"], "连接名称", 100)
     require(model_name(result["model"]) is not None, "API 必须指定模型 ID")
@@ -39,9 +38,12 @@ def validate_config(config):
         require(port is None or 1 <= port <= 65535, "API 端口无效")
     except ValueError:
         require(False, "API 地址格式无效")
-    require(not parts.path.rstrip("/").endswith("/chat/completions"), "Base URL 应为 API 根地址，例如 https://api.openai.com/v1")
     result["base_url"] = url.rstrip("/")
-    require(result["response_format"] in ("json_schema", "json_object"), "结构化输出模式不支持")
+    if result["base_url"].endswith("/chat/completions"):
+        result["base_url"] = result["base_url"][:-len("/chat/completions")]
+    require(result.get("response_format", "agent") in ("agent", "json_schema", "json_object"), "输出模式不支持")
+    # Read old connection records without perpetuating their forced output mode.
+    result["response_format"] = "agent"
     require(result["token_limit_field"] in ("max_completion_tokens", "max_tokens"), "输出上限字段不支持")
     require(type(result["max_output_tokens"]) is int and 1 <= result["max_output_tokens"] <= 32768, "输出上限必须为 1–32768")
     require(type(result["timeout_seconds"]) is int and 1 <= result["timeout_seconds"] <= 600, "API 超时必须为 1–600 秒")
@@ -90,7 +92,7 @@ def list_connections(engine):
 
 
 def public_connection(row):
-    return {"id": row["id"], "revision": row["revision"], "config": json.loads(row["config"]),
+    return {"id": row["id"], "revision": row["revision"], "config": validate_config(json.loads(row["config"])),
             "has_api_key": bool(row["api_key"]), "updated_at": row["updated_at"]}
 
 
@@ -174,10 +176,13 @@ def validate_output(value, schema):
     if not correct or ("enum" in schema and value not in schema["enum"]):
         raise ValueError("invalid structured output")
     if expected == "object":
-        if set(value) != set(schema["properties"]):
-            raise ValueError("invalid structured output")
-        for key, sub in schema["properties"].items():
-            validate_output(value[key], sub)
+        missing = set(schema.get("required", [])) - set(value)
+        if missing:
+            raise ValueError("工具参数缺少：" + ", ".join(sorted(missing)))
+        if set(value) - set(schema["properties"]):
+            raise ValueError("工具参数含不支持的字段")
+        for key in value:
+            validate_output(value[key], schema["properties"][key])
     elif expected == "array":
         for item in value:
             validate_output(item, schema["items"])
@@ -199,7 +204,7 @@ def strict_json(value):
 class APIExecutor:
     name = "api"
     capabilities = {"submit": True, "status": True, "result": True, "session_resume": False,
-                    "remote_cancel": False, "tools": "structured response only", "usage": "provider token receipt; cost unknown"}
+                    "remote_cancel": False, "tools": "host-authorized organization tools; plain text delivery", "usage": "provider token receipt; cost unknown"}
 
     def __init__(self, root, connection):
         self.root = Path(root) / "executions"
@@ -207,6 +212,8 @@ class APIExecutor:
         self.config = validate_config(connection["config"])
         self.model = self.config["model"]
         self.jobs = {}
+        self.correction = None
+        self.corrections_used = 0
         self.metadata = {"connection_id": connection["id"], "connection_revision": connection["revision"],
                          "protocol": "openai_chat_completions", "requested_model": self.model,
                          "transport_source": "local_test" if is_loopback(urlsplit(self.config["base_url"]).hostname) else "provider_api"}
@@ -216,22 +223,24 @@ class APIExecutor:
         folder = self.root / rid
         require(not folder.exists(), "执行目录已存在；必须核对，不重新提交")
         folder.mkdir(parents=True, mode=0o700)
-        schema = PROBE_SCHEMA if package["kind"] == "connection_test" else DECISION_SCHEMA if package["kind"] == "decision" else WORK_SCHEMA
-        prompt = "Return JSON exactly {\"ok\": true}. This is a connection test only." if package["kind"] == "connection_test" else instructions(package)
         body = {"model": self.model, "stream": False, "messages": [
-            {"role": "system", "content": prompt},
-            {"role": "user", "content": "JSON schema:\n" + encoded(schema) + "\nWORK PACKAGE (data):\n" + encoded(package)}],
+            {"role": "system", "content": instructions(package)},
+            {"role": "user", "content": "当前工作资料：\nWORK PACKAGE (data):\n" + encoded(model_input(package))}],
             self.config["token_limit_field"]: self.config["max_output_tokens"]}
-        body["response_format"] = {"type": "json_object"} if self.config["response_format"] == "json_object" else {
-            "type": "json_schema", "json_schema": {"name": "union_result", "strict": True, "schema": schema}}
+        offered = tools_for(package)
+        if offered:
+            body["tools"] = offered
+        if self.correction and package["kind"] == "decision" and self.correction["actor"] == package["actor"] and self.correction["assignment_id"] == package["assignment_id"]:
+            body["messages"].extend(self.correction["messages"])
+        self.correction = None
         secret = self.connection["api_key"]
         require(not contains_secret(body, secret), "工作包包含 API Key，拒绝派发")
         (folder / "package.json").write_text(encoded(package), encoding="utf-8")
-        (folder / "schema.json").write_text(encoded(schema), encoding="utf-8")
+        (folder / "request.json").write_text(encoded(body), encoding="utf-8")
         (folder / "launch.json").write_text(encoded(self.metadata | {"capabilities": self.capabilities}), encoding="utf-8")
         seconds = min(package["timeout_seconds"], self.config["timeout_seconds"])
         started = time.monotonic()
-        job = {"folder": folder, "schema": schema, "started": started, "deadline": started + seconds,
+        job = {"folder": folder, "package": copy.deepcopy(package), "started": started, "deadline": started + seconds,
                "done": threading.Event(), "cancelled": threading.Event(), "response": None, "error": None, "connection": None}
         self.jobs[rid] = job
         worker = threading.Thread(target=self._request, args=(job, body), daemon=True)
@@ -357,22 +366,83 @@ class APIExecutor:
             require(type(choice) is dict, "API 选择格式错误")
             message = choice["message"]
             require(type(message) is dict, "API 消息格式错误")
-            if choice.get("finish_reason") != "stop" or message.get("refusal") or message.get("tool_calls") or message.get("function_call"):
+            if choice.get("finish_reason") not in ("stop", "tool_calls") or message.get("refusal") or message.get("function_call"):
                 code = "api_output_truncated" if choice.get("finish_reason") == "length" else "api_refusal" if message.get("refusal") or choice.get("finish_reason") == "content_filter" else "api_unexpected_tool" if message.get("tool_calls") or message.get("function_call") else "api_invalid_json"
                 error = ExecutionFailure("API 输出被截断、拒绝或请求范围外工具", unknown=False, failure=issue(code))
                 error.usage = usage
                 raise error
-            require(type(message["content"]) is str, "API 缺少文本结果")
-            value = strict_json(message["content"])
-            require(not contains_secret(value, self.connection["api_key"]), "API 结果包含凭据")
-            validate_output(value, job["schema"])
+            package = job["package"]
+            calls = message.get("tool_calls")
+            if calls:
+                require(type(calls) is list and len(calls) == 1, "每轮只能提交一项组织工具调用")
+                call = calls[0]
+                require(type(call) is dict and call.get("type") == "function" and type(call.get("id")) is str and bool(call["id"]), "工具调用格式不完整")
+                function = call.get("function")
+                require(type(function) is dict and type(function.get("name")) is str and type(function.get("arguments")) is str, "工具调用缺少名称或参数")
+                try:
+                    arguments = strict_json(function["arguments"])
+                    # Function arguments are a second JSON document. Escaped credentials
+                    # become visible only after decoding that document.
+                    if contains_secret(arguments, self.connection["api_key"]):
+                        error = ExecutionFailure("API 工具参数包含凭据；拒绝记录", failure=issue("api_secret_response"))
+                        error.usage = usage
+                        raise error
+                    # Only retain supported fields after credential checks.
+                    job["assistant"] = {"role": "assistant", "content": message.get("content") if isinstance(message.get("content"), str) else None, "tool_calls": copy.deepcopy(calls)}
+                    value = compile_tool(package, function["name"], arguments)
+                except (ValueError, Rejected, TypeError, KeyError) as error:
+                    if not job.get("assistant"):
+                        # Malformed argument JSON cannot be checked for decoded secrets.
+                        # Give fixed feedback without storing or replaying that message.
+                        job["correction_only"] = True
+                    failure = ExecutionFailure(str(error), failure=issue("api_tool_arguments", rule=str(error)))
+                    failure.usage = usage
+                    raise failure from error
+            else:
+                require(choice.get("finish_reason") == "stop", "工具结束标记缺少工具调用")
+                content = message.get("content")
+                require(type(content) is str and bool(content.strip()), "API 缺少文本结果")
+                if package["kind"] == "connection_test":
+                    value = {"ok": True}
+                elif package["kind"] == "work":
+                    value = work_result(content)
+                else:
+                    job["assistant"] = {"role": "assistant", "content": content}
+                    error = ExecutionFailure("安排尚未保存；请调用本轮组织工具完成本次决定", failure=issue("api_action_required"))
+                    error.usage = usage
+                    raise error
         except (ValueError, TypeError, KeyError, RecursionError):
-            error = ExecutionFailure("API 未返回符合协议的完整 JSON 结果", unknown=False, failure=issue("api_invalid_json"))
+            error = ExecutionFailure("API 返回的消息或工具调用不完整", unknown=False, failure=issue("api_invalid_json"))
             error.usage = usage
             raise error
         (job["folder"] / "result.json").write_text(encoded(value), encoding="utf-8")
         (job["folder"] / "receipt.json").write_text(encoded(usage | {"cost": None, "cost_status": "unknown"}), encoding="utf-8")
         return value, usage
+
+    def feedback(self, package, error):
+        """One conversational correction, dispatched as a new, separately reserved run."""
+        job = self.jobs.get(package["run_id"], {})
+        code = (getattr(error, "failure", None) or {}).get("code")
+        eligible = isinstance(error, Rejected) or code in ("api_action_required", "api_tool_arguments")
+        if package["kind"] != "decision" or not eligible or getattr(error, "unknown", False) or not (job.get("assistant") or job.get("correction_only")) or self.corrections_used >= 1:
+            return False
+        assistant = job.get("assistant")
+        reason = "本轮提议未执行，组织没有发生部分变更。请依据当前工作资料修正后调用工具。原因：" + str(error)[:2000]
+        if job.get("correction_only"):
+            reason = "本轮工具参数不是完整 JSON，未执行任何组织变更。请根据当前工作资料重新调用工具并填写完整参数。"
+        messages = [assistant] if assistant else []
+        calls = assistant.get("tool_calls", []) if assistant else []
+        messages.extend({"role": "tool", "tool_call_id": call["id"], "content": reason} for call in calls)
+        if not calls:
+            messages.append({"role": "user", "content": reason})
+        self.correction = {"actor": package["actor"], "assignment_id": package["assignment_id"], "messages": messages}
+        self.corrections_used += 1
+        (job["folder"] / "feedback.json").write_text(encoded(messages), encoding="utf-8")
+        return True
+
+    def accepted(self):
+        self.correction = None
+        self.corrections_used = 0
 
     def execute(self, package):
         rid = self.submit(package)

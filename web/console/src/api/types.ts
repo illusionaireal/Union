@@ -29,7 +29,7 @@ export interface ModelConnection {
     name: string;
     base_url: string;
     model: string;
-    response_format: 'json_schema' | 'json_object';
+    response_format: 'agent' | 'json_schema' | 'json_object';
     token_limit_field: 'max_completion_tokens' | 'max_tokens';
     max_output_tokens: number;
     timeout_seconds: number;

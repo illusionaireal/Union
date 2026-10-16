@@ -22,11 +22,13 @@ async function navigate(name) {
   await page.locator('[data-nav="'+name+'"].active').waitFor();
 }
 async function close() { if (await page.locator('#operation-dialog').isVisible()) await page.locator('#close-operation').click(); }
-async function commit() {
+async function commit(expectedFailure = null) {
   await page.locator('#preview-operation').click();
   await page.locator('#commit-operation').click();
   await page.locator('#operation-result').waitFor();
-  check('Command returns an accepted or completed persistent receipt', /已完成|已受理/.test(await page.locator('#operation-result').innerText()));
+  const accepted = /已完成|已受理/.test(await page.locator('#operation-result').innerText());
+  const failedAsExpected = expectedFailure && await page.locator('#operation-result [data-execution-failure="'+expectedFailure+'"]').count()>0;
+  check('Command returns an accepted, completed, or explicitly expected failed receipt', accepted || failedAsExpected);
   await close();
   await page.locator('#refresh').click();
   await connected(page);
@@ -64,6 +66,7 @@ async function commit() {
   await page.screenshot({path:path.join(output,'generic-overview-desktop.png'),fullPage:true});
   await navigate('models');
   await page.locator('[data-command="api_connection"]').first().click();
+  check('API editor uses ordinary chat and tools without an output-schema selector',await page.locator('[name="response_format"]').count()===0 && (await page.locator('#operation-form').innerText()).includes('无需选择 JSON 输出模式'));
   const first=await page.locator('[name="connection_id"]').inputValue();
   await page.locator('[name="connection_name"]').fill('主模型 · 本机接口替身');
   await page.locator('[name="base_url"]').fill(ready.provider_url);
@@ -145,9 +148,9 @@ async function commit() {
   await commit();
   await page.locator('[data-connection="'+first+'"] [data-command="api_test"]').click();
   await page.locator('[name="allow_unknown_cost"]').check();
-  await commit();
+  await commit('api_request_rejected');
   await page.locator('[data-execution-failure="api_request_rejected"]').first().waitFor();
-  check('Rejected provider parameter is visible with recovery instructions',await page.getByText('供应商拒绝的参数：response_format',{exact:true}).count()>0 && (await page.locator('body').innerText()).includes('JSON Object'));
+  check('Rejected provider parameter is visible with recovery instructions',await page.getByText('供应商拒绝的参数：response_format',{exact:true}).count()>0 && (await page.locator('body').innerText()).includes('不再发送 response_format'));
   check('Error response never exposes an echoed API key',!(await page.locator('body').innerText()).includes(secret));
   check('Failed probe is persisted once without automatic retry',(await snapshot(page)).runs.length===2 && (await snapshot(page)).runs.at(-1).failure.http_status===400);
   await page.screenshot({path:path.join(output,'api-failure-desktop.png'),fullPage:true});

@@ -11,6 +11,7 @@ from ai_union.console import Console
 from ai_union.engine import encoded
 from ai_union.novel_demo import NovelDemoExecutor
 from ai_union.server import Server
+from tests.api_messages import fixture_message, historical_package
 
 
 class NovelProvider(BaseHTTPRequestHandler):
@@ -32,9 +33,12 @@ class NovelProvider(BaseHTTPRequestHandler):
         if package['kind'] == 'connection_test':
             value, usage = {'ok': True}, {'input_tokens': 23, 'output_tokens': 11}
         else:
-            value, usage = NovelDemoExecutor().execute(package)
-        raw = encoded({'id': 'local-response-' + package['run_id'], 'model': 'novel-local-double',
-                       'choices': [{'finish_reason': 'stop', 'message': {'role': 'assistant', 'content': encoded(value)}}],
+            value, usage = NovelDemoExecutor().execute(historical_package(package, getattr(self.server, 'bootstrap', None)))
+        message = fixture_message(package, value, getattr(self.server, 'bootstrap', None))
+        if package.get('actor') == 'bootstrap':
+            self.server.bootstrap = value
+        raw = encoded({'id': 'explicit-local-response', 'model': 'novel-local-double',
+                       'choices': [{'finish_reason': 'tool_calls' if message.get('tool_calls') else 'stop', 'message': message}],
                        'usage': {'prompt_tokens': usage['input_tokens'], 'completion_tokens': usage['output_tokens']}}).encode()
         self.send_response(200)
         self.send_header('Content-Type', 'application/json')

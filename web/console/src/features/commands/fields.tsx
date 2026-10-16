@@ -283,7 +283,7 @@ export function CommandFields({
             保存后设为当前公司的默认连接。保存不会调用模型，测试连接需要另行确认。
             {connection
               ? '编辑时密钥不回显；留空沿用原密钥。更换 API 地址需重新填写密钥。'
-              : '支持 Chat Completions 兼容接口，填入供应商提供的 API 根地址和模型名称。'}
+              : '支持 Chat Completions 兼容接口，填入供应商提供的地址和模型名称。组织协作需要模型支持工具调用。'}
           </p>
           <Field
             name="connection_id"
@@ -320,18 +320,14 @@ export function CommandFields({
             autoComplete="new-password"
             maxLength={4096}
           />
-          <Select
-            name="response_format"
-            label="结构化输出模式"
-            value={connection?.config.response_format}
-          >
-            <option value="json_schema">JSON Schema</option>
-            <option value="json_object">JSON Object（兼容模式）</option>
-          </Select>
+          <p className="form-note">
+            可填写根地址或完整的 /chat/completions
+            地址。正常工作使用普通文本；组织变更通过工具调用完成，无需选择 JSON 输出模式。
+          </p>
           <Select
             name="token_limit_field"
             label="输出上限字段"
-            value={connection?.config.token_limit_field}
+            value={connection?.config.token_limit_field || 'max_tokens'}
           >
             <option value="max_completion_tokens">max_completion_tokens</option>
             <option value="max_tokens">max_tokens</option>

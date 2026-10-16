@@ -428,6 +428,10 @@ class Console:
                     calls += 1
                     if request["data"].get("max_seconds") and time.monotonic() >= deadline:
                         break
+                if actions and actions[-1]["action"] == "correction":
+                    actions[-1]["action"] = "blocked"
+                    failure = actions[-1].get("failure")
+                    status, message = "blocked", "本次调用额度或运行时间已用完；组织提议尚待修正"
         except BaseException:
             status, message = "unknown", "宿主作业中断；保留原执行记录并核对，不能推断远程取消"
         finally:
