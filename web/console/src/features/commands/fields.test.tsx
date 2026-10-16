@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import type { Session, Snapshot } from '../../api/types';
+import type { ModelConnection, Session, Snapshot } from '../../api/types';
 import { CommandFields } from './fields';
 import { readForm } from './model';
 const session: Session = {
@@ -148,5 +148,55 @@ describe('novel company setup', () => {
     const request = readForm('api_connection', form);
     expect(request).toMatchObject({ bind_default: true, api_key: 'private-test-key' });
     expect(JSON.stringify(publicPreview(request))).not.toContain('private-test-key');
+  });
+});
+
+describe('saved API connection editing', () => {
+  const connection: ModelConnection = {
+    id: 'existing',
+    revision: 2,
+    has_api_key: true,
+    updated_at: '2026-10-16',
+    config: {
+      name: '已有连接',
+      base_url: 'https://example.test/v1',
+      model: 'existing-model',
+      response_format: 'json_object',
+      token_limit_field: 'max_tokens',
+      max_output_tokens: 2048,
+      timeout_seconds: 90,
+      enabled: true,
+    },
+  };
+  it('prefills the selected public configuration and retains its key without putting it in the form', () => {
+    render(
+      <form aria-label="操作表单">
+        <CommandFields
+          kind="api_connection"
+          session={session}
+          data={data}
+          options={{ connection }}
+        />
+      </form>,
+    );
+    expect(screen.getByLabelText('连接 ID')).toHaveValue('existing');
+    expect(screen.getByLabelText('连接 ID')).toHaveAttribute('readonly');
+    expect(screen.getByLabelText('API Key（留空保留原密钥）')).toHaveValue('');
+    const saved = readForm('api_connection', screen.getByRole('form') as HTMLFormElement);
+    expect(saved.config).toEqual(connection.config);
+    expect(saved).not.toHaveProperty('api_key');
+  });
+  it('creates a distinct new connection even when a default is already bound', () => {
+    render(
+      <form aria-label="操作表单">
+        <CommandFields
+          kind="api_connection"
+          session={session}
+          data={{ ...data, execution_config: { codex_model: null, api_connection_id: 'existing' } }}
+        />
+      </form>,
+    );
+    expect(screen.getByLabelText('连接 ID')).not.toHaveValue('existing');
+    expect(screen.getByLabelText('API 根地址')).toHaveValue('');
   });
 });

@@ -43,11 +43,12 @@ async function command(page, kind, fill = async () => {}) {
   });
   await close(page);
   await page.locator('.company-panel').waitFor();
-  await page.locator('[data-nav="settings"]').click();
-  await page.getByRole('heading', { name: '模型 API · 首次配置', exact: true }).waitFor();
+  await page.locator('[data-nav="models"]').click();
+  await page.getByRole('heading', { name: '模型与 API', exact: true }).waitFor();
   check('Settings has configuration actions without repeated create/run buttons', await page.locator('[data-command="create"], [data-command="start"]').count() === 0);
   const secret = 'browser-test-key-not-real';
-  await page.locator('[data-command="api_connection"]').click();
+  await page.locator('[data-command="api_connection"]').first().click();
+  await page.locator('[name="connection_id"]').fill('primary');
   await page.locator('[name="base_url"]').fill(ready.provider_url);
   await page.locator('[name="api_model"]').fill('local-test-model');
   await page.locator('[name="api_key"]').fill(secret);
@@ -55,7 +56,7 @@ async function command(page, kind, fill = async () => {}) {
   check('API preview never displays key', !(await page.locator('#operation-preview').innerText()).includes(secret));
   await page.locator('#commit-operation').click(); await page.locator('#operation-result').waitFor();
   await close(page); await refresh(page);
-  check('API configuration binds default connection', await page.getByText('primary', { exact: true }).first().isVisible());
+  check('API configuration binds default connection', await page.locator('[data-connection="primary"]').isVisible());
   check('Browser storage contains no API secret', await page.evaluate(k => !JSON.stringify({ local: { ...localStorage }, session: { ...sessionStorage } }).includes(k), secret));
   await command(page, 'api_test', async form => { await form.locator('[name="allow_unknown_cost"]').check(); });
   await close(page);

@@ -3,6 +3,7 @@ import { useUrlState } from '../app/url-state';
 import { useWorkspace } from '../app/workspace';
 import { Card, Badge, Empty } from '../components/ui';
 import { DetailLink } from '../features/details/Details';
+import { PageStats } from '../components/SetupGuide';
 export default function Activity() {
   const { data, offset, setOffset } = useWorkspace();
   const [params, update] = useUrlState();
@@ -26,69 +27,78 @@ export default function Activity() {
     .filter((r) => filter === 'all' || filter === r.type)
     .sort((a, b) => b.date.localeCompare(a.date));
   return (
-    <Card title="事件与决定" action={<CommandButton kind="event" />}>
-      <div className="segmented">
-        {[
-          ['all', '全部'],
-          ['event', '事件'],
-          ['decision', '决定'],
-        ].map(([key, title]) => (
+    <>
+      <PageStats
+        items={[
+          { label: '已记录事件', value: data!.pagination.event_count },
+          { label: '正式决定记录', value: data!.pagination.decision_count },
+          { label: '待处理事件', value: data!.pending_events, note: '意见与反馈将进入组织循环' },
+        ]}
+      />
+      <Card title="事件与决定" action={<CommandButton kind="event" />}>
+        <div className="segmented">
+          {[
+            ['all', '全部'],
+            ['event', '事件'],
+            ['decision', '决定'],
+          ].map(([key, title]) => (
+            <button
+              key={key}
+              data-activity={key}
+              className={filter === key ? 'active' : ''}
+              aria-pressed={filter === key}
+              onClick={() =>
+                update((next) => {
+                  next.set('type', key);
+                })
+              }
+            >
+              {title}
+            </button>
+          ))}
+        </div>
+        <div className="timeline">
+          {rows.length ? (
+            rows.map((r) => (
+              <article key={r.type + r.id} className="runtime-row">
+                <span className={`timeline-dot ${r.type}`} />
+                <div className="row-main">
+                  <DetailLink kind={r.type} id={r.id}>
+                    {r.title}
+                  </DetailLink>
+                  <small>
+                    {r.date} · {r.id}
+                  </small>
+                </div>
+                {r.status ? <Badge value={r.status} /> : <span className="badge grey">事件</span>}
+              </article>
+            ))
+          ) : (
+            <Empty title="暂无活动">有效操作、执行与组织决定在此留痕。</Empty>
+          )}
+        </div>
+        <div className="toolbar-pages">
           <button
-            key={key}
-            data-activity={key}
-            className={filter === key ? 'active' : ''}
-            aria-pressed={filter === key}
-            onClick={() =>
-              update((next) => {
-                next.set('type', key);
-              })
-            }
+            className="button secondary"
+            data-page="-1"
+            disabled={offset === 0}
+            onClick={() => setOffset(offset - 50)}
           >
-            {title}
+            上一页
           </button>
-        ))}
-      </div>
-      <div className="timeline">
-        {rows.length ? (
-          rows.map((r) => (
-            <article key={r.type + r.id} className="runtime-row">
-              <span className={`timeline-dot ${r.type}`} />
-              <div className="row-main">
-                <DetailLink kind={r.type} id={r.id}>
-                  {r.title}
-                </DetailLink>
-                <small>
-                  {r.date} · {r.id}
-                </small>
-              </div>
-              {r.status ? <Badge value={r.status} /> : <span className="badge grey">事件</span>}
-            </article>
-          ))
-        ) : (
-          <Empty title="暂无活动">有效操作、执行与组织决定在此留痕。</Empty>
-        )}
-      </div>
-      <div className="toolbar-pages">
-        <button
-          className="button secondary"
-          data-page="-1"
-          disabled={offset === 0}
-          onClick={() => setOffset(offset - 50)}
-        >
-          上一页
-        </button>
-        <span>第 {Math.floor(offset / 50) + 1} 页 · 每类最多 50 条</span>
-        <button
-          className="button secondary"
-          data-page="1"
-          disabled={
-            offset + 50 >= Math.max(data!.pagination.event_count, data!.pagination.decision_count)
-          }
-          onClick={() => setOffset(offset + 50)}
-        >
-          下一页
-        </button>
-      </div>
-    </Card>
+          <span>第 {Math.floor(offset / 50) + 1} 页 · 每类最多 50 条</span>
+          <button
+            className="button secondary"
+            data-page="1"
+            disabled={
+              offset + 50 >= Math.max(data!.pagination.event_count, data!.pagination.decision_count)
+            }
+            onClick={() => setOffset(offset + 50)}
+          >
+            下一页
+          </button>
+        </div>
+      </Card>
+    </>
   );
 }

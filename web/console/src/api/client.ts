@@ -1,4 +1,11 @@
-import type { ArtifactContent, CommandRequest, Receipt, Session, Snapshot } from './types';
+import type {
+  ArtifactContent,
+  CommandRequest,
+  ModelConnection,
+  Receipt,
+  Session,
+  Snapshot,
+} from './types';
 
 export class ApiError extends Error {
   constructor(
@@ -43,6 +50,12 @@ export async function request<T>(path: string, init: RequestInit = {}): Promise<
 }
 const query = (values: Record<string, string>) => new URLSearchParams(values).toString();
 export const api = {
+  connections: (organization_id: string, signal?: AbortSignal) =>
+    request<{
+      connections: ModelConnection[];
+      api_enabled: boolean;
+      api_connection_id: string | null;
+    }>('/api/model-connections?' + query({ organization_id }), { signal }),
   session: (signal?: AbortSignal) => request<Session>('/api/session', { signal }),
   exchange: (ticket: string) =>
     request<Session>('/api/session', { method: 'POST', headers: { 'X-Union-Launch': ticket } }),

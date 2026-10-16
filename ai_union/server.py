@@ -15,7 +15,7 @@ from .engine import Rejected, encoded, require
 from .observation import artifact
 
 REPO = Path(__file__).resolve().parents[1]
-SPA_ROUTES = {"/", "/overview", "/members", "/tasks", "/artifacts", "/activity", "/resources", "/settings"}
+SPA_ROUTES = {"/", "/overview", "/members", "/tasks", "/artifacts", "/activity", "/resources", "/settings", "/models"}
 STATIC_CSP = "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; font-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
 
 

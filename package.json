@@ -19,6 +19,7 @@
     "dev:console": "npm run dev --workspace @union/console",
     "test:browser": "node scripts/check_console.cjs",
     "test:novel": "node scripts/check_novel_company.cjs",
+    "test:workspace": "node scripts/check_workspace.cjs",
     "start": "node scripts/start-console.mjs",
     "dev": "node scripts/start-console.mjs --watch"
   }

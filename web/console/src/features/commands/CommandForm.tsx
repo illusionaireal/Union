@@ -132,7 +132,12 @@ export function CommandForm({ draft, onClose }: { draft: Draft; onClose: () => v
             if (!submitting.current) setPreview(null);
           }}
         >
-          <CommandFields kind={draft.kind} data={draft.data} session={draft.session} />
+          <CommandFields
+            kind={draft.kind}
+            data={draft.data}
+            session={draft.session}
+            options={draft.options}
+          />
         </fieldset>
         <p
           id="operation-error"
@@ -225,6 +230,13 @@ export function CommandForm({ draft, onClose }: { draft: Draft; onClose: () => v
               </button>
             </section>
           )}
+        </div>
+      )}
+      {receipt?.status === 'succeeded' && (
+        <div className="operation-footer">
+          <button type="button" className="button primary" onClick={onClose}>
+            完成，返回工作台
+          </button>
         </div>
       )}
     </>

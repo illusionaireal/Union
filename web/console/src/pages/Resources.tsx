@@ -2,11 +2,32 @@ import { useWorkspace } from '../app/workspace';
 import { Card, Badge, Empty, labels, sourceName } from '../components/ui';
 import { CommandButton } from '../features/commands/CommandProvider';
 import { DetailLink } from '../features/details/Details';
+import { PageStats } from '../components/SetupGuide';
 export default function Resources() {
   const { data } = useWorkspace();
   const d = data!;
   return (
     <>
+      <PageStats
+        items={[
+          { label: '累计调用占用', value: d.budget.calls_reserved, note: '失败和未知结果保留占用' },
+          {
+            label: '剩余额度',
+            value: Math.max(0, d.budget.max_calls - d.budget.calls_reserved),
+            note: '上限 ' + d.budget.max_calls + ' 次',
+          },
+          {
+            label: '用量回执',
+            value: d.runs.filter((r) => r.usage).length + ' / ' + d.runs.length,
+            note: '仅显示实际收到的记录',
+          },
+          {
+            label: '待核对执行',
+            value: d.runs.filter((r) => r.status === 'unknown').length,
+            note: '未知结果先核对',
+          },
+        ]}
+      />
       <div className="cards-grid">
         <Card title="调用额度">
           <div className="budget-number">

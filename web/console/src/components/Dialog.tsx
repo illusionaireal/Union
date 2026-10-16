@@ -37,7 +37,7 @@ export function Dialog({
       <div className="dialog-inner">
         <div className="dialog-header">
           <div>
-            <div className="eyebrow">ORGANIZATION WORKSPACE</div>
+            <div className="eyebrow">UNION WORKSPACE</div>
             <h2 id={titleId}>{title}</h2>
           </div>
           <button id={closeId} className="icon-button" aria-label="关闭" onClick={onClose}>

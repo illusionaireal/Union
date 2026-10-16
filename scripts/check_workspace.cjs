@@ -1,0 +1,157 @@
+// Browser verification of the general workspace and existing model API contracts.
+// Uses a private temporary service and a loopback HTTP model double; no real model calls.
+const { chromium } = require('playwright-core');
+const { spawn } = require('node:child_process');
+const readline = require('node:readline');
+const fs = require('node:fs');
+const os = require('node:os');
+const path = require('node:path');
+const assert = require('node:assert/strict');
+const root = path.resolve(__dirname, '..');
+const output = path.resolve(process.env.UNION_WORKSPACE_EVIDENCE || '.union/workspace-evidence');
+const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'union-workspace-'));
+let host, browser, page;
+const checks = [], errors = [];
+const check = (name, value = true) => { assert.ok(value, name); checks.push(name); };
+const connected = p => p.getByText('已连接本机服务', { exact: true }).waitFor();
+const snapshot = p => p.evaluate(async () => (await fetch('/api/snapshot?organization_id=' + document.querySelector('#org-select').value)).json());
+const connections = p => p.evaluate(async () => (await fetch('/api/model-connections?organization_id=' + document.querySelector('#org-select').value)).json());
+async function close() { if (await page.locator('#operation-dialog').isVisible()) await page.locator('#close-operation').click(); }
+async function commit() {
+  await page.locator('#preview-operation').click();
+  await page.locator('#commit-operation').click();
+  await page.locator('#operation-result').waitFor();
+  check('Command returns an accepted or completed persistent receipt', /已完成|已受理/.test(await page.locator('#operation-result').innerText()));
+  await close();
+  await page.locator('#refresh').click();
+  await connected(page);
+}
+(async () => {
+  fs.mkdirSync(output, { recursive: true });
+  host = spawn(process.env.UNION_PYTHON || 'python3', ['-X','utf8','tests/novel_browser_host.py','--root',temp], {cwd:root,stdio:['pipe','pipe','pipe']});
+  host.stderr.on('data',data=>errors.push(String(data)));
+  const ready = await new Promise((resolve,reject) => {
+    const timer=setTimeout(()=>reject(new Error('Local test host startup timed out')),15000);
+    host.once('error',reject);
+    readline.createInterface({input:host.stdout}).once('line',line=>{clearTimeout(timer);resolve(JSON.parse(line));});
+  });
+  browser=await chromium.launch({executablePath:process.env.UNION_CHROMIUM_PATH || (process.platform==='win32'?'C:/Program Files/Google/Chrome/Application/chrome.exe':chromium.executablePath()),headless:true});
+  const context=await browser.newContext({viewport:{width:1440,height:1000}});
+  page=await context.newPage();
+  page.on('pageerror',e=>errors.push(e.message));
+  await page.goto(ready.board_url); await connected(page);
+  check('Empty workspace has a general company onboarding flow',await page.getByRole('region',{name:'公司启动准备'}).isVisible());
+  check('Eight page navigation exposes the model API directly',await page.locator('[data-nav]').count()===8 && await page.locator('[data-nav="models"]').isVisible());
+  await page.screenshot({path:path.join(output,'welcome-desktop.png'),fullPage:true});
+  await page.locator('[data-nav="models"]').click();
+  await page.getByText('模型连接随公司保存',{exact:true}).waitFor();
+  check('Model entry works before any organization exists',await page.locator('[data-command="create"]').isEnabled());
+  await page.locator('[data-command="create"]').click();
+  check('General company does not require a novel template',await page.locator('[name="company_template"]').inputValue()==='generic');
+  await page.locator('[name="name"]').fill('通用公司 · 前端验收');
+  await page.locator('[name="goal"]').fill('围绕通用目标协作，完成可核验交付；本次仅验证本地界面与模拟模型。');
+  await commit();
+  await page.getByText('添加第一个模型连接',{exact:true}).waitFor();
+  const org=(await snapshot(page)).organization.id;
+  check('Generic company starts with zero calls and no business specialization',!(await snapshot(page)).company && (await snapshot(page)).runs.length===0);
+  await page.locator('[data-nav="overview"]').click();
+  check('Existing generic company gets the new homepage and model onboarding',await page.getByRole('region',{name:'公司启动准备'}).isVisible() && await page.getByText('添加模型 API',{exact:true}).count()>=1);
+  await page.screenshot({path:path.join(output,'generic-overview-desktop.png'),fullPage:true});
+  await page.locator('[data-nav="models"]').click();
+  await page.locator('[data-command="api_connection"]').first().click();
+  const first=await page.locator('[name="connection_id"]').inputValue();
+  await page.locator('[name="connection_name"]').fill('主模型 · 本机接口替身');
+  await page.locator('[name="base_url"]').fill(ready.provider_url);
+  await page.locator('[name="api_model"]').fill('test-model-one');
+  const secret='workspace-test-key-not-real';
+  await page.locator('[name="api_key"]').fill(secret);
+  await page.locator('#preview-operation').click();
+  check('Secret stays out of the preview',!(await page.locator('#operation-preview').innerText()).includes(secret));
+  await page.screenshot({path:path.join(output,'api-form-desktop.png'),fullPage:true});
+  await commit();
+  await page.locator('[data-connection="'+first+'"]').waitFor();
+  let records=(await connections(page)).connections;
+  check('Adding API saves, binds, and performs no model request',records[0].has_api_key && (await snapshot(page)).execution_config.api_connection_id===first && (await snapshot(page)).runs.length===0);
+  await page.locator('[data-connection="'+first+'"] [data-command="api_connection"]').click();
+  check('Editing prefills the selected connection but never its key',await page.locator('[name="base_url"]').inputValue()===ready.provider_url && await page.locator('[name="api_model"]').inputValue()==='test-model-one' && await page.locator('[name="api_key"]').inputValue()==='');
+  await page.locator('[name="api_model"]').fill('test-model-edited');
+  await page.locator('[name="max_output_tokens"]').fill('2048');
+  await commit();
+  check('Editing keeps the existing key and saves the changed model', (await connections(page)).connections[0].has_api_key && (await connections(page)).connections[0].config.model==='test-model-edited');
+  await page.locator('.model-intro [data-command="api_connection"]').click();
+  const second=await page.locator('[name="connection_id"]').inputValue();
+  check('New connection does not overwrite the default connection',first!==second && await page.locator('[name="base_url"]').inputValue()==='');
+  await page.locator('[name="connection_name"]').fill('备用模型 · 本机接口替身');
+  await page.locator('[name="base_url"]').fill(ready.provider_url);
+  await page.locator('[name="api_model"]').fill('test-model-two');
+  await page.locator('[name="api_key"]').fill(secret);
+  await commit();
+  await page.locator('[data-connection="'+second+'"]').waitFor();
+  check('Two independent connections remain in the service',(await connections(page)).connections.length===2);
+  await page.locator('[data-connection="'+first+'"] [data-command="api_binding"]').click();
+  check('Default switch targets the selected connection',await page.locator('[name="connection_id"]').inputValue()===first);
+  await page.locator('[name="reason"]').fill('验证默认连接切换');
+  await commit();
+  check('Default switch is durable',(await snapshot(page)).execution_config.api_connection_id===first);
+  await page.locator('[data-connection="'+first+'"] [data-command="api_test"]').click();
+  await page.locator('[name="allow_unknown_cost"]').check();
+  await commit();
+  await page.waitForFunction(async()=>{const s=await(await fetch('/api/snapshot?organization_id='+document.querySelector('#org-select').value)).json();return s.receipts.some(r=>r.kind==='api_test'&&r.status==='succeeded');});
+  check('Explicit connection test consumes exactly one loopback model call',(await snapshot(page)).runs.length===1 && (await snapshot(page)).source==='fixture');
+  await page.locator('[data-nav="overview"]').click();
+  check('Connection probing does not mark company collaboration as started',await page.getByRole('region',{name:'公司启动准备'}).isVisible() && await page.getByText('2 / 3 已准备',{exact:true}).isVisible());
+  await page.locator('[data-nav="models"]').click();
+  await page.reload();await connected(page);await page.locator('[data-connection="'+first+'"]').waitFor();
+  check('Reload retains both API connections and default selection',(await connections(page)).connections.length===2 && (await snapshot(page)).execution_config.api_connection_id===first);
+  check('Credentials are absent from page text and browser storage',!((await page.locator('body').innerText()).includes(secret)) && await page.evaluate(s=>!JSON.stringify({...localStorage,...sessionStorage}).includes(s),secret));
+  await page.screenshot({path:path.join(output,'models-desktop.png'),fullPage:true});
+  await context.setOffline(true);await page.locator('#refresh').click();
+  await page.getByText('连接断开',{exact:true}).waitFor();
+  check('Offline API operations are disabled',await page.locator('.model-intro [data-command="api_connection"]').isDisabled());
+  await context.setOffline(false);await page.locator('#refresh').click();await connected(page);
+  await page.locator('[data-connection="'+first+'"] [data-command="api_binding"]').click();
+  check('Unbinding explicitly previews an empty default',await page.locator('[name="connection_id"]').inputValue()==='');
+  await page.locator('[name="reason"]').fill('测试解绑，保留原连接');
+  await commit();
+  check('Unbinding retains connections and consumes no additional calls',!(await snapshot(page)).execution_config.api_connection_id && (await connections(page)).connections.length===2 && (await snapshot(page)).runs.length===1);
+  for(const name of ['overview','members','tasks','artifacts','activity','models','resources','settings']){
+    await page.locator('[data-nav="'+name+'"]').click();
+    await page.screenshot({path:path.join(output,name+'-desktop.png'),fullPage:true});
+    for(const width of [390,320]){
+      await page.setViewportSize({width,height:844});
+      check(name+' has no horizontal overflow at '+width+'px',await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+    }
+    await page.screenshot({path:path.join(output,name+'-mobile.png'),fullPage:true});
+    await page.setViewportSize({width:1440,height:1000});
+  }
+  await page.locator('[data-nav="overview"]').click();
+  await page.locator('[data-command="create"]').click();
+  await page.locator('[name="name"]').fill('另一个公司 · 配置隔离');
+  await page.locator('[name="goal"]').fill('验证公司之间的配置隔离，不进行真实调用。');
+  await commit();
+  await page.locator('[data-nav="models"]').click();
+  await page.getByText('添加第一个模型连接',{exact:true}).waitFor();
+  check('Second organization sees no previous organization connection',(await connections(page)).connections.length===0);
+  await page.locator('#org-select').selectOption(org); await connected(page);
+  await page.locator('[data-connection="'+first+'"]').waitFor();
+  check('Switching back restores the correct organization connections',(await connections(page)).connections.length===2);
+  const observerContext=await browser.newContext();
+  const observer=await observerContext.newPage();
+  await observer.goto(ready.observer_url);await connected(observer);
+  await observer.locator('[data-nav="models"]').click();
+  await observer.getByText('当前为观察者会话',{exact:true}).waitFor();
+  check('Observer sees an explicit access explanation and no API editor',await observer.getByText('当前为观察者会话',{exact:true}).isVisible() && await observer.locator('[data-command="api_connection"]').count()===0);
+  check('Observer cannot read connection configuration through HTTP',await observer.evaluate(async id=>(await fetch('/api/model-connections?organization_id='+id)).status,org)===403);
+  await observerContext.close();
+  check('No uncaught browser or host failures',errors.length===0);
+  fs.writeFileSync(path.join(output,'checks.json'),JSON.stringify({checks,errors,simulated:true,real_model_calls:0},null,2));
+  console.log(JSON.stringify({passed:checks.length,real_model_calls:0,evidence:output}));
+})().catch(async e=>{
+  fs.mkdirSync(output,{recursive:true});
+  fs.writeFileSync(path.join(output,'failure.json'),JSON.stringify({error:e.stack,checks,errors},null,2));
+  if(page)await page.screenshot({path:path.join(output,'failure.png'),fullPage:true}).catch(()=>{});
+  console.error(e.stack);process.exitCode=1;
+}).finally(async()=>{
+  if(browser)await browser.close();
+  if(host){host.stdin.end();await new Promise(resolve=>{const timeout=setTimeout(()=>{host.kill();resolve();},5000);host.once('exit',()=>{clearTimeout(timeout);resolve();});});}
+});

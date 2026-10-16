@@ -1,5 +1,13 @@
 # 当前工程交接
 
+## 2026-10-16：整体前端与通用模型 API 管理
+
+用户纠正上一轮仅增加小说特化面板。已在本地 `dev` (`a80fa13`) 整体更新八页工作台：统一导航/首页/启动准备/各页汇总，独立 `/models` 展示和管理真实持久连接。旧通用组织直接使用新界面；小说作为可选业务模块。新增连接不覆盖默认连接，编辑只预填公开配置；保存、测试、默认切换与解绑均保留预览与原回执协议。
+
+关键文件：`Layout.tsx`、`Overview.tsx`、`Models.tsx`、`SetupGuide.tsx`、`workspace.css`；服务器新增同源静态路由。根路径重定向保留一次性 fragment 直到交换，连接测试不计作组织协作已启动。后端身份、授权与账本未改。
+
+91 Python／16 前端测试、50 新浏览器／61 原浏览器／16 小说模拟检查及 `npm run check` 通过。证据见 [007](evidence/007-workspace-redesign/README.md)。新增 `npm run test:workspace` 和 `UNION_WORKSPACE_EVIDENCE`；测试用临时服务与回环供应商，真实模型调用 0。用户已授权将本轮更新提交并推送到远端 `dev`；远端提交以 Git 记录为准。
+
 ## 2026-10-16：小说公司首版链路
 
 后续开发以 `dev` 为主分支。用户已确认“开箱即用的 AI 公司”，当前验收为真实模型 + mock 小说平台，连续同书三章/三周期，受控负面反馈后落实新行动；异常只做最小兜底。新实现与操作见 [NOVEL_COMPANY.md](docs/NOVEL_COMPANY.md)，规格 [006](specs/006-novel-company/spec.md)。

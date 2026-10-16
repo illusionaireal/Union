@@ -24,7 +24,7 @@ export function CompanyPanel() {
         </p>
         <div className="company-steps">
           <span>01 创建公司 ✓</span>
-          <Link to={{ pathname: '/settings', search }}>
+          <Link to={{ pathname: '/models', search }}>
             02 {data?.execution_config.api_connection_id ? '模型已配置' : '配置并测试模型 API'}
           </Link>
           <span>03 运行与交付 {company.chapters.length}/3</span>
@@ -50,7 +50,9 @@ export function CompanyPanel() {
         </div>
         <p className="form-note">
           启动模拟预算 {money(t.initial_budget_minor)}
-          。余额包含模拟收支与模型估算，不能视为真实账户或盈利；缺失费用 {t.unknown_model_costs}{' '}
+          。余额包含模拟收支与模型估算，不能视为真实账户或盈利；缺失费用 {
+            t.unknown_model_costs
+          }{' '}
           笔。
         </p>
         {company.completed && (
@@ -59,7 +61,7 @@ export function CompanyPanel() {
           </p>
         )}
         {!data?.execution_config.api_connection_id && (
-          <p>先到组织设置接入模型；也可选择 Fixture 查看明确标识的脚本演示。</p>
+          <p>先到“模型与 API”接入模型，再回到总览启动有限运行。</p>
         )}
         <div className="company-chapters">
           {[1, 2, 3].map((n) => {

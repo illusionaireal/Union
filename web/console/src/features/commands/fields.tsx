@@ -1,6 +1,7 @@
 import { useState, type InputHTMLAttributes, type ReactNode } from 'react';
 import type { Charter, CommandKind, Session, Snapshot } from '../../api/types';
 import { defaultCharter, novelCharter } from './model';
+import type { CommandOptions } from './CommandProvider';
 function Field({
   name,
   label,
@@ -36,11 +37,23 @@ function Area({
     </label>
   );
 }
-function Select({ name, label, children }: { name: string; label: string; children: ReactNode }) {
+function Select({
+  name,
+  label,
+  children,
+  value,
+}: {
+  name: string;
+  label: string;
+  children: ReactNode;
+  value?: string;
+}) {
   return (
     <label className="operation-field">
       {label}
-      <select name={name}>{children}</select>
+      <select name={name} defaultValue={value}>
+        {children}
+      </select>
     </label>
   );
 }
@@ -69,10 +82,12 @@ export function CommandFields({
   kind,
   data,
   session,
+  options,
 }: {
   kind: CommandKind;
   data?: Snapshot;
   session: Session;
+  options?: CommandOptions;
 }) {
   const [executor, setExecutor] = useState(
     data?.execution_config.api_connection_id && session.executors.includes('api')
@@ -80,6 +95,8 @@ export function CommandFields({
       : session.executors[0] || 'fixture',
   );
   const [template, setTemplate] = useState('generic');
+  const [newConnectionId] = useState(() => 'model-' + crypto.randomUUID().slice(0, 8));
+  const connection = options?.connection;
   const [eventId] = useState(() => crypto.randomUUID());
   const model = (label: string, hidden = false) => (
     <Field
@@ -104,21 +121,21 @@ export function CommandFields({
             value={template}
             onChange={(e) => setTemplate(e.target.value)}
           >
-            <option value="generic">通用组织</option>
+            <option value="generic">通用 AI 公司 · 按目标自主协作</option>
             <option value="novel">小说公司 · 三周期首版</option>
           </select>
         </label>
         <Field
           key={template + '-name'}
           name="name"
-          label="组织名称"
-          value={template === 'novel' ? '我的 AI 小说公司' : '我的试验组织'}
+          label="公司名称"
+          value={template === 'novel' ? '我的 AI 小说公司' : '我的 AI 公司'}
           maxLength={200}
         />
         <Area
           key={template + '-goal'}
           name="goal"
-          label="组织目标"
+          label="公司目标"
           value={
             template === 'novel'
               ? '自主组织团队，创作同一本中文网络小说并连续交付三章；向模拟平台投稿，核算成本，依据反馈调整后续创作。'
@@ -257,23 +274,44 @@ export function CommandFields({
     case 'api_connection':
       return (
         <>
+          <input
+            type="hidden"
+            name="api_enabled"
+            value={String(connection?.config.enabled ?? true)}
+          />
           <p className="form-note">
-            保存并设为默认连接，不调用模型。密钥仅发送给本机服务；留空保留同一连接原密钥。更换地址时需重新填写。可在下方查看已保存连接的公开配置。
+            保存后设为当前公司的默认连接。保存不会调用模型，测试连接需要另行确认。
+            {connection
+              ? '编辑时密钥不回显；留空沿用原密钥。更换 API 地址需重新填写密钥。'
+              : '支持 Chat Completions 兼容接口，填入供应商提供的 API 根地址和模型名称。'}
           </p>
           <Field
             name="connection_id"
             label="连接 ID"
-            value={data.execution_config.api_connection_id || 'primary'}
+            value={connection?.id || newConnectionId}
+            readOnly={!!connection}
             maxLength={80}
           />
-          <Field name="connection_name" label="连接名称" value="主模型连接" maxLength={100} />
+          <Field
+            name="connection_name"
+            label="连接名称"
+            value={connection?.config.name || '我的模型连接'}
+            maxLength={100}
+          />
           <Field
             name="base_url"
             label="API 根地址"
             placeholder="https://your-provider.example/v1"
             type="url"
+            value={connection?.config.base_url || ''}
           />
-          <Field name="api_model" label="API 模型 ID" maxLength={128} />
+          <Field
+            name="api_model"
+            label="API 模型 ID"
+            value={connection?.config.model || ''}
+            placeholder="填写供应商提供的模型 ID"
+            maxLength={128}
+          />
           <Field
             name="api_key"
             label="API Key（留空保留原密钥）"
@@ -282,11 +320,19 @@ export function CommandFields({
             autoComplete="new-password"
             maxLength={4096}
           />
-          <Select name="response_format" label="结构化输出模式">
+          <Select
+            name="response_format"
+            label="结构化输出模式"
+            value={connection?.config.response_format}
+          >
             <option value="json_schema">JSON Schema</option>
             <option value="json_object">JSON Object（兼容模式）</option>
           </Select>
-          <Select name="token_limit_field" label="输出上限字段">
+          <Select
+            name="token_limit_field"
+            label="输出上限字段"
+            value={connection?.config.token_limit_field}
+          >
             <option value="max_completion_tokens">max_completion_tokens</option>
             <option value="max_tokens">max_tokens</option>
           </Select>
@@ -297,7 +343,7 @@ export function CommandFields({
               type="number"
               min={1}
               max={32768}
-              value={8192}
+              value={connection?.config.max_output_tokens || 8192}
             />
             <Field
               name="api_timeout"
@@ -305,7 +351,7 @@ export function CommandFields({
               type="number"
               min={1}
               max={600}
-              value={180}
+              value={connection?.config.timeout_seconds || 180}
             />
           </div>
           <Field name="reason" label="配置说明" value="为公司接入真实模型" />
@@ -318,7 +364,7 @@ export function CommandFields({
             name="connection_id"
             label="连接 ID（留空解绑）"
             required={false}
-            value={data.execution_config.api_connection_id || ''}
+            value={options?.connectionId ?? data.execution_config.api_connection_id ?? ''}
           />
           <Reason />
         </>

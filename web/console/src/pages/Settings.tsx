@@ -1,5 +1,4 @@
-import { request } from '../api/client';
-import { useQuery } from '@tanstack/react-query';
+import { Link, useLocation } from 'react-router-dom';
 import { Cpu, ShieldCheck } from 'lucide-react';
 import { useWorkspace } from '../app/workspace';
 import { Badge, Card, Empty, Json } from '../components/ui';
@@ -7,46 +6,32 @@ import { CommandButton } from '../features/commands/CommandProvider';
 import { titles } from '../features/commands/model';
 import { DetailLink } from '../features/details/Details';
 export default function Settings() {
-  const { data, session, orgId, connected } = useWorkspace();
+  const { data, session } = useWorkspace();
+  const { search } = useLocation();
   const d = data!;
-  const connections = useQuery({
-    queryKey: ['model-connections', orgId, d.organization.version],
-    enabled: connected && session?.role === 'board',
-    queryFn: ({ signal }) =>
-      request<{
-        connections: {
-          id: string;
-          revision: number;
-          config: Record<string, unknown>;
-          has_api_key: boolean;
-        }[];
-      }>('/api/model-connections?organization_id=' + encodeURIComponent(orgId), { signal }),
-    retry: false,
-  });
   return (
     <>
-      <Card title="模型 API · 首次配置">
-        <p>
-          配置连接 → 测试一次 → 在总览启动公司。当前默认：
-          <strong>{d.execution_config.api_connection_id || '尚未配置'}</strong>
-        </p>
-        <div className="detail-links">
-          <CommandButton kind="api_connection" primary>
-            配置并使用 API
-          </CommandButton>
-          <CommandButton kind="api_test">测试连接</CommandButton>
-          <CommandButton kind="api_binding">切换默认连接</CommandButton>
+      <section className="settings-identity">
+        <div className="identity-mark">{d.organization.name.slice(0, 1)}</div>
+        <div>
+          <span className="eyebrow">公司档案</span>
+          <h2>{d.organization.name}</h2>
+          <p>{d.organization.goal}</p>
         </div>
-        {connections.isError && <p role="alert">连接配置读取失败，请刷新后重试。</p>}
-        {connections.data?.connections.map((c) => (
-          <details key={c.id}>
-            <summary>
-              {c.id} · v{c.revision} · {c.has_api_key ? '密钥已保存' : '未配置密钥'}
-            </summary>
-            <Json value={c.config} />
-          </details>
-        ))}
-      </Card>
+        <span className="quiet-pill">章程 v{d.organization.charter_version}</span>
+      </section>
+      <div className="next-action-banner">
+        <div>
+          <strong>模型与 API 已有独立管理入口</strong>
+          <p>
+            默认连接：{d.execution_config.api_connection_id || '尚未配置'}
+            。在模型页面添加、编辑或测试连接。
+          </p>
+        </div>
+        <Link className="button primary" to={{ pathname: '/models', search }}>
+          管理模型与 API
+        </Link>
+      </div>
       <Card title="模型设置" action={<Cpu size={20} className="muted" />}>
         <div className="setting-row">
           <div>

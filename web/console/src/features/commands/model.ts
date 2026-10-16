@@ -1,6 +1,6 @@
 import type { Charter, CommandKind, ReceiptKind, Session, Snapshot } from '../../api/types';
 export const titles: Record<ReceiptKind, string> = {
-  create: '创建并采用组织',
+  create: '创建 AI 公司',
   start: '启动／继续有限运行',
   pause: '暂停新的派发',
   event: '提交组织事件',
@@ -45,6 +45,11 @@ export function blocked(
   if (session?.role !== 'board') return '观察者可查看，操作需要发起人会话';
   if (kind === 'create') return '';
   if (!data) return '请先创建组织';
+  if (
+    ['api_connection', 'api_binding', 'api_test'].includes(kind) &&
+    !session?.executors.includes('api')
+  )
+    return '本机服务未启用模型 API';
   if (kind === 'start') {
     if (data.company?.completed) return '三个周期已完成，请审读交付结果；新试验请创建新公司';
     if (!session.executors.length) return '宿主尚未配置执行器';
@@ -127,7 +132,7 @@ export function readForm(kind: CommandKind, form: HTMLFormElement): Record<strin
           token_limit_field: str('token_limit_field'),
           max_output_tokens: Number(str('max_output_tokens')),
           timeout_seconds: Number(str('api_timeout')),
-          enabled: true,
+          enabled: str('api_enabled') !== 'false',
         },
       };
     case 'api_binding':

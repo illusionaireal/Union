@@ -1,5 +1,13 @@
 # React 组织工作台工程
 
+## 007：整体工作台与模型管理
+
+`/models` 是独立的模型 API 管理页，在空实例、通用组织及小说公司中均可发现。首次使用：总览创建公司 → 模型与 API 添加连接（API 根地址、API Key、模型 ID）→ 保存 → 明确确认一次连接测试 → 总览有限运行。编辑、默认切换、解绑均沿用受信命令和预览；保存不产生模型请求。
+
+统一布局在 `src/app/Layout.tsx`，新视觉层在 `src/workspace.css`；`SetupGuide` 与 `PageStats` 复用于所有页面。`src/pages/Models.tsx` 按服务实例、角色、组织与版本读取公开连接配置；`CommandOptions` 只传公开编辑初值，新增连接标识独立生成。`/` 重定向保留一次性 fragment，完成会话交换后清除，避免初始导航丢失启动凭据。
+
+新增验证 `npm run test:workspace`，使用独立临时服务和回环模型替身。`UNION_WORKSPACE_EVIDENCE` 指定新结果目录。保留 `npm run check`、Python 全量、`npm run test:browser` 及 `npm run test:novel`；原七页与首次 API 表单的历史描述按本节更新。
+
 2026-10-16 更新：开发主分支 `dev`；小说公司首版已接入网页创建、模型 API 配置并绑定/连接测试、经营周期/章节/账本及缺失用量核对。操作入口按页面职责展示。最新范围和使用步骤见 [NOVEL_COMPANY.md](NOVEL_COMPANY.md)，下文旧迭代记录以此更新为准。
 
 更新：2026-10-14（北京时间）。正式前端位于 `web/console/`，使用 React、TypeScript、Vite、React Router 和 TanStack Query。产品范围见 [005](../specs/005-frontend-engineering/spec.md)，操作及本机会话见 [CONSOLE.md](CONSOLE.md)。

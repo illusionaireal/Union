@@ -44,6 +44,7 @@ def main():
     threads = [threading.Thread(target=s.serve_forever, daemon=True) for s in (server, provider)]
     for thread in threads: thread.start()
     print(encoded({'origin': server.origin, 'board_url': server.origin + '/#launch=' + app.ticket('board'),
+                   'observer_url': server.origin + '/#launch=' + app.ticket('observer'),
                    'provider_url': f'http://127.0.0.1:{provider.server_port}/v1'}), flush=True)
     try:
         for line in sys.stdin:

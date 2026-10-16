@@ -2,15 +2,15 @@ dialog {
   width: min(680px, calc(100vw - 32px));
   max-height: calc(100dvh - 40px);
   padding: 0;
-  border: 1px solid #e3dbea;
+  border: 1px solid #dfe6ef;
   border-radius: 16px;
-  color: #62546d;
+  color: #34445d;
   background: #fff;
-  box-shadow: 0 28px 90px #32203f38;
+  box-shadow: 0 28px 90px #17223538;
   overflow: auto;
 }
 dialog::backdrop {
-  background: #27213870;
+  background: #17223570;
   backdrop-filter: blur(3px);
 }
 .dialog-inner {
@@ -26,17 +26,17 @@ dialog::backdrop {
 .dialog-header h2 {
   font-size: 20px;
   margin: 9px 0 0;
-  color: #54425f;
+  color: #263a57;
 }
 .icon-button {
   display: grid;
   place-items: center;
   width: 33px;
   height: 33px;
-  background: #f8f5fa;
-  border: 1px solid #efe8f3;
+  background: #f4f6fa;
+  border: 1px solid #e4e9f0;
   border-radius: 8px;
-  color: #b09abb;
+  color: #7e91ad;
   flex-shrink: 0;
 }
 .operation-field {
@@ -45,16 +45,16 @@ dialog::backdrop {
   gap: 8px;
   margin: 16px 0;
   font-size: 12px;
-  color: #7d638a;
+  color: #556984;
 }
 .operation-field input,
 .operation-field textarea,
 .operation-field select {
-  border: 1px solid #e6ddeb;
+  border: 1px solid #dfe6f0;
   border-radius: 7px;
   background: #fff;
   padding: 11px 12px;
-  color: #655271;
+  color: #374c6a;
   min-width: 0;
   width: 100%;
   font-size: 12px;
@@ -62,7 +62,7 @@ dialog::backdrop {
   resize: vertical;
 }
 .operation-field input::placeholder {
-  color: #c3b3cb;
+  color: #a1aec1;
 }
 .field-grid {
   display: grid;
@@ -81,7 +81,7 @@ fieldset {
   gap: 9px;
   font-size: 11px;
   line-height: 1.8;
-  color: #846590;
+  color: #5e7391;
   margin: 20px 0;
 }
 .check-field input {
@@ -107,8 +107,8 @@ fieldset {
   line-height: 1.8;
 }
 .preview-panel {
-  background: #fcf9ff;
-  border: 1px solid #e8ddee;
+  background: #f6f8fc;
+  border: 1px solid #dfe7f2;
   border-radius: 10px;
   padding: 17px;
   margin: 18px 0;

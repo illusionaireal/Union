@@ -56,7 +56,7 @@ async function waitFor(page,predicate){await page.waitForFunction(predicate,null
   page.on('pageerror',error=>errors.push(error.message));
   await page.goto(host.board_url);await waitConnected(page);
   check('C05: one-time host session establishes board role',await page.locator('#role-label').textContent()==='本机发起人');
-  check('A01: fresh service has a clear empty state',await page.locator('#view').getByText('尚未创建组织',{exact:true}).isVisible());
+  check('A01: fresh service has a clear empty state',await page.getByRole('region', {name:'公司启动准备'}).isVisible() && !(await page.locator('#org-select').inputValue()));
   await page.locator('[data-command="create"]').click();
   await page.locator('#cancel-operation').click();
   check('C01: cancelled creation does not create an organization',(await page.locator('#org-select option').count())===1 && !(await page.locator('#org-select').inputValue()));
@@ -94,9 +94,9 @@ async function waitFor(page,predicate){await page.waitForFunction(predicate,null
   await page.locator('[data-nav="tasks"]').click();await page.waitForURL('**/tasks?**');
   await page.locator('[data-nav="members"]').click();await page.waitForURL('**/members?**');
   await page.goBack();await page.waitForURL('**/tasks?**');
-  check('F02: browser back restores the previous route',await page.locator('#page-title').textContent()==='工作与依赖');
+  check('F02: browser back restores the previous route',await page.locator('#page-title').textContent()==='工作与协作');
   await page.goForward();await page.waitForURL('**/members?**');
-  check('F02: browser forward restores the next route',await page.locator('#page-title').textContent()==='成员与岗位');
+  check('F02: browser forward restores the next route',await page.locator('#page-title').textContent()==='团队与责任');
   check('F06: member pages do not repeat unrelated global actions',await page.locator('[data-command]').count()===0);
   await page.locator('[data-nav="activity"]').click();
   await page.locator('[data-command="event"]').click();

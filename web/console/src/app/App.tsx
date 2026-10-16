@@ -10,9 +10,10 @@ import Artifacts from '../pages/Artifacts';
 import Activity from '../pages/Activity';
 import Resources from '../pages/Resources';
 import Settings from '../pages/Settings';
+import Models from '../pages/Models';
 function Home() {
-  const { search } = useLocation();
-  return <Navigate to={{ pathname: '/overview', search }} replace />;
+  const { search, hash } = useLocation();
+  return <Navigate to={{ pathname: '/overview', search, hash }} replace />;
 }
 export default function App() {
   return (
@@ -29,6 +30,7 @@ export default function App() {
               <Route path="activity" element={<Activity />} />
               <Route path="resources" element={<Resources />} />
               <Route path="settings" element={<Settings />} />
+              <Route path="models" element={<Models />} />
               <Route path="*" element={<p>页面不存在，请从左侧导航选择工作台页面。</p>} />
             </Route>
           </Routes>

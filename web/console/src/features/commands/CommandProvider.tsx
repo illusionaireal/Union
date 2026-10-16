@@ -15,15 +15,20 @@ import { Dialog } from '../../components/Dialog';
 import { ReceiptView, CommandForm } from './CommandForm';
 import { acceptReceipt, loadPending, savePending } from './receipts';
 import { blocked, titles } from './model';
+export interface CommandOptions {
+  connection?: import('../../api/types').ModelConnection;
+  connectionId?: string;
+}
 interface Draft {
   key: string;
   kind: CommandKind;
   organizationId: string | null;
   data?: Snapshot;
   session: Session;
+  options?: CommandOptions;
 }
 interface Commands {
-  open: (kind: CommandKind) => void;
+  open: (kind: CommandKind, options?: CommandOptions) => void;
   pending: PendingRequest[];
   receipts: Record<string, Receipt>;
   remember: (item: PendingRequest) => void;
@@ -125,7 +130,7 @@ export function CommandProvider({ children }: { children: ReactNode }) {
     setLookupError('');
     void lookup(item).catch((error) => setLookupError(errorText(error)));
   };
-  const open = (kind: CommandKind) => {
+  const open = (kind: CommandKind, options?: CommandOptions) => {
     if (blocked(kind, workspace.connected, workspace.session, workspace.data) || !workspace.session)
       return;
     setInspection(null);
@@ -135,6 +140,7 @@ export function CommandProvider({ children }: { children: ReactNode }) {
       organizationId: kind === 'create' ? null : workspace.orgId,
       data: workspace.data,
       session: workspace.session,
+      options,
     });
   };
   return (
@@ -184,10 +190,12 @@ export function CommandButton({
   kind,
   children,
   primary = false,
+  options,
 }: {
   kind: CommandKind;
   children?: ReactNode;
   primary?: boolean;
+  options?: CommandOptions;
 }) {
   const { connected, session, data } = useWorkspace();
   const { open } = useCommands();
@@ -198,7 +206,7 @@ export function CommandButton({
       data-command={kind}
       disabled={!!reason}
       title={reason || titles[kind]}
-      onClick={() => open(kind)}
+      onClick={() => open(kind, options)}
     >
       {children || titles[kind]}
     </button>
