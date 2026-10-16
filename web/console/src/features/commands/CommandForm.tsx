@@ -4,14 +4,24 @@ import { api, errorText } from '../../api/client';
 import type { CommandRequest, Receipt } from '../../api/types';
 import { useWorkspace } from '../../app/workspace';
 import { Badge, Json } from '../../components/ui';
+import { FailureNotice } from '../../components/FailureNotice';
 import { CommandFields } from './fields';
 import { blocked, readForm, titles, publicPreview } from './model';
 import { useCommands, type Draft } from './CommandProvider';
-export function ReceiptView({ receipt, onQuery }: { receipt: Receipt; onQuery: () => void }) {
+export function ReceiptView({
+  receipt,
+  onQuery,
+  onNavigate,
+}: {
+  receipt: Receipt;
+  onQuery: () => void;
+  onNavigate?: () => void;
+}) {
   return (
     <section className="operation-success">
       <Badge value={receipt.status} />
       <h3>{receipt.message}</h3>
+      {receipt.failure && <FailureNotice failure={receipt.failure} onNavigate={onNavigate} />}
       <p>
         请求 {receipt.id}
         <br />
@@ -210,6 +220,7 @@ export function CommandForm({ draft, onClose }: { draft: Draft; onClose: () => v
           {receipt ? (
             <ReceiptView
               receipt={receipt}
+              onNavigate={onClose}
               onQuery={() => {
                 void commands.lookup(request).catch((e) => setError(errorText(e)));
               }}

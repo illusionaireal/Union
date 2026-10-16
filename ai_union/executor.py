@@ -13,9 +13,11 @@ from .protocol import DECISION_SCHEMA, WORK_SCHEMA, instructions
 
 
 class ExecutionFailure(RuntimeError):
-    def __init__(self, message, unknown=False):
+    def __init__(self, message, unknown=False, failure=None):
         super().__init__(message)
         self.unknown = unknown
+        from .failures import public_failure
+        self.failure = public_failure(failure)
 
 
 class CodexExecutor:

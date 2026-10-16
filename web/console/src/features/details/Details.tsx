@@ -5,6 +5,7 @@ import { useWorkspace } from '../../app/workspace';
 import { Dialog } from '../../components/Dialog';
 import { Badge, Json, sourceName } from '../../components/ui';
 import { WorkRows } from '../../components/Records';
+import { FailureNotice } from '../../components/FailureNotice';
 
 type Kind = 'work' | 'member' | 'artifact' | 'event' | 'decision' | 'run' | 'receipt';
 interface Selection {
@@ -181,6 +182,9 @@ function Details({
     if (row)
       body = (
         <>
+          {'failure' in row && row.failure && (
+            <FailureNotice failure={row.failure} onNavigate={onClose} />
+          )}
           {'status' in row && (
             <Badge value={'display_status' in row ? row.display_status : row.status} />
           )}

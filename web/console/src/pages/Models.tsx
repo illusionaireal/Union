@@ -16,6 +16,7 @@ import { Card, Empty, Badge } from '../components/ui';
 import { PageStats } from '../components/SetupGuide';
 import { CommandButton } from '../features/commands/CommandProvider';
 import { DetailLink } from '../features/details/Details';
+import { FailureNotice } from '../components/FailureNotice';
 
 export default function Models() {
   const { data: d, session, orgId, connected } = useWorkspace();
@@ -192,7 +193,7 @@ export default function Models() {
                   </CommandButton>
                   {active === c.id ? (
                     <>
-                      <CommandButton kind="api_test" primary>
+                      <CommandButton kind="api_test" options={{ connection: c }} primary>
                         测试连接
                       </CommandButton>
                       <CommandButton kind="api_binding" options={{ connectionId: '' }}>
@@ -233,6 +234,7 @@ export default function Models() {
                       <Badge value={r.status} />
                     </div>
                     <p>{r.message}</p>
+                    {r.failure && <FailureNotice failure={r.failure} />}
                     <small>{r.created_at}</small>
                   </article>
                 ))

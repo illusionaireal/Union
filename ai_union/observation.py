@@ -3,6 +3,7 @@ import json
 
 from .activity import host_activity
 from .engine import instant, now, require
+from .failures import public_failure
 
 
 def pick(obj, keys):
@@ -17,10 +18,13 @@ def snapshot(engine, offset=0, limit=50):
         live = host_activity(engine)
         runs = []
         host_failures = set()
-        for row in cx.execute("SELECT id,kind,work_id,executor,status,started_at,ended_at,usage,package,json_type(result,'$.reason') AS host_failure FROM runs ORDER BY rowid"):
+        for row in cx.execute("SELECT id,kind,work_id,executor,status,started_at,ended_at,usage,package,json_type(result,'$.reason') AS host_failure,json_extract(result,'$.failure') AS failure FROM runs ORDER BY rowid"):
             r = dict(row)
             if r.pop("host_failure"):
                 host_failures.add(r["id"])
+            failure = public_failure(json.loads(r.pop("failure") or "null"))
+            if failure:
+                r["failure"] = failure
             package = json.loads(r.pop("package"))
             r["member_id"] = package.get("member_id", package.get("actor"))
             r["usage"] = json.loads(r["usage"]) if r["usage"] else None
@@ -37,7 +41,10 @@ def snapshot(engine, offset=0, limit=50):
             e = dict(row)
             data = json.loads(e["data"])
             if e["kind"] in ("execution_failed", "execution_unknown"):
-                data = pick(data, "run_id") | {"reason": "执行失败；请在宿主核对私有执行记录" if e["kind"] == "execution_failed" else "执行结果未知，需要核对"}
+                failure = next((r.get("failure") for r in runs if r["id"] == data.get("run_id")), None)
+                data = pick(data, "run_id") | {"reason": failure["message"] if failure else "执行失败；请在宿主核对私有执行记录" if e["kind"] == "execution_failed" else "执行结果未知，需要核对"}
+                if failure:
+                    data["failure"] = failure
             e["data"] = data
             events.append(e)
         decisions = []
@@ -56,7 +63,7 @@ def snapshot(engine, offset=0, limit=50):
         for work in organization["work"].values():
             r = run_by_id.get(work.get("run_id"))
             if r and (r["status"] in ("unknown", "failed") or r["id"] in host_failures):
-                work["summary"] = "执行结果未知，需要核对" if r["status"] == "unknown" else "执行失败；请在宿主核对私有执行记录"
+                work["summary"] = r["failure"]["message"] if r.get("failure") else "执行结果未知，需要核对" if r["status"] == "unknown" else "执行失败；请在宿主核对私有执行记录"
             work["display_status"] = r["display_status"] if work["status"] == "running" and r else work["status"]
             if work["status"] == "pending" and any(state["work"][d]["status"] != "delivered" for d in work["dependencies"]):
                 work["display_status"] = "dependent"
@@ -66,6 +73,8 @@ def snapshot(engine, offset=0, limit=50):
         execution = "unknown" if unknown else ("running" if all(r["host_confirmed"] for r in running) else "unconfirmed") if running else "idle"
         dispatch = ("needs_review" if unknown else "pause_requested" if running or live["confirmed"] else "paused") if paused else "enabled"
         blocked = [w["id"] + ": " + w.get("summary", w["display_status"]) for w in organization["work"].values() if w["display_status"] in ("blocked", "failed", "needs_review", "paused", "dependent")]
+        if runs and runs[-1]["status"] in ("failed", "unknown") and runs[-1].get("failure"):
+            blocked.append(runs[-1]["failure"]["message"])
         if budget["blocked_reason"]:
             blocked.append(budget["blocked_reason"])
         if unknown:

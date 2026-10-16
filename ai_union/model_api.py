@@ -14,6 +14,7 @@ from urllib.parse import urlsplit
 
 from .engine import encoded, identifier, model_name, now, require, text, uid
 from .executor import ExecutionFailure
+from .failures import issue
 from .protocol import DECISION_SCHEMA, WORK_SCHEMA, instructions, obj
 
 
@@ -220,7 +221,7 @@ class APIExecutor:
         body = {"model": self.model, "stream": False, "messages": [
             {"role": "system", "content": prompt},
             {"role": "user", "content": "JSON schema:\n" + encoded(schema) + "\nWORK PACKAGE (data):\n" + encoded(package)}],
-            self.config["token_limit_field"]: min(512, self.config["max_output_tokens"]) if package["kind"] == "connection_test" else self.config["max_output_tokens"]}
+            self.config["token_limit_field"]: self.config["max_output_tokens"]}
         body["response_format"] = {"type": "json_object"} if self.config["response_format"] == "json_object" else {
             "type": "json_schema", "json_schema": {"name": "union_result", "strict": True, "schema": schema}}
         secret = self.connection["api_key"]
@@ -257,11 +258,21 @@ class APIExecutor:
             response = conn.getresponse()
             if response.status != 200:
                 code = "authentication_failed" if response.status in (401, 403) else "rate_limited" if response.status == 429 else "request_rejected" if 400 <= response.status < 500 else "redirect_refused" if 300 <= response.status < 400 else "provider_error"
-                raise ExecutionFailure("API " + code + " (HTTP " + str(response.status) + ")", unknown=response.status >= 500 or response.status < 300)
+                parameter = None
+                # Error bodies are untrusted and may echo keys. Keep only a known parameter name.
+                if response.status == 400:
+                    try:
+                        body_error = strict_json(response.read(16385))
+                        parameter = body_error.get("error", {}).get("param")
+                    except (ValueError, TypeError, AttributeError, OSError, http.client.HTTPException):
+                        pass
+                public_code = {"authentication_failed": "api_authentication", "rate_limited": "api_rate_limited", "redirect_refused": "api_redirect"}.get(code, "api_" + code)
+                raise ExecutionFailure("API " + code + " (HTTP " + str(response.status) + ")", unknown=response.status >= 500 or response.status < 300,
+                                       failure=issue(public_code, http_status=response.status, parameter=parameter))
             chunks, size = [], 0
             while True:
                 if job["cancelled"].is_set() or time.monotonic() >= job["deadline"]:
-                    raise ExecutionFailure("API 请求超时；远程执行结果未知", unknown=True)
+                    raise ExecutionFailure("API 请求超时；远程执行结果未知", unknown=True, failure=issue("api_timeout"))
                 if conn.sock:
                     conn.sock.settimeout(max(0.01, job["deadline"] - time.monotonic()))
                 chunk = response.read1(min(65536, 1000001 - size))
@@ -270,21 +281,21 @@ class APIExecutor:
                 chunks.append(chunk)
                 size += len(chunk)
                 if size > 1000000:
-                    raise ExecutionFailure("API 响应超出容量", unknown=False)
+                    raise ExecutionFailure("API 响应超出容量", unknown=False, failure=issue("api_response_too_large"))
             raw = b"".join(chunks).decode("utf-8")
             # Provider bodies and diagnostic text are never recorded verbatim.
             if self.connection["api_key"] in raw:
-                raise ExecutionFailure("API 响应包含凭据；拒绝记录", unknown=False)
+                raise ExecutionFailure("API 响应包含凭据；拒绝记录", unknown=False, failure=issue("api_secret_response"))
             parsed = strict_json(raw)
             if contains_secret(parsed, self.connection["api_key"]):
-                raise ExecutionFailure("API 响应包含凭据；拒绝记录", unknown=False)
+                raise ExecutionFailure("API 响应包含凭据；拒绝记录", unknown=False, failure=issue("api_secret_response"))
             job["response"] = (parsed, response.getheader("x-request-id"))
         except ExecutionFailure as error:
             job["error"] = error
         except (OSError, http.client.HTTPException):
-            job["error"] = ExecutionFailure("API 连接失败或中断；请核对供应商请求记录", unknown=sent)
+            job["error"] = ExecutionFailure("API 连接失败或中断；请核对供应商请求记录", unknown=sent, failure=issue("api_connection"))
         except (ValueError, UnicodeError, RecursionError):
-            job["error"] = ExecutionFailure("API 返回无效 JSON", unknown=False)
+            job["error"] = ExecutionFailure("API 返回无效 JSON", unknown=False, failure=issue("api_invalid_json"))
         finally:
             if 'response' in locals():
                 response.close()
@@ -319,7 +330,7 @@ class APIExecutor:
         state = self.status(rid)
         usage = dict(self.metadata, elapsed_ms=max(0, round((time.monotonic() - job["started"]) * 1000)))
         if state == "unknown":
-            error = job["error"] or ExecutionFailure("API 执行结果未知；保留记录，不自动重试", unknown=True)
+            error = job["error"] or ExecutionFailure("API 执行结果未知；保留记录，不自动重试", unknown=True, failure=issue("api_timeout"))
             error.usage = usage
             raise error
         if job["error"]:
@@ -346,13 +357,17 @@ class APIExecutor:
             require(type(choice) is dict, "API 选择格式错误")
             message = choice["message"]
             require(type(message) is dict, "API 消息格式错误")
-            require(choice.get("finish_reason") == "stop" and not message.get("refusal") and not message.get("tool_calls") and not message.get("function_call"), "API 输出被截断、拒绝或请求范围外工具")
+            if choice.get("finish_reason") != "stop" or message.get("refusal") or message.get("tool_calls") or message.get("function_call"):
+                code = "api_output_truncated" if choice.get("finish_reason") == "length" else "api_refusal" if message.get("refusal") or choice.get("finish_reason") == "content_filter" else "api_unexpected_tool" if message.get("tool_calls") or message.get("function_call") else "api_invalid_json"
+                error = ExecutionFailure("API 输出被截断、拒绝或请求范围外工具", unknown=False, failure=issue(code))
+                error.usage = usage
+                raise error
             require(type(message["content"]) is str, "API 缺少文本结果")
             value = strict_json(message["content"])
             require(not contains_secret(value, self.connection["api_key"]), "API 结果包含凭据")
             validate_output(value, job["schema"])
         except (ValueError, TypeError, KeyError, RecursionError):
-            error = ExecutionFailure("API 未返回符合协议的完整 JSON 结果", unknown=False)
+            error = ExecutionFailure("API 未返回符合协议的完整 JSON 结果", unknown=False, failure=issue("api_invalid_json"))
             error.usage = usage
             raise error
         (job["folder"] / "result.json").write_text(encoded(value), encoding="utf-8")

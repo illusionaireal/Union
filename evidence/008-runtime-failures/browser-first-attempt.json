@@ -1,0 +1,12 @@
+{
+  "error": "AssertionError [ERR_ASSERTION]: Existing generic company gets the new homepage and model onboarding\n    at check (/workspace/scratch/b5b63ebd1f60/Union/scripts/check_workspace.cjs:15:48)\n    at /workspace/scratch/b5b63ebd1f60/Union/scripts/check_workspace.cjs:58:3",
+  "checks": [
+    "Empty workspace has a general company onboarding flow",
+    "Eight page navigation exposes the model API directly",
+    "Model entry works before any organization exists",
+    "General company does not require a novel template",
+    "Command returns an accepted or completed persistent receipt",
+    "Generic company starts with zero calls and no business specialization"
+  ],
+  "errors": []
+}

@@ -92,6 +92,14 @@ export interface ArtifactContent extends Artifact {
   content: string;
   verified: boolean;
 }
+export interface ExecutionFailure {
+  code: string;
+  message: string;
+  recovery: string;
+  http_status?: number;
+  parameter?: string;
+  rule?: string;
+}
 export interface Run {
   id: string;
   kind: string;
@@ -105,6 +113,7 @@ export interface Run {
   member_id: string;
   simulated: boolean;
   host_confirmed: boolean;
+  failure?: ExecutionFailure;
 }
 export interface OrganizationEvent {
   id: string;
@@ -131,6 +140,7 @@ export interface Receipt {
   status: 'accepted' | 'succeeded' | 'rejected' | 'unknown' | 'blocked' | 'failed';
   message: string;
   requested_model?: string | null;
+  failure?: ExecutionFailure;
 }
 export interface CommandRequest {
   id: string;

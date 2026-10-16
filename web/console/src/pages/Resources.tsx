@@ -3,6 +3,7 @@ import { Card, Badge, Empty, labels, sourceName } from '../components/ui';
 import { CommandButton } from '../features/commands/CommandProvider';
 import { DetailLink } from '../features/details/Details';
 import { PageStats } from '../components/SetupGuide';
+import { FailureNotice } from '../components/FailureNotice';
 export default function Resources() {
   const { data } = useWorkspace();
   const d = data!;
@@ -85,6 +86,7 @@ export default function Resources() {
                   <br />
                   结束 {r.ended_at || '未结束'}
                 </small>
+                {r.failure && <FailureNotice failure={r.failure} />}
               </div>
               <Badge value={r.display_status} />
             </article>

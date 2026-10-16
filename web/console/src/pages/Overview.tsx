@@ -6,6 +6,7 @@ import { SetupGuide, PageStats } from '../components/SetupGuide';
 import { CompanyPanel } from '../components/Company';
 import { ArtifactRows, WorkRows, MemberRows } from '../components/Records';
 import { DetailLink } from '../features/details/Details';
+import { FailureNotice } from '../components/FailureNotice';
 
 export default function Overview() {
   const { data: d } = useWorkspace();
@@ -43,6 +44,7 @@ export default function Overview() {
     works = Object.values(s.work),
     artifacts = Object.values(s.artifacts);
   const hasActivity = d.runs.some((run) => run.kind !== 'connection_test');
+  const lastRun = d.runs.at(-1);
   const running = works.filter((w) => w.display_status === 'running'),
     done = works.filter((w) => w.status === 'delivered');
   const stage = d.company?.completed
@@ -98,6 +100,9 @@ export default function Overview() {
           </Link>
         </div>
       </section>
+      {lastRun?.failure && ['failed', 'unknown'].includes(lastRun.status) && (
+        <FailureNotice failure={lastRun.failure} />
+      )}
       {!hasActivity && <SetupGuide />}
       <PageStats
         items={[

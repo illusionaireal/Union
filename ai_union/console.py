@@ -16,6 +16,7 @@ from .locking import file_lock
 from .observation import snapshot
 from .runner import exclusive, step, test_connection
 from .model_api import APIExecutor, bind_connection, configure_connection, list_connections, resolve_connection, stored_command, reject_saved_secrets
+from .failures import runtime_failure
 
 
 class Console:
@@ -401,6 +402,7 @@ class Console:
 
     def _job(self, e, request, executor, guard):
         actions = []
+        failure = None
         status, message = "succeeded", "有限运行已结束"
         try:
             with activity(e):
@@ -411,16 +413,17 @@ class Console:
                     try:
                         action = step(e, executor)
                     except Rejected as error:
-                        action = {"action": "blocked", "reason": str(error)}
+                        action = {"action": "blocked", "reason": str(error), "failure": runtime_failure(error)}
                     # Do not expose private executor diagnostics in browser receipts.
-                    actions.append({k: action[k] for k in ("action", "run_id", "work_id") if k in action})
+                    actions.append({k: action[k] for k in ("action", "run_id", "work_id", "failure") if k in action})
                     if action["action"] == "wait" and time.monotonic() < deadline:
                         time.sleep(min(0.5, max(0, deadline - time.monotonic())))
                         actions.pop()
                         continue
                     if action["action"] in ("blocked", "wait", "paused"):
                         if action["action"] == "blocked":
-                            status, message = "blocked", "运行受阻；查看组织状态及宿主执行记录"
+                            failure = action.get("failure")
+                            status, message = "blocked", failure["message"] if failure else "运行受阻；查看组织状态及宿主执行记录"
                         break
                     calls += 1
                     if request["data"].get("max_seconds") and time.monotonic() >= deadline:
@@ -433,6 +436,8 @@ class Console:
                     row = cx.execute("SELECT receipt FROM commands WHERE id=?", (request["id"],)).fetchone()
                     receipt = json.loads(row[0])
                     receipt.update(status=status, message=message, ended_at=now(), actions=actions)
+                    if failure:
+                        receipt["failure"] = failure
                     cx.execute("UPDATE commands SET receipt=? WHERE id=?", (encoded(receipt), request["id"]))
             finally:
                 guard.__exit__(None, None, None)

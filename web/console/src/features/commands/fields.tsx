@@ -408,6 +408,9 @@ export function CommandFields({
           <p>
             测试默认连接 {data.execution_config.api_connection_id}
             ，占用一次调用额度，保存用量和测试回执。
+            {connection
+              ? ` 最大输出 ${connection.config.max_output_tokens.toLocaleString()} token；实际超时 ${Math.min(connection.config.timeout_seconds, data.organization.resources.timeout_seconds)} 秒，取连接与公司单次超时中的较小值。`
+              : ' 沿用当前连接配置的最大输出；超时同时受公司单次上限约束。'}
           </p>
           <label className="check-field">
             <input name="allow_unknown_cost" type="checkbox" />

@@ -42,7 +42,7 @@ class Provider(BaseHTTPRequestHandler):
             self.send_header("Location", self.server.redirect)
         self.end_headers()
         if self.server.code != 200:
-            response = {"error": {"message": SECRET}}
+            response = self.server.override or {"error": {"message": SECRET}}
         else:
             package = json.loads(body["messages"][1]["content"].split("\nWORK PACKAGE (data):\n")[1])
             value = copy.deepcopy(self.server.outputs.pop(0))
@@ -51,7 +51,9 @@ class Provider(BaseHTTPRequestHandler):
                 value.update(base_state_version=manifest["state_version"], charter_version=manifest["charter_version"], policy_version=manifest["policy_version"])
                 if value.get("evidence_refs") == ["$latest_work"]:
                     value["evidence_refs"] = [key for key, work in package["context"]["work"].items() if work["status"] == "delivered"]
-            response = {"id": "response-1", "model": "resolved-provider-model", "choices": [{"finish_reason": self.server.finish,
+            limit = body.get("max_completion_tokens", body.get("max_tokens", 0))
+            finish = "length" if limit < self.server.minimum_output else self.server.finish
+            response = {"id": "response-1", "model": "resolved-provider-model", "choices": [{"finish_reason": finish,
                 "message": {"role": "assistant", "content": json.dumps(value)}}],
                 "usage": {"prompt_tokens": 23, "completion_tokens": 11, "prompt_tokens_details": {"cached_tokens": 3}}}
             if self.server.override is not None:
@@ -72,6 +74,7 @@ class ModelAPITests(unittest.TestCase):
         self.provider.requests = []
         self.provider.outputs = [{"ok": True}]
         self.provider.code, self.provider.delay, self.provider.finish, self.provider.override = 200, 0, "stop", None
+        self.provider.minimum_output = 0
         self.provider.redirect = "http://127.0.0.1:1/stolen"
         self.addCleanup(self.provider.server_close)
         thread = threading.Thread(target=self.provider.serve_forever, daemon=True)
@@ -281,7 +284,7 @@ class ModelAPITests(unittest.TestCase):
         request = self.provider.requests[0]
         self.assertEqual(request["path"], "/v1/chat/completions")
         self.assertEqual(request["body"]["response_format"], {"type": "json_object"})
-        self.assertEqual(request["body"]["max_tokens"], 512)
+        self.assertEqual(request["body"]["max_tokens"], self.config["max_output_tokens"])
         self.assertNotIn("tools", request["body"])
 
     def test_whole_http_loop_is_persistent_and_explicitly_simulated(self):
@@ -424,3 +427,52 @@ class ModelAPITests(unittest.TestCase):
         receipt_path.write_text(json.dumps(metadata | {"connection_revision": 1, "response_id": "provider-response"}))
         self.assertFalse(execution_receipt(self.e, record))
         self.assertTrue(simulated_run(record | {"package": {"execution": metadata | {"transport_source": "local_test"}}}))
+
+    def test_rejected_api_parameter_is_actionable_without_exposing_provider_body(self):
+        self.configure()
+        self.bind()
+        self.provider.code = 400
+        self.provider.override = {"error": {"param": "response_format", "message": "unsupported " + SECRET}}
+        result = self.probe()
+        self.assertEqual(result["status"], "failed")
+        self.assertEqual(result["failure"]["code"], "api_request_rejected")
+        self.assertEqual(result["failure"]["parameter"], "response_format")
+        self.assertIn("JSON Object", result["failure"]["recovery"])
+        view = self.app.observe(self.board, self.org)
+        self.assertEqual(view["runs"][-1]["failure"], result["failure"])
+        self.assertNotIn(SECRET, json.dumps([result, view]))
+        self.assertEqual(len(self.provider.requests), 1)  # No automatic retry or fallback.
+
+    def test_truncated_output_reports_cause_and_retains_usage(self):
+        self.configure()
+        self.bind()
+        self.provider.finish = "length"
+        result = self.probe()
+        self.assertEqual(result["failure"]["code"], "api_output_truncated")
+        self.assertIn("输出", result["failure"]["recovery"])
+        self.assertEqual(self.e.runs()[-1]["usage"]["output_tokens"], 11)
+        self.assertEqual(len(self.provider.requests), 1)
+
+    def test_connection_probe_honors_configured_output_budget_for_reasoning_models(self):
+        self.configure()
+        self.bind()
+        self.provider.minimum_output = 1024
+        result = self.probe()
+        self.assertEqual(result["status"], "succeeded", result)
+        self.assertEqual(self.provider.requests[-1]["body"]["max_completion_tokens"], self.config["max_output_tokens"])
+        self.assertEqual(len(self.provider.requests), 1)
+
+    def test_bootstrap_validation_failure_is_visible_in_run_and_start_receipt(self):
+        self.configure()
+        self.bind()
+        self.provider.outputs = [{"issue": "test", "rationale": "test", "expected_effect": "test", "evidence_refs": [], "operations": []}]
+        receipt = self.command("start", {"executor": "api", "max_steps": 2, "allow_unknown_cost": True})
+        self.app.join_jobs()
+        receipt = self.app.receipt(self.board, self.org, receipt["id"])
+        view = self.app.observe(self.board, self.org)
+        self.assertEqual(receipt["status"], "blocked")
+        self.assertEqual(receipt["failure"]["code"], "runtime_validation")
+        self.assertIn("至少两名", receipt["failure"]["rule"])
+        self.assertEqual(view["runs"][-1]["failure"], receipt["failure"])
+        self.assertTrue(any("至少两名" in reason for reason in view["blocked_reasons"]))
+        self.assertEqual(len(self.provider.requests), 1)

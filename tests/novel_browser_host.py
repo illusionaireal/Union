@@ -20,6 +20,15 @@ class NovelProvider(BaseHTTPRequestHandler):
     def do_POST(self):
         body = json.loads(self.rfile.read(int(self.headers['Content-Length'])))
         package = json.loads(body['messages'][1]['content'].split('\nWORK PACKAGE (data):\n')[1])
+        # Negative-path browser scenario, isolated to this explicit test host.
+        if body['model'] == 'reject-response-format':
+            raw = encoded({'error': {'param': 'response_format', 'message': 'unsupported ' + self.headers.get('Authorization', '')}}).encode()
+            self.send_response(400)
+            self.send_header('Content-Type', 'application/json')
+            self.send_header('Content-Length', str(len(raw)))
+            self.end_headers()
+            self.wfile.write(raw)
+            return
         if package['kind'] == 'connection_test':
             value, usage = {'ok': True}, {'input_tokens': 23, 'output_tokens': 11}
         else:

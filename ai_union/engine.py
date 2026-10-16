@@ -673,13 +673,16 @@ class Engine:
             self._save(cx, s)
             return s
 
-    def fail_run(self, run_id, reason, unknown=False, usage=None):
+    def fail_run(self, run_id, reason, unknown=False, usage=None, failure=None):
         with self.transaction() as cx:
             r = self._run(cx, run_id)
             if r["status"] != "running":
                 return
             s = self._state(cx)
-            self._settle(cx, run_id, "unknown" if unknown else "failed", {"reason": reason}, usage or {}, s)
+            from .failures import public_failure
+            failure = public_failure(failure)
+            result = {"reason": reason} | ({"failure": failure} if failure else {})
+            self._settle(cx, run_id, "unknown" if unknown else "failed", result, usage or {}, s)
             if r["work_id"]:
                 w = s["work"][r["work_id"]]
                 if w["run_id"] == run_id:

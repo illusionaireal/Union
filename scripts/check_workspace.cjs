@@ -16,6 +16,11 @@ const check = (name, value = true) => { assert.ok(value, name); checks.push(name
 const connected = p => p.getByText('已连接本机服务', { exact: true }).waitFor();
 const snapshot = p => p.evaluate(async () => (await fetch('/api/snapshot?organization_id=' + document.querySelector('#org-select').value)).json());
 const connections = p => p.evaluate(async () => (await fetch('/api/model-connections?organization_id=' + document.querySelector('#org-select').value)).json());
+async function navigate(name) {
+  await page.locator('[data-nav="'+name+'"]').click();
+  await page.waitForURL(url => url.pathname === '/'+name);
+  await page.locator('[data-nav="'+name+'"].active').waitFor();
+}
 async function close() { if (await page.locator('#operation-dialog').isVisible()) await page.locator('#close-operation').click(); }
 async function commit() {
   await page.locator('#preview-operation').click();
@@ -43,7 +48,7 @@ async function commit() {
   check('Empty workspace has a general company onboarding flow',await page.getByRole('region',{name:'公司启动准备'}).isVisible());
   check('Eight page navigation exposes the model API directly',await page.locator('[data-nav]').count()===8 && await page.locator('[data-nav="models"]').isVisible());
   await page.screenshot({path:path.join(output,'welcome-desktop.png'),fullPage:true});
-  await page.locator('[data-nav="models"]').click();
+  await navigate('models');
   await page.getByText('模型连接随公司保存',{exact:true}).waitFor();
   check('Model entry works before any organization exists',await page.locator('[data-command="create"]').isEnabled());
   await page.locator('[data-command="create"]').click();
@@ -54,10 +59,10 @@ async function commit() {
   await page.getByText('添加第一个模型连接',{exact:true}).waitFor();
   const org=(await snapshot(page)).organization.id;
   check('Generic company starts with zero calls and no business specialization',!(await snapshot(page)).company && (await snapshot(page)).runs.length===0);
-  await page.locator('[data-nav="overview"]').click();
+  await navigate('overview');
   check('Existing generic company gets the new homepage and model onboarding',await page.getByRole('region',{name:'公司启动准备'}).isVisible() && await page.getByText('添加模型 API',{exact:true}).count()>=1);
   await page.screenshot({path:path.join(output,'generic-overview-desktop.png'),fullPage:true});
-  await page.locator('[data-nav="models"]').click();
+  await navigate('models');
   await page.locator('[data-command="api_connection"]').first().click();
   const first=await page.locator('[name="connection_id"]').inputValue();
   await page.locator('[name="connection_name"]').fill('主模型 · 本机接口替身');
@@ -98,9 +103,9 @@ async function commit() {
   await commit();
   await page.waitForFunction(async()=>{const s=await(await fetch('/api/snapshot?organization_id='+document.querySelector('#org-select').value)).json();return s.receipts.some(r=>r.kind==='api_test'&&r.status==='succeeded');});
   check('Explicit connection test consumes exactly one loopback model call',(await snapshot(page)).runs.length===1 && (await snapshot(page)).source==='fixture');
-  await page.locator('[data-nav="overview"]').click();
+  await navigate('overview');
   check('Connection probing does not mark company collaboration as started',await page.getByRole('region',{name:'公司启动准备'}).isVisible() && await page.getByText('2 / 3 已准备',{exact:true}).isVisible());
-  await page.locator('[data-nav="models"]').click();
+  await navigate('models');
   await page.reload();await connected(page);await page.locator('[data-connection="'+first+'"]').waitFor();
   check('Reload retains both API connections and default selection',(await connections(page)).connections.length===2 && (await snapshot(page)).execution_config.api_connection_id===first);
   check('Credentials are absent from page text and browser storage',!((await page.locator('body').innerText()).includes(secret)) && await page.evaluate(s=>!JSON.stringify({...localStorage,...sessionStorage}).includes(s),secret));
@@ -115,7 +120,7 @@ async function commit() {
   await commit();
   check('Unbinding retains connections and consumes no additional calls',!(await snapshot(page)).execution_config.api_connection_id && (await connections(page)).connections.length===2 && (await snapshot(page)).runs.length===1);
   for(const name of ['overview','members','tasks','artifacts','activity','models','resources','settings']){
-    await page.locator('[data-nav="'+name+'"]').click();
+    await navigate(name);
     await page.screenshot({path:path.join(output,name+'-desktop.png'),fullPage:true});
     for(const width of [390,320]){
       await page.setViewportSize({width,height:844});
@@ -124,17 +129,39 @@ async function commit() {
     await page.screenshot({path:path.join(output,name+'-mobile.png'),fullPage:true});
     await page.setViewportSize({width:1440,height:1000});
   }
-  await page.locator('[data-nav="overview"]').click();
+  await navigate('overview');
   await page.locator('[data-command="create"]').click();
   await page.locator('[name="name"]').fill('另一个公司 · 配置隔离');
   await page.locator('[name="goal"]').fill('验证公司之间的配置隔离，不进行真实调用。');
   await commit();
-  await page.locator('[data-nav="models"]').click();
+  await navigate('models');
   await page.getByText('添加第一个模型连接',{exact:true}).waitFor();
   check('Second organization sees no previous organization connection',(await connections(page)).connections.length===0);
   await page.locator('#org-select').selectOption(org); await connected(page);
   await page.locator('[data-connection="'+first+'"]').waitFor();
   check('Switching back restores the correct organization connections',(await connections(page)).connections.length===2);
+  await page.locator('[data-connection="'+first+'"] [data-command="api_connection"]').click();
+  await page.locator('[name="api_model"]').fill('reject-response-format');
+  await commit();
+  await page.locator('[data-connection="'+first+'"] [data-command="api_test"]').click();
+  await page.locator('[name="allow_unknown_cost"]').check();
+  await commit();
+  await page.locator('[data-execution-failure="api_request_rejected"]').first().waitFor();
+  check('Rejected provider parameter is visible with recovery instructions',await page.getByText('供应商拒绝的参数：response_format',{exact:true}).count()>0 && (await page.locator('body').innerText()).includes('JSON Object'));
+  check('Error response never exposes an echoed API key',!(await page.locator('body').innerText()).includes(secret));
+  check('Failed probe is persisted once without automatic retry',(await snapshot(page)).runs.length===2 && (await snapshot(page)).runs.at(-1).failure.http_status===400);
+  await page.screenshot({path:path.join(output,'api-failure-desktop.png'),fullPage:true});
+  await page.reload();await connected(page);
+  await page.locator('[data-execution-failure="api_request_rejected"]').first().waitFor();
+  check('Failure cause survives a browser reload',(await snapshot(page)).runs.length===2);
+  await page.locator('[data-connection="'+first+'"] [data-command="api_connection"]').click();
+  await page.locator('[name="api_model"]').fill('test-model-repaired');
+  await commit();
+  await page.locator('[data-connection="'+first+'"] [data-command="api_test"]').click();
+  await page.locator('[name="allow_unknown_cost"]').check();
+  await commit();
+  await page.waitForFunction(async()=>{const s=await(await fetch('/api/snapshot?organization_id='+document.querySelector('#org-select').value)).json();return s.runs.length===3 && s.runs.at(-1).status==='delivered';});
+  check('Explicitly fixing and retesting the connection succeeds without replaying the failed call',!(await snapshot(page)).runs.at(-1).failure);
   const observerContext=await browser.newContext();
   const observer=await observerContext.newPage();
   await observer.goto(ready.observer_url);await connected(observer);
