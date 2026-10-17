@@ -1,5 +1,11 @@
 # ai-union 当前状态
 
+## 2026-10-18：HYB 已注入，真实 API 返回 403
+
+用户切换到 `https://ai.hybgzs.com/v1`，使用 `hyb_key`、`hyb_model`。新配置最终显示网络 enforced、两个绑定 ready，实际进程已收到变量。`hyb_model` 为两行候选，按顺序采用首个非空标识。凭据访问模型列表返回“访问已被拦截”的 HTML 403；正式项目 Chat Completions 工具探测的第一次请求也 HTTP 403，未重试，未启动新的公司。认证错误分类不能证明 key 无效；费用和用量没有供应商回执，继续保留未知。接口方需排查 POST 403 和正常 API 访问权限。见 [013](../../evidence/013-hyb-api-access/README.md)。
+
+按用户要求新增项目 `.codex/config.toml`，`codex features list` 实测为 `goals stable true`。全局 `features enable` 重试仍因系统配置挂载只读而失败；项目使用 workspace-write，不声称当前托管会话权限热更新。现有首版三章未验收的结论保持。
+
 ## 2026-10-18：首版真实业务试跑受阻
 
 已在独立组织通过正式 Console/API/Harness 实际重跑首版：4 次免费模型工具探测，加 1 次小说公司筹建请求。Xing4.0 能调用工具但抄错随机校验码；Nemotron 完成工具调用后，读取结果的请求 180 秒后连接中断。两者都未通过完整探测。保留 Xing4.0 的已知限制启动独立业务后，首个筹建请求也在 180 秒后进入 unknown，系统停止派发。

@@ -1,0 +1,92 @@
+{
+  "recorded_at": "2026-10-17T20:58:12.959449+00:00",
+  "baseline_commit": "f0839d79ca2b41bbdb5e8e37df6401ef5ac162f8",
+  "branch": "dev",
+  "api_base_url": "https://ai.hybgzs.com/v1",
+  "key_variable": "hyb_key",
+  "model_variable": "hyb_model",
+  "readiness": {
+    "observations_current": true,
+    "network_policy": "enforced",
+    "secret": "ready",
+    "runtime_model_variable": "ready",
+    "variables_present": true
+  },
+  "model_selection": {
+    "candidate_count": 2,
+    "encoding": "two nonempty newline-separated identifiers",
+    "selected_candidate_index": 0,
+    "value_omitted": true
+  },
+  "models_read": {
+    "authenticated": true,
+    "http_status": 403,
+    "content_type": "text/html; charset=UTF-8",
+    "html_title": "访问已被拦截",
+    "cf_ray": "a4c235c6d93da4aa-GRU",
+    "interpretation": "网页防护返回HTML；不是有效模型列表。不能从此确认API key无效。"
+  },
+  "project_chat_completion": {
+    "result": {
+      "status": "failed",
+      "run_id": "run-de9c31b3a4b346eb9a4d9202af96a1bd",
+      "run_ids": [
+        "run-de9c31b3a4b346eb9a4d9202af96a1bd"
+      ],
+      "failure": {
+        "code": "api_authentication",
+        "message": "模型 API 认证失败（HTTP 403）",
+        "recovery": "在模型与 API 中检查密钥、地址及模型访问权限，然后手动测试连接。",
+        "http_status": 403
+      },
+      "message": "模型 API 认证失败（HTTP 403）"
+    },
+    "run": {
+      "id": "run-de9c31b3a4b346eb9a4d9202af96a1bd",
+      "kind": "connection_test",
+      "executor": "api",
+      "status": "failed",
+      "started_at": "2026-10-17T20:57:26.853206+00:00",
+      "ended_at": "2026-10-17T20:57:27.312723+00:00",
+      "usage": {
+        "connection_id": "hyb",
+        "connection_revision": 1,
+        "cost": null,
+        "cost_status": "unknown",
+        "elapsed_ms": 453,
+        "protocol": "openai_chat_completions",
+        "transport_source": "provider_api"
+      },
+      "result": {
+        "failure": {
+          "code": "api_authentication",
+          "http_status": 403,
+          "message": "模型 API 认证失败（HTTP 403）",
+          "recovery": "在模型与 API 中检查密钥、地址及模型访问权限，然后手动测试连接。"
+        },
+        "reason": "工具往返测试未完成"
+      }
+    },
+    "requests_sent": 1,
+    "automatic_retries": 0,
+    "tool_roundtrip_verified": false,
+    "billing": "unknown; no generation id or token receipt; not assumed zero"
+  },
+  "business_acceptance": {
+    "company_started": false,
+    "three_chapters_verified": false,
+    "three_cycles_verified": false,
+    "reason": "真实API探测HTTP403，未启动新的小说公司。"
+  },
+  "codex_goals": {
+    "global_enable_exit_code": 1,
+    "global_failure": "/run/codex-environment/codex-home/config.toml is on a read-only filesystem",
+    "project_config": ".codex/config.toml",
+    "project_sandbox_mode": "workspace-write",
+    "features_list_exit_code": 0,
+    "goals_line": [
+      "goals                                    stable             true"
+    ],
+    "current_session_permissions_changed": false
+  }
+}

@@ -1,5 +1,11 @@
 # 当前工程交接
 
+## 2026-10-18：HYB 接口与项目级 goals
+
+用户指定新 API `https://ai.hybgzs.com/v1`，绑定 `hyb_key` 及 `hyb_model`。发布/权限更新后复查，网络 enforced、绑定 ready，变量已实际注入。模型变量为两行候选标识，使用时按顺序取第一个非空行，不把多行整串当型号。带凭据的模型列表返回“访问已被拦截”HTML 403；项目正式 Chat Completions 工具探测发出 1 次请求也 403，failed，无供应商用量/生成 ID，费用未填零。没有启动新公司、重放历史未知执行或重复尝试其他型号。先由接口方核对 POST 403、API 权限及正常客户端访问策略，不能仅据通用认证错误提示断言 key 无效。见 [013 回执与继续条件](evidence/013-hyb-api-access/README.md)。
+
+用户另要求启用 Codex goals。全局 `codex features enable goals` 在完全访问设置后重试仍因系统配置目录只读失败；新增 `.codex/config.toml` 后，在项目目录执行不带覆盖参数的 `codex features list` 实测 `goals stable true`。项目 sandbox_mode 为 workspace-write；没有重定向 CODEX_HOME，也没有改变当前托管会话或全局只读挂载。此配置不含认证信息。
+
 ## 2026-10-18：实际重跑首版，未知请求阻止继续
 
 基于 `dev` / `0da2861` 用当前免费模型凭据实际执行 4 次工具探测和 1 次独立小说公司筹建。Xing4.0 两次工具探测取得生成结果，但校验码不一致；Nemotron 第一次工具请求成功，第二次连接中断为 unknown。独立公司采用有工具响应实证的 Xing4.0，明确保留其兼容风险；首个筹建请求 180 秒后 `api_timeout` / unknown。未重放未知请求，未用 fixture 补齐作品。
