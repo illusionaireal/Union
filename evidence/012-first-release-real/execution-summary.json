@@ -1,0 +1,376 @@
+{
+  "recorded_at": "2026-10-17T20:43:57.730443+00:00",
+  "baseline_commit": "0da286184dd8b03450b5310a91f90c7f0a3534c3",
+  "branch": "dev",
+  "authorization": "用户要求真实重跑首版；复用云环境免费模型凭据",
+  "limits": {
+    "preflight_max_calls": 4,
+    "company_max_calls": 32,
+    "company_job_max_steps": 30,
+    "per_call_timeout_seconds": 180,
+    "max_output_tokens": 8192
+  },
+  "preflight": {
+    "status": "not_passed",
+    "runs": [
+      {
+        "id": "run-e2c95d42dbe445b184054ec56b39ae6b",
+        "kind": "connection_test",
+        "executor": "api",
+        "work_id": null,
+        "status": "delivered",
+        "started_at": "2026-10-17T20:33:35.323546+00:00",
+        "ended_at": "2026-10-17T20:34:41.308488+00:00",
+        "usage": {
+          "actual_model": "xingchen-agi/xing4.0-29b-a4b:free",
+          "cached_input_tokens": 0,
+          "connection_id": "preflight",
+          "connection_revision": 1,
+          "cost": null,
+          "cost_status": "unknown",
+          "elapsed_ms": 65979,
+          "input_tokens": 250,
+          "output_tokens": 50,
+          "protocol": "openai_chat_completions",
+          "requested_model": "xingchen-agi/xing4.0-29b-a4b:free",
+          "response_id": "gen-1792269215-llyME1ojDM0EF3yXCoEm",
+          "transport_source": "provider_api"
+        },
+        "result": {
+          "ok": true,
+          "stage": "tool_invoked"
+        },
+        "requested_model": "xingchen-agi/xing4.0-29b-a4b:free",
+        "stage": "invoke_tool",
+        "expected_challenge": null,
+        "assistant_response": {
+          "content": "",
+          "role": "assistant",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{}",
+                "name": "connection_echo"
+              },
+              "id": "call_b9d7dc1336294e589911fea8",
+              "index": 0,
+              "type": "function"
+            }
+          ]
+        },
+        "exact_challenge_present": null
+      },
+      {
+        "id": "run-81da10b729d544e89c4aeaae4445e52b",
+        "kind": "connection_test",
+        "executor": "api",
+        "work_id": null,
+        "status": "failed",
+        "started_at": "2026-10-17T20:34:41.311436+00:00",
+        "ended_at": "2026-10-17T20:34:46.039917+00:00",
+        "usage": {
+          "actual_model": "xingchen-agi/xing4.0-29b-a4b:free",
+          "cached_input_tokens": 0,
+          "connection_id": "preflight",
+          "connection_revision": 1,
+          "cost": null,
+          "cost_status": "unknown",
+          "elapsed_ms": 4723,
+          "input_tokens": 109,
+          "output_tokens": 61,
+          "protocol": "openai_chat_completions",
+          "requested_model": "xingchen-agi/xing4.0-29b-a4b:free",
+          "response_id": "gen-1792269281-wBTxXeeHGbnY8XyCW0pd",
+          "transport_source": "provider_api"
+        },
+        "result": {
+          "failure": {
+            "code": "api_unexpected_tool",
+            "message": "模型请求了当前不支持的工具",
+            "recovery": "模型只能调用本轮提供的组织工具；检查模型的 Chat Completions 工具调用兼容性。"
+          },
+          "reason": "工具往返测试未完成"
+        },
+        "requested_model": "xingchen-agi/xing4.0-29b-a4b:free",
+        "stage": "read_tool_result",
+        "expected_challenge": "connection-check-7efedfb9ed5f4aa7adf33117472bc98d",
+        "assistant_response": {
+          "content": "连接校验码：connection-check-7efedfb9ed5f4aa7adf331174772bc98d",
+          "role": "assistant"
+        },
+        "exact_challenge_present": false
+      },
+      {
+        "id": "run-630dd93c29e64960924dfbf283f089f5",
+        "kind": "connection_test",
+        "executor": "api",
+        "work_id": null,
+        "status": "delivered",
+        "started_at": "2026-10-17T20:34:51.052505+00:00",
+        "ended_at": "2026-10-17T20:36:35.413033+00:00",
+        "usage": {
+          "actual_model": "nvidia/nemotron-3.5-lightning:free",
+          "cached_input_tokens": 0,
+          "connection_id": "preflight",
+          "connection_revision": 2,
+          "cost": null,
+          "cost_status": "unknown",
+          "elapsed_ms": 104352,
+          "input_tokens": 318,
+          "output_tokens": 52,
+          "protocol": "openai_chat_completions",
+          "requested_model": "nvidia/nemotron-3.5-lightning:free",
+          "response_id": "gen-1792269291-sIFFPdLSr3C9xB64UFNY",
+          "transport_source": "provider_api"
+        },
+        "result": {
+          "ok": true,
+          "stage": "tool_invoked"
+        },
+        "requested_model": "nvidia/nemotron-3.5-lightning:free",
+        "stage": "invoke_tool",
+        "expected_challenge": null,
+        "assistant_response": {
+          "content": "",
+          "role": "assistant",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{}",
+                "name": "connection_echo"
+              },
+              "id": "call-c9ca57e4-950a-4561-940e-0ae5b27e9e67",
+              "index": 0,
+              "type": "function"
+            }
+          ]
+        },
+        "exact_challenge_present": null
+      },
+      {
+        "id": "run-fe6ff98c61e041a4b12f80ded6121c50",
+        "kind": "connection_test",
+        "executor": "api",
+        "work_id": null,
+        "status": "unknown",
+        "started_at": "2026-10-17T20:36:35.418441+00:00",
+        "ended_at": "2026-10-17T20:39:35.427627+00:00",
+        "usage": {
+          "connection_id": "preflight",
+          "connection_revision": 2,
+          "cost": null,
+          "cost_status": "unknown",
+          "elapsed_ms": 180004,
+          "protocol": "openai_chat_completions",
+          "requested_model": "nvidia/nemotron-3.5-lightning:free",
+          "transport_source": "provider_api"
+        },
+        "result": {
+          "failure": {
+            "code": "api_connection",
+            "message": "无法连接模型 API 或连接中断",
+            "recovery": "检查地址、网络、证书及供应商请求记录；若结果未知，先核对原执行。"
+          },
+          "reason": "工具往返测试未完成"
+        },
+        "requested_model": "nvidia/nemotron-3.5-lightning:free",
+        "stage": "read_tool_result",
+        "expected_challenge": "connection-check-34e8cb317af04880adb54cc9541e786d",
+        "assistant_response": null,
+        "exact_challenge_present": null
+      }
+    ]
+  },
+  "business_candidate": {
+    "model": "xingchen-agi/xing4.0-29b-a4b:free",
+    "selection_reason": "工具调用和返回读取有实证；随机标识抄写有错误；独立有限业务试跑，不重放Nemotron未知探测。",
+    "tool_roundtrip_passed": false
+  },
+  "company": {
+    "organization_id": "org-eccc3581e319417296ed21fae9ed20f4",
+    "source": "real",
+    "phase": "bootstrap",
+    "member_count": 0,
+    "work_count": 0,
+    "artifact_count": 0,
+    "chapter_count": 0,
+    "review_count": 0,
+    "next_step": "blocked",
+    "blocked_reasons": [
+      "模型 API 请求超时，执行结果未知",
+      "模型用量缺失，成本未知；暂停新调用并核对供应商回执",
+      "需要核对执行：run-46b4c0ea89464454af2f57a3485b0cab"
+    ],
+    "budget": {
+      "calls_reserved": 1,
+      "max_calls": 32,
+      "cost_status": "unknown",
+      "estimated_cost_reserved": null,
+      "blocked_reason": "模型用量缺失，成本未知；暂停新调用并核对供应商回执"
+    },
+    "runs": [
+      {
+        "id": "run-46b4c0ea89464454af2f57a3485b0cab",
+        "kind": "decision",
+        "executor": "api",
+        "work_id": null,
+        "status": "unknown",
+        "started_at": "2026-10-17T20:39:48.485926+00:00",
+        "ended_at": "2026-10-17T20:42:48.580412+00:00",
+        "usage": {
+          "connection_id": "openrouter-free",
+          "connection_revision": 1,
+          "cost": null,
+          "cost_status": "unknown",
+          "elapsed_ms": 180003,
+          "protocol": "openai_chat_completions",
+          "requested_model": "xingchen-agi/xing4.0-29b-a4b:free",
+          "transport_source": "provider_api"
+        },
+        "result": {
+          "failure": {
+            "code": "api_timeout",
+            "message": "模型 API 请求超时，执行结果未知",
+            "recovery": "核对供应商原请求，处理未知执行后再手动继续；可在连接配置中调整超时。"
+          },
+          "reason": "API 执行结果未知；保留记录，不自动重试"
+        }
+      }
+    ],
+    "business": {
+      "book_title": null,
+      "chapters": [],
+      "config": {
+        "initial_budget_minor": 10000,
+        "input_price_minor_per_million": 0,
+        "output_price_minor_per_million": 0
+      },
+      "currency": "CNY",
+      "kind": "novel",
+      "ledger": [
+        {
+          "amount_minor": null,
+          "created_at": "2026-10-17T20:42:48.580339+00:00",
+          "currency": "CNY",
+          "id": "model-run-46b4c0ea89464454af2f57a3485b0cab",
+          "input_tokens": null,
+          "kind": "model",
+          "output_tokens": null,
+          "prices": {
+            "initial_budget_minor": 10000,
+            "input_price_minor_per_million": 0,
+            "output_price_minor_per_million": 0
+          },
+          "reference": "run-46b4c0ea89464454af2f57a3485b0cab",
+          "run_status": "unknown",
+          "source": "provider_usage_estimate"
+        }
+      ],
+      "platform": {
+        "price_minor": 30,
+        "server_minor": 20,
+        "simulated": true,
+        "subscriptions": [
+          12,
+          2,
+          8
+        ],
+        "tax_basis_points": 600,
+        "version": "novel-mock-v1"
+      },
+      "reviews": [],
+      "scope": "同一本小说连续三章；第二周期低订阅是受控实验，不能推断市场或质量。",
+      "target_cycles": 3,
+      "totals": {
+        "initial_budget_minor": 10000,
+        "balance_minor": 10000,
+        "income_minor": 0,
+        "operating_cost_minor": 0,
+        "model_estimate_minor": 0,
+        "unknown_model_costs": 1
+      },
+      "completed": false,
+      "feedback_actions": [],
+      "quality_review": "待人工审读：设定、情节衔接、每章推进、负面反馈后的实际改变。"
+    },
+    "commands": [
+      {
+        "actor": "local board",
+        "base_version": 0,
+        "connection": {
+          "config": {
+            "base_url": "https://openrouter.ai/api/v1",
+            "enabled": true,
+            "max_output_tokens": 8192,
+            "model": "xingchen-agi/xing4.0-29b-a4b:free",
+            "name": "首版免费工具模型（校验码探测未通过）",
+            "response_format": "agent",
+            "timeout_seconds": 180,
+            "token_limit_field": "max_tokens"
+          },
+          "has_api_key": true,
+          "id": "openrouter-free",
+          "revision": 1
+        },
+        "created_at": "2026-10-17T20:39:46.423975+00:00",
+        "id": "command-755b1ab61ea54a6fa122a514a513b763",
+        "kind": "api_connection",
+        "message": "操作已保存",
+        "organization_id": "org-eccc3581e319417296ed21fae9ed20f4",
+        "status": "succeeded"
+      },
+      {
+        "actions": [
+          {
+            "action": "blocked",
+            "failure": {
+              "code": "api_timeout",
+              "message": "模型 API 请求超时，执行结果未知",
+              "recovery": "核对供应商原请求，处理未知执行后再手动继续；可在连接配置中调整超时。"
+            },
+            "run_id": "run-46b4c0ea89464454af2f57a3485b0cab"
+          }
+        ],
+        "actor": "local board",
+        "base_version": 2,
+        "created_at": "2026-10-17T20:39:46.432335+00:00",
+        "ended_at": "2026-10-17T20:42:48.586648+00:00",
+        "execution": {
+          "connection_id": "openrouter-free",
+          "connection_revision": 1,
+          "harness": "deepagents",
+          "harness_version": "0.7.28",
+          "protocol": "openai_chat_completions",
+          "requested_model": "xingchen-agi/xing4.0-29b-a4b:free",
+          "transport_source": "provider_api"
+        },
+        "executor": "api",
+        "failure": {
+          "code": "api_timeout",
+          "message": "模型 API 请求超时，执行结果未知",
+          "recovery": "核对供应商原请求，处理未知执行后再手动继续；可在连接配置中调整超时。"
+        },
+        "id": "command-9b4c57800917473ea36fdc6fd4856e05",
+        "kind": "start",
+        "message": "模型 API 请求超时，执行结果未知",
+        "organization_id": "org-eccc3581e319417296ed21fae9ed20f4",
+        "requested_model": "xingchen-agi/xing4.0-29b-a4b:free",
+        "status": "blocked"
+      }
+    ]
+  },
+  "acceptance": {
+    "status": "blocked",
+    "three_chapters_verified": false,
+    "three_cycles_verified": false,
+    "cross_member_work_verified": false,
+    "controlled_feedback_followup_verified": false,
+    "chapter_quality_review": "未执行：没有交付正文；不可标记人工验收通过",
+    "actual_external_publishing": false,
+    "actual_income": false,
+    "unknown_remote_results": 2,
+    "known_provider_generations": 3,
+    "total_model_requests": 5,
+    "manual_participation": "人类目标与授权；本机创建组织、配置连接和启动由工程代理通过正式Console命令完成；团队和正文未手工代填。"
+  }
+}

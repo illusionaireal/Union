@@ -1,0 +1,62 @@
+[
+  {
+    "run_id": "run-e2c95d42dbe445b184054ec56b39ae6b",
+    "response_id": "gen-1792269215-llyME1ojDM0EF3yXCoEm",
+    "queried_at": "2026-10-17T20:43:16.531754+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "xingchen-agi/xing4.0-29b-a4b-20261015:free",
+      "provider_name": "Phala",
+      "total_cost": 0,
+      "tokens_prompt": 132,
+      "tokens_completion": 60,
+      "native_tokens_prompt": 250,
+      "native_tokens_completion": 50,
+      "native_tokens_reasoning": 44,
+      "finish_reason": "tool_calls",
+      "is_byok": false,
+      "generation_time": 65766,
+      "latency": 11089
+    }
+  },
+  {
+    "run_id": "run-81da10b729d544e89c4aeaae4445e52b",
+    "response_id": "gen-1792269281-wBTxXeeHGbnY8XyCW0pd",
+    "queried_at": "2026-10-17T20:43:16.720921+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "xingchen-agi/xing4.0-29b-a4b-20261015:free",
+      "provider_name": "Phala",
+      "total_cost": 0,
+      "tokens_prompt": 93,
+      "tokens_completion": 47,
+      "native_tokens_prompt": 109,
+      "native_tokens_completion": 61,
+      "native_tokens_reasoning": 25,
+      "finish_reason": "stop",
+      "is_byok": false,
+      "generation_time": 4514,
+      "latency": 800
+    }
+  },
+  {
+    "run_id": "run-630dd93c29e64960924dfbf283f089f5",
+    "response_id": "gen-1792269291-sIFFPdLSr3C9xB64UFNY",
+    "queried_at": "2026-10-17T20:43:16.918459+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "nvidia/nemotron-3.5-lightning-20260807:free",
+      "provider_name": "Nvidia",
+      "total_cost": 0,
+      "tokens_prompt": 132,
+      "tokens_completion": 52,
+      "native_tokens_prompt": 318,
+      "native_tokens_completion": 52,
+      "native_tokens_reasoning": 35,
+      "finish_reason": "tool_calls",
+      "is_byok": false,
+      "generation_time": 104212,
+      "latency": 90944
+    }
+  }
+]

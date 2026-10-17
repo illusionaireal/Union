@@ -1,0 +1,108 @@
+
+> union@0.0.0 check
+> npm run check:plan && npm test && npm run check:console
+
+
+> union@0.0.0 check:plan
+> node scripts/check-plan.mjs
+
+{"baseline":"UNION-B1","tasks":82,"dependencies":181,"cycles":0,"missingDependencies":0,"baselineFiles":5,"githubTasks":8}
+
+> union@0.0.0 test
+> node --test tests/*.test.ts
+
+✔ retry uses the same reservation; changed request is rejected (8.302057ms)
+✔ unauthorized model actions and tenant/currency changes leave budget untouched (1.686588ms)
+✔ only positive safe integer amounts and bounded keys are accepted (1.504736ms)
+✔ eight competing processes cannot exceed a 100-minor-unit hard budget (344.88971ms)
+✔ process crash after external success recovers by lookup without repeating the effect (136.027123ms)
+✔ crash before external call retains reservation when lookup is inconclusive (100.869272ms)
+✔ definitive failure releases reservation exactly once (24.723964ms)
+✔ settling below maximum releases the difference and invalid receipt rolls back (10.11822ms)
+✔ same key across test tenants remains independent (8.902526ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 805.731809
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice
+
+> union@0.0.0 check:console
+> npm run typecheck --workspace @union/console && npm run test --workspace @union/console && npm run build:console
+
+
+> @union/console@0.1.0 typecheck
+> tsc --noEmit
+
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice
+
+> @union/console@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 /workspace/Union/web/console
+
+ ✓ src/api/client.test.ts (3 tests) 12ms
+ ✓ src/features/commands/fields.test.tsx (8 tests) 289ms
+ ✓ src/app/url-state.test.tsx (1 test) 315ms
+   ✓ URL filter state > composes rapid edits without restoring a cleared search and preserves organization scope  312ms
+ ✓ src/features/commands/receipts.test.ts (4 tests) 6ms
+
+ Test Files  4 passed (4)
+      Tests  16 passed (16)
+   Start at  20:40:43
+   Duration  2.77s (transform 431ms, setup 1.04s, collect 447ms, tests 622ms, environment 2.50s, prepare 740ms)
+
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice
+
+> union@0.0.0 build:console
+> npm run build --workspace @union/console
+
+
+> @union/console@0.1.0 build
+> tsc --noEmit && vite build
+
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 2004 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.74 kB │ gzip:   0.51 kB
+dist/assets/index-DcBMpnBZ.css   41.52 kB │ gzip:   9.41 kB
+dist/assets/index-CsHS5wYU.js   384.26 kB │ gzip: 121.24 kB
+✓ built in 2.57s
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice

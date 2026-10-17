@@ -1,0 +1,6 @@
+{
+  "purpose": "只读核对没有response_id的两次未知请求",
+  "endpoint": "GET /api/v1/activity?date=2026-10-17",
+  "http_status": 400,
+  "provider_message": "Date must be within the last 30 (completed) UTC days"
+}
