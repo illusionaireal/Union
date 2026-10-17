@@ -1,0 +1,15 @@
+{
+  "date": "2026-10-17T20:16:38.163090+00:00",
+  "test": "openrouter-free-connectivity",
+  "requested_model": "google/gemma-4-26b-a4b-it:free",
+  "catalog_pricing": {
+    "prompt": "0",
+    "completion": "0"
+  },
+  "generation_requests_sent": 1,
+  "http_status": 429,
+  "error_code": 429,
+  "error_message": "Provider returned error",
+  "passed": false,
+  "elapsed_seconds": 0.347
+}

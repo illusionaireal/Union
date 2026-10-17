@@ -2,16 +2,16 @@
 
 当前界面提供八页导航。**模型 API 入口在左侧“模型与 API”**，所有通用组织均可使用。先创建公司，再点击“添加 API 连接”填写地址、API Key、模型 ID，预览并保存。连接卡可编辑、设为默认、取消默认和确认一次连接测试。保存不会调用模型；API Key 不回显，编辑留空保留原值。完成后在公司总览选择有限运行。旧小说指南中的“组织设置配置 API”入口由独立模型页接续。
 
-更新：2026-10-14。使用 Node 24.19.0 和 Python 3.11+，不需要 Python 第三方包。从仓库根目录首次安装，然后一条命令构建并启动：
+更新：2026-10-18。使用 Node 24.19.0 和 Python 3.11+；启动器会在项目 `.venv` 安装固定 Harness 依赖。从仓库根目录首次安装，然后一条命令构建并启动：
 
 ```sh
 npm ci --ignore-scripts
 npm start -- --root .union/console --port 8766 --open
 ```
 
-Linux 默认 `python3`，Windows 默认 `python`，可设置 `UNION_PYTHON`。已有构建时可继续直接运行 `python -m ai_union.server --open`。服务只监听本机，`--open` 打开一次性发起人链接；默认仅配置 fixture，创建不会自动运行。
+Linux 默认 `python3`，Windows 默认 `python`，可设置 `UNION_PYTHON`。依赖与构建就绪后，可直接使用项目解释器运行 `.venv/bin/python -m ai_union.server --open`（Windows 用 `.venv\Scripts\python.exe`）。服务只监听本机，`--open` 打开一次性发起人链接；默认仅配置 fixture，创建不会自动运行。
 
-正式前端是 `web/console/` 的 React + TypeScript + Vite 工程，构建目录由 Python 同源提供。七个页面支持直接访问、刷新和前进后退；架构及开发模式见 [FRONTEND.md](FRONTEND.md)。单 HTML 原型和报告继续独立保留，根目录 `ai-union-console.html` 是旧实现归档，不是默认启动页面。
+正式前端是 `web/console/` 的 React + TypeScript + Vite 工程，构建目录由 Python 同源提供。八个页面支持直接访问、刷新和前进后退；架构及开发模式见 [FRONTEND.md](FRONTEND.md)。独立单 HTML 原型、旧工作台和报告已按用户要求删除；不再提供其生成入口。历史证据保留，见 [退役说明](site.md)。
 
 ## 本机会话
 

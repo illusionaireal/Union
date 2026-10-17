@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import copy
+import base64
 import hashlib
 import http.client
 import ipaddress
@@ -10,7 +11,8 @@ import socket
 import threading
 import time
 from pathlib import Path
-from urllib.parse import urlsplit
+from urllib.parse import urlsplit, unquote
+from urllib.request import getproxies, proxy_bypass
 
 from .engine import Rejected, encoded, identifier, model_name, now, require, text, uid
 from .executor import ExecutionFailure
@@ -19,6 +21,29 @@ from .agent_protocol import compile_tool, instructions, model_input, tools_for, 
 
 
 CONFIG_FIELDS = {"name", "base_url", "model", "response_format", "token_limit_field", "max_output_tokens", "timeout_seconds", "enabled"}
+
+
+def api_connection(parts, timeout):
+    """Honor the host's HTTPS proxy without weakening destination TLS verification."""
+    if parts.scheme != "https":
+        return http.client.HTTPConnection(parts.hostname, parts.port, timeout=timeout)
+    proxy = getproxies().get("https")
+    if not proxy or is_loopback(parts.hostname) or proxy_bypass(parts.hostname):
+        return http.client.HTTPSConnection(parts.hostname, parts.port, timeout=timeout)
+    try:
+        target = urlsplit(proxy if "://" in proxy else "http://" + proxy)
+        if target.scheme != "http" or not target.hostname or target.path not in ("", "/") or target.query or target.fragment:
+            raise ValueError("Unsupported proxy")
+        connection = http.client.HTTPSConnection(target.hostname, target.port or 80, timeout=timeout)
+        headers = {}
+        if target.username is not None:
+            credentials = unquote(target.username) + ":" + unquote(target.password or "")
+            headers["Proxy-Authorization"] = "Basic " + base64.b64encode(credentials.encode()).decode("ascii")
+        connection.set_tunnel(parts.hostname, parts.port or 443, headers=headers)
+        return connection
+    except ValueError:
+        # Never silently bypass a configured proxy or expose its credentials.
+        raise OSError("HTTPS proxy configuration is unsupported") from None
 
 
 def validate_config(config):
@@ -262,11 +287,11 @@ class APIExecutor:
 
     def _request(self, job, body):
         parts = urlsplit(self.config["base_url"])
-        connection_class = http.client.HTTPSConnection if parts.scheme == "https" else http.client.HTTPConnection
-        conn = connection_class(parts.hostname, parts.port, timeout=max(0.01, job["deadline"] - time.monotonic()))
-        job["connection"] = conn
+        conn = None
         sent = False
         try:
+            conn = api_connection(parts, max(0.01, job["deadline"] - time.monotonic()))
+            job["connection"] = conn
             conn.connect()
             if job["cancelled"].is_set() or time.monotonic() >= job["deadline"]:
                 raise ExecutionFailure("API 请求截止时间已到", unknown=False)
@@ -315,7 +340,8 @@ class APIExecutor:
         finally:
             if 'response' in locals():
                 response.close()
-            conn.close()
+            if conn:
+                conn.close()
             job["done"].set()
 
     def cancel(self, rid):

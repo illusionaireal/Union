@@ -1,0 +1,41 @@
+{
+  "date": "2026-10-17T20:16:53.254720+00:00",
+  "test": "openrouter-free-connectivity",
+  "requested_model": "liquid/lfm-2.5-2.6b:free",
+  "catalog_pricing": {
+    "prompt": "0",
+    "completion": "0"
+  },
+  "generation_requests_sent": 1,
+  "http_status": 200,
+  "response_id": "gen-1792268213-1VZ1jPoCxiDDGH5eIc85",
+  "returned_model": "liquid/lfm-2.5-2.6b:free",
+  "provider": "Liquid",
+  "response": null,
+  "finish_reason": "length",
+  "usage": {
+    "prompt_tokens": 26,
+    "completion_tokens": 64,
+    "total_tokens": 90,
+    "cost": 0,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0,
+      "upstream_inference_prompt_cost": 0,
+      "upstream_inference_completions_cost": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 64,
+      "image_tokens": 0,
+      "audio_tokens": 0
+    }
+  },
+  "passed": false,
+  "elapsed_seconds": 1.189
+}

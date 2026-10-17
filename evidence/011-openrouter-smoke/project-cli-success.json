@@ -1,0 +1,31 @@
+{
+  "date": "2026-10-17T20:21:51.459176+00:00",
+  "test": "project-cli-api-test",
+  "model": "liquid/lfm-2.5-2.6b:free",
+  "base_url": "https://openrouter.ai/api/v1",
+  "max_output_tokens": 1024,
+  "generation_requests_sent": 1,
+  "exit_code": 0,
+  "result": {
+    "action": "connection_test",
+    "run_id": "run-b1c552b440cf490d90c849350b084165",
+    "status": "succeeded",
+    "usage": {
+      "actual_model": "liquid/lfm-2.5-2.6b:free",
+      "cached_input_tokens": 0,
+      "connection_id": "openrouter-free",
+      "connection_revision": 1,
+      "cost": null,
+      "cost_status": "unknown",
+      "elapsed_ms": 1053,
+      "input_tokens": 59,
+      "output_tokens": 90,
+      "protocol": "openai_chat_completions",
+      "requested_model": "liquid/lfm-2.5-2.6b:free",
+      "response_id": "gen-1792268510-YlIAzQcJUSpX908UXAkJ",
+      "transport_source": "provider_api"
+    }
+  },
+  "elapsed_seconds": 1.134,
+  "scope": "single plain-text connection probe through configured HTTPS proxy; not an organization or tool-loop acceptance"
+}

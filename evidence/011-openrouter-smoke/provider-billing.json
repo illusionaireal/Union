@@ -1,0 +1,40 @@
+{
+  "generations": [
+    {
+      "http_status": 200,
+      "id": "gen-1792268213-1VZ1jPoCxiDDGH5eIc85",
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "tokens_prompt": 17,
+      "tokens_completion": 74,
+      "native_tokens_reasoning": 64,
+      "is_byok": false,
+      "cancelled": false
+    },
+    {
+      "http_status": 200,
+      "id": "gen-1792268259-Ara7K5ZXQObmxewb2YhM",
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "tokens_prompt": 17,
+      "tokens_completion": 113,
+      "native_tokens_reasoning": 95,
+      "is_byok": false,
+      "cancelled": false
+    },
+    {
+      "http_status": 200,
+      "id": "gen-1792268510-YlIAzQcJUSpX908UXAkJ",
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "tokens_prompt": 51,
+      "tokens_completion": 117,
+      "native_tokens_reasoning": 76,
+      "is_byok": false,
+      "cancelled": false
+    }
+  ]
+}

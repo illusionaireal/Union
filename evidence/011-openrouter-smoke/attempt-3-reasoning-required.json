@@ -1,0 +1,17 @@
+{
+  "date": "2026-10-17T20:17:22.776767+00:00",
+  "test": "openrouter-free-connectivity",
+  "requested_model": "liquid/lfm-2.5-2.6b:free",
+  "catalog_pricing": {
+    "prompt": "0",
+    "completion": "0"
+  },
+  "max_tokens": 512,
+  "reasoning_requested": false,
+  "generation_requests_sent": 1,
+  "http_status": 400,
+  "error_code": 400,
+  "error_message": "Reasoning is mandatory for this endpoint and cannot be disabled.",
+  "passed": false,
+  "elapsed_seconds": 0.341
+}

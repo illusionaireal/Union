@@ -4,6 +4,8 @@
 
 你给目标和预算，它自行组织团队、开展业务、交付成果，并向你汇报经营情况。开发主分支为 **`dev`**。
 
+**2026-10-18：移除旧单 HTML 演示，开发统一使用 `dev`。** 已删除独立演示/报告、旧原型源码和专用生成/部署/验收工具，正式入口是 React 工作台。历史证据保留；[退役说明](docs/site.md)。OpenRouter 免费模型普通对话已通过独立实测，API 报告费用为 0；这不代表组织筹建、工具协作或三章业务已验收。见 [测试记录](evidence/011-openrouter-smoke/README.md)。
+
 **2026-10-17：组织筹建与成员 Harness。** API 有限运行现在使用 Deep Agents / LangGraph，支持分批保存与修正筹建草案、事务成立、成员虚拟文件工具循环及检查点恢复。每次模型请求独立计入额度；网页连接测试使用两次调用验证工具往返，总览展示筹建进度。`npm start` 自动准备项目 Python 环境和固定 SDK 依赖。架构与使用见 [组织 Harness](docs/ORGANIZATION_HARNESS.md)，范围见 [010](specs/010-organization-harness/spec.md)。真实供应商与业务质量仍待独立验收。
 
 **2026-10-17：修正 API 与初始化协议。** API 使用普通对话和按职责提供的组织工具，不再要求每一步返回整包 Schema。连接测试接收普通文本，工作正文直接保存；初始化由模型安排成员与任务，程序维护内部标识、任职与版本。旧 API 连接可继续读取，网页已移除 JSON 输出模式。实现与验证范围见 [009](specs/009-agent-conversation/spec.md)；真实供应商仍须单独验收。
@@ -20,9 +22,9 @@
 
 这是组织层原型。经营策略和岗位由执行器输出形成，代码不预置内容工作流。已有本地 mock 小说平台及试验账本；尚无真实模型闭环验收、真实对外发布或市场反馈证据，也没有真实支付或投资募集。
 
-**P0 本地组织工作台已接入实际服务，fixture 验收通过。** 浏览器可创建、有限运行、暂停派发、提交事件、调整资源、修章和核对执行；Dashboard 读取实际持久记录。正式前端已迁移到 React + TypeScript + Vite，七页路由、服务端数据管理、操作表单和回执分别维护。最新验证见 [005 前端工程](evidence/005-frontend-engineering/README.md)，真实模型调用仍为 0。范围见 [004](specs/004-organization-console/spec.md) 与 [003](specs/003-runtime-dashboard/spec.md)，证据见 [工作台验收](evidence/004-organization-console/README.md)。
+**P0 本地组织工作台已接入实际服务，fixture 验收通过。** 浏览器可创建、有限运行、暂停派发、提交事件、调整资源、修章和核对执行；Dashboard 读取实际持久记录。正式前端已迁移到 React + TypeScript + Vite，七页路由、服务端数据管理、操作表单和回执分别维护。原前端迁移验证见 [005](evidence/005-frontend-engineering/README.md)，当前组织 Harness 验证见 [010](evidence/010-organization-harness/README.md)。范围见 [004](specs/004-organization-console/spec.md) 与 [003](specs/003-runtime-dashboard/spec.md)，证据见 [工作台验收](evidence/004-organization-console/README.md)。
 
-本轮实现、review、验证与复盘见 [单页完成报告](ai-union-completion-report.html)，可离线打开。2026-10-13 的最终复验记录单独保存，历史结果保留。
+实现、review、验证与复盘保存在 `docs/` 和 `evidence/`；单 HTML 报告已退役，历史提交和原验收记录保留。
 
 从仓库根目录首次安装，然后一条命令构建并启动（Node 24.19.0、Python 3.11+）：
 
@@ -31,11 +33,11 @@ npm ci --ignore-scripts
 npm start -- --root .union/console --port 8766 --open
 ```
 
-浏览器从本机一次性链接建立发起人会话，默认仅配置 fixture。正式源码在 [web/console](web/console)，Vite 构建由 Python 同源提供；[工程与架构](docs/FRONTEND.md)、[工作台使用说明](docs/CONSOLE.md)包含开发、操作和恢复流程。原单 HTML 保留为演示及历史资料。
+浏览器从本机一次性链接建立发起人会话，默认仅配置 fixture。正式源码在 [web/console](web/console)，Vite 构建由 Python 同源提供；[工程与架构](docs/FRONTEND.md)、[工作台使用说明](docs/CONSOLE.md)包含开发、操作和恢复流程。独立单 HTML 演示已删除，后续只维护正式 React 工程。
 
-**真实模型 API 后端已接入。** 可配置 Chat Completions API 地址、模型、私有密钥、输出上限与超时，绑定组织默认连接，通过普通对话及组织工具执行。无需 Codex CLI；配置本身不调用模型。React 工作台已整合；API 配置、默认绑定与连接测试已接入网页；CLI／HTTP 入口继续可用。运行步骤与当前契约见 [API_MODELS.md](docs/API_MODELS.md)，原实现范围见 [005](specs/005-real-model-api/spec.md)。当前证据来自本地 HTTP 替身，真实供应商调用仍为 0。
+**真实模型 API 后端已接入。** 可配置 Chat Completions API 地址、模型、私有密钥、输出上限与超时，绑定组织默认连接，通过普通对话及组织工具执行。无需 Codex CLI；配置本身不调用模型。React 工作台已整合；API 配置、默认绑定与连接测试已接入网页；CLI／HTTP 入口继续可用。运行步骤与当前契约见 [API_MODELS.md](docs/API_MODELS.md)，原实现范围见 [005](specs/005-real-model-api/spec.md)。组织协作验收来自本地 HTTP 替身；独立 OpenRouter 普通对话实测见 [011](evidence/011-openrouter-smoke/README.md)，尚不代表组织能力通过。
 
-产品与设计基线：[统一 PRD v0.3](docs/PRD.md)、[产品设计说明](docs/product-design.md)、[操作工作台单 HTML 原型](ai-union-dashboard-prototype.html)、[软件复用与 AI 适配](docs/software-reuse.md)。原型支持七视图、操作表单与预览、回执、有限 fixture 步骤、详情及异常情景。48 项观察交互与 32 项操作交互检查通过；仅模拟浏览器内状态，未连接真实组织服务，模型调用为 0。
+产品与设计基线：[统一 PRD v0.6](docs/PRD.md)、[产品设计说明](docs/product-design.md)、[软件复用与 AI 适配](docs/software-reuse.md)。原型的历史设计验收和截图保存在 `evidence/design/`，后续页面和交互以正式 React 工程为准。
 
 业务事实与交易能力优先复用 ERP／CRM／文件／发布等已有系统；ai-union 负责 AI 成员、授权、组织决定、责任、执行与恢复。当前未接入这些业务系统，也不为抽象的 AI 企业预先重建 ERP、CRM 或 MES。
 
@@ -44,7 +46,7 @@ npm start -- --root .union/console --port 8766 --open
 ## 从这里接手
 
 1. [当前状态](docs/ai-union/STATUS.md)与[工程交接](HANDOFF.md)：已实现范围、明确缺口和下一步。
-2. [新环境开发与验证](docs/DEVELOPMENT.md)：从新克隆仓库重建模拟场景、运行工程检查、构建工作台和生成独立演示，不依赖前一个环境。
+2. [新环境开发与验证](docs/DEVELOPMENT.md)：从新克隆仓库重建模拟场景、运行工程检查、构建正式工作台，不依赖前一个环境。
 3. [PRD](docs/PRD.md)、[产品设计](docs/product-design.md)与[005 前端工程待办](specs/005-frontend-engineering/tasks.md)：当前 P0 产品范围及验收。
 4. [治理设计依据](docs/ai-union/DESIGN.md)、[最初开发交接](docs/ai-union/DEVELOPMENT.md)与[ADR-0002](docs/decisions/0002-ai-union-direction.md)：产品与路线背景；当前进度以 STATUS／HANDOFF 为准。
 
@@ -151,13 +153,9 @@ python3 -m ai_union --root .union/real resources \
 
 工程规格见 [specs/001-org-bootstrap](specs/001-org-bootstrap/)，当前结果及下一步见 [HANDOFF.md](HANDOFF.md)。
 
-## 开发进展网站
+## 正式前端与历史记录
 
-单文件交付：[ai-union-progress.html](ai-union-progress.html)。内置样式、脚本、验证快照和三份模拟成果，无需其他文件或网络资源。支持演示播放、架构切换、成果及验证摘要下载。
-
-`site/index.html` 提供中文开发进展、可逐步播放的模拟协作、成果查看及交互架构图。它展示验证快照，浏览器操作不启动模型、不修改组织状态。
-
-`site/` 保留可编辑源文件。更新公开数据后，运行 `python3 scripts/build_single_html.py` 重新生成单文件。Cloudflare Pages 发布准备与当前凭据/网络阻塞见 [docs/site.md](docs/site.md)；实际浏览器验证与截图见 [evidence/site](evidence/site/)。
+日常开发和体验使用 [React 工作台](docs/FRONTEND.md)。独立进展页、设计原型、旧实际单页和 HTML 完成报告已按用户要求删除，其源码、生成/部署/验收工具同时退役。历史截图、验证记录和 Git 历史保留，见 [说明](docs/site.md)。
 
 ## 检查旧平台工程资产
 

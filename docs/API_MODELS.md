@@ -1,5 +1,11 @@
 # 真实模型 API：运行与前端接口
 
+## 2026-10-18：OpenRouter 免费模型与云代理实测
+
+云环境中的 `openrouter_key` 已验证可用。API 根地址为 `https://openrouter.ai/api/v1`，本轮确认普通对话可用的免费模型为 `liquid/lfm-2.5-2.6b:free`。选择 `max_tokens` 并设置 1024 输出上限；该端点强制推理，64 上限会全部用于推理，禁止推理参数会被拒绝。免费模型有供应商限流，首次 Gemma 测试返回 429，不能把限流当成密钥错误，也不应无限重试或切换收费模型。
+
+项目传输现沿用宿主 `HTTPS_PROXY`/`https_proxy`（HTTP CONNECT 代理）及 `NO_PROXY`，使用系统默认 TLS 验证和 CA 配置；回环 HTTP 测试仍直连。非支持的代理格式明确失败，不静默绕过代理；不关闭证书校验。普通 `api-test` 实测已通过，原失败调用记录未删除。项目费用状态保持未知，供应商 0 费用明细独立保留于 [011](../evidence/011-openrouter-smoke/README.md)。工具循环及组织业务必须另行验证，不能据普通连接成功宣称 Harness 或三章通过。
+
 010（2026-10-17）：API `run/watch` 与网页有限运行默认使用 Deep Agents / LangGraph，支持工具执行及检查点恢复。分批筹建工具先保存草案，正式成立由宿主校验和事务提交。网页测试采用两次调用的工具往返；CLI 可选 `api-test --tools`，省略则保留一次普通探测。安装固定依赖、调用边界与恢复见 [组织 Harness](ORGANIZATION_HARNESS.md)。
 
 2026-10-17：API 改为普通对话与组织工具，不再发送 `response_format` 或整包输出 Schema。连接测试接收普通回复，工作直接保存正文，初始化工具接收成员、职责和首批任务，宿主生成内部标识、任职与版本依据。旧连接无需重建。当前行为见 [009](../specs/009-agent-conversation/spec.md)；Codex CLI 保留原结构化适配器。下文日期段落保留历史记录，当前契约按正文更新。

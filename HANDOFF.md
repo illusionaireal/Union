@@ -1,5 +1,15 @@
 # 当前工程交接
 
+## 2026-10-18：OpenRouter 免费模型实测与演示退役
+
+已检测并复用云环境 `openrouter_key`，凭据不写入 Git。OpenRouter 普通免费模型实测成功：`liquid/lfm-2.5-2.6b:free` 返回 `OPENROUTER_FREE_OK`。保留首次 Gemma 429、Liquid 推理耗尽 64 输出额度、禁止关闭推理的失败，以及最终成功证据。该端点要求推理，连接测试建议 `max_tokens` 至少 512–1024。此结果不证明工具兼容、筹建或三章业务质量。
+
+项目 CLI 首次探测暴露原 HTTP 客户端忽略云代理的缺陷，连接尚未发出时失败。现已支持宿主 `HTTPS_PROXY`/`https_proxy` 和 `NO_PROXY` 的 HTTP CONNECT 路由，保留标准 TLS 校验、取消、超时和不重试语义；代理凭据仅用于 CONNECT。原失败运行和调用占用保留，修复后的新 `api-test` 成功。项目账本仍如实记录费用未知，供应商费用明细单独留证。
+
+按用户要求删除四份独立 HTML 演示/报告、旧 `site/` 和设计/单页源码，以及专用生成、发布、验收工具；正式 React、小说业务测试场景和历史证据保留。实际远端 `dev` 已包含 `8179d6e` 和后续 010 Harness，本轮从 `d297c21` 接续，无需重复合并旧前端分支。后续开发继续使用 `dev`，`main` 不变。
+
+新证据见 [011](evidence/011-openrouter-smoke/README.md)，现行前端与启动见 [FRONTEND.md](docs/FRONTEND.md)，旧演示退役说明见 [site.md](docs/site.md)。下文均为历史记录，其旧文件路径和命令不作为当前维护入口。
+
 ## 2026-10-17：组织筹建与成员 Harness（010）
 
 API 默认执行已接入 Deep Agents 0.7.28 / LangGraph，保留受控 Chat Completions 传输与显式 token 参数。筹建成员、任务、协调责任先分批保存为草案，校验通过后事务成立；成员在持久任务会话中使用虚拟文件工具、读取工具结果并交付正文。每次派发最多一次模型请求，工具检查点恢复与 `continued` 结算逐次保留用量。网页总览显示筹建进度，API 测试验证两次调用的工具往返；CLI 使用 `api-test --tools`。
@@ -69,7 +79,7 @@ API 配置/绑定/连接测试沿用 [API_MODELS.md](docs/API_MODELS.md) 的 CLI
 
 ## 2026-10-13：最终复验与完成报告
 
-独立 review 的六项发现已修正或复核完成。当前 Windows／Python 3.13.14 再次通过 47 项测试、45 项实际浏览器检查，Node 24.19.0 历史检查通过；新证据位于 `evidence/004-organization-console/2026-10-13/`。已完成 A01–A10／C01–C09 映射、文档一致性同步和[单页 HTML 报告](ai-union-completion-report.html)，报告离线可读并支持复制启动命令及打印。
+独立 review 的六项发现已修正或复核完成。当前 Windows／Python 3.13.14 再次通过 47 项测试、45 项实际浏览器检查，Node 24.19.0 历史检查通过；新证据位于 `evidence/004-organization-console/2026-10-13/`。已完成 A01–A10／C01–C09 映射、文档一致性同步和[单页 HTML 报告](docs/site.md)，报告离线可读并支持复制启动命令及打印。
 
 跨机器同步曾将完整目录移入大小写冲突副本；已在 `D:/Project/Union` 恢复项目自身 Git 元数据和最后修复，并重跑验证。独立审阅记录保留其 Python 3.12.10 环境事实。后续使用 Git 分支检查点接手，先核对 `git rev-parse --show-toplevel`，避免在缺少 `.git` 时落入父目录其他仓库。没有推送、合并或公开部署本轮成果。
 

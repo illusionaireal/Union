@@ -88,6 +88,6 @@ flowchart TB
 
 Python 只给明确页面路由返回 SPA，未知资源、源码和私有文件返回 404；页面和资产继续执行主机/来源限制。CSP 仅允许同源脚本、样式和请求，不使用内联执行授权。静态资源公开加载用于建立初始会话，API 保持原权限边界。
 
-`ai-union-dashboard-prototype.html`、`ai-union-progress.html` 和完成报告继续作为单 HTML 演示/报告。`ai-union-console.html` 是 004 的历史实际前端，源码归档至 `design/console-legacy/`，用 `scripts/build_console.py` 可复现；Python 默认服务已切换为 Vite 构建。
+2026-10-18：用户取消独立单 HTML 演示/报告。根目录四份 HTML、旧设计/单页源码和专用生成、部署、浏览器验收脚本已删除；正式 Vite 入口 `web/console/index.html` 继续使用。只在 `dev` 维护正式 React 工作台，历史证据和 Git 提交保留，见 [退役说明](site.md)。
 
 当前会话没有可调用的 Sites、Figma、Canva 工具，因此本轮交付是可运行仓库工程和设计实现，没有外部 Sites 站点或设计平台文件。真实模型、外部部署和经营闭环继续按各自条件验收。

@@ -1,0 +1,24 @@
+{
+  "date": "2026-10-17T20:20:16.421252+00:00",
+  "test": "project-cli-api-test",
+  "model": "liquid/lfm-2.5-2.6b:free",
+  "base_url": "https://openrouter.ai/api/v1",
+  "max_output_tokens": 1024,
+  "generation_requests_sent": 0,
+  "exit_code": 2,
+  "result": {
+    "action": "connection_test",
+    "failure": {
+      "code": "api_connection",
+      "message": "无法连接模型 API 或连接中断",
+      "recovery": "检查地址、网络、证书及供应商请求记录；若结果未知，先核对原执行。"
+    },
+    "message": "无法连接模型 API 或连接中断",
+    "run_id": "run-bc34725f7359488da199be2f9a4e74e4",
+    "status": "failed"
+  },
+  "elapsed_seconds": 0.087,
+  "scope": "single plain-text connection probe; no organization collaboration or tool-loop acceptance",
+  "generation_requests_attempted": 1,
+  "failure_stage": "connect failed before the HTTP POST; the original failed run/reservation is retained"
+}
