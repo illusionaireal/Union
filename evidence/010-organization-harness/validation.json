@@ -1,0 +1,27 @@
+{
+  "date": "2026-10-17",
+  "source": "real SDK with loopback HTTP model doubles",
+  "real_model_calls": 0,
+  "python_tests": 131,
+  "harness_tests": 21,
+  "python_duration_seconds": 44.874,
+  "frontend_tests": 16,
+  "workspace_browser_checks": 71,
+  "novel_browser_checks": 16,
+  "startup_checks": 5,
+  "fresh_dependency_install": true,
+  "dependency_check": "passed",
+  "npm_check": "passed",
+  "independent_review": "passed; all P1 findings closed",
+  "versions": {
+    "deepagents": "0.7.28",
+    "langgraph": "1.2.16",
+    "langchain": "1.4.6",
+    "langgraph-checkpoint-sqlite": "3.1.2"
+  },
+  "limitations": [
+    "No real supplier credentials or model evaluation",
+    "Sequential member dispatch",
+    "Automatic model summarization disabled; bounded context"
+  ]
+}

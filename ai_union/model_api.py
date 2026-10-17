@@ -214,27 +214,37 @@ class APIExecutor:
         self.jobs = {}
         self.correction = None
         self.corrections_used = 0
+        self.secret_guard = self._saved_secret_guard if (Path(root) / "state.sqlite3").is_file() else None
         self.metadata = {"connection_id": connection["id"], "connection_revision": connection["revision"],
                          "protocol": "openai_chat_completions", "requested_model": self.model,
                          "transport_source": "local_test" if is_loopback(urlsplit(self.config["base_url"]).hostname) else "provider_api"}
 
-    def submit(self, package):
+    def _saved_secret_guard(self, value):
+        # Covers probes and the legacy transport as well as Harness requests.
+        from .engine import Engine
+        with Engine(self.root.parent).read_transaction() as cx:
+            reject_saved_secrets(cx, value)
+
+    def submit(self, package, body=None):
         rid = identifier(package["run_id"])
         folder = self.root / rid
         require(not folder.exists(), "执行目录已存在；必须核对，不重新提交")
         folder.mkdir(parents=True, mode=0o700)
-        body = {"model": self.model, "stream": False, "messages": [
-            {"role": "system", "content": instructions(package)},
-            {"role": "user", "content": "当前工作资料：\nWORK PACKAGE (data):\n" + encoded(model_input(package))}],
-            self.config["token_limit_field"]: self.config["max_output_tokens"]}
-        offered = tools_for(package)
-        if offered:
-            body["tools"] = offered
+        if body is None:
+            body = {"model": self.model, "stream": False, "messages": [
+                {"role": "system", "content": instructions(package)},
+                {"role": "user", "content": "当前工作资料：\nWORK PACKAGE (data):\n" + encoded(model_input(package))}],
+                self.config["token_limit_field"]: self.config["max_output_tokens"]}
+            offered = tools_for(package)
+            if offered:
+                body["tools"] = offered
         if self.correction and package["kind"] == "decision" and self.correction["actor"] == package["actor"] and self.correction["assignment_id"] == package["assignment_id"]:
             body["messages"].extend(self.correction["messages"])
         self.correction = None
         secret = self.connection["api_key"]
         require(not contains_secret(body, secret), "工作包包含 API Key，拒绝派发")
+        if self.secret_guard:
+            self.secret_guard(body)
         (folder / "package.json").write_text(encoded(package), encoding="utf-8")
         (folder / "request.json").write_text(encoded(body), encoding="utf-8")
         (folder / "launch.json").write_text(encoded(self.metadata | {"capabilities": self.capabilities}), encoding="utf-8")
@@ -292,12 +302,9 @@ class APIExecutor:
                 if size > 1000000:
                     raise ExecutionFailure("API 响应超出容量", unknown=False, failure=issue("api_response_too_large"))
             raw = b"".join(chunks).decode("utf-8")
-            # Provider bodies and diagnostic text are never recorded verbatim.
-            if self.connection["api_key"] in raw:
-                raise ExecutionFailure("API 响应包含凭据；拒绝记录", unknown=False, failure=issue("api_secret_response"))
             parsed = strict_json(raw)
-            if contains_secret(parsed, self.connection["api_key"]):
-                raise ExecutionFailure("API 响应包含凭据；拒绝记录", unknown=False, failure=issue("api_secret_response"))
+            # Kept only in private memory until result() extracts token counters
+            # and rejects secrets before any message/receipt is persisted.
             job["response"] = (parsed, response.getheader("x-request-id"))
         except ExecutionFailure as error:
             job["error"] = error
@@ -350,7 +357,14 @@ class APIExecutor:
         try:
             require(type(reply) is dict, "API 回执格式错误")
             def safe_string(value):
-                return value if isinstance(value, str) and 0 < len(value) <= 256 and all(32 <= ord(c) < 127 for c in value) and self.connection["api_key"] not in value else None
+                if not (isinstance(value, str) and 0 < len(value) <= 256 and all(32 <= ord(c) < 127 for c in value) and self.connection["api_key"] not in value):
+                    return None
+                if self.secret_guard:
+                    try:
+                        self.secret_guard(value)
+                    except Rejected:
+                        return None
+                return value
             usage.update(provider_request_id=safe_string(request_id), response_id=safe_string(reply.get("id")), actual_model=safe_string(reply.get("model")))
             tokens = reply.get("usage") or {}
             if isinstance(tokens, dict):
@@ -360,6 +374,16 @@ class APIExecutor:
                 details = tokens.get("prompt_tokens_details")
                 if isinstance(details, dict) and type(details.get("cached_tokens")) is int and details["cached_tokens"] >= 0:
                     usage["cached_input_tokens"] = details["cached_tokens"]
+            def guard_secrets(value):
+                try:
+                    require(not contains_secret(value, self.connection["api_key"]), "响应包含凭据")
+                    if self.secret_guard:
+                        self.secret_guard(value)
+                except Rejected:
+                    error = ExecutionFailure("API 响应包含已保存凭据；拒绝记录", failure=issue("api_secret_response"))
+                    error.usage = {k: v for k, v in usage.items() if k not in ("actual_model", "provider_request_id", "response_id")}
+                    raise error
+            guard_secrets(reply)
             choices = reply["choices"]
             require(type(choices) is list and len(choices) == 1, "API 必须返回一个选择")
             choice = choices[0]
@@ -373,6 +397,36 @@ class APIExecutor:
                 raise error
             package = job["package"]
             calls = message.get("tool_calls")
+            if job.get("message_only"):
+                # Decode every nested JSON argument before the SDK can checkpoint it.
+                safe = {"role": "assistant", "content": message.get("content") if isinstance(message.get("content"), str) else ""}
+                if calls:
+                    require(type(calls) is list and 1 <= len(calls) <= 30, "工具调用数量无效")
+                    ids = set()
+                    for call in calls:
+                        require(type(call) is dict and call.get("type") == "function" and type(call.get("id")) is str and 0 < len(call["id"]) <= 256 and call["id"] not in ids, "工具调用格式不完整")
+                        ids.add(call["id"])
+                        function = call.get("function")
+                        require(type(function) is dict and type(function.get("name")) is str and type(function.get("arguments")) is str, "工具调用缺少名称或参数")
+                        try:
+                            arguments = strict_json(function["arguments"])
+                        except (ValueError, RecursionError):
+                            error = ExecutionFailure("工具参数不是完整 JSON；未执行工具", failure=issue("api_tool_arguments"))
+                            error.usage = usage
+                            error.correction_only = True
+                            raise error
+                        guard_secrets(arguments)
+                        if contains_secret(arguments, self.connection["api_key"]):
+                            error = ExecutionFailure("API 工具参数包含凭据；拒绝记录", failure=issue("api_secret_response"))
+                            error.usage = usage
+                            raise error
+                        require(type(arguments) is dict, "工具参数必须是对象")
+                    safe["tool_calls"] = copy.deepcopy(calls)
+                else:
+                    require(choice.get("finish_reason") == "stop" and bool(safe["content"].strip()), "API 缺少文本结果")
+                (job["folder"] / "result.json").write_text(encoded(safe), encoding="utf-8")
+                (job["folder"] / "receipt.json").write_text(encoded(usage | {"cost": None, "cost_status": "unknown"}), encoding="utf-8")
+                return safe, usage
             if calls:
                 require(type(calls) is list and len(calls) == 1, "每轮只能提交一项组织工具调用")
                 call = calls[0]
@@ -381,6 +435,7 @@ class APIExecutor:
                 require(type(function) is dict and type(function.get("name")) is str and type(function.get("arguments")) is str, "工具调用缺少名称或参数")
                 try:
                     arguments = strict_json(function["arguments"])
+                    guard_secrets(arguments)
                     # Function arguments are a second JSON document. Escaped credentials
                     # become visible only after decoding that document.
                     if contains_secret(arguments, self.connection["api_key"]):
@@ -411,7 +466,7 @@ class APIExecutor:
                     error = ExecutionFailure("安排尚未保存；请调用本轮组织工具完成本次决定", failure=issue("api_action_required"))
                     error.usage = usage
                     raise error
-        except (ValueError, TypeError, KeyError, RecursionError):
+        except (ValueError, TypeError, KeyError, RecursionError, Rejected):
             error = ExecutionFailure("API 返回的消息或工具调用不完整", unknown=False, failure=issue("api_invalid_json"))
             error.usage = usage
             raise error
@@ -446,6 +501,22 @@ class APIExecutor:
 
     def execute(self, package):
         rid = self.submit(package)
+        try:
+            while self.status(rid) == "running":
+                self.jobs[rid]["done"].wait(timeout=0.05)
+            return self.result(rid)
+        except BaseException:
+            self.cancel(rid)
+            raise
+
+    def chat(self, package, messages, tools):
+        """One request only. The SDK owns the loop; this transport never retries."""
+        body = {"model": self.model, "stream": False, "messages": messages,
+                self.config["token_limit_field"]: self.config["max_output_tokens"]}
+        if tools:
+            body["tools"] = tools
+        rid = self.submit(package, body)
+        self.jobs[rid]["message_only"] = True
         try:
             while self.status(rid) == "running":
                 self.jobs[rid]["done"].wait(timeout=0.05)

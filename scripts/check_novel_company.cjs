@@ -80,7 +80,7 @@ async function command(page, kind, fill = async () => {}) {
   await refresh(page);
   await page.getByText(/三个周期已完成，已停止/).waitFor();
   const snap = await page.evaluate(async () => (await fetch('/api/snapshot?organization_id=' + document.querySelector('#org-select').value)).json());
-  check('One start delivers same-book three chapters and three reviews', snap.company.chapters.length === 3 && snap.company.reviews.length === 3 && snap.runs.length === 12);
+  check('One start delivers same-book three chapters and three reviews after two probe calls', snap.company.chapters.length === 3 && snap.company.reviews.length === 3 && snap.runs.length === 13);
   check('Negative feedback has a delivered follow-up task', snap.company.feedback_actions[1].delivered_work_ids.includes('chapter-3'));
   check('All HTTP double calls stay visibly simulated', snap.source === 'fixture' && snap.runs.every(r => r.simulated));
   check('Immutable mock settlement totals are correct', snap.company.totals.income_minor === 660 && snap.company.totals.operating_cost_minor === 101);

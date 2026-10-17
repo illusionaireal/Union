@@ -1,0 +1,6 @@
+{
+  "fresh_virtual_environment": true,
+  "deepagents": "0.7.28",
+  "package_import": true,
+  "real_model_calls": 0
+}

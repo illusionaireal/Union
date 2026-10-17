@@ -146,8 +146,8 @@ export function readForm(kind: CommandKind, form: HTMLFormElement): Record<strin
       };
     case 'api_test':
       if (values.get('allow_unknown_cost') !== 'on')
-        throw new Error('请确认连接测试会调用一次真实模型，费用未知');
-      return { allow_unknown_cost: true };
+        throw new Error('请确认工具往返测试会调用两次真实模型，费用未知');
+      return { allow_unknown_cost: true, tools: true };
     case 'resources':
       return { resources: resources(), reason };
     case 'amend':

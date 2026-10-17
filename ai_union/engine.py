@@ -622,6 +622,23 @@ class Engine:
         d["id"] = run_id
         return self.apply_decision(d, p["actor"], p["assignment_id"], p["event_ids"], run_id, usage)
 
+    def finish_progress(self, run_id, usage):
+        """One actual model call finished; its SDK task can continue later."""
+        with self.transaction() as cx:
+            r = self._run(cx, run_id)
+            require(r["status"] == "running", "执行已结算或需要核对")
+            s, p = self._state(cx), r["package"]
+            require(s["charter_version"] == p["context_manifest"]["charter_version"], "生效章程已变化，进度需要核对")
+            if r["work_id"]:
+                w = s["work"][r["work_id"]]
+                require(w["run_id"] == run_id and w["version"] == p["work_version"] and s["assignments"][p["assignment_id"]]["active"], "工作责任已改变")
+                w.update(status="pending", summary="工具执行进度已保存，等待下一次调用继续")
+            else:
+                self._authorize(s, self._charter(cx, s["charter_version"]), p["actor"], p["assignment_id"])
+            self._settle(cx, run_id, "continued", {"summary": "Agent 工具进度已保存；尚未交付或提交组织决定"}, usage, s)
+            s["version"] += 1
+            self._save(cx, s)
+
     def finish_work(self, run_id, result, usage):
         require(isinstance(result, dict), "执行结果必须是对象")
         with self.transaction() as cx:

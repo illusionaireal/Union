@@ -16,6 +16,8 @@ export const labels: Record<string, string> = {
   dependent: '等待依赖',
   pending: '待执行',
   delivered: '已交付',
+  continued: '进度已保存',
+  progress: '工具进度已保存',
   failed: '执行失败',
   cancelled: '已取消',
   reconciled: '已核对',

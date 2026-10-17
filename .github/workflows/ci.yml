@@ -20,6 +20,7 @@ jobs:
         with:
           python-version: '3.12'
       - run: npm ci --ignore-scripts
+      - run: python -m pip install -r requirements-harness.lock -e .
       - run: npm run check
   console-browser:
     runs-on: ubuntu-latest
@@ -33,6 +34,7 @@ jobs:
         with:
           python-version: '3.12'
       - run: npm ci --ignore-scripts
+      - run: python -m pip install -r requirements-harness.lock -e .
       - run: npm run build:console
       - run: python3 scripts/check_console_start.py --output .union/frontend-startup.json
       - run: npx playwright-core install --with-deps chromium

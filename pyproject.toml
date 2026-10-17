@@ -7,7 +7,7 @@ name = "ai-union"
 version = "0.1.0"
 description = "Persistent goal-driven organization bootstrap and collaboration runtime"
 requires-python = ">=3.11"
-dependencies = []
+dependencies = ["deepagents==0.7.28", "langgraph-checkpoint-sqlite==3.1.2"]
 
 [project.scripts]
 ai-union = "ai_union.cli:main"

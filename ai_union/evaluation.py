@@ -10,7 +10,7 @@ def simulated_run(run):
 
 def execution_receipt(engine, run):
     folder = engine.root / "executions" / run["id"]
-    if not (run["status"] == "delivered" and run["usage"] is not None and (folder / "result.json").is_file()):
+    if not (run["status"] in ("delivered", "continued") and run["usage"] is not None and (folder / "result.json").is_file()):
         return False
     if run["executor"] == "codex":
         return True

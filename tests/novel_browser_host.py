@@ -12,6 +12,30 @@ from ai_union.engine import encoded
 from ai_union.novel_demo import NovelDemoExecutor
 from ai_union.server import Server
 from tests.api_messages import fixture_message, historical_package
+from tests.test_agent_conversation import PLAN, tool
+
+
+def harness_message(body, package):
+    """Explicit staged outputs for browser Harness acceptance, never a real model."""
+    calls = [c for m in body['messages'] for c in m.get('tool_calls', [])]
+    names = [c['function']['name'] for c in calls]
+    if package.get('actor') == 'bootstrap':
+        if 'prepare_member' in names:
+            return tool('activate_organization', {})
+        items = [('prepare_member', m) for m in PLAN['members']] + [('arrange_work', t) for t in PLAN['tasks']] + [('configure_bootstrap', {'coordinator': PLAN['coordinator']})]
+        result = {'role': 'assistant', 'content': '保存本地测试草案。', 'tool_calls': []}
+        for index, (name, args) in enumerate(items):
+            call = tool(name, args)['tool_calls'][0]
+            call['id'] = f'draft-{index}'
+            result['tool_calls'].append(call)
+        return result
+    if package['kind'] == 'work' and not package['context']['task']['dependencies']:
+        if 'read_file' in names:
+            return {'role': 'assistant', 'content': '# 资料交付\n这是从虚拟工作区继续完善的本地测试资料。'}
+        if 'write_file' in names:
+            return tool('read_file', {'file_path': '/draft.md'})
+        return tool('write_file', {'file_path': '/draft.md', 'content': '本地测试资料，等待下一轮读取并交付。'})
+    return {'role': 'assistant', 'content': '# 成稿交付\n第二名成员使用前一成员的资料完成本地测试正文。'}
 
 
 class NovelProvider(BaseHTTPRequestHandler):
@@ -30,12 +54,19 @@ class NovelProvider(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(raw)
             return
-        if package['kind'] == 'connection_test':
+        if body['model'] == 'harness-draft-double' and package['kind'] != 'connection_test':
+            value, usage = None, {'input_tokens': 20, 'output_tokens': 10}
+        elif package['kind'] == 'connection_test':
             value, usage = {'ok': True}, {'input_tokens': 23, 'output_tokens': 11}
         else:
             value, usage = NovelDemoExecutor().execute(historical_package(package, getattr(self.server, 'bootstrap', None)))
-        message = fixture_message(package, value, getattr(self.server, 'bootstrap', None))
-        if package.get('actor') == 'bootstrap':
+        message = harness_message(body, package) if value is None else fixture_message(package, value, getattr(self.server, 'bootstrap', None))
+        probe_tools = [t['function']['name'] for t in body.get('tools', [])]
+        if 'connection_echo' in probe_tools:
+            message = {'role': 'assistant', 'content': '', 'tool_calls': [{'id': 'probe', 'type': 'function', 'function': {'name': 'connection_echo', 'arguments': '{}'}}]}
+        elif package['kind'] == 'connection_test' and any(m['role'] == 'tool' for m in body['messages']):
+            message = {'role': 'assistant', 'content': next(m['content'] for m in body['messages'] if m['role'] == 'tool')}
+        if package.get('actor') == 'bootstrap' and value is not None:
             self.server.bootstrap = value
         raw = encoded({'id': 'explicit-local-response', 'model': 'novel-local-double',
                        'choices': [{'finish_reason': 'tool_calls' if message.get('tool_calls') else 'stop', 'message': message}],

@@ -305,9 +305,9 @@ class Console:
                   "resources": {"resources", "reason"}, "model": {"model", "reason"}, "amend": {"charter", "reason"},
                   "reconcile": {"run_id", "resolution", "reason"}, "start": {"executor", "model", "connection_id", "max_steps", "max_seconds", "allow_unknown_cost"},
                   "api_connection": {"connection_id", "config", "api_key", "reason", "bind_default"}, "api_binding": {"connection_id", "reason"},
-                  "api_test": {"connection_id", "allow_unknown_cost"}, "company_usage": {"run_id", "input_tokens", "output_tokens", "reason"}}
+                  "api_test": {"connection_id", "allow_unknown_cost", "tools"}, "company_usage": {"run_id", "input_tokens", "output_tokens", "reason"}}
         optional = {"event": {"event_id"}, "start": {"model", "connection_id", "max_seconds", "allow_unknown_cost"},
-                    "api_connection": {"api_key", "bind_default"}, "api_test": {"connection_id"}}
+                    "api_connection": {"api_key", "bind_default"}, "api_test": {"connection_id", "tools"}}
         require(set(data) <= fields[kind] and fields[kind] - optional.get(kind, set()) <= set(data), "命令字段缺失或不支持")
         if kind == "pause":
             e.set_paused(True)
@@ -336,7 +336,12 @@ class Console:
                 connection = resolve_connection(e, data.get("connection_id"))
                 executor = APIExecutor(e.root, connection)
                 if kind == "start":
+                    from .harness import HarnessExecutor
+                    executor = HarnessExecutor(e, connection)
                     e.set_paused(False)
+                else:
+                    require(type(data.get("tools", False)) is bool, "工具测试选项必须为布尔值")
+                    executor.tool_probe = data.get("tools", False)
                 return executor
             elif executor_name == "codex":
                 require(self.enable_codex and data.get("allow_unknown_cost") is True, "宿主未启用 Codex 或未接受有限调用费用未知")
@@ -388,7 +393,11 @@ class Console:
         outcome = {"status": "unknown", "message": "连接测试中断；请核对原执行记录"}
         try:
             with activity(e):
-                outcome = test_connection(e, executor)
+                if getattr(executor, "tool_probe", False):
+                    from .harness import test_tool_connection
+                    outcome = test_tool_connection(e, executor)
+                else:
+                    outcome = test_connection(e, executor)
         except (Rejected, OSError, ValueError):
             outcome = {"status": "blocked", "message": "连接测试受阻；查看资源和原执行状态"}
         finally:
@@ -432,6 +441,8 @@ class Console:
                     actions[-1]["action"] = "blocked"
                     failure = actions[-1].get("failure")
                     status, message = "blocked", "本次调用额度或运行时间已用完；组织提议尚待修正"
+                elif actions and actions[-1]["action"] == "progress":
+                    message = "本次有限调用已结束；筹建或任务进度已保存，继续运行可接续"
         except BaseException:
             status, message = "unknown", "宿主作业中断；保留原执行记录并核对，不能推断远程取消"
         finally:

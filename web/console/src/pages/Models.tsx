@@ -49,7 +49,7 @@ export default function Models() {
           <h2>把模型接入公司的工作流</h2>
           <p>
             使用 Chat Completions 兼容接口。配置 API
-            根地址、密钥和模型，保存后选择一次连接测试，再回到总览启动。
+            根地址、密钥和模型，保存后测试工具往返能力，再回到总览启动筹建。
           </p>
           <span className="security-note">
             <ShieldCheck size={14} />
@@ -96,7 +96,7 @@ export default function Models() {
                 note: '仅当前公司',
               },
               { label: '默认连接', value: active || '尚未设置', note: '有限运行使用此连接' },
-              { label: '验证方式', value: '一次连接测试', note: '测试会占用调用额度' },
+              { label: '验证方式', value: '工具往返测试', note: '两次调用，验证工具与继续执行' },
             ]}
           />
           {!connected && (

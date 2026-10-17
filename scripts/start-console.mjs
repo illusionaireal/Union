@@ -1,9 +1,12 @@
 // Build and serve one same-origin application. No credentials pass through this wrapper.
 import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { ensurePython } from './ensure-python.mjs';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const npm = process.platform === 'win32' ? 'npm.cmd' : 'npm';
-const python = process.env.UNION_PYTHON || (process.platform === 'win32' ? 'python' : 'python3');
+let python;
+try { python = await ensurePython(root); }
+catch (error) { console.error(error.message); process.exit(1); }
 const args = process.argv.slice(2);
 const watch = args[0] === '--watch';
 if (watch) args.shift();

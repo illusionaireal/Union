@@ -43,6 +43,12 @@ def step(engine, executor):
     usage = {}
     try:
         result, usage = executor.execute(package)
+        if result.get("_harness_progress"):
+            engine.finish_progress(package["run_id"], usage)
+            if hasattr(executor, "continued"):
+                executor.continued()
+            return {"action": "correction" if result.get("correction") else "progress", "run_id": package["run_id"], "work_id": package.get("work_id"), "executor": executor.name,
+                    **({"failure": result["failure"]} if result.get("failure") else {})}
         if package["kind"] == "decision":
             engine.finish_decision(package["run_id"], result, usage)
         else:
@@ -53,11 +59,13 @@ def step(engine, executor):
     except (ExecutionFailure, Rejected, OSError, ValueError) as e:
         failure = public_failure(getattr(e, "failure", None)) or (runtime_failure(e) if isinstance(e, Rejected) else issue("execution_unknown" if getattr(e, "unknown", False) else "execution_failed"))
         engine.fail_run(package["run_id"], str(e), unknown=getattr(e, "unknown", False), usage=getattr(e, "usage", usage), failure=failure)
+        if hasattr(executor, "failed"):
+            executor.failed(e)
         if hasattr(executor, "feedback") and executor.feedback(package, e):
             return {"action": "correction", "run_id": package["run_id"], "reason": str(e), "failure": failure}
         return {"action": "blocked", "run_id": package["run_id"], "reason": str(e), "failure": failure}
-    except BaseException:
-        engine.fail_run(package["run_id"], "执行被中断；先核对结果", unknown=True)
+    except BaseException as error:
+        engine.fail_run(package["run_id"], "执行被中断；先核对结果", unknown=True, usage=getattr(error, "usage", usage))
         raise
 
 

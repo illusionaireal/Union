@@ -104,6 +104,27 @@ export default function Overview() {
         <FailureNotice failure={lastRun.failure} />
       )}
       {!hasActivity && <SetupGuide />}
+      {s.phase === 'bootstrap' && d.bootstrap && (
+        <Card title="组织筹建进度">
+          <p>草案已保存，可继续完善。正式成立后，成员和任务将一起启用并开始工作。</p>
+          <p>
+            筹建成员 {d.bootstrap.members.length} 名 · 首批工作 {d.bootstrap.tasks.length} 项 ·
+            协调负责人：{d.bootstrap.coordinator || '尚未确定'}
+          </p>
+          <div className="decision-note">
+            {d.bootstrap.members.map((member) => (
+              <p key={member.name}>
+                <strong>{member.name}</strong> · {member.role} — {member.mandate}
+              </p>
+            ))}
+          </div>
+          {d.bootstrap.tasks.map((task) => (
+            <p key={task.title}>
+              {task.title} · {task.owner}
+            </p>
+          ))}
+        </Card>
+      )}
       <PageStats
         items={[
           { label: '团队成员', value: Object.keys(s.members).length, note: '稳定身份与岗位责任' },

@@ -71,6 +71,7 @@ def parser():
     probe = sub.add_parser("api-test", help="实际连接测试，预约一次调用，不形成组织")
     probe.add_argument("--connection-id")
     probe.add_argument("--allow-unknown-cost", action="store_true")
+    probe.add_argument("--tools", action="store_true", help="两次调用验证工具调用及读取结果继续回应")
     for s in (configure, bind, probe):
         s.add_argument("--board-key-file", required=True)
         if s is not probe:
@@ -123,7 +124,8 @@ def main(argv=None):
                     require(args.model is None, "API 模型由连接配置固定")
                     def executor():
                         require("max_cost" not in engine.state()["resources"], "API 不支持金额硬上限")
-                        return APIExecutor(root, resolve_connection(engine, args.connection_id))
+                        from .harness import HarnessExecutor
+                        return HarnessExecutor(engine, resolve_connection(engine, args.connection_id))
                 actions = watch(engine, executor, args.max_steps, args.max_seconds) if args.command == "watch" else run(engine, executor, args.max_steps)
                 result = {"executor": args.executor, "simulated": args.executor == "fixture", "actions": actions, "status": engine.status()}
                 if args.executor == "api":
@@ -151,7 +153,12 @@ def main(argv=None):
                         result = {"api_connection_id": args.connection_id}
                     else:
                         require(args.allow_unknown_cost, "连接测试会产生一次实际调用；需显式 --allow-unknown-cost")
-                        result = test_connection(engine, APIExecutor(root, resolve_connection(engine, args.connection_id)))
+                        executor = APIExecutor(root, resolve_connection(engine, args.connection_id))
+                        if args.tools:
+                            from .harness import test_tool_connection
+                            result = test_tool_connection(engine, executor)
+                        else:
+                            result = test_connection(engine, executor)
             elif args.command == "event":
                 data = load(args.data)
                 if args.kind == "external_feedback":

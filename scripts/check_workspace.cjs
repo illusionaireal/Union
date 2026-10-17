@@ -29,9 +29,11 @@ async function commit(expectedFailure = null) {
   const accepted = /已完成|已受理/.test(await page.locator('#operation-result').innerText());
   const failedAsExpected = expectedFailure && await page.locator('#operation-result [data-execution-failure="'+expectedFailure+'"]').count()>0;
   check('Command returns an accepted, completed, or explicitly expected failed receipt', accepted || failedAsExpected);
+  const requestId = await page.locator('#operation-result [data-query-receipt]').getAttribute('data-query-receipt');
   await close();
   await page.locator('#refresh').click();
   await connected(page);
+  return requestId;
 }
 (async () => {
   fs.mkdirSync(output, { recursive: true });
@@ -105,7 +107,7 @@ async function commit(expectedFailure = null) {
   await page.locator('[name="allow_unknown_cost"]').check();
   await commit();
   await page.waitForFunction(async()=>{const s=await(await fetch('/api/snapshot?organization_id='+document.querySelector('#org-select').value)).json();return s.receipts.some(r=>r.kind==='api_test'&&r.status==='succeeded');});
-  check('Explicit connection test consumes exactly one loopback model call',(await snapshot(page)).runs.length===1 && (await snapshot(page)).source==='fixture');
+  check('Tool connection test consumes exactly two loopback model calls',(await snapshot(page)).runs.length===2 && (await snapshot(page)).source==='fixture');
   await navigate('overview');
   check('Connection probing does not mark company collaboration as started',await page.getByRole('region',{name:'公司启动准备'}).isVisible() && await page.getByText('2 / 3 已准备',{exact:true}).isVisible());
   await navigate('models');
@@ -121,7 +123,7 @@ async function commit(expectedFailure = null) {
   check('Unbinding explicitly previews an empty default',await page.locator('[name="connection_id"]').inputValue()==='');
   await page.locator('[name="reason"]').fill('测试解绑，保留原连接');
   await commit();
-  check('Unbinding retains connections and consumes no additional calls',!(await snapshot(page)).execution_config.api_connection_id && (await connections(page)).connections.length===2 && (await snapshot(page)).runs.length===1);
+  check('Unbinding retains connections and consumes no additional calls',!(await snapshot(page)).execution_config.api_connection_id && (await connections(page)).connections.length===2 && (await snapshot(page)).runs.length===2);
   for(const name of ['overview','members','tasks','artifacts','activity','models','resources','settings']){
     await navigate(name);
     await page.screenshot({path:path.join(output,name+'-desktop.png'),fullPage:true});
@@ -152,18 +154,18 @@ async function commit(expectedFailure = null) {
   await page.locator('[data-execution-failure="api_request_rejected"]').first().waitFor();
   check('Rejected provider parameter is visible with recovery instructions',await page.getByText('供应商拒绝的参数：response_format',{exact:true}).count()>0 && (await page.locator('body').innerText()).includes('不再发送 response_format'));
   check('Error response never exposes an echoed API key',!(await page.locator('body').innerText()).includes(secret));
-  check('Failed probe is persisted once without automatic retry',(await snapshot(page)).runs.length===2 && (await snapshot(page)).runs.at(-1).failure.http_status===400);
+  check('Failed probe is persisted once without automatic retry',(await snapshot(page)).runs.length===3 && (await snapshot(page)).runs.at(-1).failure.http_status===400);
   await page.screenshot({path:path.join(output,'api-failure-desktop.png'),fullPage:true});
   await page.reload();await connected(page);
   await page.locator('[data-execution-failure="api_request_rejected"]').first().waitFor();
-  check('Failure cause survives a browser reload',(await snapshot(page)).runs.length===2);
+  check('Failure cause survives a browser reload',(await snapshot(page)).runs.length===3);
   await page.locator('[data-connection="'+first+'"] [data-command="api_connection"]').click();
   await page.locator('[name="api_model"]').fill('test-model-repaired');
   await commit();
   await page.locator('[data-connection="'+first+'"] [data-command="api_test"]').click();
   await page.locator('[name="allow_unknown_cost"]').check();
   await commit();
-  await page.waitForFunction(async()=>{const s=await(await fetch('/api/snapshot?organization_id='+document.querySelector('#org-select').value)).json();return s.runs.length===3 && s.runs.at(-1).status==='delivered';});
+  await page.waitForFunction(async()=>{const s=await(await fetch('/api/snapshot?organization_id='+document.querySelector('#org-select').value)).json();return s.runs.length===5 && s.runs.at(-1).status==='delivered';});
   check('Explicitly fixing and retesting the connection succeeds without replaying the failed call',!(await snapshot(page)).runs.at(-1).failure);
   const observerContext=await browser.newContext();
   const observer=await observerContext.newPage();
@@ -173,6 +175,46 @@ async function commit(expectedFailure = null) {
   check('Observer sees an explicit access explanation and no API editor',await observer.getByText('当前为观察者会话',{exact:true}).isVisible() && await observer.locator('[data-command="api_connection"]').count()===0);
   check('Observer cannot read connection configuration through HTTP',await observer.evaluate(async id=>(await fetch('/api/model-connections?organization_id='+id)).status,org)===403);
   await observerContext.close();
+  await navigate('overview');
+  await page.locator('[data-command="create"]').click();
+  await page.locator('[name="name"]').fill('Harness · 分批筹建与恢复验收');
+  await page.locator('[name="goal"]').fill('本地模拟：分批建立团队，保存草稿，两成员依赖交付。');
+  await commit();
+  await navigate('models');
+  await page.locator('[data-command="api_connection"]').first().click();
+  await page.locator('[name="base_url"]').fill(ready.provider_url);
+  await page.locator('[name="api_model"]').fill('harness-draft-double');
+  await page.locator('[name="api_key"]').fill('harness-browser-key-not-real');
+  await commit();
+  async function advance(steps) {
+    await navigate('overview');
+    await page.locator('[data-command="start"]').first().click();
+    await page.locator('[name="max_steps"]').fill(String(steps));
+    await page.locator('[name="allow_unknown_cost"]').check();
+    const requestId = await commit();
+    await page.waitForFunction(async id=>{const org=document.querySelector('#org-select').value;const r=await(await fetch('/api/receipts?organization_id='+org+'&id='+id)).json();return r.receipt && r.receipt.status!=='accepted';},requestId);
+    await page.locator('#refresh').click();
+  }
+  await advance(1);
+  await page.getByRole('heading',{name:'组织筹建进度',exact:true}).waitFor();
+  let staged=await snapshot(page);
+  check('SDK stages two members without creating official members',staged.bootstrap.members.length===2 && Object.keys(staged.organization.members).length===0 && staged.runs.length===1);
+  await page.reload();await connected(page);
+  await page.getByRole('heading',{name:'组织筹建进度',exact:true}).waitFor();
+  check('Bootstrap draft survives reload', (await snapshot(page)).bootstrap.tasks.length===2);
+  await page.screenshot({path:path.join(output,'bootstrap-draft-desktop.png'),fullPage:true});
+  await page.setViewportSize({width:390,height:844});
+  check('Bootstrap draft fits mobile viewport',await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+  await page.screenshot({path:path.join(output,'bootstrap-draft-mobile.png'),fullPage:true});
+  await page.setViewportSize({width:1440,height:1000});
+  await advance(1);
+  check('Continue atomically activates the saved team',(await snapshot(page)).organization.phase==='active' && Object.keys((await snapshot(page)).organization.members).length===2);
+  await advance(4);
+  await page.waitForFunction(async()=>{const s=await(await fetch('/api/snapshot?organization_id='+document.querySelector('#org-select').value)).json();return Object.keys(s.organization.artifacts).length===2 && Object.values(s.organization.work).every(w=>w.status==='delivered');});
+  const delivered=await snapshot(page);
+  check('SDK file loop and cross-member work deliver two actual artifacts',Object.keys(delivered.organization.artifacts).length===2 && Object.values(delivered.organization.work).every(w=>w.status==='delivered'));
+  check('Six SDK requests have six usage receipts without hidden calls',delivered.runs.length===6 && delivered.runs.every(r=>r.usage.output_tokens===10) && delivered.runs.filter(r=>r.status==='continued').length===3);
+  await page.screenshot({path:path.join(output,'harness-delivery-desktop.png'),fullPage:true});
   check('No uncaught browser or host failures',errors.length===0);
   fs.writeFileSync(path.join(output,'checks.json'),JSON.stringify({checks,errors,simulated:true,real_model_calls:0},null,2));
   console.log(JSON.stringify({passed:checks.length,real_model_calls:0,evidence:output}));

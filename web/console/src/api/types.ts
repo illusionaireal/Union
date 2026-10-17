@@ -155,6 +155,13 @@ export interface PendingRequest {
   kind: ReceiptKind;
 }
 export interface Snapshot {
+  bootstrap?: {
+    members: { name: string; role: string; mandate: string }[];
+    tasks: { title: string; instruction: string; owner: string; dependencies?: string[] }[];
+    coordinator?: string;
+    strategy?: string;
+    updated_at: string;
+  } | null;
   company?: Company | null;
   service_instance: string;
   snapshot_sequence: number;
