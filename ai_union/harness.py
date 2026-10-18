@@ -91,6 +91,11 @@ class HarnessExecutor:
                    "work_version": package.get("work_version"), "charter": manifest["charter_version"],
                    "policy": manifest["policy_version"], "connection": self.metadata["connection_id"],
                    "revision": self.metadata["connection_revision"], "base": self.base}
+        if package["kind"] == "decision":
+            # Old coordinator checkpoints may contain private-file exploration.
+            # Restart only their conversation under the new tool workflow;
+            # official drafts/state and work-file sessions stay intact.
+            binding["tool_workflow"] = "organization-v3"
         key = hashlib.sha256(encoded(binding).encode()).hexdigest()
         with self.engine.transaction() as cx:
             row = cx.execute("SELECT * FROM agent_sessions WHERE task_key=? AND status IN ('paused','running','failed') ORDER BY rowid DESC LIMIT 1", (key,)).fetchone()
@@ -127,7 +132,7 @@ class HarnessExecutor:
             self._guard()
             with self.engine.read_transaction() as cx:
                 reject_saved_secrets(cx, args)
-            terminal = name in ("activate_organization", "initialize_organization", "update_organization", "report_blocked")
+            terminal = name in ("activate_organization", "initialize_organization", "update_organization", "schedule_work", "wait_for_event", "report_blocked")
             require(not terminal or self.tool_count == 1, "提交组织或交付状态的工具必须单独调用；其他工具尚未提交")
             if name in BOOTSTRAP_TOOLS:
                 result = bootstrap_tool(self.engine, self.package, name, args)
@@ -180,7 +185,10 @@ class HarnessExecutor:
                 require(not owner.called, "Harness 单次派发不能隐式增加模型请求")
                 owner._guard()
                 systems = [m.content for m in messages if m.type == "system" and isinstance(m.content, str)]
-                body = [{"role": "system", "content": "\n\n".join(systems)},
+                # SDK middleware adds general file-workflow guidance. End with the
+                # current organization task so a coordinator does not mistake
+                # artifact references or earlier tasks for its own assignment.
+                body = [{"role": "system", "content": "\n\n".join(systems) + "\n\n当前轮次的具体职责：\n" + instructions(owner.package)},
                         {"role": "user", "content": "当前工作资料：\nWORK PACKAGE (data):\n" + encoded(model_input(owner.package))}]
                 for m in messages:
                     if m.type == "system":
@@ -203,7 +211,7 @@ class HarnessExecutor:
                 return ChatResult(generations=[ChatGeneration(message=AIMessage(content=message.get("content") or "", tool_calls=[
                     {"id": c["id"], "name": c["function"]["name"], "args": json.loads(c["function"]["arguments"])} for c in calls]))])
 
-        return ControlledChat(cache=False)
+        return ControlledChat(cache=False, model_name="union:controlled-chat" if self.package["kind"] == "work" else "union:controlled-organization")
 
     def execute(self, package):
         from langchain_core.messages import HumanMessage
@@ -233,8 +241,9 @@ class HarnessExecutor:
             with sqlite3.connect(folder / "checkpoints.sqlite3", check_same_thread=False) as cx, tracing_context(enabled=False):
                 saver = SqliteSaver(cx)
                 if self.base == "deepagents":
-                    deepagents.register_harness_profile("union:controlled-chat", deepagents.HarnessProfile(
+                    deepagents.register_harness_profile(model.model_name, deepagents.HarnessProfile(
                         general_purpose_subagent=deepagents.GeneralPurposeSubagentProfile(enabled=False),
+                        excluded_tools=frozenset({"ls", "read_file", "write_file", "edit_file", "delete", "glob", "grep"}) if package["kind"] == "decision" else frozenset(),
                         excluded_middleware=frozenset({"SummarizationMiddleware"})))
                     graph = deepagents.create_deep_agent(model, self._tools(), system_prompt=prompt, checkpointer=saver)
                 else:

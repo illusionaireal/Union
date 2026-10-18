@@ -1,0 +1,15 @@
+{
+  "at": "2026-10-18T04:44:49.577952+00:00",
+  "calls_before": 40,
+  "calls_after": 40,
+  "rejected_receipt": {
+    "id": "command-5218413ed3f4463fa7630bc5f217105d",
+    "organization_id": "org-99943902dd794537819836c48c4e03d6",
+    "base_version": 63,
+    "kind": "start",
+    "actor": "local board",
+    "created_at": "2026-10-18T04:44:49.570762+00:00",
+    "status": "rejected",
+    "message": "调用额度耗尽；需要董事会配置追加资源"
+  }
+}

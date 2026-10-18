@@ -1,0 +1,122 @@
+test_bad_proposal_cannot_loop_or_exceed_authorized_steps (tests.test_agent_conversation.AgentConversationTests.test_bad_proposal_cannot_loop_or_exceed_authorized_steps) ... ok
+test_console_does_not_report_uncommitted_plan_as_success_when_step_budget_ends (tests.test_agent_conversation.AgentConversationTests.test_console_does_not_report_uncommitted_plan_as_success_when_step_budget_ends) ... ok
+test_duplicate_names_and_dependency_cycles_are_rejected_before_commit (tests.test_agent_conversation.AgentConversationTests.test_duplicate_names_and_dependency_cycles_are_rejected_before_commit) ... ok
+test_escaped_secret_inside_tool_arguments_cannot_enter_state_or_feedback (tests.test_agent_conversation.AgentConversationTests.test_escaped_secret_inside_tool_arguments_cannot_enter_state_or_feedback) ... ok
+test_full_endpoint_is_normalized_and_not_appended_twice (tests.test_agent_conversation.AgentConversationTests.test_full_endpoint_is_normalized_and_not_appended_twice) ... ok
+test_host_owns_versions_and_rejects_stale_plan_without_partial_organization (tests.test_agent_conversation.AgentConversationTests.test_host_owns_versions_and_rejects_stale_plan_without_partial_organization) ... ok
+test_init_and_two_members_deliver_plain_markdown_without_schema (tests.test_agent_conversation.AgentConversationTests.test_init_and_two_members_deliver_plain_markdown_without_schema) ... ok
+test_invalid_tool_gets_specific_feedback_and_can_be_corrected (tests.test_agent_conversation.AgentConversationTests.test_invalid_tool_gets_specific_feedback_and_can_be_corrected) ... ok
+test_malformed_arguments_get_fixed_feedback_without_replaying_unchecked_text (tests.test_agent_conversation.AgentConversationTests.test_malformed_arguments_get_fixed_feedback_without_replaying_unchecked_text) ... ok
+test_named_followup_commits_real_cross_member_artifact_dependency (tests.test_agent_conversation.AgentConversationTests.test_named_followup_commits_real_cross_member_artifact_dependency) ... ok
+test_named_followup_rejects_unknown_ambiguous_and_duplicate_references (tests.test_agent_conversation.AgentConversationTests.test_named_followup_rejects_unknown_ambiguous_and_duplicate_references) ... ok
+test_natural_tools_preserve_host_identity_and_current_permission_checks (tests.test_agent_conversation.AgentConversationTests.test_natural_tools_preserve_host_identity_and_current_permission_checks) ... 
+  test_natural_tools_preserve_host_identity_and_current_permission_checks (tests.test_agent_conversation.AgentConversationTests.test_natural_tools_preserve_host_identity_and_current_permission_checks) (field='actor') ... ERROR
+  test_natural_tools_preserve_host_identity_and_current_permission_checks (tests.test_agent_conversation.AgentConversationTests.test_natural_tools_preserve_host_identity_and_current_permission_checks) (field='position_id') ... ERROR
+  test_natural_tools_preserve_host_identity_and_current_permission_checks (tests.test_agent_conversation.AgentConversationTests.test_natural_tools_preserve_host_identity_and_current_permission_checks) (field='id') ... ERROR
+  test_natural_tools_preserve_host_identity_and_current_permission_checks (tests.test_agent_conversation.AgentConversationTests.test_natural_tools_preserve_host_identity_and_current_permission_checks) (field='base_state_version') ... ERROR
+test_plain_planning_reply_gets_one_bounded_followup_and_receipt_per_call (tests.test_agent_conversation.AgentConversationTests.test_plain_planning_reply_gets_one_bounded_followup_and_receipt_per_call) ... ok
+test_probe_is_plain_chat_even_for_saved_legacy_schema_connection (tests.test_agent_conversation.AgentConversationTests.test_probe_is_plain_chat_even_for_saved_legacy_schema_connection) ... ok
+test_relative_wait_uses_host_time_and_idle_does_not_call_model (tests.test_agent_conversation.AgentConversationTests.test_relative_wait_uses_host_time_and_idle_does_not_call_model) ... 
+  test_relative_wait_uses_host_time_and_idle_does_not_call_model (tests.test_agent_conversation.AgentConversationTests.test_relative_wait_uses_host_time_and_idle_does_not_call_model) (seconds=True) ... ERROR
+test_tool_proposal_cannot_supply_authority_or_versions (tests.test_agent_conversation.AgentConversationTests.test_tool_proposal_cannot_supply_authority_or_versions) ... ok
+test_work_can_report_blocked_without_fabricating_an_artifact (tests.test_agent_conversation.AgentConversationTests.test_work_can_report_blocked_without_fabricating_an_artifact) ... ok
+test_charter_change_starts_a_new_session_without_old_task_messages (tests.test_harness.HarnessTests.test_charter_change_starts_a_new_session_without_old_task_messages) ... ok
+test_cli_resumes_bootstrap_from_a_separate_process (tests.test_harness.HarnessTests.test_cli_resumes_bootstrap_from_a_separate_process) ... ok
+test_draft_is_not_official_and_recovers_in_a_fresh_executor (tests.test_harness.HarnessTests.test_draft_is_not_official_and_recovers_in_a_fresh_executor) ... ok
+test_idle_console_job_wakes_on_feedback_without_another_start (tests.test_harness.HarnessTests.test_idle_console_job_wakes_on_feedback_without_another_start) ... ok
+test_invalid_draft_is_corrected_without_rebuilding_members (tests.test_harness.HarnessTests.test_invalid_draft_is_corrected_without_rebuilding_members) ... ok
+test_langchain_control_runs_same_plain_tools_loop (tests.test_harness.HarnessTests.test_langchain_control_runs_same_plain_tools_loop) ... ok
+test_malformed_tool_arguments_get_one_safe_correction_without_replay (tests.test_harness.HarnessTests.test_malformed_tool_arguments_get_one_safe_correction_without_replay) ... ok
+test_organization_rounds_expose_business_tools_and_keep_inline_artifacts (tests.test_harness.HarnessTests.test_organization_rounds_expose_business_tools_and_keep_inline_artifacts) ... ok
+test_provider_unknown_is_not_automatically_resumed (tests.test_harness.HarnessTests.test_provider_unknown_is_not_automatically_resumed) ... ok
+test_received_usage_survives_an_unexpected_local_exception (tests.test_harness.HarnessTests.test_received_usage_survives_an_unexpected_local_exception) ... ok
+test_received_usage_survives_artifact_and_sdk_processing_failures (tests.test_harness.HarnessTests.test_received_usage_survives_artifact_and_sdk_processing_failures) ... ok
+test_rejected_correction_settlement_closes_call_and_preserves_tokens (tests.test_harness.HarnessTests.test_rejected_correction_settlement_closes_call_and_preserves_tokens) ... ok
+test_rejected_plaintext_credential_still_preserves_provider_tokens (tests.test_harness.HarnessTests.test_rejected_plaintext_credential_still_preserves_provider_tokens) ... ok
+test_revoked_permission_prevents_partial_activation_and_retains_usage (tests.test_harness.HarnessTests.test_revoked_permission_prevents_partial_activation_and_retains_usage) ... ok
+test_rotated_key_in_provider_header_is_dropped_from_all_receipts (tests.test_harness.HarnessTests.test_rotated_key_in_provider_header_is_dropped_from_all_receipts) ... ok
+test_rotated_keys_are_rejected_before_text_or_tools_enter_checkpoints (tests.test_harness.HarnessTests.test_rotated_keys_are_rejected_before_text_or_tools_enter_checkpoints) ... ok
+test_secret_in_nested_tool_arguments_never_reaches_checkpoint (tests.test_harness.HarnessTests.test_secret_in_nested_tool_arguments_never_reaches_checkpoint) ... ok
+test_tool_connection_probe_requires_reading_tool_result_and_charges_twice (tests.test_harness.HarnessTests.test_tool_connection_probe_requires_reading_tool_result_and_charges_twice) ... ok
+test_tool_probe_cannot_succeed_from_a_plain_greeting (tests.test_harness.HarnessTests.test_tool_probe_cannot_succeed_from_a_plain_greeting) ... ok
+test_total_quota_and_pause_do_not_trigger_hidden_calls (tests.test_harness.HarnessTests.test_total_quota_and_pause_do_not_trigger_hidden_calls) ... ok
+test_unwanted_draft_member_can_be_removed_before_adoption (tests.test_harness.HarnessTests.test_unwanted_draft_member_can_be_removed_before_adoption) ... ok
+test_work_parameter_error_is_not_misclassified_as_an_artifact (tests.test_harness.HarnessTests.test_work_parameter_error_is_not_misclassified_as_an_artifact) ... ok
+test_work_uses_file_tools_then_delivers_and_second_member_gets_artifact (tests.test_harness.HarnessTests.test_work_uses_file_tools_then_delivers_and_second_member_gets_artifact) ... ok
+
+======================================================================
+ERROR: test_natural_tools_preserve_host_identity_and_current_permission_checks (tests.test_agent_conversation.AgentConversationTests.test_natural_tools_preserve_host_identity_and_current_permission_checks) (field='actor')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/Union/tests/test_agent_conversation.py", line 142, in test_natural_tools_preserve_host_identity_and_current_permission_checks
+    compile_tool(package, "schedule_work", valid | {field: value})
+  File "/workspace/Union/ai_union/agent_protocol.py", line 185, in compile_tool
+    _validate(arguments, offered[name])
+  File "/workspace/Union/ai_union/agent_protocol.py", line 132, in _validate
+    validate_output(value, schema)
+  File "/workspace/Union/ai_union/model_api.py", line 208, in validate_output
+    raise ValueError("工具参数含不支持的字段")
+ValueError: 工具参数含不支持的字段
+
+======================================================================
+ERROR: test_natural_tools_preserve_host_identity_and_current_permission_checks (tests.test_agent_conversation.AgentConversationTests.test_natural_tools_preserve_host_identity_and_current_permission_checks) (field='position_id')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/Union/tests/test_agent_conversation.py", line 142, in test_natural_tools_preserve_host_identity_and_current_permission_checks
+    compile_tool(package, "schedule_work", valid | {field: value})
+  File "/workspace/Union/ai_union/agent_protocol.py", line 185, in compile_tool
+    _validate(arguments, offered[name])
+  File "/workspace/Union/ai_union/agent_protocol.py", line 132, in _validate
+    validate_output(value, schema)
+  File "/workspace/Union/ai_union/model_api.py", line 208, in validate_output
+    raise ValueError("工具参数含不支持的字段")
+ValueError: 工具参数含不支持的字段
+
+======================================================================
+ERROR: test_natural_tools_preserve_host_identity_and_current_permission_checks (tests.test_agent_conversation.AgentConversationTests.test_natural_tools_preserve_host_identity_and_current_permission_checks) (field='id')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/Union/tests/test_agent_conversation.py", line 142, in test_natural_tools_preserve_host_identity_and_current_permission_checks
+    compile_tool(package, "schedule_work", valid | {field: value})
+  File "/workspace/Union/ai_union/agent_protocol.py", line 185, in compile_tool
+    _validate(arguments, offered[name])
+  File "/workspace/Union/ai_union/agent_protocol.py", line 132, in _validate
+    validate_output(value, schema)
+  File "/workspace/Union/ai_union/model_api.py", line 208, in validate_output
+    raise ValueError("工具参数含不支持的字段")
+ValueError: 工具参数含不支持的字段
+
+======================================================================
+ERROR: test_natural_tools_preserve_host_identity_and_current_permission_checks (tests.test_agent_conversation.AgentConversationTests.test_natural_tools_preserve_host_identity_and_current_permission_checks) (field='base_state_version')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/Union/tests/test_agent_conversation.py", line 142, in test_natural_tools_preserve_host_identity_and_current_permission_checks
+    compile_tool(package, "schedule_work", valid | {field: value})
+  File "/workspace/Union/ai_union/agent_protocol.py", line 185, in compile_tool
+    _validate(arguments, offered[name])
+  File "/workspace/Union/ai_union/agent_protocol.py", line 132, in _validate
+    validate_output(value, schema)
+  File "/workspace/Union/ai_union/model_api.py", line 208, in validate_output
+    raise ValueError("工具参数含不支持的字段")
+ValueError: 工具参数含不支持的字段
+
+======================================================================
+ERROR: test_relative_wait_uses_host_time_and_idle_does_not_call_model (tests.test_agent_conversation.AgentConversationTests.test_relative_wait_uses_host_time_and_idle_does_not_call_model) (seconds=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/Union/tests/test_agent_conversation.py", line 161, in test_relative_wait_uses_host_time_and_idle_does_not_call_model
+    compile_tool(package, "wait_for_event", {"reason": "等待反馈", "review_after_seconds": seconds})
+  File "/workspace/Union/ai_union/agent_protocol.py", line 185, in compile_tool
+    _validate(arguments, offered[name])
+  File "/workspace/Union/ai_union/agent_protocol.py", line 132, in _validate
+    validate_output(value, schema)
+  File "/workspace/Union/ai_union/model_api.py", line 210, in validate_output
+    validate_output(value[key], schema["properties"][key])
+  File "/workspace/Union/ai_union/model_api.py", line 202, in validate_output
+    raise ValueError("invalid structured output")
+ValueError: invalid structured output
+
+----------------------------------------------------------------------
+Ran 40 tests in 25.973s
+
+FAILED (errors=5)

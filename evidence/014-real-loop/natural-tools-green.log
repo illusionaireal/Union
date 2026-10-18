@@ -1,0 +1,11 @@
+test_named_followup_commits_real_cross_member_artifact_dependency (tests.test_agent_conversation.AgentConversationTests.test_named_followup_commits_real_cross_member_artifact_dependency) ... ok
+test_named_followup_rejects_unknown_ambiguous_and_duplicate_references (tests.test_agent_conversation.AgentConversationTests.test_named_followup_rejects_unknown_ambiguous_and_duplicate_references) ... ok
+test_natural_tools_preserve_host_identity_and_current_permission_checks (tests.test_agent_conversation.AgentConversationTests.test_natural_tools_preserve_host_identity_and_current_permission_checks) ... ok
+test_relative_wait_uses_host_time_and_idle_does_not_call_model (tests.test_agent_conversation.AgentConversationTests.test_relative_wait_uses_host_time_and_idle_does_not_call_model) ... ok
+test_organization_rounds_expose_business_tools_and_keep_inline_artifacts (tests.test_harness.HarnessTests.test_organization_rounds_expose_business_tools_and_keep_inline_artifacts) ... ok
+test_idle_console_job_wakes_on_feedback_without_another_start (tests.test_harness.HarnessTests.test_idle_console_job_wakes_on_feedback_without_another_start) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 5.145s
+
+OK

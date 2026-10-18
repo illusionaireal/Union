@@ -3,6 +3,7 @@ import json
 import unittest
 import subprocess
 import sys
+import threading
 from unittest.mock import patch
 
 from ai_union.engine import Engine, Rejected
@@ -89,7 +90,63 @@ class HarnessTests(unittest.TestCase):
         self.assertIn("关键事实", json.dumps(self.provider.requests[-2]["body"], ensure_ascii=False))
         package = json.loads(self.provider.requests[-1]["body"]["messages"][1]["content"].split("\nWORK PACKAGE (data):\n")[1])
         self.assertIn(source, [a["content"] for a in package["context"]["artifacts"]])
+        self.assertTrue(all("path" not in a for a in package["context"]["artifacts"]))
+        self.assertTrue(all("path" in a for a in self.e.state()["artifacts"].values()))
         self.assertEqual(self.e.status()["budget"]["calls_reserved"], 5)
+
+    def test_organization_rounds_expose_business_tools_and_keep_inline_artifacts(self):
+        executor = self.executor()
+        source, final = "已交付资料", "另一成员完成的正文"
+        self.replies(tool("initialize_organization", PLAN),
+                     {"role": "assistant", "content": source},
+                     {"role": "assistant", "content": final},
+                     tool("update_organization", {"operations": [{"op": "wait", "until": "2099-01-01T00:00:00Z", "reason": "等待新反馈"}]}))
+        actions = run(self.e, executor, 4)
+        self.assertEqual([a["action"] for a in actions], ["decision", "work", "work", "decision"], actions)
+        bootstrap = {t["function"]["name"] for t in self.provider.requests[0]["body"]["tools"]}
+        self.assertIn("prepare_member", bootstrap)
+        self.assertIn("activate_organization", bootstrap)
+        self.assertFalse(bootstrap.intersection({"ls", "read_file", "write_file", "edit_file", "delete", "glob", "grep"}))
+        decision = self.provider.requests[-1]["body"]
+        self.assertEqual({t["function"]["name"] for t in decision["tools"]}, {"update_organization", "schedule_work", "wait_for_event"})
+        context = json.loads(decision["messages"][1]["content"].split("\nWORK PACKAGE (data):\n")[1])["context"]
+        self.assertCountEqual([a["content"] for a in context["artifacts"]], [source, final])
+        self.assertTrue(all("path" not in a for a in context["artifacts"]))
+        before = len(self.provider.requests)
+        self.assertEqual(run(self.e, executor, 1)[0]["action"], "wait")
+        self.assertEqual(len(self.provider.requests), before)
+
+    def test_idle_console_job_wakes_on_feedback_without_another_start(self):
+        from ai_union.runner import step
+        executor = self.executor()
+        waiting = {"operations": [{"op": "wait", "until": "2099-01-01T00:00:00Z", "reason": "等待读者反馈"}]}
+        self.replies(tool("initialize_organization", PLAN),
+                     {"role": "assistant", "content": "资料"},
+                     {"role": "assistant", "content": "正文"},
+                     tool("update_organization", waiting))
+        run(self.e, executor, 4)
+        before = len(self.provider.requests)
+        self.replies(tool("update_organization", waiting | {"evidence_refs": ["fresh-feedback"]}))
+        idle = threading.Event()
+
+        def observe_step(engine, current_executor):
+            action = step(engine, current_executor)
+            if action["action"] == "wait":
+                idle.set()
+            return action
+
+        with patch("ai_union.console.step", side_effect=observe_step):
+            receipt = self.command("start", {"executor": "api", "max_steps": 1, "max_seconds": 5, "allow_unknown_cost": True})
+            self.assertTrue(idle.wait(2), "作业应进入不消耗模型调用的等待")
+            self.assertEqual(len(self.provider.requests), before)
+            self.command("event", {"event_id": "fresh-feedback", "kind": "external_feedback", "content": "请关注人物动机", "source": "HTTP double", "simulated": True})
+            self.app.join_jobs()
+        self.assertEqual(len(self.provider.requests), before + 1)
+        result = self.app.receipt(self.board, self.org, receipt["id"])
+        self.assertEqual(result["status"], "succeeded", result)
+        self.assertEqual(result["actions"][-1]["action"], "decision", result)
+        package = json.loads(self.provider.requests[-1]["body"]["messages"][1]["content"].split("\nWORK PACKAGE (data):\n")[1])
+        self.assertIn("fresh-feedback", [e["id"] for e in package["context"]["events"]])
 
     def test_invalid_draft_is_corrected_without_rebuilding_members(self):
         executor = self.executor()

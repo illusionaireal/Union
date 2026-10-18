@@ -1,0 +1,849 @@
+[
+  {
+    "run_id": "run-8701515eb4414a72a4a5cdf12d1cd608",
+    "response_id": null,
+    "queried_at": "2026-10-18T05:03:42.022486+00:00",
+    "status": "no_response_id",
+    "cost_status": "unknown"
+  },
+  {
+    "run_id": "run-537675e5868d4032a29809fe8c160e59",
+    "response_id": "gen-1792297300-iZnYxbfSu3YF6aO8KTyo",
+    "queried_at": "2026-10-18T05:03:42.022648+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "native_tokens_prompt": 129,
+      "native_tokens_completion": 62,
+      "native_tokens_reasoning": 53,
+      "finish_reason": "tool_calls",
+      "generation_time": 345,
+      "latency": 119
+    }
+  },
+  {
+    "run_id": "run-5b24657200a9411193f3f0bdd4bd09f3",
+    "response_id": "gen-1792297300-O8sXFm9sxBrRQyrbwIrD",
+    "queried_at": "2026-10-18T05:03:42.023242+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "native_tokens_prompt": 111,
+      "native_tokens_completion": 158,
+      "native_tokens_reasoning": 130,
+      "finish_reason": "stop",
+      "generation_time": 451,
+      "latency": 138
+    }
+  },
+  {
+    "run_id": "run-c6a17d6c8fa743379e80a0a92b852c4f",
+    "response_id": "gen-1792297386-UKIAq7HgjcJaHrB3V14t",
+    "queried_at": "2026-10-18T05:03:42.023671+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "native_tokens_prompt": 4253,
+      "native_tokens_completion": 296,
+      "native_tokens_reasoning": 286,
+      "finish_reason": "tool_calls",
+      "generation_time": 1885,
+      "latency": 148
+    }
+  },
+  {
+    "run_id": "run-0f9ac679f18d4e4795f9c8a55e2e4524",
+    "response_id": "gen-1792297388-j0rpkoy8rftEulX5vJ2H",
+    "queried_at": "2026-10-18T05:03:42.024125+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "native_tokens_prompt": 4280,
+      "native_tokens_completion": 464,
+      "native_tokens_reasoning": 410,
+      "finish_reason": "tool_calls",
+      "generation_time": 1875,
+      "latency": 181
+    }
+  },
+  {
+    "run_id": "run-e7771a176fb940a18ce421c8db00bfe6",
+    "response_id": "gen-1792297391-E5K0GTc3FOZdk1zVKBNv",
+    "queried_at": "2026-10-18T05:03:42.369214+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "native_tokens_prompt": 4537,
+      "native_tokens_completion": 366,
+      "native_tokens_reasoning": 219,
+      "finish_reason": "tool_calls",
+      "generation_time": 1911,
+      "latency": 162
+    }
+  },
+  {
+    "run_id": "run-542f2c577c464aec895a6cd37ab9b8c7",
+    "response_id": "gen-1792297408-QTDZEhgiIvk11SkHpxQt",
+    "queried_at": "2026-10-18T05:03:42.424414+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "native_tokens_prompt": 4769,
+      "native_tokens_completion": 284,
+      "native_tokens_reasoning": 151,
+      "finish_reason": "tool_calls",
+      "generation_time": 1454,
+      "latency": 189
+    }
+  },
+  {
+    "run_id": "run-5e69510778064c92be7117096ea903c2",
+    "response_id": "gen-1792297410-wOzAWppfrfaEmXWjjlPo",
+    "queried_at": "2026-10-18T05:03:42.439513+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "native_tokens_prompt": 5520,
+      "native_tokens_completion": 423,
+      "native_tokens_reasoning": 412,
+      "finish_reason": "tool_calls",
+      "generation_time": 1989,
+      "latency": 230
+    }
+  },
+  {
+    "run_id": "run-82ab7f0f890d4c65be946b8c3b7d3e46",
+    "response_id": "gen-1792297412-CNK0IOcTt80B1w5miH4T",
+    "queried_at": "2026-10-18T05:03:42.444359+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "native_tokens_prompt": 5738,
+      "native_tokens_completion": 153,
+      "native_tokens_reasoning": 125,
+      "finish_reason": "tool_calls",
+      "generation_time": 649,
+      "latency": 134
+    }
+  },
+  {
+    "run_id": "run-ae0efc8076514942a8c26b1c82be3c14",
+    "response_id": "gen-1792297429-p7NLlBIr0aSwACVOETIi",
+    "queried_at": "2026-10-18T05:03:42.563388+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "native_tokens_prompt": 6015,
+      "native_tokens_completion": 49,
+      "native_tokens_reasoning": 38,
+      "finish_reason": "tool_calls",
+      "generation_time": 340,
+      "latency": 172
+    }
+  },
+  {
+    "run_id": "run-f3486cae5b5148f09b912aa7131dec0b",
+    "response_id": "gen-1792297430-ZhpgPzTx6t7tGCAvJQy4",
+    "queried_at": "2026-10-18T05:03:42.617396+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "native_tokens_prompt": 3442,
+      "native_tokens_completion": 415,
+      "native_tokens_reasoning": 391,
+      "finish_reason": "tool_calls",
+      "generation_time": 1593,
+      "latency": 147
+    }
+  },
+  {
+    "run_id": "run-02e583a1b0c4459cbd5716fe6fc2b656",
+    "response_id": "gen-1792297432-rc5i9Yo1EjlLcMm0ktLr",
+    "queried_at": "2026-10-18T05:03:42.651765+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "native_tokens_prompt": 3541,
+      "native_tokens_completion": 540,
+      "native_tokens_reasoning": 518,
+      "finish_reason": "tool_calls",
+      "generation_time": 1994,
+      "latency": 162
+    }
+  },
+  {
+    "run_id": "run-72d93b3b23614440b4be00dd261b0ce7",
+    "response_id": "gen-1792297446-kFRsoNGJpD0whsxjNUjC",
+    "queried_at": "2026-10-18T05:03:42.657993+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "native_tokens_prompt": 3579,
+      "native_tokens_completion": 1323,
+      "native_tokens_reasoning": 598,
+      "finish_reason": "tool_calls",
+      "generation_time": 6004,
+      "latency": 165
+    }
+  },
+  {
+    "run_id": "run-0dff14f401514b49993cdbcf6263fd7d",
+    "response_id": "gen-1792297452-s1KMSOVQeqrysNauVqEa",
+    "queried_at": "2026-10-18T05:03:42.727420+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "native_tokens_prompt": 4318,
+      "native_tokens_completion": 390,
+      "native_tokens_reasoning": 369,
+      "finish_reason": "tool_calls",
+      "generation_time": 2311,
+      "latency": 133
+    }
+  },
+  {
+    "run_id": "run-23b1e90edab848bf8d6205a05dc3b792",
+    "response_id": "gen-1792297455-KmdCle52ondfpD74oEPo",
+    "queried_at": "2026-10-18T05:03:42.789132+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "native_tokens_prompt": 5028,
+      "native_tokens_completion": 1034,
+      "native_tokens_reasoning": 491,
+      "finish_reason": "stop",
+      "generation_time": 4731,
+      "latency": 133
+    }
+  },
+  {
+    "run_id": "run-35ca111fd5834612949d670469819d6d",
+    "response_id": "gen-1792297479-uGxQQXcIAIQPiFQYRulm",
+    "queried_at": "2026-10-18T05:03:42.795662+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "native_tokens_prompt": 3510,
+      "native_tokens_completion": 457,
+      "native_tokens_reasoning": 424,
+      "finish_reason": "tool_calls",
+      "generation_time": 2248,
+      "latency": 254
+    }
+  },
+  {
+    "run_id": "run-de946a72ef9844128175ffff51d21321",
+    "response_id": "gen-1792297481-i5lyx2pjnQzgDJhRk0ih",
+    "queried_at": "2026-10-18T05:03:42.807609+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "native_tokens_prompt": 3571,
+      "native_tokens_completion": 1644,
+      "native_tokens_reasoning": 711,
+      "finish_reason": "tool_calls",
+      "generation_time": 7844,
+      "latency": 256
+    }
+  },
+  {
+    "run_id": "run-80c7354aa1fb496c90741185a580e585",
+    "response_id": "gen-1792297489-S8turLPdrGqR0HmRQZEs",
+    "queried_at": "2026-10-18T05:03:42.895015+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "native_tokens_prompt": 4527,
+      "native_tokens_completion": 485,
+      "native_tokens_reasoning": 93,
+      "finish_reason": "stop",
+      "generation_time": 2066,
+      "latency": 140
+    }
+  },
+  {
+    "run_id": "run-11f0446e908d48959aa6b2cc657022a2",
+    "response_id": "gen-1792297512-LKmSYyqx9r75IlEuL1pT",
+    "queried_at": "2026-10-18T05:03:42.974526+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "native_tokens_prompt": 3517,
+      "native_tokens_completion": 95,
+      "native_tokens_reasoning": 74,
+      "finish_reason": "tool_calls",
+      "generation_time": 447,
+      "latency": 126
+    }
+  },
+  {
+    "run_id": "run-b8b8db9de4614ee4aa9a4d783ae66b4a",
+    "response_id": "gen-1792297513-5ETQyJsgTmUF8TAN6zoh",
+    "queried_at": "2026-10-18T05:03:42.990910+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "native_tokens_prompt": 3564,
+      "native_tokens_completion": 52,
+      "native_tokens_reasoning": 39,
+      "finish_reason": "tool_calls",
+      "generation_time": 336,
+      "latency": 168
+    }
+  },
+  {
+    "run_id": "run-88a701fadade4ca7bfdd931d106cd656",
+    "response_id": "gen-1792297513-NZBP6gXsmkWObsQrwWR7",
+    "queried_at": "2026-10-18T05:03:43.019172+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "native_tokens_prompt": 3583,
+      "native_tokens_completion": 1457,
+      "native_tokens_reasoning": 895,
+      "finish_reason": "tool_calls",
+      "generation_time": 5973,
+      "latency": 127
+    }
+  },
+  {
+    "run_id": "run-6d2688693e9f4c0690817c7b7acf00a6",
+    "response_id": "gen-1792297545-pxPS6eaAKvHUtoyfOWhS",
+    "queried_at": "2026-10-18T05:03:43.029119+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "native_tokens_prompt": 4172,
+      "native_tokens_completion": 140,
+      "native_tokens_reasoning": 116,
+      "finish_reason": "tool_calls",
+      "generation_time": 702,
+      "latency": 163
+    }
+  },
+  {
+    "run_id": "run-38b2ce21d885467998a10e1d1eabacf5",
+    "response_id": "gen-1792297546-FwjiexRvje7t9F2bkfdY",
+    "queried_at": "2026-10-18T05:03:43.204216+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "native_tokens_prompt": 4724,
+      "native_tokens_completion": 749,
+      "native_tokens_reasoning": 381,
+      "finish_reason": "stop",
+      "generation_time": 3725,
+      "latency": 132
+    }
+  },
+  {
+    "run_id": "run-5e9081a9087c4dbeb12f83e2fbe65bdf",
+    "response_id": "gen-1792297550-ovWSRJHgF61ktYrGbGhH",
+    "queried_at": "2026-10-18T05:03:43.245260+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "native_tokens_prompt": 8473,
+      "native_tokens_completion": 2161,
+      "native_tokens_reasoning": 2102,
+      "finish_reason": "tool_calls",
+      "generation_time": 11344,
+      "latency": 214
+    }
+  },
+  {
+    "run_id": "run-3c0b17d4aa0049a78313066e7a5291c1",
+    "response_id": "gen-1792297577-kSvuxey3b49R4KLkHdOi",
+    "queried_at": "2026-10-18T05:03:43.267447+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "native_tokens_prompt": 8599,
+      "native_tokens_completion": 101,
+      "native_tokens_reasoning": 50,
+      "finish_reason": "tool_calls",
+      "generation_time": 503,
+      "latency": 186
+    }
+  },
+  {
+    "run_id": "run-d45efa6cc0a347b3ae9223cb9ee67cdb",
+    "response_id": "gen-1792297577-nuuQYXbrGDHtq6Ex7C1n",
+    "queried_at": "2026-10-18T05:03:43.293473+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "native_tokens_prompt": 8685,
+      "native_tokens_completion": 1887,
+      "native_tokens_reasoning": 714,
+      "finish_reason": "tool_calls",
+      "generation_time": 7051,
+      "latency": 150
+    }
+  },
+  {
+    "run_id": "run-cafae5a0e771495da606bd1ba2eae03b",
+    "response_id": "gen-1792297585-chAGqz1LBNZKK9KEs7fq",
+    "queried_at": "2026-10-18T05:03:43.393725+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "native_tokens_prompt": 9913,
+      "native_tokens_completion": 982,
+      "native_tokens_reasoning": 339,
+      "finish_reason": "stop",
+      "generation_time": 3938,
+      "latency": 254
+    }
+  },
+  {
+    "run_id": "run-ad7384e72f074c79902ac251b2603061",
+    "response_id": "gen-1792297623-fKJfEzjy0fs1Fm48VUX7",
+    "queried_at": "2026-10-18T05:03:43.417652+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "native_tokens_prompt": 10955,
+      "native_tokens_completion": 1973,
+      "native_tokens_reasoning": 1684,
+      "finish_reason": "tool_calls",
+      "generation_time": 8331,
+      "latency": 209
+    }
+  },
+  {
+    "run_id": "run-3c3d9e787ae04158aa56a2fc1543398b",
+    "response_id": "gen-1792297683-oD3VajUyBCShhIzC2WzL",
+    "queried_at": "2026-10-18T05:03:43.457193+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "cohere/north-mini-code-20260617:free",
+      "provider_name": "Cohere",
+      "total_cost": 0,
+      "native_tokens_prompt": 7984,
+      "native_tokens_completion": 399,
+      "native_tokens_reasoning": 497,
+      "finish_reason": "tool_calls",
+      "generation_time": 7992,
+      "latency": 407
+    }
+  },
+  {
+    "run_id": "run-c306235f66c84a288bfbee78737d9d08",
+    "response_id": "gen-1792297691-taJPGXw3mP7FNDfuJEO7",
+    "queried_at": "2026-10-18T05:03:43.507312+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "cohere/north-mini-code-20260617:free",
+      "provider_name": "Cohere",
+      "total_cost": 0,
+      "native_tokens_prompt": 7998,
+      "native_tokens_completion": 30,
+      "native_tokens_reasoning": 28,
+      "finish_reason": "tool_calls",
+      "generation_time": 955,
+      "latency": 349
+    }
+  },
+  {
+    "run_id": "run-36179726139e46d9a389c2eb2c6e0e18",
+    "response_id": "gen-1792297692-LDfxsmyZNHos0wIQUmrB",
+    "queried_at": "2026-10-18T05:03:43.518217+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "cohere/north-mini-code-20260617:free",
+      "provider_name": "Cohere",
+      "total_cost": 0,
+      "native_tokens_prompt": 8003,
+      "native_tokens_completion": 40,
+      "native_tokens_reasoning": 42,
+      "finish_reason": "tool_calls",
+      "generation_time": 1201,
+      "latency": 376
+    }
+  },
+  {
+    "run_id": "run-5e7eb043e5794754a7ff14f7154e73cf",
+    "response_id": "gen-1792297829-uwyKXI0tKC3p0RE0V5H7",
+    "queried_at": "2026-10-18T05:03:43.578901+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "cohere/north-mini-code-20260617:free",
+      "provider_name": "Cohere",
+      "total_cost": 0,
+      "native_tokens_prompt": 8338,
+      "native_tokens_completion": 942,
+      "native_tokens_reasoning": 813,
+      "finish_reason": "stop",
+      "generation_time": 12064,
+      "latency": 386
+    }
+  },
+  {
+    "run_id": "run-a6728555193844689b7eb4620bebba15",
+    "response_id": "gen-1792297841-eXqPyquBoYKVruUERdcB",
+    "queried_at": "2026-10-18T05:03:43.628020+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "cohere/north-mini-code-20260617:free",
+      "provider_name": "Cohere",
+      "total_cost": 0,
+      "native_tokens_prompt": 8825,
+      "native_tokens_completion": 581,
+      "native_tokens_reasoning": 635,
+      "finish_reason": "tool_calls",
+      "generation_time": 5854,
+      "latency": 351
+    }
+  },
+  {
+    "run_id": "run-944ce5478ed4474c87383b57c4cef453",
+    "response_id": "gen-1792297960-E73EeU2qde9BxeyWXxIU",
+    "queried_at": "2026-10-18T05:03:43.675883+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "cohere/north-mini-code-20260617:free",
+      "provider_name": "Cohere",
+      "total_cost": 0,
+      "native_tokens_prompt": 8836,
+      "native_tokens_completion": 298,
+      "native_tokens_reasoning": 361,
+      "finish_reason": "tool_calls",
+      "generation_time": 3667,
+      "latency": 376
+    }
+  },
+  {
+    "run_id": "run-11ce4940d1004ce1a22198bc0522effc",
+    "response_id": "gen-1792297964-VlkBICOBIiQCgW9M9WCl",
+    "queried_at": "2026-10-18T05:03:43.732572+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "cohere/north-mini-code-20260617:free",
+      "provider_name": "Cohere",
+      "total_cost": 0,
+      "native_tokens_prompt": 8841,
+      "native_tokens_completion": 354,
+      "native_tokens_reasoning": 407,
+      "finish_reason": "tool_calls",
+      "generation_time": 4381,
+      "latency": 588
+    }
+  },
+  {
+    "run_id": "run-1d04fa55145d4a33b7c9263db93bb027",
+    "response_id": "gen-1792298140-X2HRoGcQpZTkNeAWiYl0",
+    "queried_at": "2026-10-18T05:03:43.768889+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "cohere/north-mini-code-20260617:free",
+      "provider_name": "Cohere",
+      "total_cost": 0,
+      "native_tokens_prompt": 6682,
+      "native_tokens_completion": 844,
+      "native_tokens_reasoning": 662,
+      "finish_reason": "error",
+      "generation_time": 9534,
+      "latency": 266
+    }
+  },
+  {
+    "run_id": "run-ba3f57fbebd44b28a6cab7965bafab6d",
+    "response_id": "gen-1792298228-fOw1nULQknerogpSEogQ",
+    "queried_at": "2026-10-18T05:03:43.822888+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "native_tokens_prompt": 8331,
+      "native_tokens_completion": 2422,
+      "native_tokens_reasoning": 2177,
+      "finish_reason": "tool_calls",
+      "generation_time": 12870,
+      "latency": 206
+    }
+  },
+  {
+    "run_id": "run-857d48c1594d4b57a7709069ee529eb1",
+    "response_id": "gen-1792298242-CBZJbdG3T09zar2Z8Pjp",
+    "queried_at": "2026-10-18T05:03:43.863578+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "native_tokens_prompt": 8601,
+      "native_tokens_completion": 760,
+      "native_tokens_reasoning": 517,
+      "finish_reason": "tool_calls",
+      "generation_time": 3031,
+      "latency": 181
+    }
+  },
+  {
+    "run_id": "run-c1e19dd1746e462595f2e4aa076fcb43",
+    "response_id": "gen-1792298497-J6rWtp6YJlggnet7LEcr",
+    "queried_at": "2026-10-18T05:03:43.888368+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "native_tokens_prompt": 8861,
+      "native_tokens_completion": 2109,
+      "native_tokens_reasoning": 1842,
+      "finish_reason": "tool_calls",
+      "generation_time": 11557,
+      "latency": 2747
+    }
+  },
+  {
+    "run_id": "run-bb639a8198a3465fa7009fef3d125940",
+    "response_id": "gen-1792298509-n6Zb45e6pLp5K4y4HVRp",
+    "queried_at": "2026-10-18T05:03:43.977417+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "native_tokens_prompt": 9164,
+      "native_tokens_completion": 1292,
+      "native_tokens_reasoning": 1037,
+      "finish_reason": "tool_calls",
+      "generation_time": 4698,
+      "latency": 220
+    }
+  },
+  {
+    "run_id": "run-ce2709301e61433e99a20dcf49b9d671",
+    "response_id": "gen-1792298587-VjhAvkVlhJZ6Uub2cgnb",
+    "queried_at": "2026-10-18T05:03:44.046041+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "native_tokens_prompt": 9579,
+      "native_tokens_completion": 726,
+      "native_tokens_reasoning": 469,
+      "finish_reason": "tool_calls",
+      "generation_time": 3395,
+      "latency": 193
+    }
+  },
+  {
+    "run_id": "run-bfaf8ddadf0f494186e7300ab6cf316d",
+    "response_id": "gen-1792298590-b63WuTncF48ee9NkQbYf",
+    "queried_at": "2026-10-18T05:03:44.161277+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "native_tokens_prompt": 5944,
+      "native_tokens_completion": 525,
+      "native_tokens_reasoning": 466,
+      "finish_reason": "tool_calls",
+      "generation_time": 1968,
+      "latency": 179
+    }
+  },
+  {
+    "run_id": "run-f1179863cc7a462c8c9eae298f6f6cc7",
+    "response_id": "gen-1792298593-6947ZwLD4xM6H5VNkQiZ",
+    "queried_at": "2026-10-18T05:03:44.184203+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "native_tokens_prompt": 6073,
+      "native_tokens_completion": 80,
+      "native_tokens_reasoning": 56,
+      "finish_reason": "tool_calls",
+      "generation_time": 481,
+      "latency": 183
+    }
+  },
+  {
+    "run_id": "run-6501475566d94cbf8df8db1a8e3c8242",
+    "response_id": "gen-1792299483-YBDzLxDV26UbLNSPLkYi",
+    "queried_at": "2026-10-18T05:03:44.195146+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "native_tokens_prompt": 6011,
+      "native_tokens_completion": 740,
+      "native_tokens_reasoning": 683,
+      "finish_reason": "tool_calls",
+      "generation_time": 4181,
+      "latency": 534
+    }
+  },
+  {
+    "run_id": "run-522cb360aec54d88a1349aa791194e3e",
+    "response_id": "gen-1792299487-y41x0fSXmvVs0fPuuJrC",
+    "queried_at": "2026-10-18T05:03:44.254975+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "native_tokens_prompt": 6134,
+      "native_tokens_completion": 80,
+      "native_tokens_reasoning": 56,
+      "finish_reason": "tool_calls",
+      "generation_time": 503,
+      "latency": 226
+    }
+  },
+  {
+    "run_id": "run-9ae85ec527b848fbbbfc48de118989f8",
+    "response_id": "gen-1792299488-HGyGTHnrIIoQGwJhF1dj",
+    "queried_at": "2026-10-18T05:03:44.363809+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "native_tokens_prompt": 6177,
+      "native_tokens_completion": 965,
+      "native_tokens_reasoning": 876,
+      "finish_reason": "tool_calls",
+      "generation_time": 4014,
+      "latency": 136
+    }
+  },
+  {
+    "run_id": "run-d95dbe1b364e4a168f80f83ecfd20e12",
+    "response_id": "gen-1792299493-tOEhrCX12agwgZ6mUHHP",
+    "queried_at": "2026-10-18T05:03:44.377097+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "native_tokens_prompt": 7658,
+      "native_tokens_completion": 1906,
+      "native_tokens_reasoning": 1855,
+      "finish_reason": "tool_calls",
+      "generation_time": 7990,
+      "latency": 171
+    }
+  },
+  {
+    "run_id": "run-bd720cde3bf9411b95292c1ef6bb6b97",
+    "response_id": "gen-1792299504-A1x1CBBVT10FOgJ76U1y",
+    "queried_at": "2026-10-18T05:03:44.444369+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "native_tokens_prompt": 7172,
+      "native_tokens_completion": 3672,
+      "native_tokens_reasoning": 3445,
+      "finish_reason": "tool_calls",
+      "generation_time": 16458,
+      "latency": 160
+    }
+  },
+  {
+    "run_id": "run-bf032509b04f49b08694bb249667cfb9",
+    "response_id": "gen-1792299521-S0bcl6vgHcTnfDo2ETGd",
+    "queried_at": "2026-10-18T05:03:44.449482+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "native_tokens_prompt": 7434,
+      "native_tokens_completion": 2977,
+      "native_tokens_reasoning": 2812,
+      "finish_reason": "tool_calls",
+      "generation_time": 12507,
+      "latency": 194
+    }
+  },
+  {
+    "run_id": "run-63e94d52aa3b4f7aa9e728186f80c3f5",
+    "response_id": null,
+    "queried_at": "2026-10-18T05:03:44.570490+00:00",
+    "status": "no_response_id",
+    "cost_status": "unknown"
+  },
+  {
+    "run_id": "run-4098aa85cff8461a97c1cbeca43706bb",
+    "response_id": "gen-1792299692-OBVmdlLZJzCb0AOEfazg",
+    "queried_at": "2026-10-18T05:03:44.570512+00:00",
+    "http_status": 200,
+    "data": {
+      "model": "liquid/lfm-2.5-2.6b-20260811:free",
+      "provider_name": "Liquid",
+      "total_cost": 0,
+      "native_tokens_prompt": 8127,
+      "native_tokens_completion": 1434,
+      "native_tokens_reasoning": 1283,
+      "finish_reason": "tool_calls",
+      "generation_time": 7486,
+      "latency": 230
+    }
+  }
+]

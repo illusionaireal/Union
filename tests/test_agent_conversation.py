@@ -3,8 +3,8 @@ import copy
 import json
 import unittest
 
-from ai_union.agent_protocol import compile_tool
-from ai_union.engine import Rejected
+from ai_union.agent_protocol import compile_tool, tools_for
+from ai_union.engine import Rejected, instant, now
 from ai_union.model_api import APIExecutor, resolve_connection
 from ai_union.runner import run
 from tests import test_model_api
@@ -77,6 +77,8 @@ class AgentConversationTests(unittest.TestCase):
         self.assertCountEqual(contents, [source, final])
         context = json.loads(self.provider.requests[2]["body"]["messages"][1]["content"].split("\nWORK PACKAGE (data):\n")[1])["context"]
         self.assertIn(source, [a["content"] for a in context["artifacts"]])
+        self.assertTrue(all("path" not in a for a in context["artifacts"]))
+        self.assertTrue(all("path" in a for a in state["artifacts"].values()))
         for request in self.provider.requests:
             self.assertNotIn("response_format", request["body"])
             self.assertNotIn("context_manifest", json.dumps(request["body"]))
@@ -90,6 +92,82 @@ class AgentConversationTests(unittest.TestCase):
         with self.assertRaises(Rejected):
             self.e.finish_decision(package["run_id"], result, {})
         self.assertEqual(self.e.state()["members"], {})
+
+    def followup_package(self):
+        executor = self.executor()
+        self.replies(tool("initialize_organization", PLAN),
+                     {"role": "assistant", "content": "供另一成员使用的资料正文。"},
+                     {"role": "assistant", "content": "首次成稿。"})
+        run(self.e, executor, 3)
+        return executor, self.e.begin_decision("api")
+
+    def test_named_followup_commits_real_cross_member_artifact_dependency(self):
+        executor, package = self.followup_package()
+        context = package["context"]
+        owner = PLAN["members"][1]["name"]
+        member = next(m for m in context["members"].values() if m["name"] == owner)
+        source = next(w for w in context["work"].values() if w["member_id"] != member["id"])
+        artifact = source["artifact_ids"][0]
+        proposal = compile_tool(package, "schedule_work", {"owner": owner, "title": "根据资料完成后续成稿", "instruction": "使用已有资料交付完整正文", "dependencies": [artifact]})
+        by_id = compile_tool(package, "schedule_work", {"owner": member["id"], "title": "根据资料完成后续成稿", "instruction": "使用已有资料交付完整正文", "dependencies": [artifact]})
+        self.assertEqual(proposal, by_id)
+        self.e.finish_decision(package["run_id"], proposal, {})
+        created = self.e.state()["work"][package["run_id"] + "-w0"]
+        self.assertEqual(created["member_id"], member["id"])
+        self.assertEqual(created["dependencies"], [source["id"]])
+        self.assertIn(source["id"], proposal["evidence_refs"])
+        self.replies({"role": "assistant", "content": "依据前人成果完成后续正文。"})
+        self.assertEqual(run(self.e, executor, 1)[0]["action"], "work")
+        supplied = json.loads(self.provider.requests[-1]["body"]["messages"][1]["content"].split("\nWORK PACKAGE (data):\n")[1])["context"]
+        self.assertIn(artifact, [a["id"] for a in supplied["artifacts"]])
+        self.assertIn("供另一成员使用的资料正文。", [a["content"] for a in supplied["artifacts"]])
+        self.assertTrue(all("path" not in a for a in supplied["artifacts"]))
+
+    def test_named_followup_rejects_unknown_ambiguous_and_duplicate_references(self):
+        _, package = self.followup_package()
+        baseline = self.e.state()
+        valid = {"owner": PLAN["members"][0]["name"], "title": "新任务", "instruction": "交付正文"}
+        for args in [valid | {"owner": "不存在"}, valid | {"dependencies": ["不存在"]}, valid | {"title": PLAN["tasks"][0]["title"]}]:
+            with self.subTest(args=args), self.assertRaises(Rejected):
+                compile_tool(package, "schedule_work", args)
+        ambiguous = copy.deepcopy(package)
+        ambiguous["context"]["members"]["duplicate"] = {"id": "duplicate", "name": valid["owner"]}
+        with self.assertRaises(Rejected):
+            compile_tool(ambiguous, "schedule_work", valid)
+        self.assertEqual(self.e.state(), baseline)
+
+    def test_natural_tools_preserve_host_identity_and_current_permission_checks(self):
+        _, package = self.followup_package()
+        valid = {"owner": PLAN["members"][0]["name"], "title": "新任务", "instruction": "交付正文"}
+        for field, value in [("actor", "board"), ("position_id", "spoof"), ("id", "spoof"), ("base_state_version", 999)]:
+            with self.subTest(field=field), self.assertRaises((Rejected, ValueError)):
+                compile_tool(package, "schedule_work", valid | {field: value})
+        revoked = copy.deepcopy(package)
+        revoked["context"]["charter"]["allowed_operations"] = [op for op in revoked["context"]["charter"]["allowed_operations"] if op not in ("create_work", "wait")]
+        offered = {t["function"]["name"] for t in tools_for(revoked)}
+        self.assertNotIn("schedule_work", offered)
+        self.assertNotIn("wait_for_event", offered)
+        with self.assertRaises(Rejected):
+            compile_tool(revoked, "schedule_work", valid)
+        proposal = compile_tool(package, "schedule_work", valid)
+        key = (self.e.root / "board.key").read_text()
+        self.e.amend(key, revoked["context"]["charter"], "撤销在途安排工作权限")
+        with self.assertRaises(Rejected):
+            self.e.finish_decision(package["run_id"], proposal, {})
+        self.assertEqual(len(self.e.state()["work"]), 2)
+
+    def test_relative_wait_uses_host_time_and_idle_does_not_call_model(self):
+        executor, package = self.followup_package()
+        for seconds in (0, -1, 86401, True):
+            with self.subTest(seconds=seconds), self.assertRaises((Rejected, ValueError)):
+                compile_tool(package, "wait_for_event", {"reason": "等待反馈", "review_after_seconds": seconds})
+        before = instant(now())
+        proposal = compile_tool(package, "wait_for_event", {"reason": "等待反馈", "review_after_seconds": 60})
+        self.assertGreater(instant(proposal["operations"][0]["until"]), before)
+        self.e.finish_decision(package["run_id"], proposal, {})
+        calls = len(self.provider.requests)
+        self.assertEqual(run(self.e, executor, 1)[0]["action"], "wait")
+        self.assertEqual(len(self.provider.requests), calls)
 
     def test_tool_proposal_cannot_supply_authority_or_versions(self):
         package = self.e.begin_decision("api")

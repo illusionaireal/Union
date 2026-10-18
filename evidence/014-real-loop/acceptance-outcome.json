@@ -1,0 +1,114 @@
+{
+  "first_listener": {
+    "start_receipt_id": "command-4e5888c872604a729f50cd4c92404bd0",
+    "idle_without_calls": true,
+    "event_woke_same_job": false,
+    "followup_delivered": false,
+    "loop_running": false,
+    "first_idle_at": "2026-10-18T04:58:21.306933+00:00",
+    "first_idle_calls": 44,
+    "wake_event_id": "command-61e124123c824468becf4e9667448169",
+    "wake_sent_at": "2026-10-18T04:58:23.332760+00:00",
+    "ended_at": "2026-10-18T04:58:54.720082+00:00",
+    "calls_used": 46
+  },
+  "listener_receipt": {
+    "actions": [
+      {
+        "action": "correction",
+        "failure": {
+          "code": "api_tool_arguments",
+          "message": "组织工具参数需要修正",
+          "recovery": "本次提议未生效；系统会在本次剩余额度内将原因反馈给模型一次。"
+        },
+        "run_id": "run-6501475566d94cbf8df8db1a8e3c8242",
+        "work_id": "run-ce2709301e61433e99a20dcf49b9d671-w0"
+      },
+      {
+        "action": "progress",
+        "run_id": "run-522cb360aec54d88a1349aa791194e3e",
+        "work_id": "run-ce2709301e61433e99a20dcf49b9d671-w0"
+      },
+      {
+        "action": "work",
+        "run_id": "run-9ae85ec527b848fbbbfc48de118989f8",
+        "work_id": "run-ce2709301e61433e99a20dcf49b9d671-w0"
+      },
+      {
+        "action": "decision",
+        "run_id": "run-d95dbe1b364e4a168f80f83ecfd20e12",
+        "work_id": null
+      },
+      {
+        "action": "correction",
+        "failure": {
+          "code": "api_tool_arguments",
+          "message": "组织工具参数需要修正",
+          "recovery": "本次提议未生效；系统会在本次剩余额度内将原因反馈给模型一次。"
+        },
+        "run_id": "run-bd720cde3bf9411b95292c1ef6bb6b97",
+        "work_id": null
+      },
+      {
+        "action": "blocked",
+        "failure": {
+          "code": "api_tool_arguments",
+          "message": "组织工具参数需要修正",
+          "recovery": "本次提议未生效；系统会在本次剩余额度内将原因反馈给模型一次。"
+        },
+        "run_id": "run-bf032509b04f49b08694bb249667cfb9"
+      }
+    ],
+    "actor": "local board",
+    "base_version": 65,
+    "created_at": "2026-10-18T04:58:01.870520+00:00",
+    "ended_at": "2026-10-18T04:58:53.826432+00:00",
+    "execution": {
+      "connection_id": "openrouter-free",
+      "connection_revision": 3,
+      "harness": "deepagents",
+      "harness_version": "0.7.28",
+      "protocol": "openai_chat_completions",
+      "requested_model": "liquid/lfm-2.5-2.6b:free",
+      "transport_source": "provider_api"
+    },
+    "executor": "api",
+    "failure": {
+      "code": "api_tool_arguments",
+      "message": "组织工具参数需要修正",
+      "recovery": "本次提议未生效；系统会在本次剩余额度内将原因反馈给模型一次。"
+    },
+    "id": "command-4e5888c872604a729f50cd4c92404bd0",
+    "kind": "start",
+    "message": "组织工具参数需要修正",
+    "organization_id": "org-99943902dd794537819836c48c4e03d6",
+    "requested_model": "liquid/lfm-2.5-2.6b:free",
+    "status": "blocked"
+  },
+  "event_dispatch_proof": {
+    "event_id": "command-61e124123c824468becf4e9667448169",
+    "same_job_runs": [
+      "run-bd720cde3bf9411b95292c1ef6bb6b97",
+      "run-bf032509b04f49b08694bb249667cfb9"
+    ],
+    "provider_response_ids": [
+      "gen-1792299504-A1x1CBBVT10FOgJ76U1y",
+      "gen-1792299521-S0bcl6vgHcTnfDo2ETGd"
+    ],
+    "idle_without_model_calls": true,
+    "same_job_event_dispatched": true,
+    "valid_event_handling_decision": false
+  },
+  "final_controlled_event": {
+    "id": "command-2839d3662af14bf89d532cc819dd22c5",
+    "organization_id": "org-99943902dd794537819836c48c4e03d6",
+    "base_version": 79,
+    "kind": "event",
+    "actor": "local board",
+    "created_at": "2026-10-18T05:01:30.389987+00:00",
+    "status": "succeeded",
+    "message": "操作已保存"
+  },
+  "later_wait_fully_verified": false,
+  "current_background_dispatch": false
+}

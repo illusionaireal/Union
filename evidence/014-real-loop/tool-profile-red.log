@@ -1,0 +1,14 @@
+test_organization_rounds_expose_business_tools_and_keep_inline_artifacts (tests.test_harness.HarnessTests.test_organization_rounds_expose_business_tools_and_keep_inline_artifacts) ... FAIL
+
+======================================================================
+FAIL: test_organization_rounds_expose_business_tools_and_keep_inline_artifacts (tests.test_harness.HarnessTests.test_organization_rounds_expose_business_tools_and_keep_inline_artifacts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/Union/tests/test_harness.py", line 108, in test_organization_rounds_expose_business_tools_and_keep_inline_artifacts
+    self.assertFalse(bootstrap.intersection({"ls", "read_file", "write_file", "edit_file", "delete", "glob", "grep"}))
+AssertionError: {'delete', 'ls', 'write_file', 'read_file', 'glob', 'grep', 'edit_file'} is not false
+
+----------------------------------------------------------------------
+Ran 1 test in 1.952s
+
+FAILED (failures=1)

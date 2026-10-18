@@ -1,0 +1,27 @@
+test_charter_change_starts_a_new_session_without_old_task_messages (tests.test_harness.HarnessTests.test_charter_change_starts_a_new_session_without_old_task_messages) ... ok
+test_cli_resumes_bootstrap_from_a_separate_process (tests.test_harness.HarnessTests.test_cli_resumes_bootstrap_from_a_separate_process) ... ok
+test_draft_is_not_official_and_recovers_in_a_fresh_executor (tests.test_harness.HarnessTests.test_draft_is_not_official_and_recovers_in_a_fresh_executor) ... ok
+test_invalid_draft_is_corrected_without_rebuilding_members (tests.test_harness.HarnessTests.test_invalid_draft_is_corrected_without_rebuilding_members) ... ok
+test_langchain_control_runs_same_plain_tools_loop (tests.test_harness.HarnessTests.test_langchain_control_runs_same_plain_tools_loop) ... ok
+test_malformed_tool_arguments_get_one_safe_correction_without_replay (tests.test_harness.HarnessTests.test_malformed_tool_arguments_get_one_safe_correction_without_replay) ... ok
+test_organization_rounds_expose_business_tools_and_keep_inline_artifacts (tests.test_harness.HarnessTests.test_organization_rounds_expose_business_tools_and_keep_inline_artifacts) ... ok
+test_provider_unknown_is_not_automatically_resumed (tests.test_harness.HarnessTests.test_provider_unknown_is_not_automatically_resumed) ... ok
+test_received_usage_survives_an_unexpected_local_exception (tests.test_harness.HarnessTests.test_received_usage_survives_an_unexpected_local_exception) ... ok
+test_received_usage_survives_artifact_and_sdk_processing_failures (tests.test_harness.HarnessTests.test_received_usage_survives_artifact_and_sdk_processing_failures) ... ok
+test_rejected_correction_settlement_closes_call_and_preserves_tokens (tests.test_harness.HarnessTests.test_rejected_correction_settlement_closes_call_and_preserves_tokens) ... ok
+test_rejected_plaintext_credential_still_preserves_provider_tokens (tests.test_harness.HarnessTests.test_rejected_plaintext_credential_still_preserves_provider_tokens) ... ok
+test_revoked_permission_prevents_partial_activation_and_retains_usage (tests.test_harness.HarnessTests.test_revoked_permission_prevents_partial_activation_and_retains_usage) ... ok
+test_rotated_key_in_provider_header_is_dropped_from_all_receipts (tests.test_harness.HarnessTests.test_rotated_key_in_provider_header_is_dropped_from_all_receipts) ... ok
+test_rotated_keys_are_rejected_before_text_or_tools_enter_checkpoints (tests.test_harness.HarnessTests.test_rotated_keys_are_rejected_before_text_or_tools_enter_checkpoints) ... ok
+test_secret_in_nested_tool_arguments_never_reaches_checkpoint (tests.test_harness.HarnessTests.test_secret_in_nested_tool_arguments_never_reaches_checkpoint) ... ok
+test_tool_connection_probe_requires_reading_tool_result_and_charges_twice (tests.test_harness.HarnessTests.test_tool_connection_probe_requires_reading_tool_result_and_charges_twice) ... ok
+test_tool_probe_cannot_succeed_from_a_plain_greeting (tests.test_harness.HarnessTests.test_tool_probe_cannot_succeed_from_a_plain_greeting) ... ok
+test_total_quota_and_pause_do_not_trigger_hidden_calls (tests.test_harness.HarnessTests.test_total_quota_and_pause_do_not_trigger_hidden_calls) ... ok
+test_unwanted_draft_member_can_be_removed_before_adoption (tests.test_harness.HarnessTests.test_unwanted_draft_member_can_be_removed_before_adoption) ... ok
+test_work_parameter_error_is_not_misclassified_as_an_artifact (tests.test_harness.HarnessTests.test_work_parameter_error_is_not_misclassified_as_an_artifact) ... ok
+test_work_uses_file_tools_then_delivers_and_second_member_gets_artifact (tests.test_harness.HarnessTests.test_work_uses_file_tools_then_delivers_and_second_member_gets_artifact) ... ok
+
+----------------------------------------------------------------------
+Ran 22 tests in 14.882s
+
+OK

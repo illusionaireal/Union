@@ -1,0 +1,15 @@
+{
+  "at": "2026-10-18T05:03:43.476286+00:00",
+  "calls_before": 48,
+  "calls_after": 48,
+  "receipt": {
+    "id": "command-final-budget-guard-014",
+    "organization_id": "org-99943902dd794537819836c48c4e03d6",
+    "base_version": 80,
+    "kind": "start",
+    "actor": "local board",
+    "created_at": "2026-10-18T05:03:43.463669+00:00",
+    "status": "rejected",
+    "message": "调用额度耗尽；需要董事会配置追加资源"
+  }
+}

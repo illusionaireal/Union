@@ -1,0 +1,6 @@
+test_named_followup_commits_real_cross_member_artifact_dependency (tests.test_agent_conversation.AgentConversationTests.test_named_followup_commits_real_cross_member_artifact_dependency) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.537s
+
+OK

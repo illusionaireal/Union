@@ -1,8 +1,9 @@
 """Business tools for API agents; host envelopes never become model output schemas."""
 import copy
+from datetime import timedelta
 
-from .engine import require, text
-from .protocol import OPERATION_SCHEMAS, STRING, STRINGS, obj
+from .engine import instant, now, require, text
+from .protocol import INTEGER, OPERATION_SCHEMAS, STRING, STRINGS, obj
 
 
 def fields(properties, required):
@@ -49,7 +50,20 @@ def tools_for(package):
             "operations": {"type": "array", "items": {"anyOf": operations}},
         }, ["operations"])
     # No provider strict/structured-output mode. Validation is owned by the host.
-    return [{"type": "function", "function": {"name": name, "description": description, "parameters": parameters}}]
+    result = [{"type": "function", "function": {"name": name, "description": description, "parameters": parameters}}]
+    if package["kind"] == "decision" and package["actor"] != "bootstrap":
+        if "create_work" in allowed:
+            result.append({"type": "function", "function": {"name": "schedule_work", "description": "安排一项后续工作。使用成员姓名与已有任务标题，不用生成岗位或任务ID。请单独调用。", "parameters": fields({
+                "owner": STRING | {"description": "当前正式成员姓名或成员ID；须有唯一有效任职。"},
+                "title": STRING, "instruction": STRING,
+                "dependencies": STRINGS | {"description": "依赖的已有任务标题、任务ID或对应成果ID；宿主解析为任务依赖。"},
+                "evidence_refs": STRINGS,
+            }, ["owner", "title", "instruction"])}})
+        if "wait" in allowed:
+            result.append({"type": "function", "function": {"name": "wait_for_event", "description": "没有可执行动作时等待新事件，并在给定秒数后复查。请单独调用。", "parameters": fields({
+                "reason": STRING, "review_after_seconds": INTEGER, "evidence_refs": STRINGS,
+            }, ["reason", "review_after_seconds"])}})
+    return result
 
 
 def instructions(package):
@@ -65,6 +79,8 @@ def instructions(package):
         task = (
             "本轮完成 context.task 中的工作。先读任务要求和依赖成果，再直接交付可用的完整正文，"
             "可以使用 Markdown。系统会原样保存正文并交给后续成员。不要只承诺以后完成。"
+            "虚拟文件只属于当前任务会话，其他成员无法通过草稿路径读取它们；"
+            "最终回答须包含成果本身的完整内容，不能只给文件路径、完成报告或内容摘要。"
             "如果确实缺少必要条件，调用 report_blocked 说明原因，不要编造交付。"
         )
     elif package["actor"] == "bootstrap":
@@ -80,10 +96,16 @@ def instructions(package):
     else:
         task = (
             "本轮履行组织决策责任。阅读已有工作、成果和待处理事件，决定下一步。"
+            "这不是重新执行已交付任务：context.artifacts 中的 content 是正式成果，"
+            "其中提到的虚拟草稿路径属于其他任务会话，不是本会话文件；不要查找或重建这些路径。"
             "需要安排、调整或提交工作时调用 update_organization，参数只描述本次实际变更。"
+            "安排新工作时优先用 schedule_work，填写成员姓名、交付要求和已有任务依赖；宿主会生成内部标识。"
             "可以附简短说明；不用重写已有组织，不要重复创建已有任务。"
+            "引用 work_id 时使用 context.work 中的任务 id，不能把 run_id 当作任务 id；"
+            "依赖关系须写入工作操作的 dependencies，不能只写在说明中。"
             "有依赖的操作应先创建目标再引用目标。没有可执行行动时使用 wait 操作，"
             "说明等待什么并给出带时区的 ISO 复查时间。保留事项交给董事会，不自行扩大授权。"
+            "也可直接用 wait_for_event(reason, review_after_seconds) 等待新事件，无需计算日期。"
         )
     if package.get("context", {}).get("company"):
         from .company import guidance
@@ -97,6 +119,10 @@ def model_input(package):
     for key in ("charter", "policy", "position", "assignment"):
         if isinstance(context.get(key), dict):
             context[key].pop("version", None)
+    # Artifacts are delivered inline. Their host storage paths are not files
+    # in the task's virtual workspace and must not invite read_file calls.
+    for artifact in context.get("artifacts", []):
+        artifact.pop("path", None)
     return {"kind": package["kind"], "actor": package.get("actor"), "context": context}
 
 
@@ -160,14 +186,38 @@ def compile_tool(package, name, arguments):
     if name == "report_blocked":
         return {"status": "blocked", "summary": text(arguments["reason"], "受阻原因"), "artifacts": []}
     bootstrap = name == "initialize_organization"
-    operations = _initialize(package, arguments) if bootstrap else arguments["operations"]
+    evidence = arguments.get("evidence_refs", [])
+    if name == "schedule_work":
+        context = package["context"]
+        members = [m["id"] for m in context["members"].values() if arguments["owner"] in (m["name"], m["id"])]
+        assignments = [a for a in context["assignments"].values() if a["active"] and a["member_id"] in members]
+        require(len(members) == 1 and len(assignments) == 1, "负责人须是具有唯一有效任职的正式成员；多岗位请用 update_organization 明确岗位")
+        work = context["work"]
+        require(not any(w["title"] == arguments["title"] for w in work.values()), "同名工作已存在，请更新现有工作而非重复安排")
+        artifacts = {a["id"]: a["work_id"] for a in context["artifacts"]}
+        dependencies = []
+        for reference in arguments.get("dependencies", []):
+            matches = [reference] if reference in work else ([artifacts[reference]] if reference in artifacts else [w["id"] for w in work.values() if w["title"] == reference])
+            require(len(matches) == 1, "任务依赖不存在或标题不唯一，请引用当前工作包中的唯一任务或成果")
+            if matches[0] not in dependencies:
+                dependencies.append(matches[0])
+        operations = [{"op": "create_work", "id": package["run_id"] + "-w0", "title": arguments["title"],
+                       "instruction": arguments["instruction"], "position_id": assignments[0]["position_id"], "dependencies": dependencies}]
+        # A declared work dependency is evidence, not an invented external fact.
+        evidence = list(dict.fromkeys(evidence + dependencies))
+    elif name == "wait_for_event":
+        seconds = arguments["review_after_seconds"]
+        require(type(seconds) is int and 1 <= seconds <= 86400, "复查间隔须为1至86400秒")
+        operations = [{"op": "wait", "until": (instant(now()) + timedelta(seconds=seconds)).isoformat(), "reason": arguments["reason"]}]
+    else:
+        operations = _initialize(package, arguments) if bootstrap else arguments["operations"]
     summary = arguments.get("strategy" if bootstrap else "summary") or ("根据目标建立团队并安排首批工作" if bootstrap else "根据当前成果和事件安排下一步")
     manifest = package["context_manifest"]
     return {
         "base_state_version": manifest["state_version"], "charter_version": manifest["charter_version"],
         "policy_version": manifest["policy_version"], "issue": "组织初始化" if bootstrap else "推进组织工作",
         "rationale": summary, "expected_effect": summary,
-        "evidence_refs": arguments.get("evidence_refs", []), "operations": operations,
+        "evidence_refs": evidence, "operations": operations,
     }
 
 
