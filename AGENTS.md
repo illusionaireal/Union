@@ -2,6 +2,8 @@
 
 ## Active direction and source of truth
 
+- Product boundary confirmed 2026-10-20: ai-union is the AI-centered collective that autonomously organizes, acts, and adapts its members, positions, processes, and capabilities around a shared goal. ai-union-platform (also called UNION platform) provides creation, hosting, observation, integration, and other shared services without prescribing an organization's business, structure, or operating methods. The organization decides how to develop and achieve its goal within its charter, authorization, and resources; an ai-union may itself build and operate the platform. The exact approved wording is in `docs/ai-union/DESIGN.md`, section "2026-10-20：已确认的作用和边界".
+- Apply this boundary throughout the organization lifecycle, not only during bootstrap. Business capabilities follow each organization's goal; coding is not a universal prerequisite. Do not turn current tool limitations into the product definition or infer a requirement that every organization must run without the platform or obtain every capability through it. Keep the organization runtime and the platform product conceptually distinct.
 - Independent single-HTML demos/reports and their dedicated source/build/deploy/check scripts were retired by the user. Maintain the React workspace; preserve historical evidence and Git history, but do not recreate those artifacts.
 - Use `dev` as the ongoing development mainline (user decision 2026-10-15). Current first experience is `specs/006-novel-company`: real model execution, three same-book chapters/cycles, host-owned mock platform/accounting, controlled negative feedback, and human quality review. Do not require real external publishing for this first experiment; that remains a later milestone.
 
