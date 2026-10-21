@@ -1,0 +1,12 @@
+{
+  "name": "ai-union-corp",
+  "goal": "建设和运营 AI-UNION 与 ai-union-platform。AI-UNION 是围绕共同目标自主组织、持续行动并调整成员、岗位、流程与能力的协作集体；平台提供创建、托管、观察、接入等公共服务，不预设组织的业务、结构和经营方式。先交付可实际运行、可观察、可恢复的产品与运行服务，再依据用户反馈持续改进，并逐步验证覆盖模型、服务器等成本的经营方式。组织自行决定团队和首批工作，不把规划文档当成代码开发、上线或经营成果。",
+  "charter": {
+    "text": "发起人依据启动 ai-union-corp 的指令采用本阶段筹建章程。公司围绕建设和运营 AI-UNION、ai-union-platform 自主形成团队、分配责任、安排依赖工作并保存成果。当前运行时仅授权组织协调与本地文本成果；代码修改、测试和部署由已获用户授权的宿主工程流程执行并提供证据，成员不得虚构主机、代码仓库或上线能力。新增外部工具、持久主机、模型付费、资金转移、签约及融资必须具备相应的实际授权和资源；本章程不会授予这些能力。董事会保留目标、资源、章程、融资与解散权。岗位和人数由目标决定，至少两名成员；不固定团队结构。此阶段不进行真实收付款。",
+    "allowed_operations": ["create_member", "create_position", "update_position", "assign", "set_policy", "create_work", "handoff", "pause_work", "resume_work", "cancel_work", "update_work", "wait", "set_strategy", "record_memory"],
+    "allowed_tools": ["produce_artifact"],
+    "reserved_matters": ["goal", "resources", "charter", "funding", "dissolution"],
+    "board_can_amend": true
+  },
+  "resources": {"max_calls": 32, "timeout_seconds": 180}
+}

@@ -1,0 +1,15 @@
+test_changed_creation_does_not_overwrite_adopted_profile (tests.test_corp.CorpTests.test_changed_creation_does_not_overwrite_adopted_profile) ... ok
+test_preparation_is_idempotent_and_does_not_create_members_or_calls (tests.test_corp.CorpTests.test_preparation_is_idempotent_and_does_not_create_members_or_calls) ... ok
+test_saved_connection_is_not_tool_verification_and_never_exposes_key (tests.test_corp.CorpTests.test_saved_connection_is_not_tool_verification_and_never_exposes_key) ... ok
+test_service_pause_and_failure_are_terminal (tests.test_corp.CorpTests.test_service_pause_and_failure_are_terminal) ... ok
+test_service_requires_explicit_cost_acceptance_before_watch (tests.test_corp.CorpTests.test_service_requires_explicit_cost_acceptance_before_watch) ... ok
+test_service_stops_at_exact_budget_boundary_without_budget_reset (tests.test_corp.CorpTests.test_service_stops_at_exact_budget_boundary_without_budget_reset) ... ok
+test_service_unknown_execution_is_never_replayed (tests.test_corp.CorpTests.test_service_unknown_execution_is_never_replayed) ... ok
+test_status_can_read_while_console_runs_and_never_probes_provider (tests.test_corp.CorpTests.test_status_can_read_while_console_runs_and_never_probes_provider) ... ok
+test_tool_probe_evidence_is_bound_to_real_source_and_connection_revision (tests.test_corp.CorpTests.test_tool_probe_evidence_is_bound_to_real_source_and_connection_revision) ... ok
+test_unknown_creation_is_not_automatically_recreated (tests.test_corp.CorpTests.test_unknown_creation_is_not_automatically_recreated) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.234s
+
+OK

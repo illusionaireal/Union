@@ -1,0 +1,47 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> union@0.0.0 check:console
+> npm run typecheck --workspace @union/console && npm run test --workspace @union/console && npm run build:console
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> @union/console@0.1.0 typecheck
+> tsc --noEmit
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> @union/console@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 /workspace/scratch/ec13abb7a5d3/Union/web/console
+
+ ✓ src/features/commands/receipts.test.ts (4 tests) 4ms
+ ✓ src/api/client.test.ts (3 tests) 10ms
+ ✓ src/app/url-state.test.tsx (1 test) 95ms
+ ✓ src/features/commands/fields.test.tsx (8 tests) 254ms
+
+ Test Files  4 passed (4)
+      Tests  16 passed (16)
+   Start at  06:05:43
+   Duration  1.17s (transform 195ms, setup 462ms, collect 271ms, tests 362ms, environment 1.40s, prepare 257ms)
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> union@0.0.0 build:console
+> npm run build --workspace @union/console
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> @union/console@0.1.0 build
+> tsc --noEmit && vite build
+
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 2004 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.74 kB │ gzip:   0.51 kB
+dist/assets/index-DcBMpnBZ.css   41.52 kB │ gzip:   9.41 kB
+dist/assets/index-CsHS5wYU.js   384.26 kB │ gzip: 121.24 kB
+✓ built in 1.88s

@@ -1,5 +1,13 @@
 # ai-union 当前状态
 
+## 2026-10-20：ai-union-corp 已准备，正式启动仍有实质缺口
+
+已实现 [015](../../specs/015-corp-startup/spec.md)：公司目标/阶段章程/有限资源、通过正式 Console 幂等准备、可与工作台并行的只读诊断、禁用 fixture 的真实 React 入口，以及复用既有 API watch 的有限常驻服务包装与 systemd 模板。没有修改原有章程/岗位授权或资金机制，开发主线仍为 dev。
+
+实际创建公司 `org-eb1c6fc7e1784a52823f3d389f9cac34`，phase=bootstrap，暂停，0 成员、0 工作、0 成果、0 模型调用；未用 fixture 补齐团队。工作台在本环境会话中启动并通过23项实际 HTTP 检查。152项后端全量回归通过，收紧回执证据检查后10项公司测试复验通过；npm/前端检查见 [015证据](../../evidence/015-corp-startup/README.md)。浏览器验证因本环境没有 Chromium 未执行；systemd仅验证模板语法，未安装或做主机重启验收。
+
+用户选择使用已有服务器，尚无 SSH 连接信息。本环境没有可用模型 Key 或先前私有组织数据。Cloudflare Containers 实际返回401，错误明确需要 Workers Paid，本轮没有升级套餐或部署。当前成员执行器仍无真实代码仓库/测试/运维工具；宿主工程代理开发不是成员已具备这些能力的证明。因此“公司已自主运营”尚未成立，不能只补模型和主机便宣称完成。操作与后续缺口见 [启动说明](../CORP_STARTUP.md)。
+
 ## 2026-10-20：确认 ai-union 与 ai-union-platform 的作用和边界
 
 用户确认的三句话已写入 [README](../../README.md#ai-union-与-ai-union-platform-的作用和边界)及[产品定义](DESIGN.md#2026-10-20已确认的作用和边界)，并同步 PRD 与开发指引。组织自主形成和持续调整成员、岗位、流程与能力；平台提供公共服务，不预设业务与经营方式，且可由一个 ai-union 建设和运营。

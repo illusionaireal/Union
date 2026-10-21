@@ -1,5 +1,13 @@
 # 当前工程交接
 
+## 2026-10-20：ai-union-corp 筹建与常驻服务准备
+
+新增 [015](specs/015-corp-startup/spec.md) 与 [CORP_STARTUP](docs/CORP_STARTUP.md)。`python -m ai_union.corp --root .union/ai-union-corp prepare --board-name ...` 使用稳定创建请求接续原公司，status可与工作台并行读取，serve提供不启用fixture的正式React。`python -m ai_union.service`复用API watch，资源到限、暂停、未知和失败退出2；systemd模板禁止对2自动重启，不重置预算或重发未知执行。
+
+私有公司服务目录在当前 checkout 的 `.union/ai-union-corp/`，组织ID `org-eb1c6fc7e1784a52823f3d389f9cac34`；实际目录由status返回，不写入另一份运行状态。当前bootstrap/paused，0成员/工作/成果/模型调用。该目录不随Git提交，不能在新环境假装恢复；需要停止原服务后整体安全迁移，或明确新建。公共证据在 [015](evidence/015-corp-startup/README.md)。
+
+用户已选择已有服务器，连接信息未提供。没有可用模型凭据。当前无成员真实仓库读写/测试/运维工具，仍需实现并完成对应权限评审；不能把本轮启动脚本当公司能自行开发的证据。Cloudflare Containers返回需要付费，本轮未升级。浏览器验收因缺少Chromium未执行；实际HTTP与模板语法验证不代替持久运行验收。保留所有旧真实模型失败与unknown记录，不重建或重置它们。
+
 ## 2026-10-20：组织与平台边界已确认
 
 接手时先读 [README 的三句话定义](README.md#ai-union-与-ai-union-platform-的作用和边界)及 [DESIGN 最新确认](docs/ai-union/DESIGN.md#2026-10-20已确认的作用和边界)。ai-union 自主组织、行动并持续调整能力；ai-union-platform 提供公共服务，组织依据章程、授权与资源决定如何发展。平台本身也可由一个 ai-union 建设和运营。

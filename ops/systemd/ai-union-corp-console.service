@@ -1,0 +1,28 @@
+[Unit]
+Description=ai-union-corp private React console
+After=network.target
+StartLimitIntervalSec=300
+StartLimitBurst=3
+
+[Service]
+Type=simple
+User=union
+Group=union
+WorkingDirectory=/opt/union
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/opt/union/.venv/bin/python -m ai_union.corp --root /var/lib/union/ai-union-corp serve --port 8766
+Restart=on-failure
+RestartPreventExitStatus=2
+RestartSec=15
+TimeoutStopSec=200
+KillMode=control-group
+UMask=0077
+StateDirectory=union
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/union
+
+[Install]
+WantedBy=multi-user.target
