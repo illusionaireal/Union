@@ -1,0 +1,31 @@
+{
+  "status": "passed",
+  "checks": [
+    "Actual React document and CSP are served",
+    "Built asset is served: /assets/index-CsHS5wYU.js",
+    "Built asset is served: /assets/index-DcBMpnBZ.css",
+    "Private host files are not static assets",
+    "Snapshot requires a session",
+    "board launch exchanges for the correct role",
+    "board cannot reuse the one-time launch",
+    "board has no fixture or Codex execution option",
+    "Actual company appears in the catalog",
+    "No startup, members or model calls are manufactured",
+    "Missing model connection is represented accurately",
+    "observer launch exchanges for the correct role",
+    "observer cannot reuse the one-time launch",
+    "observer has no fixture or Codex execution option",
+    "Observer command attempt is rejected",
+    "SPA route is served: overview",
+    "SPA route is served: models",
+    "SPA route is served: members",
+    "SPA route is served: tasks",
+    "SPA route is served: artifacts",
+    "SPA route is served: activity",
+    "SPA route is served: resources",
+    "SPA route is served: settings"
+  ],
+  "model_calls": 0,
+  "autonomous_operation_verified": false,
+  "scope": "actual HTTP transport and React build assets; browser rendering not validated"
+}

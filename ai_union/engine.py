@@ -18,7 +18,7 @@ from pathlib import Path
 OPERATIONS = {"create_member", "create_position", "update_position", "assign", "set_policy", "create_work",
               "handoff", "pause_work", "resume_work", "cancel_work", "update_work",
               "wait", "set_strategy", "record_memory", "submit_chapter", "review_cycle"}
-TOOLS = {"produce_artifact"}
+TOOLS = {"produce_artifact", "workspace_execute"}
 ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.-]{0,79}$")
 
 

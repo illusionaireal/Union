@@ -1,5 +1,7 @@
 # 启动 ai-union-corp
 
+2026-10-21：成员隔离工作区适配已实现，配置、岗位授权、真实运行前检查见 [MEMBER_WORKSPACE](MEMBER_WORKSPACE.md)。原公司没有自动修章或绑定工具；真实模型、Docker 主机和部署运维能力仍待接入。下文 015 的工具缺口描述保留其当时状态。
+
 本公司负责建设和运营 AI-UNION 与 ai-union-platform。目标、阶段章程与首次有限调用配置在 [公司配置](../examples/ai-union-corp.json)。公司自行决定成员和任务；`prepare` 只保存筹建条件，不产生团队、模型请求或费用回执。
 
 ## 当前环境启动

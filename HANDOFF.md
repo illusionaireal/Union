@@ -1,5 +1,13 @@
 # 当前工程交接
 
+## 2026-10-21：016 成员开发工作区接入
+
+继续原公司 `org-eb1c6fc7e1784a52823f3d389f9cac34`，不重复创建或填充模拟团队。新增可选 `workspace_execute`、宿主绑定/停用/核对CLI、持久命令回执，接入原 Deep Agents 任务循环；初始成员可按需选择章程允许的业务工具，后续仍可由组织调整岗位。使用与当前边界见 [MEMBER_WORKSPACE](docs/MEMBER_WORKSPACE.md)；规格 [016](specs/016-member-workspace/spec.md)。
+
+当前环境无模型凭据、Docker、Codex/Claude CLI；Linux bubblewrap最小隔离探测失败，没有降级为宿主命令。用户此前选择已有服务器，SSH信息仍未提供。公司现有阶段章程仍只允许文本工具，本轮没有自动扩大或伪造容器绑定。要真实启动仍需目标主机、模型连接、经过实际验收的工作区镜像，并接入部署运维能力。不得把本轮工程代理改代码或SDK/容器替身测试说成公司成员已开发上线。
+
+168项Python、npm检查及23项实际HTTP检查通过；独立权限review通过默认关闭工程接入。HTTP校验后临时服务已停止，未提供持久可访问站点。证据见 [016](evidence/016-member-workspace/README.md)。
+
 ## 2026-10-20：ai-union-corp 筹建与常驻服务准备
 
 新增 [015](specs/015-corp-startup/spec.md) 与 [CORP_STARTUP](docs/CORP_STARTUP.md)。`python -m ai_union.corp --root .union/ai-union-corp prepare --board-name ...` 使用稳定创建请求接续原公司，status可与工作台并行读取，serve提供不启用fixture的正式React。`python -m ai_union.service`复用API watch，资源到限、暂停、未知和失败退出2；systemd模板禁止对2自动重启，不重置预算或重发未知执行。

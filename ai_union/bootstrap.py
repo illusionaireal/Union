@@ -8,7 +8,7 @@ from .protocol import STRING, STRINGS, obj
 
 
 BOOTSTRAP_TOOLS = {
-    "prepare_member": ("筹建一名成员及其初始岗位；同名再次调用更新草案，不重复建立。", obj({"name": STRING, "role": STRING, "mandate": STRING})),
+    "prepare_member": ("筹建一名成员及其初始岗位；同名再次调用更新草案，不重复建立。可用 tools 选择章程允许的业务工具。", fields({"name": STRING, "role": STRING, "mandate": STRING, "tools": STRINGS}, ["name", "role", "mandate"])),
     "arrange_work": ("安排或修改首批工作草案；owner 为成员姓名，dependencies 为任务标题。", fields({"title": STRING, "instruction": STRING, "owner": STRING, "dependencies": STRINGS}, ["title", "instruction", "owner"])),
     "configure_bootstrap": ("确定承担后续组织决策责任的成员及初始策略。", fields({"coordinator": STRING, "strategy": STRING}, ["coordinator"])),
     "inspect_bootstrap": ("查看已保存的成员、任务和协调责任草案。", obj({})),
@@ -48,6 +48,8 @@ def operate(engine, package, name, args):
         draft = read(cx) or {"members": [], "tasks": []}
         draft.pop("updated_at", None)
         if name == "prepare_member":
+            requested = args.get("tools", [])
+            require(set(requested) <= set(package["context"]["charter"]["allowed_tools"]), "成员工具超出章程授权")
             for key in ("name", "role", "mandate"):
                 text(args[key], key, 200 if key != "mandate" else 10000)
             old = next((m for m in draft["members"] if m["name"] == args["name"]), None)

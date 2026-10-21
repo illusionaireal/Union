@@ -9,6 +9,7 @@ import argparse
 import importlib.util
 import json
 import os
+import shutil
 import sqlite3
 import sys
 from contextlib import closing
@@ -91,6 +92,19 @@ def inspect_company(root):
                 if result.get("stage") == "tool_roundtrip" and metadata.get("transport_source") == "provider_api" and metadata.get("connection_id") == connection["id"] and metadata.get("connection_revision") == connection["revision"] and execution_receipt(engine, run):
                     tool_tested = True
     build_ready = (REPO / "web/console/dist/index.html").is_file()
+    from .workspace import binding, receipts
+    grant = binding(engine)
+    commands = receipts(engine)
+    real_runs = {r["id"] for r in engine.runs() if r["executor"] == "api"
+                 and r["package"].get("execution", {}).get("transport_source") == "provider_api"
+                 and execution_receipt(engine, r)}
+    workspace = {
+        "configured": bool(grant and grant["config"]["enabled"]),
+        "docker_cli_present": shutil.which("docker") is not None,
+        "charter_allows_tool": "workspace_execute" in engine.charter()["allowed_tools"],
+        "unresolved_commands": sum(c["status"] in ("started", "unknown") for c in commands),
+        "real_commands_confirmed": sum(c["status"] == "completed" and c["run_id"] in real_runs and bool(c["result"].get("container_exit_confirmed")) for c in commands),
+    }
     return {
         "organization_id": status["organization"]["id"], "name": status["organization"]["name"],
         "organization_root": str(engine.root), "phase": status["organization"]["phase"],
@@ -99,8 +113,9 @@ def inspect_company(root):
         "model_connection": connection, "tool_roundtrip_verified": tool_tested,
         "can_attempt_bootstrap": not blockers, "bootstrap_blockers": blockers,
         "console_build_ready": build_ready, "source": status["source"],
+        "development_workspace": workspace,
         "operating_blockers": [
-            {"code": "development_tools", "message": "成员执行器仍只有组织工具与虚拟文件；尚无真实仓库读写、测试和运维工具接入"},
+            {"code": "development_tools", "message": "隔离工作区适配已实现；本公司的实际容器、授权、代码交付与部署运维仍须逐项接入和验收"},
             {"code": "persistent_host", "message": "尚无该公司已安装并验证的持久主机与自动接续证据；本机进程不等于常驻托管"},
         ],
         "autonomous_operation_verified": False,

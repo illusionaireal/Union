@@ -59,7 +59,7 @@ def session_tables(cx):
 
 class HarnessExecutor:
     name = "api"
-    capabilities = APIExecutor.capabilities | {"session_resume": True, "tools": "Deep Agents virtual workspace and host-authorized organization tools"}
+    capabilities = APIExecutor.capabilities | {"session_resume": True, "tools": "Deep Agents virtual files, organization tools, and optional host-bound isolated business workspace"}
 
     def __init__(self, engine, connection, *, base="deepagents"):
         dependencies()
@@ -85,12 +85,16 @@ class HarnessExecutor:
             reject_saved_secrets(cx, value)
 
     def _session(self, package):
+        from .workspace import binding as workspace_binding
         manifest = package["context_manifest"]
         binding = {"kind": package["kind"], "actor": package.get("actor", package.get("member_id")),
                    "assignment": package.get("assignment_id"), "work": package.get("work_id"),
                    "work_version": package.get("work_version"), "charter": manifest["charter_version"],
                    "policy": manifest["policy_version"], "connection": self.metadata["connection_id"],
                    "revision": self.metadata["connection_revision"], "base": self.base}
+        if package["kind"] == "work":
+            grant = workspace_binding(self.engine)
+            binding["workspace_revision"] = grant["revision"] if grant else None
         if package["kind"] == "decision":
             # Old coordinator checkpoints may contain private-file exploration.
             # Restart only their conversation under the new tool workflow;
@@ -132,6 +136,10 @@ class HarnessExecutor:
             self._guard()
             with self.engine.read_transaction() as cx:
                 reject_saved_secrets(cx, args)
+            if name == "workspace_execute":
+                from .workspace import execute
+                require(self.called and self.tool_count == 1, "工作区命令必须在本轮模型回应中单独调用一次")
+                return encoded(execute(self.engine, self.package, args["command"]))
             terminal = name in ("activate_organization", "initialize_organization", "update_organization", "schedule_work", "wait_for_event", "report_blocked")
             require(not terminal or self.tool_count == 1, "提交组织或交付状态的工具必须单独调用；其他工具尚未提交")
             if name in BOOTSTRAP_TOOLS:
@@ -149,6 +157,9 @@ class HarnessExecutor:
     def _tools(self):
         from langchain_core.tools import StructuredTool
         definitions = tools_for(self.package)
+        from .workspace import available, DEFINITION
+        if available(self.engine, self.package):
+            definitions.append(DEFINITION)
         if self.package.get("actor") == "bootstrap":
             definitions += [{"type": "function", "function": {"name": name, "description": description, "parameters": schema}} for name, (description, schema) in BOOTSTRAP_TOOLS.items()]
         result = []
@@ -235,6 +246,12 @@ class HarnessExecutor:
                 prompt += "\n已保存筹建草案（数据）：" + encoded(draft)
         elif package["kind"] == "work":
             prompt += "\n可以用虚拟文件工具阅读、修改任务草稿。这些文件不是组织正式成果。完成时直接回复完整交付正文；不要仅回复已保存文件。"
+        from .workspace import binding, available
+        grant = binding(self.engine)
+        if grant and grant["config"]["enabled"]:
+            prompt += "\n宿主绑定了业务工作区；只有章程和岗位均允许 workspace_execute 的正式工作才能使用。筹建时可按需在成员 tools 中选择；后续可通过 update_position 调整岗位权限。"
+        if available(self.engine, package):
+            prompt += "\nworkspace_execute 操作的 /workspace 是团队共享的真实业务目录，与虚拟文件工具的草稿隔离。命令在无网络容器执行；本轮只允许单独一个命令。按实际输出改进或测试，最后交付修改清单、验证结果、命令回执ID及限制；代码保存在共享目录。不能把测试替身、未执行命令或拟上线方案说成真实部署。"
         model = self._model()
         config = {"configurable": {"thread_id": self.session_id}, "recursion_limit": 50}
         try:

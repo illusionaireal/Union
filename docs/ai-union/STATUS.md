@@ -1,5 +1,13 @@
 # ai-union 当前状态
 
+## 2026-10-21：成员开发能力已接入代码，真实运营待资源到位
+
+[016](../../specs/016-member-workspace/spec.md) 新增按宿主绑定、章程、岗位及当前任职共同限制的 `workspace_execute`，复用 Deep Agents，支持共享业务目录、命令退出回执、检查点接续、未知结果不重放和独立停用。筹建可按需选择工具，所有公司均未自动取得该权限。详见 [使用说明](../MEMBER_WORKSPACE.md)。
+
+当前公司仍为原组织、bootstrap/paused，0成员/工作/成果/模型调用。没有Docker/模型凭据/已有服务器连接信息，真实容器隔离、成员开发闭环、常驻部署及运营接口仍未验收。本轮继续落地工程能力，不把配置或替身验收记为公司实际运营。
+
+验证：168项Python、npm检查、23项实际HTTP检查及独立权限review通过，见 [016证据](../../evidence/016-member-workspace/README.md)。临时HTTP校验服务已停止。
+
 ## 2026-10-20：ai-union-corp 已准备，正式启动仍有实质缺口
 
 已实现 [015](../../specs/015-corp-startup/spec.md)：公司目标/阶段章程/有限资源、通过正式 Console 幂等准备、可与工作台并行的只读诊断、禁用 fixture 的真实 React 入口，以及复用既有 API watch 的有限常驻服务包装与 systemd 模板。没有修改原有章程/岗位授权或资金机制，开发主线仍为 dev。
