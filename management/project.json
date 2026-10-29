@@ -140,6 +140,26 @@
       "evidence": [
         "evidence/017-project-management/README.md"
       ]
+    },
+    {
+      "id": "composition",
+      "name": "跨 AU 协作与组织演进 / ai-union",
+      "implemented": "现有本地多组织目录可复用；关系、委托、派生、重构尚未实现",
+      "validation": "V0：规划，运行未验",
+      "gap": "先统一契约并验证单 AU，再做委托、派生和责任交接",
+      "evidence": [
+        "docs/DEVELOPMENT_ROADMAP.md"
+      ]
+    },
+    {
+      "id": "tool-services",
+      "name": "可选管理工具服务 / platform",
+      "implemented": "现有仓库管理脚本是工程基础，尚未服务化；未接入付费工具",
+      "validation": "V0：服务规划，运行未验",
+      "gap": "真实需求驱动接口与免费工具接入，付费和结算随后分项验收",
+      "evidence": [
+        "docs/DEVELOPMENT_ROADMAP.md"
+      ]
     }
   ],
   "milestones": [
@@ -184,6 +204,20 @@
       "id": "G5",
       "name": "可持续产品经营",
       "outcome": "按真实用户需求形成运营、成本、质量及收入闭环；支付/业务系统按实际需求接入",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "G-AU",
+      "name": "AU 协作、派生与重构",
+      "outcome": "两个已有 AU 委托交付、三层派生及有责任连续性的重构分项验收；不重复消耗资源、不扩大权限、成员保持单 AU 归属，故障后可恢复。",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "G-TOOLS",
+      "name": "可选工具服务",
+      "outcome": "至少一个免费管理工具可被 AU 选择、启停、导出和替换；付费服务单独验证价格/授权/使用回执和费用核对，模拟不算真实商业验收。",
       "status": "pending",
       "evidence": []
     }
@@ -256,11 +290,13 @@
       "priority": "P0",
       "milestone": "G2",
       "module": "evaluation",
-      "status": "ready",
+      "status": "backlog",
       "owner": null,
       "role": "产品验收 / 工程",
-      "acceptance": "编写首个真实开发任务的输入、可接受成果、反馈用例和失败口径；选择小型非关键改动",
-      "dependencies": [],
+      "acceptance": "编写首个真实开发任务的输入、可接受成果、反馈用例和失败口径；选择小型非关键改动；根据 U-018 的实际缺口选题，避免重复已有功能。",
+      "dependencies": [
+        "U-018"
+      ],
       "blocker": null,
       "started_at": null,
       "updated_at": "2026-10-28",
@@ -528,7 +564,7 @@
       "status": "ready",
       "owner": null,
       "role": "工程 / 产品验收",
-      "acceptance": "列出实际可读状态和可执行调整接口；用代码及测试证明边界，形成最小缺口任务，不预设固定管理 Agent。",
+      "acceptance": "列出实际可读状态和可执行调整接口；用代码及测试证明边界，形成最小缺口任务，不预设固定管理 Agent。；明确当前单 AU 身份/任职及外部治理接入限制，给 U-022/023 提供依据。",
       "dependencies": [],
       "blocker": null,
       "started_at": null,
@@ -570,6 +606,237 @@
       "dependencies": [
         "U-006",
         "U-012"
+      ],
+      "blocker": null,
+      "started_at": null,
+      "updated_at": "2026-10-28",
+      "completion": null
+    },
+    {
+      "id": "U-021",
+      "title": "规划同构 AU、组织演进与工具服务路线",
+      "priority": "P0",
+      "milestone": "G0",
+      "module": "management",
+      "status": "done",
+      "owner": "Codex（外部工程代理）",
+      "role": "产品 / 工程规划",
+      "acceptance": "保存确认约束、实际代码差距、开发批次和验收；保留旧 U 编号，同步主账和生成视图，不提升运行能力成熟度。",
+      "dependencies": [
+        "U-016"
+      ],
+      "blocker": null,
+      "started_at": "2026-10-28",
+      "updated_at": "2026-10-28",
+      "completion": {
+        "scope": "documentation",
+        "reviewer": "Codex（自检；非独立评审）",
+        "evidence": [
+          "docs/DEVELOPMENT_ROADMAP.md",
+          "evidence/018-au-development-roadmap/README.md"
+        ],
+        "note": "产品约束、代码抽查、分阶段路线与任务依赖已整理；新增能力保持未实现/未验收。"
+      }
+    },
+    {
+      "id": "U-022",
+      "title": "定义同构 AU 最小契约",
+      "priority": "P0",
+      "milestone": "G2",
+      "module": "governance",
+      "status": "ready",
+      "owner": null,
+      "role": "产品 / 运行时工程",
+      "acceptance": "同一契约表达独立组织与企业内部 AU；明确治理主体、成员/岗位/会话、单 AU 归属和轻量协作边界，列出兼容迁移及必要改动。",
+      "dependencies": [],
+      "blocker": null,
+      "started_at": null,
+      "updated_at": "2026-10-28",
+      "completion": null
+    },
+    {
+      "id": "U-023",
+      "title": "实现最小核心缺口与兼容迁移",
+      "priority": "P0",
+      "milestone": "G2",
+      "module": "governance",
+      "status": "backlog",
+      "owner": null,
+      "role": "产品 / 运行时工程",
+      "acceptance": "仅实现契约审计确认的必要缺口；旧组织/回执可读，成员单 AU 归属和现有授权保持，迁移恢复及权限行为通过复核和测试。",
+      "dependencies": [
+        "U-022",
+        "U-018"
+      ],
+      "blocker": null,
+      "started_at": null,
+      "updated_at": "2026-10-28",
+      "completion": null
+    },
+    {
+      "id": "U-024",
+      "title": "按实际需要支持轻量工作组",
+      "priority": "P2",
+      "milestone": "G2",
+      "module": "governance",
+      "status": "candidate",
+      "owner": null,
+      "role": "产品 / 运行时工程",
+      "acceptance": "先证明任务/标签不足；如需要持久工作组，仅组合既有职责与任务，不产生独立权限或固定部门等级；无需新对象时记录复用决定。",
+      "dependencies": [
+        "U-022",
+        "U-018"
+      ],
+      "blocker": null,
+      "started_at": null,
+      "updated_at": "2026-10-28",
+      "completion": null
+    },
+    {
+      "id": "U-025",
+      "title": "定义可替换的工具服务契约",
+      "priority": "P1",
+      "milestone": "G-TOOLS",
+      "module": "tool-services",
+      "status": "backlog",
+      "owner": null,
+      "role": "平台工程 / 运营",
+      "acceptance": "定义平台/第三方/自建工具的能力、费用说明、绑定/停用/撤销、数据导出及回执；明确宿主权限与组织选择的边界。",
+      "dependencies": [
+        "U-018",
+        "U-022"
+      ],
+      "blocker": null,
+      "started_at": null,
+      "updated_at": "2026-10-28",
+      "completion": null
+    },
+    {
+      "id": "U-026",
+      "title": "接入首个免费管理工具服务",
+      "priority": "P1",
+      "milestone": "G-TOOLS",
+      "module": "tool-services",
+      "status": "backlog",
+      "owner": null,
+      "role": "平台工程 / 运营",
+      "acceptance": "按真实需求选择并复用工具；在有效身份与组织数据隔离下完成选择、启停、使用、导出/替换，记录真实 AU 使用结果。",
+      "dependencies": [
+        "U-025",
+        "U-006"
+      ],
+      "blocker": null,
+      "started_at": null,
+      "updated_at": "2026-10-28",
+      "completion": null
+    },
+    {
+      "id": "U-027",
+      "title": "定义 AU 关系与委托协议",
+      "priority": "P1",
+      "milestone": "G-AU",
+      "module": "composition",
+      "status": "backlog",
+      "owner": null,
+      "role": "产品 / 运行时工程",
+      "acceptance": "分开治理/归属、目标委托和协作；定义稳定请求、承接、交付验收、取消、资源归属及失败恢复，不默认跨 AU 共享上下文。",
+      "dependencies": [
+        "U-022",
+        "U-018"
+      ],
+      "blocker": null,
+      "started_at": null,
+      "updated_at": "2026-10-28",
+      "completion": null
+    },
+    {
+      "id": "U-028",
+      "title": "实现并验证两个 AU 委托交付",
+      "priority": "P1",
+      "milestone": "G-AU",
+      "module": "composition",
+      "status": "backlog",
+      "owner": null,
+      "role": "产品 / 运行时工程",
+      "acceptance": "两个已有 AU 完成委托、接受/拒绝、交付与反馈；跨组织越权、重复派发、重启恢复和资源责任通过机制及真实场景验收。",
+      "dependencies": [
+        "U-027",
+        "U-023",
+        "U-006",
+        "U-009"
+      ],
+      "blocker": null,
+      "started_at": null,
+      "updated_at": "2026-10-28",
+      "completion": null
+    },
+    {
+      "id": "U-029",
+      "title": "实现可递归的受控 AU 派生",
+      "priority": "P1",
+      "milestone": "G-AU",
+      "module": "composition",
+      "status": "backlog",
+      "owner": null,
+      "role": "产品 / 运行时工程",
+      "acceptance": "按授权提出派生、配置子目标与资源并成立；A→B→C 复用同一机制，失败恢复不重复创建、预算不复制、子 AU 自行组织成员。",
+      "dependencies": [
+        "U-028"
+      ],
+      "blocker": null,
+      "started_at": null,
+      "updated_at": "2026-10-28",
+      "completion": null
+    },
+    {
+      "id": "U-030",
+      "title": "实现跨 AU 职责与成员交接",
+      "priority": "P1",
+      "milestone": "G-AU",
+      "module": "composition",
+      "status": "backlog",
+      "owner": null,
+      "role": "产品 / 运行时工程",
+      "acceptance": "交接工作、相关知识和未完成责任；先核对未决执行。成员转移不得同时双重有效归属，跨存储部分失败可恢复，不复制后重跑。",
+      "dependencies": [
+        "U-029"
+      ],
+      "blocker": null,
+      "started_at": null,
+      "updated_at": "2026-10-28",
+      "completion": null
+    },
+    {
+      "id": "U-031",
+      "title": "逐项验证 AU 拆分合并及归属调整",
+      "priority": "P2",
+      "milestone": "G-AU",
+      "module": "composition",
+      "status": "backlog",
+      "owner": null,
+      "role": "产品 / 运行时工程",
+      "acceptance": "按具体重构计划移交目标、资源、成员和责任；分别验证拆分/合并/归属调整/退出，保留历史且真实工作可接续。",
+      "dependencies": [
+        "U-030"
+      ],
+      "blocker": null,
+      "started_at": null,
+      "updated_at": "2026-10-28",
+      "completion": null
+    },
+    {
+      "id": "U-032",
+      "title": "接入付费工具与费用核对",
+      "priority": "P2",
+      "milestone": "G-TOOLS",
+      "module": "tool-services",
+      "status": "backlog",
+      "owner": null,
+      "role": "平台工程 / 运营",
+      "acceptance": "真实需求与授权明确后选服务；价格版本、开通/取消、使用记录及账单核对分别验收，未知支付不盲目重试，mock 不计真实付费通过。",
+      "dependencies": [
+        "U-026",
+        "U-020"
       ],
       "blocker": null,
       "started_at": null,
