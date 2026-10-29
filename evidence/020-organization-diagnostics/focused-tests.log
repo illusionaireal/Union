@@ -1,0 +1,11 @@
+test_artifact_references_omit_text_paths_and_unknown_fields (tests.test_diagnostics.DiagnosticsTests.test_artifact_references_omit_text_paths_and_unknown_fields) ... ok
+test_bootstrap_not_given_history_and_invalid_limits_rejected (tests.test_diagnostics.DiagnosticsTests.test_bootstrap_not_given_history_and_invalid_limits_rejected) ... ok
+test_history_excludes_private_material_and_reconstructs_failure (tests.test_diagnostics.DiagnosticsTests.test_history_excludes_private_material_and_reconstructs_failure) ... ok
+test_history_is_bounded_and_ordinary_work_has_no_diagnostics (tests.test_diagnostics.DiagnosticsTests.test_history_is_bounded_and_ordinary_work_has_no_diagnostics) ... ok
+test_legacy_decision_failure_scalars_do_not_break_future_context (tests.test_diagnostics.DiagnosticsTests.test_legacy_decision_failure_scalars_do_not_break_future_context) ... ok
+test_decision_diagnostics_reach_sdk_without_private_failure_or_worker_history (tests.test_harness.HarnessTests.test_decision_diagnostics_reach_sdk_without_private_failure_or_worker_history) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 2.752s
+
+OK

@@ -290,17 +290,24 @@
       "priority": "P0",
       "milestone": "G2",
       "module": "evaluation",
-      "status": "ready",
-      "owner": null,
+      "status": "done",
+      "owner": "Codex（外部工程代理）",
       "role": "产品验收 / 工程",
       "acceptance": "编写首个真实开发任务的输入、可接受成果、反馈用例和失败口径；选择小型非关键改动；根据 U-018 的实际缺口选题，避免重复已有功能。",
       "dependencies": [
         "U-018"
       ],
       "blocker": null,
-      "started_at": null,
+      "started_at": "2026-10-28",
       "updated_at": "2026-10-28",
-      "completion": null
+      "completion": {
+        "scope": "documentation",
+        "reviewer": "Codex（自检）",
+        "evidence": [
+          "specs/020-organization-diagnostics/real-task.md"
+        ],
+        "note": "首个真实研发任务、资源条件、验收与反馈轮已定义；实际U-006未执行。"
+      }
     },
     {
       "id": "U-005",
@@ -868,17 +875,25 @@
       "priority": "P0",
       "milestone": "G2",
       "module": "coordination",
-      "status": "ready",
-      "owner": null,
+      "status": "done",
+      "owner": "Codex（外部工程代理）",
       "role": "运行时工程 / 验收",
       "acceptance": "根据 U-018 的角色矩阵提供有限脱敏的失败/调用/成果诊断与稳定引用；费用未知保持未知，不复制私有工作包或扩大普通成员权限；受控行为与实际 SDK 请求可核对，采用前完成必要权限复核。",
       "dependencies": [
         "U-018"
       ],
       "blocker": null,
-      "started_at": null,
+      "started_at": "2026-10-28",
       "updated_at": "2026-10-28",
-      "completion": null
+      "completion": {
+        "scope": "controlled",
+        "reviewer": "workspace_authorization_review（独立工程复核）",
+        "evidence": [
+          "evidence/020-organization-diagnostics/README.md",
+          "docs/reviews/2026-10-28-organization-diagnostics.md"
+        ],
+        "note": "有界只读决策历史工程接入、隐私和未知边界通过，真实自主诊断未验。"
+      }
     },
     {
       "id": "U-034",
@@ -905,15 +920,15 @@
       "priority": "P1",
       "milestone": "G3",
       "module": "evaluation",
-      "status": "ready",
-      "owner": null,
+      "status": "doing",
+      "owner": "Codex（外部工程代理）",
       "role": "运行时工程 / 验收",
       "acceptance": "记录开始/受阻/恢复/交付等生命周期并定义重试/续跑；旧记录未知不回填，支撑 U-012/020 的等待和交付指标，有恢复及兼容测试。",
       "dependencies": [
         "U-018"
       ],
       "blocker": null,
-      "started_at": null,
+      "started_at": "2026-10-28",
       "updated_at": "2026-10-28",
       "completion": null
     },

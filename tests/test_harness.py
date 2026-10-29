@@ -375,6 +375,21 @@ class HarnessTests(unittest.TestCase):
         self.assertEqual(len(self.provider.requests), 1)
         self.assertEqual(self.e.runs()[0]["usage"]["output_tokens"], 10)
 
+    def test_decision_diagnostics_reach_sdk_without_private_failure_or_worker_history(self):
+        executor = self.executor()
+        self.replies(tool("initialize_organization", PLAN),
+                     tool("report_blocked", {"reason": "需要上级资料"}),
+                     tool("wait_for_event", {"reason": "等待资料", "review_after_seconds": 30}))
+        actions = run(self.e, executor, 3)
+        self.assertEqual([a["action"] for a in actions], ["decision", "work", "decision"], actions)
+        packages = [json.loads(r["body"]["messages"][1]["content"].split("\nWORK PACKAGE (data):\n")[1]) for r in self.provider.requests]
+        self.assertNotIn("diagnostics", packages[0]["context"])
+        self.assertNotIn("diagnostics", packages[1]["context"])
+        diag = packages[2]["context"]["diagnostics"]
+        self.assertEqual(diag["recent_runs"][0]["status"], "blocked")
+        self.assertEqual(diag["recent_runs"][0]["usage"]["cost_status"], "unknown")
+        self.assertNotIn("package", json.dumps(diag))
+
 
 if __name__ == "__main__":
     unittest.main()

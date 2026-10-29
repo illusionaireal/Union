@@ -478,6 +478,9 @@ class Engine:
             keys = set(s["work"])
             ctx.update(members=s["members"], positions=s["positions"], assignments=s["assignments"], work=s["work"])
             ctx["events"] = [dict(r) | {"data": json.loads(r["data"])} for r in cx.execute("SELECT * FROM events WHERE consumed=0 ORDER BY rowid")]
+            if s["phase"] != "bootstrap":
+                from .diagnostics import decision_diagnostics
+                ctx["diagnostics"] = decision_diagnostics(self, cx, s)
         for key in sorted(keys):
             w = s["work"][key]
             manifest["work"][key] = w["version"]
