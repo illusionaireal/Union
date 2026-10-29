@@ -1,0 +1,31 @@
+{
+  "status": "proposed-contract-examples-not-executed",
+  "same_create_contract": [
+    {
+      "scenario_label_for_review_only": "independent organization",
+      "request_id": "example-independent-001",
+      "name": "Service AU",
+      "goal": "持续完成委托的知识服务并根据反馈改进",
+      "board_name": "发起人",
+      "controller_ref": {"principal_id": "human:founder", "display_name": "发起人"},
+      "resources": {"max_calls": 32, "timeout_seconds": 180},
+      "charter_reference": "governance charter supplied through the same existing creation API"
+    },
+    {
+      "scenario_label_for_review_only": "internal department",
+      "request_id": "example-internal-001",
+      "name": "Knowledge AU",
+      "goal": "维护公司知识资料，分析反馈并推动问题解决",
+      "board_name": "公司授权负责人",
+      "controller_ref": {"principal_id": "external-org:company-ops", "display_name": "公司授权负责人"},
+      "resources": {"max_calls": 32, "timeout_seconds": 180},
+      "charter_reference": "governance charter supplied through the same existing creation API"
+    }
+  ],
+  "notes": [
+    "Scenario labels and charter_reference are review annotations, not API request fields; resolve the actual charter and existing Console field envelope before execution.",
+    "The request_id maps to existing Console command id; it is not a new routing field.",
+    "controller_ref is proposed non-authorizing metadata; actual board/session verification remains required.",
+    "No company/department type, fixed team, tool grant or paid resource is selected by these examples."
+  ]
+}

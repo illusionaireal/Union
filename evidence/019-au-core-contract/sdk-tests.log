@@ -1,0 +1,10 @@
+test_organization_rounds_expose_business_tools_and_keep_inline_artifacts (tests.test_harness.HarnessTests.test_organization_rounds_expose_business_tools_and_keep_inline_artifacts) ... ok
+test_work_uses_file_tools_then_delivers_and_second_member_gets_artifact (tests.test_harness.HarnessTests.test_work_uses_file_tools_then_delivers_and_second_member_gets_artifact) ... ok
+test_revoked_permission_prevents_partial_activation_and_retains_usage (tests.test_harness.HarnessTests.test_revoked_permission_prevents_partial_activation_and_retains_usage) ... ok
+test_provider_unknown_is_not_automatically_resumed (tests.test_harness.HarnessTests.test_provider_unknown_is_not_automatically_resumed) ... ok
+test_natural_tools_preserve_host_identity_and_current_permission_checks (tests.test_agent_conversation.AgentConversationTests.test_natural_tools_preserve_host_identity_and_current_permission_checks) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 4.670s
+
+OK

@@ -1,0 +1,131 @@
+{
+  "baseline": "0d4e824",
+  "scope": "fresh fixture engine/tool projection; no actual model or Docker",
+  "checks": [
+    {
+      "id": "O01",
+      "finding": "available",
+      "verified": true,
+      "detail": "Work sees goal/charter/budget, own responsibility and org memory."
+    },
+    {
+      "id": "O02",
+      "finding": "available",
+      "verified": true,
+      "detail": "Dependency artifacts are inline; host file paths removed."
+    },
+    {
+      "id": "O03",
+      "finding": "gap",
+      "verified": true,
+      "detail": "Ordinary work does not get org-wide roster/work/events or dependency task metadata."
+    },
+    {
+      "id": "O04",
+      "finding": "boundary",
+      "verified": true,
+      "detail": "Normal work exposes report_blocked, not organization decision tools."
+    },
+    {
+      "id": "O05",
+      "finding": "boundary",
+      "verified": true,
+      "detail": "Workspace unavailable without host binding; charter text does not grant host access."
+    },
+    {
+      "id": "O06",
+      "finding": "available",
+      "verified": true,
+      "detail": "Decision context sees full local work graph, roster and pending blocked event."
+    },
+    {
+      "id": "O07",
+      "finding": "boundary",
+      "verified": true,
+      "detail": "Decision role sees all local formal artifacts, not a fine-grained data access policy."
+    },
+    {
+      "id": "O08",
+      "finding": "gap",
+      "verified": true,
+      "detail": "Budget summary exists, per-run usage/receipts/decision history query does not."
+    },
+    {
+      "id": "A01",
+      "finding": "available",
+      "verified": true,
+      "detail": "Decision role can change local organization, schedule work and wait."
+    },
+    {
+      "id": "A02",
+      "finding": "gap",
+      "verified": true,
+      "detail": "No dedicated bounded observation query or resource/tool request workflow."
+    },
+    {
+      "id": "A03",
+      "finding": "available",
+      "verified": true,
+      "detail": "Memory, mandate update, local handoff and blocked work resume commit together."
+    },
+    {
+      "id": "A04",
+      "finding": "gap",
+      "verified": true,
+      "detail": "One member may have multiple positions; schedule_work shorthand then rejects ambiguous assignment."
+    },
+    {
+      "id": "A05",
+      "finding": "available",
+      "verified": true,
+      "detail": "Explicit create_work by position remains valid for multi-position member."
+    },
+    {
+      "id": "A06",
+      "finding": "boundary",
+      "verified": true,
+      "detail": "Missing grant/request tool cannot be invoked."
+    },
+    {
+      "id": "A07",
+      "finding": "boundary",
+      "verified": true,
+      "detail": "Member exit, cross-AU evolution and governance/resource changes are not decision operations."
+    },
+    {
+      "id": "R01",
+      "finding": "boundary",
+      "verified": true,
+      "detail": "Unknown execution stops dispatcher before any new decision/model call."
+    },
+    {
+      "id": "O09",
+      "finding": "available",
+      "verified": true,
+      "detail": "Pending failure event/work summary visible, but this is not a persistent filtered history query."
+    },
+    {
+      "id": "O10",
+      "finding": "gap",
+      "verified": true,
+      "detail": "Work objects lack stable lifecycle timestamps for wait/blocked-age metrics."
+    },
+    {
+      "id": "I01",
+      "finding": "boundary",
+      "verified": true,
+      "detail": "Identity is effectively scoped by AU; local ID equality is not a shared global Agent."
+    },
+    {
+      "id": "I02",
+      "finding": "boundary",
+      "verified": true,
+      "detail": "Unregistered member cannot acquire a local assignment; no cross-AU identity transfer protocol."
+    }
+  ],
+  "total": 20,
+  "passed": 20,
+  "model_calls": 0,
+  "docker_commands": 0,
+  "note": "Fixture run records were created; these are not actual provider requests or autonomous improvement evidence."
+}

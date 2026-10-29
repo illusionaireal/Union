@@ -1,0 +1,6 @@
+113 relative file links: PASS
+20 distinct capability probes; 0 real model calls / Docker commands: PASS
+U-001 through U-032 retained: PASS
+All real outcome milestones unchanged: PASS
+Git diff --check: PASS
+External links and anchors not checked.
