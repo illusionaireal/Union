@@ -76,6 +76,13 @@ def parser():
         s.add_argument("--board-key-file", required=True)
         if s is not probe:
             s.add_argument("--reason", required=True)
+    sub.add_parser("support-requests", help="只读查看资源/工具申请，受理不等于授权")
+    response = sub.add_parser("respond-request", help="受信治理响应；不修改预算或工具授权")
+    response.add_argument("--request-id", required=True)
+    response.add_argument("--status", choices=("needs_information", "accepted_for_action", "declined"), required=True)
+    response.add_argument("--expected-version", type=int, required=True)
+    response.add_argument("--board-key-file", required=True)
+    response.add_argument("--reason", required=True)
     event = sub.add_parser("event", help="导入可溯源事实；外部反馈需要真实来源或模拟标记")
     event.add_argument("--id", required=True)
     event.add_argument("--kind", required=True)
@@ -101,6 +108,13 @@ def main(argv=None):
             engine = Engine(root)
             if args.command in ("status", "events", "decisions", "usage", "context"):
                 result = engine.context(args.work_id) if args.command == "context" else getattr(engine, args.command)()
+            elif args.command == "support-requests":
+                from .support_requests import view
+                result = view(engine.state())
+            elif args.command == "respond-request":
+                from .support_requests import respond
+                with exclusive(engine):
+                    result = respond(engine, board_key(args), args.request_id, args.status, args.reason, args.expected_version)
             elif args.command == "evaluate":
                 result = evaluate(engine)
                 if args.output:

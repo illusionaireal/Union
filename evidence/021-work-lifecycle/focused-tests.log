@@ -1,0 +1,20 @@
+test_dispatch_resume_and_delivery_have_persistent_host_times (tests.test_lifecycle.LifecycleTests.test_dispatch_resume_and_delivery_have_persistent_host_times) ... ok
+test_old_work_read_is_unchanged_and_first_change_remains_partial (tests.test_lifecycle.LifecycleTests.test_old_work_read_is_unchanged_and_first_change_remains_partial) ... ok
+test_same_status_saves_do_not_rewrite_times_or_read_state (tests.test_lifecycle.LifecycleTests.test_same_status_saves_do_not_rewrite_times_or_read_state) ... ok
+test_adapter_error_remains_unknown_and_can_be_reconciled (tests.test_workspace.WorkspaceTests.test_adapter_error_remains_unknown_and_can_be_reconciled) ... ok
+test_attach_client_exit_requires_container_stop_evidence (tests.test_workspace.WorkspaceTests.test_attach_client_exit_requires_container_stop_evidence) ... ok
+test_command_receipt_is_idempotent_and_survives_reopen (tests.test_workspace.WorkspaceTests.test_command_receipt_is_idempotent_and_survives_reopen) ... ok
+test_container_command_exposes_only_selected_workspace_without_network_or_secrets (tests.test_workspace.WorkspaceTests.test_container_command_exposes_only_selected_workspace_without_network_or_secrets) ... ok
+test_crash_receipt_blocks_later_command_until_explicit_reconciliation (tests.test_workspace.WorkspaceTests.test_crash_receipt_blocks_later_command_until_explicit_reconciliation) ... ok
+test_current_authority_and_pause_rechecked_before_sandbox (tests.test_workspace.WorkspaceTests.test_current_authority_and_pause_rechecked_before_sandbox) ... ok
+test_disable_retains_unknown_receipts_even_when_directory_disappears (tests.test_workspace.WorkspaceTests.test_disable_retains_unknown_receipts_even_when_directory_disappears) ... ok
+test_failure_receipt_write_error_does_not_lose_unknown_classification (tests.test_workspace.WorkspaceTests.test_failure_receipt_write_error_does_not_lose_unknown_classification) ... ok
+test_host_binding_rejects_board_failure_and_private_directory_overlap (tests.test_workspace.WorkspaceTests.test_host_binding_rejects_board_failure_and_private_directory_overlap) ... ok
+test_killed_attach_client_is_unknown (tests.test_workspace.WorkspaceTests.test_killed_attach_client_is_unknown) ... ok
+test_missing_runtime_never_falls_back_to_host_shell (tests.test_workspace.WorkspaceTests.test_missing_runtime_never_falls_back_to_host_shell) ... ok
+test_unknown_command_is_never_replayed_or_erased_by_reconfiguration (tests.test_workspace.WorkspaceTests.test_unknown_command_is_never_replayed_or_erased_by_reconfiguration) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.497s
+
+OK

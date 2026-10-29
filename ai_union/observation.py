@@ -97,7 +97,10 @@ def snapshot(engine, offset=0, limit=50):
         bootstrap = read_bootstrap(cx) if state["phase"] == "bootstrap" else None
         if company and company["completed"] and not running:
             next_step = "wait"
-        return {"company": company, "bootstrap": bootstrap, "organization": organization, "charter": charter, "budget": budget, "ready_work": ready,
+        from .lifecycle import work_metrics
+        from .au_contract import projection
+        from .support_requests import view as request_view
+        return {"support_requests": request_view(state), "au_contract": projection(engine, cx, state), "work_metrics": work_metrics(state), "company": company, "bootstrap": bootstrap, "organization": organization, "charter": charter, "budget": budget, "ready_work": ready,
                 "execution_config": {"codex_model": state.get("execution_config", {}).get("codex_model"),
                                      "api_connection_id": state.get("execution_config", {}).get("api_connection_id")},
                 "pending_events": pending, "next_step": next_step, "blocked_reasons": blocked,

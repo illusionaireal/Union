@@ -172,7 +172,7 @@ class Console:
         require(session["role"] == "board", "观察者不能提交操作")
         require(isinstance(request, dict) and set(request) == {"id", "organization_id", "base_version", "kind", "data"}, "无效命令字段")
         identifier(request["id"])
-        require(request["kind"] in ("create", "event", "resources", "model", "amend", "reconcile", "start", "pause", "api_connection", "api_binding", "api_test", "company_usage"), "不支持的命令")
+        require(request["kind"] in ("create", "event", "resources", "model", "amend", "reconcile", "start", "pause", "api_connection", "api_binding", "api_test", "company_usage", "controller_descriptor", "respond_request"), "不支持的命令")
         require(isinstance(request["data"], dict), "命令数据必须为对象")
         require(len(encoded(request)) <= 200000, "命令过大")
         receipt = {k: request[k] for k in ("id", "organization_id", "base_version", "kind")}
@@ -184,14 +184,16 @@ class Console:
         public_input = copy.deepcopy(request)
         if request["kind"] == "api_connection":
             public_input["data"].pop("api_key", None)
+        private_key = (e.root / "board.key").read_text(encoding="utf-8").strip() if request["kind"] in ("controller_descriptor", "respond_request") else None
         with e.read_transaction() as cx:
-            reject_saved_secrets(cx, public_input)
+            # Reject credentials before even a rejected command can persist them.
+            reject_saved_secrets(cx, public_input, extra_secret=private_key)
         persisted = stored_command(request)
         with e.read_transaction() as cx:
             prior = self._existing(cx, persisted)
         if prior:
             return prior
-        guard = exclusive(e) if request["kind"] in ("start", "resources", "model", "amend", "reconcile", "api_connection", "api_binding", "api_test", "company_usage") else nullcontext()
+        guard = exclusive(e) if request["kind"] in ("start", "resources", "model", "amend", "reconcile", "api_connection", "api_binding", "api_test", "company_usage", "controller_descriptor", "respond_request") else nullcontext()
         acquired = False
         transferred = False
         try:
@@ -259,7 +261,10 @@ class Console:
                     return prior
                 cx.execute("INSERT INTO creations VALUES(?,?,?,?)", (request["id"], encoded(request), encoded(receipt), folder))
             try:
-                require(set(data) - {"company"} == {"name", "goal", "board_name", "charter", "resources"}, "创建字段不完整或含不支持的字段")
+                require(set(data) - {"company", "controller_ref"} == {"name", "goal", "board_name", "charter", "resources"}, "创建字段不完整或含不支持的字段")
+                if "controller_ref" in data:
+                    from .au_contract import validate_descriptor
+                    validate_descriptor(data["controller_ref"])
                 if "company" in data:
                     from .company import validate_config, create
                     validate_config(data["company"])
@@ -285,6 +290,9 @@ class Console:
                     if "company" in data:
                         state["company"] = create(data["company"])
                         engine._save(cx, state)
+                    if "controller_ref" in data:
+                        from .au_contract import configure_descriptor
+                        configure_descriptor(engine, key, data["controller_ref"], "initial controller description", state["version"])
                 receipt.update(organization_id=org_id, status="succeeded", message="组织已创建并采用章程；尚未启动执行")
                 with self.catalog() as cx:
                     cx.execute("INSERT INTO organizations VALUES(?,?)", (org_id, folder))
@@ -305,7 +313,9 @@ class Console:
                   "resources": {"resources", "reason"}, "model": {"model", "reason"}, "amend": {"charter", "reason"},
                   "reconcile": {"run_id", "resolution", "reason"}, "start": {"executor", "model", "connection_id", "max_steps", "max_seconds", "allow_unknown_cost"},
                   "api_connection": {"connection_id", "config", "api_key", "reason", "bind_default"}, "api_binding": {"connection_id", "reason"},
-                  "api_test": {"connection_id", "allow_unknown_cost", "tools"}, "company_usage": {"run_id", "input_tokens", "output_tokens", "reason"}}
+                  "api_test": {"connection_id", "allow_unknown_cost", "tools"}, "company_usage": {"run_id", "input_tokens", "output_tokens", "reason"},
+                  "controller_descriptor": {"controller_ref", "reason"},
+                  "respond_request": {"request_id", "status", "reason"}}
         optional = {"event": {"event_id"}, "start": {"model", "connection_id", "max_seconds", "allow_unknown_cost"},
                     "api_connection": {"api_key", "bind_default"}, "api_test": {"connection_id", "tools"}}
         require(set(data) <= fields[kind] and fields[kind] - optional.get(kind, set()) <= set(data), "命令字段缺失或不支持")
@@ -356,7 +366,13 @@ class Console:
             return executor
         else:
             key = (e.root / "board.key").read_text(encoding="utf-8").strip()
-            if kind == "resources":
+            if kind == "controller_descriptor":
+                from .au_contract import configure_descriptor
+                configure_descriptor(e, key, data["controller_ref"], data["reason"], request["base_version"])
+            elif kind == "respond_request":
+                from .support_requests import respond
+                respond(e, key, data["request_id"], data["status"], data["reason"], request["base_version"])
+            elif kind == "resources":
                 require(set(data["resources"]) == {"max_calls", "timeout_seconds"}, "工作台仅支持调用次数与超时；金额未知")
                 require(type(data["resources"].get("max_calls")) is int and data["resources"]["max_calls"] >= len(e.runs()), "新上限不能低于累计占用")
                 e.configure_resources(key, data["resources"], data["reason"])

@@ -53,6 +53,10 @@ def tools_for(package):
     # No provider strict/structured-output mode. Validation is owned by the host.
     result = [{"type": "function", "function": {"name": name, "description": description, "parameters": parameters}}]
     if package["kind"] == "decision" and package["actor"] != "bootstrap":
+        if "request_support" in allowed:
+            result.append({"type": "function", "function": {"name": "request_support", "description": "向治理主体提出资源或工具需求；受理不授予权限或预算。请单独调用。", "parameters": fields({
+                "kind": {"type": "string", "enum": ["resources", "tool"]}, "need": STRING, "reason": STRING,
+            }, ["kind", "need", "reason"])}})
         if "create_work" in allowed:
             result.append({"type": "function", "function": {"name": "schedule_work", "description": "安排一项后续工作。使用成员姓名与已有任务标题，不用生成岗位或任务ID。请单独调用。", "parameters": fields({
                 "owner": STRING | {"description": "当前正式成员姓名或成员ID；须有唯一有效任职。"},
@@ -209,6 +213,8 @@ def compile_tool(package, name, arguments):
                        "instruction": arguments["instruction"], "position_id": assignments[0]["position_id"], "dependencies": dependencies}]
         # A declared work dependency is evidence, not an invented external fact.
         evidence = list(dict.fromkeys(evidence + dependencies))
+    elif name == "request_support":
+        operations = [{"op": "request_support", "id": package["run_id"] + "-request", **arguments}]
     elif name == "wait_for_event":
         seconds = arguments["review_after_seconds"]
         require(type(seconds) is int and 1 <= seconds <= 86400, "复查间隔须为1至86400秒")

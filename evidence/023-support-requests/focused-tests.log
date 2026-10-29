@@ -1,0 +1,10 @@
+test_console_response_scope_replay_and_no_implicit_grant (tests.test_support_requests.SupportConsoleTests.test_console_response_scope_replay_and_no_implicit_grant) ... ok
+test_bootstrap_cannot_raise_request_or_supply_forged_source (tests.test_support_requests.SupportRequestTests.test_bootstrap_cannot_raise_request_or_supply_forged_source) ... ok
+test_capability_is_opt_in_and_cannot_grant_actual_tools (tests.test_support_requests.SupportRequestTests.test_capability_is_opt_in_and_cannot_grant_actual_tools) ... ok
+test_responses_require_actual_board_and_version_and_persist (tests.test_support_requests.SupportRequestTests.test_responses_require_actual_board_and_version_and_persist) ... ok
+test_support_request_sdk_records_need_without_changing_resource_grants (tests.test_harness.HarnessTests.test_support_request_sdk_records_need_without_changing_resource_grants) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 2.312s
+
+OK

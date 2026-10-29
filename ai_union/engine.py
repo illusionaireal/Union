@@ -17,7 +17,7 @@ from pathlib import Path
 
 OPERATIONS = {"create_member", "create_position", "update_position", "assign", "set_policy", "create_work",
               "handoff", "pause_work", "resume_work", "cancel_work", "update_work",
-              "wait", "set_strategy", "record_memory", "submit_chapter", "review_cycle"}
+              "wait", "set_strategy", "record_memory", "request_support", "submit_chapter", "review_cycle"}
 TOOLS = {"produce_artifact", "workspace_execute"}
 ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.-]{0,79}$")
 
@@ -188,6 +188,8 @@ class Engine:
         return json.loads(cx.execute("SELECT data FROM state WHERE id=1").fetchone()[0])
 
     def _save(self, cx, s):
+        from .lifecycle import track_work
+        track_work(self._state(cx), s, now())
         cx.execute("UPDATE state SET data=? WHERE id=1", (encoded(s),))
 
     def state(self):
@@ -265,6 +267,9 @@ class Engine:
                     if op["op"] in ("submit_chapter", "review_cycle"):
                         from .company import operate
                         operate(self, cx, s, op, d)
+                    elif op["op"] == "request_support":
+                        from .support_requests import propose
+                        propose(s, op, actor, assignment, d["evidence_refs"])
                     else:
                         self._operate(s, c, op)
                 if actor == "bootstrap":
@@ -481,6 +486,8 @@ class Engine:
             if s["phase"] != "bootstrap":
                 from .diagnostics import decision_diagnostics
                 ctx["diagnostics"] = decision_diagnostics(self, cx, s)
+                from .support_requests import view as request_view
+                ctx["support_requests"] = request_view(s)
         for key in sorted(keys):
             w = s["work"][key]
             manifest["work"][key] = w["version"]
@@ -541,6 +548,9 @@ class Engine:
             w.pop("summary", None)
             w["run_id"] = uid("run")
             s["version"] += 1
+            # Persist host transition metadata before freezing the work package;
+            # the surrounding transaction rolls it back if reservation fails.
+            self._save(cx, s)
             bundle = self._context(cx, s, work_id)
             package = {"run_id": w["run_id"], "work_id": work_id, "work_version": w["version"], "member_id": w["member_id"], "position_id": w["position_id"], "assignment_id": w["assignment_id"],
                        "context": bundle["context"], "context_manifest": bundle["manifest"], "tools": ["produce_artifact"]}
@@ -548,7 +558,6 @@ class Engine:
                 package["execution"] = copy.deepcopy(execution)
             self._reserve(cx, s, "work", executor, package, work_id)
             w["run_id"] = package["run_id"]
-            self._save(cx, s)
             return package
 
     def begin_decision(self, executor, execution=None):

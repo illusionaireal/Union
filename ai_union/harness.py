@@ -140,7 +140,7 @@ class HarnessExecutor:
                 from .workspace import execute
                 require(self.called and self.tool_count == 1, "工作区命令必须在本轮模型回应中单独调用一次")
                 return encoded(execute(self.engine, self.package, args["command"]))
-            terminal = name in ("activate_organization", "initialize_organization", "update_organization", "schedule_work", "wait_for_event", "report_blocked")
+            terminal = name in ("activate_organization", "initialize_organization", "update_organization", "schedule_work", "wait_for_event", "report_blocked", "request_support")
             require(not terminal or self.tool_count == 1, "提交组织或交付状态的工具必须单独调用；其他工具尚未提交")
             if name in BOOTSTRAP_TOOLS:
                 result = bootstrap_tool(self.engine, self.package, name, args)

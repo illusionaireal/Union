@@ -15,6 +15,7 @@ def operation(name, fields):
 
 
 OPERATION_SCHEMAS = [
+    operation("request_support", {"id": STRING, "kind": {"type": "string", "enum": ["resources", "tool"]}, "need": STRING, "reason": STRING}),
     operation("submit_chapter", {"artifact_id": STRING, "chapter_number": INTEGER, "book_title": STRING, "title": STRING}),
     operation("review_cycle", {"chapter_number": INTEGER, "response": STRING, "next_work_ids": STRINGS}),
     operation("create_member", {"id": STRING, "name": STRING}),

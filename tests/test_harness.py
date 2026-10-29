@@ -390,6 +390,23 @@ class HarnessTests(unittest.TestCase):
         self.assertEqual(diag["recent_runs"][0]["usage"]["cost_status"], "unknown")
         self.assertNotIn("package", json.dumps(diag))
 
+    def test_support_request_sdk_records_need_without_changing_resource_grants(self):
+        charter = self.e.charter()
+        charter['allowed_operations'].append('request_support')
+        self.command('amend', {'charter': charter, 'reason': 'fixture request capability'})
+        executor = self.executor()
+        before = self.e.state()['resources'].copy()
+        self.replies(tool('initialize_organization', PLAN),
+                     {'role':'assistant','content':'Source evidence'},
+                     {'role':'assistant','content':'Delivered text'},
+                     tool('request_support', {'kind':'tool','need':'Knowledge access','reason':'Need source data'}))
+        actions = run(self.e, executor, 4)
+        self.assertEqual([a['action'] for a in actions], ['decision','work','work','decision'], actions)
+        requests = self.e.state()['support_requests']
+        self.assertEqual(len(requests),1)
+        self.assertEqual(next(iter(requests.values()))['status'],'pending')
+        self.assertEqual(self.e.state()['resources'],before)
+
 
 if __name__ == "__main__":
     unittest.main()
