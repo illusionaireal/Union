@@ -4,9 +4,11 @@
 
 你给目标和预算，它自行组织团队、开展业务、交付成果，并向你汇报经营情况。开发主分支为 **`dev`**。
 
+**项目管理入口：[项目总览、模块成熟度、Roadmap 与待办](PROJECT.md)。** 当前为工程原型，目标公司尚未真实运营；下方日期条目为迭代记录。
+
 ## ai-union 与 ai-union-platform 的作用和边界
 
-以下定义经用户于 2026-10-20 确认，描述产品方向；具体能力的实现与验收状态见[当前状态](docs/ai-union/STATUS.md)。
+以下定义经用户于 2026-10-20 确认，描述产品方向；具体能力的实现与验收状态见[项目总览](PROJECT.md)。
 
 **ai-union** 是以 AI 为核心、围绕共同目标自主组织和持续行动的协作集体，能够自行调整成员、岗位、流程与能力，并对成果负责。
 
@@ -36,13 +38,13 @@
 
 先看可重放效果：安装依赖后运行 `npm start -- --root .union/novel-demo --novel-demo --open`。这是明确标识的脚本演示，不调用模型。真实模型配置、预算含义和恢复步骤见 [小说公司体验指南](docs/NOVEL_COMPANY.md)，验证见 [006 evidence](evidence/006-novel-company/README.md)。
 
-当前首版：一家持续创作同一本小说、交付三章并完成三轮模拟经营的 AI 公司。成员执行循环复用现有 Agent，开发重点是组织层运行。
+历史小说基准目标：一家持续创作同一本小说、交付三章并完成三轮模拟经营的 AI 公司。当前启动目标是建设和运营两个产品的 ai-union-corp。成员执行循环复用现有 Agent，开发重点是组织层运行。
 
-当前实现：从“组织启动与首次协作”扩展到小说公司经营试验的本地运行时。Python 3.11+、SQLite、CLI；API 成员执行依赖固定版本 Deep Agents / LangGraph。支持目标、版本化章程、临时启动授权、筹建草案、组织决定、岗位与任职、依赖工作、文本成果、任务会话恢复、交接、等待唤醒、重启核对和资源记录。
+运行时基础：支持“组织启动与首次协作”及可选小说公司经营试验的本地运行时。Python 3.11+、SQLite、CLI；API 成员执行依赖固定版本 Deep Agents / LangGraph。支持目标、版本化章程、临时启动授权、筹建草案、组织决定、岗位与任职、依赖工作、文本成果、任务会话恢复、交接、等待唤醒、重启核对和资源记录。
 
 这是组织层原型。经营策略和岗位由执行器输出形成，代码不预置内容工作流。已有本地 mock 小说平台及试验账本；尚无真实模型闭环验收、真实对外发布或市场反馈证据，也没有真实支付或投资募集。
 
-**P0 本地组织工作台已接入实际服务，fixture 验收通过。** 浏览器可创建、有限运行、暂停派发、提交事件、调整资源、修章和核对执行；Dashboard 读取实际持久记录。正式前端已迁移到 React + TypeScript + Vite，七页路由、服务端数据管理、操作表单和回执分别维护。原前端迁移验证见 [005](evidence/005-frontend-engineering/README.md)，当前组织 Harness 验证见 [010](evidence/010-organization-harness/README.md)。范围见 [004](specs/004-organization-console/spec.md) 与 [003](specs/003-runtime-dashboard/spec.md)，证据见 [工作台验收](evidence/004-organization-console/README.md)。
+**P0 本地组织工作台已接入实际服务，fixture 验收通过。** 浏览器可创建、有限运行、暂停派发、提交事件、调整资源、修章和核对执行；Dashboard 读取实际持久记录。正式前端已迁移到 React + TypeScript + Vite，八页导航（007 更新）、服务端数据管理、操作表单和回执分别维护。原前端迁移验证见 [005](evidence/005-frontend-engineering/README.md)，当前组织 Harness 验证见 [010](evidence/010-organization-harness/README.md)。范围见 [004](specs/004-organization-console/spec.md) 与 [003](specs/003-runtime-dashboard/spec.md)，证据见 [工作台验收](evidence/004-organization-console/README.md)。
 
 实现、review、验证与复盘保存在 `docs/` 和 `evidence/`；单 HTML 报告已退役，历史提交和原验收记录保留。
 

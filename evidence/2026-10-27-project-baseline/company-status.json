@@ -1,0 +1,44 @@
+{
+  "checked_at": "2026-10-27",
+  "method": "read-only local corp status; no provider or host probes",
+  "state": {
+    "name": "ai-union-corp",
+    "organization_id": "org-eb1c6fc7e1784a52823f3d389f9cac34",
+    "phase": "bootstrap",
+    "members": 0,
+    "work": 0,
+    "artifacts": 0,
+    "source": "not_run",
+    "model_connection": null,
+    "tool_roundtrip_verified": false,
+    "can_attempt_bootstrap": false,
+    "autonomous_operation_verified": false,
+    "development_workspace": {
+      "charter_allows_tool": false,
+      "configured": false,
+      "docker_cli_present": false,
+      "real_commands_confirmed": 0,
+      "unresolved_commands": 0
+    },
+    "bootstrap_blockers": [
+      {
+        "code": "paused",
+        "message": "派发已暂停；由董事会通过工作台继续"
+      },
+      {
+        "code": "model_connection",
+        "message": "尚无已绑定且启用、带密钥的真实模型连接；在模型与 API 页面配置"
+      }
+    ],
+    "operating_blockers": [
+      {
+        "code": "development_tools",
+        "message": "隔离工作区适配已实现；本公司的实际容器、授权、代码交付与部署运维仍须逐项接入和验收"
+      },
+      {
+        "code": "persistent_host",
+        "message": "尚无该公司已安装并验证的持久主机与自动接续证据；本机进程不等于常驻托管"
+      }
+    ]
+  }
+}

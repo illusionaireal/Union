@@ -1,5 +1,7 @@
 # 从新环境接手开发
 
+> 当前模块成熟度、目标完成情况、路线和统一待办见[项目总览](../PROJECT.md)（2026-10-27）。下文日期条目保留各迭代的历史范围；较早的“当前/未完成”描述须结合后续证据阅读。
+
 2026-10-17 / 010：默认 API 执行使用 Deep Agents Harness。`npm start` 自动在项目 `.venv` 安装固定依赖；直接开发先 `python3 -m venv .venv`，再 `.venv/bin/python -m pip install -r requirements-harness.lock -e .`，随后用该解释器运行测试与 CLI。Windows 使用 `.venv\Scripts\python.exe`。下文无 Python 依赖的描述仅对应历史版本。筹建、逐次调用、会话恢复及工具测试见 [组织 Harness](ORGANIZATION_HARNESS.md)。
 
 2026-10-16 工作台更正：前端整体更新范围见 [007](../specs/007-workspace-redesign/spec.md)。八页导航与独立 `/models` 已覆盖通用组织；使用入口见 [FRONTEND](FRONTEND.md)。新增 `npm run test:workspace` 验证普通公司、API 连接管理、密钥处理、组织切换和全页面移动端。不要只启动小说演示来验收整体前端。
@@ -8,7 +10,7 @@
 
 更新：2026-10-18（北京时间）。面向只有 GitHub 仓库、没有上一轮聊天或云环境快照的开发者。验收与复盘以 `evidence/` 和 `docs/reviews/` 为准；旧单 HTML 演示和工具已退役，见 [说明](site.md)。
 
-统一开发入口为 `dev`，整合运行时、真实 API 和 React 前端；当前验证见 [dev 集成](../evidence/dev-integration/README.md)。真实 API 后端见 [005](../specs/005-real-model-api/spec.md)，配置与运行按 [API_MODELS.md](API_MODELS.md)。React 运行表单可选择已绑定的默认 API，连接管理表单仍待接入。下文各日期和数量保留其历史验收含义，不替代当前集成证据。
+统一开发入口为 `dev`，整合运行时、真实 API 和 React 前端；当前验证见 [dev 集成](../evidence/dev-integration/README.md)。真实 API 后端见 [005](../specs/005-real-model-api/spec.md)，配置与运行按 [API_MODELS.md](API_MODELS.md)。React 运行表单可选择已绑定的默认 API，连接管理表单已由 007 接入（修正此处旧描述）。下文各日期和数量保留其历史验收含义，不替代当前集成证据。
 
 ## 1. 读取顺序与当前任务
 

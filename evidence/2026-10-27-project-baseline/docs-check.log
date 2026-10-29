@@ -1,0 +1,3 @@
+Checked 30 relative file links in PROJECT.md and evidence README: PASS
+Git diff --check: PASS
+Anchor targets and external URLs are not validated by this check.

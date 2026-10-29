@@ -1,0 +1,85 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> union@0.0.0 check
+> npm run check:plan && npm test && npm run check:console
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> union@0.0.0 check:plan
+> node scripts/check-plan.mjs
+
+{"baseline":"UNION-B1","tasks":82,"dependencies":181,"cycles":0,"missingDependencies":0,"baselineFiles":5,"githubTasks":8}
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> union@0.0.0 test
+> node --test tests/*.test.ts
+
+✔ retry uses the same reservation; changed request is rejected (28.570427ms)
+✔ unauthorized model actions and tenant/currency changes leave budget untouched (13.47957ms)
+✔ only positive safe integer amounts and bounded keys are accepted (12.800289ms)
+✔ eight competing processes cannot exceed a 100-minor-unit hard budget (683.578226ms)
+✔ process crash after external success recovers by lookup without repeating the effect (345.003262ms)
+✔ crash before external call retains reservation when lookup is inconclusive (142.746906ms)
+✔ definitive failure releases reservation exactly once (13.711685ms)
+✔ settling below maximum releases the difference and invalid receipt rolls back (14.022537ms)
+✔ same key across test tenants remains independent (23.880429ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1564.617283
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> union@0.0.0 check:console
+> npm run typecheck --workspace @union/console && npm run test --workspace @union/console && npm run build:console
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> @union/console@0.1.0 typecheck
+> tsc --noEmit
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> @union/console@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 /workspace/scratch/ec13abb7a5d3/Union/web/console
+
+ ✓ src/features/commands/receipts.test.ts (4 tests) 6ms
+ ✓ src/api/client.test.ts (3 tests) 11ms
+ ✓ src/app/url-state.test.tsx (1 test) 111ms
+ ✓ src/features/commands/fields.test.tsx (8 tests) 303ms
+
+ Test Files  4 passed (4)
+      Tests  16 passed (16)
+   Start at  16:55:26
+   Duration  1.30s (transform 281ms, setup 489ms, collect 396ms, tests 431ms, environment 1.67s, prepare 349ms)
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> union@0.0.0 build:console
+> npm run build --workspace @union/console
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> @union/console@0.1.0 build
+> tsc --noEmit && vite build
+
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 2004 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.74 kB │ gzip:   0.51 kB
+dist/assets/index-DcBMpnBZ.css   41.52 kB │ gzip:   9.41 kB
+dist/assets/index-CsHS5wYU.js   384.26 kB │ gzip: 121.24 kB
+✓ built in 2.81s
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice
