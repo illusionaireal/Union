@@ -2,6 +2,8 @@
 
 > 当前模块成熟度、目标完成情况、路线和统一待办见[项目总览](../PROJECT.md)（2026-10-27）。下文日期条目保留各迭代的历史范围；较早的“当前/未完成”描述须结合后续证据阅读。
 
+2026-10-28 管理入口：先读 [PROJECT](../PROJECT.md) 和 [TASKS](../TASKS.md)，任务状态只改 `management/project.json`，运行 `npm run management:render`。`npm run check` 已包含主账/生成视图和管理规则检查；维护说明见 [管理手册](../management/README.md)。
+
 2026-10-17 / 010：默认 API 执行使用 Deep Agents Harness。`npm start` 自动在项目 `.venv` 安装固定依赖；直接开发先 `python3 -m venv .venv`，再 `.venv/bin/python -m pip install -r requirements-harness.lock -e .`，随后用该解释器运行测试与 CLI。Windows 使用 `.venv\Scripts\python.exe`。下文无 Python 依赖的描述仅对应历史版本。筹建、逐次调用、会话恢复及工具测试见 [组织 Harness](ORGANIZATION_HARNESS.md)。
 
 2026-10-16 工作台更正：前端整体更新范围见 [007](../specs/007-workspace-redesign/spec.md)。八页导航与独立 `/models` 已覆盖通用组织；使用入口见 [FRONTEND](FRONTEND.md)。新增 `npm run test:workspace` 验证普通公司、API 连接管理、密钥处理、组织切换和全页面移动端。不要只启动小说演示来验收整体前端。

@@ -1,0 +1,16 @@
+{
+  "id": "U-NNN",
+  "title": "具体可交付的结果",
+  "priority": "P0",
+  "milestone": "G2",
+  "module": "evaluation",
+  "status": "candidate",
+  "owner": null,
+  "role": "需要的责任，不代表已有成员",
+  "acceptance": "写明成果、验收方法和实际范围",
+  "dependencies": [],
+  "blocker": null,
+  "started_at": null,
+  "updated_at": "YYYY-MM-DD",
+  "completion": null
+}

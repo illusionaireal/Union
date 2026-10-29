@@ -1,0 +1,16 @@
+✔ rejects missing owners at start and unfinished dependencies, but permits honest unassigned backlog (8.626466ms)
+✔ completion requires scope, reviewer and existing evidence, and does not promote milestones (1.580891ms)
+✔ rejects duplicate IDs, unknown references and dependency cycles (1.366158ms)
+✔ blocked work needs an unblock action; already-started blocked work counts toward WIP (5.502597ms)
+✔ rejects evidence outside repository, invalid scope and malformed dates (5.299067ms)
+✔ deterministic generated views reject stale output and preserve surrounding narrative (13.861066ms)
+✔ flow summary keeps empty live evidence distinct from completion counts (0.687013ms)
+✔ milestone acceptance and task scope cannot be asserted without their review metadata (1.080266ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 181.088566

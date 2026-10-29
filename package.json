@@ -13,7 +13,7 @@
   "scripts": {
     "test": "node --test tests/*.test.ts",
     "check:plan": "node scripts/check-plan.mjs",
-    "check": "npm run check:plan && npm test && npm run check:console",
+    "check": "npm run check:management && npm run check:plan && npm test && npm run check:console",
     "check:console": "npm run typecheck --workspace @union/console && npm run test --workspace @union/console && npm run build:console",
     "build:console": "npm run build --workspace @union/console",
     "dev:console": "npm run dev --workspace @union/console",
@@ -21,6 +21,9 @@
     "test:novel": "node scripts/check_novel_company.cjs",
     "test:workspace": "node scripts/check_workspace.cjs",
     "start": "node scripts/start-console.mjs",
-    "dev": "node scripts/start-console.mjs --watch"
+    "dev": "node scripts/start-console.mjs --watch",
+    "management:render": "node scripts/project-management.mjs render",
+    "management:status": "node scripts/project-management.mjs status",
+    "check:management": "node scripts/project-management.mjs check && node --test tests/project-management.test.mjs"
   }
 }

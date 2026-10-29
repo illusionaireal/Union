@@ -22,7 +22,7 @@
 - Human-free is descriptive, not a zero-human requirement. Report human participation, actual outcomes, costs and uncertainty honestly.
 - Distinguish implementation completion, a real-model prototype run, and the first release's real delivery/feedback/next-action acceptance. Mock outputs and role dialogue do not establish these outcomes.
 
-- Maintain PROJECT.md as the current module maturity, outcome milestone and prioritized backlog entry point. Update affected rows with scope and evidence when implementation or acceptance changes. Keep dated STATUS/HANDOFF entries as history; implementation, controlled tests, real integration and sustained operation are different claims. Proposed roadmap items do not grant spending or host permissions.
+- Maintain management/project.json as the single current source for module maturity, outcome milestones and the U-numbered backlog. Read management/README.md and TASKS.md when selecting work. Update the source with scope, actual owner and evidence, then run npm run management:render and npm run check:management; do not hand-edit generated PROJECT.md blocks or TASKS.md. PROJECT.md remains the entry point. Organization self-improvement acceptance follows management/SELF_IMPROVEMENT.md; externally assisted management is not autonomous organizational improvement. Keep dated STATUS/HANDOFF entries as history; implementation, controlled tests, real integration and sustained operation are different claims. Proposed roadmap items do not grant spending or host permissions.
 
 ## Historical assets and validation
 
@@ -31,7 +31,7 @@
 - Keep mock, testnet and real funds distinct. Existing documentation and the offline spike do not enable real payments, marketing, model spending, signing or external deployment. Use actual configured permissions and explicit resource limits for real runs; carry forward existing user authorization.
 - Amounts use integer minor units with explicit currency. Unknown external results retain reservations and require lookup in the existing action-safety implementation.
 - Money and authorization changes require another engineering role's review before adoption. Tests alone do not satisfy that review.
-- Run npm run check before proposing changes. It checks historical plan integrity, the offline action-safety tests, and frontend type/interaction/build checks; do not present it as organization-loop or PostgreSQL/Temporal validation.
+- Run npm run check before proposing changes. It checks current management integrity and generated views, historical plan integrity, the offline action-safety tests, and frontend type/interaction/build checks; do not present it as organization-loop or PostgreSQL/Temporal validation.
 - Do not change repository visibility or choose an open-source license without an explicit project decision. Never commit credentials or customer data.
 
 ## Current runtime engineering
