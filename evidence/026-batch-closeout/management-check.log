@@ -1,0 +1,22 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> union@0.0.0 check:management
+> node scripts/project-management.mjs check && node --test tests/project-management.test.mjs
+
+Management check: 15 modules, 8 milestones, 36 tasks; PASS
+✔ rejects missing owners at start and unfinished dependencies, but permits honest unassigned backlog (3.941106ms)
+✔ completion requires scope, reviewer and existing evidence, and does not promote milestones (0.886965ms)
+✔ rejects duplicate IDs, unknown references and dependency cycles (0.864181ms)
+✔ blocked work needs an unblock action; already-started blocked work counts toward WIP (0.826996ms)
+✔ rejects evidence outside repository, invalid scope and malformed dates (1.750374ms)
+✔ deterministic generated views reject stale output and preserve surrounding narrative (8.958815ms)
+✔ flow summary keeps empty live evidence distinct from completion counts (0.603157ms)
+✔ milestone acceptance and task scope cannot be asserted without their review metadata (0.925611ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 107.189923

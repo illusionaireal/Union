@@ -8,10 +8,11 @@
       "name": "组织治理与状态 / ai-union",
       "implemented": "版本化章程、成员/岗位/任职、组织决定、SQLite 持久化",
       "validation": "V1；真实筹建用过部分机制",
-      "gap": "U-022最小契约完成；U-023兼容投影与真实运行中的职责调整待实现/验收",
+      "gap": "U-023兼容投影/治理描述和U-034申请机制已受控验证；真实运行职责调整、企业身份集成仍待验",
       "evidence": [
         "specs/001-org-bootstrap/spec.md",
-        "evidence/014-real-loop/README.md"
+        "evidence/014-real-loop/README.md",
+        "evidence/022-au-contract-implementation/README.md"
       ]
     },
     {
@@ -73,9 +74,10 @@
       "name": "协作、唤醒与恢复 / ai-union",
       "implemented": "工作依赖、交接、有限 watch、暂停、未知结果核对",
       "validation": "V2：真实空闲零调用、同一作业事件唤醒通过",
-      "gap": "U-018确认有限历史诊断与生命周期缺口；U-033/035待实现，真实唤醒后有效行动和跨重启仍待验",
+      "gap": "诊断和生命周期已实现；模型有效事件处理、真实后续交付及持续运行待资源复验",
       "evidence": [
-        "evidence/014-real-loop/README.md"
+        "evidence/014-real-loop/README.md",
+        "evidence/020-organization-diagnostics/README.md"
       ]
     },
     {
@@ -115,7 +117,7 @@
       "name": "质量与评估 / 工程支撑",
       "implemented": "机制回归、模拟与真实标记、E1/E2 检查及证据留存",
       "validation": "V1；真实完整业务验收未通过",
-      "gap": "面向当前公司建立真实开发交付及反馈改进基准",
+      "gap": "首个真实任务及指标口径已定义，U-006/U-019/U-020真实采集和效果待验",
       "evidence": [
         "specs/014-real-loop/spec.md",
         "evidence/016-member-workspace/README.md"
@@ -136,7 +138,7 @@
       "name": "项目管理与组织改进 / 工程支撑",
       "implemented": "单一主账、生成视图、管理检查、维护/评审/改进流程及评估协议",
       "validation": "V1：管理规则受控验证；真实自主改进未验收",
-      "gap": "U-018角色能力核查完成；U-033补最小诊断，U-019验真实自主改善",
+      "gap": "U-033诊断/U-034申请/U-035时间记录已实现；U-019真实自主改善仍待验",
       "evidence": [
         "evidence/017-project-management/README.md"
       ]
@@ -144,19 +146,20 @@
     {
       "id": "composition",
       "name": "跨 AU 协作与组织演进 / ai-union",
-      "implemented": "现有本地多组织目录可复用；关系、委托、派生、重构尚未实现",
+      "implemented": "AU关系与委托契约已定义；现有本地目录可复用，跨AU执行/派生/重构尚未实现",
       "validation": "V0：规划，运行未验",
-      "gap": "先统一契约并验证单 AU，再做委托、派生和责任交接",
+      "gap": "U-028先满足真实单AU交付/恢复依赖，再实现双边委托和演进",
       "evidence": [
-        "docs/DEVELOPMENT_ROADMAP.md"
+        "docs/DEVELOPMENT_ROADMAP.md",
+        "specs/025-au-delegation-contract/spec.md"
       ]
     },
     {
       "id": "tool-services",
       "name": "可选管理工具服务 / platform",
-      "implemented": "现有仓库管理脚本是工程基础，尚未服务化；未接入付费工具",
+      "implemented": "工具服务契约完成，仓库管理与观察可复用；尚未服务化或接入付费工具",
       "validation": "V0：服务规划，运行未验",
-      "gap": "真实需求驱动接口与免费工具接入，付费和结算随后分项验收",
+      "gap": "U-026依真实需求接首个免费工具；U-032付费开通和结算另验",
       "evidence": [
         "docs/DEVELOPMENT_ROADMAP.md"
       ]
@@ -355,13 +358,17 @@
       "priority": "P0",
       "milestone": "G2",
       "module": "coordination",
-      "status": "ready",
-      "owner": null,
+      "status": "blocked",
+      "owner": "Codex（外部工程代理）",
       "role": "运行时工程",
       "acceptance": "将 014 的受阻、上下文、事件后非法提议转为可重现用例；只修阻碍当前真实任务的问题",
       "dependencies": [],
-      "blocker": null,
-      "started_at": null,
+      "blocker": {
+        "reason": "现有工程回归通过，但014后续交付与事件处理的真实模型复验缺少可用连接/授权资源",
+        "action": "完成U-002并在真实工具环境按014未通过口径复验；保留失败与未知记录",
+        "owner": null
+      },
+      "started_at": "2026-10-28",
       "updated_at": "2026-10-28",
       "completion": null
     },
@@ -720,8 +727,8 @@
       "priority": "P2",
       "milestone": "G2",
       "module": "governance",
-      "status": "candidate",
-      "owner": null,
+      "status": "done",
+      "owner": "Codex（外部工程代理）",
       "role": "产品 / 运行时工程",
       "acceptance": "先证明任务/标签不足；如需要持久工作组，仅组合既有职责与任务，不产生独立权限或固定部门等级；无需新对象时记录复用决定。",
       "dependencies": [
@@ -729,9 +736,17 @@
         "U-018"
       ],
       "blocker": null,
-      "started_at": null,
+      "started_at": "2026-10-28",
       "updated_at": "2026-10-28",
-      "completion": null
+      "completion": {
+        "scope": "documentation",
+        "reviewer": "Codex（候选需求评估）",
+        "evidence": [
+          "evidence/026-batch-closeout/decisions.md",
+          "docs/AU_CAPABILITY_AUDIT.md"
+        ],
+        "note": "现有工作/岗位/依赖满足当前轻量协作需要，选择复用，不增加新工作组对象；未来具体需求另开卡。"
+      }
     },
     {
       "id": "U-025",

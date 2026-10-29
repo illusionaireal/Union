@@ -1,6 +1,6 @@
-"""Reproduce U-018 baseline with fresh fixtures; no model, Docker or private org reads.
+"""Audit the current AU capability surface with fresh fixtures; no model, Docker or private org reads.
 
-Checks assert the observed baseline (including gaps), not the desired implementation.
+Checks assert current observed mechanisms (including remaining gaps), not real organizational outcomes.
 Run again before changing the contract; this script is deliberately not a permanent CI gate.
 """
 import argparse
@@ -54,9 +54,9 @@ def audit():
         tools = {t["function"]["name"] for t in tools_for(decision_package)}
         check("O06", all(k in ctx for k in ("members", "positions", "assignments", "work", "events")) and ctx["work"]["w2"]["summary"] == "Need sponsor input", "Decision context sees full local work graph, roster and pending blocked event.")
         check("O07", "Source content for dependency" in [a["content"] for a in ctx["artifacts"]], "Decision role sees all local formal artifacts, not a fine-grained data access policy.", finding="boundary")
-        check("O08", "runs" not in ctx and "usage" not in ctx and "decisions" not in ctx and "cost_status" in ctx["budget"], "Budget summary exists, per-run usage/receipts/decision history query does not.", finding="gap")
+        check("O08", "diagnostics" in ctx and "recent_runs" in ctx["diagnostics"] and ctx["diagnostics"]["limit"] == 12 and "cost_status" in ctx["budget"], "Decision context includes bounded host-owned runtime history and unknown-cost summary; raw packages are excluded.")
         check("A01", {"update_organization", "schedule_work", "wait_for_event"} <= tools, "Decision role can change local organization, schedule work and wait.")
-        check("A02", not ({"request_resources", "request_tool", "inspect_organization", "observe_organization"} & tools), "No dedicated bounded observation query or resource/tool request workflow.", finding="gap")
+        check("A02", not ({"request_resources", "request_tool", "inspect_organization", "observe_organization"} & tools), "No extra query tool; diagnostics are inline. Legacy charter does not automatically grant the opt-in request workflow.", finding="boundary")
         # Exercise real decision validation and commit, not merely schema inspection.
         proposal = compile_tool(decision_package, "update_organization", {
             "summary": "Record a test improvement hypothesis and move work responsibility",
@@ -92,14 +92,14 @@ def audit():
         e.fail_run(failed["run_id"], "Synthetic diagnostic for audit", failure={})
         diagnostic = model_input(e.begin_decision("fixture"))["context"]
         check("O09", "execution_failed" in {ev["kind"] for ev in diagnostic["events"]} and diagnostic["work"]["w2"]["status"] == "failed", "Pending failure event/work summary visible, but this is not a persistent filtered history query.")
-        check("O10", not {"work_started_at", "blocked_since", "completed_at"} & set(diagnostic["work"]["w2"]), "Work objects lack stable lifecycle timestamps for wait/blocked-age metrics.", finding="gap")
+        check("O10", diagnostic["work"]["w2"]["lifecycle"]["first_started_at"] is not None and diagnostic["work"]["w2"]["lifecycle"]["status_since"] is not None, "New work has host-observed lifecycle timestamps; legacy unknown history remains separately classified.")
         # Same local member id in another AU denotes a different scoped identity.
         other = Engine.create(root / "other", "Other AU", "Other work", CHARTER, RESOURCES, "Other sponsor", "other-fixture-key")
         organization(other)
         check("I01", e.state()["id"] != other.state()["id"] and "m1" in e.state()["members"] and "m1" in other.state()["members"], "Identity is effectively scoped by AU; local ID equality is not a shared global Agent.", finding="boundary")
         before = e.state()
         check("I02", rejected(lambda: e.apply_decision(decision(e, [{"op": "assign", "id": "bad-assignment", "position_id": "p2", "member_id": "foreign-member"}]), "m1", "a1")) and e.state() == before, "Unregistered member cannot acquire a local assignment; no cross-AU identity transfer protocol.", finding="boundary")
-    return {"baseline": "0d4e824", "scope": "fresh fixture engine/tool projection; no actual model or Docker", "checks": checks,
+    return {"baseline": "c9b910b", "scope": "fresh fixture engine/tool projection; no actual model or Docker", "checks": checks,
             "total": len(checks), "passed": len(checks), "model_calls": 0, "docker_commands": 0,
             "note": "Fixture run records were created; these are not actual provider requests or autonomous improvement evidence."}
 

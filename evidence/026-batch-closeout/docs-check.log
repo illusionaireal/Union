@@ -1,0 +1,4 @@
+136 relative file links in current overview/cards and 020–026 documents: PASS
+Git diff --check: PASS
+Generated views: validated by management-check.log
+External URLs and anchors not checked.

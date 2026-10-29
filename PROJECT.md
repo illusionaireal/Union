@@ -44,21 +44,21 @@
 <!-- management:modules:start -->
 | 模块 | 已实现 | 验收范围 | 下一缺口 | 证据 |
 | --- | --- | --- | --- | --- |
-| 组织治理与状态 / ai-union | 版本化章程、成员/岗位/任职、组织决定、SQLite 持久化 | V1；真实筹建用过部分机制 | U-022最小契约完成；U-023兼容投影与真实运行中的职责调整待实现/验收 | [specs/001-org-bootstrap/spec.md](specs/001-org-bootstrap/spec.md)、[evidence/014-real-loop/README.md](evidence/014-real-loop/README.md) |
+| 组织治理与状态 / ai-union | 版本化章程、成员/岗位/任职、组织决定、SQLite 持久化 | V1；真实筹建用过部分机制 | U-023兼容投影/治理描述和U-034申请机制已受控验证；真实运行职责调整、企业身份集成仍待验 | [specs/001-org-bootstrap/spec.md](specs/001-org-bootstrap/spec.md)、[evidence/014-real-loop/README.md](evidence/014-real-loop/README.md)、[evidence/022-au-contract-implementation/README.md](evidence/022-au-contract-implementation/README.md) |
 | 筹建与自我调整 / ai-union | 分批筹建草案、成立事务、组织更新工具 | V2：试验组织真实成立 | 当前公司成立；证明初始化之后仍能按目标扩展和调整 | [specs/010-organization-harness/spec.md](specs/010-organization-harness/spec.md)、[evidence/014-real-loop/README.md](evidence/014-real-loop/README.md) |
 | 成员执行循环 / ai-union | Deep Agents / LangGraph、工具调用、任务检查点 | V2：规划文本交付 | 有效业务成果、长任务可靠性、失败后的正确后续动作 | [docs/ORGANIZATION_HARNESS.md](docs/ORGANIZATION_HARNESS.md)、[evidence/014-real-loop/README.md](evidence/014-real-loop/README.md) |
 | 模型连接 / 公共接入 | Chat Completions、私有密钥、默认连接、网页工具往返测试与调用回执 | V2：免费 OpenRouter 曾实测 | 当前公司连接与适用模型工具协议验收；历史可用不等于现在已配置 | [docs/API_MODELS.md](docs/API_MODELS.md)、[evidence/011-openrouter-smoke/README.md](evidence/011-openrouter-smoke/README.md) |
 | 开发工具 / 当前公司业务能力 | 可选 Docker 工作区、宿主/章程/岗位授权、持久命令回执及核对 | V1：SDK 与容器替身；独立权限复核通过默认关闭接入 | 真实容器与模型编程；网络、提交、部署仍需各自明确接口与授权 | [evidence/016-member-workspace/README.md](evidence/016-member-workspace/README.md) |
 | 记忆与上下文 / ai-union | 组织记录、成果、交接信息、任务检查点及虚拟文件 | V1，真实运行暴露上下文问题 | 长任务上下文管理、知识检索与经验复用闭环；不能等同成熟学习系统 | [docs/ORGANIZATION_HARNESS.md](docs/ORGANIZATION_HARNESS.md)、[evidence/014-real-loop/README.md](evidence/014-real-loop/README.md) |
-| 协作、唤醒与恢复 / ai-union | 工作依赖、交接、有限 watch、暂停、未知结果核对 | V2：真实空闲零调用、同一作业事件唤醒通过 | U-018确认有限历史诊断与生命周期缺口；U-033/035待实现，真实唤醒后有效行动和跨重启仍待验 | [evidence/014-real-loop/README.md](evidence/014-real-loop/README.md) |
+| 协作、唤醒与恢复 / ai-union | 工作依赖、交接、有限 watch、暂停、未知结果核对 | V2：真实空闲零调用、同一作业事件唤醒通过 | 诊断和生命周期已实现；模型有效事件处理、真实后续交付及持续运行待资源复验 | [evidence/014-real-loop/README.md](evidence/014-real-loop/README.md)、[evidence/020-organization-diagnostics/README.md](evidence/020-organization-diagnostics/README.md) |
 | 工作台与观察 / platform | React 八页导航、本地多组织、模型配置、事件/工作/成果/回执 | V1：前端、历史浏览器与实际本地 HTTP 验证 | 最新真实公司用户流程；公共账户、多租户与外部访问未实现 | [evidence/007-workspace-redesign/README.md](evidence/007-workspace-redesign/README.md)、[evidence/016-member-workspace/README.md](evidence/016-member-workspace/README.md) |
 | 托管与运维 / platform | 有限 service/watch 入口、systemd 模板、就绪检查 | V1：工程入口；真实托管 V0 | 目标服务器安装、访问、重启、备份恢复、告警与资源到限停机 | [evidence/015-corp-startup/README.md](evidence/015-corp-startup/README.md) |
 | 预算与经营记录 / 运行时及业务 | 调用额度、用量与未知费用记录、小说 mock 账本 | V1；真实运行曾按调用上限停止 | 真实成本核对与可执行预算控制；无真实支付/收入能力 | [evidence/014-real-loop/README.md](evidence/014-real-loop/README.md)、[evidence/006-novel-company/README.md](evidence/006-novel-company/README.md) |
-| 质量与评估 / 工程支撑 | 机制回归、模拟与真实标记、E1/E2 检查及证据留存 | V1；真实完整业务验收未通过 | 面向当前公司建立真实开发交付及反馈改进基准 | [specs/014-real-loop/spec.md](specs/014-real-loop/spec.md)、[evidence/016-member-workspace/README.md](evidence/016-member-workspace/README.md) |
+| 质量与评估 / 工程支撑 | 机制回归、模拟与真实标记、E1/E2 检查及证据留存 | V1；真实完整业务验收未通过 | 首个真实任务及指标口径已定义，U-006/U-019/U-020真实采集和效果待验 | [specs/014-real-loop/spec.md](specs/014-real-loop/spec.md)、[evidence/016-member-workspace/README.md](evidence/016-member-workspace/README.md) |
 | 目标公司实例 / ai-union-corp | 固定身份、目标、阶段章程、只读诊断、正式工作台入口 | V1：准备入口；运营 V0 | 真实筹建 → 研发交付 → 反馈 → 持续运营 | [specs/015-corp-startup/tasks.md](specs/015-corp-startup/tasks.md) |
-| 项目管理与组织改进 / 工程支撑 | 单一主账、生成视图、管理检查、维护/评审/改进流程及评估协议 | V1：管理规则受控验证；真实自主改进未验收 | U-018角色能力核查完成；U-033补最小诊断，U-019验真实自主改善 | [evidence/017-project-management/README.md](evidence/017-project-management/README.md) |
-| 跨 AU 协作与组织演进 / ai-union | 现有本地多组织目录可复用；关系、委托、派生、重构尚未实现 | V0：规划，运行未验 | 先统一契约并验证单 AU，再做委托、派生和责任交接 | [docs/DEVELOPMENT_ROADMAP.md](docs/DEVELOPMENT_ROADMAP.md) |
-| 可选管理工具服务 / platform | 现有仓库管理脚本是工程基础，尚未服务化；未接入付费工具 | V0：服务规划，运行未验 | 真实需求驱动接口与免费工具接入，付费和结算随后分项验收 | [docs/DEVELOPMENT_ROADMAP.md](docs/DEVELOPMENT_ROADMAP.md) |
+| 项目管理与组织改进 / 工程支撑 | 单一主账、生成视图、管理检查、维护/评审/改进流程及评估协议 | V1：管理规则受控验证；真实自主改进未验收 | U-033诊断/U-034申请/U-035时间记录已实现；U-019真实自主改善仍待验 | [evidence/017-project-management/README.md](evidence/017-project-management/README.md) |
+| 跨 AU 协作与组织演进 / ai-union | AU关系与委托契约已定义；现有本地目录可复用，跨AU执行/派生/重构尚未实现 | V0：规划，运行未验 | U-028先满足真实单AU交付/恢复依赖，再实现双边委托和演进 | [docs/DEVELOPMENT_ROADMAP.md](docs/DEVELOPMENT_ROADMAP.md)、[specs/025-au-delegation-contract/spec.md](specs/025-au-delegation-contract/spec.md) |
+| 可选管理工具服务 / platform | 工具服务契约完成，仓库管理与观察可复用；尚未服务化或接入付费工具 | V0：服务规划，运行未验 | U-026依真实需求接首个免费工具；U-032付费开通和结算另验 | [docs/DEVELOPMENT_ROADMAP.md](docs/DEVELOPMENT_ROADMAP.md) |
 <!-- management:modules:end -->
 
 真实外部发布、业务系统接入、支付和商业经营尚无验收，不包含在“已有工作台”或“已有账本”的完成声明中。成员数量、岗位与工具应随目标演进，不能由项目管理表预设成所有组织的固定结构。
@@ -87,7 +87,7 @@
 任务唯一主账为 `management/project.json`，保留 U 编号；以下视图由 `npm run management:render` 生成。实际负责人和所需责任角色分开，未认领不虚构为公司成员。
 
 <!-- management:tasks:start -->
-数据日期：2026-10-28；在制 0/2，就绪 1，阻塞 3，完成 14。这是工作项统计，不是产品完成率。
+数据日期：2026-10-28；在制 1/2，就绪 0，阻塞 4，完成 15。这是工作项统计，不是产品完成率。
 
 | 任务 | 内容 | 优先级 / 阶段 | 状态 | 实际负责人 | 依赖 |
 | --- | --- | --- | --- | --- | --- |
@@ -97,7 +97,7 @@
 | [U-004](TASKS.md#u-004) | 定义首个真实研发任务 | P0 / G2 | 完成 | Codex（外部工程代理） | U-018 |
 | [U-005](TASKS.md#u-005) | 验证真实隔离工作区 | P0 / G2 | 阻塞 | 待认领 | — |
 | [U-006](TASKS.md#u-006) | 完成真实研发交付与反馈 | P0 / G2 | 待依赖 | 待认领 | U-003, U-004, U-005 |
-| [U-007](TASKS.md#u-007) | 修复真实执行阻塞 | P0 / G2 | 就绪 | 待认领 | — |
+| [U-007](TASKS.md#u-007) | 修复真实执行阻塞 | P0 / G2 | 阻塞 | Codex（外部工程代理） | — |
 | [U-016](TASKS.md#u-016) | 搭建可维护的项目管理骨架 | P0 / G0 | 完成 | Codex（外部工程代理） | U-001 |
 | [U-017](TASKS.md#u-017) | 定义组织自主改进验收协议 | P0 / G2 | 完成 | Codex（外部工程代理） | — |
 | [U-018](TASKS.md#u-018) | 核查组织观察与调整能力缺口 | P0 / G2 | 完成 | Codex（外部工程代理） | — |
@@ -123,7 +123,7 @@
 | [U-013](TASKS.md#u-013) | 评估成员执行器选型 | P2 / G0 | 候选 | 待认领 | — |
 | [U-014](TASKS.md#u-014) | 定义外部试点 | P2 / G4 | 待依赖 | 待认领 | U-009, U-010, U-011, U-019 |
 | [U-015](TASKS.md#u-015) | 按需求接入业务系统 | P2 / G5 | 候选 | 待认领 | U-014 |
-| [U-024](TASKS.md#u-024) | 按实际需要支持轻量工作组 | P2 / G2 | 候选 | 待认领 | U-022, U-018 |
+| [U-024](TASKS.md#u-024) | 按实际需要支持轻量工作组 | P2 / G2 | 完成 | Codex（外部工程代理） | U-022, U-018 |
 | [U-031](TASKS.md#u-031) | 逐项验证 AU 拆分合并及归属调整 | P2 / G-AU | 待依赖 | 待认领 | U-030 |
 | [U-032](TASKS.md#u-032) | 接入付费工具与费用核对 | P2 / G-TOOLS | 待依赖 | 待认领 | U-026, U-020 |
 | [U-036](TASKS.md#u-036) | 按需求支持成员退出与任职解除 | P2 / G2 | 候选 | 待认领 | U-018, U-023 |
@@ -131,7 +131,7 @@
 完整验收条件、阻塞与证据见 [TASKS.md](TASKS.md)；主账为 [management/project.json](management/project.json)。
 <!-- management:tasks:end -->
 
-U-022最小契约及U-018接口核查已完成，见 [核心契约](specs/019-au-core-contract/spec.md)与[能力矩阵](docs/AU_CAPABILITY_AUDIT.md)。下一工作批次：U-004 根据实际缺口定义真实任务，U-033 补有界组织诊断；U-007/U-023 按真实任务需要修执行或核心缺口。模型/主机准备可并行，真实交付 U-006 与自主改进 U-019 分别验收。跨 AU 委托、派生和重构按 U-027–031 后续推进；平台工具按 U-025/026/032 独立规划。
+020–025已完成首个真实任务定义、有界诊断、生命周期/指标口径、同构AU兼容接入、可选申请流程及工具/委托契约。**当前就绪任务为0**：U-002模型、U-005真实工作区、U-008主机和U-007真实复验受阻；其余未完成工作依赖这些真实结果或属于条件候选。见[收口与解除条件](evidence/026-batch-closeout/README.md)。这不是所有产品目标完成；资源到位后接续U-003/U-006/U-019，随后持续运营及跨AU/工具服务验收。
 
 ## 6. 适合当前规模的管理方式
 
