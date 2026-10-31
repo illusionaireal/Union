@@ -1032,19 +1032,24 @@
       "priority": "P1",
       "milestone": "G0",
       "module": "models",
-      "status": "blocked",
+      "status": "done",
       "owner": "Codex（外部工程代理）",
       "role": "平台工程 / 独立权限复核",
       "acceptance": "实现宿主显式平台权限、实例登记/解除、无凭据健康/版本检测和回执、AU 独立连接引用及工具测试复用；受控验证与真实 New API 验收分开。",
       "dependencies": [],
-      "blocker": {
-        "reason": "实现、200项Python、20项前端及独立权限复核已通过；缺少浏览器执行文件，官方安装器下载内容不完整，实际浏览器验收未完成。",
-        "action": "在具备可用 Chromium 的开发/CI 环境运行 npm run test:gateways，处理问题并审阅桌面/320px截图后关闭本卡。",
-        "owner": "后续工程 / 浏览器环境维护"
-      },
+      "blocker": null,
       "started_at": "2026-10-30",
-      "updated_at": "2026-10-30",
-      "completion": null
+      "updated_at": "2026-11-01",
+      "completion": {
+        "scope": "controlled",
+        "reviewer": "Codex（NAS浏览器/截图验收）；2026-10-30独立权限复核",
+        "evidence": [
+          "evidence/030-dev-orchestrator/README.md",
+          "evidence/030-dev-orchestrator/gateways/checks.json",
+          "docs/reviews/2026-10-30-gateway-management.md"
+        ],
+        "note": "专用NAS环境网关12项、工作台61项通过；已审1440px/320px截图；真实New API仍为U-039。"
+      }
     },
     {
       "id": "U-038",
@@ -1170,6 +1175,26 @@
       "started_at": null,
       "updated_at": "2026-10-30",
       "completion": null
+    },
+    {
+      "id": "U-044",
+      "title": "搭建NAS常驻Astra/Sol外部开发调度器",
+      "priority": "P0",
+      "milestone": "G0",
+      "module": "hosting",
+      "status": "blocked",
+      "owner": "Codex（外部工程代理）",
+      "role": "部署工程 / 独立权限复核",
+      "acceptance": "按030及用户交接实现CLI、证据、隔离、恢复、持久调度；E01–E10逐项留实际回执，真实模型链不以替身代替",
+      "dependencies": [],
+      "started_at": "2026-11-01",
+      "updated_at": "2026-11-01",
+      "completion": null,
+      "blocker": {
+        "reason": "DSM4.4不能创建Codex沙箱user namespace；设备登录403；真实凭据隔离、路由和有限额度未验；默认关闭部署已完成，真实E02/E03等未过",
+        "action": "选择NAS新版Linux VM或另一执行节点，完成假凭据拒读/独立复核、官方认证和有限模型授权，再执行真实链及长期门禁；保留未知及失败",
+        "owner": "用户（执行节点选择/账号确认）与后续工程"
+      }
     }
   ]
 }

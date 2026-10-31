@@ -1,5 +1,11 @@
 # ai-union 当前状态
 
+## 2026-11-01：NAS开发调度器默认关闭部署与U-037浏览器收口
+
+用户提供root SSH并要求按Astra/Sol交接搭建。专用dev已接入用户推送53dd96b快照，固定工具链/Chromium、npm检查和Python279项、工作台61项/网关12项真实浏览器通过；桌面/320px已审，U-037以受控范围完成，U-039真实实例不变。新增U-044承接外部调度器，释放U-037后在制仍3/3，无需扩大上限。
+
+控制器/broker/CLI/systemd已安装但enabled=false、max_calls=0、timer disabled；DSM4.4实际bwrap user namespace失败、官方设备登录403，未注入真实认证、真实模型调用0。U-044保持blocked，下一步选择Linux VM/执行节点、假凭据拒读、官方认证/有限额度与独立复核。U-041热配置/恢复/整体验收仍blocked，原公司状态不迁移、不据宿主Docker推定成员工具可用。详见[evidence/030-dev-orchestrator/README.md](../../evidence/030-dev-orchestrator/README.md)。未推送、公开发布、合并main或改生产；本地原用户工作区保留。
+
 ## 2026-11-01：检查点观察仅元数据（040）
 
 Astra完整规划、Sol移除所有原checkpoint库/文件头观察读取，只lstat：明确缺失false，存在或异常unknown，协议true分支保留但本实现不产生true。两项正确red后green；定向50、Python260、独立Astra94项与npm完整检查（前端31项/类型/构建）通过。独立已报告无阻断缺陷，完整长结论因额度中断，不能写整体独立验收通过。见[040](../../evidence/040-checkpoint-metadata/README.md)。

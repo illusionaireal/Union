@@ -1,0 +1,23 @@
+{
+  "date": "2026-11-01",
+  "source_snapshot": "53dd96bde22bf95c149929c686ead7dc5ddaa579",
+  "branch": "dev",
+  "fixture_and_local_http_only": true,
+  "real_model_calls": 0,
+  "credentials_injected": false,
+  "dispatch_enabled": false,
+  "timer_enabled": false,
+  "image_sha256": "1d6e909941870743eb6677a392e685df38c4c346d7dd1eb4f83a258ba83b1dac",
+  "checks": [
+    {"argv": ["npm", "run", "check"], "job_id": "f64e13a08459437f918e7dd4492a5472", "exit_code": 0, "status": "pass"},
+    {"argv": [".venv/bin/python", "-m", "unittest", "discover", "-v"], "job_id": "0a7f061653af4947808f837144d63858", "exit_code": 0, "tests": 279, "seconds": 75.644, "status": "pass"},
+    {"argv": ["npm", "run", "test:browser"], "job_id": "5f540abe1321410090d6b34b45d238fa", "exit_code": 0, "checks": 61, "status": "pass"},
+    {"argv": ["npm", "run", "test:gateways"], "job_id": "45d0a16652c446b2bc82da64300db9c7", "exit_code": 0, "checks": 12, "status": "pass"},
+    {"check": "chromium_start_title_close", "job_id": "81ea95a5fa884f90b7b5f507265f3d43", "exit_code": 0, "status": "pass"},
+    {"check": "codex_linux_sandbox", "exit_code": 1, "status": "blocked", "reason": "bwrap cannot create user namespace on DSM kernel4.4"},
+    {"check": "official_device_login", "exit_code": 1, "http_status": 403, "status": "blocked", "auth_file_created": false},
+    {"check": "disabled_systemd_once", "exec_main_status": 0, "result": "success", "status": "pass"}
+  ],
+  "acceptance": {"E01": "partial", "E02": "blocked", "E03": "not_run", "E04": "controlled_only", "E05": "controlled_only", "E06": "partial", "E07": "controlled_only", "E08": "controlled_only", "E09": "controlled_only", "E10": "partial"},
+  "next": "Select newer Linux VM or execution node; prove credential isolation, then authenticate and confirm bounded resources before real model probes."
+}

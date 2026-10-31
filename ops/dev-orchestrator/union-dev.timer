@@ -1,0 +1,10 @@
+[Unit]
+Description=UNION hourly external development trigger
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=1h
+Unit=union-dev.service
+
+[Install]
+WantedBy=timers.target

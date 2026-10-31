@@ -1,0 +1,28 @@
+{
+  "repository": "/volume1/docker/union-dev/Union",
+  "branch": "dev",
+  "state_directory": "/volume1/docker/union-dev/state",
+  "broker_socket": "/volume1/docker/union-dev/broker.sock",
+  "planner_model": "gpt-6-astra",
+  "worker_model": "gpt-6.1-sol",
+  "reviewer_model": "gpt-6-astra",
+  "enabled": false,
+  "max_repair_rounds": 2,
+  "max_calls": 0,
+  "model_access_verified": false,
+  "sandbox_verified": false,
+  "credentials_isolation_verified": false,
+  "unknown_cost_authorized": false,
+  "job_wall_time_limit_seconds": 14400,
+  "interval_seconds": 3600,
+  "no_progress_warning_seconds": 1800,
+  "automatic_push": false,
+  "automatic_main_merge": false,
+  "production_deploy": false,
+  "source_ready": false,
+  "allowed_paths": ["ai_union", "tests", "web/console/src", "scripts", "docs", "specs", "evidence", "management/project.json", "PROJECT.md", "TASKS.md", "HANDOFF.md"],
+  "test_profiles": {
+    "union": [["npm", "run", "check"], [".venv/bin/python", "-m", "unittest", "discover", "-v"]],
+    "union_gateways": [["npm", "run", "check"], [".venv/bin/python", "-m", "unittest", "discover", "-v"], ["npm", "run", "test:browser"], ["npm", "run", "test:gateways"]]
+  }
+}

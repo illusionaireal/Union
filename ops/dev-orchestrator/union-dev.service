@@ -1,0 +1,16 @@
+[Unit]
+Description=UNION serial external development cycle
+After=union-dev-broker.service
+Requires=union-dev-broker.service
+
+[Service]
+Type=oneshot
+UMask=0077
+Environment=PYTHONDONTWRITEBYTECODE=1
+ExecStart=/usr/local/bin/union-dev once
+TimeoutStartSec=15000
+KillMode=process
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true

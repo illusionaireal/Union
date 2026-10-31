@@ -1,0 +1,14 @@
+[Unit]
+Description=UNION fixed container execution broker
+After=docker.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /volume1/docker/union-dev/controller/broker.py /volume1/docker/union-dev/broker.json
+Restart=on-failure
+RestartSec=10
+UMask=0077
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target

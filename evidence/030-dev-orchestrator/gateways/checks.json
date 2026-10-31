@@ -1,0 +1,18 @@
+{
+  "simulated": true,
+  "realProviderCalls": 0,
+  "checks": [
+    "registration does not run a health probe",
+    "health keeps deployment unknown",
+    "unsupported update and stop controls are absent",
+    "AU receives only the public endpoint and no inherited token",
+    "tool probe succeeds against local model double",
+    "tool roundtrip reserves two simulated calls",
+    "mobile layout fits 390",
+    "mobile layout fits 320",
+    "archive preserves AU connection snapshot",
+    "ordinary board cannot manage platform",
+    "ordinary board direct endpoint is rejected",
+    "no browser runtime errors"
+  ]
+}
