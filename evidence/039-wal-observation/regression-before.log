@@ -1,0 +1,37 @@
+test_wal_writer_closes_at_connect_without_observer_recreating_sidecars (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_wal_writer_closes_at_connect_without_observer_recreating_sidecars) ... FAIL
+test_live_wal_is_unknown_without_any_checkpoint_sqlite_connection (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_live_wal_is_unknown_without_any_checkpoint_sqlite_connection) ... FAIL
+
+======================================================================
+FAIL: test_wal_writer_closes_at_connect_without_observer_recreating_sidecars (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_wal_writer_closes_at_connect_without_observer_recreating_sidecars)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_runtime_checkpoints.py", line 217, in test_wal_writer_closes_at_connect_without_observer_recreating_sidecars
+    self.assertEqual(files(), transition[-1] if transition else before)
+AssertionError: {'checkpoints.sqlite3-wal': 'e3b0c44298fc1c149afbf4c8996fb9242[214 chars]9eb'} != {'checkpoints.sqlite3': '313263dbbf7443c40ee25ab365e55e65f633a[24 chars]79d'}
+- {'checkpoints.sqlite3': '313263dbbf7443c40ee25ab365e55e65f633a1e2cb69f335a3aa4ff5c1f9c79d',
+?                                                                                           ^
+
++ {'checkpoints.sqlite3': '313263dbbf7443c40ee25ab365e55e65f633a1e2cb69f335a3aa4ff5c1f9c79d'}
+?                                                                                           ^
+
+-  'checkpoints.sqlite3-shm': 'fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb',
+-  'checkpoints.sqlite3-wal': 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'}
+
+======================================================================
+FAIL: test_live_wal_is_unknown_without_any_checkpoint_sqlite_connection (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_live_wal_is_unknown_without_any_checkpoint_sqlite_connection)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_runtime_checkpoints.py", line 243, in test_live_wal_is_unknown_without_any_checkpoint_sqlite_connection
+    self.assertEqual(opened, [])
+AssertionError: Lists differ: ['file:///tmp/tmpkkey7sn1/org/harness/chec[623 chars]=ro'] != []
+
+First list contains 10 additional elements.
+First extra element 0:
+'file:///tmp/tmpkkey7sn1/org/harness/checkpoints.sqlite3?mode=ro'
+
+Diff is 705 characters long. Set self.maxDiff to None to see it.
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.059s
+
+FAILED (failures=2)

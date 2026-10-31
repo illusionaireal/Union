@@ -1,0 +1,101 @@
+test_confirmed_work_and_loss_of_activity_do_not_infer_deployment (tests.test_runtime_location.RuntimeLocationTests.test_confirmed_work_and_loss_of_activity_do_not_infer_deployment) ... FAIL
+test_legacy_unregistered_reads_do_not_create_runtime_registration (tests.test_runtime_location.RuntimeLocationTests.test_legacy_unregistered_reads_do_not_create_runtime_registration) ... FAIL
+test_new_host_activity_does_not_confirm_a_previous_owners_run (tests.test_runtime_location.RuntimeLocationTests.test_new_host_activity_does_not_confirm_a_previous_owners_run) ... FAIL
+test_unknown_dispatch_is_not_erased_by_unregistered_description (tests.test_runtime_location.RuntimeLocationTests.test_unknown_dispatch_is_not_erased_by_unregistered_description) ... FAIL
+
+======================================================================
+FAIL: test_confirmed_work_and_loss_of_activity_do_not_infer_deployment (tests.test_runtime_location.RuntimeLocationTests.test_confirmed_work_and_loss_of_activity_do_not_infer_deployment)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_runtime_location.py", line 50, in test_confirmed_work_and_loss_of_activity_do_not_infer_deployment
+    self.observe(liveness="confirmed")  # Host alive, but no active run yet.
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_runtime_location.py", line 32, in observe
+    self.assertEqual(runtime, {"runtime_id": None, "name": "部署位置未登记", "mode": "unregistered",
+AssertionError: {'run[20 chars]e': '本地控制台执行器', 'mode': 'embedded', 'instance_[179 chars]ce']} != {'run[20 chars]e': '部署位置未登记', 'mode': 'unregistered', 'instan[126 chars]: []}
+  {'active_run_id': None,
+-  'capabilities': ['serial_dispatch', 'task_sessions', 'optional_workspace'],
++  'capabilities': [],
+   'dispatch_state': 'enabled',
+   'instance_id': None,
+   'liveness': 'confirmed',
+-  'mode': 'embedded',
+-  'name': '本地控制台执行器',
++  'mode': 'unregistered',
++  'name': '部署位置未登记',
+   'observed_at': None,
+   'runtime_id': None}
+
+======================================================================
+FAIL: test_legacy_unregistered_reads_do_not_create_runtime_registration (tests.test_runtime_location.RuntimeLocationTests.test_legacy_unregistered_reads_do_not_create_runtime_registration)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_runtime_location.py", line 42, in test_legacy_unregistered_reads_do_not_create_runtime_registration
+    view = self.observe()
+           ^^^^^^^^^^^^^^
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_runtime_location.py", line 32, in observe
+    self.assertEqual(runtime, {"runtime_id": None, "name": "部署位置未登记", "mode": "unregistered",
+AssertionError: {'run[20 chars]e': '本地控制台执行器', 'mode': 'embedded', 'instance_[177 chars]ce']} != {'run[20 chars]e': '部署位置未登记', 'mode': 'unregistered', 'instan[124 chars]: []}
+  {'active_run_id': None,
+-  'capabilities': ['serial_dispatch', 'task_sessions', 'optional_workspace'],
++  'capabilities': [],
+   'dispatch_state': 'enabled',
+   'instance_id': None,
+   'liveness': 'unknown',
+-  'mode': 'embedded',
+-  'name': '本地控制台执行器',
++  'mode': 'unregistered',
++  'name': '部署位置未登记',
+   'observed_at': None,
+   'runtime_id': None}
+
+======================================================================
+FAIL: test_new_host_activity_does_not_confirm_a_previous_owners_run (tests.test_runtime_location.RuntimeLocationTests.test_new_host_activity_does_not_confirm_a_previous_owners_run)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_runtime_location.py", line 66, in test_new_host_activity_does_not_confirm_a_previous_owners_run
+    view = self.observe(liveness="confirmed")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_runtime_location.py", line 32, in observe
+    self.assertEqual(runtime, {"runtime_id": None, "name": "部署位置未登记", "mode": "unregistered",
+AssertionError: {'run[20 chars]e': '本地控制台执行器', 'mode': 'embedded', 'instance_[179 chars]ce']} != {'run[20 chars]e': '部署位置未登记', 'mode': 'unregistered', 'instan[126 chars]: []}
+  {'active_run_id': None,
+-  'capabilities': ['serial_dispatch', 'task_sessions', 'optional_workspace'],
++  'capabilities': [],
+   'dispatch_state': 'enabled',
+   'instance_id': None,
+   'liveness': 'confirmed',
+-  'mode': 'embedded',
+-  'name': '本地控制台执行器',
++  'mode': 'unregistered',
++  'name': '部署位置未登记',
+   'observed_at': None,
+   'runtime_id': None}
+
+======================================================================
+FAIL: test_unknown_dispatch_is_not_erased_by_unregistered_description (tests.test_runtime_location.RuntimeLocationTests.test_unknown_dispatch_is_not_erased_by_unregistered_description)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_runtime_location.py", line 75, in test_unknown_dispatch_is_not_erased_by_unregistered_description
+    view = self.observe(dispatch="needs_review")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_runtime_location.py", line 32, in observe
+    self.assertEqual(runtime, {"runtime_id": None, "name": "部署位置未登记", "mode": "unregistered",
+AssertionError: {'run[20 chars]e': '本地控制台执行器', 'mode': 'embedded', 'instance_[182 chars]ce']} != {'run[20 chars]e': '部署位置未登记', 'mode': 'unregistered', 'instan[129 chars]: []}
+  {'active_run_id': None,
+-  'capabilities': ['serial_dispatch', 'task_sessions', 'optional_workspace'],
++  'capabilities': [],
+   'dispatch_state': 'needs_review',
+   'instance_id': None,
+   'liveness': 'unknown',
+-  'mode': 'embedded',
+-  'name': '本地控制台执行器',
++  'mode': 'unregistered',
++  'name': '部署位置未登记',
+   'observed_at': None,
+   'runtime_id': None}
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.085s
+
+FAILED (failures=4)

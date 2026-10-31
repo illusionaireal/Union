@@ -11,7 +11,7 @@ export const labels: Record<string, string> = {
   unknown: '执行待核对',
   blocked: '运行受阻',
   paused: '派发已暂停',
-  pause_requested: '暂停已请求，等待在途回执',
+  pause_requested: '暂停已请求，结束状态尚待确认',
   needs_review: '执行待核对',
   dependent: '等待依赖',
   pending: '待执行',
@@ -25,6 +25,9 @@ export const labels: Record<string, string> = {
   rejected: '已拒绝',
   succeeded: '已完成',
   idle: '无在途执行',
+  executing: '正在执行',
+  ready: '可派发',
+  waiting: '等待条件',
   enabled: '允许派发',
 };
 export const sourceName = (source: string) =>

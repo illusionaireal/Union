@@ -1,0 +1,77 @@
+{
+  "scope": "synthetic local SDK/SQLite fixtures; no real AU/provider; residual explicitly retained",
+  "sqlite_version": "3.53.1",
+  "cases": [
+    {
+      "case": "wal_writer_closes",
+      "precheck_files": {
+        "checkpoints.sqlite3": {
+          "bytes": 4096,
+          "sha256": "0ab48b25cba617ed3a4acca0161813b314c095ef63544bb4af60769eb1012977"
+        },
+        "checkpoints.sqlite3-shm": {
+          "bytes": 32768,
+          "sha256": "bbdc8819d957911c917e52f4517db582495430f77d13f84f09b1192268363e95"
+        },
+        "checkpoints.sqlite3-wal": {
+          "bytes": 32992,
+          "sha256": "3e9d0aa9095c373d18d3c0730fd7d47f3852ba35551dec6da4360eae1179a733"
+        }
+      },
+      "connect_calls": 0,
+      "observed": null,
+      "after_observation": {
+        "checkpoints.sqlite3": {
+          "bytes": 4096,
+          "sha256": "0ab48b25cba617ed3a4acca0161813b314c095ef63544bb4af60769eb1012977"
+        },
+        "checkpoints.sqlite3-shm": {
+          "bytes": 32768,
+          "sha256": "bbdc8819d957911c917e52f4517db582495430f77d13f84f09b1192268363e95"
+        },
+        "checkpoints.sqlite3-wal": {
+          "bytes": 32992,
+          "sha256": "3e9d0aa9095c373d18d3c0730fd7d47f3852ba35551dec6da4360eae1179a733"
+        }
+      },
+      "observer_added_files": [],
+      "scope": "WAL bypass: no connect/transition hook"
+    },
+    {
+      "case": "delete_switches_to_wal",
+      "precheck_files": {
+        "checkpoints.sqlite3": {
+          "bytes": 20480,
+          "sha256": "eaba70ab28c55163121167680dca6b27024bc5a7e86b3670959fbe3b6ef3dae1"
+        }
+      },
+      "connect_calls": 1,
+      "after_external_transition": {
+        "checkpoints.sqlite3": {
+          "bytes": 20480,
+          "sha256": "81f04414b62faea5f9897fb1779be8d23d4518db4bd2f4faa021e7711d8e48a4"
+        }
+      },
+      "observed": true,
+      "after_observation": {
+        "checkpoints.sqlite3": {
+          "bytes": 20480,
+          "sha256": "81f04414b62faea5f9897fb1779be8d23d4518db4bd2f4faa021e7711d8e48a4"
+        },
+        "checkpoints.sqlite3-shm": {
+          "bytes": 32768,
+          "sha256": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb"
+        },
+        "checkpoints.sqlite3-wal": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "observer_added_files": [
+        "checkpoints.sqlite3-shm",
+        "checkpoints.sqlite3-wal"
+      ],
+      "scope": "Known residual DELETE-to-WAL race, not fixed"
+    }
+  ]
+}

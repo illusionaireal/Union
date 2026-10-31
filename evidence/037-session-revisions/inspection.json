@@ -1,0 +1,46 @@
+{
+  "checked_at_utc": "2026-10-31T10:41:51.612835+00:00",
+  "branch": "dev",
+  "base_head": "6ed3470cfb3b7726a945a616e00893b86a7ef389",
+  "starting_ahead_of_origin_dev": 13,
+  "latest_commits": [
+    "6ed3470 test: verify runtime observation over scoped HTTP",
+    "fe20291 fix: share dispatch observation across runtime summaries",
+    "d428e87 fix: separate unregistered deployment from host activity",
+    "70e2c29 fix: observe checkpoint evidence without promising resume",
+    "c120a6c fix: bind workspace summary to representative work"
+  ],
+  "production_source_changed": false,
+  "remote_observed_again_at_local": "2026-10-31 18:37 +08:00",
+  "remote_refs": {
+    "dev": "b39c06c76e3b83a6d5413b45f58a9c736e2f15bc",
+    "main": "e11c389366814060ea4475a359c9b62036ccd176"
+  },
+  "remote_ci": {
+    "combined_statuses": [],
+    "workflow_runs": [],
+    "limitation": "workflow wrapper only PR-triggered first page; no evidence all Actions absent/pass; local changes unpushed"
+  },
+  "models": {
+    "planning": "requested gpt-6-astra; completed",
+    "execution": "GPT-6.1 Sol",
+    "independent_review": "requested gpt-6-astra; initially interrupted by usage limit, resumed and completed final 54 tests",
+    "provider_resolved_model": null,
+    "tokens": null,
+    "cost": null
+  },
+  "company": "local read-only only; no remote production/VPS/provider request",
+  "user_data_preserved": "docs/research/",
+  "browser": {
+    "chromium_cached": false,
+    "common_browser_commands": false
+  },
+  "external_actions": {
+    "AU_live_provider_call": false,
+    "real_container_run": false,
+    "vps_deploy": false,
+    "push": false,
+    "main_merge": false,
+    "payment": false
+  }
+}

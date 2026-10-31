@@ -1,5 +1,101 @@
 # 当前工程交接
 
+## 2026-11-01：检查点只做lstat与本地提交未同步（040）
+
+Astra完整规划、Sol撤掉所有原检查点SQLite连接/文件头读取，保留调用签名，仅harness/固定路径lstat；存在/异常unknown、明确缺失false，无匹配session仍false。true是兼容协议但当前无生产来源；不靠伪造true维持测试。定向50、Python260、独立Astra94项和npm完整检查（前端31项/类型/构建）通过；独立明确报告无阻断缺陷，但书面长结论因额度中断，不称整体独立验收完成。两项有效red均来自旧实现，首个尝试的hash fixture自身被guard拦截另存，不把它归生产bug。详见[040](evidence/040-checkpoint-metadata/README.md)。
+
+移除观察连接使DELETE→WAL/路径替换的旧connect入口不触达，不宣称外部转换已执行或全HTTP/并发绝不写文件。路径类型/权限错误未知，缺失仅探测时事实；组织库/文件系统非原子。Harness真实SDK恢复/锁/授权未改。下一小时先冻结已有HarnessExecutor在连接禁用/revision变化后的撤销生效点，再SDK/回环HTTP复现；不要自动重建true元数据。U-041仍blocked，热配置/真实恢复/浏览器/整体复核保留，U-042不扩大。
+
+GitHub插件/ls-remote核对远端dev仍b39c06c；此前提交仅本地commit，未push，因此GitHub看不到。基线本地e0d04c7领先16提交；用户docs/research/资料未动，当前批完成后仍仅本地保存，不隐含声称远端CI或发布。原公司本地仍bootstrap/paused、0成员/工作/成果/调用，无模型/工作区、Docker/Chromium。未推送/发布/付费/合并main/改生产。
+
+## 2026-10-31：WAL观察竞态局部修复与可见度退让（039）
+
+Astra完整规划、Sol实际SDK/SQLite复现：sidecar预检通过后关闭最后writer，观察SELECT重建wal/shm；以writer关闭后的基线归因。runtime_view._checkpoint仅对已观察WAL早退None，不再connect；通常SDK检查点现为unknown。两项red后green，定向48、Python258、独立Astra92及npm完整检查（前端31项/类型/构建）通过；非WAL正例仅fixture写完SDK后显式转DELETE，保留正文禁止读取/会话与AU隔离，HTTP同时有WAL未知与非WAL正例。见[039](evidence/039-wal-observation/README.md)。没有改Harness/恢复/授权或使用immutable/复制库。
+
+重要：race-after.json已证明DELETE头预检后外部切WAL仍可创建sidecars并返回true；路径替换/跨库也未协调，不可称任意并发零文件副作用。现行spec028已更新，历史033证据勿改写。下一小时先冻结这些残余场景的保证，再选择独立观察元数据或最小读写协调方案；不靠重复is_file预检宣称闭合，不先扩U-042。U-041仍blocked，热配置、真实恢复、Chromium/整体验收未过。
+
+20:40公司本地仍bootstrap/paused、0成员/工作/成果/调用，无模型/工作区，Docker/Chromium不可用，真实供应商/主机资源阻塞保持。验证解释器.union/validation-20261031-0940/bin/python可用，接手先检查；用户docs/research/保留。未推送/发布/付费/合并main/改生产。
+
+## 2026-10-31：A03心跳TTL与迟到回执子集（038）
+
+Astra完整规划、Sol新增tests/test_activity_receipts.py四项测试，独立Astra83项通过，Python全量256项及npm完整检查（前端31项/类型/构建）通过。真实首拍/UID/锁/Thread与正常清理保留，只patch activity自身time和续拍等待：age0/5确认、5.001/负age不确认，原owner/文件/锁仍在，读取不恢复/写业务状态，第二Runner拒绝。过期不撤销合法回执；实际Runner启动recover→unknown和正式reconcile后新run期间，旧work/progress被拒、旧fail_run无效，仅新成果落库。无生产改动，首轮失败仅测试未预计usage的cost未知标准化。见[038证据](evidence/038-activity-boundaries/README.md)。
+
+不能把run.status/工作版本及本地互斥改称独立epoch/owner-token fencing；也未验证真实续拍可靠性、进程崩溃、供应商迟到网络响应、跨进程/主机或VPS恢复。U-041仍blocked。下一小时先按Astra建议确定性复现checkpoint sidecar预检至connect TOCTOU，记录实际文件变化，再冻结保守只读契约并最小修复；不先扩U-042。WAL/跨库、已有Executor热配置、真实恢复、Chromium A11及整体复核保留。
+
+19:37公司本地仍筹建/暂停、0成员/工作/成果/调用，无模型/工作区、Docker/Chromium；模型授权、真实容器/镜像、持久主机/SSH、New API阻塞未解除。验证解释器.union/validation-20261031-0940/bin/python可用，接手先检查；docs/research/用户资料保留。本轮未推送/发布/付费/合并main/改生产。
+
+## 2026-10-31：A06 SDK版本与交接隔离（037）
+
+基线dev@6ed3470，Astra完整规划、Sol新增tests/test_session_revisions.py七项行为测试，独立Astra曾因额度中断，18时恢复并最终54项通过；Python全量252项及npm完整检查（前端31项/类型/构建）通过。无生产改动；同版本paused/continued续接为对照，连接/workspace revision各仅改变目标绑定字段，正式handoff整体变化；新session/key无旧草稿，旧row/run/用量、非空workspace回执和旧thread checkpoint/writes保留。新factory禁用连接零消耗；禁用工作区及HTTP在途正式岗位撤权不调用容器、无新命令回执，模型用量保留。见[037](evidence/037-session-revisions/README.md)。
+
+初期失败是测试读取最新delta checkpoint为完整内容、期待单步correction而非blocked及feedback必有值；均纠正测试，未证明生产bug。SDK历史用get_tuple确认根存在、list读取历史；同版本用例证明同thread历史续接，不额外宣称已直接断言read_file的ToolMessage正文。旧Executor连接快照热撤销和在途配置竞态未验。
+
+下一小时首项A03：先核对activity/owner/receipt已有机制，冻结直接心跳时间过期、旧实例迟到的最小行为用例；不把owner退出当过期，有失败才修复。U-041仍blocked，WAL/跨库、真实恢复、Chromium A11和整体复核未过，U-042不先扩大。18:38公司本地仍bootstrap/paused、0成员/工作/成果/调用，无模型/工作区；真实Docker/主机/供应商阻塞未解除。验证解释器.union/validation-20261031-0940/bin/python仍可用，接手先检查；用户docs/research/保留。本轮未推送/发布/付费/合并main/改生产。
+
+## 2026-10-31：实际HTTP验证与剩余A03/A06证据（036）
+
+Astra完整规划，Sol新增tests/test_runtime_http.py六项实际Server/cookie组合测试，独立Astra115项子集复核PASS；最终Python245项及npm完整检查（含前端31项/类型/构建）通过。全局/限域board与observer、同ID跨AU、完整响应私有哨兵、伪造参数、稳定读取、正式状态链和当前授权变化有证据。无生产缺陷，生产代码未改；初次fixture缺token_limit_field被合法拒绝，补齐后通过。详见[036证据/矩阵](evidence/036-runtime-http-observation/README.md)。
+
+U-041整体仍blocked，切勿把六项HTTP通过写成A01–A06全项验收。下一小时首项A06：用实际SDK分别验证连接revision、工作区revision、有效任职变化产生新session，旧消息不进入新请求、历史保留、当前权限重检；有失败才最小修复。随后A03直接心跳时间过期和旧owner迟到回执。WAL TOCTOU/跨库非原子、真实恢复、Chromium和整体独立验收保留。13:42原公司本地仍筹建/暂停、0成员/工作/成果/调用，无模型/工作区绑定，不是VPS现场。
+
+验证解释器.union/validation-20261031-0940/bin/python仍可执行，接手先核查；未重装。主账保持16done=10文档+6受控、在制3/3、阻塞7、就绪0，资源阻塞未解除。未推送、发布、付费、合并main或修改生产；docs/research/用户资料未动。
+
+## 2026-10-31：派发观察统一与暂停诊断修正（035）
+
+按Astra实际返回的优先级与直接消费者决策，Sol将snapshot派发状态单次计算后传runtime：unknown始终needs_review；否则暂停且running/host活跃为pause_requested；否则paused或enabled。corp诊断以真实暂停标志决定paused blocker，不把unknown误报用户暂停。仅观察/诊断与文案变更，runner/Engine/权限/next_step/成员状态未改。239项Python、31项前端通过，独立Astra局部PASS；见[035](evidence/035-dispatch-observation/README.md)。
+
+12:40原公司本地只读诊断仍筹建/暂停、0成员/工作/成果/调用，未绑定模型/工作区；不是VPS现场。旧环境已缺失，新解释器.union/validation-20261031-0940/bin/python本段可用，接手先检查。U-041仍blocked；下一小时按028对完整观察面补独立服务端/HTTP权限、AU隔离、只读矩阵，再最小修失败项；不将服务端证据替代Chromium或整体通过。WAL竞态、跨库非原子、真实主机/模型阻塞保留，未推送/付费/发布/改生产。
+
+## 2026-10-31：未登记部署的诚实投影（034）
+
+Astra完整规划、Sol实现、独立Astra局部复核PASS。无持久runtime登记时mode改为unregistered、中性名称、空实例能力声明，身份/时间仍null；宿主活性与匹配owner的running引用独立保留，不猜Console/CLI/service部署。资源页区分部署/活性，兼容其他mode的明确fixture。234项Python与29项前端通过，见[034证据](evidence/034-unregistered-runtime/README.md)。未加注册、控制或权限，原公司08:39本地只读检查仍筹建/暂停、0成员/工作/成果/调用。
+
+U-041整体仍blocked。下一项先复现顶层与runtime派发口径在unknown未暂停、暂停且只有宿主活性时的差异，由Astra冻结契约、Sol仅修观察一致性，不改调度/授权；WAL竞态、跨库非原子、实际浏览器和完整边界继续待验。本轮重建固定依赖解释器.union/validation-20261031-0837/bin/python，后续先检查可执行性。未推送、发布、付费或修改main/生产。
+
+## 2026-10-31：检查点存在性与接续提示纠偏（033）
+
+Astra本轮已恢复响应并完成完整规划，Sol实现，另一独立Astra局部复核PASS。修复按session.status推断检查点和paused=>possible：现查本AU本会话根namespace行存在三态，取消安全恢复暗示；成员页区分有/无/未知。真实SDK本地fixture、WAL/正文排除及实际connect错误均有回归，见[033](evidence/033-checkpoint-observation/README.md)。未改Harness授权/恢复、组织流程或真实公司配置。
+
+07:47本地原公司仍bootstrap/paused，成员/工作/成果/调用0，模型/工作区未绑定；不是远端生产检查。WAL格式且缺sidecars时返回unknown，不开库；预检到连接仍有TOCTOU，不能声称任意并发绝对零新增文件或原子快照。完整U-041仍blocked，下一小时先复现未登记时runtime.mode/name仍固定embedded/本地控制台的部署描述，再冻结只读契约并最小修复；实际浏览器及完整边界复核仍待完成。
+
+## 2026-10-31：代表工作区许可摘要修复（032）
+
+基于dev@85647a7，修复成员兼任时workspace摘要任选首任职导致的双向误报；跟随既有代表工作有效任职，无代表工作不猜岗位，禁用/未配置原因与revision保持。只改观察投影，真实命令包/暂停/版本/任职检查不变。Astra实际给出核心取舍后因usage limit终止完整规划；Sol据已收到方案实现与测试，另一独立Sol复核PASS，不能称Astra完成了后续复核。222项Python和59项定向通过，见[032证据](evidence/032-runtime-workspace/README.md)。
+
+07:33本地原公司仍bootstrap/paused、0成员/工作/成果/调用，未绑定模型或工作区，无Docker CLI；远端dev仍b39c06c，未推送或更改生产。验证解释器须先核对存在性，本轮重建.union/validation-20261031-0731/bin/python并装固定依赖，未覆盖原.venv或用户docs/research/资料。
+
+U-041完整验收仍blocked；下一小时首项为_session从会话status直接推断has_checkpoint的确定性缺口：先由可用Astra冻结只读、无正文泄漏的存在性契约，再由Sol测试修复；存在检查点不等于当前授权或可安全恢复。部署描述、实际Chromium矩阵与完整观察边界复核继续等待，不自动开启真实调用或托管。Astra额度不足需明确记录，不冒称指定模型规划/复核完成。
+
+## 2026-10-31 02:45：Astra规划/局部复核，Sol修复成员工作状态
+
+基于dev@ed0d411，完成U-041工作状态及代表项选择的局部修复：blocked/failed/paused/needs_review不再被忽略；unknown优先于待办，ready选择跳过未满足依赖，全AU在途/unknown不冒报可派发。独立Astra发现handoff后旧成员会话被新成员行引用，已补先红后绿回归并限制run归属，最终局部PASS。215项Python全量通过，详见[031证据与逐项完成核查](evidence/031-member-work-state/README.md)。
+
+02:44本地原公司只读检查仍bootstrap/paused，0成员/工作/成果/调用，未绑定模型或工作区；这是本地现有数据，不是远端VPS检查。本轮新建固定依赖验证解释器`.union/validation-20261031-0237/bin/python`，上一轮临时解释器已不存在，后续先检查实际环境。未推送、合并main、发布、付费或更改生产。
+
+U-041整体仍blocked，下一小时先处理多任职工作区摘要：现有_workspace只取首个有效任职，可能与代表工作岗位不一致。由Astra明确最小只读契约，Sol加正式Engine行为回归，不扩权。检查点/恢复、部署描述、实际浏览器A01–A06/A11及完整观察边界复核仍待完成；Chromium缺失不能掩盖这些代码缺口。原WIP3与恢复条件保持。
+
+## 2026-10-31：Astra规划/复核、Sol修复最近执行引用
+
+基于 `dev@97119e5`，GPT-6 Astra 规划，GPT-6.1 Sol 实施，另一独立 Astra 代理复核。修复成员 recent_run 取最早回执及空闲会话跟随旧回执的问题，保留成员隔离、旧到新 runs 顺序和当前工作优先的会话引用。三项新增回归先失败后通过；固定Python依赖已在独立验证环境恢复，全量205项通过。详见[030证据](evidence/030-runtime-recent-run/README.md)。
+
+U-041完整验收仍未通过：后续应先确定工作状态优先级并复现 blocked/failed/paused 被显示为 idle 的问题，再补兼任工作区、检查点/部署描述及浏览器矩阵。不能继续把 U-041 视为只差 Chromium。主账补记原开始时间、实际负责人及阻塞，临时在制上限3与恢复条件见[排期纠偏](management/reviews/2026-10-31-runtime-observation.md)。本轮双模型是本环境中的工程代理协作；VPS常驻链、AU成员调用和公司真实运行未验收。未推送或修改生产环境。
+
+## 2026-10-30：U-041 成员运行观察受控实现，浏览器验收待环境
+
+本地 `dev` 新增只读 runtime/member/session/workspace 摘要与成员、资源页展示；成员工作、活性和部署位置分开表达，不新增派发、托管控制或宿主权限。受控后端/前端检查通过，详见 [029 证据](evidence/029-member-runtime-observation/README.md)。当前环境缺少 Playwright Chromium，A01–A06/A11 浏览器验证及独立观察边界复核未做；U-041 不能关闭，U-042 和真实托管保持未实现。主账在制上限已由 U-007/U-037 占满，因此本轮不虚构认领或改变 U-041 状态；下次应在带 Chromium 的环境补齐浏览器验收，再按主账流程处理状态。
+
+追加：已为新成员/资源观察界面添加 2 项组件行为检查；前端共22项、定向Python共27项通过。该项只增强受控验证，不改变 U-041 的浏览器/独立复核阻塞结论。
+
+2026-10-30 另按 CI 命令重试 `npx playwright-core install chromium`，下载的 Chrome 压缩包显示 0 MiB 且无法解压；环境仍无法运行 Playwright。该可复现阻塞已补入029证据，不要将安装失败归为 U-041 功能或浏览器测试失败。
+
+## 2026-10-30：成员执行与托管管理计划已准备
+
+U-040仅交付规划；下一实现U-041只读成员/运行位置观察，随后U-042单机持久托管与受限控制，并发U-043为候选。见[028计划](specs/028-member-runtime-management/plan.md)。未改运行时、资源/权限和公司状态；U-007/U-037在制阻塞及U-008实际主机条件继续保留，不把计划记作托管能力上线。
+
+## 2026-10-30：New API 第一批接入代码与受控检查
+
+已实现平台目录、宿主显式平台权限、健康/版本检测及持久回执、AU独立连接来源快照与React入口。200项Python、20项前端和完整npm检查通过，独立权限复核通过。U-037因当前环境缺浏览器且官方安装器下载不完整，保持阻塞待实际浏览器验收；U-039真实New API/模型未验，U-038托管启停/升级尚未实现。公司未因本批启动。见[027证据](evidence/027-gateway-management/README.md)及[使用说明](docs/AI_GATEWAYS.md)。
+
 > 当前模块成熟度、目标完成情况、路线和统一待办见[项目总览](PROJECT.md)（2026-10-27）。下文日期条目保留各迭代的历史范围；较早的“当前/未完成”描述须结合后续证据阅读。
 
 ## 2026-10-28：持续批次020–025完成工程交付，真实验收受资源阻塞

@@ -113,7 +113,15 @@ def list_connections(engine):
         if not cx.execute("SELECT 1 FROM sqlite_master WHERE name='model_connections'").fetchone():
             return []
         rows = cx.execute("SELECT a.* FROM model_connections a WHERE revision=(SELECT MAX(revision) FROM model_connections b WHERE b.id=a.id) ORDER BY id").fetchall()
-        return [public_connection(row) for row in rows]
+        linked = cx.execute("SELECT 1 FROM sqlite_master WHERE name='model_gateway_refs'").fetchone()
+        result = []
+        for row in rows:
+            item = public_connection(row)
+            ref = cx.execute("SELECT reference FROM model_gateway_refs WHERE id=? AND revision=?", (row["id"], row["revision"])).fetchone() if linked else None
+            if ref:
+                item["gateway_ref"] = json.loads(ref[0])
+            result.append(item)
+        return result
 
 
 def public_connection(row):
@@ -121,7 +129,7 @@ def public_connection(row):
             "has_api_key": bool(row["api_key"]), "updated_at": row["updated_at"]}
 
 
-def configure_connection(engine, board_key, connection_id, config, reason, api_key=None):
+def configure_connection(engine, board_key, connection_id, config, reason, api_key=None, *, gateway_ref=None):
     identifier(connection_id)
     config = validate_config(config)
     text(reason, "API 配置依据", 1000)
@@ -137,6 +145,9 @@ def configure_connection(engine, board_key, connection_id, config, reason, api_k
         reject_saved_secrets(cx, [connection_id, config, reason], secret)
         revision = old["revision"] + 1 if old else 1
         cx.execute("INSERT INTO model_connections VALUES(?,?,?,?,?)", (connection_id, revision, encoded(config), secret, now()))
+        if gateway_ref is not None:
+            cx.execute("CREATE TABLE IF NOT EXISTS model_gateway_refs(id TEXT NOT NULL, revision INTEGER NOT NULL, reference TEXT NOT NULL, PRIMARY KEY(id,revision))")
+            cx.execute("INSERT INTO model_gateway_refs VALUES(?,?,?)", (connection_id, revision, encoded(gateway_ref)))
         state = engine._state(cx)
         state["version"] += 1
         engine._event(cx, "api_connection_configured", {"connection_id": connection_id, "revision": revision, "board": board, "reason": reason})

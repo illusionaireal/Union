@@ -1,0 +1,178 @@
+test_empty_database_and_unreadable_schema_have_distinct_results (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_empty_database_and_unreadable_schema_have_distinct_results) ... FAIL
+test_legacy_read_and_handoff_do_not_create_or_share_checkpoints (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_legacy_read_and_handoff_do_not_create_or_share_checkpoints) ... ok
+test_live_wal_checkpoint_is_visible_without_reading_body_columns (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_live_wal_checkpoint_is_visible_without_reading_body_columns) ... ERROR
+test_other_thread_namespace_and_au_are_not_this_session (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_other_thread_namespace_and_au_are_not_this_session) ... FAIL
+test_sdk_checkpoint_exists_independently_of_session_status (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_sdk_checkpoint_exists_independently_of_session_status) ...
+  test_sdk_checkpoint_exists_independently_of_session_status (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_sdk_checkpoint_exists_independently_of_session_status) (status='paused') ... FAIL
+  test_sdk_checkpoint_exists_independently_of_session_status (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_sdk_checkpoint_exists_independently_of_session_status) (status='running') ... FAIL
+  test_sdk_checkpoint_exists_independently_of_session_status (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_sdk_checkpoint_exists_independently_of_session_status) (status='failed') ... FAIL
+  test_sdk_checkpoint_exists_independently_of_session_status (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_sdk_checkpoint_exists_independently_of_session_status) (status='completed') ... FAIL
+test_session_status_is_not_checkpoint_evidence (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_session_status_is_not_checkpoint_evidence) ...
+  test_session_status_is_not_checkpoint_evidence (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_session_status_is_not_checkpoint_evidence) (status='paused') ... FAIL
+  test_session_status_is_not_checkpoint_evidence (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_session_status_is_not_checkpoint_evidence) (status='running') ... FAIL
+  test_session_status_is_not_checkpoint_evidence (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_session_status_is_not_checkpoint_evidence) (status='failed') ... FAIL
+test_unknown_reconciled_and_running_runs_do_not_offer_resume (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_unknown_reconciled_and_running_runs_do_not_offer_resume) ...
+  test_unknown_reconciled_and_running_runs_do_not_offer_resume (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_unknown_reconciled_and_running_runs_do_not_offer_resume) (status='unknown', checkpoint=False) ... FAIL
+  test_unknown_reconciled_and_running_runs_do_not_offer_resume (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_unknown_reconciled_and_running_runs_do_not_offer_resume) (status='unknown', checkpoint=True) ... FAIL
+  test_unknown_reconciled_and_running_runs_do_not_offer_resume (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_unknown_reconciled_and_running_runs_do_not_offer_resume) (status='reconciled', checkpoint=False) ... FAIL
+  test_unknown_reconciled_and_running_runs_do_not_offer_resume (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_unknown_reconciled_and_running_runs_do_not_offer_resume) (status='reconciled', checkpoint=True) ... FAIL
+  test_unknown_reconciled_and_running_runs_do_not_offer_resume (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_unknown_reconciled_and_running_runs_do_not_offer_resume) (status='running', checkpoint=False) ... FAIL
+  test_unknown_reconciled_and_running_runs_do_not_offer_resume (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_unknown_reconciled_and_running_runs_do_not_offer_resume) (status='running', checkpoint=True) ... FAIL
+
+======================================================================
+ERROR: test_live_wal_checkpoint_is_visible_without_reading_body_columns (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_live_wal_checkpoint_is_visible_without_reading_body_columns)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_runtime_checkpoints.py", line 169, in test_live_wal_checkpoint_is_visible_without_reading_body_columns
+    with patch("ai_union.runtime_view.sqlite3.connect", side_effect=guarded):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1451, in __enter__
+    self.target = self.getter()
+                  ^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pkgutil.py", line 528, in resolve_name
+    result = getattr(result, p)
+             ^^^^^^^^^^^^^^^^^^
+AttributeError: module 'ai_union.runtime_view' has no attribute 'sqlite3'
+
+======================================================================
+FAIL: test_empty_database_and_unreadable_schema_have_distinct_results (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_empty_database_and_unreadable_schema_have_distinct_results)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_runtime_checkpoints.py", line 131, in test_empty_database_and_unreadable_schema_have_distinct_results
+    self.assertIs(self.observe()["has_checkpoint"], False)
+AssertionError: True is not False
+
+======================================================================
+FAIL: test_other_thread_namespace_and_au_are_not_this_session (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_other_thread_namespace_and_au_are_not_this_session)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_runtime_checkpoints.py", line 109, in test_other_thread_namespace_and_au_are_not_this_session
+    self.assertIs(self.observe()["has_checkpoint"], False)
+AssertionError: True is not False
+
+======================================================================
+FAIL: test_sdk_checkpoint_exists_independently_of_session_status (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_sdk_checkpoint_exists_independently_of_session_status) (status='paused')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_runtime_checkpoints.py", line 101, in test_sdk_checkpoint_exists_independently_of_session_status
+    self.assertEqual(observed["resume_state"], "not_available" if status == "completed" else "requires_validation")
+AssertionError: 'possible' != 'requires_validation'
+- possible
++ requires_validation
+
+
+======================================================================
+FAIL: test_sdk_checkpoint_exists_independently_of_session_status (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_sdk_checkpoint_exists_independently_of_session_status) (status='running')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_runtime_checkpoints.py", line 101, in test_sdk_checkpoint_exists_independently_of_session_status
+    self.assertEqual(observed["resume_state"], "not_available" if status == "completed" else "requires_validation")
+AssertionError: 'not_available' != 'requires_validation'
+- not_available
++ requires_validation
+
+
+======================================================================
+FAIL: test_sdk_checkpoint_exists_independently_of_session_status (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_sdk_checkpoint_exists_independently_of_session_status) (status='failed')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_runtime_checkpoints.py", line 101, in test_sdk_checkpoint_exists_independently_of_session_status
+    self.assertEqual(observed["resume_state"], "not_available" if status == "completed" else "requires_validation")
+AssertionError: 'not_available' != 'requires_validation'
+- not_available
++ requires_validation
+
+
+======================================================================
+FAIL: test_sdk_checkpoint_exists_independently_of_session_status (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_sdk_checkpoint_exists_independently_of_session_status) (status='completed')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_runtime_checkpoints.py", line 100, in test_sdk_checkpoint_exists_independently_of_session_status
+    self.assertIs(observed["has_checkpoint"], True)
+AssertionError: False is not True
+
+======================================================================
+FAIL: test_session_status_is_not_checkpoint_evidence (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_session_status_is_not_checkpoint_evidence) (status='paused')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_runtime_checkpoints.py", line 91, in test_session_status_is_not_checkpoint_evidence
+    self.assertIs(observed["has_checkpoint"], False)
+AssertionError: True is not False
+
+======================================================================
+FAIL: test_session_status_is_not_checkpoint_evidence (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_session_status_is_not_checkpoint_evidence) (status='running')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_runtime_checkpoints.py", line 91, in test_session_status_is_not_checkpoint_evidence
+    self.assertIs(observed["has_checkpoint"], False)
+AssertionError: True is not False
+
+======================================================================
+FAIL: test_session_status_is_not_checkpoint_evidence (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_session_status_is_not_checkpoint_evidence) (status='failed')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_runtime_checkpoints.py", line 91, in test_session_status_is_not_checkpoint_evidence
+    self.assertIs(observed["has_checkpoint"], False)
+AssertionError: True is not False
+
+======================================================================
+FAIL: test_unknown_reconciled_and_running_runs_do_not_offer_resume (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_unknown_reconciled_and_running_runs_do_not_offer_resume) (status='unknown', checkpoint=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_runtime_checkpoints.py", line 122, in test_unknown_reconciled_and_running_runs_do_not_offer_resume
+    self.assertIs(observed["has_checkpoint"], checkpoint)
+AssertionError: True is not False
+
+======================================================================
+FAIL: test_unknown_reconciled_and_running_runs_do_not_offer_resume (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_unknown_reconciled_and_running_runs_do_not_offer_resume) (status='unknown', checkpoint=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_runtime_checkpoints.py", line 123, in test_unknown_reconciled_and_running_runs_do_not_offer_resume
+    self.assertEqual(observed["resume_state"], "not_available" if status == "running" else "requires_reconciliation")
+AssertionError: 'possible' != 'requires_reconciliation'
+- possible
++ requires_reconciliation
+
+
+======================================================================
+FAIL: test_unknown_reconciled_and_running_runs_do_not_offer_resume (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_unknown_reconciled_and_running_runs_do_not_offer_resume) (status='reconciled', checkpoint=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_runtime_checkpoints.py", line 122, in test_unknown_reconciled_and_running_runs_do_not_offer_resume
+    self.assertIs(observed["has_checkpoint"], checkpoint)
+AssertionError: True is not False
+
+======================================================================
+FAIL: test_unknown_reconciled_and_running_runs_do_not_offer_resume (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_unknown_reconciled_and_running_runs_do_not_offer_resume) (status='reconciled', checkpoint=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_runtime_checkpoints.py", line 123, in test_unknown_reconciled_and_running_runs_do_not_offer_resume
+    self.assertEqual(observed["resume_state"], "not_available" if status == "running" else "requires_reconciliation")
+AssertionError: 'possible' != 'requires_reconciliation'
+- possible
++ requires_reconciliation
+
+
+======================================================================
+FAIL: test_unknown_reconciled_and_running_runs_do_not_offer_resume (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_unknown_reconciled_and_running_runs_do_not_offer_resume) (status='running', checkpoint=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_runtime_checkpoints.py", line 122, in test_unknown_reconciled_and_running_runs_do_not_offer_resume
+    self.assertIs(observed["has_checkpoint"], checkpoint)
+AssertionError: True is not False
+
+======================================================================
+FAIL: test_unknown_reconciled_and_running_runs_do_not_offer_resume (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_unknown_reconciled_and_running_runs_do_not_offer_resume) (status='running', checkpoint=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_runtime_checkpoints.py", line 123, in test_unknown_reconciled_and_running_runs_do_not_offer_resume
+    self.assertEqual(observed["resume_state"], "not_available" if status == "running" else "requires_reconciliation")
+AssertionError: 'possible' != 'not_available'
+- possible
++ not_available
+
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.384s
+
+FAILED (failures=15, errors=1)

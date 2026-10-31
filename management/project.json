@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-28",
-  "wip_limit": 2,
+  "updated_at": "2026-11-01",
+  "wip_limit": 3,
   "modules": [
     {
       "id": "governance",
@@ -40,12 +40,13 @@
     {
       "id": "models",
       "name": "模型连接 / 公共接入",
-      "implemented": "Chat Completions、私有密钥、默认连接、网页工具往返测试与调用回执",
+      "implemented": "Chat Completions、私有密钥、默认连接、网页工具往返测试与调用回执；New API 目录、显式平台权限、健康/版本检测、AU连接来源快照已实现",
       "validation": "V2：免费 OpenRouter 曾实测",
-      "gap": "当前公司连接与适用模型工具协议验收；历史可用不等于现在已配置",
+      "gap": "U-037待实际浏览器验收；U-039真实New API/上游工具往返未验；当前公司连接阻塞保持",
       "evidence": [
         "docs/API_MODELS.md",
-        "evidence/011-openrouter-smoke/README.md"
+        "evidence/011-openrouter-smoke/README.md",
+        "evidence/027-gateway-management/README.md"
       ]
     },
     {
@@ -83,12 +84,24 @@
     {
       "id": "console",
       "name": "工作台与观察 / platform",
-      "implemented": "React 八页导航、本地多组织、模型配置、事件/工作/成果/回执",
-      "validation": "V1：前端、历史浏览器与实际本地 HTTP 验证",
-      "gap": "最新真实公司用户流程；公共账户、多租户与外部访问未实现",
+      "implemented": "React 八页导航、本地多组织、模型配置、事件/工作/成果/回执、只读成员运行状态/会话/工作区摘要",
+      "validation": "V1：checkpoint观察仅lstat、不打开原库；定向50/全量260与独立94项通过，独立长结论因额度中断",
+      "gap": "检查点存在性当前无true生产来源；跨来源非原子、热配置、真实续拍/崩溃/供应商迟到、真实恢复、浏览器与整体复核未过；公共账户/多租户未实现",
       "evidence": [
         "evidence/007-workspace-redesign/README.md",
-        "evidence/016-member-workspace/README.md"
+        "evidence/016-member-workspace/README.md",
+        "evidence/029-member-runtime-observation/README.md",
+        "evidence/030-runtime-recent-run/README.md",
+        "evidence/031-member-work-state/README.md",
+        "evidence/032-runtime-workspace/README.md",
+        "evidence/033-checkpoint-observation/README.md",
+        "evidence/034-unregistered-runtime/README.md",
+        "evidence/035-dispatch-observation/README.md",
+        "evidence/036-runtime-http-observation/README.md",
+        "evidence/037-session-revisions/README.md",
+        "evidence/038-activity-boundaries/README.md",
+        "evidence/039-wal-observation/README.md",
+        "evidence/040-checkpoint-metadata/README.md"
       ]
     },
     {
@@ -96,9 +109,10 @@
       "name": "托管与运维 / platform",
       "implemented": "有限 service/watch 入口、systemd 模板、就绪检查",
       "validation": "V1：工程入口；真实托管 V0",
-      "gap": "目标服务器安装、访问、重启、备份恢复、告警与资源到限停机",
+      "gap": "U-041观察已受控实现但浏览器/独立复核未过；U-042单机受限托管未实现；U-008目标服务器安装、访问及U-009真实重启/备份恢复仍待资源和依赖，告警与资源到限停机待验",
       "evidence": [
-        "evidence/015-corp-startup/README.md"
+        "evidence/015-corp-startup/README.md",
+        "specs/028-member-runtime-management/plan.md"
       ]
     },
     {
@@ -1010,6 +1024,151 @@
       "blocker": null,
       "started_at": null,
       "updated_at": "2026-10-28",
+      "completion": null
+    },
+    {
+      "id": "U-037",
+      "title": "New API 网关登记、观察及 AU 连接接入",
+      "priority": "P1",
+      "milestone": "G0",
+      "module": "models",
+      "status": "blocked",
+      "owner": "Codex（外部工程代理）",
+      "role": "平台工程 / 独立权限复核",
+      "acceptance": "实现宿主显式平台权限、实例登记/解除、无凭据健康/版本检测和回执、AU 独立连接引用及工具测试复用；受控验证与真实 New API 验收分开。",
+      "dependencies": [],
+      "blocker": {
+        "reason": "实现、200项Python、20项前端及独立权限复核已通过；缺少浏览器执行文件，官方安装器下载内容不完整，实际浏览器验收未完成。",
+        "action": "在具备可用 Chromium 的开发/CI 环境运行 npm run test:gateways，处理问题并审阅桌面/320px截图后关闭本卡。",
+        "owner": "后续工程 / 浏览器环境维护"
+      },
+      "started_at": "2026-10-30",
+      "updated_at": "2026-10-30",
+      "completion": null
+    },
+    {
+      "id": "U-038",
+      "title": "New API 托管实例运维控制",
+      "priority": "P1",
+      "milestone": "G0",
+      "module": "hosting",
+      "status": "backlog",
+      "owner": null,
+      "role": "平台工程 / 验收",
+      "acceptance": "固定部署对象的 Docker Compose 适配，启停/日志/备份/指定版本升级/数据库恢复，持久作业与权限复核；无部署控制器不出现可执行运维按钮。",
+      "dependencies": [
+        "U-037"
+      ],
+      "blocker": null,
+      "started_at": null,
+      "updated_at": "2026-10-30",
+      "completion": null
+    },
+    {
+      "id": "U-039",
+      "title": "真实 New API 与 AU 工具往返验收",
+      "priority": "P1",
+      "milestone": "G0",
+      "module": "models",
+      "status": "blocked",
+      "owner": null,
+      "role": "平台工程 / 验收",
+      "acceptance": "部署或提供真实 New API 实例，使用已授权上游及有限令牌，实际完成健康/版本读取和AU两次工具往返并核对用量；不以本地替身代替。",
+      "dependencies": [
+        "U-037"
+      ],
+      "blocker": {
+        "reason": "尚无真实 New API 实例地址、专用模型令牌及确认的有限调用范围。",
+        "action": "提供真实实例及合法上游连接，确认调用范围后运行独立真实验收并记录结果。",
+        "owner": null
+      },
+      "started_at": null,
+      "updated_at": "2026-10-30",
+      "completion": null
+    },
+    {
+      "id": "U-040",
+      "title": "规划成员执行与托管管理",
+      "priority": "P1",
+      "milestone": "G0",
+      "module": "hosting",
+      "status": "done",
+      "owner": "Codex（外部工程代理）",
+      "role": "平台 / 运行时工程 / 验收",
+      "acceptance": "核对当前执行/恢复/托管实现，明确员工身份、运行时和业务工作区边界，给出分批技术方案、权限及验收矩阵。",
+      "dependencies": [],
+      "blocker": null,
+      "started_at": "2026-10-30",
+      "updated_at": "2026-10-30",
+      "completion": {
+        "scope": "documentation",
+        "reviewer": "Codex（规划自检；实现权限需另行独立复核）",
+        "evidence": [
+          "specs/028-member-runtime-management/plan.md",
+          "specs/028-member-runtime-management/spec.md",
+          "evidence/028-member-runtime-plan/README.md"
+        ],
+        "note": "仅规划，无运行时/权限/主机变更；实际实现为U-041/U-042，真实部署沿用U-008等。"
+      }
+    },
+    {
+      "id": "U-041",
+      "title": "展示成员执行状态与运行位置",
+      "priority": "P1",
+      "milestone": "G0",
+      "module": "console",
+      "status": "blocked",
+      "owner": "Codex / GPT-6.1 Sol（外部工程代理；GPT-6 Astra规划）",
+      "role": "平台 / 运行时工程 / 验收",
+      "acceptance": "按028实现只读runtime/member/session/workspace摘要及成员/资源页面；准确区分工作、活性和部署状态；旧库兼容、刷新零调用、权限隔离、实际浏览器A01–A06/A11及独立观察边界复核通过。",
+      "dependencies": [
+        "U-040"
+      ],
+      "blocker": {
+        "reason": "checkpoint观察已撤掉全部原库连接/内容读取，仅lstat：存在或异常unknown、明确缺失false，当前无true生产来源；独立94项通过且已报告无阻断缺陷，长结论因额度中断。跨来源非原子、旧Executor热配置、真实恢复/续拍、供应商迟到、Chromium及整体复核未过。",
+        "action": "下一批先冻结A06已有HarnessExecutor在连接禁用/revision变化后的撤销生效点，用实际SDK/回环HTTP复现；不自动重建checkpoint true元数据。补齐独立结论与浏览器/真实验收，U-041不关闭、U-042不扩大。",
+        "owner": "Codex / 后续工程与浏览器环境维护"
+      },
+      "started_at": "2026-10-30",
+      "updated_at": "2026-11-01",
+      "completion": null
+    },
+    {
+      "id": "U-042",
+      "title": "实现单机AU持久托管与受限控制",
+      "priority": "P1",
+      "milestone": "G3",
+      "module": "hosting",
+      "status": "backlog",
+      "owner": null,
+      "role": "平台 / 运行时工程 / 验收",
+      "acceptance": "按028复用service/watch及systemd，宿主固定对象绑定、显式runtime_manage、异步幂等回执、优雅停止和安全重启；网页/CLI/服务同AU互斥，unknown不重放、预算不重置；A07–A11与独立权限评审通过，真实部署另验。",
+      "dependencies": [
+        "U-041"
+      ],
+      "blocker": null,
+      "started_at": null,
+      "updated_at": "2026-10-30",
+      "completion": null
+    },
+    {
+      "id": "U-043",
+      "title": "按真实瓶颈评估成员并发与Worker",
+      "priority": "P2",
+      "milestone": "G3",
+      "module": "coordination",
+      "status": "candidate",
+      "owner": null,
+      "role": "平台 / 运行时工程 / 验收",
+      "acceptance": "基于真实吞吐/恢复证据判断是否需要并发；若需要，先定义任务认领、预算原子预约、过期执行隔离、工作区写入隔离和可靠回执，再安排独立实现；不把并发当当前托管前置。",
+      "dependencies": [
+        "U-042",
+        "U-009",
+        "U-020"
+      ],
+      "blocker": null,
+      "started_at": null,
+      "updated_at": "2026-10-30",
       "completion": null
     }
   ]

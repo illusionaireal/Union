@@ -4,6 +4,15 @@ import { CommandButton } from '../features/commands/CommandProvider';
 import { DetailLink } from '../features/details/Details';
 import { PageStats } from '../components/SetupGuide';
 import { FailureNotice } from '../components/FailureNotice';
+
+const runtimeModes: Record<string, string> = {
+  embedded: '本地控制台有限执行', managed_local: '本机托管',
+  external: '外部运行时', unregistered: '部署位置未登记',
+};
+const hostLiveness: Record<string, string> = {
+  confirmed: '已确认', unconfirmed: '活性未确认', unknown: '活性未知',
+};
+
 export default function Resources() {
   const { data } = useWorkspace();
   const d = data!;
@@ -67,6 +76,15 @@ export default function Resources() {
               <dd>未知</dd>
             </div>
           </dl>
+        </Card>
+        <Card title="运行位置与宿主活性">
+          <dl className="detail-dl">
+            <div><dt>部署模式</dt><dd>{runtimeModes[d.runtime.mode] || '部署方式未知'}</dd></div>
+            <div><dt>宿主活性</dt><dd>{hostLiveness[d.runtime.liveness] || '活性未知'}</dd></div>
+            <div><dt>当前派发</dt><dd>{labels[d.runtime.dispatch_state] || d.runtime.dispatch_state}</dd></div>
+            <div><dt>已确认的活跃执行</dt><dd>{d.runtime.active_run_id || '无已确认的活跃执行'}</dd></div>
+          </dl>
+          <p>宿主活性仅反映当前执行证据，不证明部署位置或托管方式。读取不会启动服务、恢复会话或调用模型。</p>
         </Card>
       </div>
       <Card title="执行记录">

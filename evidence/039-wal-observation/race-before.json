@@ -1,0 +1,82 @@
+{
+  "scope": "synthetic local SDK/SQLite fixtures; deterministic transition at connect; not real company",
+  "sqlite_version": "3.53.1",
+  "cases": [
+    {
+      "case": "wal_writer_closes",
+      "precheck_files": {
+        "checkpoints.sqlite3": {
+          "bytes": 4096,
+          "sha256": "0ab48b25cba617ed3a4acca0161813b314c095ef63544bb4af60769eb1012977"
+        },
+        "checkpoints.sqlite3-shm": {
+          "bytes": 32768,
+          "sha256": "9b7321be97c3726a2889a7418ed66d439136ef8cbe0b5936244af976d83c4fac"
+        },
+        "checkpoints.sqlite3-wal": {
+          "bytes": 32992,
+          "sha256": "46842483b4a69bfff48df74334341257e0d9d15a4af01d69e8d475621938754f"
+        }
+      },
+      "after_external_transition": {
+        "checkpoints.sqlite3": {
+          "bytes": 20480,
+          "sha256": "170c0cc2b7a5b91980734b4d480e518855962c67e114a07435c103973aab949c"
+        }
+      },
+      "observed": true,
+      "after_observation": {
+        "checkpoints.sqlite3": {
+          "bytes": 20480,
+          "sha256": "170c0cc2b7a5b91980734b4d480e518855962c67e114a07435c103973aab949c"
+        },
+        "checkpoints.sqlite3-shm": {
+          "bytes": 32768,
+          "sha256": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb"
+        },
+        "checkpoints.sqlite3-wal": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "observer_added_files": [
+        "checkpoints.sqlite3-shm",
+        "checkpoints.sqlite3-wal"
+      ]
+    },
+    {
+      "case": "delete_switches_to_wal",
+      "precheck_files": {
+        "checkpoints.sqlite3": {
+          "bytes": 20480,
+          "sha256": "19d32e5de45a8503b09c68a596c4c2331e253076117ff784c813b8dd8a977ee3"
+        }
+      },
+      "after_external_transition": {
+        "checkpoints.sqlite3": {
+          "bytes": 20480,
+          "sha256": "76df3382b723dc832bdf8b3a8af9f9decdc8eaf9e926152ee344bf41e9dbfff6"
+        }
+      },
+      "observed": true,
+      "after_observation": {
+        "checkpoints.sqlite3": {
+          "bytes": 20480,
+          "sha256": "76df3382b723dc832bdf8b3a8af9f9decdc8eaf9e926152ee344bf41e9dbfff6"
+        },
+        "checkpoints.sqlite3-shm": {
+          "bytes": 32768,
+          "sha256": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb"
+        },
+        "checkpoints.sqlite3-wal": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "observer_added_files": [
+        "checkpoints.sqlite3-shm",
+        "checkpoints.sqlite3-wal"
+      ]
+    }
+  ]
+}

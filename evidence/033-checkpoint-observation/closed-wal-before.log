@@ -1,0 +1,23 @@
+test_closed_wal_database_is_unknown_without_creating_sidecars (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_closed_wal_database_is_unknown_without_creating_sidecars) ... FAIL
+
+======================================================================
+FAIL: test_closed_wal_database_is_unknown_without_creating_sidecars (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_closed_wal_database_is_unknown_without_creating_sidecars)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_runtime_checkpoints.py", line 187, in test_closed_wal_database_is_unknown_without_creating_sidecars
+    observed = self.observe()
+               ^^^^^^^^^^^^^^
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_runtime_checkpoints.py", line 87, in observe
+    self.assertEqual(before, self.persisted(engine))
+AssertionError: Tuples differ: ({'ar[6054 chars]lite3': 'a374fddb5c41844da71564818d0891fe2ee91[25 chars]9a'}) != ({'ar[6054 chars]lite3-shm': None, 'checkpoints.sqlite3-wal': '[153 chars]9a'})
+
+First differing element 6:
+{'checkpoints.sqlite3': 'a374fddb5c41844da71564818d0891fe2ee91[24 chars]d9a'}
+{'checkpoints.sqlite3-shm': None, 'checkpoints.sqlite3-wal': '[152 chars]d9a'}
+
+Diff is 13102 characters long. Set self.maxDiff to None to see it.
+
+----------------------------------------------------------------------
+Ran 1 test in 0.031s
+
+FAILED (failures=1)

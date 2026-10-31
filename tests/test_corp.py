@@ -41,6 +41,23 @@ class CorpTests(unittest.TestCase):
             prepare(self.root, changed, "test adopter")
         self.assertEqual(engine.state()["goal"], self.profile["goal"])
 
+    def test_unknown_dispatch_does_not_misreport_the_actual_pause_intent(self):
+        engine = self.create()
+        engine.set_paused(False)
+        package = engine.begin_decision("fixture")
+        engine.fail_run(package["run_id"], "Fixture unknown", unknown=True)
+        for paused in (False, True):
+            engine.set_paused(paused)
+            before = (engine.state(), engine.events(), engine.runs())
+            self.assertEqual(engine.status()["dispatch_state"], "needs_review")
+            with patch("ai_union.model_api.APIExecutor.chat", side_effect=AssertionError("No provider call")):
+                result = inspect_company(self.root)
+            codes = [b["code"] for b in result["bootstrap_blockers"]]
+            self.assertEqual("paused" in codes, paused)
+            self.assertIn("unresolved_execution", codes)
+            self.assertFalse(result["can_attempt_bootstrap"])
+            self.assertEqual(before, (engine.state(), engine.events(), engine.runs()))
+
     def test_status_can_read_while_console_runs_and_never_probes_provider(self):
         engine = self.create()
         app = Console(self.root, fixture=None)

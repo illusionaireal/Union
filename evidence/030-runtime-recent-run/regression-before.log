@@ -1,0 +1,41 @@
+test_runtime_recent_run_uses_latest_persisted_member_run_without_writing (tests.test_console.ConsoleTests.test_runtime_recent_run_uses_latest_persisted_member_run_without_writing) ... FAIL
+test_runtime_idle_session_follows_latest_member_run_without_reading_feedback (tests.test_console.ConsoleTests.test_runtime_idle_session_follows_latest_member_run_without_reading_feedback) ... FAIL
+test_runtime_recent_member_run_includes_later_decision (tests.test_console.ConsoleTests.test_runtime_recent_member_run_includes_later_decision) ... FAIL
+
+======================================================================
+FAIL: test_runtime_recent_run_uses_latest_persisted_member_run_without_writing (tests.test_console.ConsoleTests.test_runtime_recent_run_uses_latest_persisted_member_run_without_writing)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_console.py", line 348, in test_runtime_recent_run_uses_latest_persisted_member_run_without_writing
+    self.assertEqual(members["m1"]["recent_run"]["id"], latest["run_id"])
+AssertionError: 'run-415333711ff74cf7a22c4d182d9e1ba6' != 'run-fd60c3b269d84a048bd1810a0850d6e3'
+- run-415333711ff74cf7a22c4d182d9e1ba6
++ run-fd60c3b269d84a048bd1810a0850d6e3
+
+
+======================================================================
+FAIL: test_runtime_idle_session_follows_latest_member_run_without_reading_feedback (tests.test_console.ConsoleTests.test_runtime_idle_session_follows_latest_member_run_without_reading_feedback)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_console.py", line 370, in test_runtime_idle_session_follows_latest_member_run_without_reading_feedback
+    self.assertEqual(members["m1"]["session"]["id"], "session-latest")
+AssertionError: 'session-old' != 'session-latest'
+- session-old
++ session-latest
+
+
+======================================================================
+FAIL: test_runtime_recent_member_run_includes_later_decision (tests.test_console.ConsoleTests.test_runtime_recent_member_run_includes_later_decision)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_console.py", line 382, in test_runtime_recent_member_run_includes_later_decision
+    self.assertEqual(member["recent_run"]["id"], latest["run_id"])
+AssertionError: 'run-48c0de12e8b645b18ef3738d3215390f' != 'run-4e55f89a2d114a18a94ccfc8aeb5a292'
+- run-48c0de12e8b645b18ef3738d3215390f
++ run-4e55f89a2d114a18a94ccfc8aeb5a292
+
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.104s
+
+FAILED (failures=3)

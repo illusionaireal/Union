@@ -1,0 +1,42 @@
+test_non_wal_store_is_unknown_without_opening_checkpoint_content (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_non_wal_store_is_unknown_without_opening_checkpoint_content) ... FAIL
+test_file_replaced_at_connect_does_not_create_observer_sidecars (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_file_replaced_at_connect_does_not_create_observer_sidecars) ... FAIL
+
+======================================================================
+FAIL: test_non_wal_store_is_unknown_without_opening_checkpoint_content (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_non_wal_store_is_unknown_without_opening_checkpoint_content)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_runtime_checkpoints.py", line 186, in test_non_wal_store_is_unknown_without_opening_checkpoint_content
+    view = snapshot(engine)
+           ^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/ec13abb7a5d3/Union/ai_union/observation.py", line 110, in snapshot
+    runtime = runtime_view(cx, state, runs, live, budget, paused, engine.root, dispatch)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/ec13abb7a5d3/Union/ai_union/runtime_view.py", line 180, in view
+    "session": _session(cx, session_run, root),
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/ec13abb7a5d3/Union/ai_union/runtime_view.py", line 84, in _session
+    exists = _checkpoint(root, row["id"])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/ec13abb7a5d3/Union/ai_union/runtime_view.py", line 54, in _checkpoint
+    with path.open("rb") as file:
+         ^^^^^^^^^^^^^^^
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_runtime_checkpoints.py", line 179, in forbid_content
+    raise AssertionError("Observation must not read the checkpoint header or body")
+AssertionError: Observation must not read the checkpoint header or body
+
+======================================================================
+FAIL: test_file_replaced_at_connect_does_not_create_observer_sidecars (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_file_replaced_at_connect_does_not_create_observer_sidecars)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_runtime_checkpoints.py", line 269, in test_file_replaced_at_connect_does_not_create_observer_sidecars
+    self.assertEqual(files(), transition[-1] if transition else before)
+AssertionError: {'checkpoints.sqlite3-wal': 'e3b0c44298fc1c[321 chars]9eb'} != {'previous.sqlite3': 'c023c647df40ffea43306[131 chars]9e4'}
+  {'checkpoints.sqlite3': '57090444768c5bb57c4ce0e71e723878cad7ac374e8ac0f33c26d4198cc949e4',
+-  'checkpoints.sqlite3-shm': 'fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb',
+-  'checkpoints.sqlite3-wal': 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+   'previous.sqlite3': 'c023c647df40ffea43306154dfca4d75e45d8991f4fe0a90ced9aa25dcfebd86'}
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.107s
+
+FAILED (failures=2)

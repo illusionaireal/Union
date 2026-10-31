@@ -16,7 +16,7 @@ from ai_union.runner import run, exclusive
 from ai_union.activity import activity
 from ai_union.observation import snapshot, artifact
 from ai_union.console import Console
-from tests.support import CHARTER, RESOURCES, init, organization
+from tests.support import CHARTER, RESOURCES, decision, init, organization
 
 FIXTURE = json.loads((Path(__file__).resolve().parents[1] / "examples/fixture.json").read_text(encoding="utf-8"))
 
@@ -302,6 +302,243 @@ class ConsoleTests(unittest.TestCase):
         (self.e.root / a["path"]).unlink()
         with self.assertRaises(Rejected):
             artifact(self.e, a["id"])
+
+    def test_runtime_member_projection_is_readonly_and_does_not_expose_host_details(self):
+        organization(self.e)
+        before = (self.e.state(), self.e.events(), self.e.runs())
+        view = snapshot(self.e)
+        self.assertEqual(view["runtime"]["mode"], "unregistered")
+        self.assertEqual(view["runtime"]["liveness"], "unknown")
+        member = next(item for item in view["member_execution"] if item["member_id"] == "m1")
+        self.assertEqual(member["work_state"], "ready")
+        self.assertEqual(member["workspace"]["mode"], "virtual_only")
+        self.assertNotIn("directory", json.dumps(view))
+        self.assertNotIn("container", json.dumps(view))
+        self.assertEqual(before, (self.e.state(), self.e.events(), self.e.runs()))
+
+    def test_runtime_member_projection_preserves_waiting_and_unknown_states(self):
+        organization(self.e)
+        package = self.e.begin_work("w1", "fixture")
+        self.e.fail_run(package["run_id"], "private", unknown=True)
+        unknown = snapshot(self.e)
+        first = next(item for item in unknown["member_execution"] if item["member_id"] == "m1")
+        self.assertEqual(first["work_state"], "blocked")
+        self.assertIn("run_requires_reconciliation", first["reason_codes"])
+        waiting = next(item for item in unknown["member_execution"] if item["member_id"] == "m2")
+        self.assertEqual(waiting["work_state"], "waiting")
+        self.assertIn("dependency_pending", waiting["reason_codes"])
+
+    def _retried_member_runs(self):
+        organization(self.e)
+        first = self.e.begin_work("w1", "fixture")
+        self.e.finish_work(first["run_id"], {"status": "blocked", "summary": "Fixture input needed"}, {})
+        self.e.apply_decision(decision(self.e, [{"op": "resume_work", "work_id": "w1"}]), "m1", "a1")
+        latest = self.e.begin_work("w1", "fixture")
+        self.e.finish_work(latest["run_id"], {"status": "delivered", "artifacts": [{"name": "first.txt", "content": "Fixture delivery"}]}, {})
+        other = self.e.begin_work("w2", "fixture")
+        self.e.finish_work(other["run_id"], {"status": "delivered", "artifacts": [{"name": "dependent.txt", "content": "Fixture dependent delivery"}]}, {})
+        return first, latest, other
+
+    def test_runtime_recent_run_uses_latest_persisted_member_run_without_writing(self):
+        first, latest, other = self._retried_member_runs()
+        before = (self.e.state(), self.e.events(), self.e.runs())
+        for engine in (self.e, Engine(self.e.root), self.e):
+            view = snapshot(engine)
+            members = {item["member_id"]: item for item in view["member_execution"]}
+            self.assertEqual(members["m1"]["recent_run"]["id"], latest["run_id"])
+            self.assertEqual(members["m1"]["recent_run"]["status"], "delivered")
+            self.assertEqual(members["m1"]["recent_run"]["work_id"], "w1")
+            self.assertEqual(members["m2"]["recent_run"]["id"], other["run_id"])
+            self.assertEqual([r["id"] for r in view["runs"]], [first["run_id"], latest["run_id"], other["run_id"]])
+            self.assertEqual(view["budget"]["calls_reserved"], 3)
+        self.assertEqual(before, (self.e.state(), self.e.events(), self.e.runs()))
+
+    def test_runtime_idle_session_follows_latest_member_run_without_reading_feedback(self):
+        from ai_union.harness import session_tables
+        first, latest, other = self._retried_member_runs()
+        with self.e.transaction() as cx:
+            session_tables(cx)
+            for sid, package in (("session-old", first), ("session-latest", latest), ("session-other", other)):
+                cx.execute("INSERT INTO agent_sessions(id,task_key,status,last_run_id,feedback,updated_at) VALUES(?,?,'completed',?,?,?)",
+                           (sid, sid, package["run_id"], "PRIVATE_SESSION_FEEDBACK", "2026-10-31T00:00:00+00:00"))
+        with self.e.read_transaction() as cx:
+            before = [dict(row) for row in cx.execute("SELECT * FROM agent_sessions ORDER BY rowid")]
+        for engine in (self.e, Engine(self.e.root)):
+            view = snapshot(engine)
+            members = {item["member_id"]: item for item in view["member_execution"]}
+            self.assertIsNone(members["m1"]["current_work_id"])
+            self.assertEqual(members["m1"]["session"]["id"], "session-latest")
+            self.assertEqual(members["m2"]["session"]["id"], "session-other")
+            self.assertNotIn("PRIVATE_SESSION_FEEDBACK", json.dumps(view))
+        with self.e.read_transaction() as cx:
+            self.assertEqual(before, [dict(row) for row in cx.execute("SELECT * FROM agent_sessions ORDER BY rowid")])
+
+    def test_runtime_recent_member_run_includes_later_decision(self):
+        self._retried_member_runs()
+        latest = self.e.begin_decision("fixture")
+        self.e.finish_decision(latest["run_id"], decision(self.e, []), {})
+        view = snapshot(self.e)
+        member = next(item for item in view["member_execution"] if item["member_id"] == "m1")
+        self.assertEqual(member["recent_run"]["id"], latest["run_id"])
+        self.assertIsNone(member["recent_run"]["work_id"])
+
+    def _runtime_member(self, engine, member_id="m1"):
+        before = (engine.state(), engine.events(), engine.runs(), engine.paused())
+        result = None
+        for reader in (engine, Engine(engine.root), engine):
+            view = snapshot(reader)
+            result = next(item for item in view["member_execution"] if item["member_id"] == member_id)
+            self.assertEqual(view["budget"]["calls_reserved"], len(before[2]))
+        self.assertEqual(before, (engine.state(), engine.events(), engine.runs(), engine.paused()))
+        return result
+
+    def _extra_runtime_work(self, work_id, position_id="p1", dependencies=None):
+        return {"op": "create_work", "id": work_id, "title": "Fixture observation work",
+                "instruction": "Produce a fixture artifact", "position_id": position_id,
+                "dependencies": dependencies or []}
+
+    def test_runtime_unfinished_work_states_are_not_idle(self):
+        for status, expected, reason in (("blocked", "blocked", "work_blocked"),
+                                         ("failed", "blocked", "work_failed"),
+                                         ("host_failed", "blocked", "work_failed"),
+                                         ("needs_review", "blocked", "run_requires_reconciliation"),
+                                         ("paused", "waiting", "work_paused")):
+            with self.subTest(status=status):
+                engine = init(Path(self.temp.name) / status)
+                organization(engine)
+                if status == "paused":
+                    engine.apply_decision(decision(engine, [{"op": "pause_work", "work_id": "w1"}]), "m1", "a1")
+                else:
+                    package = engine.begin_work("w1", "fixture")
+                    if status in ("host_failed", "needs_review"):
+                        engine.fail_run(package["run_id"], "PRIVATE_FAILURE_DETAIL", unknown=status == "needs_review")
+                    else:
+                        engine.finish_work(package["run_id"], {"status": status, "summary": "Fixture result"}, {})
+                member = self._runtime_member(engine)
+                self.assertEqual(member["current_work_id"], "w1")
+                self.assertEqual(member["work_state"], expected)
+                self.assertIn(reason, member["reason_codes"])
+                self.assertNotIn("PRIVATE_FAILURE_DETAIL", json.dumps(snapshot(engine)))
+
+    def test_runtime_selects_ready_work_ahead_of_earlier_dependency_wait(self):
+        organization(self.e)
+        self.e.apply_decision(decision(self.e, [{"op": "cancel_work", "work_id": "w1"},
+            self._extra_runtime_work("a-waiting", dependencies=["w2"]),
+            self._extra_runtime_work("z-ready")]), "m1", "a1")
+        member = self._runtime_member(self.e)
+        self.assertEqual(self.e.ready_work(), ["z-ready"])
+        self.assertEqual((member["current_work_id"], member["work_state"], member["reason_codes"]), ("z-ready", "ready", []))
+
+    def test_runtime_ready_work_is_not_hidden_by_settled_failure(self):
+        organization(self.e)
+        self.e.apply_decision(decision(self.e, [self._extra_runtime_work("ready")]), "m1", "a1")
+        package = self.e.begin_work("w1", "fixture")
+        self.e.finish_work(package["run_id"], {"status": "blocked", "summary": "Fixture blocked"}, {})
+        member = self._runtime_member(self.e)
+        self.assertEqual((member["current_work_id"], member["work_state"]), ("ready", "ready"))
+
+    def test_runtime_unknown_work_precedes_ready_and_never_replays(self):
+        from ai_union.runner import step
+        organization(self.e)
+        self.e.apply_decision(decision(self.e, [self._extra_runtime_work("ready")]), "m1", "a1")
+        package = self.e.begin_work("w1", "fixture")
+        self.e.fail_run(package["run_id"], "Fixture unknown", unknown=True)
+        before = (self.e.state(), self.e.events(), self.e.runs())
+        member = self._runtime_member(self.e)
+        self.assertEqual((member["current_work_id"], member["work_state"]), ("w1", "blocked"))
+        self.assertIn("run_requires_reconciliation", member["reason_codes"])
+        self.assertEqual(step(self.e, FixtureExecutor(copy.deepcopy(FIXTURE)))["action"], "blocked")
+        self.assertEqual(before, (self.e.state(), self.e.events(), self.e.runs()))
+        self.assertEqual(self.command("reconcile", {"run_id": package["run_id"], "resolution": "abandon", "reason": "Fixture receipt checked"})["status"], "succeeded")
+        self.assertEqual(self._runtime_member(self.e)["work_state"], "ready")
+
+    def test_runtime_other_members_unknown_blocks_ready_but_preserves_dependency_wait(self):
+        organization(self.e)
+        package = self.e.begin_work("w1", "fixture")
+        self.e.fail_run(package["run_id"], "Fixture unknown", unknown=True)
+        waiting = self._runtime_member(self.e, "m2")
+        self.assertEqual((waiting["work_state"], waiting["reason_codes"]), ("waiting", ["dependency_pending"]))
+        self.e.apply_decision(decision(self.e, [self._extra_runtime_work("other-ready", "p2")]), "m1", "a1")
+        member = self._runtime_member(self.e, "m2")
+        self.assertEqual((member["current_work_id"], member["work_state"]), ("other-ready", "blocked"))
+        self.assertIn("run_requires_reconciliation", member["reason_codes"])
+
+    def test_runtime_unknown_decision_has_no_work_reference_and_blocks_dispatch(self):
+        organization(self.e)
+        self.e.apply_decision(decision(self.e, [self._extra_runtime_work("other-ready", "p2")]), "m1", "a1")
+        package = self.e.begin_decision("fixture")
+        self.e.fail_run(package["run_id"], "Fixture decision unknown", unknown=True)
+        member = self._runtime_member(self.e)
+        self.assertEqual(member["work_state"], "blocked")
+        self.assertIsNone(member["current_work_id"])
+        self.assertIn("run_requires_reconciliation", member["reason_codes"])
+        other = self._runtime_member(self.e, "m2")
+        self.assertEqual((other["current_work_id"], other["work_state"]), ("other-ready", "blocked"))
+
+    def test_runtime_running_requires_current_host_evidence_and_blocks_other_ready(self):
+        organization(self.e)
+        self.e.apply_decision(decision(self.e, [self._extra_runtime_work("other-ready", "p2")]), "m1", "a1")
+        with exclusive(self.e), activity(self.e):
+            self.e.begin_work("w1", "fixture")
+            member = self._runtime_member(self.e)
+            self.assertEqual((member["current_work_id"], member["work_state"]), ("w1", "executing"))
+            other = self._runtime_member(self.e, "m2")
+            self.assertEqual((other["work_state"], other["reason_codes"]), ("waiting", ["dispatch_busy"]))
+        member = self._runtime_member(self.e)
+        self.assertEqual((member["work_state"], member["reason_codes"]), ("blocked", ["activity_unconfirmed"]))
+        other = self._runtime_member(self.e, "m2")
+        self.assertEqual((other["work_state"], other["reason_codes"]), ("blocked", ["activity_unconfirmed"]))
+
+    def test_runtime_pause_budget_resume_and_terminal_work_recompute_without_calls(self):
+        organization(self.e)
+        self.assertEqual(self.command("pause", {})["status"], "succeeded")
+        self.assertEqual(self._runtime_member(self.e)["reason_codes"], ["dispatch_paused"])
+        self.e.set_paused(False)
+        package = self.e.begin_work("w1", "fixture")
+        self.e.finish_work(package["run_id"], {"status": "blocked", "summary": "Fixture input needed"}, {})
+        self.e.apply_decision(decision(self.e, [{"op": "resume_work", "work_id": "w1"}]), "m1", "a1")
+        self.assertEqual(self.command("resources", {"resources": RESOURCES | {"max_calls": 1}, "reason": "Fixture exhausted allowance"})["status"], "succeeded")
+        member = self._runtime_member(self.e)
+        self.assertEqual((member["work_state"], member["reason_codes"]), ("blocked", ["budget_limited"]))
+        self.assertEqual(self.command("resources", {"resources": RESOURCES, "reason": "Fixture restore original allowance"})["status"], "succeeded")
+        self.e.apply_decision(decision(self.e, [{"op": "pause_work", "work_id": "w1"}]), "m1", "a1")
+        self.assertEqual(self._runtime_member(self.e)["reason_codes"], ["work_paused"])
+        self.e.apply_decision(decision(self.e, [{"op": "resume_work", "work_id": "w1"}]), "m1", "a1")
+        self.assertEqual(self._runtime_member(self.e)["work_state"], "ready")
+        self.e.apply_decision(decision(self.e, [{"op": "cancel_work", "work_id": "w1"}]), "m1", "a1")
+        member = self._runtime_member(self.e)
+        self.assertEqual((member["current_work_id"], member["work_state"], member["reason_codes"]), (None, "idle", []))
+
+    def test_runtime_needs_review_after_revocation_precedes_confirmed_activity(self):
+        organization(self.e)
+        with exclusive(self.e), activity(self.e):
+            package = self.e.begin_work("w1", "fixture")
+            self.e.apply_decision(decision(self.e, [{"op": "update_position", "position_id": "p1",
+                "title": "Fixture responsibility", "mandate": "Coordinate fixture work",
+                "permissions": CHARTER["allowed_operations"]}]), "m1", "a1")
+            member = self._runtime_member(self.e)
+            self.assertEqual(self.e.state()["work"]["w1"]["status"], "needs_review")
+            self.assertEqual((member["current_work_id"], member["work_state"], member["reason_codes"]),
+                             ("w1", "blocked", ["work_needs_review"]))
+            self.assertEqual(member["recent_run"]["id"], package["run_id"])
+            self.assertEqual(member["recent_run"]["status"], "running")
+
+    def test_runtime_handoff_does_not_give_new_owner_the_old_members_session(self):
+        from ai_union.harness import session_tables
+        organization(self.e)
+        package = self.e.begin_work("w1", "fixture")
+        with self.e.transaction() as cx:
+            session_tables(cx)
+            cx.execute("INSERT INTO agent_sessions(id,task_key,status,last_run_id,feedback,updated_at) VALUES(?,?,'paused',?,?,?)",
+                       ("old-owner-session", "fixture-task", package["run_id"], "PRIVATE_HANDOFF_FEEDBACK", "2026-10-31T00:00:00+00:00"))
+        self.e.apply_decision(decision(self.e, [{"op": "handoff", "position_id": "p1", "member_id": "m2", "assignment_id": "a3"}]), "m1", "a1")
+        member = self._runtime_member(self.e, "m2")
+        self.assertEqual((member["current_work_id"], member["work_state"]), ("w1", "blocked"))
+        self.assertIn("work_needs_review", member["reason_codes"])
+        self.assertIsNone(member["recent_run"])
+        self.assertEqual(member["session"], {"id": None, "updated_at": None, "has_checkpoint": False, "resume_state": "not_available"})
+        self.assertEqual(self._runtime_member(self.e)["session"]["id"], "old-owner-session")
+        self.assertNotIn("PRIVATE_HANDOFF_FEEDBACK", json.dumps(snapshot(self.e)))
 
     def test_same_version_snapshots_include_new_events_and_reservations(self):
         a = snapshot(self.e)

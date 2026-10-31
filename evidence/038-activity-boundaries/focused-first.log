@@ -1,0 +1,29 @@
+test_actual_runner_startup_recovers_unknown_and_rejects_late_old_receipts (tests.test_activity_receipts.ActivityReceiptTests.test_actual_runner_startup_recovers_unknown_and_rejects_late_old_receipts) ... ok
+test_direct_ttl_boundary_keeps_original_owner_lock_and_never_dispatches (tests.test_activity_receipts.ActivityReceiptTests.test_direct_ttl_boundary_keeps_original_owner_lock_and_never_dispatches) ... ok
+test_expired_heartbeat_does_not_cancel_a_still_valid_original_receipt (tests.test_activity_receipts.ActivityReceiptTests.test_expired_heartbeat_does_not_cancel_a_still_valid_original_receipt) ... FAIL
+test_reconciled_old_receipt_cannot_complete_the_new_owners_run (tests.test_activity_receipts.ActivityReceiptTests.test_reconciled_old_receipt_cannot_complete_the_new_owners_run) ... FAIL
+
+======================================================================
+FAIL: test_expired_heartbeat_does_not_cancel_a_still_valid_original_receipt (tests.test_activity_receipts.ActivityReceiptTests.test_expired_heartbeat_does_not_cancel_a_still_valid_original_receipt)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_activity_receipts.py", line 142, in test_expired_heartbeat_does_not_cancel_a_still_valid_original_receipt
+    self.assertEqual(view["runs"][0]["usage"], self.usage)
+AssertionError: {'cost': None, 'cost_status': 'unknown', 'input_tokens': 12, 'output_tokens': 4} != {'input_tokens': 12, 'output_tokens': 4}
+- {'cost': None, 'cost_status': 'unknown', 'input_tokens': 12, 'output_tokens': 4}
++ {'input_tokens': 12, 'output_tokens': 4}
+
+======================================================================
+FAIL: test_reconciled_old_receipt_cannot_complete_the_new_owners_run (tests.test_activity_receipts.ActivityReceiptTests.test_reconciled_old_receipt_cannot_complete_the_new_owners_run)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_activity_receipts.py", line 181, in test_reconciled_old_receipt_cannot_complete_the_new_owners_run
+    self.assertEqual(records[1]["usage"], {"input_tokens": 3, "output_tokens": 2})
+AssertionError: {'cost': None, 'cost_status': 'unknown', 'input_tokens': 3, 'output_tokens': 2} != {'input_tokens': 3, 'output_tokens': 2}
+- {'cost': None, 'cost_status': 'unknown', 'input_tokens': 3, 'output_tokens': 2}
++ {'input_tokens': 3, 'output_tokens': 2}
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.117s
+
+FAILED (failures=2)

@@ -16,6 +16,7 @@ import { ReceiptView, CommandForm } from './CommandForm';
 import { acceptReceipt, loadPending, savePending } from './receipts';
 import { blocked, titles } from './model';
 export interface CommandOptions {
+  gateway?: import('../../api/client').GatewayChoice;
   connection?: import('../../api/types').ModelConnection;
   connectionId?: string;
 }

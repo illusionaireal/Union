@@ -1,0 +1,89 @@
+test_connection_revision_starts_new_sdk_thread_and_preserves_history (tests.test_session_revisions.SessionRevisionTests.test_connection_revision_starts_new_sdk_thread_and_preserves_history) ... FAIL
+test_disabled_connection_rejected_by_fresh_locked_factory_without_consumption (tests.test_session_revisions.SessionRevisionTests.test_disabled_connection_rejected_by_fresh_locked_factory_without_consumption) ... FAIL
+test_disabled_workspace_not_offered_and_forged_sdk_call_never_runs_container (tests.test_session_revisions.SessionRevisionTests.test_disabled_workspace_not_offered_and_forged_sdk_call_never_runs_container) ... FAIL
+test_formal_handoff_starts_new_sdk_thread_without_previous_members_draft (tests.test_session_revisions.SessionRevisionTests.test_formal_handoff_starts_new_sdk_thread_without_previous_members_draft) ... FAIL
+test_inflight_position_revocation_rechecked_before_sdk_workspace_tool (tests.test_session_revisions.SessionRevisionTests.test_inflight_position_revocation_rechecked_before_sdk_workspace_tool) ... FAIL
+test_unchanged_binding_resumes_actual_sdk_thread_and_private_draft (tests.test_session_revisions.SessionRevisionTests.test_unchanged_binding_resumes_actual_sdk_thread_and_private_draft) ... FAIL
+test_workspace_revision_starts_new_sdk_thread_and_preserves_history (tests.test_session_revisions.SessionRevisionTests.test_workspace_revision_starts_new_sdk_thread_and_preserves_history) ... FAIL
+
+======================================================================
+FAIL: test_connection_revision_starts_new_sdk_thread_and_preserves_history (tests.test_session_revisions.SessionRevisionTests.test_connection_revision_starts_new_sdk_thread_and_preserves_history)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_session_revisions.py", line 100, in test_connection_revision_starts_new_sdk_thread_and_preserves_history
+    sid, _ = self.seed()
+             ^^^^^^^^^^^
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_session_revisions.py", line 57, in seed
+    self.assertIn(self.canary, json.dumps(self.checkpoint(sid), default=str))
+AssertionError: 'PRIVATE_OLD_SESSION_DRAFT' not found in '{"v": 4, "ts": "2026-10-31T06:39:17.968005+00:00", "id": "1f1d4f5c-bfdc-6db4-8003-973a0e074f6a", "channel_values": {"__pregel_tasks": [], "branch:to:model": null}, "channel_versions": {"__start__": "00000000000000000000000000000002.0.5694912725593696", "messages": "00000000000000000000000000000005.0.24157119558274087", "branch:to:PatchToolCallsMiddleware.before_agent": "00000000000000000000000000000003.0.3681062662844574", "branch:to:model": "00000000000000000000000000000005.0.24157119558274087", "__pregel_tasks": "00000000000000000000000000000005.0.24157119558274087", "files": "00000000000000000000000000000005.0.24157119558274087"}, "versions_seen": {"__input__": {}, "__start__": {"__start__": "00000000000000000000000000000001.0.26977292657021934"}, "PatchToolCallsMiddleware.before_agent": {"branch:to:PatchToolCallsMiddleware.before_agent": "00000000000000000000000000000002.0.5694912725593696"}, "model": {"branch:to:model": "00000000000000000000000000000003.0.3681062662844574"}, "tools": {}}, "updated_channels": ["branch:to:model", "files", "messages"]}'
+
+======================================================================
+FAIL: test_disabled_connection_rejected_by_fresh_locked_factory_without_consumption (tests.test_session_revisions.SessionRevisionTests.test_disabled_connection_rejected_by_fresh_locked_factory_without_consumption)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_session_revisions.py", line 128, in test_disabled_connection_rejected_by_fresh_locked_factory_without_consumption
+    sid, _ = self.seed()
+             ^^^^^^^^^^^
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_session_revisions.py", line 57, in seed
+    self.assertIn(self.canary, json.dumps(self.checkpoint(sid), default=str))
+AssertionError: 'PRIVATE_OLD_SESSION_DRAFT' not found in '{"v": 4, "ts": "2026-10-31T06:39:18.575120+00:00", "id": "1f1d4f5c-c5a7-60fe-8003-d326de2c824b", "channel_values": {"__pregel_tasks": [], "branch:to:model": null}, "channel_versions": {"__start__": "00000000000000000000000000000002.0.23030514678724767", "messages": "00000000000000000000000000000005.0.2096203563007354", "branch:to:PatchToolCallsMiddleware.before_agent": "00000000000000000000000000000003.0.16550816614319874", "branch:to:model": "00000000000000000000000000000005.0.2096203563007354", "__pregel_tasks": "00000000000000000000000000000005.0.2096203563007354", "files": "00000000000000000000000000000005.0.2096203563007354"}, "versions_seen": {"__input__": {}, "__start__": {"__start__": "00000000000000000000000000000001.0.6997834111389624"}, "PatchToolCallsMiddleware.before_agent": {"branch:to:PatchToolCallsMiddleware.before_agent": "00000000000000000000000000000002.0.23030514678724767"}, "model": {"branch:to:model": "00000000000000000000000000000003.0.16550816614319874"}, "tools": {}}, "updated_channels": ["branch:to:model", "files", "messages"]}'
+
+======================================================================
+FAIL: test_disabled_workspace_not_offered_and_forged_sdk_call_never_runs_container (tests.test_session_revisions.SessionRevisionTests.test_disabled_workspace_not_offered_and_forged_sdk_call_never_runs_container)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_session_revisions.py", line 138, in test_disabled_workspace_not_offered_and_forged_sdk_call_never_runs_container
+    sid, _ = self.seed()
+             ^^^^^^^^^^^
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_session_revisions.py", line 57, in seed
+    self.assertIn(self.canary, json.dumps(self.checkpoint(sid), default=str))
+AssertionError: 'PRIVATE_OLD_SESSION_DRAFT' not found in '{"v": 4, "ts": "2026-10-31T06:39:19.234840+00:00", "id": "1f1d4f5c-cbf1-6b55-8003-2a01422b8102", "channel_values": {"__pregel_tasks": [], "branch:to:model": null}, "channel_versions": {"__start__": "00000000000000000000000000000002.0.409872395334988", "messages": "00000000000000000000000000000005.0.2830848801136494", "branch:to:PatchToolCallsMiddleware.before_agent": "00000000000000000000000000000003.0.12858142993436084", "branch:to:model": "00000000000000000000000000000005.0.2830848801136494", "__pregel_tasks": "00000000000000000000000000000005.0.2830848801136494", "files": "00000000000000000000000000000005.0.2830848801136494"}, "versions_seen": {"__input__": {}, "__start__": {"__start__": "00000000000000000000000000000001.0.6843053528731882"}, "PatchToolCallsMiddleware.before_agent": {"branch:to:PatchToolCallsMiddleware.before_agent": "00000000000000000000000000000002.0.409872395334988"}, "model": {"branch:to:model": "00000000000000000000000000000003.0.12858142993436084"}, "tools": {}}, "updated_channels": ["branch:to:model", "files", "messages"]}'
+
+======================================================================
+FAIL: test_formal_handoff_starts_new_sdk_thread_without_previous_members_draft (tests.test_session_revisions.SessionRevisionTests.test_formal_handoff_starts_new_sdk_thread_without_previous_members_draft)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_session_revisions.py", line 116, in test_formal_handoff_starts_new_sdk_thread_without_previous_members_draft
+    sid, _ = self.seed()
+             ^^^^^^^^^^^
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_session_revisions.py", line 57, in seed
+    self.assertIn(self.canary, json.dumps(self.checkpoint(sid), default=str))
+AssertionError: 'PRIVATE_OLD_SESSION_DRAFT' not found in '{"v": 4, "ts": "2026-10-31T06:39:19.844527+00:00", "id": "1f1d4f5c-d1c2-6334-8003-f64df14fbddd", "channel_values": {"__pregel_tasks": [], "branch:to:model": null}, "channel_versions": {"__start__": "00000000000000000000000000000002.0.03542600036746513", "messages": "00000000000000000000000000000005.0.28413636561939937", "branch:to:PatchToolCallsMiddleware.before_agent": "00000000000000000000000000000003.0.02363545657382149", "branch:to:model": "00000000000000000000000000000005.0.28413636561939937", "__pregel_tasks": "00000000000000000000000000000005.0.28413636561939937", "files": "00000000000000000000000000000005.0.28413636561939937"}, "versions_seen": {"__input__": {}, "__start__": {"__start__": "00000000000000000000000000000001.0.28391491201794095"}, "PatchToolCallsMiddleware.before_agent": {"branch:to:PatchToolCallsMiddleware.before_agent": "00000000000000000000000000000002.0.03542600036746513"}, "model": {"branch:to:model": "00000000000000000000000000000003.0.02363545657382149"}, "tools": {}}, "updated_channels": ["branch:to:model", "files", "messages"]}'
+
+======================================================================
+FAIL: test_inflight_position_revocation_rechecked_before_sdk_workspace_tool (tests.test_session_revisions.SessionRevisionTests.test_inflight_position_revocation_rechecked_before_sdk_workspace_tool)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_session_revisions.py", line 154, in test_inflight_position_revocation_rechecked_before_sdk_workspace_tool
+    sid, _ = self.seed()
+             ^^^^^^^^^^^
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_session_revisions.py", line 57, in seed
+    self.assertIn(self.canary, json.dumps(self.checkpoint(sid), default=str))
+AssertionError: 'PRIVATE_OLD_SESSION_DRAFT' not found in '{"v": 4, "ts": "2026-10-31T06:39:20.462000+00:00", "id": "1f1d4f5c-d7a5-6b46-8003-e4fdad85cf8a", "channel_values": {"__pregel_tasks": [], "branch:to:model": null}, "channel_versions": {"__start__": "00000000000000000000000000000002.0.8720453382043051", "messages": "00000000000000000000000000000005.0.928045358886138", "branch:to:PatchToolCallsMiddleware.before_agent": "00000000000000000000000000000003.0.9781592301139738", "branch:to:model": "00000000000000000000000000000005.0.928045358886138", "__pregel_tasks": "00000000000000000000000000000005.0.928045358886138", "files": "00000000000000000000000000000005.0.928045358886138"}, "versions_seen": {"__input__": {}, "__start__": {"__start__": "00000000000000000000000000000001.0.34795553499929865"}, "PatchToolCallsMiddleware.before_agent": {"branch:to:PatchToolCallsMiddleware.before_agent": "00000000000000000000000000000002.0.8720453382043051"}, "model": {"branch:to:model": "00000000000000000000000000000003.0.9781592301139738"}, "tools": {}}, "updated_channels": ["branch:to:model", "files", "messages"]}'
+
+======================================================================
+FAIL: test_unchanged_binding_resumes_actual_sdk_thread_and_private_draft (tests.test_session_revisions.SessionRevisionTests.test_unchanged_binding_resumes_actual_sdk_thread_and_private_draft)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_session_revisions.py", line 88, in test_unchanged_binding_resumes_actual_sdk_thread_and_private_draft
+    sid, _ = self.seed()
+             ^^^^^^^^^^^
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_session_revisions.py", line 57, in seed
+    self.assertIn(self.canary, json.dumps(self.checkpoint(sid), default=str))
+AssertionError: 'PRIVATE_OLD_SESSION_DRAFT' not found in '{"v": 4, "ts": "2026-10-31T06:39:21.077013+00:00", "id": "1f1d4f5c-dd83-6326-8003-490d28c3e85a", "channel_values": {"__pregel_tasks": [], "branch:to:model": null}, "channel_versions": {"__start__": "00000000000000000000000000000002.0.31246222277837343", "messages": "00000000000000000000000000000005.0.42653428621488976", "branch:to:PatchToolCallsMiddleware.before_agent": "00000000000000000000000000000003.0.5317467570413252", "branch:to:model": "00000000000000000000000000000005.0.42653428621488976", "__pregel_tasks": "00000000000000000000000000000005.0.42653428621488976", "files": "00000000000000000000000000000005.0.42653428621488976"}, "versions_seen": {"__input__": {}, "__start__": {"__start__": "00000000000000000000000000000001.0.08924798399137568"}, "PatchToolCallsMiddleware.before_agent": {"branch:to:PatchToolCallsMiddleware.before_agent": "00000000000000000000000000000002.0.31246222277837343"}, "model": {"branch:to:model": "00000000000000000000000000000003.0.5317467570413252"}, "tools": {}}, "updated_channels": ["branch:to:model", "files", "messages"]}'
+
+======================================================================
+FAIL: test_workspace_revision_starts_new_sdk_thread_and_preserves_history (tests.test_session_revisions.SessionRevisionTests.test_workspace_revision_starts_new_sdk_thread_and_preserves_history)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_session_revisions.py", line 108, in test_workspace_revision_starts_new_sdk_thread_and_preserves_history
+    sid, _ = self.seed()
+             ^^^^^^^^^^^
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_session_revisions.py", line 57, in seed
+    self.assertIn(self.canary, json.dumps(self.checkpoint(sid), default=str))
+AssertionError: 'PRIVATE_OLD_SESSION_DRAFT' not found in '{"v": 4, "ts": "2026-10-31T06:39:21.699927+00:00", "id": "1f1d4f5c-e373-6fc6-8003-d47fc5b50ca8", "channel_values": {"__pregel_tasks": [], "branch:to:model": null}, "channel_versions": {"__start__": "00000000000000000000000000000002.0.39636889251330165", "messages": "00000000000000000000000000000005.0.5188147661093605", "branch:to:PatchToolCallsMiddleware.before_agent": "00000000000000000000000000000003.0.8419925090317274", "branch:to:model": "00000000000000000000000000000005.0.5188147661093605", "__pregel_tasks": "00000000000000000000000000000005.0.5188147661093605", "files": "00000000000000000000000000000005.0.5188147661093605"}, "versions_seen": {"__input__": {}, "__start__": {"__start__": "00000000000000000000000000000001.0.9294729418880927"}, "PatchToolCallsMiddleware.before_agent": {"branch:to:PatchToolCallsMiddleware.before_agent": "00000000000000000000000000000002.0.39636889251330165"}, "model": {"branch:to:model": "00000000000000000000000000000003.0.8419925090317274"}, "tools": {}}, "updated_channels": ["branch:to:model", "files", "messages"]}'
+
+----------------------------------------------------------------------
+Ran 7 tests in 5.578s
+
+FAILED (failures=7)

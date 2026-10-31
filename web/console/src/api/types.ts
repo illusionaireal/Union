@@ -16,11 +16,13 @@ export type ReceiptKind =
   CommandKind | 'api_connection' | 'api_binding' | 'api_test' | 'company_usage';
 export interface Session {
   role: 'board' | 'observer';
+  platform_admin?: boolean;
   organizations: { id: string; name: string }[];
   service_instance: string;
   executors: ('fixture' | 'codex' | 'api')[];
 }
 export interface ModelConnection {
+  gateway_ref?: { id: string; revision: number };
   id: string;
   revision: number;
   has_api_key: boolean;
@@ -115,6 +117,27 @@ export interface Run {
   host_confirmed: boolean;
   failure?: ExecutionFailure;
 }
+export interface RuntimeSummary {
+  runtime_id: string | null;
+  name: string;
+  mode: 'embedded' | 'managed_local' | 'external' | 'unregistered';
+  instance_id: string | null;
+  observed_at: string | null;
+  liveness: 'confirmed' | 'unconfirmed' | 'unknown';
+  dispatch_state: string;
+  active_run_id: string | null;
+  capabilities: string[];
+}
+export interface MemberExecution {
+  member_id: string;
+  assignment_ids: string[];
+  current_work_id: string | null;
+  work_state: 'executing' | 'ready' | 'waiting' | 'blocked' | 'idle';
+  reason_codes: string[];
+  recent_run: Pick<Run, 'id' | 'status' | 'display_status' | 'started_at' | 'ended_at' | 'work_id'> | null;
+  session: { id: string | null; updated_at: string | null; has_checkpoint: boolean | null; resume_state: string };
+  workspace: { mode: 'virtual_only' | 'shared_business'; revision: number | null; available: boolean; reason_codes: string[] };
+}
 export interface OrganizationEvent {
   id: string;
   kind: string;
@@ -197,6 +220,8 @@ export interface Snapshot {
   execution_state: string;
   dispatch_state: string;
   host_activity: { confirmed: boolean; owner?: string };
+  runtime: RuntimeSummary;
+  member_execution: MemberExecution[];
   runs: Run[];
   events: OrganizationEvent[];
   decisions: Decision[];

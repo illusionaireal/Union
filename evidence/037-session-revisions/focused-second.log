@@ -1,0 +1,34 @@
+test_connection_revision_starts_new_sdk_thread_and_preserves_history (tests.test_session_revisions.SessionRevisionTests.test_connection_revision_starts_new_sdk_thread_and_preserves_history) ... ok
+test_disabled_connection_rejected_by_fresh_locked_factory_without_consumption (tests.test_session_revisions.SessionRevisionTests.test_disabled_connection_rejected_by_fresh_locked_factory_without_consumption) ... ok
+test_disabled_workspace_not_offered_and_forged_sdk_call_never_runs_container (tests.test_session_revisions.SessionRevisionTests.test_disabled_workspace_not_offered_and_forged_sdk_call_never_runs_container) ... FAIL
+test_formal_handoff_starts_new_sdk_thread_without_previous_members_draft (tests.test_session_revisions.SessionRevisionTests.test_formal_handoff_starts_new_sdk_thread_without_previous_members_draft) ... ok
+test_inflight_position_revocation_rechecked_before_sdk_workspace_tool (tests.test_session_revisions.SessionRevisionTests.test_inflight_position_revocation_rechecked_before_sdk_workspace_tool) ... FAIL
+test_unchanged_binding_resumes_actual_sdk_thread_and_private_draft (tests.test_session_revisions.SessionRevisionTests.test_unchanged_binding_resumes_actual_sdk_thread_and_private_draft) ... ok
+test_workspace_revision_starts_new_sdk_thread_and_preserves_history (tests.test_session_revisions.SessionRevisionTests.test_workspace_revision_starts_new_sdk_thread_and_preserves_history) ... ok
+
+======================================================================
+FAIL: test_disabled_workspace_not_offered_and_forged_sdk_call_never_runs_container (tests.test_session_revisions.SessionRevisionTests.test_disabled_workspace_not_offered_and_forged_sdk_call_never_runs_container)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_session_revisions.py", line 149, in test_disabled_workspace_not_offered_and_forged_sdk_call_never_runs_container
+    self.assertEqual(result[0]["action"], "correction", result)
+AssertionError: 'blocked' != 'correction'
+- blocked
++ correction
+ : [{'action': 'blocked', 'run_id': 'run-f7a3ee7db3224692bf8f8a9d2e2b1512', 'work_id': 'run-65399f4cdc5b483c85ad5bda8ddc1472-w1', 'executor': 'api', 'failure': {'code': 'api_tool_arguments', 'message': '组织工具参数需要修正', 'recovery': '本次提议未生效；系统会在本次剩余额度内将原因反馈给模型一次。'}, 'reason': '本次调用步数已用完；组织提议尚待修正'}]
+
+======================================================================
+FAIL: test_inflight_position_revocation_rechecked_before_sdk_workspace_tool (tests.test_session_revisions.SessionRevisionTests.test_inflight_position_revocation_rechecked_before_sdk_workspace_tool)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_session_revisions.py", line 175, in test_inflight_position_revocation_rechecked_before_sdk_workspace_tool
+    self.assertEqual(result[0]["action"], "correction", result)
+AssertionError: 'blocked' != 'correction'
+- blocked
++ correction
+ : [{'action': 'blocked', 'run_id': 'run-dbd329a8dfae4117879be6b1789e4d5c', 'work_id': 'run-89b6b29ee1d34223b2a8298b9c8c0046-w1', 'executor': 'api', 'failure': {'code': 'api_tool_arguments', 'message': '组织工具参数需要修正', 'recovery': '本次提议未生效；系统会在本次剩余额度内将原因反馈给模型一次。'}, 'reason': '本次调用步数已用完；组织提议尚待修正'}]
+
+----------------------------------------------------------------------
+Ran 7 tests in 5.885s
+
+FAILED (failures=2)

@@ -39,6 +39,12 @@ export default function Models() {
   });
   const list = connections.data?.connections || [];
   const active = d?.execution_config.api_connection_id;
+  const gateways = useQuery({
+    queryKey: ['gateway-choices', session?.service_instance, session?.role, orgId],
+    enabled: connected && board && !!d && enabled,
+    queryFn: ({ signal }) => api.gatewayChoices(orgId, signal),
+    retry: false, refetchInterval: 4000,
+  });
   return (
     <>
       <section className="model-intro">
@@ -99,6 +105,11 @@ export default function Models() {
               { label: '验证方式', value: '工具往返测试', note: '两次调用，验证工具与继续执行' },
             ]}
           />
+          {gateways.isError && <p role="alert">平台网关列表暂不可读；仍可手动配置独立 API 连接。</p>}
+          {!!gateways.data?.gateways.length && <Card title="使用平台登记的网关">
+            <p>选择公开接入地址，再填写该公司自己的令牌和模型。保存不调用模型，也不共享其他公司的密钥。</p>
+            <div className="empty-actions">{gateways.data.gateways.map(gateway => <CommandButton key={gateway.id} kind="api_connection" options={{ gateway }}>使用 {gateway.config.name}</CommandButton>)}</div>
+          </Card>}
           {!connected && (
             <div className="connection-warning" role="status">
               连接已断开，以下为最近读取的配置。恢复连接后才能操作。
@@ -142,6 +153,7 @@ export default function Models() {
                 key={c.id}
                 data-connection={c.id}
               >
+                {c.gateway_ref && <p className="form-note">网关登记来源：{c.gateway_ref.id} · v{c.gateway_ref.revision}（地址快照）</p>}
                 <div className="model-card-heading">
                   <span className="provider-icon">
                     <Cpu size={23} />

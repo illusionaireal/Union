@@ -205,3 +205,18 @@ describe('saved API connection editing', () => {
     expect(screen.getByLabelText('API 根地址')).toHaveValue('');
   });
 });
+
+describe('gateway connection snapshots', () => {
+  it('prefills a public gateway without inheriting a token and permits explicit detachment', () => {
+    const gateway = { id: 'gateway-test', revision: 2, config: { name: 'New API', api_base_url: 'https://gateway.example/v1' } };
+    const { rerender } = render(<form aria-label="操作表单"><CommandFields kind="api_connection" session={session} data={data} options={{ gateway }} /></form>);
+    expect(screen.getByLabelText('API 根地址')).toHaveValue(gateway.config.api_base_url);
+    expect(screen.getByLabelText('API Key（留空保留原密钥）')).toHaveValue('');
+    fireEvent.change(screen.getByLabelText('API 模型 ID'), { target: { value: 'test-model' } });
+    expect(readForm('api_connection', screen.getByRole('form') as HTMLFormElement)).toMatchObject({ gateway_ref: { id: gateway.id, revision: 2 } });
+    const connection: ModelConnection = { id: 'primary', revision: 1, has_api_key: true, updated_at: '', gateway_ref: { id: gateway.id, revision: 2 }, config: { name: 'New API', base_url: gateway.config.api_base_url, model: 'test-model', response_format: 'agent', token_limit_field: 'max_tokens', max_output_tokens: 100, timeout_seconds: 5, enabled: true } };
+    rerender(<form aria-label="操作表单"><CommandFields kind="api_connection" session={session} data={data} options={{ connection }} /></form>);
+    fireEvent.click(screen.getByRole('checkbox', { name: /改为独立 API 连接/ }));
+    expect(readForm('api_connection', screen.getByRole('form') as HTMLFormElement)).not.toHaveProperty('gateway_ref');
+  });
+});

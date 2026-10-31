@@ -1,0 +1,74 @@
+$ /workspace/scratch/ec13abb7a5d3/Union/.union/validation-20261031-0940/bin/python -m unittest -v tests.test_dispatch_observation tests.test_corp tests.test_runtime_location tests.test_runtime_workspace tests.test_runtime_checkpoints
+test_enabled_does_not_promise_work_or_budget_eligibility (tests.test_dispatch_observation.DispatchObservationTests.test_enabled_does_not_promise_work_or_budget_eligibility) ... ok
+test_paused_host_without_a_run_does_not_claim_quiescence (tests.test_dispatch_observation.DispatchObservationTests.test_paused_host_without_a_run_does_not_claim_quiescence) ... ok
+test_persisted_running_keeps_pause_request_after_owner_loss (tests.test_dispatch_observation.DispatchObservationTests.test_persisted_running_keeps_pause_request_after_owner_loss) ... ok
+test_unknown_precedes_pause_intent_without_recovery_or_replay (tests.test_dispatch_observation.DispatchObservationTests.test_unknown_precedes_pause_intent_without_recovery_or_replay) ... ok
+test_changed_creation_does_not_overwrite_adopted_profile (tests.test_corp.CorpTests.test_changed_creation_does_not_overwrite_adopted_profile) ... ok
+test_preparation_is_idempotent_and_does_not_create_members_or_calls (tests.test_corp.CorpTests.test_preparation_is_idempotent_and_does_not_create_members_or_calls) ... ok
+test_saved_connection_is_not_tool_verification_and_never_exposes_key (tests.test_corp.CorpTests.test_saved_connection_is_not_tool_verification_and_never_exposes_key) ... ok
+test_service_pause_and_failure_are_terminal (tests.test_corp.CorpTests.test_service_pause_and_failure_are_terminal) ... ok
+test_service_requires_explicit_cost_acceptance_before_watch (tests.test_corp.CorpTests.test_service_requires_explicit_cost_acceptance_before_watch) ... ok
+test_service_stops_at_exact_budget_boundary_without_budget_reset (tests.test_corp.CorpTests.test_service_stops_at_exact_budget_boundary_without_budget_reset) ... ok
+test_service_unknown_execution_is_never_replayed (tests.test_corp.CorpTests.test_service_unknown_execution_is_never_replayed) ... ok
+test_status_can_read_while_console_runs_and_never_probes_provider (tests.test_corp.CorpTests.test_status_can_read_while_console_runs_and_never_probes_provider) ... ok
+test_tool_probe_evidence_is_bound_to_real_source_and_connection_revision (tests.test_corp.CorpTests.test_tool_probe_evidence_is_bound_to_real_source_and_connection_revision) ... ok
+test_unknown_creation_is_not_automatically_recreated (tests.test_corp.CorpTests.test_unknown_creation_is_not_automatically_recreated) ... ok
+test_unknown_dispatch_does_not_misreport_the_actual_pause_intent (tests.test_corp.CorpTests.test_unknown_dispatch_does_not_misreport_the_actual_pause_intent) ... ok
+test_confirmed_work_and_loss_of_activity_do_not_infer_deployment (tests.test_runtime_location.RuntimeLocationTests.test_confirmed_work_and_loss_of_activity_do_not_infer_deployment) ... ok
+test_legacy_unregistered_reads_do_not_create_runtime_registration (tests.test_runtime_location.RuntimeLocationTests.test_legacy_unregistered_reads_do_not_create_runtime_registration) ... ok
+test_new_host_activity_does_not_confirm_a_previous_owners_run (tests.test_runtime_location.RuntimeLocationTests.test_new_host_activity_does_not_confirm_a_previous_owners_run) ... ok
+test_unknown_dispatch_is_not_erased_by_unregistered_description (tests.test_runtime_location.RuntimeLocationTests.test_unknown_dispatch_is_not_erased_by_unregistered_description) ... ok
+test_current_position_and_charter_revocation_are_observed (tests.test_runtime_workspace.RuntimeWorkspaceTests.test_current_position_and_charter_revocation_are_observed) ... ok
+test_disabled_workspace_reason_precedes_missing_current_work (tests.test_runtime_workspace.RuntimeWorkspaceTests.test_disabled_workspace_reason_precedes_missing_current_work) ... ok
+test_handoff_uses_new_owners_work_assignment_not_their_other_position (tests.test_runtime_workspace.RuntimeWorkspaceTests.test_handoff_uses_new_owners_work_assignment_not_their_other_position) ... ok
+test_legacy_unconfigured_workspace_read_does_not_create_tables (tests.test_runtime_workspace.RuntimeWorkspaceTests.test_legacy_unconfigured_workspace_read_does_not_create_tables) ... ok
+test_permission_summary_is_not_a_promise_that_commands_can_run (tests.test_runtime_workspace.RuntimeWorkspaceTests.test_permission_summary_is_not_a_promise_that_commands_can_run) ... ok
+test_workspace_uses_selected_assignment_in_both_permission_directions (tests.test_runtime_workspace.RuntimeWorkspaceTests.test_workspace_uses_selected_assignment_in_both_permission_directions) ... ok
+test_workspace_without_current_work_does_not_choose_an_assignment (tests.test_runtime_workspace.RuntimeWorkspaceTests.test_workspace_without_current_work_does_not_choose_an_assignment) ... ok
+test_closed_wal_database_is_unknown_without_creating_sidecars (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_closed_wal_database_is_unknown_without_creating_sidecars) ... ok
+test_empty_database_and_unreadable_schema_have_distinct_results (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_empty_database_and_unreadable_schema_have_distinct_results) ... ok
+test_legacy_read_and_handoff_do_not_create_or_share_checkpoints (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_legacy_read_and_handoff_do_not_create_or_share_checkpoints) ... ok
+test_live_wal_checkpoint_is_visible_without_reading_body_columns (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_live_wal_checkpoint_is_visible_without_reading_body_columns) ... ok
+test_other_thread_namespace_and_au_are_not_this_session (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_other_thread_namespace_and_au_are_not_this_session) ... ok
+test_sdk_checkpoint_exists_independently_of_session_status (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_sdk_checkpoint_exists_independently_of_session_status) ... ok
+test_session_status_is_not_checkpoint_evidence (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_session_status_is_not_checkpoint_evidence) ... ok
+test_unknown_reconciled_and_running_runs_do_not_offer_resume (tests.test_runtime_checkpoints.RuntimeCheckpointTests.test_unknown_reconciled_and_running_runs_do_not_offer_resume) ... ok
+
+----------------------------------------------------------------------
+Ran 34 tests in 2.176s
+
+OK
+
+EXIT 0
+$ npm run test --workspace @union/console
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> @union/console@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 /workspace/scratch/ec13abb7a5d3/Union/web/console
+
+ ✓ src/features/commands/receipts.test.ts (4 tests) 7ms
+ ✓ src/api/client.test.ts (3 tests) 12ms
+ ✓ src/app/url-state.test.tsx (1 test) 139ms
+ ✓ src/features/commands/fields.test.tsx (9 tests) 359ms
+ ✓ src/pages/Gateways.test.tsx (3 tests) 292ms
+ ✓ src/pages/RuntimeObservation.test.tsx (11 tests) 222ms
+
+ Test Files  6 passed (6)
+      Tests  31 passed (31)
+   Start at  12:39:32
+   Duration  1.81s (transform 730ms, setup 1.25s, collect 1.74s, tests 1.03s, environment 2.86s, prepare 634ms)
+
+
+EXIT 0
+
+$ npm run typecheck --workspace @union/console
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> @union/console@0.1.0 typecheck
+> tsc --noEmit
+
+
+EXIT 0

@@ -1,0 +1,7 @@
+2026-10-30，当前环境无可执行 Chromium。
+node node_modules/playwright-core/cli.js install chromium: exit 1
+官方下载地址：https://cdn.playwright.dev/builds/cft/156.0.8078.4/linux64/chrome-linux64.zip
+安装器多次返回：Error: End of central directory record signature not found. Either not a zip file, or file is truncated.
+UNION_PYTHON=.venv/bin/python npm run test:gateways: exit 1
+Executable doesn't exist at /root/.cache/ms-playwright/chromium_headless_shell-1248/chrome-linux/headless_shell
+没有实际浏览器交互/截图验收结果。

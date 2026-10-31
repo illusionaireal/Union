@@ -1,0 +1,49 @@
+test_enabled_does_not_promise_work_or_budget_eligibility (tests.test_dispatch_observation.DispatchObservationTests.test_enabled_does_not_promise_work_or_budget_eligibility) ... ok
+test_paused_host_without_a_run_does_not_claim_quiescence (tests.test_dispatch_observation.DispatchObservationTests.test_paused_host_without_a_run_does_not_claim_quiescence) ... FAIL
+test_persisted_running_keeps_pause_request_after_owner_loss (tests.test_dispatch_observation.DispatchObservationTests.test_persisted_running_keeps_pause_request_after_owner_loss) ... ok
+test_unknown_precedes_pause_intent_without_recovery_or_replay (tests.test_dispatch_observation.DispatchObservationTests.test_unknown_precedes_pause_intent_without_recovery_or_replay) ... FAIL
+test_unknown_dispatch_does_not_misreport_the_actual_pause_intent (tests.test_corp.CorpTests.test_unknown_dispatch_does_not_misreport_the_actual_pause_intent) ... FAIL
+
+======================================================================
+FAIL: test_paused_host_without_a_run_does_not_claim_quiescence (tests.test_dispatch_observation.DispatchObservationTests.test_paused_host_without_a_run_does_not_claim_quiescence)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_dispatch_observation.py", line 62, in test_paused_host_without_a_run_does_not_claim_quiescence
+    view = self.observe("pause_requested")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_dispatch_observation.py", line 40, in observe
+    self.assertEqual(result["runtime"]["dispatch_state"], expected)
+AssertionError: 'paused' != 'pause_requested'
+- paused
++ pause_requested
+
+
+======================================================================
+FAIL: test_unknown_precedes_pause_intent_without_recovery_or_replay (tests.test_dispatch_observation.DispatchObservationTests.test_unknown_precedes_pause_intent_without_recovery_or_replay)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_dispatch_observation.py", line 51, in test_unknown_precedes_pause_intent_without_recovery_or_replay
+    view = self.observe("needs_review")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_dispatch_observation.py", line 39, in observe
+    self.assertEqual(result["dispatch_state"], expected)
+AssertionError: 'enabled' != 'needs_review'
+- enabled
++ needs_review
+
+
+======================================================================
+FAIL: test_unknown_dispatch_does_not_misreport_the_actual_pause_intent (tests.test_corp.CorpTests.test_unknown_dispatch_does_not_misreport_the_actual_pause_intent)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_corp.py", line 52, in test_unknown_dispatch_does_not_misreport_the_actual_pause_intent
+    self.assertEqual(engine.status()["dispatch_state"], "needs_review")
+AssertionError: 'enabled' != 'needs_review'
+- enabled
++ needs_review
+
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.130s
+
+FAILED (failures=3)

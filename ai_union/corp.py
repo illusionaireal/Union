@@ -63,7 +63,7 @@ def inspect_company(root):
     blockers = []
     if status["budget"]["blocked_reason"]:
         blockers.append({"code": "resources", "message": status["budget"]["blocked_reason"]})
-    if status["dispatch_state"] != "enabled":
+    if engine.paused():
         blockers.append({"code": "paused", "message": "派发已暂停；由董事会通过工作台继续"})
     if any(r["status"] in ("running", "unknown") for r in status["runs"]):
         blockers.append({"code": "unresolved_execution", "message": "存在在途或未知执行；先核对，禁止自动重放"})

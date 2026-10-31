@@ -1,0 +1,37 @@
+test_forged_observation_parameters_and_runtime_commands_do_not_expand_scope (tests.test_runtime_http.RuntimeHTTPTests.test_forged_observation_parameters_and_runtime_commands_do_not_expand_scope) ... ok
+test_http_current_authority_changes_do_not_resume_historical_checkpoint (tests.test_runtime_http.RuntimeHTTPTests.test_http_current_authority_changes_do_not_resume_historical_checkpoint) ... FAIL
+test_http_legacy_unconfigured_read_does_not_create_observation_tables (tests.test_runtime_http.RuntimeHTTPTests.test_http_legacy_unconfigured_read_does_not_create_observation_tables) ... ok
+test_http_session_roles_and_actual_au_scope (tests.test_runtime_http.RuntimeHTTPTests.test_http_session_roles_and_actual_au_scope) ... ok
+test_http_state_chain_and_budget_do_not_execute_on_get (tests.test_runtime_http.RuntimeHTTPTests.test_http_state_chain_and_budget_do_not_execute_on_get) ... ok
+test_same_member_session_ids_and_whole_response_privacy (tests.test_runtime_http.RuntimeHTTPTests.test_same_member_session_ids_and_whole_response_privacy) ... FAIL
+
+======================================================================
+FAIL: test_http_current_authority_changes_do_not_resume_historical_checkpoint (tests.test_runtime_http.RuntimeHTTPTests.test_http_current_authority_changes_do_not_resume_historical_checkpoint)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_runtime_http.py", line 207, in test_http_current_authority_changes_do_not_resume_historical_checkpoint
+    self.private_fixture("a", checkpoint=True, unknown=False)
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_runtime_http.py", line 99, in private_fixture
+    self.assertEqual(response["receipt"]["status"], "succeeded")
+AssertionError: 'rejected' != 'succeeded'
+- rejected
++ succeeded
+
+
+======================================================================
+FAIL: test_same_member_session_ids_and_whole_response_privacy (tests.test_runtime_http.RuntimeHTTPTests.test_same_member_session_ids_and_whole_response_privacy)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_runtime_http.py", line 150, in test_same_member_session_ids_and_whole_response_privacy
+    self.private_fixture("a", checkpoint=True)
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_runtime_http.py", line 99, in private_fixture
+    self.assertEqual(response["receipt"]["status"], "succeeded")
+AssertionError: 'rejected' != 'succeeded'
+- rejected
++ succeeded
+
+
+----------------------------------------------------------------------
+Ran 6 tests in 3.487s
+
+FAILED (failures=2)

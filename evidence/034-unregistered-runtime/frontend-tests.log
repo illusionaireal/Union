@@ -1,0 +1,54 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> union@0.0.0 check:console
+> npm run typecheck --workspace @union/console && npm run test --workspace @union/console && npm run build:console
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> @union/console@0.1.0 typecheck
+> tsc --noEmit
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> @union/console@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 /workspace/scratch/ec13abb7a5d3/Union/web/console
+
+ ✓ src/features/commands/receipts.test.ts (4 tests) 10ms
+ ✓ src/api/client.test.ts (3 tests) 12ms
+ ✓ src/app/url-state.test.tsx (1 test) 126ms
+ ✓ src/features/commands/fields.test.tsx (9 tests) 321ms
+ ✓ src/pages/Gateways.test.tsx (3 tests) 273ms
+ ✓ src/pages/RuntimeObservation.test.tsx (9 tests) 294ms
+
+ Test Files  6 passed (6)
+      Tests  29 passed (29)
+   Start at  08:39:40
+   Duration  1.73s (transform 740ms, setup 1.14s, collect 1.70s, tests 1.04s, environment 2.49s, prepare 413ms)
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> union@0.0.0 build:console
+> npm run build --workspace @union/console
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> @union/console@0.1.0 build
+> tsc --noEmit && vite build
+
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 2005 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.74 kB │ gzip:   0.51 kB
+dist/assets/index-CZvwxqwE.css   41.95 kB │ gzip:   9.50 kB
+dist/assets/index-COL2XPwy.js   394.55 kB │ gzip: 124.54 kB
+✓ built in 2.25s
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice

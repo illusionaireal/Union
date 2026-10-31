@@ -37,6 +37,8 @@ class Console:
         self.enable_api = enable_api
         self.executor_factory = self._executor
         self.closed = False
+        from .gateways import Gateways
+        self.gateways = Gateways(self)
         with self.catalog() as cx:
             cx.execute("CREATE TABLE IF NOT EXISTS organizations(id TEXT PRIMARY KEY, folder TEXT NOT NULL)")
             cx.execute("CREATE TABLE IF NOT EXISTS creations(id TEXT PRIMARY KEY, payload TEXT NOT NULL, receipt TEXT NOT NULL, folder TEXT NOT NULL)")
@@ -75,25 +77,28 @@ class Console:
             cx.execute("BEGIN")
             yield cx
 
-    def new_session(self, role, organizations=None):
+    def new_session(self, role, organizations=None, *, platform_admin=False):
         require(role in ("board", "observer"), "不支持的宿主角色")
+        require(not platform_admin or (role == "board" and organizations is None), "平台管理必须由宿主授予独立的全局会话")
         token = secrets.token_urlsafe(32)
         with self.mutex:
             self.sessions[token] = {"role": role, "organizations": None if organizations is None else frozenset(organizations),
-                                    "expires": time.monotonic() + 8 * 3600, "actor": "local " + role}
+                                    "expires": time.monotonic() + 8 * 3600, "actor": "local " + role,
+                                    "platform_admin": bool(platform_admin)}
         return token
 
-    def ticket(self, role):
+    def ticket(self, role, *, platform_admin=False):
+        require(not platform_admin or role == "board", "观察者不能管理平台")
         token = secrets.token_urlsafe(32)
         with self.mutex:
-            self.tickets[token] = (role, time.monotonic() + 600)
+            self.tickets[token] = (role, time.monotonic() + 600, platform_admin)
         return token
 
     def exchange(self, ticket):
         with self.mutex:
             entry = self.tickets.pop(ticket, None)
         require(entry is not None and entry[1] > time.monotonic(), "启动链接无效或已过期；请在宿主重新生成")
-        return self.new_session(entry[0])
+        return self.new_session(entry[0], platform_admin=entry[2])
 
     def session(self, token):
         with self.mutex:
@@ -120,6 +125,7 @@ class Console:
                     state = e._state(cx)
                     orgs.append({"id": state["id"], "name": state["name"]})
         return {"role": session["role"], "organizations": orgs, "service_instance": self.instance,
+                "platform_admin": session.get("platform_admin", False),
                 "executors": (["fixture"] if self.fixture is not None else []) + (["codex"] if self.enable_codex else []) + (["api"] if self.enable_api else [])}
 
     def model_connections(self, token, org_id):
@@ -312,12 +318,12 @@ class Console:
         fields = {"event": {"event_id", "kind", "content", "source", "simulated"}, "pause": set(),
                   "resources": {"resources", "reason"}, "model": {"model", "reason"}, "amend": {"charter", "reason"},
                   "reconcile": {"run_id", "resolution", "reason"}, "start": {"executor", "model", "connection_id", "max_steps", "max_seconds", "allow_unknown_cost"},
-                  "api_connection": {"connection_id", "config", "api_key", "reason", "bind_default"}, "api_binding": {"connection_id", "reason"},
+                  "api_connection": {"connection_id", "config", "api_key", "reason", "bind_default", "gateway_ref"}, "api_binding": {"connection_id", "reason"},
                   "api_test": {"connection_id", "allow_unknown_cost", "tools"}, "company_usage": {"run_id", "input_tokens", "output_tokens", "reason"},
                   "controller_descriptor": {"controller_ref", "reason"},
                   "respond_request": {"request_id", "status", "reason"}}
         optional = {"event": {"event_id"}, "start": {"model", "connection_id", "max_seconds", "allow_unknown_cost"},
-                    "api_connection": {"api_key", "bind_default"}, "api_test": {"connection_id", "tools"}}
+                    "api_connection": {"api_key", "bind_default", "gateway_ref"}, "api_test": {"connection_id", "tools"}}
         require(set(data) <= fields[kind] and fields[kind] - optional.get(kind, set()) <= set(data), "命令字段缺失或不支持")
         if kind == "pause":
             e.set_paused(True)
@@ -383,7 +389,11 @@ class Console:
             elif kind == "api_connection":
                 require(self.enable_api, "宿主未启用 API")
                 require(type(data.get("bind_default", False)) is bool, "默认连接标记须为布尔值")
-                result = configure_connection(e, key, data["connection_id"], data["config"], data["reason"], data.get("api_key"))
+                ref = data.get("gateway_ref")
+                if ref is not None:
+                    require(isinstance(ref, dict) and set(ref) == {"id", "revision"}, "网关引用无效")
+                    ref = self.gateways.reference(ref["id"], ref["revision"], data["config"]["base_url"])
+                result = configure_connection(e, key, data["connection_id"], data["config"], data["reason"], data.get("api_key"), gateway_ref=ref)
                 if data.get("bind_default"):
                     bind_connection(e, key, data["connection_id"], data["reason"])
                 return result

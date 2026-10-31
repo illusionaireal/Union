@@ -1,0 +1,265 @@
+{
+  "checked_at_utc": "2026-10-31T11:42:55.761845+00:00",
+  "baseline": "dev@3e908fd plus activity/receipt tests/evidence; no production code changes",
+  "scope": "current completion scopes and artifact integrity, content/code mapping reviewed against 031 audit and current 256-test regression; not proof of actual business outcomes",
+  "task_count": 43,
+  "completion_scopes": {
+    "documentation": 10,
+    "controlled": 6
+  },
+  "accepted_milestones": [],
+  "tasks": [
+    {
+      "id": "U-001",
+      "scope": "documentation",
+      "reviewer": "Codex（自检；非独立评审）",
+      "note": "管理基线文档和回归完成；不代表公司运营。",
+      "evidence": [
+        {
+          "path": "evidence/2026-10-27-project-baseline/README.md",
+          "sha256": "eca478b1c5bf65a4495cad363224e81be907cc748f4b80ca2a3a79a495e93fae"
+        }
+      ]
+    },
+    {
+      "id": "U-004",
+      "scope": "documentation",
+      "reviewer": "Codex（自检）",
+      "note": "首个真实研发任务、资源条件、验收与反馈轮已定义；实际U-006未执行。",
+      "evidence": [
+        {
+          "path": "specs/020-organization-diagnostics/real-task.md",
+          "sha256": "fc3521ade6b63ac2be5107cef27850405cf237e381ea4643e13500dae50c0fa4"
+        }
+      ]
+    },
+    {
+      "id": "U-012",
+      "scope": "documentation",
+      "reviewer": "Codex（自检）",
+      "note": "明确工作记录/业务验收、续跑、未知时间、反馈、人工帮助和成本口径；真实采集U-020另验。",
+      "evidence": [
+        {
+          "path": "specs/021-work-lifecycle/metrics.md",
+          "sha256": "b3a22e1c228db92ff503a2c85fd2faabf1084c4c4165e5603738f775006ffd77"
+        }
+      ]
+    },
+    {
+      "id": "U-016",
+      "scope": "controlled",
+      "reviewer": "Codex（自检；非独立评审）",
+      "note": "管理工具及规则受控验证通过；真实公司自主采用未验收。",
+      "evidence": [
+        {
+          "path": "evidence/017-project-management/README.md",
+          "sha256": "4190dbbc6467b4965a064ae27f2122c873dfada01e30cc7eb4dc276154200751"
+        },
+        {
+          "path": "evidence/017-project-management/management-tests.log",
+          "sha256": "97842eca640541788dee43c17332017c2f067de2281e5fa7e2946d6817828d06"
+        }
+      ]
+    },
+    {
+      "id": "U-017",
+      "scope": "documentation",
+      "reviewer": "Codex（自检；非独立评审）",
+      "note": "验收协议已按发现来源、实际执行、效果与人工介入自检；未执行真实试验。",
+      "evidence": [
+        {
+          "path": "management/SELF_IMPROVEMENT.md",
+          "sha256": "9291551a744500edcc618370a40a7663ff0d59c90678138fab2a1c31cc25bd41"
+        },
+        {
+          "path": "management/reviews/2026-10-28.md",
+          "sha256": "4eef99bf14c41b2d4dfa54bd56cc72ff0a75e33fdec9954e356bbfb3e35df372"
+        }
+      ]
+    },
+    {
+      "id": "U-018",
+      "scope": "controlled",
+      "reviewer": "Codex（自检；非独立权限评审，未改变权限）",
+      "note": "已按宿主/决策任职/普通工作核查实际上下文与工具，完成20项新临时组织探测及SDK路径复核；真实自治未验。",
+      "evidence": [
+        {
+          "path": "docs/AU_CAPABILITY_AUDIT.md",
+          "sha256": "cb8ec3a8eeea82bec1ed44ea50630e51ac40f355a3c49099be4903dedcbd6b2f"
+        },
+        {
+          "path": "evidence/019-au-core-contract/capability-probes.json",
+          "sha256": "e70e66fec0c1411d28c699584f797f98948acf214d49ae60f764332f2f261225"
+        },
+        {
+          "path": "evidence/019-au-core-contract/sdk-tests.log",
+          "sha256": "52c0706f901efedee1d3050d41cdbf076e6a73c81b5c40c1d84f20831a9f18be"
+        }
+      ]
+    },
+    {
+      "id": "U-021",
+      "scope": "documentation",
+      "reviewer": "Codex（自检；非独立评审）",
+      "note": "产品约束、代码抽查、分阶段路线与任务依赖已整理；新增能力保持未实现/未验收。",
+      "evidence": [
+        {
+          "path": "docs/DEVELOPMENT_ROADMAP.md",
+          "sha256": "d6e9faefe0ac54285b42724578071b4f09b14d153f4b687a04948d843b263461"
+        },
+        {
+          "path": "evidence/018-au-development-roadmap/README.md",
+          "sha256": "9f798b758f5c497a8adfa8e1a990819961eac648ef86b30099275aaf23e33826"
+        }
+      ]
+    },
+    {
+      "id": "U-022",
+      "scope": "documentation",
+      "reviewer": "Codex（自检；非独立权限评审，未改变权限）",
+      "note": "最小契约、同构场景、身份边界、兼容迁移及实现验收已交付；新增投影/治理描述未实现。",
+      "evidence": [
+        {
+          "path": "specs/019-au-core-contract/spec.md",
+          "sha256": "1d68aae999029f51af8ce303355eabc9edd22b14b0e84e7b238b4440bf9a938d"
+        },
+        {
+          "path": "specs/019-au-core-contract/migration.md",
+          "sha256": "a1f44b846ef99a5f007914d89bd76585ab2e7ce3e571267fedb7fecd8fbc3f5e"
+        },
+        {
+          "path": "specs/019-au-core-contract/examples.json",
+          "sha256": "8aa60d851b54517b495e8df4b3647bfb96d93710ec9da82bbbe9922a505908ce"
+        }
+      ]
+    },
+    {
+      "id": "U-023",
+      "scope": "controlled",
+      "reviewer": "workspace_authorization_review（独立工程复核）",
+      "note": "同构投影和治理描述兼容接入通过，修复bootstrap伪任职及拒绝命令凭据落库问题；不代表企业身份集成。",
+      "evidence": [
+        {
+          "path": "evidence/022-au-contract-implementation/README.md",
+          "sha256": "a516640a84ebf64b71fa784d1373515ffc4fb6b77797f787320efea568905047"
+        },
+        {
+          "path": "docs/reviews/2026-10-28-au-contract-implementation.md",
+          "sha256": "32305fac0f5e129c303d9a2487672dc610ff3c13e2a98ecf1aec31ffd8243cee"
+        }
+      ]
+    },
+    {
+      "id": "U-024",
+      "scope": "documentation",
+      "reviewer": "Codex（候选需求评估）",
+      "note": "现有工作/岗位/依赖满足当前轻量协作需要，选择复用，不增加新工作组对象；未来具体需求另开卡。",
+      "evidence": [
+        {
+          "path": "evidence/026-batch-closeout/decisions.md",
+          "sha256": "29fcaa518858045d7fdddde00c025169498e1115503de5b9ce0ef710b9cbc054"
+        },
+        {
+          "path": "docs/AU_CAPABILITY_AUDIT.md",
+          "sha256": "cb8ec3a8eeea82bec1ed44ea50630e51ac40f355a3c49099be4903dedcbd6b2f"
+        }
+      ]
+    },
+    {
+      "id": "U-025",
+      "scope": "documentation",
+      "reviewer": "Codex（规格自检；实际适配器另审）",
+      "note": "可替换服务契约及免费/付费边界已定义，未实现实际服务或计费。",
+      "evidence": [
+        {
+          "path": "specs/024-tool-services-contract/spec.md",
+          "sha256": "adbbc20b037e247a7f042ff2837d5da813d3d27a7b58512c65abaed7aa669e8a"
+        },
+        {
+          "path": "evidence/024-tool-services-contract/README.md",
+          "sha256": "1ff7dbfe555a064b56a03f6bea8f6a87e641ba9950204a1dd59af4478f70419d"
+        }
+      ]
+    },
+    {
+      "id": "U-027",
+      "scope": "documentation",
+      "reviewer": "Codex（契约自检；实现另作权限复核）",
+      "note": "关系、双边委托、稳定回执、资源责任及恢复契约完成；U-028实际协作未实现/验收。",
+      "evidence": [
+        {
+          "path": "specs/025-au-delegation-contract/spec.md",
+          "sha256": "303f4b22695ee2635f9261bc9064753f1de643367fbf76c5e39c0d803387ed2d"
+        },
+        {
+          "path": "evidence/025-au-delegation-contract/README.md",
+          "sha256": "957df8dde425ae76f7d429e7793ce5ef9fed8d13fdc627ac8a2721fefd194452"
+        }
+      ]
+    },
+    {
+      "id": "U-033",
+      "scope": "controlled",
+      "reviewer": "workspace_authorization_review（独立工程复核）",
+      "note": "有界只读决策历史工程接入、隐私和未知边界通过，真实自主诊断未验。",
+      "evidence": [
+        {
+          "path": "evidence/020-organization-diagnostics/README.md",
+          "sha256": "d65265f919d64d2ba1ef678d1cf5b70143941d3f1f5fcb2069b2685e68038acc"
+        },
+        {
+          "path": "docs/reviews/2026-10-28-organization-diagnostics.md",
+          "sha256": "fe48579c4bc39de8327b875f1ed2ffa3d3d5e3b72d33fcdc84e4c13b62e36222"
+        }
+      ]
+    },
+    {
+      "id": "U-034",
+      "scope": "controlled",
+      "reviewer": "workspace_authorization_review（独立工程复核）",
+      "note": "可选申请、受信响应、CLI/SDK及未知/暂停边界通过，不自动授予资源或采购权限。",
+      "evidence": [
+        {
+          "path": "evidence/023-support-requests/README.md",
+          "sha256": "304796ffc39bf2f46d6f3d5cba014ed3d712f2fc4da101d188e09c17927b580f"
+        },
+        {
+          "path": "docs/reviews/2026-10-28-support-requests.md",
+          "sha256": "62dba593d45ebaa8164be5fae4f1b803ac502c3a81ac292333343feeec23d204"
+        }
+      ]
+    },
+    {
+      "id": "U-035",
+      "scope": "controlled",
+      "reviewer": "Codex（自检）",
+      "note": "宿主提交生命周期和旧数据unknown兼容通过，真实运营另验。",
+      "evidence": [
+        {
+          "path": "evidence/021-work-lifecycle/README.md",
+          "sha256": "11eeb35ca7b47dd1e2243b7aaaa017d76b27a5ba51dfe2d792202b9da932cd57"
+        }
+      ]
+    },
+    {
+      "id": "U-040",
+      "scope": "documentation",
+      "reviewer": "Codex（规划自检；实现权限需另行独立复核）",
+      "note": "仅规划，无运行时/权限/主机变更；实际实现为U-041/U-042，真实部署沿用U-008等。",
+      "evidence": [
+        {
+          "path": "specs/028-member-runtime-management/plan.md",
+          "sha256": "b350a2a38bdcefd88e689544758b8eb585d7a5ed7d8050cbef9c5b665306f98b"
+        },
+        {
+          "path": "specs/028-member-runtime-management/spec.md",
+          "sha256": "7cb9d45e53f28b42c5f5c9e9a95e33a81d8e524021aa55bfe3695db789a58a67"
+        },
+        {
+          "path": "evidence/028-member-runtime-plan/README.md",
+          "sha256": "5f7e3558780d5cbae04e7ca30cd9aff0604f57b494349cf8c5222cd3c8aa269b"
+        }
+      ]
+    }
+  ]
+}

@@ -123,6 +123,7 @@ export function readForm(kind: CommandKind, form: HTMLFormElement): Record<strin
         connection_id: str('connection_id'),
         reason: str('reason') || '网页配置模型连接',
         bind_default: true,
+        ...(str('gateway_id') && values.get('detach_gateway') !== 'on' ? { gateway_ref: { id: str('gateway_id'), revision: Number(str('gateway_revision')) } } : {}),
         ...(str('api_key') ? { api_key: str('api_key') } : {}),
         config: {
           name: str('connection_name'),

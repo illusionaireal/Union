@@ -15,7 +15,7 @@ from .engine import Rejected, encoded, require
 from .observation import artifact
 
 REPO = Path(__file__).resolve().parents[1]
-SPA_ROUTES = {"/", "/overview", "/members", "/tasks", "/artifacts", "/activity", "/resources", "/settings", "/models"}
+SPA_ROUTES = {"/", "/overview", "/members", "/tasks", "/artifacts", "/activity", "/resources", "/settings", "/models", "/gateways"}
 STATIC_CSP = "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; font-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
 
 
@@ -124,18 +124,22 @@ class Handler(BaseHTTPRequestHandler):
             return self.send(401, {"error": str(error)})
         try:
             if write:
-                if path.path != "/api/commands":
+                if path.path not in ("/api/commands", "/api/gateway-commands"):
                     return self.send(404, {"error": "接口不存在"})
                 require(app.session(token)["role"] == "board", "观察者不能提交操作")
                 require(self.headers.get("Content-Type", "").split(";")[0] == "application/json", "命令需要 application/json")
                 length = int(self.headers.get("Content-Length", "0"))
                 require(0 < length <= 200000, "请求体大小不允许")
                 request = json.loads(self.rfile.read(length).decode("utf-8"))
-                receipt = app.command(token, request)
+                receipt = app.gateways.command(token, request) if path.path == "/api/gateway-commands" else app.command(token, request)
                 return self.send(202 if receipt["status"] == "accepted" else 200, {"receipt": receipt})
             if path.path == "/api/session":
                 return self.send(200, app.session_info(token))
             org_id = query.get("organization_id", [None])[0]
+            if path.path == "/api/gateways":
+                return self.send(200, app.gateways.list(token, org_id))
+            if path.path == "/api/gateway-receipts":
+                return self.send(200, {"receipt": app.gateways.receipt(token, query.get("id", [None])[0])})
             if path.path == "/api/model-connections":
                 return self.send(200, app.model_connections(token, org_id))
             if path.path == "/api/snapshot":
@@ -174,6 +178,7 @@ def main(argv=None):
     p.add_argument("--fixture", default=str(REPO / "examples/fixture.json"))
     p.add_argument("--enable-codex", action="store_true", help="允许网页选择 Codex；不会自动调用")
     p.add_argument("--disable-api", action="store_true", help="禁用 API 配置和调用入口")
+    p.add_argument("--enable-gateway-management", action="store_true", help="为本机发起人启动链接明确授予平台网关管理权限")
     p.add_argument("--novel-demo", action="store_true", help="创建并运行明确标识的三周期小说脚本演示，不调用真实模型")
     p.add_argument("--open", action="store_true", help="在本机浏览器打开一次性发起人会话")
     args = p.parse_args(argv)
@@ -182,7 +187,7 @@ def main(argv=None):
         from .novel_demo import seed
         seed(app)
     server = Server(app, args.port)
-    access = {role: server.origin + "/#launch=" + app.ticket(role) for role in ("board", "observer")}
+    access = {role: server.origin + "/#launch=" + app.ticket(role, platform_admin=args.enable_gateway_management and role == "board") for role in ("board", "observer")}
     path = app.root / "local-access.json"
     fd = os.open(path, os.O_CREAT | os.O_TRUNC | os.O_WRONLY, 0o600)
     with os.fdopen(fd, "w", encoding="utf-8") as file:

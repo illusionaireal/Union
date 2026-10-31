@@ -71,7 +71,13 @@ def snapshot(engine, offset=0, limit=50):
         unknown = [r for r in runs if r["status"] == "unknown"]
         running = [r for r in runs if r["status"] == "running"]
         execution = "unknown" if unknown else ("running" if all(r["host_confirmed"] for r in running) else "unconfirmed") if running else "idle"
-        dispatch = ("needs_review" if unknown else "pause_requested" if running or live["confirmed"] else "paused") if paused else "enabled"
+        # A single observation for all consumers; this is not dispatch authority.
+        if unknown:
+            dispatch = "needs_review"
+        elif paused:
+            dispatch = "pause_requested" if running or live["confirmed"] else "paused"
+        else:
+            dispatch = "enabled"
         blocked = [w["id"] + ": " + w.get("summary", w["display_status"]) for w in organization["work"].values() if w["display_status"] in ("blocked", "failed", "needs_review", "paused", "dependent")]
         if runs and runs[-1]["status"] in ("failed", "unknown") and runs[-1].get("failure"):
             blocked.append(runs[-1]["failure"]["message"])
@@ -100,12 +106,14 @@ def snapshot(engine, offset=0, limit=50):
         from .lifecycle import work_metrics
         from .au_contract import projection
         from .support_requests import view as request_view
+        from .runtime_view import view as runtime_view
+        runtime = runtime_view(cx, state, runs, live, budget, paused, engine.root, dispatch)
         return {"support_requests": request_view(state), "au_contract": projection(engine, cx, state), "work_metrics": work_metrics(state), "company": company, "bootstrap": bootstrap, "organization": organization, "charter": charter, "budget": budget, "ready_work": ready,
                 "execution_config": {"codex_model": state.get("execution_config", {}).get("codex_model"),
                                      "api_connection_id": state.get("execution_config", {}).get("api_connection_id")},
                 "pending_events": pending, "next_step": next_step, "blocked_reasons": blocked,
                 "next_review_at": min(wakes, key=instant) if wakes else None, "collected_at": now(),
-                "execution_state": execution, "dispatch_state": dispatch, "host_activity": live,
+                "execution_state": execution, "dispatch_state": dispatch, "host_activity": live, **runtime,
                 "runs": runs, "events": events, "decisions": decisions, "receipts": receipts,
                 "pagination": {"offset": offset, "limit": limit, "event_count": event_count, "decision_count": decision_count},
                 "source": "mixed" if any(r["simulated"] for r in runs) and any(not r["simulated"] for r in runs) else "fixture" if runs and all(r["simulated"] for r in runs) else "real" if runs else "not_run"}

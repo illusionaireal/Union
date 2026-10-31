@@ -50,6 +50,14 @@ export async function request<T>(path: string, init: RequestInit = {}): Promise<
 }
 const query = (values: Record<string, string>) => new URLSearchParams(values).toString();
 export const api = {
+  gateways: (organization_id?: string, signal?: AbortSignal) =>
+    request<GatewayList>('/api/gateways' + (organization_id ? '?' + query({ organization_id }) : ''), { signal }),
+  gatewayChoices: (organization_id: string, signal?: AbortSignal) =>
+    request<{ gateways: GatewayChoice[]; service_instance: string }>('/api/gateways?' + query({ organization_id }), { signal }),
+  gatewayCommand: (command: GatewayCommand) =>
+    request<{ receipt: GatewayReceipt }>('/api/gateway-commands', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(command),
+    }),
   connections: (organization_id: string, signal?: AbortSignal) =>
     request<{
       connections: ModelConnection[];
@@ -78,3 +86,43 @@ export const api = {
   download: (organization_id: string, id: string) =>
     '/api/artifact?' + query({ organization_id, id, download: '1' }),
 };
+
+export interface GatewayConfig {
+  name: string;
+  service_url: string;
+  api_base_url: string;
+  admin_url: string;
+  mode: 'external' | 'managed';
+}
+export interface Gateway {
+  id: string;
+  revision: number;
+  config: GatewayConfig;
+  health: 'unknown' | 'healthy' | 'unavailable';
+  version: string | null;
+  checked_at: string | null;
+  message: string;
+  deployment_state: 'unknown';
+  capabilities: string[];
+}
+export type GatewayChoice = Pick<Gateway, 'id' | 'revision'> & { config: Pick<GatewayConfig, 'name' | 'api_base_url'> };
+export interface GatewayCommand {
+  id: string;
+  gateway_id: string;
+  base_revision: number;
+  kind: 'save' | 'archive' | 'probe';
+  data: { config?: GatewayConfig };
+}
+export interface GatewayReceipt {
+  id: string;
+  gateway_id: string;
+  kind: string;
+  status: string;
+  message: string;
+  created_at: string;
+}
+export interface GatewayList {
+  gateways: Gateway[];
+  receipts?: GatewayReceipt[];
+  service_instance: string;
+}

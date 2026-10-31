@@ -1,0 +1,66 @@
+test_current_position_and_charter_revocation_are_observed (tests.test_runtime_workspace.RuntimeWorkspaceTests.test_current_position_and_charter_revocation_are_observed) ... ok
+test_disabled_workspace_reason_precedes_missing_current_work (tests.test_runtime_workspace.RuntimeWorkspaceTests.test_disabled_workspace_reason_precedes_missing_current_work) ... ok
+test_handoff_uses_new_owners_work_assignment_not_their_other_position (tests.test_runtime_workspace.RuntimeWorkspaceTests.test_handoff_uses_new_owners_work_assignment_not_their_other_position) ... FAIL
+test_legacy_unconfigured_workspace_read_does_not_create_tables (tests.test_runtime_workspace.RuntimeWorkspaceTests.test_legacy_unconfigured_workspace_read_does_not_create_tables) ... ok
+test_permission_summary_is_not_a_promise_that_commands_can_run (tests.test_runtime_workspace.RuntimeWorkspaceTests.test_permission_summary_is_not_a_promise_that_commands_can_run) ... ok
+test_workspace_uses_selected_assignment_in_both_permission_directions (tests.test_runtime_workspace.RuntimeWorkspaceTests.test_workspace_uses_selected_assignment_in_both_permission_directions) ...
+  test_workspace_uses_selected_assignment_in_both_permission_directions (tests.test_runtime_workspace.RuntimeWorkspaceTests.test_workspace_uses_selected_assignment_in_both_permission_directions) (first_allowed=False) ... FAIL
+  test_workspace_uses_selected_assignment_in_both_permission_directions (tests.test_runtime_workspace.RuntimeWorkspaceTests.test_workspace_uses_selected_assignment_in_both_permission_directions) (first_allowed=True) ... FAIL
+test_workspace_without_current_work_does_not_choose_an_assignment (tests.test_runtime_workspace.RuntimeWorkspaceTests.test_workspace_without_current_work_does_not_choose_an_assignment) ... FAIL
+
+======================================================================
+FAIL: test_handoff_uses_new_owners_work_assignment_not_their_other_position (tests.test_runtime_workspace.RuntimeWorkspaceTests.test_handoff_uses_new_owners_work_assignment_not_their_other_position)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_runtime_workspace.py", line 135, in test_handoff_uses_new_owners_work_assignment_not_their_other_position
+    self.assertTrue(member["workspace"]["available"])
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_workspace_uses_selected_assignment_in_both_permission_directions (tests.test_runtime_workspace.RuntimeWorkspaceTests.test_workspace_uses_selected_assignment_in_both_permission_directions) (first_allowed=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_runtime_workspace.py", line 85, in test_workspace_uses_selected_assignment_in_both_permission_directions
+    self.assertEqual(member["workspace"], {"mode": "shared_business", "revision": 1,
+AssertionError: {'mod[40 chars]vailable': False, 'reason_codes': ['workspace_not_authorized']} != {'mod[40 chars]vailable': True, 'reason_codes': []}
+- {'available': False,
+?               ^^^^
+
++ {'available': True,
+?               ^^^
+
+   'mode': 'shared_business',
+-  'reason_codes': ['workspace_not_authorized'],
++  'reason_codes': [],
+   'revision': 1}
+
+======================================================================
+FAIL: test_workspace_uses_selected_assignment_in_both_permission_directions (tests.test_runtime_workspace.RuntimeWorkspaceTests.test_workspace_uses_selected_assignment_in_both_permission_directions) (first_allowed=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_runtime_workspace.py", line 85, in test_workspace_uses_selected_assignment_in_both_permission_directions
+    self.assertEqual(member["workspace"], {"mode": "shared_business", "revision": 1,
+AssertionError: {'mod[40 chars]vailable': True, 'reason_codes': []} != {'mod[40 chars]vailable': False, 'reason_codes': ['workspace_not_authorized']}
+- {'available': True,
+?               ^^^
+
++ {'available': False,
+?               ^^^^
+
+   'mode': 'shared_business',
+-  'reason_codes': [],
++  'reason_codes': ['workspace_not_authorized'],
+   'revision': 1}
+
+======================================================================
+FAIL: test_workspace_without_current_work_does_not_choose_an_assignment (tests.test_runtime_workspace.RuntimeWorkspaceTests.test_workspace_without_current_work_does_not_choose_an_assignment)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_runtime_workspace.py", line 95, in test_workspace_without_current_work_does_not_choose_an_assignment
+    self.assertEqual(member["workspace"]["available"], False)
+AssertionError: True != False
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.255s
+
+FAILED (failures=4)

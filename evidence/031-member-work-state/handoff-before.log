@@ -1,0 +1,30 @@
+test_runtime_handoff_does_not_give_new_owner_the_old_members_session (tests.test_console.ConsoleTests.test_runtime_handoff_does_not_give_new_owner_the_old_members_session) ... FAIL
+
+======================================================================
+FAIL: test_runtime_handoff_does_not_give_new_owner_the_old_members_session (tests.test_console.ConsoleTests.test_runtime_handoff_does_not_give_new_owner_the_old_members_session)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/ec13abb7a5d3/Union/tests/test_console.py", line 539, in test_runtime_handoff_does_not_give_new_owner_the_old_members_session
+    self.assertEqual(member["session"], {"id": None, "updated_at": None, "has_checkpoint": False, "resume_state": "not_available"})
+AssertionError: {'id': 'old-owner-session', 'updated_at': '2026-[69 chars]ble'} != {'id': None, 'updated_at': None, 'has_checkpoint[37 chars]ble'}
+- {'has_checkpoint': True,
+?                    ^^^
+
++ {'has_checkpoint': False,
+?                    ^^^^
+
+-  'id': 'old-owner-session',
++  'id': None,
+-  'resume_state': 'possible',
+?                   ^ ^^
+
++  'resume_state': 'not_available',
+?                   ^ ^^^^^ ++
+
+-  'updated_at': '2026-10-31T00:00:00+00:00'}
++  'updated_at': None}
+
+----------------------------------------------------------------------
+Ran 1 test in 0.030s
+
+FAILED (failures=1)

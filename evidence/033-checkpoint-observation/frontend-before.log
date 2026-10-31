@@ -1,0 +1,1425 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> @union/console@0.1.0 test
+> vitest run --run src/pages/RuntimeObservation.test.tsx
+
+
+ RUN  v3.2.7 /workspace/scratch/ec13abb7a5d3/Union/web/console
+
+ ❯ src/pages/RuntimeObservation.test.tsx (5 tests | 3 failed) 127ms
+   × member runtime observation > shows checkpoint evidence true without claiming safe resume 39ms
+     → Unable to find an element with the text: /存在检查点，接续仍需核对/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"page-stats"[39m
+    [36m>[39m
+      [36m<div>[39m
+        [36m<span>[39m
+          [0m团队成员[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0m2[0m
+        [36m</strong>[39m
+        [36m<small>[39m
+          [0m独立身份，持续协作[0m
+        [36m</small>[39m
+      [36m</div>[39m
+      [36m<div>[39m
+        [36m<span>[39m
+          [0m已设岗位[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0m2[0m
+        [36m</strong>[39m
+        [36m<small>[39m
+          [0m职责与权限来自组织决定[0m
+        [36m</small>[39m
+      [36m</div>[39m
+      [36m<div>[39m
+        [36m<span>[39m
+          [0m有效任职[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0m2[0m
+        [36m</strong>[39m
+        [36m<small>[39m
+          [0m支持一人兼任多个岗位[0m
+        [36m</small>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"cards-grid team-directory"[39m
+    [36m>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"card "[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"card-heading"[39m
+        [36m>[39m
+          [36m<h2>[39m
+            [0m稳定成员身份[0m
+          [36m</h2>[39m
+        [36m</div>[39m
+        [36m<div>[39m
+          [36m<article[39m
+            [33mclass[39m=[32m"runtime-row"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"avatar tone-0"[39m
+            [36m>[39m
+              [0m林[0m
+            [36m</span>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"row-main"[39m
+            [36m>[39m
+              [36m<span>[39m
+                [0m林策[0m
+              [36m</span>[39m
+              [36m<small>[39m
+                [0m策划[0m
+              [36m</small>[39m
+            [36m</div>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"member-mark"[39m
+            [36m>[39m
+              [0mAI[0m
+            [36m</span>[39m
+          [36m</article>[39m
+          [36m<article[39m
+            [33mclass[39m=[32m"runtime-row"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"avatar tone-1"[39m
+            [36m>[39m
+              [0m江[0m
+            [36m</span>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"row-main"[39m
+            [36m>[39m
+              [36m<span>[39m
+                [0m江墨[0m
+              [36m</span>[39m
+              [36m<small>[39m
+                [0m写作[0m
+              [36m</small>[39m
+            [36m</div>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"member-mark"[39m
+            [36m>[39m
+              [0mAI[0m
+            [36m</span>[39m
+          [36m</article>[39m
+        [36m</div>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"card "[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"card-heading"[39m
+        [36m>[39m
+          [36m<h2>[39m
+            [0m成员执行状态[0m
+          [36m</h2>[39m
+        [36m</div>[39m
+        [36m<article[39m
+          [33mclass[39m=[32m"runtime-row"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"row-main"[39m
+          [36m>[39m
+            [36m<strong>[39m
+              [0m林策[0m
+            [36m</strong>[39m
+            [36m<small>[39m
+              [0m当前工作：[0m
+              [0mw1[0m
+              [0m；会话：[0m
+              [0m存在检查点，仍需按状态核对[0m
+            [36m</small>[39m
+            [36m<small>[39m
+              [0mdependency_pending[0m
+            [36m</small>[39m
+          [36m</div>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"badge purple"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"badge-dot"[39m
+            [36m/>[39m
+            [0m等待条件[0m
+          [36m</span>[39m
+        [36m</article>[39m
+        [36m<article[39m
+          [33mclass[39m=[32m"runtime-row"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"row-main"[39m
+          [36m>[39m
+            [36m<strong>[39m
+              [0m江墨[0m
+            [36m</strong>[39m
+            [36m<small>[39m
+              [0m当前工作：[0m
+              [0m无[0m
+              [0m；会话：[0m
+              [0m无可公开检查点[0m
+            [36m</small>[39m
+            [36m<small>[39m
+              [0m无阻塞原因[0m
+            [36m</small>[39m
+          [36m</div>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"badge purple"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"badge-dot"[39m
+            [36m/>[39m
+            [0m无在途执行[0m
+          [36m</span>[39m
+        [36m</article>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"card "[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"card-heading"[39m
+        [36m>[39m
+          [36m<h2>[39m
+            [0m岗位与职责[0m
+          [36m</h2>[39m
+        [36m</div>[39m
+        [36m<article[39m
+          [33mclass[39m=[32m"position-row"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"badge purple"[39m
+          [36m>[39m
+            [0m岗位 v[0m
+            [0m1[0m
+          [36m</span>[39m
+          [36m<h3>[39m
+            [0m策划[0m
+          [36m</h3>[39m
+          [36m<p>[39m
+            [0m规划[0m
+          [36m</p>[39m
+          [36m<small>[39m
+            [0mp1[0m
+          [36m</small>[39m
+        [36m</article>[39m
+        [36m<article[39m
+          [33mclass[39m=[32m"position-row"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"badge purple"[39m
+          [36m>[39m
+            [0m岗位 v[0m
+            [0m1[0m
+          [36m</span>[39m
+          [36m<h3>[39m
+            [0m写作[0m
+          [36m</h3>[39m
+          [36m<p>[39m
+            [0m交付[0m
+          [36m</p>[39m
+          [36m<small>[39m
+            [0mp2[0m
+          [36m</small>[39m
+        [36m</article>[39m
+      [36m</section>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+   × member runtime observation > shows checkpoint evidence false without claiming safe resume 9ms
+     → Unable to find an element with the text: /未发现检查点/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"page-stats"[39m
+    [36m>[39m
+      [36m<div>[39m
+        [36m<span>[39m
+          [0m团队成员[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0m2[0m
+        [36m</strong>[39m
+        [36m<small>[39m
+          [0m独立身份，持续协作[0m
+        [36m</small>[39m
+      [36m</div>[39m
+      [36m<div>[39m
+        [36m<span>[39m
+          [0m已设岗位[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0m2[0m
+        [36m</strong>[39m
+        [36m<small>[39m
+          [0m职责与权限来自组织决定[0m
+        [36m</small>[39m
+      [36m</div>[39m
+      [36m<div>[39m
+        [36m<span>[39m
+          [0m有效任职[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0m2[0m
+        [36m</strong>[39m
+        [36m<small>[39m
+          [0m支持一人兼任多个岗位[0m
+        [36m</small>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"cards-grid team-directory"[39m
+    [36m>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"card "[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"card-heading"[39m
+        [36m>[39m
+          [36m<h2>[39m
+            [0m稳定成员身份[0m
+          [36m</h2>[39m
+        [36m</div>[39m
+        [36m<div>[39m
+          [36m<article[39m
+            [33mclass[39m=[32m"runtime-row"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"avatar tone-0"[39m
+            [36m>[39m
+              [0m林[0m
+            [36m</span>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"row-main"[39m
+            [36m>[39m
+              [36m<span>[39m
+                [0m林策[0m
+              [36m</span>[39m
+              [36m<small>[39m
+                [0m策划[0m
+              [36m</small>[39m
+            [36m</div>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"member-mark"[39m
+            [36m>[39m
+              [0mAI[0m
+            [36m</span>[39m
+          [36m</article>[39m
+          [36m<article[39m
+            [33mclass[39m=[32m"runtime-row"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"avatar tone-1"[39m
+            [36m>[39m
+              [0m江[0m
+            [36m</span>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"row-main"[39m
+            [36m>[39m
+              [36m<span>[39m
+                [0m江墨[0m
+              [36m</span>[39m
+              [36m<small>[39m
+                [0m写作[0m
+              [36m</small>[39m
+            [36m</div>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"member-mark"[39m
+            [36m>[39m
+              [0mAI[0m
+            [36m</span>[39m
+          [36m</article>[39m
+        [36m</div>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"card "[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"card-heading"[39m
+        [36m>[39m
+          [36m<h2>[39m
+            [0m成员执行状态[0m
+          [36m</h2>[39m
+        [36m</div>[39m
+        [36m<article[39m
+          [33mclass[39m=[32m"runtime-row"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"row-main"[39m
+          [36m>[39m
+            [36m<strong>[39m
+              [0m林策[0m
+            [36m</strong>[39m
+            [36m<small>[39m
+              [0m当前工作：[0m
+              [0mw1[0m
+              [0m；会话：[0m
+              [0m无可公开检查点[0m
+            [36m</small>[39m
+            [36m<small>[39m
+              [0mdependency_pending[0m
+            [36m</small>[39m
+          [36m</div>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"badge purple"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"badge-dot"[39m
+            [36m/>[39m
+            [0m等待条件[0m
+          [36m</span>[39m
+        [36m</article>[39m
+        [36m<article[39m
+          [33mclass[39m=[32m"runtime-row"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"row-main"[39m
+          [36m>[39m
+            [36m<strong>[39m
+              [0m江墨[0m
+            [36m</strong>[39m
+            [36m<small>[39m
+              [0m当前工作：[0m
+              [0m无[0m
+              [0m；会话：[0m
+              [0m无可公开检查点[0m
+            [36m</small>[39m
+            [36m<small>[39m
+              [0m无阻塞原因[0m
+            [36m</small>[39m
+          [36m</div>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"badge purple"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"badge-dot"[39m
+            [36m/>[39m
+            [0m无在途执行[0m
+          [36m</span>[39m
+        [36m</article>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"card "[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"card-heading"[39m
+        [36m>[39m
+          [36m<h2>[39m
+            [0m岗位与职责[0m
+          [36m</h2>[39m
+        [36m</div>[39m
+        [36m<article[39m
+          [33mclass[39m=[32m"position-row"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"badge purple"[39m
+          [36m>[39m
+            [0m岗位 v[0m
+            [0m1[0m
+          [36m</span>[39m
+          [36m<h3>[39m
+            [0m策划[0m
+          [36m</h3>[39m
+          [36m<p>[39m
+            [0m规划[0m
+          [36m</p>[39m
+          [36m<small>[39m
+            [0mp1[0m
+          [36m</small>[39m
+        [36m</article>[39m
+        [36m<article[39m
+          [33mclass[39m=[32m"position-row"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"badge purple"[39m
+          [36m>[39m
+            [0m岗位 v[0m
+            [0m1[0m
+          [36m</span>[39m
+          [36m<h3>[39m
+            [0m写作[0m
+          [36m</h3>[39m
+          [36m<p>[39m
+            [0m交付[0m
+          [36m</p>[39m
+          [36m<small>[39m
+            [0mp2[0m
+          [36m</small>[39m
+        [36m</article>[39m
+      [36m</section>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+   × member runtime observation > shows checkpoint evidence null without claiming safe resume 8ms
+     → Unable to find an element with the text: /检查点状态未知/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"page-stats"[39m
+    [36m>[39m
+      [36m<div>[39m
+        [36m<span>[39m
+          [0m团队成员[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0m2[0m
+        [36m</strong>[39m
+        [36m<small>[39m
+          [0m独立身份，持续协作[0m
+        [36m</small>[39m
+      [36m</div>[39m
+      [36m<div>[39m
+        [36m<span>[39m
+          [0m已设岗位[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0m2[0m
+        [36m</strong>[39m
+        [36m<small>[39m
+          [0m职责与权限来自组织决定[0m
+        [36m</small>[39m
+      [36m</div>[39m
+      [36m<div>[39m
+        [36m<span>[39m
+          [0m有效任职[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0m2[0m
+        [36m</strong>[39m
+        [36m<small>[39m
+          [0m支持一人兼任多个岗位[0m
+        [36m</small>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"cards-grid team-directory"[39m
+    [36m>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"card "[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"card-heading"[39m
+        [36m>[39m
+          [36m<h2>[39m
+            [0m稳定成员身份[0m
+          [36m</h2>[39m
+        [36m</div>[39m
+        [36m<div>[39m
+          [36m<article[39m
+            [33mclass[39m=[32m"runtime-row"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"avatar tone-0"[39m
+            [36m>[39m
+              [0m林[0m
+            [36m</span>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"row-main"[39m
+            [36m>[39m
+              [36m<span>[39m
+                [0m林策[0m
+              [36m</span>[39m
+              [36m<small>[39m
+                [0m策划[0m
+              [36m</small>[39m
+            [36m</div>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"member-mark"[39m
+            [36m>[39m
+              [0mAI[0m
+            [36m</span>[39m
+          [36m</article>[39m
+          [36m<article[39m
+            [33mclass[39m=[32m"runtime-row"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"avatar tone-1"[39m
+            [36m>[39m
+              [0m江[0m
+            [36m</span>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"row-main"[39m
+            [36m>[39m
+              [36m<span>[39m
+                [0m江墨[0m
+              [36m</span>[39m
+              [36m<small>[39m
+                [0m写作[0m
+              [36m</small>[39m
+            [36m</div>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"member-mark"[39m
+            [36m>[39m
+              [0mAI[0m
+            [36m</span>[39m
+          [36m</article>[39m
+        [36m</div>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"card "[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"card-heading"[39m
+        [36m>[39m
+          [36m<h2>[39m
+            [0m成员执行状态[0m
+          [36m</h2>[39m
+        [36m</div>[39m
+        [36m<article[39m
+          [33mclass[39m=[32m"runtime-row"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"row-main"[39m
+          [36m>[39m
+            [36m<strong>[39m
+              [0m林策[0m
+            [36m</strong>[39m
+            [36m<small>[39m
+              [0m当前工作：[0m
+              [0mw1[0m
+              [0m；会话：[0m
+              [0m无可公开检查点[0m
+            [36m</small>[39m
+            [36m<small>[39m
+              [0mdependency_pending[0m
+            [36m</small>[39m
+          [36m</div>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"badge purple"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"badge-dot"[39m
+            [36m/>[39m
+            [0m等待条件[0m
+          [36m</span>[39m
+        [36m</article>[39m
+        [36m<article[39m
+          [33mclass[39m=[32m"runtime-row"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"row-main"[39m
+          [36m>[39m
+            [36m<strong>[39m
+              [0m江墨[0m
+            [36m</strong>[39m
+            [36m<small>[39m
+              [0m当前工作：[0m
+              [0m无[0m
+              [0m；会话：[0m
+              [0m无可公开检查点[0m
+            [36m</small>[39m
+            [36m<small>[39m
+              [0m无阻塞原因[0m
+            [36m</small>[39m
+          [36m</div>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"badge purple"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"badge-dot"[39m
+            [36m/>[39m
+            [0m无在途执行[0m
+          [36m</span>[39m
+        [36m</article>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"card "[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"card-heading"[39m
+        [36m>[39m
+          [36m<h2>[39m
+            [0m岗位与职责[0m
+          [36m</h2>[39m
+        [36m</div>[39m
+        [36m<article[39m
+          [33mclass[39m=[32m"position-row"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"badge purple"[39m
+          [36m>[39m
+            [0m岗位 v[0m
+            [0m1[0m
+          [36m</span>[39m
+          [36m<h3>[39m
+            [0m策划[0m
+          [36m</h3>[39m
+          [36m<p>[39m
+            [0m规划[0m
+          [36m</p>[39m
+          [36m<small>[39m
+            [0mp1[0m
+          [36m</small>[39m
+        [36m</article>[39m
+        [36m<article[39m
+          [33mclass[39m=[32m"position-row"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"badge purple"[39m
+          [36m>[39m
+            [0m岗位 v[0m
+            [0m1[0m
+          [36m</span>[39m
+          [36m<h3>[39m
+            [0m写作[0m
+          [36m</h3>[39m
+          [36m<p>[39m
+            [0m交付[0m
+          [36m</p>[39m
+          [36m<small>[39m
+            [0mp2[0m
+          [36m</small>[39m
+        [36m</article>[39m
+      [36m</section>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+   ✓ member runtime observation > keeps member work state separate from identity and does not render private workspace details 48ms
+   ✓ member runtime observation > labels the embedded location and unknown liveness without claiming a managed service 22ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/pages/RuntimeObservation.test.tsx > member runtime observation > shows checkpoint evidence true without claiming safe resume
+TestingLibraryElementError: Unable to find an element with the text: /存在检查点，接续仍需核对/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"page-stats"[39m
+    [36m>[39m
+      [36m<div>[39m
+        [36m<span>[39m
+          [0m团队成员[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0m2[0m
+        [36m</strong>[39m
+        [36m<small>[39m
+          [0m独立身份，持续协作[0m
+        [36m</small>[39m
+      [36m</div>[39m
+      [36m<div>[39m
+        [36m<span>[39m
+          [0m已设岗位[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0m2[0m
+        [36m</strong>[39m
+        [36m<small>[39m
+          [0m职责与权限来自组织决定[0m
+        [36m</small>[39m
+      [36m</div>[39m
+      [36m<div>[39m
+        [36m<span>[39m
+          [0m有效任职[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0m2[0m
+        [36m</strong>[39m
+        [36m<small>[39m
+          [0m支持一人兼任多个岗位[0m
+        [36m</small>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"cards-grid team-directory"[39m
+    [36m>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"card "[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"card-heading"[39m
+        [36m>[39m
+          [36m<h2>[39m
+            [0m稳定成员身份[0m
+          [36m</h2>[39m
+        [36m</div>[39m
+        [36m<div>[39m
+          [36m<article[39m
+            [33mclass[39m=[32m"runtime-row"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"avatar tone-0"[39m
+            [36m>[39m
+              [0m林[0m
+            [36m</span>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"row-main"[39m
+            [36m>[39m
+              [36m<span>[39m
+                [0m林策[0m
+              [36m</span>[39m
+              [36m<small>[39m
+                [0m策划[0m
+              [36m</small>[39m
+            [36m</div>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"member-mark"[39m
+            [36m>[39m
+              [0mAI[0m
+            [36m</span>[39m
+          [36m</article>[39m
+          [36m<article[39m
+            [33mclass[39m=[32m"runtime-row"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"avatar tone-1"[39m
+            [36m>[39m
+              [0m江[0m
+            [36m</span>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"row-main"[39m
+            [36m>[39m
+              [36m<span>[39m
+                [0m江墨[0m
+              [36m</span>[39m
+              [36m<small>[39m
+                [0m写作[0m
+              [36m</small>[39m
+            [36m</div>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"member-mark"[39m
+            [36m>[39m
+              [0mAI[0m
+            [36m</span>[39m
+          [36m</article>[39m
+        [36m</div>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"card "[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"card-heading"[39m
+        [36m>[39m
+          [36m<h2>[39m
+            [0m成员执行状态[0m
+          [36m</h2>[39m
+        [36m</div>[39m
+        [36m<article[39m
+          [33mclass[39m=[32m"runtime-row"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"row-main"[39m
+          [36m>[39m
+            [36m<strong>[39m
+              [0m林策[0m
+            [36m</strong>[39m
+            [36m<small>[39m
+              [0m当前工作：[0m
+              [0mw1[0m
+              [0m；会话：[0m
+              [0m存在检查点，仍需按状态核对[0m
+            [36m</small>[39m
+            [36m<small>[39m
+              [0mdependency_pending[0m
+            [36m</small>[39m
+          [36m</div>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"badge purple"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"badge-dot"[39m
+            [36m/>[39m
+            [0m等待条件[0m
+          [36m</span>[39m
+        [36m</article>[39m
+        [36m<article[39m
+          [33mclass[39m=[32m"runtime-row"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"row-main"[39m
+          [36m>[39m
+            [36m<strong>[39m
+              [0m江墨[0m
+            [36m</strong>[39m
+            [36m<small>[39m
+              [0m当前工作：[0m
+              [0m无[0m
+              [0m；会话：[0m
+              [0m无可公开检查点[0m
+            [36m</small>[39m
+            [36m<small>[39m
+              [0m无阻塞原因[0m
+            [36m</small>[39m
+          [36m</div>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"badge purple"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"badge-dot"[39m
+            [36m/>[39m
+            [0m无在途执行[0m
+          [36m</span>[39m
+        [36m</article>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"card "[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"card-heading"[39m
+        [36m>[39m
+          [36m<h2>[39m
+            [0m岗位与职责[0m
+          [36m</h2>[39m
+        [36m</div>[39m
+        [36m<article[39m
+          [33mclass[39m=[32m"position-row"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"badge purple"[39m
+          [36m>[39m
+            [0m岗位 v[0m
+            [0m1[0m
+          [36m</span>[39m
+          [36m<h3>[39m
+            [0m策划[0m
+          [36m</h3>[39m
+          [36m<p>[39m
+            [0m规划[0m
+          [36m</p>[39m
+          [36m<small>[39m
+            [0mp1[0m
+          [36m</small>[39m
+        [36m</article>[39m
+        [36m<article[39m
+          [33mclass[39m=[32m"position-row"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"badge purple"[39m
+          [36m>[39m
+            [0m岗位 v[0m
+            [0m1[0m
+          [36m</span>[39m
+          [36m<h3>[39m
+            [0m写作[0m
+          [36m</h3>[39m
+          [36m<p>[39m
+            [0m交付[0m
+          [36m</p>[39m
+          [36m<small>[39m
+            [0mp2[0m
+          [36m</small>[39m
+        [36m</article>[39m
+      [36m</section>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError ../../node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ ../../node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ ../../node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ ../../node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/pages/RuntimeObservation.test.tsx:45:19
+     43|     state.data.member_execution[0].session.has_checkpoint = exists;
+     44|     render(<Members />);
+     45|     expect(screen.getByText(new RegExp(label))).toBeVisible();
+       |                   ^
+     46|     expect(document.body.textContent).not.toContain('可安全恢复');
+     47|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/pages/RuntimeObservation.test.tsx > member runtime observation > shows checkpoint evidence false without claiming safe resume
+TestingLibraryElementError: Unable to find an element with the text: /未发现检查点/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"page-stats"[39m
+    [36m>[39m
+      [36m<div>[39m
+        [36m<span>[39m
+          [0m团队成员[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0m2[0m
+        [36m</strong>[39m
+        [36m<small>[39m
+          [0m独立身份，持续协作[0m
+        [36m</small>[39m
+      [36m</div>[39m
+      [36m<div>[39m
+        [36m<span>[39m
+          [0m已设岗位[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0m2[0m
+        [36m</strong>[39m
+        [36m<small>[39m
+          [0m职责与权限来自组织决定[0m
+        [36m</small>[39m
+      [36m</div>[39m
+      [36m<div>[39m
+        [36m<span>[39m
+          [0m有效任职[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0m2[0m
+        [36m</strong>[39m
+        [36m<small>[39m
+          [0m支持一人兼任多个岗位[0m
+        [36m</small>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"cards-grid team-directory"[39m
+    [36m>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"card "[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"card-heading"[39m
+        [36m>[39m
+          [36m<h2>[39m
+            [0m稳定成员身份[0m
+          [36m</h2>[39m
+        [36m</div>[39m
+        [36m<div>[39m
+          [36m<article[39m
+            [33mclass[39m=[32m"runtime-row"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"avatar tone-0"[39m
+            [36m>[39m
+              [0m林[0m
+            [36m</span>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"row-main"[39m
+            [36m>[39m
+              [36m<span>[39m
+                [0m林策[0m
+              [36m</span>[39m
+              [36m<small>[39m
+                [0m策划[0m
+              [36m</small>[39m
+            [36m</div>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"member-mark"[39m
+            [36m>[39m
+              [0mAI[0m
+            [36m</span>[39m
+          [36m</article>[39m
+          [36m<article[39m
+            [33mclass[39m=[32m"runtime-row"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"avatar tone-1"[39m
+            [36m>[39m
+              [0m江[0m
+            [36m</span>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"row-main"[39m
+            [36m>[39m
+              [36m<span>[39m
+                [0m江墨[0m
+              [36m</span>[39m
+              [36m<small>[39m
+                [0m写作[0m
+              [36m</small>[39m
+            [36m</div>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"member-mark"[39m
+            [36m>[39m
+              [0mAI[0m
+            [36m</span>[39m
+          [36m</article>[39m
+        [36m</div>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"card "[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"card-heading"[39m
+        [36m>[39m
+          [36m<h2>[39m
+            [0m成员执行状态[0m
+          [36m</h2>[39m
+        [36m</div>[39m
+        [36m<article[39m
+          [33mclass[39m=[32m"runtime-row"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"row-main"[39m
+          [36m>[39m
+            [36m<strong>[39m
+              [0m林策[0m
+            [36m</strong>[39m
+            [36m<small>[39m
+              [0m当前工作：[0m
+              [0mw1[0m
+              [0m；会话：[0m
+              [0m无可公开检查点[0m
+            [36m</small>[39m
+            [36m<small>[39m
+              [0mdependency_pending[0m
+            [36m</small>[39m
+          [36m</div>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"badge purple"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"badge-dot"[39m
+            [36m/>[39m
+            [0m等待条件[0m
+          [36m</span>[39m
+        [36m</article>[39m
+        [36m<article[39m
+          [33mclass[39m=[32m"runtime-row"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"row-main"[39m
+          [36m>[39m
+            [36m<strong>[39m
+              [0m江墨[0m
+            [36m</strong>[39m
+            [36m<small>[39m
+              [0m当前工作：[0m
+              [0m无[0m
+              [0m；会话：[0m
+              [0m无可公开检查点[0m
+            [36m</small>[39m
+            [36m<small>[39m
+              [0m无阻塞原因[0m
+            [36m</small>[39m
+          [36m</div>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"badge purple"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"badge-dot"[39m
+            [36m/>[39m
+            [0m无在途执行[0m
+          [36m</span>[39m
+        [36m</article>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"card "[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"card-heading"[39m
+        [36m>[39m
+          [36m<h2>[39m
+            [0m岗位与职责[0m
+          [36m</h2>[39m
+        [36m</div>[39m
+        [36m<article[39m
+          [33mclass[39m=[32m"position-row"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"badge purple"[39m
+          [36m>[39m
+            [0m岗位 v[0m
+            [0m1[0m
+          [36m</span>[39m
+          [36m<h3>[39m
+            [0m策划[0m
+          [36m</h3>[39m
+          [36m<p>[39m
+            [0m规划[0m
+          [36m</p>[39m
+          [36m<small>[39m
+            [0mp1[0m
+          [36m</small>[39m
+        [36m</article>[39m
+        [36m<article[39m
+          [33mclass[39m=[32m"position-row"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"badge purple"[39m
+          [36m>[39m
+            [0m岗位 v[0m
+            [0m1[0m
+          [36m</span>[39m
+          [36m<h3>[39m
+            [0m写作[0m
+          [36m</h3>[39m
+          [36m<p>[39m
+            [0m交付[0m
+          [36m</p>[39m
+          [36m<small>[39m
+            [0mp2[0m
+          [36m</small>[39m
+        [36m</article>[39m
+      [36m</section>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError ../../node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ ../../node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ ../../node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ ../../node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/pages/RuntimeObservation.test.tsx:45:19
+     43|     state.data.member_execution[0].session.has_checkpoint = exists;
+     44|     render(<Members />);
+     45|     expect(screen.getByText(new RegExp(label))).toBeVisible();
+       |                   ^
+     46|     expect(document.body.textContent).not.toContain('可安全恢复');
+     47|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/pages/RuntimeObservation.test.tsx > member runtime observation > shows checkpoint evidence null without claiming safe resume
+TestingLibraryElementError: Unable to find an element with the text: /检查点状态未知/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"page-stats"[39m
+    [36m>[39m
+      [36m<div>[39m
+        [36m<span>[39m
+          [0m团队成员[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0m2[0m
+        [36m</strong>[39m
+        [36m<small>[39m
+          [0m独立身份，持续协作[0m
+        [36m</small>[39m
+      [36m</div>[39m
+      [36m<div>[39m
+        [36m<span>[39m
+          [0m已设岗位[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0m2[0m
+        [36m</strong>[39m
+        [36m<small>[39m
+          [0m职责与权限来自组织决定[0m
+        [36m</small>[39m
+      [36m</div>[39m
+      [36m<div>[39m
+        [36m<span>[39m
+          [0m有效任职[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0m2[0m
+        [36m</strong>[39m
+        [36m<small>[39m
+          [0m支持一人兼任多个岗位[0m
+        [36m</small>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"cards-grid team-directory"[39m
+    [36m>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"card "[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"card-heading"[39m
+        [36m>[39m
+          [36m<h2>[39m
+            [0m稳定成员身份[0m
+          [36m</h2>[39m
+        [36m</div>[39m
+        [36m<div>[39m
+          [36m<article[39m
+            [33mclass[39m=[32m"runtime-row"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"avatar tone-0"[39m
+            [36m>[39m
+              [0m林[0m
+            [36m</span>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"row-main"[39m
+            [36m>[39m
+              [36m<span>[39m
+                [0m林策[0m
+              [36m</span>[39m
+              [36m<small>[39m
+                [0m策划[0m
+              [36m</small>[39m
+            [36m</div>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"member-mark"[39m
+            [36m>[39m
+              [0mAI[0m
+            [36m</span>[39m
+          [36m</article>[39m
+          [36m<article[39m
+            [33mclass[39m=[32m"runtime-row"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"avatar tone-1"[39m
+            [36m>[39m
+              [0m江[0m
+            [36m</span>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"row-main"[39m
+            [36m>[39m
+              [36m<span>[39m
+                [0m江墨[0m
+              [36m</span>[39m
+              [36m<small>[39m
+                [0m写作[0m
+              [36m</small>[39m
+            [36m</div>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"member-mark"[39m
+            [36m>[39m
+              [0mAI[0m
+            [36m</span>[39m
+          [36m</article>[39m
+        [36m</div>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"card "[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"card-heading"[39m
+        [36m>[39m
+          [36m<h2>[39m
+            [0m成员执行状态[0m
+          [36m</h2>[39m
+        [36m</div>[39m
+        [36m<article[39m
+          [33mclass[39m=[32m"runtime-row"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"row-main"[39m
+          [36m>[39m
+            [36m<strong>[39m
+              [0m林策[0m
+            [36m</strong>[39m
+            [36m<small>[39m
+              [0m当前工作：[0m
+              [0mw1[0m
+              [0m；会话：[0m
+              [0m无可公开检查点[0m
+            [36m</small>[39m
+            [36m<small>[39m
+              [0mdependency_pending[0m
+            [36m</small>[39m
+          [36m</div>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"badge purple"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"badge-dot"[39m
+            [36m/>[39m
+            [0m等待条件[0m
+          [36m</span>[39m
+        [36m</article>[39m
+        [36m<article[39m
+          [33mclass[39m=[32m"runtime-row"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"row-main"[39m
+          [36m>[39m
+            [36m<strong>[39m
+              [0m江墨[0m
+            [36m</strong>[39m
+            [36m<small>[39m
+              [0m当前工作：[0m
+              [0m无[0m
+              [0m；会话：[0m
+              [0m无可公开检查点[0m
+            [36m</small>[39m
+            [36m<small>[39m
+              [0m无阻塞原因[0m
+            [36m</small>[39m
+          [36m</div>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"badge purple"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"badge-dot"[39m
+            [36m/>[39m
+            [0m无在途执行[0m
+          [36m</span>[39m
+        [36m</article>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"card "[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"card-heading"[39m
+        [36m>[39m
+          [36m<h2>[39m
+            [0m岗位与职责[0m
+          [36m</h2>[39m
+        [36m</div>[39m
+        [36m<article[39m
+          [33mclass[39m=[32m"position-row"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"badge purple"[39m
+          [36m>[39m
+            [0m岗位 v[0m
+            [0m1[0m
+          [36m</span>[39m
+          [36m<h3>[39m
+            [0m策划[0m
+          [36m</h3>[39m
+          [36m<p>[39m
+            [0m规划[0m
+          [36m</p>[39m
+          [36m<small>[39m
+            [0mp1[0m
+          [36m</small>[39m
+        [36m</article>[39m
+        [36m<article[39m
+          [33mclass[39m=[32m"position-row"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"badge purple"[39m
+          [36m>[39m
+            [0m岗位 v[0m
+            [0m1[0m
+          [36m</span>[39m
+          [36m<h3>[39m
+            [0m写作[0m
+          [36m</h3>[39m
+          [36m<p>[39m
+            [0m交付[0m
+          [36m</p>[39m
+          [36m<small>[39m
+            [0mp2[0m
+          [36m</small>[39m
+        [36m</article>[39m
+      [36m</section>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError ../../node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ ../../node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ ../../node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ ../../node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/pages/RuntimeObservation.test.tsx:45:19
+     43|     state.data.member_execution[0].session.has_checkpoint = exists;
+     44|     render(<Members />);
+     45|     expect(screen.getByText(new RegExp(label))).toBeVisible();
+       |                   ^
+     46|     expect(document.body.textContent).not.toContain('可安全恢复');
+     47|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 2 passed (5)
+   Start at  07:43:34
+   Duration  1.01s (transform 145ms, setup 122ms, collect 258ms, tests 127ms, environment 252ms, prepare 70ms)
+
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /workspace/scratch/ec13abb7a5d3/Union/web/console
+npm error workspace @union/console@0.1.0
+npm error location /workspace/scratch/ec13abb7a5d3/Union/web/console
+npm error command failed
+npm error command sh -c vitest run --run src/pages/RuntimeObservation.test.tsx

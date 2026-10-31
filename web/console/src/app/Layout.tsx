@@ -23,6 +23,11 @@ import { Card, Empty, sourceName } from '../components/ui';
 
 const pages = [
   {
+    key: 'gateways', label: 'AI 网关', title: 'AI 网关管理',
+    description: '管理平台接入的网关，查看健康、版本和检测记录。',
+    icon: Cpu, group: '平台管理',
+  },
+  {
     key: 'overview',
     label: '公司总览',
     title: '公司总览',
@@ -86,9 +91,9 @@ export function Layout() {
     useWorkspace();
   const { pending, inspect } = useCommands();
   const location = useLocation();
-  const page = pages.find((p) => '/' + p.key === location.pathname) || pages[0];
+  const page = pages.find((p) => '/' + p.key === location.pathname) || pages.find((p) => p.key === 'overview')!;
   const search = orgId ? '?organization=' + encodeURIComponent(orgId) : '';
-  const openPage = page.key === 'overview' || page.key === 'models';
+  const openPage = page.key === 'overview' || page.key === 'models' || page.key === 'gateways';
   useEffect(() => {
     document.title = page.label + ' · UNION';
   }, [page.label]);
@@ -124,7 +129,7 @@ export function Layout() {
           </span>
         </label>
         <nav id="navigation">
-          {pages.map(({ key, label, icon: Icon, group }) => (
+          {pages.filter((p) => p.key !== 'gateways' || session?.platform_admin).map(({ key, label, icon: Icon, group }) => (
             <div className="nav-entry" key={key}>
               {group && <div className="nav-caption">{group}</div>}
               <NavLink

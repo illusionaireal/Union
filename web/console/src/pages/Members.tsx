@@ -1,10 +1,11 @@
 import { useWorkspace } from '../app/workspace';
 import { MemberRows } from '../components/Records';
-import { Card, Empty } from '../components/ui';
+import { Badge, Card, Empty } from '../components/ui';
 import { PageStats } from '../components/SetupGuide';
 export default function Members() {
   const { data } = useWorkspace();
   const positions = Object.values(data!.organization.positions);
+  const execution = new Map(data!.member_execution.map((item) => [item.member_id, item]));
   return (
     <>
       <PageStats
@@ -25,6 +26,20 @@ export default function Members() {
       <div className="cards-grid team-directory">
         <Card title="稳定成员身份">
           <MemberRows />
+        </Card>
+        <Card title="成员执行状态">
+          {Object.keys(data!.organization.members).length ? Object.values(data!.organization.members).map((member) => {
+            const item = execution.get(member.id);
+            if (!item) return null;
+            return <article className="runtime-row" key={member.id}>
+              <div className="row-main">
+                <strong>{member.name}</strong>
+                <small>当前工作：{item.current_work_id || '无'}；会话：{item.session.has_checkpoint === null ? '检查点状态未知' : item.session.has_checkpoint ? '存在检查点，接续仍需核对' : '未发现检查点'}</small>
+                <small>{item.reason_codes.length ? item.reason_codes.join('、') : '无阻塞原因'}</small>
+              </div>
+              <Badge value={item.work_state} />
+            </article>;
+          }) : <Empty title="尚无成员">形成成员后显示各自工作和会话摘要。</Empty>}
         </Card>
         <Card title="岗位与职责">
           {positions.length ? (

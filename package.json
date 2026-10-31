@@ -24,6 +24,7 @@
     "dev": "node scripts/start-console.mjs --watch",
     "management:render": "node scripts/project-management.mjs render",
     "management:status": "node scripts/project-management.mjs status",
-    "check:management": "node scripts/project-management.mjs check && node --test tests/project-management.test.mjs"
+    "check:management": "node scripts/project-management.mjs check && node --test tests/project-management.test.mjs",
+    "test:gateways": "node scripts/check_gateways.cjs"
   }
 }

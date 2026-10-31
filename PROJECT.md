@@ -1,6 +1,6 @@
 # 项目总览：目标、成熟度与路线
 
-管理更新：2026-10-28。运行能力审计基线仍为 `dev@9bf6d54`（2026-10-27）；本次增加项目管理工具与规则，不增加公司运行能力。运行事实来自本地只读诊断及已归档证据，不代表已经核查远端生产服务。
+管理更新：2026-11-01。本轮在 `dev@e0d04c7` 加检查点元数据探测修复上只读复查原公司，仍筹建/暂停，成员/工作/成果/模型调用均0；见[040诊断](evidence/040-checkpoint-metadata/company-status.json)。既有公司能力审计基线为 `9bf6d54`（2026-10-27）；当前工程验收见下表。观察不再打开任何原检查点库，仅lstat；存在或异常为未知，明确缺失为无，本实现不产生true。移除了观察连接引发sidecars的路径，不承诺外部文件不变或跨库原子；真实运营/托管未验。本地复查不代表远端生产检查。
 
 **当前结论：已有组织运行时和本地工作台的工程原型，部分真实模型协作通过；目标公司 ai-union-corp 尚未成立团队、交付或持续运营。下一目标是让这家公司完成真实产品交付，并验证其主动发现、改善组织问题的能力。**
 
@@ -20,7 +20,7 @@
 
 - 工程底座：已具备本地运行、治理、任务、执行器、观察与有限运行机制，有回归证据。
 - 真实组织能力：另一试验组织曾自主形成 2 人团队、完成 3 份规划文本并产生后续工作；后续任务与事件处理没有完整通过，不能称为稳定自治。见 [014](evidence/014-real-loop/README.md)。
-- 目标公司：2026-10-27 只读检查仍为 `bootstrap/paused`，成员/工作/成果/模型调用均为 0，未绑定真实模型或开发工作区。
+- 目标公司：2026-11-01 02:40（UTC+8）本地原公司数据只读复查仍为 `bootstrap/paused`，成员/工作/成果/模型调用均为 0，未绑定真实模型或开发工作区。
 - 持久运营和外部服务：未有该公司真实主机部署、持续交付、恢复演练或外部用户验收证据。
 
 **暂不报告“整体完成百分比”。** 目标范围仍在分阶段明确，模块体量也不同；测试数、代码量和勾选任务数不能换算成产品完成度。当前可以准确报告“工程原型已具备，真实交付闭环尚未通过”。
@@ -47,12 +47,12 @@
 | 组织治理与状态 / ai-union | 版本化章程、成员/岗位/任职、组织决定、SQLite 持久化 | V1；真实筹建用过部分机制 | U-023兼容投影/治理描述和U-034申请机制已受控验证；真实运行职责调整、企业身份集成仍待验 | [specs/001-org-bootstrap/spec.md](specs/001-org-bootstrap/spec.md)、[evidence/014-real-loop/README.md](evidence/014-real-loop/README.md)、[evidence/022-au-contract-implementation/README.md](evidence/022-au-contract-implementation/README.md) |
 | 筹建与自我调整 / ai-union | 分批筹建草案、成立事务、组织更新工具 | V2：试验组织真实成立 | 当前公司成立；证明初始化之后仍能按目标扩展和调整 | [specs/010-organization-harness/spec.md](specs/010-organization-harness/spec.md)、[evidence/014-real-loop/README.md](evidence/014-real-loop/README.md) |
 | 成员执行循环 / ai-union | Deep Agents / LangGraph、工具调用、任务检查点 | V2：规划文本交付 | 有效业务成果、长任务可靠性、失败后的正确后续动作 | [docs/ORGANIZATION_HARNESS.md](docs/ORGANIZATION_HARNESS.md)、[evidence/014-real-loop/README.md](evidence/014-real-loop/README.md) |
-| 模型连接 / 公共接入 | Chat Completions、私有密钥、默认连接、网页工具往返测试与调用回执 | V2：免费 OpenRouter 曾实测 | 当前公司连接与适用模型工具协议验收；历史可用不等于现在已配置 | [docs/API_MODELS.md](docs/API_MODELS.md)、[evidence/011-openrouter-smoke/README.md](evidence/011-openrouter-smoke/README.md) |
+| 模型连接 / 公共接入 | Chat Completions、私有密钥、默认连接、网页工具往返测试与调用回执；New API 目录、显式平台权限、健康/版本检测、AU连接来源快照已实现 | V2：免费 OpenRouter 曾实测 | U-037待实际浏览器验收；U-039真实New API/上游工具往返未验；当前公司连接阻塞保持 | [docs/API_MODELS.md](docs/API_MODELS.md)、[evidence/011-openrouter-smoke/README.md](evidence/011-openrouter-smoke/README.md)、[evidence/027-gateway-management/README.md](evidence/027-gateway-management/README.md) |
 | 开发工具 / 当前公司业务能力 | 可选 Docker 工作区、宿主/章程/岗位授权、持久命令回执及核对 | V1：SDK 与容器替身；独立权限复核通过默认关闭接入 | 真实容器与模型编程；网络、提交、部署仍需各自明确接口与授权 | [evidence/016-member-workspace/README.md](evidence/016-member-workspace/README.md) |
 | 记忆与上下文 / ai-union | 组织记录、成果、交接信息、任务检查点及虚拟文件 | V1，真实运行暴露上下文问题 | 长任务上下文管理、知识检索与经验复用闭环；不能等同成熟学习系统 | [docs/ORGANIZATION_HARNESS.md](docs/ORGANIZATION_HARNESS.md)、[evidence/014-real-loop/README.md](evidence/014-real-loop/README.md) |
 | 协作、唤醒与恢复 / ai-union | 工作依赖、交接、有限 watch、暂停、未知结果核对 | V2：真实空闲零调用、同一作业事件唤醒通过 | 诊断和生命周期已实现；模型有效事件处理、真实后续交付及持续运行待资源复验 | [evidence/014-real-loop/README.md](evidence/014-real-loop/README.md)、[evidence/020-organization-diagnostics/README.md](evidence/020-organization-diagnostics/README.md) |
-| 工作台与观察 / platform | React 八页导航、本地多组织、模型配置、事件/工作/成果/回执 | V1：前端、历史浏览器与实际本地 HTTP 验证 | 最新真实公司用户流程；公共账户、多租户与外部访问未实现 | [evidence/007-workspace-redesign/README.md](evidence/007-workspace-redesign/README.md)、[evidence/016-member-workspace/README.md](evidence/016-member-workspace/README.md) |
-| 托管与运维 / platform | 有限 service/watch 入口、systemd 模板、就绪检查 | V1：工程入口；真实托管 V0 | 目标服务器安装、访问、重启、备份恢复、告警与资源到限停机 | [evidence/015-corp-startup/README.md](evidence/015-corp-startup/README.md) |
+| 工作台与观察 / platform | React 八页导航、本地多组织、模型配置、事件/工作/成果/回执、只读成员运行状态/会话/工作区摘要 | V1：checkpoint观察仅lstat、不打开原库；定向50/全量260与独立94项通过，独立长结论因额度中断 | 检查点存在性当前无true生产来源；跨来源非原子、热配置、真实续拍/崩溃/供应商迟到、真实恢复、浏览器与整体复核未过；公共账户/多租户未实现 | [evidence/007-workspace-redesign/README.md](evidence/007-workspace-redesign/README.md)、[evidence/016-member-workspace/README.md](evidence/016-member-workspace/README.md)、[evidence/029-member-runtime-observation/README.md](evidence/029-member-runtime-observation/README.md)、[evidence/030-runtime-recent-run/README.md](evidence/030-runtime-recent-run/README.md)、[evidence/031-member-work-state/README.md](evidence/031-member-work-state/README.md)、[evidence/032-runtime-workspace/README.md](evidence/032-runtime-workspace/README.md)、[evidence/033-checkpoint-observation/README.md](evidence/033-checkpoint-observation/README.md)、[evidence/034-unregistered-runtime/README.md](evidence/034-unregistered-runtime/README.md)、[evidence/035-dispatch-observation/README.md](evidence/035-dispatch-observation/README.md)、[evidence/036-runtime-http-observation/README.md](evidence/036-runtime-http-observation/README.md)、[evidence/037-session-revisions/README.md](evidence/037-session-revisions/README.md)、[evidence/038-activity-boundaries/README.md](evidence/038-activity-boundaries/README.md)、[evidence/039-wal-observation/README.md](evidence/039-wal-observation/README.md)、[evidence/040-checkpoint-metadata/README.md](evidence/040-checkpoint-metadata/README.md) |
+| 托管与运维 / platform | 有限 service/watch 入口、systemd 模板、就绪检查 | V1：工程入口；真实托管 V0 | U-041观察已受控实现但浏览器/独立复核未过；U-042单机受限托管未实现；U-008目标服务器安装、访问及U-009真实重启/备份恢复仍待资源和依赖，告警与资源到限停机待验 | [evidence/015-corp-startup/README.md](evidence/015-corp-startup/README.md)、[specs/028-member-runtime-management/plan.md](specs/028-member-runtime-management/plan.md) |
 | 预算与经营记录 / 运行时及业务 | 调用额度、用量与未知费用记录、小说 mock 账本 | V1；真实运行曾按调用上限停止 | 真实成本核对与可执行预算控制；无真实支付/收入能力 | [evidence/014-real-loop/README.md](evidence/014-real-loop/README.md)、[evidence/006-novel-company/README.md](evidence/006-novel-company/README.md) |
 | 质量与评估 / 工程支撑 | 机制回归、模拟与真实标记、E1/E2 检查及证据留存 | V1；真实完整业务验收未通过 | 首个真实任务及指标口径已定义，U-006/U-019/U-020真实采集和效果待验 | [specs/014-real-loop/spec.md](specs/014-real-loop/spec.md)、[evidence/016-member-workspace/README.md](evidence/016-member-workspace/README.md) |
 | 目标公司实例 / ai-union-corp | 固定身份、目标、阶段章程、只读诊断、正式工作台入口 | V1：准备入口；运营 V0 | 真实筹建 → 研发交付 → 反馈 → 持续运营 | [specs/015-corp-startup/tasks.md](specs/015-corp-startup/tasks.md) |
@@ -87,7 +87,7 @@
 任务唯一主账为 `management/project.json`，保留 U 编号；以下视图由 `npm run management:render` 生成。实际负责人和所需责任角色分开，未认领不虚构为公司成员。
 
 <!-- management:tasks:start -->
-数据日期：2026-10-28；在制 1/2，就绪 0，阻塞 4，完成 15。这是工作项统计，不是产品完成率。
+数据日期：2026-11-01；在制 3/3，就绪 0，阻塞 7，完成 16。这是工作项统计，不是产品完成率。
 
 | 任务 | 内容 | 优先级 / 阶段 | 状态 | 实际负责人 | 依赖 |
 | --- | --- | --- | --- | --- | --- |
@@ -120,6 +120,12 @@
 | [U-030](TASKS.md#u-030) | 实现跨 AU 职责与成员交接 | P1 / G-AU | 待依赖 | 待认领 | U-029 |
 | [U-034](TASKS.md#u-034) | 建立资源与工具申请记录 | P1 / G2 | 完成 | Codex（外部工程代理） | U-018, U-033 |
 | [U-035](TASKS.md#u-035) | 补齐工作生命周期与指标证据 | P1 / G3 | 完成 | Codex（外部工程代理） | U-018 |
+| [U-037](TASKS.md#u-037) | New API 网关登记、观察及 AU 连接接入 | P1 / G0 | 阻塞 | Codex（外部工程代理） | — |
+| [U-038](TASKS.md#u-038) | New API 托管实例运维控制 | P1 / G0 | 待依赖 | 待认领 | U-037 |
+| [U-039](TASKS.md#u-039) | 真实 New API 与 AU 工具往返验收 | P1 / G0 | 阻塞 | 待认领 | U-037 |
+| [U-040](TASKS.md#u-040) | 规划成员执行与托管管理 | P1 / G0 | 完成 | Codex（外部工程代理） | — |
+| [U-041](TASKS.md#u-041) | 展示成员执行状态与运行位置 | P1 / G0 | 阻塞 | Codex / GPT-6.1 Sol（外部工程代理；GPT-6 Astra规划） | U-040 |
+| [U-042](TASKS.md#u-042) | 实现单机AU持久托管与受限控制 | P1 / G3 | 待依赖 | 待认领 | U-041 |
 | [U-013](TASKS.md#u-013) | 评估成员执行器选型 | P2 / G0 | 候选 | 待认领 | — |
 | [U-014](TASKS.md#u-014) | 定义外部试点 | P2 / G4 | 待依赖 | 待认领 | U-009, U-010, U-011, U-019 |
 | [U-015](TASKS.md#u-015) | 按需求接入业务系统 | P2 / G5 | 候选 | 待认领 | U-014 |
@@ -127,11 +133,12 @@
 | [U-031](TASKS.md#u-031) | 逐项验证 AU 拆分合并及归属调整 | P2 / G-AU | 待依赖 | 待认领 | U-030 |
 | [U-032](TASKS.md#u-032) | 接入付费工具与费用核对 | P2 / G-TOOLS | 待依赖 | 待认领 | U-026, U-020 |
 | [U-036](TASKS.md#u-036) | 按需求支持成员退出与任职解除 | P2 / G2 | 候选 | 待认领 | U-018, U-023 |
+| [U-043](TASKS.md#u-043) | 按真实瓶颈评估成员并发与Worker | P2 / G3 | 候选 | 待认领 | U-042, U-009, U-020 |
 
 完整验收条件、阻塞与证据见 [TASKS.md](TASKS.md)；主账为 [management/project.json](management/project.json)。
 <!-- management:tasks:end -->
 
-020–025已完成首个真实任务定义、有界诊断、生命周期/指标口径、同构AU兼容接入、可选申请流程及工具/委托契约。**当前就绪任务为0**：U-002模型、U-005真实工作区、U-008主机和U-007真实复验受阻；其余未完成工作依赖这些真实结果或属于条件候选。见[收口与解除条件](evidence/026-batch-closeout/README.md)。这不是所有产品目标完成；资源到位后接续U-003/U-006/U-019，随后持续运营及跨AU/工具服务验收。
+020–025已完成首个真实任务定义、有界诊断、生命周期/指标口径、同构AU兼容接入、可选申请流程及工具/委托契约。**当前就绪任务为0，不等于没有可执行验收/修复**：040撤掉所有原检查点库观察连接，只保留元数据探测，代价是DELETE也未知且当前无true生产来源。下一批先冻结A06旧HarnessExecutor在连接禁用/revision变化后的生效点，再做实际SDK/回环HTTP复现，不自动扩检查点元数据。跨来源非原子、热配置、真实恢复、浏览器及整体复核未过；独立94项已通过，但长结论收尾额度中断。U-002/U-005/U-008/U-007真实资源阻塞保持。见[040证据](evidence/040-checkpoint-metadata/README.md)。不提升产品目标完成度；资源到位后仍须真实筹建/交付/改善与持续运营。
 
 ## 6. 适合当前规模的管理方式
 

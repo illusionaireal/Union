@@ -1,0 +1,11 @@
+test_forged_observation_parameters_and_runtime_commands_do_not_expand_scope (tests.test_runtime_http.RuntimeHTTPTests.test_forged_observation_parameters_and_runtime_commands_do_not_expand_scope) ... ok
+test_http_current_authority_changes_do_not_resume_historical_checkpoint (tests.test_runtime_http.RuntimeHTTPTests.test_http_current_authority_changes_do_not_resume_historical_checkpoint) ... ok
+test_http_legacy_unconfigured_read_does_not_create_observation_tables (tests.test_runtime_http.RuntimeHTTPTests.test_http_legacy_unconfigured_read_does_not_create_observation_tables) ... ok
+test_http_session_roles_and_actual_au_scope (tests.test_runtime_http.RuntimeHTTPTests.test_http_session_roles_and_actual_au_scope) ... ok
+test_http_state_chain_and_budget_do_not_execute_on_get (tests.test_runtime_http.RuntimeHTTPTests.test_http_state_chain_and_budget_do_not_execute_on_get) ... ok
+test_same_member_session_ids_and_whole_response_privacy (tests.test_runtime_http.RuntimeHTTPTests.test_same_member_session_ids_and_whole_response_privacy) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 3.764s
+
+OK

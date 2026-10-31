@@ -1,0 +1,30 @@
+{
+  "organization_id": "org-eb1c6fc7e1784a52823f3d389f9cac34",
+  "name": "ai-union-corp",
+  "phase": "bootstrap",
+  "members": 0,
+  "work": 0,
+  "artifacts": 0,
+  "budget": {
+    "calls_reserved": 0,
+    "max_calls": 32,
+    "cost_status": "unknown",
+    "estimated_cost_reserved": null,
+    "blocked_reason": null
+  },
+  "tool_roundtrip_verified": false,
+  "can_attempt_bootstrap": false,
+  "source": "not_run",
+  "development_workspace": {
+    "configured": false,
+    "docker_cli_present": false,
+    "charter_allows_tool": false,
+    "unresolved_commands": 0,
+    "real_commands_confirmed": 0
+  },
+  "autonomous_operation_verified": false,
+  "checked_at_utc": "2026-10-30T23:47:38.853893+00:00",
+  "scope": "local existing company only; no remote host/provider request",
+  "model_connection_configured": false,
+  "dispatch_paused": true
+}

@@ -274,6 +274,10 @@ export function CommandFields({
     case 'api_connection':
       return (
         <>
+          <input type="hidden" name="gateway_id" value={options?.gateway?.id || connection?.gateway_ref?.id || ''} />
+          <input type="hidden" name="gateway_revision" value={options?.gateway?.revision || connection?.gateway_ref?.revision || ''} />
+          {connection?.gateway_ref && <label className="check-row"><input type="checkbox" name="detach_gateway" />改为独立 API 连接（登记已变化或需要更换地址时勾选）</label>}
+          {options?.gateway && <p className="form-note">从网关 {options.gateway.config.name} 创建独立连接。请填写该公司自己的模型令牌；登记变化不会自动修改连接。</p>}
           <input
             type="hidden"
             name="api_enabled"
@@ -295,7 +299,7 @@ export function CommandFields({
           <Field
             name="connection_name"
             label="连接名称"
-            value={connection?.config.name || '我的模型连接'}
+            value={connection?.config.name || options?.gateway?.config.name || '我的模型连接'}
             maxLength={100}
           />
           <Field
@@ -303,7 +307,7 @@ export function CommandFields({
             label="API 根地址"
             placeholder="https://your-provider.example/v1"
             type="url"
-            value={connection?.config.base_url || ''}
+            value={connection?.config.base_url || options?.gateway?.config.api_base_url || ''}
           />
           <Field
             name="api_model"
