@@ -16,7 +16,7 @@
 | 进行中 | — |
 | 阻塞 | [U-002](#u-002)、[U-005](#u-005)、[U-007](#u-007)、[U-044](#u-044)、[U-008](#u-008)、[U-039](#u-039)、[U-041](#u-041) |
 | 待验收 | — |
-| 完成 | [U-001](#u-001)、[U-004](#u-004)、[U-016](#u-016)、[U-017](#u-017)、[U-018](#u-018)、[U-021](#u-021)、[U-022](#u-022)、[U-023](#u-023)、[U-033](#u-033)、[U-045](#u-045)、[U-046](#u-046)、[U-047](#u-047)、[U-048](#u-048)、[U-012](#u-012)、[U-025](#u-025)、[U-027](#u-027)、[U-034](#u-034)、[U-035](#u-035)、[U-037](#u-037)、[U-040](#u-040)、[U-024](#u-024) |
+| 完成 | [U-001](#u-001)、[U-004](#u-004)、[U-016](#u-016)、[U-017](#u-017)、[U-018](#u-018)、[U-021](#u-021)、[U-022](#u-022)、[U-023](#u-023)、[U-033](#u-033)、[U-045](#u-045)、[U-046](#u-046)、[U-047](#u-047)、[U-048](#u-048)、[U-049](#u-049)、[U-012](#u-012)、[U-025](#u-025)、[U-027](#u-027)、[U-034](#u-034)、[U-035](#u-035)、[U-037](#u-037)、[U-040](#u-040)、[U-024](#u-024) |
 
 ## U-001
 
@@ -351,6 +351,24 @@
 25项目录机制测试通过，全量323项与HEAD基线同为1失败1错误；目录数据未提供，能力查询保持unknown
 
 证据：[evidence/031-ai-config-catalog/README.md](evidence/031-ai-config-catalog/README.md)、[evidence/031-ai-config-catalog/catalog-tests.log](evidence/031-ai-config-catalog/catalog-tests.log)、[evidence/031-ai-config-catalog/full-suite.log](evidence/031-ai-config-catalog/full-suite.log)
+
+## U-049
+
+**实现凭据环境变量引用（M1b）**
+
+状态：完成；优先级：P0；里程碑：G0；模块：models。
+
+实际负责人：外部工程代理（OpenCode）；所需责任：运行时工程 / 独立权限复核待定。开始：2026-11-01；更新：2026-11-01。
+
+依赖：[U-048](#u-048)。
+
+验收条件：连接可只保存环境变量名而不落库密钥；内联与环境引用二选一；解析失败按变量名报错且不回显值；环境值出现在配置依据或命令文本中被拒绝；既有配置行为不变
+
+验收范围：controlled；验收者：外部工程代理自检（非独立权限复核）。
+
+11项凭据测试与334项全量回归通过；独立复核未做，前端入口未实现
+
+证据：[evidence/031b-credential-references/README.md](evidence/031b-credential-references/README.md)、[evidence/031b-credential-references/credential-tests.log](evidence/031b-credential-references/credential-tests.log)、[evidence/031b-credential-references/full-suite.log](evidence/031b-credential-references/full-suite.log)
 
 ## U-008
 

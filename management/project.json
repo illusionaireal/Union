@@ -1291,6 +1291,33 @@
         ],
         "note": "25项目录机制测试通过，全量323项与HEAD基线同为1失败1错误；目录数据未提供，能力查询保持unknown"
       }
+    },
+    {
+      "id": "U-049",
+      "title": "实现凭据环境变量引用（M1b）",
+      "priority": "P0",
+      "milestone": "G0",
+      "module": "models",
+      "status": "done",
+      "owner": "外部工程代理（OpenCode）",
+      "role": "运行时工程 / 独立权限复核待定",
+      "acceptance": "连接可只保存环境变量名而不落库密钥；内联与环境引用二选一；解析失败按变量名报错且不回显值；环境值出现在配置依据或命令文本中被拒绝；既有配置行为不变",
+      "dependencies": [
+        "U-048"
+      ],
+      "blocker": null,
+      "started_at": "2026-11-01",
+      "updated_at": "2026-11-01",
+      "completion": {
+        "scope": "controlled",
+        "reviewer": "外部工程代理自检（非独立权限复核）",
+        "evidence": [
+          "evidence/031b-credential-references/README.md",
+          "evidence/031b-credential-references/credential-tests.log",
+          "evidence/031b-credential-references/full-suite.log"
+        ],
+        "note": "11项凭据测试与334项全量回归通过；独立复核未做，前端入口未实现"
+      }
     }
   ]
 }

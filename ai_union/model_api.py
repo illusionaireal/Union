@@ -7,6 +7,8 @@ import hashlib
 import http.client
 import ipaddress
 import json
+import os
+import re
 import socket
 import threading
 import time
@@ -21,7 +23,7 @@ from .agent_protocol import compile_tool, instructions, model_input, tools_for, 
 from . import catalog as model_catalog
 
 
-CONFIG_FIELDS = {"name", "base_url", "model", "response_format", "token_limit_field", "max_output_tokens", "timeout_seconds", "enabled"}
+CONFIG_FIELDS = {"name", "base_url", "model", "response_format", "token_limit_field", "max_output_tokens", "timeout_seconds", "api_key_env", "enabled"}
 
 
 def api_connection(parts, timeout):
@@ -48,7 +50,7 @@ def api_connection(parts, timeout):
 
 
 def validate_config(config):
-    require(isinstance(config, dict) and CONFIG_FIELDS - {"response_format"} <= set(config) <= CONFIG_FIELDS, "API 配置字段缺失或不支持")
+    require(isinstance(config, dict) and CONFIG_FIELDS - {"response_format", "api_key_env"} <= set(config) <= CONFIG_FIELDS, "API 配置字段缺失或不支持")
     result = copy.deepcopy(config)
     text(result["name"], "连接名称", 100)
     require(model_name(result["model"]) is not None, "API 必须指定模型 ID")
@@ -73,6 +75,10 @@ def validate_config(config):
     require(result["token_limit_field"] in ("max_completion_tokens", "max_tokens"), "输出上限字段不支持")
     require(type(result["max_output_tokens"]) is int and 1 <= result["max_output_tokens"] <= 32768, "输出上限必须为 1–32768")
     require(type(result["timeout_seconds"]) is int and 1 <= result["timeout_seconds"] <= 600, "API 超时必须为 1–600 秒")
+    if "api_key_env" in result:
+        require(isinstance(result["api_key_env"], str)
+                and re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]{0,63}", result["api_key_env"]) is not None,
+                "API Key 环境变量名无效")
     require(type(result["enabled"]) is bool, "连接启用状态必须为布尔值")
     return result
 
@@ -105,7 +111,13 @@ def schema_table(cx):
 def reject_saved_secrets(cx, value, extra_secret=None):
     secrets = {extra_secret} if isinstance(extra_secret, str) and extra_secret else set()
     if cx.execute("SELECT 1 FROM sqlite_master WHERE name='model_connections'").fetchone():
-        secrets.update(row[0] for row in cx.execute("SELECT DISTINCT api_key FROM model_connections WHERE api_key != ''"))
+        for row in cx.execute("SELECT api_key, config FROM model_connections"):
+            if row[0]:
+                secrets.add(row[0])
+            # An environment reference is public as a name but its value is not.
+            name = json.loads(row[1]).get("api_key_env")
+            if name and os.environ.get(name):
+                secrets.add(os.environ[name])
     require(not any(contains_secret(value, key) for key in secrets), "公开配置或操作依据不能包含 API Key")
 
 
@@ -125,11 +137,24 @@ def list_connections(engine):
         return result
 
 
+def connection_key(row):
+    """Resolve a credential at use time; an environment reference is never persisted."""
+    config = json.loads(row["config"])
+    if row["api_key"]:
+        return row["api_key"], "inline"
+    name = config.get("api_key_env")
+    if not name:
+        return "", None
+    value = os.environ.get(name, "")
+    return (value, "env") if value else ("", "missing")
+
+
 def public_connection(row):
     config = validate_config(json.loads(row["config"]))
+    key, source = connection_key(row)
     # Read-only metadata; an unknown model stays null instead of being guessed.
     return {"id": row["id"], "revision": row["revision"], "config": config,
-            "has_api_key": bool(row["api_key"]), "updated_at": row["updated_at"],
+            "has_api_key": bool(key), "key_source": source, "updated_at": row["updated_at"],
             "catalog": model_catalog.metadata(config["model"])}
 
 
@@ -142,9 +167,13 @@ def configure_connection(engine, board_key, connection_id, config, reason, api_k
         board = engine._board(cx, board_key)
         schema_table(cx)
         old = cx.execute("SELECT * FROM model_connections WHERE id=? ORDER BY revision DESC LIMIT 1", (connection_id,)).fetchone()
-        secret = api_key if api_key is not None else old["api_key"] if old else ""
+        if config.get("api_key_env"):
+            require(api_key is None, "环境变量引用与内联密钥只能二选一")
+            secret = ""
+        else:
+            secret = api_key if api_key is not None else old["api_key"] if old else ""
         # A changed endpoint never inherits a key intended for a different destination.
-        require(not old or json.loads(old["config"])["base_url"] == config["base_url"] or api_key is not None,
+        require(not old or json.loads(old["config"])["base_url"] == config["base_url"] or api_key is not None or config.get("api_key_env"),
                 "API 地址变更必须明确重新提供或清除密钥")
         reject_saved_secrets(cx, [connection_id, config, reason], secret)
         revision = old["revision"] + 1 if old else 1
@@ -156,7 +185,9 @@ def configure_connection(engine, board_key, connection_id, config, reason, api_k
         state["version"] += 1
         engine._event(cx, "api_connection_configured", {"connection_id": connection_id, "revision": revision, "board": board, "reason": reason})
         engine._save(cx, state)
-        return {"id": connection_id, "revision": revision, "config": config, "has_api_key": bool(secret)}
+        key, source = connection_key({"api_key": secret, "config": encoded(config)})
+        return {"id": connection_id, "revision": revision, "config": config,
+                "has_api_key": bool(key), "key_source": source}
 
 
 def resolve_connection(engine, connection_id=None):
@@ -168,8 +199,11 @@ def resolve_connection(engine, connection_id=None):
         require(row is not None, "API 连接不存在")
         config = validate_config(json.loads(row["config"]))
         require(config["enabled"], "API 连接已停用")
-        require(bool(row["api_key"]), "API Key 尚未配置")
-        return public_connection(row) | {"api_key": row["api_key"]}
+        secret, source = connection_key(row)
+        if source == "missing":
+            require(False, "API Key 环境变量未设置或为空：" + config["api_key_env"])
+        require(bool(secret), "API Key 尚未配置")
+        return public_connection(row) | {"api_key": secret}
 
 
 def bind_connection(engine, board_key, connection_id, reason):
