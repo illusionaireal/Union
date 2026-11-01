@@ -24,6 +24,9 @@ from . import catalog as model_catalog
 
 
 CONFIG_FIELDS = {"name", "base_url", "model", "response_format", "token_limit_field", "max_output_tokens", "timeout_seconds", "api_key_env", "enabled"}
+ROLES = ("planner", "worker", "reviewer")
+ROLE_BY_KIND = {"work": "worker", "decision": "planner", "connection_test": None}
+MAX_FALLBACKS = 3
 
 
 def api_connection(parts, timeout):
@@ -190,36 +193,97 @@ def configure_connection(engine, board_key, connection_id, config, reason, api_k
                 "has_api_key": bool(key), "key_source": source}
 
 
-def resolve_connection(engine, connection_id=None):
+def _role_connection_id(execution, role):
+    if role is None:
+        return execution.get("api_connection_id")
+    require(role in ROLES, "未知角色")
+    slot = (execution.get("roles") or {}).get(role) or {}
+    return slot.get("connection_id")
+
+
+def _resolved(cx, connection_id):
+    row = cx.execute("SELECT * FROM model_connections WHERE id=? ORDER BY revision DESC LIMIT 1", (connection_id,)).fetchone()
+    require(row is not None, "API 连接不存在")
+    config = validate_config(json.loads(row["config"]))
+    require(config["enabled"], "API 连接已停用")
+    secret, source = connection_key(row)
+    if source == "missing":
+        require(False, "API Key 环境变量未设置或为空：" + config["api_key_env"])
+    require(bool(secret), "API Key 尚未配置")
+    return public_connection(row) | {"api_key": secret}
+
+
+def resolve_connection(engine, connection_id=None, role=None):
+    """Resolve a role's credential, with availability fallback only.
+
+    A connection that cannot serve a request at all (missing, disabled or without a
+    credential) may be replaced by the configured chain. Runtime failures are never
+    retried here: an unknown outcome still has to be reconciled.
+    """
     with engine.read_transaction() as cx:
-        connection_id = connection_id or engine._state(cx).get("execution_config", {}).get("api_connection_id")
-        identifier(connection_id)
         require(cx.execute("SELECT 1 FROM sqlite_master WHERE name='model_connections'").fetchone(), "API 连接尚未配置")
-        row = cx.execute("SELECT * FROM model_connections WHERE id=? ORDER BY revision DESC LIMIT 1", (connection_id,)).fetchone()
-        require(row is not None, "API 连接不存在")
-        config = validate_config(json.loads(row["config"]))
-        require(config["enabled"], "API 连接已停用")
-        secret, source = connection_key(row)
-        if source == "missing":
-            require(False, "API Key 环境变量未设置或为空：" + config["api_key_env"])
-        require(bool(secret), "API Key 尚未配置")
-        return public_connection(row) | {"api_key": secret}
+        execution = engine._state(cx).get("execution_config", {})
+        preferred = connection_id or _role_connection_id(execution, role) or execution.get("api_connection_id")
+        identifier(preferred)
+        chain = [preferred] + [item for item in (execution.get("fallbacks") or []) if item != preferred]
+        reason = None
+        for candidate in chain:
+            try:
+                connection = _resolved(cx, candidate)
+            except Rejected as error:
+                reason = reason or error
+                continue
+            if candidate != preferred:
+                connection["fallback_from"] = preferred
+            return connection
+        raise reason
 
 
-def bind_connection(engine, board_key, connection_id, reason):
+def resolve_roles(engine):
+    """Resolve every role independently; a role that cannot serve a request is None."""
+    resolved = {}
+    for role in ROLES:
+        try:
+            resolved[role] = resolve_connection(engine, role=role)
+        except Rejected:
+            resolved[role] = None
+    return resolved
+
+
+def bind_connection(engine, board_key, connection_id, reason, *, role=None, fallbacks=None):
     text(reason, "API 绑定依据", 1000)
+    if role is not None:
+        require(role in ROLES, "未知角色")
     if connection_id is not None:
         identifier(connection_id)
+    if fallbacks is not None:
+        require(isinstance(fallbacks, list) and len(fallbacks) <= MAX_FALLBACKS, "回退链最多三条")
+        require(all(isinstance(item, str) for item in fallbacks), "回退连接标识无效")
+        for item in fallbacks:
+            identifier(item)
+        require(len(set(fallbacks)) == len(fallbacks), "回退链不能重复")
+        require(connection_id not in fallbacks, "默认连接不能同时作为回退")
     with engine.transaction() as cx:
         board = engine._board(cx, board_key)
-        reject_saved_secrets(cx, [connection_id, reason])
-        if connection_id is not None:
+        reject_saved_secrets(cx, [connection_id, role, fallbacks, reason])
+        if connection_id is not None or fallbacks:
             schema_table(cx)
-            require(cx.execute("SELECT 1 FROM model_connections WHERE id=?", (connection_id,)).fetchone(), "API 连接不存在")
+            for item in ([connection_id] if connection_id else []) + list(fallbacks or []):
+                require(cx.execute("SELECT 1 FROM model_connections WHERE id=?", (item,)).fetchone(), "API 连接不存在")
         state = engine._state(cx)
-        state.setdefault("execution_config", {})["api_connection_id"] = connection_id
+        execution = state.setdefault("execution_config", {})
+        if role is None:
+            execution["api_connection_id"] = connection_id
+        elif connection_id is None:
+            (execution.get("roles") or {}).pop(role, None)
+        else:
+            execution.setdefault("roles", {})[role] = {"connection_id": connection_id}
+        if fallbacks is not None:
+            execution["fallbacks"] = list(fallbacks)
         state["version"] += 1
-        engine._event(cx, "api_connection_bound", {"connection_id": connection_id, "board": board, "reason": reason})
+        engine._event(cx, "api_connection_bound", {"connection_id": connection_id, "role": role,
+                                                   "fallbacks": list(fallbacks) if fallbacks is not None else None,
+                                                   "board": board, "reason": reason})
         engine._save(cx, state)
 
 

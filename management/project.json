@@ -42,7 +42,7 @@
       "name": "模型连接 / 公共接入",
       "implemented": "Chat Completions、私有密钥、默认连接、网页工具往返测试与调用回执；New API 目录、显式平台权限、健康/版本检测、AU连接来源快照已实现",
       "validation": "V2：免费 OpenRouter 曾实测",
-      "gap": "U-037待实际浏览器验收；U-039真实New API/上游工具往返未验；当前公司连接阻塞保持",
+      "gap": "U-037待实际浏览器验收；U-039真实New API/上游工具往返未验；当前公司连接阻塞保持；U-050已实现按角色绑定与解析期回退，运行期切换与前端入口未做",
       "evidence": [
         "docs/API_MODELS.md",
         "evidence/011-openrouter-smoke/README.md",
@@ -1317,6 +1317,33 @@
           "evidence/031b-credential-references/full-suite.log"
         ],
         "note": "11项凭据测试与334项全量回归通过；独立复核未做，前端入口未实现"
+      }
+    },
+    {
+      "id": "U-050",
+      "title": "实现角色绑定与可用性回退（M2a）",
+      "priority": "P0",
+      "milestone": "G0",
+      "module": "models",
+      "status": "done",
+      "owner": "外部工程代理（OpenCode）",
+      "role": "运行时工程 / 独立权限复核待定",
+      "acceptance": "默认连接与planner/worker/reviewer可分别绑定；未绑定角色继承默认；回退链最多三条并校验重复与自引用；停用或缺凭据的连接按链回退并记录fallback_from；运行期失败不自动切换；既有绑定行为不变",
+      "dependencies": [
+        "U-048"
+      ],
+      "blocker": null,
+      "started_at": "2026-11-01",
+      "updated_at": "2026-11-01",
+      "completion": {
+        "scope": "controlled",
+        "reviewer": "外部工程代理自检（非独立权限复核）",
+        "evidence": [
+          "evidence/031c-role-bindings/README.md",
+          "evidence/031c-role-bindings/role-tests.log",
+          "evidence/031c-role-bindings/full-suite.log"
+        ],
+        "note": "14项角色绑定测试与348项全量回归通过；运行期失败切换(M2b)与前端入口未实现"
       }
     }
   ]

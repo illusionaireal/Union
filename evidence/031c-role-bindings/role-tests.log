@@ -1,0 +1,19 @@
+test_all_unusable_reports_the_preferred_reason (tests.test_role_binding.RoleBindingTests.test_all_unusable_reports_the_preferred_reason) ... ok
+test_availability_fallback_skips_a_connection_without_credential (tests.test_role_binding.RoleBindingTests.test_availability_fallback_skips_a_connection_without_credential) ... ok
+test_availability_fallback_skips_a_disabled_connection (tests.test_role_binding.RoleBindingTests.test_availability_fallback_skips_a_disabled_connection) ... ok
+test_binding_requires_existing_connections (tests.test_role_binding.RoleBindingTests.test_binding_requires_existing_connections) ... ok
+test_chain_bounds_and_duplicates_are_rejected (tests.test_role_binding.RoleBindingTests.test_chain_bounds_and_duplicates_are_rejected) ... ok
+test_chain_is_recorded_on_the_binding_event (tests.test_role_binding.RoleBindingTests.test_chain_is_recorded_on_the_binding_event) ... ok
+test_clearing_a_role_returns_to_inheritance (tests.test_role_binding.RoleBindingTests.test_clearing_a_role_returns_to_inheritance) ... ok
+test_fallback_is_not_used_when_the_preferred_connection_works (tests.test_role_binding.RoleBindingTests.test_fallback_is_not_used_when_the_preferred_connection_works) ... ok
+test_package_kinds_map_to_roles_explicitly (tests.test_role_binding.RoleBindingTests.test_package_kinds_map_to_roles_explicitly) ... ok
+test_resolve_roles_marks_an_unusable_role_as_none (tests.test_role_binding.RoleBindingTests.test_resolve_roles_marks_an_unusable_role_as_none) ... ok
+test_resolve_roles_reports_every_role (tests.test_role_binding.RoleBindingTests.test_resolve_roles_reports_every_role) ... ok
+test_role_inherits_the_default_binding (tests.test_role_binding.RoleBindingTests.test_role_inherits_the_default_binding) ... ok
+test_role_overrides_only_itself (tests.test_role_binding.RoleBindingTests.test_role_overrides_only_itself) ... ok
+test_unknown_role_is_rejected (tests.test_role_binding.RoleBindingTests.test_unknown_role_is_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.367s
+
+OK

@@ -10,7 +10,7 @@ from .bootstrap import BOOTSTRAP_TOOLS, operate as bootstrap_tool, read as read_
 from .engine import Rejected, encoded, now, require, uid
 from .executor import ExecutionFailure
 from .failures import issue
-from .model_api import APIExecutor, reject_saved_secrets
+from .model_api import APIExecutor, ROLE_BY_KIND, reject_saved_secrets
 
 
 def test_tool_connection(engine, executor):
@@ -61,11 +61,12 @@ class HarnessExecutor:
     name = "api"
     capabilities = APIExecutor.capabilities | {"session_resume": True, "tools": "Deep Agents virtual files, organization tools, and optional host-bound isolated business workspace"}
 
-    def __init__(self, engine, connection, *, base="deepagents"):
+    def __init__(self, engine, connection, *, base="deepagents", roles=None):
         dependencies()
         require(base in ("deepagents", "langchain"), "不支持的 Harness")
         self.engine, self.base = engine, base
         self.transport = APIExecutor(engine.root, connection)
+        self.roles = dict(roles or {})
         self.transport.secret_guard = self._check_secrets
         self.model = self.transport.model
         self.metadata = self.transport.metadata | {"harness": base, "harness_version": "0.7.28" if base == "deepagents" else "1.4.6"}
@@ -224,7 +225,27 @@ class HarnessExecutor:
 
         return ControlledChat(cache=False, model_name="union:controlled-chat" if self.package["kind"] == "work" else "union:controlled-organization")
 
+    def _select(self, package):
+        """A role change applies to the next package, never to an in-flight one.
+
+        The connection is part of the session key, so changing a role starts a new
+        session instead of rewriting history under another model.
+        """
+        role = ROLE_BY_KIND.get(package["kind"])
+        self.metadata["role"] = role
+        connection = self.roles.get(role) if role else None
+        if not connection:
+            return
+        if (connection["id"], connection["revision"]) == (self.metadata["connection_id"], self.metadata["connection_revision"]):
+            return
+        self.transport = APIExecutor(self.engine.root, connection)
+        self.transport.secret_guard = self._check_secrets
+        self.model = self.transport.model
+        self.metadata = self.transport.metadata | {"harness": self.base,
+                                                   "harness_version": self.metadata["harness_version"], "role": role}
+
     def execute(self, package):
+        self._select(package)
         from langchain_core.messages import HumanMessage
         from langsmith import tracing_context
         deepagents, SqliteSaver = dependencies()

@@ -9,7 +9,7 @@ from .engine import Engine, Rejected, encoded, model_name, require
 from .evaluation import evaluate
 from .executor import CodexExecutor, FixtureExecutor
 from .runner import exclusive, run, watch, test_connection
-from .model_api import APIExecutor, bind_connection, configure_connection, list_connections, resolve_connection
+from .model_api import APIExecutor, bind_connection, configure_connection, list_connections, resolve_connection, resolve_roles
 
 GOAL = "一个持续经营线上内容品牌的 AI 内容工作室。"
 
@@ -139,7 +139,7 @@ def main(argv=None):
                     def executor():
                         require("max_cost" not in engine.state()["resources"], "API 不支持金额硬上限")
                         from .harness import HarnessExecutor
-                        return HarnessExecutor(engine, resolve_connection(engine, args.connection_id))
+                        return HarnessExecutor(engine, resolve_connection(engine, args.connection_id), roles=resolve_roles(engine))
                 actions = watch(engine, executor, args.max_steps, args.max_seconds) if args.command == "watch" else run(engine, executor, args.max_steps)
                 result = {"executor": args.executor, "simulated": args.executor == "fixture", "actions": actions, "status": engine.status()}
                 if args.executor == "api":

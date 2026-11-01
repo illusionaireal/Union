@@ -15,7 +15,7 @@ from .executor import CodexExecutor, FixtureExecutor
 from .locking import file_lock
 from .observation import snapshot
 from .runner import exclusive, step, test_connection
-from .model_api import APIExecutor, bind_connection, configure_connection, list_connections, resolve_connection, stored_command, reject_saved_secrets
+from .model_api import APIExecutor, bind_connection, configure_connection, list_connections, resolve_connection, resolve_roles, stored_command, reject_saved_secrets
 from .failures import runtime_failure
 
 
@@ -319,12 +319,13 @@ class Console:
         fields = {"event": {"event_id", "kind", "content", "source", "simulated"}, "pause": set(),
                   "resources": {"resources", "reason"}, "model": {"model", "reason"}, "amend": {"charter", "reason"},
                   "reconcile": {"run_id", "resolution", "reason"}, "start": {"executor", "model", "connection_id", "max_steps", "max_seconds", "allow_unknown_cost"},
-                  "api_connection": {"connection_id", "config", "api_key", "reason", "bind_default", "gateway_ref"}, "api_binding": {"connection_id", "reason"},
+                  "api_connection": {"connection_id", "config", "api_key", "reason", "bind_default", "gateway_ref"}, "api_binding": {"connection_id", "reason", "role", "fallbacks"},
                   "api_test": {"connection_id", "allow_unknown_cost", "tools"}, "company_usage": {"run_id", "input_tokens", "output_tokens", "reason"},
                   "controller_descriptor": {"controller_ref", "reason"},
                   "respond_request": {"request_id", "status", "reason"}}
         optional = {"event": {"event_id"}, "start": {"model", "connection_id", "max_seconds", "allow_unknown_cost"},
-                    "api_connection": {"api_key", "bind_default", "gateway_ref"}, "api_test": {"connection_id", "tools"}}
+                    "api_connection": {"api_key", "bind_default", "gateway_ref"}, "api_test": {"connection_id", "tools"},
+                    "api_binding": {"role", "fallbacks"}}
         require(set(data) <= fields[kind] and fields[kind] - optional.get(kind, set()) <= set(data), "命令字段缺失或不支持")
         if kind == "pause":
             e.set_paused(True)
@@ -354,7 +355,7 @@ class Console:
                 executor = APIExecutor(e.root, connection)
                 if kind == "start":
                     from .harness import HarnessExecutor
-                    executor = HarnessExecutor(e, connection)
+                    executor = HarnessExecutor(e, connection, roles=resolve_roles(e))
                     e.set_paused(False)
                 else:
                     require(type(data.get("tools", False)) is bool, "工具测试选项必须为布尔值")
@@ -403,7 +404,8 @@ class Console:
                 resolve_usage(e, key, data["run_id"], data["input_tokens"], data["output_tokens"], data["reason"])
             elif kind == "api_binding":
                 require(self.enable_api, "宿主未启用 API")
-                bind_connection(e, key, data["connection_id"], data["reason"])
+                bind_connection(e, key, data["connection_id"], data["reason"],
+                                role=data.get("role"), fallbacks=data.get("fallbacks"))
             else:
                 e.reconcile(key, data["run_id"], data["resolution"], data["reason"])
 
