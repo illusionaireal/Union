@@ -1,0 +1,30 @@
+test_bare_model_is_unknown_when_ambiguous (tests.test_catalog.CatalogTests.test_bare_model_is_unknown_when_ambiguous) ... ok
+test_capability_is_tri_state (tests.test_catalog.CatalogTests.test_capability_is_tri_state) ... ok
+test_capability_unstated_is_unknown (tests.test_catalog.CatalogTests.test_capability_unstated_is_unknown) ... ok
+test_duplicate_provider_model_rejected (tests.test_catalog.CatalogTests.test_duplicate_provider_model_rejected) ... ok
+test_lookup_by_provider_and_model (tests.test_catalog.CatalogTests.test_lookup_by_provider_and_model) ... ok
+test_provider_models_sorted (tests.test_catalog.CatalogTests.test_provider_models_sorted) ... ok
+test_records_are_returned_as_copies (tests.test_catalog.CatalogTests.test_records_are_returned_as_copies) ... ok
+test_unknown_model_stays_unknown (tests.test_catalog.CatalogTests.test_unknown_model_stays_unknown) ... ok
+test_known_model_adds_catalog_metadata (tests.test_catalog.ConnectionMetadataTests.test_known_model_adds_catalog_metadata) ... ok
+test_unknown_model_reports_explicit_null (tests.test_catalog.ConnectionMetadataTests.test_unknown_model_reports_explicit_null) ... ok
+test_loads_explicit_path (tests.test_catalog.LoadTests.test_loads_explicit_path) ... ok
+test_loads_from_environment (tests.test_catalog.LoadTests.test_loads_from_environment) ... ok
+test_malformed_snapshot_is_rejected (tests.test_catalog.LoadTests.test_malformed_snapshot_is_rejected) ... ok
+test_missing_file_is_rejected (tests.test_catalog.LoadTests.test_missing_file_is_rejected) ... ok
+test_no_snapshot_means_empty_catalog (tests.test_catalog.LoadTests.test_no_snapshot_means_empty_catalog) ... ok
+test_unexpected_shape_is_rejected (tests.test_catalog.LoadTests.test_unexpected_shape_is_rejected) ... ok
+test_unreadable_snapshot_is_unknown_but_not_fatal (tests.test_catalog.LoadTests.test_unreadable_snapshot_is_unknown_but_not_fatal) ... ok
+test_unsupported_version_is_rejected (tests.test_catalog.LoadTests.test_unsupported_version_is_rejected) ... ok
+test_accepts_complete_record (tests.test_catalog.RecordTests.test_accepts_complete_record) ... ok
+test_rejects_credentials_in_catalog (tests.test_catalog.RecordTests.test_rejects_credentials_in_catalog) ... ok
+test_rejects_negative_cost (tests.test_catalog.RecordTests.test_rejects_negative_cost) ... ok
+test_rejects_output_larger_than_context (tests.test_catalog.RecordTests.test_rejects_output_larger_than_context) ... ok
+test_rejects_unknown_field (tests.test_catalog.RecordTests.test_rejects_unknown_field) ... ok
+test_rejects_unsupported_modality (tests.test_catalog.RecordTests.test_rejects_unsupported_modality) ... ok
+test_requires_provider_and_model (tests.test_catalog.RecordTests.test_requires_provider_and_model) ... ok
+
+----------------------------------------------------------------------
+Ran 25 tests in 0.065s
+
+OK

@@ -18,6 +18,7 @@ from .engine import Rejected, encoded, identifier, model_name, now, require, tex
 from .executor import ExecutionFailure
 from .failures import issue
 from .agent_protocol import compile_tool, instructions, model_input, tools_for, work_result
+from . import catalog as model_catalog
 
 
 CONFIG_FIELDS = {"name", "base_url", "model", "response_format", "token_limit_field", "max_output_tokens", "timeout_seconds", "enabled"}
@@ -125,8 +126,11 @@ def list_connections(engine):
 
 
 def public_connection(row):
-    return {"id": row["id"], "revision": row["revision"], "config": validate_config(json.loads(row["config"])),
-            "has_api_key": bool(row["api_key"]), "updated_at": row["updated_at"]}
+    config = validate_config(json.loads(row["config"]))
+    # Read-only metadata; an unknown model stays null instead of being guessed.
+    return {"id": row["id"], "revision": row["revision"], "config": config,
+            "has_api_key": bool(row["api_key"]), "updated_at": row["updated_at"],
+            "catalog": model_catalog.metadata(config["model"])}
 
 
 def configure_connection(engine, board_key, connection_id, config, reason, api_key=None, *, gateway_ref=None):

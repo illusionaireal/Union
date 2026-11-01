@@ -1243,6 +1243,54 @@
         ],
         "note": "修复账号发起和远程回调；官方双供应商真实start probe通过。真实账号最终授权、token交换网络、模型能力与组织绑定单独验收，未调用模型。"
       }
+    },
+    {
+      "id": "U-047",
+      "title": "定义 AI 配置能力对齐判据与成本口径",
+      "priority": "P0",
+      "milestone": "G0",
+      "module": "models",
+      "status": "done",
+      "owner": "外部工程代理（OpenCode）",
+      "role": "产品 / 运行时工程",
+      "acceptance": "以 opencode/pi/hermes/openclaw 实测配置为基准给出逐行对照判据、里程碑与验收；成本口径区分按量/订阅/自有/未知四类，金额可空但 basis 必填，未知不得记 0",
+      "dependencies": [],
+      "blocker": null,
+      "started_at": "2026-11-01",
+      "updated_at": "2026-11-01",
+      "completion": {
+        "scope": "documentation",
+        "reviewer": "外部工程代理自检（非独立评审）",
+        "evidence": [
+          "specs/031-ai-configuration-parity/spec.md"
+        ],
+        "note": "对照矩阵、里程碑与四类成本口径已定；除M1目录机制外均未实现，不改变任何运行能力成熟度"
+      }
+    },
+    {
+      "id": "U-048",
+      "title": "实现模型目录与三态能力查询（M1）",
+      "priority": "P0",
+      "milestone": "G0",
+      "module": "models",
+      "status": "done",
+      "owner": "外部工程代理（OpenCode）",
+      "role": "运行时工程 / 独立复核待定",
+      "acceptance": "只读目录快照可加载并校验；未知模型与未知能力返回null而非猜测；含凭据字段被拒绝；目录损坏不中断连接列举；新增测试通过且既有回归不变",
+      "dependencies": [],
+      "blocker": null,
+      "started_at": "2026-11-01",
+      "updated_at": "2026-11-01",
+      "completion": {
+        "scope": "controlled",
+        "reviewer": "外部工程代理自检（非独立权限复核）",
+        "evidence": [
+          "evidence/031-ai-config-catalog/README.md",
+          "evidence/031-ai-config-catalog/catalog-tests.log",
+          "evidence/031-ai-config-catalog/full-suite.log"
+        ],
+        "note": "25项目录机制测试通过，全量323项与HEAD基线同为1失败1错误；目录数据未提供，能力查询保持unknown"
+      }
     }
   ]
 }
