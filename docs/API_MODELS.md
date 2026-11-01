@@ -1,5 +1,9 @@
 # 真实模型 API：运行与前端接口
 
+## 2026-11-01 订阅账号入口
+平台管理员可直接在AI-UNION /models配置Go API Key及ChatGPT官方设备授权，空组织也可配置。它保存宿主账号认证，不伪装为普通Chat Completions API、不自动让订阅额度变成API余额，也不会自动给公司绑定连接。认证成功/模型权限/组织工具能力/真实运行分别验证。未知请求查询原回执，经明确人工核对后才结束跟踪；用户无需SSH。部署及私有认证边界见ops/console-subscriptions及evidence/041-subscription-connections。
+
+
 ## 2026-10-18：OpenRouter 免费模型与云代理实测
 
 云环境中的 `openrouter_key` 已验证可用。API 根地址为 `https://openrouter.ai/api/v1`，本轮确认普通对话可用的免费模型为 `liquid/lfm-2.5-2.6b:free`。选择 `max_tokens` 并设置 1024 输出上限；该端点强制推理，64 上限会全部用于推理，禁止推理参数会被拒绝。免费模型有供应商限流，首次 Gemma 测试返回 429，不能把限流当成密钥错误，也不应无限重试或切换收费模型。

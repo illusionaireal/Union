@@ -15,6 +15,7 @@ export type CommandKind =
 export type ReceiptKind =
   CommandKind | 'api_connection' | 'api_binding' | 'api_test' | 'company_usage';
 export interface Session {
+  session_scope?: string;
   role: 'board' | 'observer';
   platform_admin?: boolean;
   organizations: { id: string; name: string }[];

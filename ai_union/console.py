@@ -84,7 +84,7 @@ class Console:
         with self.mutex:
             self.sessions[token] = {"role": role, "organizations": None if organizations is None else frozenset(organizations),
                                     "expires": time.monotonic() + 8 * 3600, "actor": "local " + role,
-                                    "platform_admin": bool(platform_admin)}
+                                    "platform_admin": bool(platform_admin), "view_id": uid("view")}
         return token
 
     def ticket(self, role, *, platform_admin=False):
@@ -126,6 +126,7 @@ class Console:
                     orgs.append({"id": state["id"], "name": state["name"]})
         return {"role": session["role"], "organizations": orgs, "service_instance": self.instance,
                 "platform_admin": session.get("platform_admin", False),
+                "session_scope": session["view_id"],
                 "executors": (["fixture"] if self.fixture is not None else []) + (["codex"] if self.enable_codex else []) + (["api"] if self.enable_api else [])}
 
     def model_connections(self, token, org_id):

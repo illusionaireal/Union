@@ -1195,6 +1195,30 @@
         "action": "选择NAS新版Linux VM或另一执行节点，完成假凭据拒读/独立复核、官方认证和有限模型授权，再执行真实链及长期门禁；保留未知及失败",
         "owner": "用户（执行节点选择/账号确认）与后续工程"
       }
+    },
+    {
+      "id": "U-045",
+      "title": "在AI-UNION前端配置Go及ChatGPT订阅",
+      "priority": "P0",
+      "milestone": "G0",
+      "module": "models",
+      "status": "done",
+      "owner": "Codex（外部工程代理）",
+      "role": "平台工程 / 独立权限复核",
+      "acceptance": "正式/models完成Go密钥、ChatGPT设备授权、进度/未知核对与秘密隔离；用户无需SSH配置；HTTPS及独立复核、回归有实际证据；真实账号结果分开",
+      "dependencies": [],
+      "blocker": null,
+      "started_at": "2026-11-01",
+      "updated_at": "2026-11-01",
+      "completion": {
+        "scope": "controlled",
+        "reviewer": "subscription_security_review（独立权限复核）与Codex实际HTTPS浏览器验收",
+        "evidence": [
+          "evidence/041-subscription-connections/README.md",
+          "docs/reviews/2026-11-01-subscription-connections.md"
+        ],
+        "note": "正式AI-UNION界面与固定认证桥接受控验收；真实订阅登录及模型能力另验。"
+      }
     }
   ]
 }

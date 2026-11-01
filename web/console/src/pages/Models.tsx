@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import SubscriptionConnections from './SubscriptionConnections';
 import { Link, useLocation } from 'react-router-dom';
 import {
   Cpu,
@@ -47,6 +48,7 @@ export default function Models() {
   });
   return (
     <>
+      <SubscriptionConnections />
       <section className="model-intro">
         <span className="model-intro-icon">
           <PlugZap size={28} />

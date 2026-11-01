@@ -1,5 +1,9 @@
 # React 组织工作台工程
 
+## 2026-11-01 /models订阅区
+SubscriptionConnections.tsx/css/test复用工作台会话/卡片。session_scope为非秘密会话视图标识，分区查询和sessionStorage请求ID；mutation以scopeRef拒迟到写结果。API密钥不进浏览器持久缓存。固定同源/api/subscriptions、subscription-commands、subscription-receipts复用平台管理员与Host/Origin校验；原组织API连接保留。HTTPS演示部署及验收见041。
+
+
 010（2026-10-17）：总览显示尚未正式成立的筹建成员、任务和协调责任；`continued` 显示进度已保存。网页 API 测试使用两次调用验证工具往返。`npm start` 先检查/准备项目 `.venv` 与固定 Harness 依赖，再构建并启动；`UNION_PYTHON` 指定解释器时需预先安装 `requirements-harness.lock` 及项目。API 启动已接入 Deep Agents。
 
 ## 007：整体工作台与模型管理

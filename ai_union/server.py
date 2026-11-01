@@ -24,6 +24,8 @@ class Server(ThreadingHTTPServer):
 
     def __init__(self, app, port=0, document=None, static_dir=None):
         self.app = app
+        from .subscriptions import Subscriptions
+        self.subscriptions = Subscriptions(app)
         self.static_dir = Path(static_dir or REPO / "web/console/dist").resolve()
         self.document = Path(document) if document else self.static_dir / "index.html"
         super().__init__(("127.0.0.1", port), Handler)
@@ -124,14 +126,14 @@ class Handler(BaseHTTPRequestHandler):
             return self.send(401, {"error": str(error)})
         try:
             if write:
-                if path.path not in ("/api/commands", "/api/gateway-commands"):
+                if path.path not in ("/api/commands", "/api/gateway-commands", "/api/subscription-commands"):
                     return self.send(404, {"error": "接口不存在"})
                 require(app.session(token)["role"] == "board", "观察者不能提交操作")
                 require(self.headers.get("Content-Type", "").split(";")[0] == "application/json", "命令需要 application/json")
                 length = int(self.headers.get("Content-Length", "0"))
                 require(0 < length <= 200000, "请求体大小不允许")
                 request = json.loads(self.rfile.read(length).decode("utf-8"))
-                receipt = app.gateways.command(token, request) if path.path == "/api/gateway-commands" else app.command(token, request)
+                receipt = self.server.subscriptions.command(token, request) if path.path == "/api/subscription-commands" else app.gateways.command(token, request) if path.path == "/api/gateway-commands" else app.command(token, request)
                 return self.send(202 if receipt["status"] == "accepted" else 200, {"receipt": receipt})
             if path.path == "/api/session":
                 return self.send(200, app.session_info(token))
@@ -142,6 +144,10 @@ class Handler(BaseHTTPRequestHandler):
                 return self.send(200, {"receipt": app.gateways.receipt(token, query.get("id", [None])[0])})
             if path.path == "/api/model-connections":
                 return self.send(200, app.model_connections(token, org_id))
+            if path.path == "/api/subscriptions":
+                return self.send(200, self.server.subscriptions.status(token))
+            if path.path == "/api/subscription-receipts":
+                return self.send(200, {"receipt": self.server.subscriptions.receipt(token, query.get("id", [None])[0])})
             if path.path == "/api/snapshot":
                 return self.send(200, app.observe(token, org_id, int(query.get("offset", [0])[0])))
             if path.path == "/api/receipts":
