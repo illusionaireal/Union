@@ -61,11 +61,11 @@ class HarnessExecutor:
     name = "api"
     capabilities = APIExecutor.capabilities | {"session_resume": True, "tools": "Deep Agents virtual files, organization tools, and optional host-bound isolated business workspace"}
 
-    def __init__(self, engine, connection, *, base="deepagents", roles=None):
+    def __init__(self, engine, connection, *, base="deepagents", roles=None, fallbacks=()):
         dependencies()
         require(base in ("deepagents", "langchain"), "不支持的 Harness")
         self.engine, self.base = engine, base
-        self.transport = APIExecutor(engine.root, connection)
+        self.transport = APIExecutor(engine.root, connection, fallbacks=fallbacks)
         self.roles = dict(roles or {})
         self.transport.secret_guard = self._check_secrets
         self.model = self.transport.model

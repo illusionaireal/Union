@@ -1,0 +1,11 @@
+test_authentication_failure_moves_to_the_fallback (tests.test_runtime_fallback.RuntimeFallbackTests.test_authentication_failure_moves_to_the_fallback) ... ok
+test_metadata_lists_the_chain_without_credentials (tests.test_runtime_fallback.RuntimeFallbackTests.test_metadata_lists_the_chain_without_credentials) ... ok
+test_rate_limit_moves_to_the_fallback (tests.test_runtime_fallback.RuntimeFallbackTests.test_rate_limit_moves_to_the_fallback) ... ok
+test_refused_connection_moves_to_the_fallback (tests.test_runtime_fallback.RuntimeFallbackTests.test_refused_connection_moves_to_the_fallback) ... ok
+test_server_error_never_moves (tests.test_runtime_fallback.RuntimeFallbackTests.test_server_error_never_moves) ... ok
+test_without_a_fallback_the_failure_is_reported (tests.test_runtime_fallback.RuntimeFallbackTests.test_without_a_fallback_the_failure_is_reported) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 4.523s
+
+OK

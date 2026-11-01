@@ -9,7 +9,7 @@ from .engine import Engine, Rejected, encoded, model_name, require
 from .evaluation import evaluate
 from .executor import CodexExecutor, FixtureExecutor
 from .runner import exclusive, run, watch, test_connection
-from .model_api import APIExecutor, bind_connection, configure_connection, list_connections, resolve_connection, resolve_roles
+from .model_api import APIExecutor, bind_connection, configure_connection, list_connections, resolve_chain, resolve_connection, resolve_roles
 
 GOAL = "一个持续经营线上内容品牌的 AI 内容工作室。"
 
@@ -167,7 +167,8 @@ def main(argv=None):
                         result = {"api_connection_id": args.connection_id}
                     else:
                         require(args.allow_unknown_cost, "连接测试会产生一次实际调用；需显式 --allow-unknown-cost")
-                        executor = APIExecutor(root, resolve_connection(engine, args.connection_id))
+                        connection, fallbacks = resolve_chain(engine)
+                        executor = APIExecutor(root, connection, fallbacks=fallbacks)
                         if args.tools:
                             from .harness import test_tool_connection
                             result = test_tool_connection(engine, executor)

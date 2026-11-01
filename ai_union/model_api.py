@@ -239,6 +239,26 @@ def resolve_connection(engine, connection_id=None, role=None):
         raise reason
 
 
+def resolve_chain(engine, *, role=None):
+    """Primary plus the fallbacks that can actually serve a request.
+
+    The primary is resolved strictly (an unusable role or default is an error);
+    fallbacks that cannot serve a request are skipped so one stale entry cannot
+    disable the whole chain.
+    """
+    primary = resolve_connection(engine, role=role)
+    with engine.read_transaction() as cx:
+        execution = engine._state(cx).get("execution_config", {})
+        candidates = [item for item in (execution.get("fallbacks") or []) if item != primary["id"]]
+        fallbacks = []
+        for candidate in candidates:
+            try:
+                fallbacks.append(_resolved(cx, candidate))
+            except Rejected:
+                continue
+    return primary, fallbacks
+
+
 def resolve_roles(engine):
     """Resolve every role independently; a role that cannot serve a request is None."""
     resolved = {}
@@ -344,11 +364,12 @@ class APIExecutor:
     capabilities = {"submit": True, "status": True, "result": True, "session_resume": False,
                     "remote_cancel": False, "tools": "host-authorized organization tools; plain text delivery", "usage": "provider token receipt; cost unknown"}
 
-    def __init__(self, root, connection):
+    def __init__(self, root, connection, *, fallbacks=()):
         self.root = Path(root) / "executions"
         self.connection = copy.deepcopy(connection)
         self.config = validate_config(connection["config"])
         self.model = self.config["model"]
+        self.fallbacks = [copy.deepcopy(item) for item in fallbacks]
         self.jobs = {}
         self.correction = None
         self.corrections_used = 0
@@ -356,6 +377,8 @@ class APIExecutor:
         self.metadata = {"connection_id": connection["id"], "connection_revision": connection["revision"],
                          "protocol": "openai_chat_completions", "requested_model": self.model,
                          "transport_source": "local_test" if is_loopback(urlsplit(self.config["base_url"]).hostname) else "provider_api"}
+        if self.fallbacks:
+            self.metadata["fallbacks"] = [item["id"] for item in self.fallbacks]
 
     def _saved_secret_guard(self, value):
         # Covers probes and the legacy transport as well as Harness requests.
@@ -398,8 +421,48 @@ class APIExecutor:
             raise ExecutionFailure("API 本地请求线程无法启动", unknown=False)
         return rid
 
+    def _body_for(self, body, connection):
+        """Keep the work package identical; only model and output limit follow the connection."""
+        config = validate_config(connection["config"])
+        payload = copy.deepcopy(body)
+        payload["model"] = config["model"]
+        for field in ("max_tokens", "max_completion_tokens"):
+            payload.pop(field, None)
+        payload[config["token_limit_field"]] = config["max_output_tokens"]
+        return payload
+
     def _request(self, job, body):
-        parts = urlsplit(self.config["base_url"])
+        chain = [self.connection] + list(self.fallbacks)
+        attempts, error = [], None
+        for index, connection in enumerate(chain):
+            if index and time.monotonic() >= job["deadline"]:
+                break
+            config = validate_config(connection["config"])
+            try:
+                self._attempt(job, body if index == 0 else self._body_for(body, connection), connection, config)
+            except ExecutionFailure as failure:
+                error = failure
+                attempts.append({"connection_id": connection["id"], "revision": connection["revision"],
+                                 "unknown": bool(failure.unknown),
+                                 "code": (failure.failure or {}).get("code")})
+                job["attempts"] = attempts
+                # A sent-but-unconfirmed request is never retried elsewhere.
+                if failure.unknown or index == len(chain) - 1:
+                    if index:
+                        job["fallback_from"] = chain[0]["id"]
+                    break
+                continue
+            error = None
+            if index:
+                job["fallback_from"] = chain[0]["id"]
+                job["attempts"] = attempts
+            break
+        if error is not None:
+            job["error"] = error
+        job["done"].set()
+
+    def _attempt(self, job, body, connection, config):
+        parts = urlsplit(config["base_url"])
         conn = None
         sent = False
         try:
@@ -411,7 +474,7 @@ class APIExecutor:
             conn.sock.settimeout(max(0.01, job["deadline"] - time.monotonic()))
             sent = True  # Even a partial write can reach a remote server.
             conn.request("POST", parts.path.rstrip("/") + "/chat/completions", body=encoded(body).encode("utf-8"),
-                         headers={"Authorization": "Bearer " + self.connection["api_key"], "Content-Type": "application/json", "Accept": "application/json"})
+                         headers={"Authorization": "Bearer " + connection["api_key"], "Content-Type": "application/json", "Accept": "application/json"})
             response = conn.getresponse()
             if response.status != 200:
                 code = "authentication_failed" if response.status in (401, 403) else "rate_limited" if response.status == 429 else "request_rejected" if 400 <= response.status < 500 else "redirect_refused" if 300 <= response.status < 400 else "provider_error"
@@ -444,18 +507,18 @@ class APIExecutor:
             # Kept only in private memory until result() extracts token counters
             # and rejects secrets before any message/receipt is persisted.
             job["response"] = (parsed, response.getheader("x-request-id"))
-        except ExecutionFailure as error:
-            job["error"] = error
+            job["connection_used"] = {"id": connection["id"], "revision": connection["revision"]}
+        except ExecutionFailure:
+            raise
         except (OSError, http.client.HTTPException):
-            job["error"] = ExecutionFailure("API 连接失败或中断；请核对供应商请求记录", unknown=sent, failure=issue("api_connection"))
+            raise ExecutionFailure("API 连接失败或中断；请核对供应商请求记录", unknown=sent, failure=issue("api_connection"))
         except (ValueError, UnicodeError, RecursionError):
-            job["error"] = ExecutionFailure("API 返回无效 JSON", unknown=False, failure=issue("api_invalid_json"))
+            raise ExecutionFailure("API 返回无效 JSON", unknown=False, failure=issue("api_invalid_json"))
         finally:
             if 'response' in locals():
                 response.close()
             if conn:
                 conn.close()
-            job["done"].set()
 
     def cancel(self, rid):
         job = self.jobs[rid]
@@ -484,6 +547,9 @@ class APIExecutor:
         job = self.jobs[rid]
         state = self.status(rid)
         usage = dict(self.metadata, elapsed_ms=max(0, round((time.monotonic() - job["started"]) * 1000)))
+        for key in ("fallback_from", "connection_used", "attempts"):
+            if job.get(key) is not None:
+                usage[key] = job[key]
         if state == "unknown":
             error = job["error"] or ExecutionFailure("API 执行结果未知；保留记录，不自动重试", unknown=True, failure=issue("api_timeout"))
             error.usage = usage

@@ -15,7 +15,7 @@ from .executor import CodexExecutor, FixtureExecutor
 from .locking import file_lock
 from .observation import snapshot
 from .runner import exclusive, step, test_connection
-from .model_api import APIExecutor, bind_connection, configure_connection, list_connections, resolve_connection, resolve_roles, stored_command, reject_saved_secrets
+from .model_api import APIExecutor, bind_connection, configure_connection, list_connections, resolve_chain, resolve_connection, resolve_roles, stored_command, reject_saved_secrets
 from .failures import runtime_failure
 
 
@@ -351,11 +351,11 @@ class Console:
                 require(self.enable_api and data.get("allow_unknown_cost") is True, "宿主未启用 API 或未接受有限调用费用未知")
                 require("max_cost" not in state["resources"], "API 不支持金额硬上限")
                 require(data.get("model") in (None, ""), "API 模型由连接配置固定；请选择或更新连接")
-                connection = resolve_connection(e, data.get("connection_id"))
-                executor = APIExecutor(e.root, connection)
+                connection, fallbacks = resolve_chain(e) if data.get("connection_id") is None else (resolve_connection(e, data.get("connection_id")), [])
+                executor = APIExecutor(e.root, connection, fallbacks=fallbacks)
                 if kind == "start":
                     from .harness import HarnessExecutor
-                    executor = HarnessExecutor(e, connection, roles=resolve_roles(e))
+                    executor = HarnessExecutor(e, connection, roles=resolve_roles(e), fallbacks=fallbacks)
                     e.set_paused(False)
                 else:
                     require(type(data.get("tools", False)) is bool, "工具测试选项必须为布尔值")

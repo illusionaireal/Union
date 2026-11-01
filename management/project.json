@@ -1345,6 +1345,33 @@
         ],
         "note": "14项角色绑定测试与348项全量回归通过；运行期失败切换(M2b)与前端入口未实现"
       }
+    },
+    {
+      "id": "U-051",
+      "title": "实现运行期失败切换（M2b）",
+      "priority": "P0",
+      "milestone": "G0",
+      "module": "models",
+      "status": "done",
+      "owner": "外部工程代理（OpenCode）",
+      "role": "运行时工程 / 独立权限复核待定",
+      "acceptance": "仅在请求被明确拒绝或连接被拒时沿回退链切换；5xx/发送后断开/超时不切换并保持未知；切换时重建请求体只替换模型与输出上限；回执记录fallback_from、connection_used与逐次尝试；无回退时行为不变",
+      "dependencies": [
+        "U-050"
+      ],
+      "blocker": null,
+      "started_at": "2026-11-01",
+      "updated_at": "2026-11-01",
+      "completion": {
+        "scope": "controlled",
+        "reviewer": "外部工程代理自检（非独立权限复核）",
+        "evidence": [
+          "evidence/031d-runtime-fallback/README.md",
+          "evidence/031d-runtime-fallback/fallback-tests.log",
+          "evidence/031d-runtime-fallback/full-suite.log"
+        ],
+        "note": "6项切换测试与354项全量回归通过；每角色独立链、前端入口与真实供应商验收未做"
+      }
     }
   ]
 }

@@ -16,7 +16,7 @@
 | 进行中 | — |
 | 阻塞 | [U-002](#u-002)、[U-005](#u-005)、[U-007](#u-007)、[U-044](#u-044)、[U-008](#u-008)、[U-039](#u-039)、[U-041](#u-041) |
 | 待验收 | — |
-| 完成 | [U-001](#u-001)、[U-004](#u-004)、[U-016](#u-016)、[U-017](#u-017)、[U-018](#u-018)、[U-021](#u-021)、[U-022](#u-022)、[U-023](#u-023)、[U-033](#u-033)、[U-045](#u-045)、[U-046](#u-046)、[U-047](#u-047)、[U-048](#u-048)、[U-049](#u-049)、[U-050](#u-050)、[U-012](#u-012)、[U-025](#u-025)、[U-027](#u-027)、[U-034](#u-034)、[U-035](#u-035)、[U-037](#u-037)、[U-040](#u-040)、[U-024](#u-024) |
+| 完成 | [U-001](#u-001)、[U-004](#u-004)、[U-016](#u-016)、[U-017](#u-017)、[U-018](#u-018)、[U-021](#u-021)、[U-022](#u-022)、[U-023](#u-023)、[U-033](#u-033)、[U-045](#u-045)、[U-046](#u-046)、[U-047](#u-047)、[U-048](#u-048)、[U-049](#u-049)、[U-050](#u-050)、[U-051](#u-051)、[U-012](#u-012)、[U-025](#u-025)、[U-027](#u-027)、[U-034](#u-034)、[U-035](#u-035)、[U-037](#u-037)、[U-040](#u-040)、[U-024](#u-024) |
 
 ## U-001
 
@@ -387,6 +387,24 @@
 14项角色绑定测试与348项全量回归通过；运行期失败切换(M2b)与前端入口未实现
 
 证据：[evidence/031c-role-bindings/README.md](evidence/031c-role-bindings/README.md)、[evidence/031c-role-bindings/role-tests.log](evidence/031c-role-bindings/role-tests.log)、[evidence/031c-role-bindings/full-suite.log](evidence/031c-role-bindings/full-suite.log)
+
+## U-051
+
+**实现运行期失败切换（M2b）**
+
+状态：完成；优先级：P0；里程碑：G0；模块：models。
+
+实际负责人：外部工程代理（OpenCode）；所需责任：运行时工程 / 独立权限复核待定。开始：2026-11-01；更新：2026-11-01。
+
+依赖：[U-050](#u-050)。
+
+验收条件：仅在请求被明确拒绝或连接被拒时沿回退链切换；5xx/发送后断开/超时不切换并保持未知；切换时重建请求体只替换模型与输出上限；回执记录fallback_from、connection_used与逐次尝试；无回退时行为不变
+
+验收范围：controlled；验收者：外部工程代理自检（非独立权限复核）。
+
+6项切换测试与354项全量回归通过；每角色独立链、前端入口与真实供应商验收未做
+
+证据：[evidence/031d-runtime-fallback/README.md](evidence/031d-runtime-fallback/README.md)、[evidence/031d-runtime-fallback/fallback-tests.log](evidence/031d-runtime-fallback/fallback-tests.log)、[evidence/031d-runtime-fallback/full-suite.log](evidence/031d-runtime-fallback/full-suite.log)
 
 ## U-008
 
