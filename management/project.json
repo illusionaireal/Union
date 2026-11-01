@@ -1219,6 +1219,30 @@
         ],
         "note": "正式AI-UNION界面与固定认证桥接受控验收；真实订阅登录及模型能力另验。"
       }
+    },
+    {
+      "id": "U-046",
+      "title": "修复Go账号授权及ChatGPT远程浏览器回调",
+      "priority": "P0",
+      "milestone": "G0",
+      "module": "models",
+      "status": "done",
+      "owner": "Codex（外部工程代理）",
+      "role": "平台工程 / 独立权限复核",
+      "acceptance": "Go无需API Key可在正式/models发起Console授权；ChatGPT新官方浏览器授权和远程单次回调；权限/秘密/未知/重启/SSRF行为、独立复核与完整检查有证据；真实登录/后续网络与模型调用另记",
+      "dependencies": [],
+      "blocker": null,
+      "started_at": "2026-11-01",
+      "updated_at": "2026-11-01",
+      "completion": {
+        "scope": "controlled",
+        "reviewer": "subscription_security_review（独立权限复核，原生8项）与Codex NAS完整/浏览器验证",
+        "evidence": [
+          "evidence/042-subscription-auth-repair/README.md",
+          "docs/reviews/2026-11-01-subscription-auth-repair.md"
+        ],
+        "note": "修复账号发起和远程回调；官方双供应商真实start probe通过。真实账号最终授权、token交换网络、模型能力与组织绑定单独验收，未调用模型。"
+      }
     }
   ]
 }

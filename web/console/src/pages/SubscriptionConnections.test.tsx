@@ -32,4 +32,24 @@ describe('subscription configuration',()=>{
     await act(async()=>finish({receipt:{id:'old',action:'authorize_chatgpt',status:'authorizing',message:'OLD_PRIVATE_DEVICE_CODE',url:'https://auth.openai.com/codex/device'}}));
     expect(screen.queryByText('OLD_PRIVATE_DEVICE_CODE')).not.toBeInTheDocument();expect(screen.queryByText('打开官方授权页面')).not.toBeInTheDocument();
   });
+  it('starts Go account authorization without asking for a key',async()=>{
+    const receipt={id:'go-native',action:'authorize_go',status:'authorizing',message:'请登录',url:'https://opencode.ai/console/auth/device',instructions:'设备码：ABCD1234'};
+    mocks.request.mockImplementation((url:string)=>url==='/api/subscriptions'?Promise.resolve({available:true,native_available:true,pending:[],providers:[]}):url==='/api/subscription-commands'?Promise.resolve({receipt}):Promise.resolve({receipt}));
+    render(tree());const button=screen.getByRole('button',{name:'连接 OpenCode Go 账号'});await waitFor(()=>expect(button).not.toBeDisabled());fireEvent.click(button);
+    await waitFor(()=>expect(screen.getByRole('link',{name:'打开官方授权页面'})).toHaveAttribute('href',receipt.url));
+    const call=mocks.request.mock.calls.find(c=>c[0]==='/api/subscription-commands');expect(JSON.parse(call![1].body).action).toBe('authorize_go');expect(call![1].body).not.toContain('api_key');
+  });
+  it('clears callback input and never persists callback credentials',async()=>{
+    const receipt={id:'chat-native',action:'authorize_chatgpt',status:'authorizing',message:'请登录',url:'https://auth.openai.com/api/accounts/authorize',needs_callback:true};
+    mocks.request.mockImplementation((url:string,options?:{body:string})=>url==='/api/subscriptions'?Promise.resolve({available:true,native_available:true,pending:[],providers:[]}):url==='/api/subscription-commands'?Promise.resolve({receipt:JSON.parse(options!.body).action==='complete_chatgpt'?{...receipt,needs_callback:false}:receipt}):Promise.resolve({receipt}));
+    render(tree());const button=screen.getByRole('button',{name:'连接 ChatGPT 订阅'});await waitFor(()=>expect(button).not.toBeDisabled());fireEvent.click(button);
+    const field=await screen.findByLabelText('官方授权后的完整回调地址');fireEvent.change(field,{target:{value:'http://127.0.0.1:1234/auth/callback?code=PRIVATE_CALLBACK&state=state'}});
+    fireEvent.click(screen.getByRole('button',{name:'完成 ChatGPT 连接'}));await waitFor(()=>expect(field).toHaveValue(''));
+    expect(JSON.stringify(sessionStorage)).not.toContain('PRIVATE_CALLBACK');
+    const call=mocks.request.mock.calls.find(c=>c[0]==='/api/subscription-commands'&&c[1].body.includes('complete_chatgpt'));expect(JSON.parse(call![1].body).target_id).toBe('chat-native');
+  });
+  it('an unknown ChatGPT request does not block Go authorization',async()=>{
+    mocks.request.mockImplementation(()=>Promise.resolve({available:true,native_available:true,pending:[{id:'old',action:'authorize_chatgpt',status:'unknown',message:'待核对'}],providers:[]}));
+    render(tree());await waitFor(()=>expect(screen.getByRole('button',{name:'连接 OpenCode Go 账号'})).not.toBeDisabled());expect(screen.getByRole('button',{name:'连接 ChatGPT 订阅'})).toBeDisabled();
+  });
 });

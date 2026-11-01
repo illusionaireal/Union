@@ -16,7 +16,7 @@
 | 进行中 | — |
 | 阻塞 | [U-002](#u-002)、[U-005](#u-005)、[U-007](#u-007)、[U-044](#u-044)、[U-008](#u-008)、[U-039](#u-039)、[U-041](#u-041) |
 | 待验收 | — |
-| 完成 | [U-001](#u-001)、[U-004](#u-004)、[U-016](#u-016)、[U-017](#u-017)、[U-018](#u-018)、[U-021](#u-021)、[U-022](#u-022)、[U-023](#u-023)、[U-033](#u-033)、[U-045](#u-045)、[U-012](#u-012)、[U-025](#u-025)、[U-027](#u-027)、[U-034](#u-034)、[U-035](#u-035)、[U-037](#u-037)、[U-040](#u-040)、[U-024](#u-024) |
+| 完成 | [U-001](#u-001)、[U-004](#u-004)、[U-016](#u-016)、[U-017](#u-017)、[U-018](#u-018)、[U-021](#u-021)、[U-022](#u-022)、[U-023](#u-023)、[U-033](#u-033)、[U-045](#u-045)、[U-046](#u-046)、[U-012](#u-012)、[U-025](#u-025)、[U-027](#u-027)、[U-034](#u-034)、[U-035](#u-035)、[U-037](#u-037)、[U-040](#u-040)、[U-024](#u-024) |
 
 ## U-001
 
@@ -297,6 +297,24 @@
 正式AI-UNION界面与固定认证桥接受控验收；真实订阅登录及模型能力另验。
 
 证据：[evidence/041-subscription-connections/README.md](evidence/041-subscription-connections/README.md)、[docs/reviews/2026-11-01-subscription-connections.md](docs/reviews/2026-11-01-subscription-connections.md)
+
+## U-046
+
+**修复Go账号授权及ChatGPT远程浏览器回调**
+
+状态：完成；优先级：P0；里程碑：G0；模块：models。
+
+实际负责人：Codex（外部工程代理）；所需责任：平台工程 / 独立权限复核。开始：2026-11-01；更新：2026-11-01。
+
+依赖：无。
+
+验收条件：Go无需API Key可在正式/models发起Console授权；ChatGPT新官方浏览器授权和远程单次回调；权限/秘密/未知/重启/SSRF行为、独立复核与完整检查有证据；真实登录/后续网络与模型调用另记
+
+验收范围：controlled；验收者：subscription_security_review（独立权限复核，原生8项）与Codex NAS完整/浏览器验证。
+
+修复账号发起和远程回调；官方双供应商真实start probe通过。真实账号最终授权、token交换网络、模型能力与组织绑定单独验收，未调用模型。
+
+证据：[evidence/042-subscription-auth-repair/README.md](evidence/042-subscription-auth-repair/README.md)、[docs/reviews/2026-11-01-subscription-auth-repair.md](docs/reviews/2026-11-01-subscription-auth-repair.md)
 
 ## U-008
 

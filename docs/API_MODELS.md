@@ -1,5 +1,10 @@
 # 真实模型 API：运行与前端接口
 
+## 2026-11-01：订阅认证故障修复（042）
+
+/models已接入固定官方v2.2.5 Console账号与ChatGPT token-sharing浏览器方法。远程回调只交给原生loopback监听器，凭据由原生私有home保存；原4096可选个人Key不自动迁移。真实token交换/模型仍待用户登录验证。
+
+
 ## 2026-11-01 订阅账号入口
 平台管理员可直接在AI-UNION /models配置Go API Key及ChatGPT官方设备授权，空组织也可配置。它保存宿主账号认证，不伪装为普通Chat Completions API、不自动让订阅额度变成API余额，也不会自动给公司绑定连接。认证成功/模型权限/组织工具能力/真实运行分别验证。未知请求查询原回执，经明确人工核对后才结束跟踪；用户无需SSH。部署及私有认证边界见ops/console-subscriptions及evidence/041-subscription-connections。
 

@@ -1,5 +1,10 @@
 # React 组织工作台工程
 
+## 2026-11-01：订阅认证故障修复（042）
+
+新增authorize_go/complete_chatgpt交互；native_available决定原生账号入口，key_available独立。回调只存request ID、不存输入，后端单次预约防跨ID重放；native attempt的明确终态可只读收口transport unknown。
+
+
 ## 2026-11-01 /models订阅区
 SubscriptionConnections.tsx/css/test复用工作台会话/卡片。session_scope为非秘密会话视图标识，分区查询和sessionStorage请求ID；mutation以scopeRef拒迟到写结果。API密钥不进浏览器持久缓存。固定同源/api/subscriptions、subscription-commands、subscription-receipts复用平台管理员与Host/Origin校验；原组织API连接保留。HTTPS演示部署及验收见041。
 

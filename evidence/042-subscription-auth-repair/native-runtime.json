@@ -1,0 +1,20 @@
+{
+  "package": "@opencode/cli",
+  "version": "2.2.5",
+  "base_image": "sha256:1d6e909941870743eb6677a392e685df38c4c346d7dd1eb4f83a258ba83b1dac",
+  "user": "10001:10001",
+  "readonly_rootfs": true,
+  "cap_drop": [
+    "ALL"
+  ],
+  "command": [
+    "/opt/go-auth/bin/opencode",
+    "serve",
+    "--hostname",
+    "127.0.0.1",
+    "--port",
+    "4097"
+  ],
+  "home_mode": "0o700",
+  "database_mode": "0o600"
+}

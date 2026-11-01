@@ -1,0 +1,36 @@
+{
+  "date": "2026-11-01",
+  "npm_check": {
+    "job_id": "a1226ad02d684fbcbf52530bd13a7ed4",
+    "exit_code": 0,
+    "frontend_tests": 37
+  },
+  "python_unittest": {
+    "job_id": "35df55dbdeb34ebbb762e266f048e69e",
+    "exit_code": 0,
+    "tests": 298,
+    "seconds": 77.524
+  },
+  "independent_native_tests": 8,
+  "real_https_browser_checks": 11,
+  "browser_actions": "explicitly_simulated",
+  "native_start_probes": [
+    {
+      "provider": "opencode",
+      "status": "authorizing",
+      "official_url": true,
+      "device_code": true,
+      "test_attempt_cancelled_and_404_confirmed": true
+    },
+    {
+      "provider": "openai",
+      "status": "authorizing",
+      "official_url": true,
+      "remote_callback": true,
+      "test_attempt_cancelled_and_404_confirmed": true
+    }
+  ],
+  "real_account_login": false,
+  "real_model_calls": 0,
+  "automatic_dispatch": false
+}

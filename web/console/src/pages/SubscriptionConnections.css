@@ -1,8 +1,8 @@
 .subscription-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px; margin:24px 0 8px; }
 .subscription-grid > section { min-width:0; padding:20px; border:1px solid #e1e6ef; border-radius:14px; background:#fafbfe; }
 .subscription-grid h3 { margin:0 0 12px; }
-.subscription-grid form,.subscription-grid label { display:grid; gap:10px; }
-.subscription-grid input[type=password] { width:100%; min-width:0; box-sizing:border-box; min-height:42px; padding:10px 12px; border:1px solid #dce2ed; border-radius:10px; background:white; font:inherit; }
+.subscription-grid form,.subscription-grid label,.subscription-callback,.subscription-callback label { display:grid; gap:10px; }
+.subscription-grid input[type=password],.subscription-callback input { width:100%; min-width:0; box-sizing:border-box; min-height:42px; padding:10px 12px; border:1px solid #dce2ed; border-radius:10px; background:white; font:inherit; }
 .subscription-grid input:focus { outline:2px solid #a8a5ff; outline-offset:2px; }
 .subscription-grid button { justify-self:start; }
 .subscription-instructions { white-space:pre-wrap; overflow-wrap:anywhere; padding:16px; background:#f5f6fb; border-radius:10px; }
