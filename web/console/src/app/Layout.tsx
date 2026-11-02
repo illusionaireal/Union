@@ -20,6 +20,7 @@ import {
 import { useWorkspace } from './workspace';
 import { CommandButton, useCommands } from '../features/commands/CommandProvider';
 import { Card, Empty, sourceName } from '../components/ui';
+import { AccountSettings } from '../pages/Identity';
 
 const pages = [
   {
@@ -192,6 +193,7 @@ export function Layout() {
           </div>
         </header>
         <main id="main" tabIndex={-1}>
+          <AccountSettings />
           <div className="page-heading">
             <div>
               <div className="eyebrow">UNION / {page.key.toUpperCase()}</div>

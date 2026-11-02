@@ -25,7 +25,10 @@ class APIProxyTests(unittest.TestCase):
 
     def test_no_proxy_and_unconfigured_hosts_use_direct_verified_https(self):
         for env in ({}, {"https_proxy": "http://proxy.example:8080", "no_proxy": "provider.example"}):
-            with self.subTest(env=list(env)), patch.dict(os.environ, env, clear=True):
+            # Isolate the scenario from Windows registry proxy settings as well
+            # as process variables; production still honors the host proxy.
+            with self.subTest(env=list(env)), patch.dict(os.environ, env, clear=True), \
+                    patch('ai_union.model_api.getproxies', return_value={k[:-6]: v for k, v in env.items() if k.endswith('_proxy')}):
                 connection = api_connection(urlsplit("https://provider.example/v1"), 4)
             connection.close()
             self.assertEqual(connection.host, "provider.example")

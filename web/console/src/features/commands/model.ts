@@ -11,6 +11,8 @@ export const titles: Record<ReceiptKind, string> = {
   api_connection: '配置模型 API 连接',
   api_binding: '绑定默认 API 连接',
   api_test: '测试模型 API 连接',
+  api_import: '导入模型连接配置',
+  api_cost_allocate: '记录期末模型成本分摊',
   company_usage: '核对缺失模型用量',
 };
 export const defaultCharter: Charter = {
@@ -46,7 +48,7 @@ export function blocked(
   if (kind === 'create') return '';
   if (!data) return '请先创建组织';
   if (
-    ['api_connection', 'api_binding', 'api_test'].includes(kind) &&
+    ['api_connection', 'api_binding', 'api_test', 'api_import'].includes(kind) &&
     !session?.executors.includes('api')
   )
     return '本机服务未启用模型 API';
@@ -81,8 +83,6 @@ export function blocked(
   if (kind === 'amend' && !data.charter.board_can_amend) return '现行章程不允许此修订入口';
   if (kind === 'reconcile' && !data.runs.some((r) => r.status === 'unknown'))
     return '仅能核对已确认 unknown 的执行';
-  if (kind === 'api_test' && !data.execution_config.api_connection_id)
-    return '请先保存并绑定 API 连接';
   return '';
 }
 export function readForm(kind: CommandKind, form: HTMLFormElement): Record<string, unknown> {
@@ -122,10 +122,21 @@ export function readForm(kind: CommandKind, form: HTMLFormElement): Record<strin
       return {
         connection_id: str('connection_id'),
         reason: str('reason') || '网页配置模型连接',
-        bind_default: true,
+        bind_default: values.get('bind_default') === 'on',
         ...(str('gateway_id') && values.get('detach_gateway') !== 'on' ? { gateway_ref: { id: str('gateway_id'), revision: Number(str('gateway_revision')) } } : {}),
         ...(str('api_key') ? { api_key: str('api_key') } : {}),
         config: {
+          billing: {basis:str('cost_basis') || 'unknown',
+            ...(str('billing_currency') ? {currency:str('billing_currency')} : {}),
+            ...(str('billing_revision') ? {revision:str('billing_revision')} : {}),
+            ...(str('cost_basis')==='metered' ? {input_per_million_minor:Number(str('input_rate')),output_per_million_minor:Number(str('output_rate')),...(str('cache_rate') ? {cache_read_per_million_minor:Number(str('cache_rate'))} : {})} : {})},
+          context_policy: {strategy:str('context_strategy') || 'trim_history', ...(str('context_window') ? {window:Number(str('context_window'))} : {})},
+          provider: str('provider') || 'custom',
+          protocol: str('protocol') || 'openai_chat_completions',
+          ...(str('api_key_env') ? {api_key_env:str('api_key_env')} : {}),
+          ...(str('api_key_file') ? {api_key_file:str('api_key_file')} : {}),
+          auth_type: str('auth_type') || 'key',
+          allow_private_http: values.get('allow_private_http') === 'on',
           name: str('connection_name'),
           base_url: str('base_url'),
           model: str('api_model'),
@@ -136,8 +147,14 @@ export function readForm(kind: CommandKind, form: HTMLFormElement): Record<strin
           enabled: str('api_enabled') !== 'false',
         },
       };
+    case 'api_import':
+      return {bundle:JSON.parse(str('bundle')), mode:str('import_mode'), reason:str('reason') || '从配置文件导入连接'};
+    case 'api_cost_allocate':
+      return {voucher:{id:str('voucher_id'),basis:str('allocation_basis'),currency:str('currency'),period:str('period'),amount_minor:Number(str('amount_minor')),run_ids:str('allocation_runs').split(/[\s,]+/).filter(Boolean)}, reason};
     case 'api_binding':
-      return { connection_id: str('connection_id') || null, reason };
+      return { connection_id: str('connection_id') || null, reason,
+        ...(str('binding_role') ? {role:str('binding_role')} : {}),
+        ...(values.get('configure_fallbacks')==='on' ? {fallbacks:str('fallbacks').split(/[\s,]+/).filter(Boolean)} : {})};
     case 'company_usage':
       return {
         run_id: str('run_id'),
@@ -148,7 +165,7 @@ export function readForm(kind: CommandKind, form: HTMLFormElement): Record<strin
     case 'api_test':
       if (values.get('allow_unknown_cost') !== 'on')
         throw new Error('请确认工具往返测试会调用两次真实模型，费用未知');
-      return { allow_unknown_cost: true, tools: true };
+      return { allow_unknown_cost: true, tools: true, ...(str('test_connection_id') ? {connection_id:str('test_connection_id')} : {}) };
     case 'resources':
       return { resources: resources(), reason };
     case 'amend':
@@ -169,10 +186,11 @@ export function readForm(kind: CommandKind, form: HTMLFormElement): Record<strin
       };
     }
     case 'event':
+      if(str('media_loading')==='true'||str('media_error'))throw new Error(str('media_error')||'资料正在读取，请稍后预览');
       return {
-        kind: str('kind'),
+        kind: str('attachments_json')?'model_input':str('kind'),
         event_id: str('event_id'),
-        content: str('content'),
+        content: str('attachments_json')?JSON.stringify({text:str('content'),attachments:JSON.parse(str('attachments_json'))}):str('content'),
         source: str('source'),
         simulated: str('simulated') === 'true',
       };

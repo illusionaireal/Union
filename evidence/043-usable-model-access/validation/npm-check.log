@@ -1,0 +1,102 @@
+
+> union@0.0.0 check
+> npm run check:management && npm run check:plan && npm test && npm run check:console
+
+
+> union@0.0.0 check:management
+> node scripts/project-management.mjs check && node --test tests/project-management.test.mjs
+
+Management check: 15 modules, 8 milestones, 52 tasks; PASS
+✔ rejects missing owners at start and unfinished dependencies, but permits honest unassigned backlog (11.4527ms)
+✔ completion requires scope, reviewer and existing evidence, and does not promote milestones (6.2552ms)
+✔ rejects duplicate IDs, unknown references and dependency cycles (6.1326ms)
+✔ blocked work needs an unblock action; already-started blocked work counts toward WIP (5.6321ms)
+✔ rejects evidence outside repository, invalid scope and malformed dates (4.926ms)
+✔ deterministic generated views reject stale output and preserve surrounding narrative (33.0961ms)
+✔ flow summary keeps empty live evidence distinct from completion counts (3.6176ms)
+✔ milestone acceptance and task scope cannot be asserted without their review metadata (6.6082ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 263.0972
+
+> union@0.0.0 check:plan
+> node scripts/check-plan.mjs
+
+{"baseline":"UNION-B1","tasks":82,"dependencies":181,"cycles":0,"missingDependencies":0,"baselineFiles":5,"githubTasks":8}
+
+> union@0.0.0 test
+> node --test tests/*.test.ts
+
+(node:34128) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ retry uses the same reservation; changed request is rejected (158.212ms)
+✔ unauthorized model actions and tenant/currency changes leave budget untouched (119.6943ms)
+✔ only positive safe integer amounts and bounded keys are accepted (86.129ms)
+✔ eight competing processes cannot exceed a 100-minor-unit hard budget (743.1705ms)
+✔ process crash after external success recovers by lookup without repeating the effect (343.6541ms)
+✔ crash before external call retains reservation when lookup is inconclusive (308.8233ms)
+✔ definitive failure releases reservation exactly once (142.4992ms)
+✔ settling below maximum releases the difference and invalid receipt rolls back (147.5974ms)
+✔ same key across test tenants remains independent (195.443ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2523.1208
+
+> union@0.0.0 check:console
+> npm run typecheck --workspace @union/console && npm run test --workspace @union/console && npm run build:console
+
+
+> @union/console@0.1.0 typecheck
+> tsc --noEmit
+
+
+> @union/console@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 C:/Users/曾驳/.codex/worktrees/8d3c/Union/web/console
+
+ ✓ src/features/commands/receipts.test.ts (4 tests) 12ms
+ ✓ src/api/client.test.ts (3 tests) 28ms
+ ✓ src/app/url-state.test.tsx (1 test) 485ms
+   ✓ URL filter state > composes rapid edits without restoring a cleared search and preserves organization scope  482ms
+ ✓ src/pages/Gateways.test.tsx (3 tests) 1140ms
+   ✓ gateway platform boundary and operations > separates unavailable health from unknown deployment, hides unsupported controls and opens isolated links  643ms
+ ✓ src/features/commands/fields.test.tsx (9 tests) 1327ms
+   ✓ operation form interactions > keeps edited content and focus across snapshot refreshes  314ms
+ ✓ src/pages/SubscriptionConnections.test.tsx (6 tests) 1146ms
+   ✓ subscription configuration > clears the key and blocks duplicate writes while original result is unknown  509ms
+ ✓ src/pages/RuntimeObservation.test.tsx (11 tests) 860ms
+
+ Test Files  7 passed (7)
+      Tests  37 passed (37)
+   Start at  15:35:39
+   Duration  10.98s (transform 1.08s, setup 9.13s, collect 3.40s, tests 5.00s, environment 40.57s, prepare 5.27s)
+
+
+> union@0.0.0 build:console
+> npm run build --workspace @union/console
+
+
+> @union/console@0.1.0 build
+> tsc --noEmit && vite build
+
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 2010 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.74 kB │ gzip:   0.51 kB
+dist/assets/index-CaMEXWpI.css   44.75 kB │ gzip:  10.07 kB
+dist/assets/index-BepTUtWN.js   422.75 kB │ gzip: 132.82 kB
+✓ built in 7.97s

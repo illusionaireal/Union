@@ -12,6 +12,7 @@ import Resources from '../pages/Resources';
 import Settings from '../pages/Settings';
 import Models from '../pages/Models';
 import Gateways from '../pages/Gateways';
+import { IdentityBoundary } from '../pages/Identity';
 function Home() {
   const { search, hash } = useLocation();
   return <Navigate to={{ pathname: '/overview', search, hash }} replace />;
@@ -19,6 +20,7 @@ function Home() {
 export default function App() {
   return (
     <WorkspaceProvider>
+      <IdentityBoundary>
       <CommandProvider>
         <DetailsProvider>
           <Routes>
@@ -38,6 +40,7 @@ export default function App() {
           </Routes>
         </DetailsProvider>
       </CommandProvider>
+      </IdentityBoundary>
     </WorkspaceProvider>
   );
 }

@@ -2,6 +2,7 @@
 import json
 import sqlite3
 import unittest
+from contextlib import closing
 from unittest.mock import patch
 
 from langgraph.checkpoint.sqlite import SqliteSaver
@@ -37,7 +38,7 @@ class SessionRevisionTests(unittest.TestCase):
             return [tuple(r) for r in cx.execute("SELECT * FROM agent_sessions ORDER BY id")]
 
     def checkpoint(self, sid):
-        with sqlite3.connect(self.e.root / "harness" / "checkpoints.sqlite3") as cx:
+        with closing(sqlite3.connect(self.e.root / "harness" / "checkpoints.sqlite3")) as cx:
             value = SqliteSaver(cx).get_tuple({"configurable": {"thread_id": sid, "checkpoint_ns": ""}})
             self.assertIsNotNone(value)
             # Latest checkpoints can contain only a delta; persisted history
@@ -46,7 +47,7 @@ class SessionRevisionTests(unittest.TestCase):
 
     def history(self, sid):
         row = self.row(sid)
-        with sqlite3.connect(self.e.root / "harness" / "checkpoints.sqlite3") as cx:
+        with closing(sqlite3.connect(self.e.root / "harness" / "checkpoints.sqlite3")) as cx:
             checkpoints = cx.execute("SELECT * FROM checkpoints WHERE thread_id=? ORDER BY checkpoint_ns,checkpoint_id", (sid,)).fetchall()
             writes = cx.execute("SELECT * FROM writes WHERE thread_id=? ORDER BY checkpoint_ns,checkpoint_id,task_id,idx", (sid,)).fetchall()
         run_ids = {row["last_run_id"]} | {r["run_id"] for r in workspace.receipts(self.e)}

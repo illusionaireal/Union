@@ -110,7 +110,9 @@ def snapshot(engine, offset=0, limit=50):
         runtime = runtime_view(cx, state, runs, live, budget, paused, engine.root, dispatch)
         return {"support_requests": request_view(state), "au_contract": projection(engine, cx, state), "work_metrics": work_metrics(state), "company": company, "bootstrap": bootstrap, "organization": organization, "charter": charter, "budget": budget, "ready_work": ready,
                 "execution_config": {"codex_model": state.get("execution_config", {}).get("codex_model"),
-                                     "api_connection_id": state.get("execution_config", {}).get("api_connection_id")},
+                                     "api_connection_id": state.get("execution_config", {}).get("api_connection_id"),
+                                     "roles": state.get('execution_config',{}).get('roles',{}),
+                                     "fallbacks": state.get('execution_config',{}).get('fallbacks',[])},
                 "pending_events": pending, "next_step": next_step, "blocked_reasons": blocked,
                 "next_review_at": min(wakes, key=instant) if wakes else None, "collected_at": now(),
                 "execution_state": execution, "dispatch_state": dispatch, "host_activity": live, **runtime,

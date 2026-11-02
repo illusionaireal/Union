@@ -11,7 +11,7 @@ from ai_union.model_api import APIExecutor, list_connections, resolve_connection
 from tests.support import CHARTER, RESOURCES
 
 FIXTURE = json.loads((Path(__file__).resolve().parents[1] / "examples/fixture.json").read_text(encoding="utf-8"))
-VARIABLE = "UNION_TEST_MODEL_KEY"
+VARIABLE = "UNION_MODEL_TEST_KEY"
 VALUE = "env-key-value-PRIVATE-never-persisted"
 
 
@@ -23,7 +23,7 @@ class CredentialReferenceTests(unittest.TestCase):
         self.addCleanup(self.restore)
         self.app = Console(Path(self.temp.name) / "console", fixture=FIXTURE)
         self.addCleanup(self.app.close)
-        self.board = self.app.new_session("board")
+        self.board = self.app.new_session("board", platform_admin=True)
         self.counter = 0
         receipt = self.command("create", {"name": "credential test", "goal": "test credential references",
                                           "board_name": "test board", "charter": CHARTER, "resources": RESOURCES})

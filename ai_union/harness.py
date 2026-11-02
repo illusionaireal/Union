@@ -4,6 +4,7 @@ from __future__ import annotations
 import hashlib
 import json
 import sqlite3
+from contextlib import closing
 
 from .agent_protocol import compile_tool, instructions, model_input, tools_for, work_result
 from .bootstrap import BOOTSTRAP_TOOLS, operate as bootstrap_tool, read as read_draft
@@ -66,6 +67,8 @@ class HarnessExecutor:
         require(base in ("deepagents", "langchain"), "不支持的 Harness")
         self.engine, self.base = engine, base
         self.transport = APIExecutor(engine.root, connection, fallbacks=fallbacks)
+        self.default_connection = connection
+        self.default_fallbacks = list(fallbacks)
         self.roles = dict(roles or {})
         self.transport.secret_guard = self._check_secrets
         self.model = self.transport.model
@@ -209,21 +212,27 @@ class HarnessExecutor:
                         body.append({"role": "user", "content": m.content})
                     elif m.type == "ai":
                         item = {"role": "assistant", "content": m.content or None}
+                        if m.additional_kwargs.get('_provider_parts'): item['_provider_parts']=m.additional_kwargs['_provider_parts']
                         if m.tool_calls:
                             item["tool_calls"] = [{"id": c["id"], "type": "function", "function": {"name": c["name"], "arguments": encoded(c["args"])}} for c in m.tool_calls]
                         body.append(item)
                     elif m.type == "tool":
                         body.append({"role": "tool", "tool_call_id": m.tool_call_id, "content": m.content})
-                require(len(encoded(body)) <= 1000000, "任务会话超出上下文容量；请缩小任务范围")
                 owner.called = True
                 message, usage = owner.transport.chat(owner.package, body, self._tools)
                 owner.usage = usage
                 calls = message.get("tool_calls", [])
                 owner.tool_count = len(calls)
-                return ChatResult(generations=[ChatGeneration(message=AIMessage(content=message.get("content") or "", tool_calls=[
+                return ChatResult(generations=[ChatGeneration(message=AIMessage(content=message.get("content") or "", additional_kwargs={'_provider_parts':message['_provider_parts']} if message.get('_provider_parts') else {}, tool_calls=[
                     {"id": c["id"], "name": c["function"]["name"], "args": json.loads(c["function"]["arguments"])} for c in calls]))])
 
         return ControlledChat(cache=False, model_name="union:controlled-chat" if self.package["kind"] == "work" else "union:controlled-organization")
+
+    def prepare(self, kind, position_id=None):
+        self._select({'kind':kind, 'context':{'position':{'id':position_id}}})
+
+    def set_attempt_budget(self, remaining):
+        self.transport.set_attempt_budget(remaining)
 
     def _select(self, package):
         """A role change applies to the next package, never to an in-flight one.
@@ -231,14 +240,19 @@ class HarnessExecutor:
         The connection is part of the session key, so changing a role starts a new
         session instead of rewriting history under another model.
         """
-        role = ROLE_BY_KIND.get(package["kind"])
+        context=package.get('context',{})
+        position=context.get('position') or {}
+        if not position and package.get('assignment_id'):
+            assignment=context.get('assignments',{}).get(package['assignment_id'],{})
+            position=context.get('positions',{}).get(assignment.get('position_id'),{})
+        role = position.get('id') if position.get('id') in self.roles else ROLE_BY_KIND.get(package["kind"])
         self.metadata["role"] = role
-        connection = self.roles.get(role) if role else None
-        if not connection:
+        connection = self.roles[role] if role in self.roles else self.default_connection
+        require(connection is not None, '岗位或执行职责绑定的模型不可用；请检查其凭据与备用链')
+        fallbacks=connection.get('_fallback_connections',self.default_fallbacks)
+        if (connection["id"], connection["revision"]) == (self.metadata["connection_id"], self.metadata["connection_revision"]) and [(c['id'],c['revision']) for c in self.transport.fallbacks]==[(c['id'],c['revision']) for c in fallbacks]:
             return
-        if (connection["id"], connection["revision"]) == (self.metadata["connection_id"], self.metadata["connection_revision"]):
-            return
-        self.transport = APIExecutor(self.engine.root, connection)
+        self.transport = APIExecutor(self.engine.root, connection, fallbacks=fallbacks)
         self.transport.secret_guard = self._check_secrets
         self.model = self.transport.model
         self.metadata = self.transport.metadata | {"harness": self.base,
@@ -276,7 +290,9 @@ class HarnessExecutor:
         model = self._model()
         config = {"configurable": {"thread_id": self.session_id}, "recursion_limit": 50}
         try:
-            with sqlite3.connect(folder / "checkpoints.sqlite3", check_same_thread=False) as cx, tracing_context(enabled=False):
+            # sqlite3.Connection.__exit__ commits but does not close. Release the
+            # SDK checkpoint handle on every exit, including interrupted runs.
+            with closing(sqlite3.connect(folder / "checkpoints.sqlite3", check_same_thread=False)) as cx, cx, tracing_context(enabled=False):
                 saver = SqliteSaver(cx)
                 if self.base == "deepagents":
                     deepagents.register_harness_profile(model.model_name, deepagents.HarnessProfile(

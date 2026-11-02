@@ -21,9 +21,11 @@ from .executor import ExecutionFailure
 from .failures import issue
 from .agent_protocol import compile_tool, instructions, model_input, tools_for, work_result
 from . import catalog as model_catalog
+from .model_protocols import PROTOCOLS, encode_request, decode_response
 
 
-CONFIG_FIELDS = {"name", "base_url", "model", "response_format", "token_limit_field", "max_output_tokens", "timeout_seconds", "api_key_env", "enabled"}
+OPTIONAL_CONFIG = {'response_format','api_key_env','api_key_file','auth_type','provider','protocol','allow_private_http','billing','context_policy'}
+CONFIG_FIELDS = {"name", "base_url", "model", "response_format", "token_limit_field", "max_output_tokens", "timeout_seconds", "api_key_env", "enabled"} | OPTIONAL_CONFIG
 ROLES = ("planner", "worker", "reviewer")
 ROLE_BY_KIND = {"work": "worker", "decision": "planner", "connection_test": None}
 MAX_FALLBACKS = 3
@@ -53,7 +55,7 @@ def api_connection(parts, timeout):
 
 
 def validate_config(config):
-    require(isinstance(config, dict) and CONFIG_FIELDS - {"response_format", "api_key_env"} <= set(config) <= CONFIG_FIELDS, "API 配置字段缺失或不支持")
+    require(isinstance(config, dict) and CONFIG_FIELDS - OPTIONAL_CONFIG <= set(config) <= CONFIG_FIELDS, "API 配置字段缺失或不支持")
     result = copy.deepcopy(config)
     text(result["name"], "连接名称", 100)
     require(model_name(result["model"]) is not None, "API 必须指定模型 ID")
@@ -65,13 +67,28 @@ def validate_config(config):
         require(parts.hostname and not parts.username and not parts.password and not parts.query and not parts.fragment,
                 "API 地址不能包含认证、查询参数或片段")
         local = is_loopback(parts.hostname)
-        require(parts.scheme == "https" or (parts.scheme == "http" and local), "API 使用 HTTPS；仅回环测试服务允许 HTTP")
+        private = False
+        try:
+            address=ipaddress.ip_address(parts.hostname)
+            private=any(address in network for network in (ipaddress.ip_network('10.0.0.0/8'),ipaddress.ip_network('172.16.0.0/12'),ipaddress.ip_network('192.168.0.0/16'),ipaddress.ip_network('fc00::/7')) if address.version==network.version)
+        except ValueError: pass
+        require(type(result.get('allow_private_http',False)) is bool, '内网HTTP声明无效')
+        require(parts.scheme == "https" or (parts.scheme == "http" and (local or private and result.get('allow_private_http') is True)), "API 使用HTTPS；内网HTTP须明确声明并填写私有IP")
         require(port is None or 1 <= port <= 65535, "API 端口无效")
     except ValueError:
         require(False, "API 地址格式无效")
     result["base_url"] = url.rstrip("/")
-    if result["base_url"].endswith("/chat/completions"):
-        result["base_url"] = result["base_url"][:-len("/chat/completions")]
+    for suffix in ('/chat/completions','/responses','/messages'):
+        if result['base_url'].endswith(suffix): result['base_url']=result['base_url'][:-len(suffix)]
+    require(result.get('protocol','openai_chat_completions') in PROTOCOLS, '模型协议不支持')
+    require(result.get('auth_type','key') in ('key','none'), '认证方式不支持')
+    if 'provider' in result: identifier(result['provider'])
+    if 'context_policy' in result:
+        from .model_context import validate_policy
+        validate_policy(result['context_policy'])
+    if 'billing' in result:
+        from .model_billing import validate_billing
+        validate_billing(result['billing'])
     require(result.get("response_format", "agent") in ("agent", "json_schema", "json_object"), "输出模式不支持")
     # Read old connection records without perpetuating their forced output mode.
     result["response_format"] = "agent"
@@ -82,6 +99,13 @@ def validate_config(config):
         require(isinstance(result["api_key_env"], str)
                 and re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]{0,63}", result["api_key_env"]) is not None,
                 "API Key 环境变量名无效")
+        allowed={name.strip() for name in os.environ.get('UNION_MODEL_KEY_ENV_ALLOWLIST','').split(',')}
+        name=result['api_key_env']
+        require(name not in {'UNION_MODEL_CATALOG','UNION_MODEL_CREDENTIAL_DIR','UNION_MODEL_KEY_ENV_ALLOWLIST'} and
+                (name.startswith('UNION_MODEL_') and name.endswith(('_KEY','_TOKEN')) or name in allowed), '此环境变量未获宿主模型凭据授权')
+    if 'api_key_file' in result: identifier(result['api_key_file'])
+    require(not (result.get('api_key_env') and result.get('api_key_file')), '凭据引用只能选择一种来源')
+    require(result.get('auth_type','key')!='none' or not (result.get('api_key_env') or result.get('api_key_file')), '无需认证不能同时引用凭据')
     require(type(result["enabled"]) is bool, "连接启用状态必须为布尔值")
     return result
 
@@ -115,6 +139,9 @@ def reject_saved_secrets(cx, value, extra_secret=None):
     secrets = {extra_secret} if isinstance(extra_secret, str) and extra_secret else set()
     if cx.execute("SELECT 1 FROM sqlite_master WHERE name='model_connections'").fetchone():
         for row in cx.execute("SELECT api_key, config FROM model_connections"):
+            if json.loads(row[1]).get('api_key_file'):
+                file_secret, _ = connection_key({'api_key':row[0], 'config':row[1]})
+                if file_secret: secrets.add(file_secret)
             if row[0]:
                 secrets.add(row[0])
             # An environment reference is public as a name but its value is not.
@@ -143,8 +170,21 @@ def list_connections(engine):
 def connection_key(row):
     """Resolve a credential at use time; an environment reference is never persisted."""
     config = json.loads(row["config"])
+    if config.get('auth_type')=='none': return '', 'none'
     if row["api_key"]:
         return row["api_key"], "inline"
+    if config.get('api_key_file'):
+        directory=os.environ.get('UNION_MODEL_CREDENTIAL_DIR')
+        if not directory: return '', 'missing_file'
+        root=Path(directory).resolve(); path=root/config['api_key_file']
+        require(not path.is_symlink() and path.resolve().parent==root, '凭据文件引用越界')
+        try:
+            require(path.stat().st_size<=4096, '凭据文件过大')
+            if os.name!='nt': require(path.stat().st_mode & 0o077 == 0, '凭据文件需为私有权限')
+            value=path.read_text(encoding='utf-8').strip()
+        except OSError: return '', 'missing_file'
+        require(value and all(33<=ord(c)<=126 for c in value), '凭据文件内容无效')
+        return value, 'file'
     name = config.get("api_key_env")
     if not name:
         return "", None
@@ -158,7 +198,7 @@ def public_connection(row):
     # Read-only metadata; an unknown model stays null instead of being guessed.
     return {"id": row["id"], "revision": row["revision"], "config": config,
             "has_api_key": bool(key), "key_source": source, "updated_at": row["updated_at"],
-            "catalog": model_catalog.metadata(config["model"])}
+            "catalog": model_catalog.metadata(config["model"],config.get('provider'))}
 
 
 def configure_connection(engine, board_key, connection_id, config, reason, api_key=None, *, gateway_ref=None):
@@ -170,15 +210,19 @@ def configure_connection(engine, board_key, connection_id, config, reason, api_k
         board = engine._board(cx, board_key)
         schema_table(cx)
         old = cx.execute("SELECT * FROM model_connections WHERE id=? ORDER BY revision DESC LIMIT 1", (connection_id,)).fetchone()
-        if config.get("api_key_env"):
+        if config.get('auth_type')=='none':
+            require(api_key in (None,''), '无需认证不能同时提供密钥')
+            secret=''
+        elif config.get("api_key_env") or config.get('api_key_file'):
             require(api_key is None, "环境变量引用与内联密钥只能二选一")
             secret = ""
         else:
             secret = api_key if api_key is not None else old["api_key"] if old else ""
         # A changed endpoint never inherits a key intended for a different destination.
-        require(not old or json.loads(old["config"])["base_url"] == config["base_url"] or api_key is not None or config.get("api_key_env"),
+        require(not old or (json.loads(old["config"])["base_url"] == config["base_url"] and json.loads(old['config']).get('protocol','openai_chat_completions')==config.get('protocol','openai_chat_completions')) or api_key is not None or config.get("api_key_env") or config.get('api_key_file'),
                 "API 地址变更必须明确重新提供或清除密钥")
-        reject_saved_secrets(cx, [connection_id, config, reason], secret)
+        effective_secret, _ = connection_key({'api_key':secret, 'config':encoded(config)})
+        reject_saved_secrets(cx, [connection_id, config, reason], effective_secret or secret)
         revision = old["revision"] + 1 if old else 1
         cx.execute("INSERT INTO model_connections VALUES(?,?,?,?,?)", (connection_id, revision, encoded(config), secret, now()))
         if gateway_ref is not None:
@@ -196,7 +240,7 @@ def configure_connection(engine, board_key, connection_id, config, reason, api_k
 def _role_connection_id(execution, role):
     if role is None:
         return execution.get("api_connection_id")
-    require(role in ROLES, "未知角色")
+    identifier(role)
     slot = (execution.get("roles") or {}).get(role) or {}
     return slot.get("connection_id")
 
@@ -209,7 +253,7 @@ def _resolved(cx, connection_id):
     secret, source = connection_key(row)
     if source == "missing":
         require(False, "API Key 环境变量未设置或为空：" + config["api_key_env"])
-    require(bool(secret), "API Key 尚未配置")
+    require(source=='none' or bool(secret), "API Key 或宿主凭据文件尚未配置")
     return public_connection(row) | {"api_key": secret}
 
 
@@ -222,10 +266,13 @@ def resolve_connection(engine, connection_id=None, role=None):
     """
     with engine.read_transaction() as cx:
         require(cx.execute("SELECT 1 FROM sqlite_master WHERE name='model_connections'").fetchone(), "API 连接尚未配置")
+        if connection_id is not None:
+            identifier(connection_id)
+            return _resolved(cx, connection_id)
         execution = engine._state(cx).get("execution_config", {})
         preferred = connection_id or _role_connection_id(execution, role) or execution.get("api_connection_id")
         identifier(preferred)
-        chain = [preferred] + [item for item in (execution.get("fallbacks") or []) if item != preferred]
+        chain = [preferred] + [item for item in _fallback_ids(execution, role) if item != preferred]
         reason = None
         for candidate in chain:
             try:
@@ -239,6 +286,11 @@ def resolve_connection(engine, connection_id=None, role=None):
         raise reason
 
 
+def _fallback_ids(execution, role=None):
+    slot=(execution.get('roles') or {}).get(role) or {}
+    return slot.get('fallbacks', execution.get('fallbacks') or [])
+
+
 def resolve_chain(engine, *, role=None):
     """Primary plus the fallbacks that can actually serve a request.
 
@@ -249,7 +301,7 @@ def resolve_chain(engine, *, role=None):
     primary = resolve_connection(engine, role=role)
     with engine.read_transaction() as cx:
         execution = engine._state(cx).get("execution_config", {})
-        candidates = [item for item in (execution.get("fallbacks") or []) if item != primary["id"]]
+        candidates = [item for item in _fallback_ids(execution, role) if item != primary["id"]]
         fallbacks = []
         for candidate in candidates:
             try:
@@ -262,9 +314,13 @@ def resolve_chain(engine, *, role=None):
 def resolve_roles(engine):
     """Resolve every role independently; a role that cannot serve a request is None."""
     resolved = {}
-    for role in ROLES:
+    with engine.read_transaction() as cx:
+        configured=engine._state(cx).get('execution_config',{}).get('roles',{})
+    for role in dict.fromkeys([*ROLES,*configured]):
         try:
             resolved[role] = resolve_connection(engine, role=role)
+            _, chain=resolve_chain(engine,role=role)
+            resolved[role]['_fallback_connections']=chain
         except Rejected:
             resolved[role] = None
     return resolved
@@ -272,8 +328,7 @@ def resolve_roles(engine):
 
 def bind_connection(engine, board_key, connection_id, reason, *, role=None, fallbacks=None):
     text(reason, "API 绑定依据", 1000)
-    if role is not None:
-        require(role in ROLES, "未知角色")
+    if role is not None: identifier(role)
     if connection_id is not None:
         identifier(connection_id)
     if fallbacks is not None:
@@ -285,6 +340,8 @@ def bind_connection(engine, board_key, connection_id, reason, *, role=None, fall
         require(connection_id not in fallbacks, "默认连接不能同时作为回退")
     with engine.transaction() as cx:
         board = engine._board(cx, board_key)
+        state = engine._state(cx)
+        require(role is None or role in ROLES or role in state['positions'], '未知岗位或执行职责')
         reject_saved_secrets(cx, [connection_id, role, fallbacks, reason])
         if connection_id is not None or fallbacks:
             schema_table(cx)
@@ -299,7 +356,8 @@ def bind_connection(engine, board_key, connection_id, reason, *, role=None, fall
         else:
             execution.setdefault("roles", {})[role] = {"connection_id": connection_id}
         if fallbacks is not None:
-            execution["fallbacks"] = list(fallbacks)
+            if role is None: execution["fallbacks"] = list(fallbacks)
+            elif connection_id is not None: execution['roles'][role]['fallbacks']=list(fallbacks)
         state["version"] += 1
         engine._event(cx, "api_connection_bound", {"connection_id": connection_id, "role": role,
                                                    "fallbacks": list(fallbacks) if fallbacks is not None else None,
@@ -370,21 +428,32 @@ class APIExecutor:
         self.config = validate_config(connection["config"])
         self.model = self.config["model"]
         self.fallbacks = [copy.deepcopy(item) for item in fallbacks]
+        self.active_secrets = tuple(c['api_key'] for c in [self.connection,*self.fallbacks] if c.get('api_key'))
         self.jobs = {}
+        self.attempt_budget = None
         self.correction = None
         self.corrections_used = 0
         self.secret_guard = self._saved_secret_guard if (Path(root) / "state.sqlite3").is_file() else None
         self.metadata = {"connection_id": connection["id"], "connection_revision": connection["revision"],
-                         "protocol": "openai_chat_completions", "requested_model": self.model,
+                         "protocol": self.config.get('protocol','openai_chat_completions'), "requested_model": self.model,
                          "transport_source": "local_test" if is_loopback(urlsplit(self.config["base_url"]).hostname) else "provider_api"}
         if self.fallbacks:
             self.metadata["fallbacks"] = [item["id"] for item in self.fallbacks]
+            self.metadata['fallback_connections']=[{'connection_id':c['id'],'connection_revision':c['revision'],
+                'protocol':c['config'].get('protocol','openai_chat_completions'), 'requested_model':c['config']['model'],
+                'transport_source':'local_test' if is_loopback(urlsplit(c['config']['base_url']).hostname) else 'provider_api'} for c in self.fallbacks]
 
     def _saved_secret_guard(self, value):
         # Covers probes and the legacy transport as well as Harness requests.
         from .engine import Engine
         with Engine(self.root.parent).read_transaction() as cx:
             reject_saved_secrets(cx, value)
+
+    def _contains_credential(self, value):
+        return any(contains_secret(value, secret) for secret in self.active_secrets)
+
+    def set_attempt_budget(self, remaining):
+        self.attempt_budget=remaining
 
     def submit(self, package, body=None):
         rid = identifier(package["run_id"])
@@ -399,11 +468,17 @@ class APIExecutor:
             offered = tools_for(package)
             if offered:
                 body["tools"] = offered
+        from .model_media import attach_visible_media, guard_media
+        body=attach_visible_media(package,copy.deepcopy(body))
+        def check_media(value):
+            require(not self._contains_credential(value), '输入资料包含模型凭据，拒绝派发')
+            if self.secret_guard:self.secret_guard(value)
         if self.correction and package["kind"] == "decision" and self.correction["actor"] == package["actor"] and self.correction["assignment_id"] == package["assignment_id"]:
             body["messages"].extend(self.correction["messages"])
+        guard_media(body,check_media)
         self.correction = None
         secret = self.connection["api_key"]
-        require(not contains_secret(body, secret), "工作包包含 API Key，拒绝派发")
+        require(not self._contains_credential(body), "工作包包含 API Key，拒绝派发")
         if self.secret_guard:
             self.secret_guard(body)
         (folder / "package.json").write_text(encoded(package), encoding="utf-8")
@@ -439,6 +514,14 @@ class APIExecutor:
                 break
             config = validate_config(connection["config"])
             try:
+                if index:
+                    try:
+                        require(self.attempt_budget is None or index<self.attempt_budget,'本次有限调用额度已耗尽')
+                        if (self.root.parent/'state.sqlite3').is_file():
+                            from .engine import Engine
+                            Engine(self.root.parent).reserve_model_attempt(job['package']['run_id'],index,connection)
+                    except Rejected:
+                        raise ExecutionFailure('当前授权或调用额度不允许备用请求；原失败已保存', failure=issue('execution_failed')) from None
                 self._attempt(job, body if index == 0 else self._body_for(body, connection), connection, config)
             except ExecutionFailure as failure:
                 error = failure
@@ -447,7 +530,8 @@ class APIExecutor:
                                  "code": (failure.failure or {}).get("code")})
                 job["attempts"] = attempts
                 # A sent-but-unconfirmed request is never retried elsewhere.
-                if failure.unknown or index == len(chain) - 1:
+                eligible=(failure.failure or {}).get('code') in {'api_authentication','api_rate_limited','api_request_rejected','api_redirect','api_connection'}
+                if failure.unknown or not eligible or index == len(chain) - 1:
                     if index:
                         job["fallback_from"] = chain[0]["id"]
                     break
@@ -466,6 +550,19 @@ class APIExecutor:
         conn = None
         sent = False
         try:
+            if (self.root.parent/'state.sqlite3').is_file():
+                from .engine import Engine
+                Engine(self.root.parent).check_model_dispatch(job['package']['run_id'],connection)
+            from .model_context import prepare_context
+            body, context_report=prepare_context(config, body)
+            job['context_report']=context_report
+            job['billing']=config.get('billing')
+            job['execution_metadata']={'connection_id':connection['id'], 'connection_revision':connection['revision'],
+                'protocol':config.get('protocol','openai_chat_completions'), 'requested_model':config['model'],
+                'transport_source':'local_test' if is_loopback(parts.hostname) else 'provider_api'}
+            wire, suffix, auth_headers = encode_request(config.get('protocol','openai_chat_completions'), body, connection['api_key'])
+            require(not self._contains_credential(wire), '请求内容包含凭据，拒绝派发')
+            if self.secret_guard: self.secret_guard(wire)
             conn = api_connection(parts, max(0.01, job["deadline"] - time.monotonic()))
             job["connection"] = conn
             conn.connect()
@@ -473,8 +570,8 @@ class APIExecutor:
                 raise ExecutionFailure("API 请求截止时间已到", unknown=False)
             conn.sock.settimeout(max(0.01, job["deadline"] - time.monotonic()))
             sent = True  # Even a partial write can reach a remote server.
-            conn.request("POST", parts.path.rstrip("/") + "/chat/completions", body=encoded(body).encode("utf-8"),
-                         headers={"Authorization": "Bearer " + connection["api_key"], "Content-Type": "application/json", "Accept": "application/json"})
+            conn.request("POST", parts.path.rstrip("/") + suffix, body=encoded(wire).encode("utf-8"),
+                         headers={**auth_headers, "Content-Type": "application/json", "Accept": "application/json"})
             response = conn.getresponse()
             if response.status != 200:
                 code = "authentication_failed" if response.status in (401, 403) else "rate_limited" if response.status == 429 else "request_rejected" if 400 <= response.status < 500 else "redirect_refused" if 300 <= response.status < 400 else "provider_error"
@@ -503,7 +600,7 @@ class APIExecutor:
                 if size > 1000000:
                     raise ExecutionFailure("API 响应超出容量", unknown=False, failure=issue("api_response_too_large"))
             raw = b"".join(chunks).decode("utf-8")
-            parsed = strict_json(raw)
+            parsed = decode_response(config.get('protocol','openai_chat_completions'), strict_json(raw))
             # Kept only in private memory until result() extracts token counters
             # and rejects secrets before any message/receipt is persisted.
             job["response"] = (parsed, response.getheader("x-request-id"))
@@ -512,7 +609,7 @@ class APIExecutor:
             raise
         except (OSError, http.client.HTTPException):
             raise ExecutionFailure("API 连接失败或中断；请核对供应商请求记录", unknown=sent, failure=issue("api_connection"))
-        except (ValueError, UnicodeError, RecursionError):
+        except (ValueError, UnicodeError, RecursionError, KeyError, TypeError, AttributeError):
             raise ExecutionFailure("API 返回无效 JSON", unknown=False, failure=issue("api_invalid_json"))
         finally:
             if 'response' in locals():
@@ -547,6 +644,10 @@ class APIExecutor:
         job = self.jobs[rid]
         state = self.status(rid)
         usage = dict(self.metadata, elapsed_ms=max(0, round((time.monotonic() - job["started"]) * 1000)))
+        usage.update(job.get('execution_metadata', {}))
+        if job.get('context_report'): usage['context']=job['context_report']
+        from .model_billing import calculate
+        usage.update(calculate(job.get('billing'), usage))
         for key in ("fallback_from", "connection_used", "attempts"):
             if job.get(key) is not None:
                 usage[key] = job[key]
@@ -562,7 +663,7 @@ class APIExecutor:
         try:
             require(type(reply) is dict, "API 回执格式错误")
             def safe_string(value):
-                if not (isinstance(value, str) and 0 < len(value) <= 256 and all(32 <= ord(c) < 127 for c in value) and self.connection["api_key"] not in value):
+                if not (isinstance(value, str) and 0 < len(value) <= 256 and all(32 <= ord(c) < 127 for c in value) and not self._contains_credential(value)):
                     return None
                 if self.secret_guard:
                     try:
@@ -581,13 +682,14 @@ class APIExecutor:
                     usage["cached_input_tokens"] = details["cached_tokens"]
             def guard_secrets(value):
                 try:
-                    require(not contains_secret(value, self.connection["api_key"]), "响应包含凭据")
+                    require(not self._contains_credential(value), "响应包含凭据")
                     if self.secret_guard:
                         self.secret_guard(value)
                 except Rejected:
                     error = ExecutionFailure("API 响应包含已保存凭据；拒绝记录", failure=issue("api_secret_response"))
                     error.usage = {k: v for k, v in usage.items() if k not in ("actual_model", "provider_request_id", "response_id")}
                     raise error
+            usage.update(calculate(job.get('billing'), usage))
             guard_secrets(reply)
             choices = reply["choices"]
             require(type(choices) is list and len(choices) == 1, "API 必须返回一个选择")
@@ -605,6 +707,7 @@ class APIExecutor:
             if job.get("message_only"):
                 # Decode every nested JSON argument before the SDK can checkpoint it.
                 safe = {"role": "assistant", "content": message.get("content") if isinstance(message.get("content"), str) else ""}
+                if message.get('_provider_parts'): safe['_provider_parts']=copy.deepcopy(message['_provider_parts'])
                 if calls:
                     require(type(calls) is list and 1 <= len(calls) <= 30, "工具调用数量无效")
                     ids = set()
@@ -621,7 +724,7 @@ class APIExecutor:
                             error.correction_only = True
                             raise error
                         guard_secrets(arguments)
-                        if contains_secret(arguments, self.connection["api_key"]):
+                        if self._contains_credential(arguments):
                             error = ExecutionFailure("API 工具参数包含凭据；拒绝记录", failure=issue("api_secret_response"))
                             error.usage = usage
                             raise error
@@ -630,7 +733,7 @@ class APIExecutor:
                 else:
                     require(choice.get("finish_reason") == "stop" and bool(safe["content"].strip()), "API 缺少文本结果")
                 (job["folder"] / "result.json").write_text(encoded(safe), encoding="utf-8")
-                (job["folder"] / "receipt.json").write_text(encoded(usage | {"cost": None, "cost_status": "unknown"}), encoding="utf-8")
+                (job["folder"] / "receipt.json").write_text(encoded(usage), encoding="utf-8")
                 return safe, usage
             if calls:
                 require(type(calls) is list and len(calls) == 1, "每轮只能提交一项组织工具调用")
@@ -643,7 +746,7 @@ class APIExecutor:
                     guard_secrets(arguments)
                     # Function arguments are a second JSON document. Escaped credentials
                     # become visible only after decoding that document.
-                    if contains_secret(arguments, self.connection["api_key"]):
+                    if self._contains_credential(arguments):
                         error = ExecutionFailure("API 工具参数包含凭据；拒绝记录", failure=issue("api_secret_response"))
                         error.usage = usage
                         raise error
@@ -676,7 +779,7 @@ class APIExecutor:
             error.usage = usage
             raise error
         (job["folder"] / "result.json").write_text(encoded(value), encoding="utf-8")
-        (job["folder"] / "receipt.json").write_text(encoded(usage | {"cost": None, "cost_status": "unknown"}), encoding="utf-8")
+        (job["folder"] / "receipt.json").write_text(encoded(usage), encoding="utf-8")
         return value, usage
 
     def feedback(self, package, error):

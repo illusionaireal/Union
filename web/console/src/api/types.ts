@@ -11,6 +11,8 @@ export type CommandKind =
   | 'api_connection'
   | 'api_binding'
   | 'api_test'
+  | 'api_import'
+  | 'api_cost_allocate'
   | 'company_usage';
 export type ReceiptKind =
   CommandKind | 'api_connection' | 'api_binding' | 'api_test' | 'company_usage';
@@ -23,12 +25,22 @@ export interface Session {
   executors: ('fixture' | 'codex' | 'api')[];
 }
 export interface ModelConnection {
+  key_source?: string | null;
+  catalog?: {context_window?:number; tool_call?:boolean; input_modalities?:string[]; revision?:string; cost?:{input?:number;output?:number}} | null;
   gateway_ref?: { id: string; revision: number };
   id: string;
   revision: number;
   has_api_key: boolean;
   updated_at: string;
   config: {
+    provider?: string;
+    protocol?: string;
+    api_key_env?: string;
+    api_key_file?: string;
+    auth_type?: 'key' | 'none';
+    allow_private_http?: boolean;
+    context_policy?: {strategy?:'trim_history'|'reject';window?:number};
+    billing?: {basis: 'metered' | 'subscription' | 'owned' | 'unknown'; currency?: string; revision?: string; input_per_million_minor?: number; output_per_million_minor?: number;cache_read_per_million_minor?:number};
     name: string;
     base_url: string;
     model: string;
@@ -112,7 +124,7 @@ export interface Run {
   display_status: string;
   started_at: string;
   ended_at: string | null;
-  usage: { input_tokens?: number; output_tokens?: number } | null;
+  usage: { input_tokens?: number; output_tokens?: number; cost_basis?:string; cost_minor?:number|null; cost_status?:string; currency?:string|null; context?:{dropped_messages?:number;estimated_input_tokens?:number} } | null;
   member_id: string;
   simulated: boolean;
   host_confirmed: boolean;
@@ -212,7 +224,7 @@ export interface Snapshot {
     cost_status: string;
   };
   ready_work: string[];
-  execution_config: { codex_model: string | null; api_connection_id?: string | null };
+  execution_config: { codex_model: string | null; api_connection_id?: string | null; roles?: Record<string,{connection_id:string;fallbacks?:string[]}>; fallbacks?:string[] };
   pending_events: number;
   next_step: string;
   blocked_reasons: string[];

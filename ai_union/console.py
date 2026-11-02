@@ -14,7 +14,7 @@ from .engine import Engine, Rejected, encoded, identifier, model_name, now, requ
 from .executor import CodexExecutor, FixtureExecutor
 from .locking import file_lock
 from .observation import snapshot
-from .runner import exclusive, step, test_connection
+from .runner import exclusive, step, test_connection, reserved_calls
 from .model_api import APIExecutor, bind_connection, configure_connection, list_connections, resolve_chain, resolve_connection, resolve_roles, stored_command, reject_saved_secrets
 from .failures import runtime_failure
 
@@ -57,6 +57,8 @@ class Console:
                     if receipt["status"] == "accepted":
                         receipt.update(status="unknown", message="宿主作业中断；检查原执行记录，不能据此推断远程取消。")
                         cx.execute("UPDATE commands SET receipt=? WHERE id=?", (encoded(receipt), row["id"]))
+        from .identity import Identity
+        self.identity = Identity(self)
 
     @contextmanager
     def catalog(self):
@@ -103,6 +105,8 @@ class Console:
     def session(self, token):
         with self.mutex:
             session = self.sessions.get(token)
+            if session is None:
+                return self.identity.session(token)
             require(session is not None and session["expires"] > time.monotonic(), "会话失效；请从宿主重新打开工作台")
             return dict(session)
 
@@ -133,6 +137,7 @@ class Console:
         require(self.session(token)["role"] == "board", "观察者不能读取 API 连接配置")
         e = self.engine(token, org_id)
         return {"connections": list_connections(e), "api_enabled": self.enable_api,
+                "routing": e.state().get('execution_config', {}),
                 "api_connection_id": e.state().get("execution_config", {}).get("api_connection_id")}
 
     def observe(self, token, org_id, offset=0):
@@ -179,7 +184,13 @@ class Console:
         require(session["role"] == "board", "观察者不能提交操作")
         require(isinstance(request, dict) and set(request) == {"id", "organization_id", "base_version", "kind", "data"}, "无效命令字段")
         identifier(request["id"])
-        require(request["kind"] in ("create", "event", "resources", "model", "amend", "reconcile", "start", "pause", "api_connection", "api_binding", "api_test", "company_usage", "controller_descriptor", "respond_request"), "不支持的命令")
+        require(request["kind"] in ("create", "event", "resources", "model", "amend", "reconcile", "start", "pause", "api_connection", "api_binding", "api_test", "api_import", "api_cost_allocate", "company_usage", "controller_descriptor", "respond_request"), "不支持的命令")
+        require(isinstance(request['data'],dict), '命令data必须为对象')
+        if request['kind']=='api_connection' and isinstance(request['data'].get('config'),dict) and any(request['data']['config'].get(k) for k in ('api_key_env','api_key_file')):
+            require(session.get('platform_admin') is True, '宿主凭据引用须由平台管理员明确授权给此AU')
+        if request['kind']=='api_import':
+            from .model_portability import validate_bundle
+            validate_bundle(request['data'].get('bundle'))
         require(isinstance(request["data"], dict), "命令数据必须为对象")
         require(len(encoded(request)) <= 200000, "命令过大")
         receipt = {k: request[k] for k in ("id", "organization_id", "base_version", "kind")}
@@ -195,12 +206,16 @@ class Console:
         with e.read_transaction() as cx:
             # Reject credentials before even a rejected command can persist them.
             reject_saved_secrets(cx, public_input, extra_secret=private_key)
+            if request['kind']=='event' and request['data'].get('kind')=='model_input':
+                from .model_media import payload
+                _,items=payload(request['data'].get('content'))
+                for _,raw in items:reject_saved_secrets(cx,raw.decode('latin1'))
         persisted = stored_command(request)
         with e.read_transaction() as cx:
             prior = self._existing(cx, persisted)
         if prior:
             return prior
-        guard = exclusive(e) if request["kind"] in ("start", "resources", "model", "amend", "reconcile", "api_connection", "api_binding", "api_test", "company_usage", "controller_descriptor", "respond_request") else nullcontext()
+        guard = exclusive(e) if request["kind"] in ("start", "resources", "model", "amend", "reconcile", "api_connection", "api_binding", "api_test", "api_import", "api_cost_allocate", "company_usage", "controller_descriptor", "respond_request") else nullcontext()
         acquired = False
         transferred = False
         try:
@@ -316,7 +331,7 @@ class Console:
 
     def _execute(self, e, request):
         kind, data = request["kind"], request["data"]
-        fields = {"event": {"event_id", "kind", "content", "source", "simulated"}, "pause": set(),
+        fields = {"api_cost_allocate": {"voucher", "reason"}, "api_import": {"bundle", "mode", "reason"}, "event": {"event_id", "kind", "content", "source", "simulated"}, "pause": set(),
                   "resources": {"resources", "reason"}, "model": {"model", "reason"}, "amend": {"charter", "reason"},
                   "reconcile": {"run_id", "resolution", "reason"}, "start": {"executor", "model", "connection_id", "max_steps", "max_seconds", "allow_unknown_cost"},
                   "api_connection": {"connection_id", "config", "api_key", "reason", "bind_default", "gateway_ref"}, "api_binding": {"connection_id", "reason", "role", "fallbacks"},
@@ -333,7 +348,7 @@ class Console:
             text(data["content"], "事件内容")
             text(data["source"], "事件来源", 1000)
             require(type(data["simulated"]) is bool, "事件需要显式布尔模拟标记")
-            require(data["kind"] in ("opinion", "fact", "external_feedback"), "不支持此输入事件类型")
+            require(data["kind"] in ("opinion", "fact", "external_feedback", "model_input"), "不支持此输入事件类型")
             e.add_event(data.get("event_id", request["id"]), data["kind"], {k: data[k] for k in ("content", "source", "simulated")})
         elif kind in ("start", "api_test"):
             require(type(data.get("max_steps", 1)) is int and 1 <= data.get("max_steps", 1) <= 10000, "运行需要有限正整数步数")
@@ -351,7 +366,7 @@ class Console:
                 require(self.enable_api and data.get("allow_unknown_cost") is True, "宿主未启用 API 或未接受有限调用费用未知")
                 require("max_cost" not in state["resources"], "API 不支持金额硬上限")
                 require(data.get("model") in (None, ""), "API 模型由连接配置固定；请选择或更新连接")
-                connection, fallbacks = resolve_chain(e) if data.get("connection_id") is None else (resolve_connection(e, data.get("connection_id")), [])
+                connection, fallbacks = resolve_chain(e) if kind=='start' and data.get("connection_id") is None else (resolve_connection(e, data.get("connection_id") or state.get('execution_config',{}).get('api_connection_id')), [])
                 executor = APIExecutor(e.root, connection, fallbacks=fallbacks)
                 if kind == "start":
                     from .harness import HarnessExecutor
@@ -382,12 +397,19 @@ class Console:
                 respond(e, key, data["request_id"], data["status"], data["reason"], request["base_version"])
             elif kind == "resources":
                 require(set(data["resources"]) == {"max_calls", "timeout_seconds"}, "工作台仅支持调用次数与超时；金额未知")
-                require(type(data["resources"].get("max_calls")) is int and data["resources"]["max_calls"] >= len(e.runs()), "新上限不能低于累计占用")
+                require(type(data["resources"].get("max_calls")) is int and data["resources"]["max_calls"] >= reserved_calls(e), "新上限不能低于累计占用")
                 e.configure_resources(key, data["resources"], data["reason"])
             elif kind == "amend":
                 e.amend(key, data["charter"], data["reason"])
             elif kind == "model":
                 e.configure_model(key, data["model"], data["reason"])
+            elif kind == 'api_cost_allocate':
+                from .model_billing import allocate
+                return allocate(e,key,data['voucher'],data['reason'])
+            elif kind == "api_import":
+                require(self.enable_api, '宿主未启用API')
+                from .model_portability import import_connections
+                return import_connections(e, key, data['bundle'], data['mode'], data['reason'])
             elif kind == "api_connection":
                 require(self.enable_api, "宿主未启用 API")
                 require(type(data.get("bind_default", False)) is bool, "默认连接标记须为布尔值")
@@ -447,9 +469,10 @@ class Console:
                 e.recover()  # The exclusive lock proves there is no live owner. Unknown remains blocked.
                 deadline = time.monotonic() + request["data"].get("max_seconds", 0)
                 calls = 0
+                initial_calls=reserved_calls(e)
                 while calls < request["data"]["max_steps"]:
                     try:
-                        action = step(e, executor)
+                        action = step(e, executor, request['data']['max_steps']-calls)
                     except Rejected as error:
                         action = {"action": "blocked", "reason": str(error), "failure": runtime_failure(error)}
                     # Do not expose private executor diagnostics in browser receipts.
@@ -463,7 +486,7 @@ class Console:
                             failure = action.get("failure")
                             status, message = "blocked", failure["message"] if failure else "运行受阻；查看组织状态及宿主执行记录"
                         break
-                    calls += 1
+                    calls=reserved_calls(e)-initial_calls
                     if request["data"].get("max_seconds") and time.monotonic() >= deadline:
                         break
                 if actions and actions[-1]["action"] == "correction":

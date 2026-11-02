@@ -47,7 +47,7 @@
 | 组织治理与状态 / ai-union | 版本化章程、成员/岗位/任职、组织决定、SQLite 持久化 | V1；真实筹建用过部分机制 | U-023兼容投影/治理描述和U-034申请机制已受控验证；真实运行职责调整、企业身份集成仍待验 | [specs/001-org-bootstrap/spec.md](specs/001-org-bootstrap/spec.md)、[evidence/014-real-loop/README.md](evidence/014-real-loop/README.md)、[evidence/022-au-contract-implementation/README.md](evidence/022-au-contract-implementation/README.md) |
 | 筹建与自我调整 / ai-union | 分批筹建草案、成立事务、组织更新工具 | V2：试验组织真实成立 | 当前公司成立；证明初始化之后仍能按目标扩展和调整 | [specs/010-organization-harness/spec.md](specs/010-organization-harness/spec.md)、[evidence/014-real-loop/README.md](evidence/014-real-loop/README.md) |
 | 成员执行循环 / ai-union | Deep Agents / LangGraph、工具调用、任务检查点 | V2：规划文本交付 | 有效业务成果、长任务可靠性、失败后的正确后续动作 | [docs/ORGANIZATION_HARNESS.md](docs/ORGANIZATION_HARNESS.md)、[evidence/014-real-loop/README.md](evidence/014-real-loop/README.md) |
-| 模型连接 / 公共接入 | Chat Completions、私有密钥、默认连接、网页工具往返测试与调用回执；New API 目录、显式平台权限、健康/版本检测、AU连接来源快照已实现 | V2：免费 OpenRouter 曾实测 | U-037待实际浏览器验收；U-039真实New API/上游工具往返未验；当前公司连接阻塞保持；U-050已实现按角色绑定与解析期回退，运行期切换与前端入口未做 | [docs/API_MODELS.md](docs/API_MODELS.md)、[evidence/011-openrouter-smoke/README.md](evidence/011-openrouter-smoke/README.md)、[evidence/027-gateway-management/README.md](evidence/027-gateway-management/README.md) |
+| 模型连接 / 公共接入 | AU独立多连接/导入导出、版本化目录、四协议、受限凭据、岗位/回退、上下文/媒体及四类费用 | V2历史局部；043新增范围V1受控验证与独立权限费用复核 | 真实供应商各协议工具往返、私有订阅最终账号至AU执行、真实自托管与整体031对标仍未验 | [docs/API_MODELS.md](docs/API_MODELS.md)、[evidence/011-openrouter-smoke/README.md](evidence/011-openrouter-smoke/README.md)、[evidence/027-gateway-management/README.md](evidence/027-gateway-management/README.md)、[evidence/043-usable-model-access/README.md](evidence/043-usable-model-access/README.md) |
 | 开发工具 / 当前公司业务能力 | 可选 Docker 工作区、宿主/章程/岗位授权、持久命令回执及核对 | V1：SDK 与容器替身；独立权限复核通过默认关闭接入 | 真实容器与模型编程；网络、提交、部署仍需各自明确接口与授权 | [evidence/016-member-workspace/README.md](evidence/016-member-workspace/README.md) |
 | 记忆与上下文 / ai-union | 组织记录、成果、交接信息、任务检查点及虚拟文件 | V1，真实运行暴露上下文问题 | 长任务上下文管理、知识检索与经验复用闭环；不能等同成熟学习系统 | [docs/ORGANIZATION_HARNESS.md](docs/ORGANIZATION_HARNESS.md)、[evidence/014-real-loop/README.md](evidence/014-real-loop/README.md) |
 | 协作、唤醒与恢复 / ai-union | 工作依赖、交接、有限 watch、暂停、未知结果核对 | V2：真实空闲零调用、同一作业事件唤醒通过 | 诊断和生命周期已实现；模型有效事件处理、真实后续交付及持续运行待资源复验 | [evidence/014-real-loop/README.md](evidence/014-real-loop/README.md)、[evidence/020-organization-diagnostics/README.md](evidence/020-organization-diagnostics/README.md) |
@@ -87,7 +87,7 @@
 任务唯一主账为 `management/project.json`，保留 U 编号；以下视图由 `npm run management:render` 生成。实际负责人和所需责任角色分开，未认领不虚构为公司成员。
 
 <!-- management:tasks:start -->
-数据日期：2026-11-01；在制 3/3，就绪 0，阻塞 7，完成 24。这是工作项统计，不是产品完成率。
+数据日期：2026-11-02；在制 3/4，就绪 0，阻塞 7，完成 25。这是工作项统计，不是产品完成率。
 
 | 任务 | 内容 | 优先级 / 阶段 | 状态 | 实际负责人 | 依赖 |
 | --- | --- | --- | --- | --- | --- |
@@ -114,6 +114,7 @@
 | [U-049](TASKS.md#u-049) | 实现凭据环境变量引用（M1b） | P0 / G0 | 完成 | 外部工程代理（OpenCode） | U-048 |
 | [U-050](TASKS.md#u-050) | 实现角色绑定与可用性回退（M2a） | P0 / G0 | 完成 | 外部工程代理（OpenCode） | U-048 |
 | [U-051](TASKS.md#u-051) | 实现运行期失败切换（M2b） | P0 / G0 | 完成 | 外部工程代理（OpenCode） | U-050 |
+| [U-052](TASKS.md#u-052) | 完成0–5批登录与模型接入工程 | P0 / G0 | 完成 | Codex（外部工程代理） | — |
 | [U-008](TASKS.md#u-008) | 部署持久服务 | P1 / G3 | 阻塞 | 待认领 | — |
 | [U-009](TASKS.md#u-009) | 演练恢复与资源控制 | P1 / G3 | 待依赖 | 待认领 | U-006, U-008 |
 | [U-010](TASKS.md#u-010) | 接通发布、观察和回滚 | P1 / G3 | 待依赖 | 待认领 | U-006, U-008 |

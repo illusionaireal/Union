@@ -121,6 +121,10 @@ def instructions(package):
 def model_input(package):
     """Only business context reaches the agent. Keep manifests and host routing private."""
     context = copy.deepcopy(package.get("context", {}))
+    for event in context.get('events',[]):
+        if event.get('kind')=='model_input':
+            from .model_media import project_event
+            event['data']['content']=project_event(event['data']['content'])
     for key in ("charter", "policy", "position", "assignment"):
         if isinstance(context.get(key), dict):
             context[key].pop("version", None)

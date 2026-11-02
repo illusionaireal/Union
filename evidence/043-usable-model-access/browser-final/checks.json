@@ -1,0 +1,21 @@
+{
+  "simulated": true,
+  "realProviderCalls": 0,
+  "checks": [
+    "First trusted setup displays a recovery code once",
+    "Account login replaces host launch credentials",
+    "Remember cookie is HttpOnly and persists",
+    "Fixed URL and owner session survive real service restart",
+    "Simple model form saves without exposing advanced settings",
+    "Saved connection completes actual HTTP tool roundtrip against a double",
+    "Export has no API key or host credential reference",
+    "Import conflict preview and rename preserve original connection",
+    "Editing does not automatically switch the default",
+    "Media preview shows filename without encoded bytes",
+    "Inline media is saved as an explicit input event without model calls",
+    "Model configuration fits a 320px viewport",
+    "Logout removes access and displays the normal login form",
+    "Normal password login works without a launch link",
+    "No browser or server errors"
+  ]
+}

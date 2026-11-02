@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-01",
-  "wip_limit": 3,
+  "updated_at": "2026-11-02",
+  "wip_limit": 4,
   "modules": [
     {
       "id": "governance",
@@ -40,13 +40,14 @@
     {
       "id": "models",
       "name": "模型连接 / 公共接入",
-      "implemented": "Chat Completions、私有密钥、默认连接、网页工具往返测试与调用回执；New API 目录、显式平台权限、健康/版本检测、AU连接来源快照已实现",
-      "validation": "V2：免费 OpenRouter 曾实测",
-      "gap": "U-037待实际浏览器验收；U-039真实New API/上游工具往返未验；当前公司连接阻塞保持；U-050已实现按角色绑定与解析期回退，运行期切换与前端入口未做",
+      "implemented": "AU独立多连接/导入导出、版本化目录、四协议、受限凭据、岗位/回退、上下文/媒体及四类费用",
+      "validation": "V2历史局部；043新增范围V1受控验证与独立权限费用复核",
+      "gap": "真实供应商各协议工具往返、私有订阅最终账号至AU执行、真实自托管与整体031对标仍未验",
       "evidence": [
         "docs/API_MODELS.md",
         "evidence/011-openrouter-smoke/README.md",
-        "evidence/027-gateway-management/README.md"
+        "evidence/027-gateway-management/README.md",
+        "evidence/043-usable-model-access/README.md"
       ]
     },
     {
@@ -1371,6 +1372,34 @@
           "evidence/031d-runtime-fallback/full-suite.log"
         ],
         "note": "6项切换测试与354项全量回归通过；每角色独立链、前端入口与真实供应商验收未做"
+      }
+    },
+    {
+      "id": "U-052",
+      "title": "完成0–5批登录与模型接入工程",
+      "priority": "P0",
+      "milestone": "G0",
+      "module": "models",
+      "status": "done",
+      "owner": "Codex（外部工程代理）",
+      "role": "工程 / 独立权限与费用复核",
+      "acceptance": "按specs/043-usable-model-access完成基线、持久身份、AU配置迁移、多协议与目录、岗位回退、上下文与成本；逐项留证，工程/真实验收分开，权限费用经独立复核",
+      "dependencies": [],
+      "blocker": null,
+      "started_at": "2026-11-02",
+      "updated_at": "2026-11-02",
+      "completion": {
+        "scope": "controlled",
+        "reviewer": "final_security_review（独立权限/费用复核，52项及媒体增量56项）",
+        "evidence": [
+          "specs/043-usable-model-access/spec.md",
+          "evidence/043-usable-model-access/README.md",
+          "evidence/043-usable-model-access/matrix.md",
+          "docs/reviews/2026-11-02-model-access.md",
+          "evidence/043-usable-model-access/validation/python-final.log",
+          "evidence/043-usable-model-access/browser-final/checks.json"
+        ],
+        "note": "0–5批工程与受控验证交付：393项Python含5平台跳过，15浏览器；真实供应商/私有订阅最终账号至AU执行、NAS部署及整体031对齐未验，不关闭原公司真实资源阻塞。"
       }
     }
   ]
