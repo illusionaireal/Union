@@ -79,7 +79,9 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     },
     retry: false,
     networkMode: 'always',
-    refetchInterval: 4000,
+    // Only poll once a read succeeded. Anonymous visitors get 401 on every
+    // tick, and the repeated failures would otherwise churn the identity form.
+    refetchInterval: (query) => (query.state.data ? 4000 : false),
     refetchIntervalInBackground: false,
     refetchOnWindowFocus: 'always',
     staleTime: 0,

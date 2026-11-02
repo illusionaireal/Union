@@ -57,11 +57,20 @@ export function AccountSettings() {
 }
 
 export function IdentityBoundary({children}: {children: ReactNode}) {
-  const {session, loading} = useWorkspace();
+  const {session} = useWorkspace();
   const [recover, setRecover] = useState(false);
-  const status = useQuery({queryKey:['identity', session?.service_instance, session?.session_scope], queryFn:api.authStatus, retry:false, refetchInterval:3000});
-  if (status.isPending || loading && !status.data?.authenticated) return <main className="identity-page"><p role="status">正在连接工作台…</p></main>;
-  if (status.isError) return <main className="identity-page"><p role="alert">暂时无法连接工作台。{errorText(status.error)}</p><button onClick={()=>void status.refetch()}>重试</button></main>;
+  const status = useQuery({
+    queryKey:['identity', session?.service_instance, session?.session_scope],
+    queryFn:api.authStatus,
+    retry:false,
+    refetchInterval:(query)=>query.state.data?.authenticated ? false : 3000,
+  });
+  // Keep the form mounted while background refreshes run. Replacing it on a
+  // poll clears typed values and drops focus out of the password field, which
+  // users experience as the page reloading mid-entry.
+  if (!status.data) return status.isError
+    ? <main className="identity-page"><p role="alert">暂时无法连接工作台。{errorText(status.error)}</p><button onClick={()=>void status.refetch()}>重试</button></main>
+    : <main className="identity-page"><p role="status">正在连接工作台…</p></main>;
   if (!status.data.authenticated) return <main className="identity-page"><div><span className="identity-brand">UNION</span>
     {status.data.configured ? <><IdentityForm mode={recover?'recover':'login'} /><button className="button secondary" onClick={()=>setRecover(!recover)}>{recover?'返回登录':'忘记密码，使用恢复码'}</button></>
       : <IdentityForm mode="setup" />}

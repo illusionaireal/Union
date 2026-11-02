@@ -298,13 +298,13 @@ test_explicit_target_is_strict_and_unusable_role_does_not_use_default (tests.tes
 test_fallback_reserves_an_extra_call_and_survives_restart (tests.test_model_routing_integration.RoutingIntegrationTests.test_fallback_reserves_an_extra_call_and_survives_restart) ... ok
 test_global_and_per_run_limit_stop_before_secondary_network_call (tests.test_model_routing_integration.RoutingIntegrationTests.test_global_and_per_run_limit_stop_before_secondary_network_call) ... ok
 test_role_metadata_is_selected_before_package_reservation (tests.test_model_routing_integration.RoutingIntegrationTests.test_role_metadata_is_selected_before_package_reservation) ... ok
-test_dry_run_keeps_the_account (tests.test_reset_owner.ResetOwnerTests.test_dry_run_keeps_the_account) ... 数据库: /tmp/tmplv9c8527/console.sqlite3
+test_dry_run_keeps_the_account (tests.test_reset_owner.ResetOwnerTests.test_dry_run_keeps_the_account) ... 数据库: /tmp/tmpltweqbhr/console.sqlite3
 将删除: {'owner_account': 1, 'login_sessions': 1, 'login_limit': 0}
 加 --yes 才会执行；执行前请先停止工作台服务。
 ok
 test_foreign_database_is_rejected_before_writing (tests.test_reset_owner.ResetOwnerTests.test_foreign_database_is_rejected_before_writing) ... ok
-test_reset_deletes_account_rows_and_keeps_a_private_backup (tests.test_reset_owner.ResetOwnerTests.test_reset_deletes_account_rows_and_keeps_a_private_backup) ... 已重置 /tmp/tmpdpt3hj9p/console.sqlite3
-重置前备份: /tmp/tmpdpt3hj9p/console.sqlite3.bak-1793621543
+test_reset_deletes_account_rows_and_keeps_a_private_backup (tests.test_reset_owner.ResetOwnerTests.test_reset_deletes_account_rows_and_keeps_a_private_backup) ... 已重置 /tmp/tmpd9_339ui/console.sqlite3
+重置前备份: /tmp/tmpd9_339ui/console.sqlite3.bak-1793625531
 重启工作台后，任意第一个访问者都可以重新设置管理员账号。
 ok
 test_all_unusable_reports_the_preferred_reason (tests.test_role_binding.RoleBindingTests.test_all_unusable_reports_the_preferred_reason) ... ok
@@ -317,7 +317,7 @@ test_clearing_a_role_returns_to_inheritance (tests.test_role_binding.RoleBinding
 test_fallback_is_not_used_when_the_preferred_connection_works (tests.test_role_binding.RoleBindingTests.test_fallback_is_not_used_when_the_preferred_connection_works) ... ok
 test_package_kinds_map_to_roles_explicitly (tests.test_role_binding.RoleBindingTests.test_package_kinds_map_to_roles_explicitly) ... ok
 test_resolve_roles_marks_an_unusable_role_as_none (tests.test_role_binding.RoleBindingTests.test_resolve_roles_marks_an_unusable_role_as_none) ... ok
-test_resolve_roles_reports_every_role (tests.test_role_binding.RoleBindingTests.test_resolve_roles_reports_every_role) ... /usr/lib/python3.13/pathlib/_local.py:277: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff0aaa7cb80>
+test_resolve_roles_reports_every_role (tests.test_role_binding.RoleBindingTests.test_resolve_roles_reports_every_role) ... /usr/lib/python3.13/pathlib/_local.py:277: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7fb228c289a0>
   @property
 ResourceWarning: Enable tracemalloc to get the object allocation traceback
 ok
@@ -410,6 +410,6 @@ test_tool_results_and_files_pass_between_members_with_real_checkpoints (tests.te
 test_unknown_sandbox_propagates_through_sdk_and_blocks_fresh_executor (tests.test_workspace_harness.WorkspaceHarnessTests.test_unknown_sandbox_propagates_through_sdk_and_blocks_fresh_executor) ... ok
 
 ----------------------------------------------------------------------
-Ran 401 tests in 99.192s
+Ran 401 tests in 99.597s
 
 OK

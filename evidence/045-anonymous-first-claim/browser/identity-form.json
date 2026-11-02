@@ -1,0 +1,28 @@
+{
+  "date": "2026-11-02",
+  "target": "https://192.168.1.29:18766/models",
+  "client": "Chrome (playwright-core, headless), self-signed certificate accepted for this check only",
+  "scenario": "unconfigured console, type username and 22-character password, wait 10s, then click submit with a short password",
+  "before_fix": {
+    "identity_panel_mutations_in_11s": 3,
+    "typed_value_lost": true,
+    "focus_lost": true,
+    "unauthorized_responses": "one per workspace poll (about every 4s)",
+    "cause": "IdentityBoundary treated the workspace query loading flag as identity loading and replaced the form with a placeholder on every poll"
+  },
+  "after_fix": {
+    "identity_panel_mutations_in_11s": 0,
+    "typed_password_kept": true,
+    "typed_username_kept": true,
+    "focus_kept": true,
+    "unauthorized_responses": 1,
+    "navigations_after_submit": 0,
+    "setup_posts_after_short_password_click": 0,
+    "still_on_setup_form": true
+  },
+  "limits": [
+    "No real administrator account was claimed; that would consume the single owner slot.",
+    "Only the setup form was exercised in a browser; login, recovery and password change are covered by component tests and backend tests, not by a live browser run.",
+    "No screenshot archived for this check."
+  ]
+}

@@ -7,14 +7,14 @@
 > node scripts/project-management.mjs check && node --test tests/project-management.test.mjs
 
 Management check: 15 modules, 8 milestones, 57 tasks; PASS
-✔ rejects missing owners at start and unfinished dependencies, but permits honest unassigned backlog (8.561035ms)
-✔ completion requires scope, reviewer and existing evidence, and does not promote milestones (1.841334ms)
-✔ rejects duplicate IDs, unknown references and dependency cycles (1.890298ms)
-✔ blocked work needs an unblock action; already-started blocked work counts toward WIP (1.774447ms)
-✔ rejects evidence outside repository, invalid scope and malformed dates (3.303289ms)
-✔ deterministic generated views reject stale output and preserve surrounding narrative (22.696176ms)
-✔ flow summary keeps empty live evidence distinct from completion counts (0.727158ms)
-✔ milestone acceptance and task scope cannot be asserted without their review metadata (1.506103ms)
+✔ rejects missing owners at start and unfinished dependencies, but permits honest unassigned backlog (8.868852ms)
+✔ completion requires scope, reviewer and existing evidence, and does not promote milestones (1.851971ms)
+✔ rejects duplicate IDs, unknown references and dependency cycles (1.902777ms)
+✔ blocked work needs an unblock action; already-started blocked work counts toward WIP (1.691023ms)
+✔ rejects evidence outside repository, invalid scope and malformed dates (1.740614ms)
+✔ deterministic generated views reject stale output and preserve surrounding narrative (22.688573ms)
+✔ flow summary keeps empty live evidence distinct from completion counts (0.745793ms)
+✔ milestone acceptance and task scope cannot be asserted without their review metadata (1.457006ms)
 ℹ tests 8
 ℹ suites 0
 ℹ pass 8
@@ -22,7 +22,7 @@ Management check: 15 modules, 8 milestones, 57 tasks; PASS
 ℹ cancelled 0
 ℹ skipped 0
 ℹ todo 0
-ℹ duration_ms 157.298416
+ℹ duration_ms 159.460996
 
 > union@0.0.0 check:plan
 > node scripts/check-plan.mjs
@@ -32,15 +32,15 @@ Management check: 15 modules, 8 milestones, 57 tasks; PASS
 > union@0.0.0 test
 > node --test tests/*.test.ts
 
-✔ retry uses the same reservation; changed request is rejected (10.691475ms)
-✔ unauthorized model actions and tenant/currency changes leave budget untouched (2.789763ms)
-✔ only positive safe integer amounts and bounded keys are accepted (2.342918ms)
-✔ eight competing processes cannot exceed a 100-minor-unit hard budget (383.785831ms)
-✔ process crash after external success recovers by lookup without repeating the effect (139.588404ms)
-✔ crash before external call retains reservation when lookup is inconclusive (133.446422ms)
-✔ definitive failure releases reservation exactly once (3.554318ms)
-✔ settling below maximum releases the difference and invalid receipt rolls back (3.550394ms)
-✔ same key across test tenants remains independent (3.867834ms)
+✔ retry uses the same reservation; changed request is rejected (10.682235ms)
+✔ unauthorized model actions and tenant/currency changes leave budget untouched (2.845029ms)
+✔ only positive safe integer amounts and bounded keys are accepted (2.392874ms)
+✔ eight competing processes cannot exceed a 100-minor-unit hard budget (383.943238ms)
+✔ process crash after external success recovers by lookup without repeating the effect (140.705016ms)
+✔ crash before external call retains reservation when lookup is inconclusive (143.443886ms)
+✔ definitive failure releases reservation exactly once (3.627304ms)
+✔ settling below maximum releases the difference and invalid receipt rolls back (3.485424ms)
+✔ same key across test tenants remains independent (3.931673ms)
 ℹ tests 9
 ℹ suites 0
 ℹ pass 9
@@ -48,7 +48,7 @@ Management check: 15 modules, 8 milestones, 57 tasks; PASS
 ℹ cancelled 0
 ℹ skipped 0
 ℹ todo 0
-ℹ duration_ms 883.654484
+ℹ duration_ms 894.078992
 
 > union@0.0.0 check:console
 > npm run typecheck --workspace @union/console && npm run test --workspace @union/console && npm run build:console
@@ -64,19 +64,20 @@ Management check: 15 modules, 8 milestones, 57 tasks; PASS
 
  RUN  v3.2.7 /repo/web/console
 
- ✓ src/features/commands/fields.test.tsx (9 tests) 817ms
- ✓ src/pages/RuntimeObservation.test.tsx (11 tests) 583ms
- ✓ src/pages/SubscriptionConnections.test.tsx (6 tests) 728ms
-   ✓ subscription configuration > clears the key and blocks duplicate writes while original result is unknown  310ms
- ✓ src/api/client.test.ts (3 tests) 24ms
- ✓ src/app/url-state.test.tsx (1 test) 219ms
- ✓ src/pages/Gateways.test.tsx (3 tests) 534ms
- ✓ src/features/commands/receipts.test.ts (4 tests) 9ms
+ ✓ src/pages/Identity.test.tsx (8 tests) 692ms
+ ✓ src/features/commands/fields.test.tsx (9 tests) 835ms
+ ✓ src/pages/SubscriptionConnections.test.tsx (6 tests) 745ms
+   ✓ subscription configuration > clears the key and blocks duplicate writes while original result is unknown  318ms
+ ✓ src/app/url-state.test.tsx (1 test) 214ms
+ ✓ src/pages/Gateways.test.tsx (3 tests) 595ms
+ ✓ src/pages/RuntimeObservation.test.tsx (11 tests) 579ms
+ ✓ src/api/client.test.ts (3 tests) 22ms
+ ✓ src/features/commands/receipts.test.ts (4 tests) 10ms
 
- Test Files  7 passed (7)
-      Tests  37 passed (37)
-   Start at  12:19:48
-   Duration  5.28s (transform 755ms, setup 1.44s, collect 2.06s, tests 2.91s, environment 5.04s, prepare 949ms)
+ Test Files  8 passed (8)
+      Tests  45 passed (45)
+   Start at  13:17:06
+   Duration  5.94s (transform 725ms, setup 1.66s, collect 2.11s, tests 3.69s, environment 5.70s, prepare 1.08s)
 
 
 > union@0.0.0 build:console
@@ -93,8 +94,8 @@ rendering chunks...
 computing gzip size...
 dist/index.html                   0.74 kB │ gzip:   0.51 kB
 dist/assets/index-CaMEXWpI.css   44.75 kB │ gzip:  10.07 kB
-dist/assets/index-XMoHdoib.js   422.53 kB │ gzip: 132.75 kB
-✓ built in 4.94s
+dist/assets/index-CNnZf7_t.js   422.54 kB │ gzip: 132.76 kB
+✓ built in 4.93s
 npm notice
 npm notice New major version of npm available! 11.17.0 -> 12.2.1
 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
