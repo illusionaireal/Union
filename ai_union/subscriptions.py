@@ -110,10 +110,21 @@ class Subscriptions:
                 pass
         with self.app.read_catalog() as cx:
             pending = [json.loads(r[0]) for r in cx.execute('SELECT receipt FROM subscription_commands')]
+        # A successful authorization must stay visible after a reload, otherwise the
+        # only confirmation is a transient panel tied to one browser session.
+        last_success = {}
+        for receipt in pending:
+            if receipt.get('status') != 'succeeded':
+                continue
+            provider = {'authorize_go': 'opencode-go', 'save_go': 'opencode-go', 'authorize_chatgpt': 'openai'}.get(receipt.get('action'))
+            created = receipt.get('created_at') or ''
+            if provider and created > last_success.get(provider, ''):
+                last_success[provider] = created
         pending = [{k:r[k] for k in ('id','action','status','message')} for r in pending if r['status'] in ('accepted','authorizing','unknown')]
         return {'available': available or native_available, 'native_available': native_available,
                 'key_available': available, 'pending': pending, 'providers': [
-            {'id': name, 'name': label, 'connected': name in connected, 'model_access': 'not_verified'}
+            {'id': name, 'name': label, 'connected': name in connected, 'model_access': 'not_verified',
+             'last_success': last_success.get(name) or None}
             for name, label in [('opencode-go', 'OpenCode Go'), ('openai', 'ChatGPT')]],
             'scope': 'host_account', 'automatic_dispatch': False}
 

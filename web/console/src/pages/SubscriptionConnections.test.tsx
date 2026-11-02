@@ -52,4 +52,12 @@ describe('subscription configuration',()=>{
     mocks.request.mockImplementation(()=>Promise.resolve({available:true,native_available:true,pending:[{id:'old',action:'authorize_chatgpt',status:'unknown',message:'待核对'}],providers:[]}));
     render(tree());await waitFor(()=>expect(screen.getByRole('button',{name:'连接 OpenCode Go 账号'})).not.toBeDisabled());expect(screen.getByRole('button',{name:'连接 ChatGPT 订阅'})).toBeDisabled();
   });
+  it('keeps the last successful authorization visible after a reload',async()=>{
+    mocks.request.mockImplementation((url:string)=>url==='/api/subscriptions'?Promise.resolve({available:true,native_available:true,pending:[],providers:[
+      {id:'opencode-go',name:'OpenCode Go',connected:true,last_success:'2026-11-02T13:49:11.392096+00:00'},
+      {id:'openai',name:'ChatGPT',connected:false,last_success:null}]}):Promise.reject(Error('not found')));
+    render(tree());
+    expect(await screen.findByText(/认证已保存/)).toBeVisible();
+    expect(screen.getByText(/最近授权/)).toBeVisible();
+  });
 });

@@ -56,6 +56,17 @@ class SubscriptionTests(unittest.TestCase):
         self.assertNotIn('PRIVATE_SENTINEL',json.dumps(result))
         self.assertEqual([p['id'] for p in result['providers']],['opencode-go','openai'])
 
+    def test_successful_authorization_stays_visible_after_reload(self):
+        saved=self.subject.command(self.admin,{'id':'go-visible','action':'save_go','api_key':'test-only-key'})
+        providers={p['id']:p for p in self.subject.status(self.admin)['providers']}
+        self.assertEqual(providers['opencode-go']['last_success'],saved['created_at'])
+        self.assertIsNone(providers['openai']['last_success'])
+        self.backend.fail=True
+        unknown=self.subject.command(self.admin,{'id':'go-unknown','action':'save_go','api_key':'test-only-key'})
+        self.assertEqual(unknown['status'],'unknown')
+        providers={p['id']:p for p in self.subject.status(self.admin)['providers']}
+        self.assertEqual(providers['opencode-go']['last_success'],saved['created_at'])
+
     def test_callback_is_bound_to_session_and_uses_fixed_provider(self):
         import unittest.mock
         with unittest.mock.patch('ai_union.subscriptions.threading.Thread'):

@@ -6,7 +6,7 @@ import { Card } from '../components/ui';
 import './SubscriptionConnections.css';
 
 interface Receipt { id: string; action: string; status: string; message: string; url?: string; instructions?: string; needs_callback?: boolean }
-interface Status { available: boolean; native_available?: boolean; key_available?: boolean; pending: Receipt[]; providers: { id: string; name: string; connected: boolean }[] }
+interface Status { available: boolean; native_available?: boolean; key_available?: boolean; pending: Receipt[]; providers: { id: string; name: string; connected: boolean; last_success?: string | null }[] }
 export default function SubscriptionConnections() {
   const { session, connected } = useWorkspace();
   const allowed = !!session?.platform_admin;
@@ -65,20 +65,25 @@ export default function SubscriptionConnections() {
     }catch(e){if(activeScope.current===scope)setError(errorText(e)+'；请查询原授权结果。');}finally{if(activeScope.current===scope)setBusy(false);}
   }
   const waiting = (go:boolean) => busy || (!!pending && !current) || [current,...(status.data?.pending||[])].some(r=>r && (go?r.action==='save_go'||r.action==='authorize_go':r.action==='authorize_chatgpt') && !['succeeded','failed','reconciled'].includes(r.status));
+  // Persisted success time, so a reload still shows that an authorization landed.
+  const lastSuccess = (id: string) => {
+    const value = status.data?.providers.find(p=>p.id===id)?.last_success;
+    return value ? ' · 最近授权 ' + new Date(value).toLocaleString('zh-CN', { hour12: false }) : '';
+  };
   return <Card title="订阅与账号连接">
     <p>直接在工作台配置已有订阅，无需登录服务器。认证保存在服务端；保存和授权不调用模型。</p>
     <p className="form-note">这是平台托管的账号连接。公司使用前仍需明确绑定、额度与能力验证；不会自动启动组织或开发调度。</p>
     {status.isError && <p role="alert">订阅连接状态暂不可读取</p>}
     {status.data && !status.data.available && <p role="alert">订阅接入服务暂不可用，请联系平台维护者；此处无需填写服务器地址。</p>}
     <div className="subscription-grid">
-      <section><h3>OpenCode Go</h3><p>{status.data?.providers.find(p=>p.id==='opencode-go')?.connected?'认证已保存 · 模型能力未验证':'尚未连接'}</p>
+      <section><h3>OpenCode Go</h3><p>{status.data?.providers.find(p=>p.id==='opencode-go')?.connected?'认证已保存 · 模型能力未验证':'尚未连接'}{lastSuccess('opencode-go')}</p>
         <p>使用 OpenCode Console 账号登录，在官方页面选择已订阅 Go 的工作区，无需寻找 API Key。</p>
         <button className="button primary" type="button" onClick={()=>void submit('authorize_go')} disabled={!connected||!status.data?.native_available||waiting(true)}>连接 OpenCode Go 账号</button>
         <details><summary>已有个人 API Key？</summary><p>在官方 Console 的账号菜单 → Account → Personal API keys 创建，选择订阅 Go 的工作区。服务账号密钥与个人 Go 权益不同。</p><a href="https://opencode.ai/v2/docs/console/api/#personal-api-keys" target="_blank" rel="noopener noreferrer">查看官方个人密钥说明</a>
         <form onSubmit={e=>void submit('save_go',e)}><label>Go API Key<input aria-label="Go API Key" type="password" value={view===storage?key:''} onChange={e=>setKey(e.target.value)} autoComplete="off" maxLength={4096} required /></label>
         <button className="button" type="submit" disabled={!connected||!(status.data?.key_available??status.data?.available)||waiting(true)||!key.trim()}>保存 Go 连接</button></form></details>
       </section>
-      <section><h3>ChatGPT 订阅</h3><p>{status.data?.providers.find(p=>p.id==='openai')?.connected?'账号已授权 · 模型能力未验证':'尚未连接'}</p>
+      <section><h3>ChatGPT 订阅</h3><p>{status.data?.providers.find(p=>p.id==='openai')?.connected?'账号已授权 · 模型能力未验证':'尚未连接'}{lastSuccess('openai')}</p>
         <p>点击后打开官方登录页面，完成账号授权。远程服务器需在本页提交最终回调地址；不要把回调地址发到聊天。无需输入 ChatGPT 密码或 API Key。</p>
         <button className="button primary" type="button" onClick={()=>void submit('authorize_chatgpt')} disabled={!connected||!(status.data?.native_available??status.data?.available)||waiting(false)}>连接 ChatGPT 订阅</button>
       </section>

@@ -1,0 +1,17 @@
+{
+  "date": "2026-11-02",
+  "target": "https://192.168.1.29:18766/models",
+  "client": "Chrome (playwright-core, headless), self-signed certificate accepted for this check only",
+  "observed_text": "认证已保存 · 模型能力未验证 · 最近授权 2026/11/2 21:49:11",
+  "database_receipt": {
+    "action": "authorize_go",
+    "status": "succeeded",
+    "created_at": "2026-11-02T13:49:11.392096+00:00"
+  },
+  "native_connections": 3,
+  "limits": [
+    "The user's original tab/session state was not reproduced.",
+    "No real model call was made; authorization success does not verify Go model access.",
+    "Repeated authorizations keep adding native connections; deduplication is out of scope."
+  ]
+}

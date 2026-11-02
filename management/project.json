@@ -1510,6 +1510,29 @@
         ],
         "note": "匿名首次认领与唯一账号按用户要求实现；平台管理改为宿主显式开关，重置脚本补备份与库校验。领取窗口持续开放为产品选择，非缺陷遗漏。真实浏览器领取与并发压测未做；修复首次认领页轮询重挂载清空输入的缺陷，补 8 项组件测试与 Chrome 实测。"
       }
+    },
+    {
+      "id": "U-058",
+      "title": "订阅授权结果在刷新后保持可见",
+      "priority": "P1",
+      "milestone": "G0",
+      "module": "console",
+      "status": "done",
+      "owner": "Codex（外部工程代理）",
+      "role": "订阅接入 / 前端状态",
+      "acceptance": "授权成功后刷新仍能看到最近授权时间；只投影时间，不新增凭据或回执正文暴露；后端与前端测试覆盖",
+      "dependencies": [],
+      "blocker": null,
+      "started_at": "2026-11-02",
+      "updated_at": "2026-11-02",
+      "completion": {
+        "scope": "controlled",
+        "reviewer": "Codex自检（只读状态投影，无授权边界变化）",
+        "evidence": [
+          "evidence/046-subscription-visibility/README.md"
+        ],
+        "note": "现场核查确认授权在服务端已成功；问题是成功回执只在单一浏览器会话可见。新增 last_success 时间投影与刷新可见的卡片信息。未复现用户当时标签状态，未做真实模型验证。"
+      }
     }
   ]
 }
