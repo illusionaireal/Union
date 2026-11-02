@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-02",
+  "updated_at": "2026-11-03",
   "wip_limit": 4,
   "modules": [
     {
@@ -1532,6 +1532,29 @@
           "evidence/046-subscription-visibility/README.md"
         ],
         "note": "现场核查确认授权在服务端已成功；问题是成功回执只在单一浏览器会话可见。新增 last_success 时间投影与刷新可见的卡片信息。未复现用户当时标签状态，未做真实模型验证。"
+      }
+    },
+    {
+      "id": "U-059",
+      "title": "展示 Go 订阅的工作区、额度与可用模型",
+      "priority": "P1",
+      "milestone": "G0",
+      "module": "console",
+      "status": "done",
+      "owner": "Codex（外部工程代理）",
+      "role": "订阅接入 / 前端状态",
+      "acceptance": "只读投影工作区、额度窗口与 Go 模型目录；不返回设置、请求头或凭据；前端可选模型并显示能力；测试覆盖",
+      "dependencies": [],
+      "blocker": null,
+      "started_at": "2026-11-03",
+      "updated_at": "2026-11-03",
+      "completion": {
+        "scope": "controlled",
+        "reviewer": "Codex自检（只读投影，无授权边界变化）",
+        "evidence": [
+          "evidence/047-go-account-catalog/README.md"
+        ],
+        "note": "工作区、额度与 30 个 Go 模型已在 /models 只读展示；选择不持久化、不发起调用。订阅到 AU 执行的绑定仍未实现。"
       }
     }
   ]

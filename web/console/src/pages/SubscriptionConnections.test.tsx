@@ -60,4 +60,25 @@ describe('subscription configuration',()=>{
     expect(await screen.findByText(/认证已保存/)).toBeVisible();
     expect(screen.getByText(/最近授权/)).toBeVisible();
   });
+  it('shows the connected workspace, plan windows and Go models',async()=>{
+    mocks.request.mockImplementation((url:string)=>{
+      if(url==='/api/subscriptions')return Promise.resolve({available:true,native_available:true,pending:[],providers:[
+        {id:'opencode-go',name:'OpenCode Go',connected:true,last_success:null},
+        {id:'openai',name:'ChatGPT',connected:false,last_success:null}]});
+      if(url==='/api/subscription-account')return Promise.resolve({available:true,
+        workspace:{name:'Default',usage_url:'https://opencode.ai/console/wrk_1/activity/overview'},
+        limits:{rolling:{percent:1,limited:false,resets_at:1793647289000},weekly:{percent:2,limited:true,resets_at:1794182400000},monthly:{percent:null,limited:false,resets_at:null}},
+        accounts:[{id:'abcdef',method:'oauth'}],
+        models:[{id:'go-model-a',name:'Go Model A',context:200000,output:32000,tools:true,input:['text'],status:'active'}],
+        default_model:'go-model-a'});
+      return Promise.reject(Error('not found'));
+    });
+    render(tree());
+    expect(await screen.findByText(/已连接 1 个账号/)).toBeVisible();
+    expect(screen.getByText(/每周 2%（已达上限）/)).toBeVisible();
+    expect(screen.getByRole('link',{name:'官方用量'})).toHaveAttribute('href','https://opencode.ai/console/wrk_1/activity/overview');
+    fireEvent.change(screen.getByLabelText('Go 可用模型'),{target:{value:'go-model-a'}});
+    expect(screen.getByText(/上下文 200000/)).toBeVisible();
+    expect(screen.getByRole('button',{name:'复制模型 ID'})).toBeVisible();
+  });
 });

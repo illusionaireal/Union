@@ -145,6 +145,21 @@ class NativeBackend:
         self.calls.append((method,path,data))
         if path == '/api/integration':
             return {'data':[{'id':'opencode','connections':[{'secret':'PRIVATE_SENTINEL'}]}]}
+        if path == '/api/integration/opencode':
+            return {'data':{'connections':[{'id':'con_0123456789abcdef','method':'oauth','credential':'PRIVATE_SENTINEL'}]}}
+        if path == '/api/model':
+            return {'data':[
+                {'id':'go-model-a','modelID':'go-model-a','name':'Go Model A','providerID':'opencode-go','type':'chat','enabled':True,
+                 'limit':{'context':200000,'output':32000},'capabilities':{'tools':True,'input':['text','image']},'status':'active',
+                 'settings':{'baseURL':'https://opencode.ai/inference','apiKey':'PRIVATE_SENTINEL'},'headers':{'Authorization':'Bearer PRIVATE_SENTINEL'}},
+                {'id':'other-model','providerID':'opencode','type':'chat','enabled':True},
+                {'id':'go-disabled','providerID':'opencode-go','type':'chat','enabled':False}]}
+        if path == '/api/experimental/usage/limits':
+            return {'data':{'workspace':{'id':'wrk_1','name':'Default','usageURL':'https://opencode.ai/console/wrk_1/activity/overview'},
+                            'go':{'rolling':{'percent':1,'limited':False,'resetsAt':1793647289000},
+                                  'weekly':{'percent':2,'limited':True,'resetsAt':1794182400000}}}}
+        if path == '/api/model/default':
+            return {'data':{'id':'go-model-a'}}
         if method == 'GET': return {'data':{'status':self.status}}
         go='/opencode/' in path
         return {'data':{'attemptID':'con_abc123','mode':'auto','url':('https://evil.example/' if self.bad_url else
@@ -225,6 +240,26 @@ class NativeSubscriptionTests(unittest.TestCase):
         self.native.bad_url=True
         result=self.begin('authorize_chatgpt','bad-native')
         self.assertEqual(result['status'],'unknown');self.assertNotIn('url',result)
+
+    def test_account_catalog_projects_workspace_limits_and_go_models(self):
+        result=self.subject.catalog(self.admin)
+        self.assertTrue(result['available'])
+        self.assertEqual(result['workspace']['name'],'Default')
+        self.assertEqual(result['workspace']['usage_url'],'https://opencode.ai/console/wrk_1/activity/overview')
+        self.assertEqual(result['limits']['rolling']['percent'],1)
+        self.assertTrue(result['limits']['weekly']['limited'])
+        self.assertIsNone(result['limits']['monthly']['percent'])
+        self.assertEqual([m['id'] for m in result['models']],['go-model-a'])
+        self.assertEqual(result['models'][0]['context'],200000)
+        self.assertTrue(result['models'][0]['tools'])
+        self.assertEqual(result['default_model'],'go-model-a')
+        self.assertEqual(result['accounts'],[{'id':'abcdef','method':'oauth'}])
+        self.assertNotIn('PRIVATE_SENTINEL',json.dumps(result))
+
+    def test_account_catalog_requires_platform_admin(self):
+        for token in (self.app.new_session('board'),self.app.new_session('observer')):
+            with self.assertRaises(Rejected):
+                self.subject.catalog(token)
 
     def test_callback_relay_has_no_basic_no_redirect_and_failure_is_unknown(self):
         self.begin();self.subject.command(self.admin,self.callback())

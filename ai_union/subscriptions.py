@@ -128,6 +128,41 @@ class Subscriptions:
             for name, label in [('opencode-go', 'OpenCode Go'), ('openai', 'ChatGPT')]],
             'scope': 'host_account', 'automatic_dispatch': False}
 
+    def catalog(self, token):
+        """Read-only view of the connected host account: workspace, plan limits and models."""
+        self.authorize(token)
+        require(self.native is not None, '账号授权服务尚未启用')
+        try:
+            models = self.native.call('GET', '/api/model')['data']
+            limits = self.native.call('GET', '/api/experimental/usage/limits')['data']
+            default = self.native.call('GET', '/api/model/default')['data']
+            integration = self.native.call('GET', '/api/integration/opencode')['data']
+        except Exception:
+            return {'available': False, 'models': [], 'limits': {}, 'workspace': {}, 'accounts': [], 'default_model': None}
+
+        def window(value):
+            value = value or {}
+            return {'percent': value.get('percent'), 'limited': bool(value.get('limited')), 'resets_at': value.get('resetsAt')}
+
+        go = (limits or {}).get('go') or {}
+        workspace = (limits or {}).get('workspace') or {}
+        accounts = [{'id': str(c.get('id', ''))[-6:], 'method': c.get('method')}
+                    for c in (integration or {}).get('connections') or []]
+        rows = []
+        for model in models or []:
+            if model.get('providerID') != 'opencode-go' or model.get('type') != 'chat' or model.get('enabled') is False:
+                continue
+            limit, capabilities = model.get('limit') or {}, model.get('capabilities') or {}
+            rows.append({'id': model.get('id'), 'name': model.get('name') or model.get('id'),
+                         'context': limit.get('context'), 'output': limit.get('output'),
+                         'tools': bool(capabilities.get('tools')), 'input': capabilities.get('input') or [],
+                         'status': model.get('status')})
+        return {'available': True,
+                'workspace': {'name': workspace.get('name'), 'usage_url': workspace.get('usageURL')},
+                'limits': {name: window(go.get(name)) for name in ('rolling', 'weekly', 'monthly')},
+                'accounts': accounts, 'models': rows,
+                'default_model': (default or {}).get('id')}
+
     def _save(self, request_id, receipt):
         with self.app.catalog() as cx:
             row = cx.execute('SELECT receipt FROM subscription_commands WHERE id=?', (request_id,)).fetchone()

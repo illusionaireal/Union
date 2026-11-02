@@ -164,6 +164,8 @@ class Handler(BaseHTTPRequestHandler):
                 return self.send(200, {'vouchers':vouchers(app.engine(token,org_id))})
             if path.path == "/api/subscriptions":
                 return self.send(200, self.server.subscriptions.status(token))
+            if path.path == "/api/subscription-account":
+                return self.send(200, self.server.subscriptions.catalog(token))
             if path.path == "/api/subscription-receipts":
                 return self.send(200, {"receipt": self.server.subscriptions.receipt(token, query.get("id", [None])[0])})
             if path.path == "/api/snapshot":
