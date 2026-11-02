@@ -1401,6 +1401,50 @@
         ],
         "note": "0–5批工程与受控验证交付：393项Python含5平台跳过，15浏览器；真实供应商/私有订阅最终账号至AU执行、NAS部署及整体031对齐未验，不关闭原公司真实资源阻塞。"
       }
+    },
+    {
+      "id": "U-053",
+      "title": "确认正式开发阶段及交付发布门槛",
+      "priority": "P0",
+      "milestone": "G0",
+      "module": "management",
+      "status": "done",
+      "owner": "Codex（外部工程代理）",
+      "role": "产品 / 工程管理",
+      "acceptance": "保存2026-11-02用户阶段决定，明确工程/真实集成/使用/发布/持续运行门槛，同步入口和主账且不升级历史成熟度",
+      "dependencies": [
+        "U-052"
+      ],
+      "blocker": null,
+      "started_at": "2026-11-02",
+      "updated_at": "2026-11-02",
+      "completion": {
+        "scope": "documentation",
+        "reviewer": "Codex自检（仅阶段与交付标准，非运行能力或独立权限评审）",
+        "evidence": [
+          "docs/FORMAL_DEVELOPMENT.md"
+        ],
+        "note": "用户确认阶段已记录；既有真实账号/模型/主机/工作区阻塞与业务里程碑不变。"
+      }
+    },
+    {
+      "id": "U-054",
+      "title": "准备正式候选版安装升级与回滚验收包",
+      "priority": "P0",
+      "milestone": "G0",
+      "module": "hosting",
+      "status": "ready",
+      "owner": null,
+      "role": "发布工程 / 运维验收",
+      "acceptance": "候选构建绑定提交和依赖版本；配置/凭据/数据分离；安装升级、旧数据兼容、失败回滚及备份恢复有可重现验证和维护说明；受控包验证与真实目标环境部署分别报告",
+      "dependencies": [
+        "U-052",
+        "U-053"
+      ],
+      "blocker": null,
+      "started_at": null,
+      "updated_at": "2026-11-02",
+      "completion": null
     }
   ]
 }
