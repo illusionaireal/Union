@@ -1,0 +1,29 @@
+{
+  "scope": "controlled local HTTP with the built Worker handler and actual Chromium",
+  "checks": [
+    "Document returns HTTP 200 and Chinese title",
+    "Eight chapters and six batch records render",
+    "Desktop has no page overflow",
+    "Chapter navigation targets the real section",
+    "Copy button writes exact guarded checkout commands",
+    "Acceptance checklist is interactive",
+    "Checklist does not persist or imply acceptance",
+    "Protocol explanation expands",
+    "Print action opens browser print flow",
+    "Print presentation hides navigation controls",
+    "320px layout has no page overflow",
+    "Mobile keeps the full chapter navigation",
+    "Wide status table scrolls within its region on mobile",
+    "CSP blocks network calls and frames",
+    "No nonlocal browser requests",
+    "No client storage writes",
+    "No JavaScript errors",
+    "Published HTML contains no real LAN address or private NAS root",
+    "Writes rejected with 405 and Allow header",
+    "Unknown API route returns 404",
+    "HEAD returns headers without a body"
+  ],
+  "errors": [],
+  "modelCalls": 0,
+  "nasDeployment": false
+}

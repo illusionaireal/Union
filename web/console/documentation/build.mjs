@@ -1,0 +1,30 @@
+// Build-time React rendering. The published document has no organization backend.
+import { build } from 'esbuild';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { createElement } from 'react';
+import { execFileSync } from 'node:child_process';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+import path from 'node:path';
+import { createHash } from 'node:crypto';
+
+const workspace = fileURLToPath(new URL('../', import.meta.url));
+const root = path.resolve(workspace, '../..');
+const output = path.join(root, 'dist/documentation');
+await mkdir(output, { recursive: true });
+await build({ entryPoints: [path.join(workspace, 'src/documentation/Document.tsx')], outfile: path.join(output, 'render.mjs'), bundle: true, platform: 'node', format: 'esm', jsx: 'automatic', external: ['react', 'react/jsx-runtime'] });
+const { default: Document } = await import(pathToFileURL(path.join(output, 'render.mjs')).href);
+const revision = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim();
+const workingTreeDirty = Boolean(execFileSync('git', ['status', '--porcelain'], { cwd: root, encoding: 'utf8' }).trim());
+const html = '<!doctype html>' + renderToStaticMarkup(createElement(Document, { revision: revision + (workingTreeDirty ? '（含未提交改动）' : '') }));
+const css = await readFile(path.join(workspace, 'src/documentation/document.css'), 'utf8');
+const js = await readFile(path.join(workspace, 'src/documentation/document.js'), 'utf8');
+const icon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><rect width="40" height="40" rx="9" fill="#203a3b"/><path d="M12 10v13c0 11 16 11 16 0V10" fill="none" stroke="#fff" stroke-width="5"/></svg>';
+const worker = await readFile(path.join(workspace, 'documentation/worker.mjs'), 'utf8');
+const files = { 'index.html': html, 'document.css': css, 'document.js': js, 'favicon.svg': icon, 'worker.mjs': worker };
+for (const [name, content] of Object.entries(files)) await writeFile(path.join(output, name), content);
+await build({ entryPoints: [path.join(output, 'worker.mjs')], outfile: path.join(output, 'worker.bundle.mjs'), bundle: true, platform: 'browser', format: 'esm', loader: { '.html': 'text', '.css': 'text', '.js': 'text', '.svg': 'text' } });
+await writeFile(path.join(output, 'bundle.json'), JSON.stringify(files));
+const manifest = { revision, workingTreeDirty, files: Object.fromEntries(Object.entries(files).map(([name, content]) => [name, { bytes: Buffer.byteLength(content), sha256: createHash('sha256').update(content).digest('hex') }])) };
+await writeFile(path.join(output, 'manifest.json'), JSON.stringify(manifest, null, 2) + '\n');
+console.log(`Built UNION documentation from ${revision.slice(0, 7)}: ${Object.keys(files).length} files, ${Buffer.byteLength(html)} bytes HTML`);

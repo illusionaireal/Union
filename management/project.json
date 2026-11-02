@@ -1468,6 +1468,24 @@
         ],
         "note": "六份说明及开发规范已更新，原文保存在本机忽略目录；未重写Git历史，宿主脚本配置化仍待U-054。"
       }
+    },
+    {
+      "id": "U-056",
+      "title": "发布正式开发与NAS试运行网页文档",
+      "priority": "P0",
+      "milestone": "G0",
+      "module": "management",
+      "status": "doing",
+      "owner": "Codex（外部工程代理）",
+      "role": "前端文档 / 发布工程",
+      "acceptance": "现有React工作区维护脱敏只读文档；桌面/手机/交互和构建验证；用户授权范围内推送dev并在Cloudflare部署且核对实际地址，不扩大NAS或模型验收结论",
+      "dependencies": [
+        "U-055"
+      ],
+      "blocker": null,
+      "started_at": "2026-11-02",
+      "updated_at": "2026-11-02",
+      "completion": null
     }
   ]
 }

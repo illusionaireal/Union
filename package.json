@@ -16,6 +16,7 @@
     "check": "npm run check:management && npm run check:plan && npm test && npm run check:console",
     "check:console": "npm run typecheck --workspace @union/console && npm run test --workspace @union/console && npm run build:console",
     "build:console": "npm run build --workspace @union/console",
+    "build:documentation": "node web/console/documentation/build.mjs",
     "dev:console": "npm run dev --workspace @union/console",
     "test:browser": "node scripts/check_console.cjs",
     "test:novel": "node scripts/check_novel_company.cjs",
