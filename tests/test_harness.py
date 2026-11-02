@@ -129,8 +129,8 @@ class HarnessTests(unittest.TestCase):
         self.replies(tool("update_organization", waiting | {"evidence_refs": ["fresh-feedback"]}))
         idle = threading.Event()
 
-        def observe_step(engine, current_executor):
-            action = step(engine, current_executor)
+        def observe_step(engine, current_executor, attempt_limit=None):
+            action = step(engine, current_executor, attempt_limit)
             if action["action"] == "wait":
                 idle.set()
             return action
@@ -339,7 +339,7 @@ class HarnessTests(unittest.TestCase):
         self.replies(self.draft())
         run(self.e, executor, 1)
         self.replies(tool("activate_organization", {}))
-        completed = subprocess.run([sys.executable, "-m", "ai_union", "--root", str(self.e.root), "run", "--executor", "api", "--max-steps", "1", "--allow-unknown-cost"], capture_output=True, text=True, timeout=20)
+        completed = subprocess.run([sys.executable, "-m", "ai_union", "--root", str(self.e.root), "run", "--executor", "api", "--max-steps", "1", "--allow-unknown-cost"], capture_output=True, text=True, encoding='utf-8', timeout=20)
         self.assertEqual(completed.returncode, 0, completed.stderr + completed.stdout)
         self.assertEqual(self.e.state()["phase"], "active")
         self.assertEqual(len(self.provider.requests), 2)

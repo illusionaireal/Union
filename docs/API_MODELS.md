@@ -1,5 +1,9 @@
 # 真实模型 API：运行与前端接口
 
+## 2026-11-02：043协议、配置与费用增量
+
+连接可声明provider/protocol、受限凭据引用、内网HTTP、context_policy及billing；旧连接缺少新字段时保持Chat Completions与unknown费用。新增Responses、Anthropic Messages、Gemini适配。指定连接测试严格使用目标；岗位备用链仅对明确失败回退，每次备用请求独立预约且持久保留占用，unknown指向实际端点。费用由原连接revision重算，分摊不改原run。新增`/api/model-catalog`、`/api/model-export`、`/api/model-costs`及受信api_import/api_cost_allocate命令。参数边界、四类口径和验证见[MODEL_ACCESS](MODEL_ACCESS.md)与[043矩阵](../evidence/043-usable-model-access/matrix.md)。
+
 ## 2026-11-01：订阅认证故障修复（042）
 
 /models已接入固定官方v2.2.5 Console账号与ChatGPT token-sharing浏览器方法。远程回调只交给原生loopback监听器，凭据由原生私有home保存；原4096可选个人Key不自动迁移。真实token交换/模型仍待用户登录验证。

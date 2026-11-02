@@ -206,6 +206,10 @@ class Console:
         with e.read_transaction() as cx:
             # Reject credentials before even a rejected command can persist them.
             reject_saved_secrets(cx, public_input, extra_secret=private_key)
+            if request['kind']=='event' and request['data'].get('kind')=='model_input':
+                from .model_media import payload
+                _,items=payload(request['data'].get('content'))
+                for _,raw in items:reject_saved_secrets(cx,raw.decode('latin1'))
         persisted = stored_command(request)
         with e.read_transaction() as cx:
             prior = self._existing(cx, persisted)
@@ -344,7 +348,7 @@ class Console:
             text(data["content"], "事件内容")
             text(data["source"], "事件来源", 1000)
             require(type(data["simulated"]) is bool, "事件需要显式布尔模拟标记")
-            require(data["kind"] in ("opinion", "fact", "external_feedback"), "不支持此输入事件类型")
+            require(data["kind"] in ("opinion", "fact", "external_feedback", "model_input"), "不支持此输入事件类型")
             e.add_event(data.get("event_id", request["id"]), data["kind"], {k: data[k] for k in ("content", "source", "simulated")})
         elif kind in ("start", "api_test"):
             require(type(data.get("max_steps", 1)) is int and 1 <= data.get("max_steps", 1) <= 10000, "运行需要有限正整数步数")

@@ -49,6 +49,16 @@ async function commit(page){const title=await page.locator('#operation-dialog h2
   await page.waitForFunction(()=>document.querySelectorAll('[data-connection]').length===2);check('Import conflict preview and rename preserve original connection');
   const original=page.locator('[data-connection]').first();await original.locator('[data-command="api_connection"]').click();
   check('Editing does not automatically switch the default',!await page.locator('[name="bind_default"]').isChecked());await page.locator('#close-operation').click();
+  await page.locator('[data-nav="overview"]').click();await page.locator('[data-command="event"]').click();
+  await page.locator('[name="content"]').fill('受控图片资料，仅测试事件提交');await page.locator('[name="source"]').fill('浏览器替身');
+  await page.getByLabel('添加图片或 PDF 资料',{exact:true}).setInputFiles({name:'simulated.png',mimeType:'image/png',buffer:Buffer.from('simulated-png')});
+  await page.waitForFunction(()=>document.querySelector('[name="attachments_json"]').value.length>0);
+  await page.locator('#preview-operation').click();await page.locator('#operation-preview').waitFor();
+  check('Media preview shows filename without encoded bytes',!(await page.locator('#operation-preview').innerText()).includes(Buffer.from('simulated-png').toString('base64')));
+  await page.locator('#commit-operation').click();await page.locator('#operation-result').waitFor();
+  assert.match(await page.locator('#operation-result').innerText(),/已保存/);await page.locator('#close-operation').click();
+  check('Inline media is saved as an explicit input event without model calls');
+  await page.locator('[data-nav="models"]').click();await page.locator('[data-connection]').first().waitFor();
   await page.screenshot({path:path.join(output,'models-desktop.png'),fullPage:true});
   await page.setViewportSize({width:320,height:900});await page.screenshot({path:path.join(output,'models-mobile.png'),fullPage:true});
   check('Model configuration fits a 320px viewport',await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));

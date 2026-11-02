@@ -180,7 +180,11 @@ export function CommandForm({ draft, onClose }: { draft: Draft; onClose: () => v
               {Object.entries(preview.data.config as Record<string,unknown>).filter(([key])=>['name','base_url','model','protocol'].includes(key)).map(([key,value])=><div key={key}><dt>{{name:'连接名称',base_url:'API地址',model:'模型',protocol:'协议'}[key]}</dt><dd>{String(value)}</dd></div>)}
               <div><dt>采用方式</dt><dd>{preview.data.bind_default?'保存并设为默认':'仅保存连接'}</dd></div>
               <div><dt>模型调用</dt><dd>本次保存不调用模型</dd></div>
-            </dl> : <Json value={publicPreview(preview.data)} />}
+            </dl> : draft.kind==='event' && preview.data.kind==='model_input' ? <div>
+              <p>{(JSON.parse(String(preview.data.content)) as {text:string}).text}</p>
+              <ul>{(JSON.parse(String(preview.data.content)) as {attachments:Array<{name:string;mime:string}>}).attachments.map(item=><li key={item.name}>{item.name} · {item.mime}</li>)}</ul>
+              <p>仅保存输入事件，不立即调用模型。</p>
+            </div> : <Json value={publicPreview(preview.data)} />}
             {draft.kind === 'amend' && (
               <p>
                 受影响的未完成工作：

@@ -4,7 +4,7 @@
 
 你给目标和预算，它自行组织团队、开展业务、交付成果，并向你汇报经营情况。开发主分支为 **`dev`**。
 
-**项目管理入口：[项目总览与路线](PROJECT.md) · [任务看板](TASKS.md) · [维护方法](management/README.md) · [后续开发计划](docs/DEVELOPMENT_ROADMAP.md)。** 当前为工程原型，目标公司尚未真实运营；下方日期条目为迭代记录。
+**项目管理入口：[项目总览与路线](PROJECT.md) · [任务看板](TASKS.md) · [维护方法](management/README.md) · [后续开发计划](docs/DEVELOPMENT_ROADMAP.md)。** 当前已进入正式开发阶段；已有工程底座，正式发布与真实经营仍待验收。见[阶段与交付标准](docs/FORMAL_DEVELOPMENT.md)；下方日期条目为迭代记录。
 
 ## ai-union 与 ai-union-platform 的作用和边界
 
@@ -19,6 +19,8 @@
 本文及历史文档中的“UNION 平台”指 ai-union-platform。完整产品依据见[定义与项目边界](docs/ai-union/DESIGN.md#2026-10-20已确认的作用和边界)。
 
 ## 当前实现与运行入口
+
+**2026-11-02：正常登录与模型接入工程交付。** 宿主首次认领后可建立管理员账号，日常固定网址登录；模型目录、四协议、AU独立配置导入导出、岗位/备用链、上下文/图片PDF及成本记录已接入。393项Python（5平台跳过）、15项实际浏览器及独立权限费用复核通过；真实供应商/订阅最终账号至AU执行与NAS部署仍未验。见[使用指南](docs/MODEL_ACCESS.md)和[043证据](evidence/043-usable-model-access/README.md)。
 
 **2026-10-30：New API 网关接入第一批代码已实现。** 平台目录、显式管理权限、健康/版本检测和AU独立连接复用通过受控检查；实际浏览器与真实New API验收待完成，托管启停/升级为后续批次。见[使用说明](docs/AI_GATEWAYS.md)与[027证据](evidence/027-gateway-management/README.md)。
 

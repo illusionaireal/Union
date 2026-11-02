@@ -186,10 +186,11 @@ export function readForm(kind: CommandKind, form: HTMLFormElement): Record<strin
       };
     }
     case 'event':
+      if(str('media_loading')==='true'||str('media_error'))throw new Error(str('media_error')||'资料正在读取，请稍后预览');
       return {
-        kind: str('kind'),
+        kind: str('attachments_json')?'model_input':str('kind'),
         event_id: str('event_id'),
-        content: str('content'),
+        content: str('attachments_json')?JSON.stringify({text:str('content'),attachments:JSON.parse(str('attachments_json'))}):str('content'),
         source: str('source'),
         simulated: str('simulated') === 'true',
       };

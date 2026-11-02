@@ -1,12 +1,14 @@
 # UNION 外部开发调度器
 
+> 2026-11-02 运维信息脱敏：实际地址、SSH 用户/端口、私有目录和证书指纹改为占位说明；历史验证结论不变。当前连接信息应取自宿主私有配置，本文件不作为连接配置。此编辑不构成对部署脚本的新复核。
+
 按 `union-astra-sol-vps-handoff-v1.md` 实施；这是外部工程工具，不是 AU 成员或公司运营。部署记录、未通过项见 `evidence/030-dev-orchestrator/README.md`。
 
 控制器使用 Python 标准库与 SQLite；专用 dev checkout 串行执行，不推送、不部署生产。模型固定 Astra / Sol / Astra。宿主配置和证据与目标仓库分开；模型输出不能指定宿主命令。模型调用、验证均经固定容器入口，日常角色没有 Docker socket。首次真实验收前保持 disabled。
 
 ## 本次部署
 
-SSH `root@192.168.1.29:222`；安装根目录 `/volume1/docker/union-dev`。`Union/` 是专用 dev 副本，原 Synology 同步目录未被覆盖。`controller/` 和宿主 JSON 配置由 root 维护；`state/` 属于 UID/GID 10001；工作及验证容器使用 UID 10002/GID 10001。DSM systemd 219 无法解析无 passwd 记录的数字 User，受信 `union-dev` 包装器在进入控制器之前清除附加组并永久降为 10001。root broker 只执行固定镜像、挂载、模型和测试 profile；该 socket 不进入任何容器。
+SSH `SSH_TARGET（宿主私有配置）`；安装根目录 `${UNION_DEPLOY_ROOT}`。`Union/` 是专用 dev 副本，原 Synology 同步目录未被覆盖。`controller/` 和宿主 JSON 配置由 root 维护；`state/` 属于 UID/GID 10001；工作及验证容器使用 UID 10002/GID 10001。DSM systemd 219 无法解析无 passwd 记录的数字 User，受信 `union-dev` 包装器在进入控制器之前清除附加组并永久降为 10001。root broker 只执行固定镜像、挂载、模型和测试 profile；该 socket 不进入任何容器。
 
 镜像工具链：Node 24.19.0、Python 3.13.5、Codex CLI 0.166.0、Chromium 156.0.8078.73。部署镜像使用实际构建的内容 SHA；基础镜像复用 NAS 已缓存的公开镜像，仅使用镜像层，不挂载现有 Hermes 服务/数据。Docker 的旧代理不可达，未改全局 daemon 设置或其他服务。DSM 不支持 CFS 的 `--cpus`，使用 4GB 内存限制和 CPU shares；shares 不是 CPU 硬上限。
 
@@ -14,16 +16,18 @@ SSH `root@192.168.1.29:222`；安装根目录 `/volume1/docker/union-dev`。`Uni
 
 ## 操作
 
+以下 `union-nas` 为占位 SSH 别名。先在宿主私有 SSH 配置中设置实际 HostName、Port、User 和认证方式；不要把其值写入本仓库。
+
 ```sh
-ssh -p 222 root@192.168.1.29 /usr/local/bin/union-dev status
-ssh -p 222 root@192.168.1.29 /usr/local/bin/union-dev preflight
-ssh -p 222 root@192.168.1.29 /usr/local/bin/union-dev once --dry-run
-ssh -p 222 root@192.168.1.29 /usr/local/bin/union-dev pause
-ssh -p 222 root@192.168.1.29 /usr/local/bin/union-dev inspect RUN_ID
-ssh -p 222 root@192.168.1.29 /usr/local/bin/union-dev reconcile RUN_ID
+ssh union-nas /usr/local/bin/union-dev status
+ssh union-nas /usr/local/bin/union-dev preflight
+ssh union-nas /usr/local/bin/union-dev once --dry-run
+ssh union-nas /usr/local/bin/union-dev pause
+ssh union-nas /usr/local/bin/union-dev inspect RUN_ID
+ssh union-nas /usr/local/bin/union-dev reconcile RUN_ID
 # 仅在确认原作业结束、已审查证据后显式归档；保留代码与预算，不重放
-ssh -p 222 root@192.168.1.29 /usr/local/bin/union-dev reconcile RUN_ID --resolve blocked
-ssh -p 222 root@192.168.1.29 /usr/local/bin/union-dev resume
+ssh union-nas /usr/local/bin/union-dev reconcile RUN_ID --resolve blocked
+ssh union-nas /usr/local/bin/union-dev resume
 ```
 
 `resume` 只清除暂停意图，不修改 `enabled` 或资源策略。未核对的作业阻止恢复。只读命令不消费模型；`preflight --probe-models` 是显式收费/额度动作，仍受沙箱、凭据隔离与预算门禁。`once --trial` 用于首次真实验收，不能绕过资源/权限门禁。每轮失败保留证据与代码；不要用 reset/clean 清除。

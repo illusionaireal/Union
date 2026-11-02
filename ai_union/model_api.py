@@ -468,8 +468,14 @@ class APIExecutor:
             offered = tools_for(package)
             if offered:
                 body["tools"] = offered
+        from .model_media import attach_visible_media, guard_media
+        body=attach_visible_media(package,copy.deepcopy(body))
+        def check_media(value):
+            require(not self._contains_credential(value), '输入资料包含模型凭据，拒绝派发')
+            if self.secret_guard:self.secret_guard(value)
         if self.correction and package["kind"] == "decision" and self.correction["actor"] == package["actor"] and self.correction["assignment_id"] == package["assignment_id"]:
             body["messages"].extend(self.correction["messages"])
+        guard_media(body,check_media)
         self.correction = None
         secret = self.connection["api_key"]
         require(not self._contains_credential(body), "工作包包含 API Key，拒绝派发")

@@ -40,13 +40,14 @@
     {
       "id": "models",
       "name": "模型连接 / 公共接入",
-      "implemented": "Chat Completions、私有密钥、默认连接、网页工具往返测试与调用回执；New API 目录、显式平台权限、健康/版本检测、AU连接来源快照已实现",
-      "validation": "V2：免费 OpenRouter 曾实测",
-      "gap": "U-037待实际浏览器验收；U-039真实New API/上游工具往返未验；当前公司连接阻塞保持；U-050已实现按角色绑定与解析期回退，运行期切换与前端入口未做",
+      "implemented": "AU独立多连接/导入导出、版本化目录、四协议、受限凭据、岗位/回退、上下文/媒体及四类费用",
+      "validation": "V2历史局部；043新增范围V1受控验证与独立权限费用复核",
+      "gap": "真实供应商各协议工具往返、私有订阅最终账号至AU执行、真实自托管与整体031对标仍未验",
       "evidence": [
         "docs/API_MODELS.md",
         "evidence/011-openrouter-smoke/README.md",
-        "evidence/027-gateway-management/README.md"
+        "evidence/027-gateway-management/README.md",
+        "evidence/043-usable-model-access/README.md"
       ]
     },
     {
@@ -1379,11 +1380,108 @@
       "priority": "P0",
       "milestone": "G0",
       "module": "models",
-      "status": "doing",
+      "status": "done",
       "owner": "Codex（外部工程代理）",
       "role": "工程 / 独立权限与费用复核",
       "acceptance": "按specs/043-usable-model-access完成基线、持久身份、AU配置迁移、多协议与目录、岗位回退、上下文与成本；逐项留证，工程/真实验收分开，权限费用经独立复核",
       "dependencies": [],
+      "blocker": null,
+      "started_at": "2026-11-02",
+      "updated_at": "2026-11-02",
+      "completion": {
+        "scope": "controlled",
+        "reviewer": "final_security_review（独立权限/费用复核，52项及媒体增量56项）",
+        "evidence": [
+          "specs/043-usable-model-access/spec.md",
+          "evidence/043-usable-model-access/README.md",
+          "evidence/043-usable-model-access/matrix.md",
+          "docs/reviews/2026-11-02-model-access.md",
+          "evidence/043-usable-model-access/validation/python-final.log",
+          "evidence/043-usable-model-access/browser-final/checks.json"
+        ],
+        "note": "0–5批工程与受控验证交付：393项Python含5平台跳过，15浏览器；真实供应商/私有订阅最终账号至AU执行、NAS部署及整体031对齐未验，不关闭原公司真实资源阻塞。"
+      }
+    },
+    {
+      "id": "U-053",
+      "title": "确认正式开发阶段及交付发布门槛",
+      "priority": "P0",
+      "milestone": "G0",
+      "module": "management",
+      "status": "done",
+      "owner": "Codex（外部工程代理）",
+      "role": "产品 / 工程管理",
+      "acceptance": "保存2026-11-02用户阶段决定，明确工程/真实集成/使用/发布/持续运行门槛，同步入口和主账且不升级历史成熟度",
+      "dependencies": [
+        "U-052"
+      ],
+      "blocker": null,
+      "started_at": "2026-11-02",
+      "updated_at": "2026-11-02",
+      "completion": {
+        "scope": "documentation",
+        "reviewer": "Codex自检（仅阶段与交付标准，非运行能力或独立权限评审）",
+        "evidence": [
+          "docs/FORMAL_DEVELOPMENT.md"
+        ],
+        "note": "用户确认阶段已记录；既有真实账号/模型/主机/工作区阻塞与业务里程碑不变。"
+      }
+    },
+    {
+      "id": "U-054",
+      "title": "准备正式候选版安装升级与回滚验收包",
+      "priority": "P0",
+      "milestone": "G0",
+      "module": "hosting",
+      "status": "ready",
+      "owner": null,
+      "role": "发布工程 / 运维验收",
+      "acceptance": "候选构建绑定提交和依赖版本；配置/凭据/数据分离；安装升级、旧数据兼容、失败回滚及备份恢复有可重现验证和维护说明；受控包验证与真实目标环境部署分别报告；真实连接目标与私有路径移入宿主配置，缺失参数在变更前拒绝，保留既有路径和来源安全边界",
+      "dependencies": [
+        "U-052",
+        "U-053"
+      ],
+      "blocker": null,
+      "started_at": null,
+      "updated_at": "2026-11-02",
+      "completion": null
+    },
+    {
+      "id": "U-055",
+      "title": "脱敏部署文档并记录环境硬编码整改范围",
+      "priority": "P0",
+      "milestone": "G0",
+      "module": "hosting",
+      "status": "done",
+      "owner": "Codex（外部工程代理）",
+      "role": "文档维护 / 部署工程",
+      "acceptance": "部署说明使用占位符；标明历史脱敏，保留原文和验收结论；说明Git历史与脚本硬编码残留并纳入U-054",
+      "dependencies": [],
+      "blocker": null,
+      "started_at": "2026-11-02",
+      "updated_at": "2026-11-02",
+      "completion": {
+        "scope": "documentation",
+        "reviewer": "Codex自检（仅文档脱敏，非部署或独立权限复核）",
+        "evidence": [
+          "docs/DEPLOYMENT_PRIVACY.md"
+        ],
+        "note": "六份说明及开发规范已更新，原文保存在本机忽略目录；未重写Git历史，宿主脚本配置化仍待U-054。"
+      }
+    },
+    {
+      "id": "U-056",
+      "title": "发布正式开发与NAS试运行网页文档",
+      "priority": "P0",
+      "milestone": "G0",
+      "module": "management",
+      "status": "doing",
+      "owner": "Codex（外部工程代理）",
+      "role": "前端文档 / 发布工程",
+      "acceptance": "现有React工作区维护脱敏只读文档；桌面/手机/交互和构建验证；用户授权范围内推送dev并在Cloudflare部署且核对实际地址，不扩大NAS或模型验收结论",
+      "dependencies": [
+        "U-055"
+      ],
       "blocker": null,
       "started_at": "2026-11-02",
       "updated_at": "2026-11-02",

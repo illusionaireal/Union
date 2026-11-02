@@ -26,7 +26,7 @@ export interface Session {
 }
 export interface ModelConnection {
   key_source?: string | null;
-  catalog?: {context_window?:number; tool_call?:boolean; input_modalities?:string[]; revision?:string} | null;
+  catalog?: {context_window?:number; tool_call?:boolean; input_modalities?:string[]; revision?:string; cost?:{input?:number;output?:number}} | null;
   gateway_ref?: { id: string; revision: number };
   id: string;
   revision: number;

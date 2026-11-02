@@ -179,6 +179,7 @@ export default function Models() {
                 </div>
                 <strong className="connected-model">{c.config.model}</strong>
                 <p className="form-note">{c.config.protocol || 'openai_chat_completions'} · 上下文 {c.catalog?.context_window?.toLocaleString() || '未知'} · 工具能力 {c.catalog?.tool_call===true?'目录声明支持':c.catalog?.tool_call===false?'目录声明不支持':'未知，需测试'} · 成本 {c.config.billing?.basis || 'unknown'}</p>
+                {c.catalog?.cost && <p className="form-note">目录基础参考价（USD / 百万文本 token）：输入 {c.catalog.cost.input??'未知'}，输出 {c.catalog.cost.output??'未知'}。不自动用于本 AU 计费。</p>}
                 <div className="endpoint">
                   <Globe size={15} />
                   <span>{c.config.base_url}</span>

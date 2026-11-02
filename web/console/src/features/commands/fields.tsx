@@ -99,6 +99,9 @@ export function CommandFields({
   const [newConnectionId] = useState(() => 'model-' + crypto.randomUUID().slice(0, 8));
   const connection = options?.connection;
   const [eventId] = useState(() => crypto.randomUUID());
+  const [media,setMedia]=useState<Array<{name:string;mime:string;data:string}>>([]);
+  const [mediaLoading,setMediaLoading]=useState(false);
+  const [mediaError,setMediaError]=useState('');
   const model = (label: string, hidden = false) => (
     <Field
       name="model"
@@ -393,6 +396,19 @@ export function CommandFields({
           </Select>
           <Field name="event_id" label="来源事件或回执 ID" value={eventId} />
           <Area name="content" label="事件内容" />
+          <label className="operation-field">添加图片或 PDF 资料<input type="file" multiple accept="image/png,image/jpeg,image/webp,image/gif,application/pdf" onChange={async e=>{
+            const files=Array.from(e.target.files||[]);setMediaLoading(true);setMediaError('');setMedia([]);
+            try {
+              if(files.length>4||files.reduce((sum,f)=>sum+f.size,0)>49152)throw new Error('最多4份资料，总大小不超过48KiB');
+              const items=await Promise.all(files.map(async file=>{const bytes=new Uint8Array(await file.arrayBuffer());return {name:file.name,mime:file.type,data:btoa(Array.from(bytes,b=>String.fromCharCode(b)).join(''))};}));
+              setMedia(items);
+            }catch(error){setMediaError(error instanceof Error?error.message:'资料读取失败');}finally{setMediaLoading(false);}
+          }} /></label>
+          <input type="hidden" name="attachments_json" value={media.length?JSON.stringify(media):''} />
+          <input type="hidden" name="media_loading" value={String(mediaLoading)} />
+          <input type="hidden" name="media_error" value={mediaError} />
+          {mediaError&&<p role="alert">{mediaError}</p>}
+          <p className="form-note">资料以模型输入事件提交，仅进入已有授权的决策上下文。模型须明确支持该类型，否则拒绝调用。当前单次总大小上限48KiB。</p>
           <Field name="source" label="可核验来源" />
           <Select name="simulated" label="来源标记">
             <option value="true">模拟资料</option>

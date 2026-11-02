@@ -1,5 +1,7 @@
 # AI-UNION 订阅配置与 HTTPS 入口：独立工程复核
 
+> 2026-11-02 运维信息脱敏：实际地址、SSH 用户/端口、私有目录和证书指纹改为占位说明；历史验证结论不变。当前连接信息应取自宿主私有配置，本文件不作为连接配置。此编辑不构成对部署脚本的新复核。
+
 日期：2026-11-01。复核角色：`subscription_security_review`，独立于实现者。范围为本批 `subscriptions.py`、Server 路由、Console 会话范围标识、React 订阅组件与测试，以及 `run_frontend.py` / `deploy_frontend.py`。未修改或归属用户既有工作区变更。
 
 ## 结论
@@ -22,7 +24,7 @@
 - 后端检查显式全局 `platform_admin`，普通 board、受限组织会话及观察者不能读取或修改宿主账号。页面隐藏不是权限依据。
 - 浏览器不能提交宿主地址、认证文件路径、命令、provider 方法编号或任意目标 URL；Go 与 OpenAI 使用固定私有后端路径。后端 Basic 认证不进入浏览器或组织上下文；禁用环境代理和 HTTP 重定向，响应有大小上限。
 - 官方授权链接仅允许 HTTPS 的 `auth.openai.com` / `chatgpt.com`，设备码按规定形式抽取，原始 instructions 不直接回显。模型访问状态保持 `not_verified`，保存不会启动模型或开发调度。
-- 专用 TLS 入口固定为 `192.168.1.29:18766`。代理先校验 Host、Origin、Sec-Fetch，再向原 loopback Server 转发；不放宽原 Server 的来源校验。会话 Cookie 保持 HttpOnly、SameSite，并追加 Secure。
+- 专用 TLS 入口固定为 `DEPLOYMENT_HOST:CONSOLE_PORT`。代理先校验 Host、Origin、Sec-Fetch，再向原 loopback Server 转发；不放宽原 Server 的来源校验。会话 Cookie 保持 HttpOnly、SameSite，并追加 Secure。
 - TLS 握手位于处理线程内，最多 16 个并发连接；客户端 socket 有 10 秒超时，上游连接有超时。它们是 socket 级限制，不应称为任意慢速输入下的完整请求总期限或公网抗滥用验收。
 - 匿名请求不会被代理自动授予管理员会话。原生一次性 ticket 仅写入 0600 私有 access 文件，通过既有会话交换取得权限。TLS 私钥、后端认证及用户账号认证未放入目标 Git 仓库。
 - 账号后端与工作台容器不取得 Docker socket 或宿主 root；仅挂载所需私有目录及只读代码。日常 CLI 写入口遇到 managed marker 会拒绝，旧独立 Web 容器停止。
@@ -46,6 +48,6 @@
 
 NAS 本轮自签证书 SHA256 指纹：
 
-`C1:CF:62:FE:46:9D:B5:9B:40:3D:CC:9E:8D:90:02:09:DD:F6:AE:04:01:82:74:CC:E8:6D:B8:4C:C7:F9:4E:BF`
+`TLS_FINGERPRINT（向宿主私有记录核对）`
 
 用户首次连接时应确认这一证书身份；没有要求全局关闭浏览器或系统 TLS 校验。实际用户授权、模型路由/额度、组织绑定与执行能力须分别取得真实回执，不能从本批受控通过推导完成。

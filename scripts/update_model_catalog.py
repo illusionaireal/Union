@@ -2,6 +2,7 @@
 import argparse
 import io
 import json
+import math
 import subprocess
 import tarfile
 import tomllib
@@ -40,6 +41,14 @@ def main():
                     kind='pdf' if item=='application/pdf' else item.split('/')[0]
                     if kind in {'text','image','audio','video','pdf'} and kind not in values: values.append(kind)
                 if values: record[target]=values
+            # models.dev schema-v2 declares USD per 1M text tokens. Preserve
+            # scalar base quotes only, never infer tier/region/cache overrides.
+            costs={}
+            for direction in ('input','output'):
+                quote=data.get('cost',{}).get('text',{}).get(direction,{})
+                price=quote.get('price') if isinstance(quote,dict) and quote.get('unit','token')=='token' else None
+                if type(price) in (int,float) and math.isfinite(price) and price>=0: costs[direction]=price
+            if costs:record['cost']=costs
             records.append(record)
     from ai_union.catalog import Catalog
     Catalog(records)
@@ -47,7 +56,7 @@ def main():
     target.mkdir(exist_ok=True)
     (target/'model-catalog.json').write_text(json.dumps({'version':1,'models':records},ensure_ascii=False,separators=(',',':'))+'\n',encoding='utf-8')
     (target/'models-dev-LICENSE.txt').write_bytes(license_bytes)
-    (target/'MODEL_CATALOG.md').write_text(f'# 模型目录快照\n\n来源：https://github.com/anomalyco/models.dev ，revision `{revision}`，导入日期2026-11-02。\n\n{len(records)}条记录、{len(set(r["provider"] for r in records))}个供应商。仅转换明确声明的能力/模态/上下文；未知省略，不包含凭据或API地址，不推断账户权限。上游价格不自动成为计费依据。\n\n保留MIT数据许可见models-dev-LICENSE.txt，本数据许可不改变UNION仓库许可。默认离线加载；UNION_MODEL_CATALOG可指定替代快照。\n',encoding='utf-8')
+    (target/'MODEL_CATALOG.md').write_text(f'# 模型目录快照\n\n来源：https://github.com/anomalyco/models.dev ，revision `{revision}`，导入日期2026-11-02。\n\n{len(records)}条记录、{len(set(r["provider"] for r in records))}个供应商。转换明确声明的能力/模态/上下文，以及schema-v2中每百万文本token的USD基础参考单价；未知/阶梯/区域/服务档位价格不推断。目录不包含凭据或API地址，不推断账户权限；上游参考价格不自动成为计费依据。\n\n保留MIT数据许可见models-dev-LICENSE.txt，本数据许可不改变UNION仓库许可。默认离线加载；UNION_MODEL_CATALOG可指定替代快照。\n',encoding='utf-8')
     print(f'Imported {len(records)} records at {revision}')
 
 
