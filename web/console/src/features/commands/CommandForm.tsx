@@ -59,19 +59,22 @@ export function CommandForm({ draft, onClose }: { draft: Draft; onClose: () => v
       setError(receipt.message + '；输入已保留，请刷新后重新预览。');
     }
   }, [receipt]);
-  function makePreview(event: FormEvent) {
+  async function makePreview(event: FormEvent) {
     event.preventDefault();
     if (submitting.current) return;
+    submitting.current=true;
     try {
       if (reason) throw new Error(reason);
       if (draft.organizationId && draft.organizationId !== workspace.orgId)
         throw new Error('组织已切换，请关闭后重新选择操作');
       const data = readForm(draft.kind, form.current!);
+      const fresh=draft.kind==='create' ? undefined : await workspace.refresh();
+      if (draft.kind!=='create' && !fresh) throw new Error('暂时无法读取最新状态，输入已保留，请恢复连接后再预览');
       setPreview({
         id: crypto.randomUUID(),
         kind: draft.kind,
         organization_id: draft.organizationId,
-        base_version: draft.kind === 'create' ? null : workspace.data!.organization.version,
+        base_version: draft.kind === 'create' ? null : fresh!.organization.version,
         data,
       });
       setRequest(null);
@@ -80,6 +83,8 @@ export function CommandForm({ draft, onClose }: { draft: Draft; onClose: () => v
     } catch (failure) {
       setError(errorText(failure));
       setPreview(null);
+    } finally {
+      submitting.current=false;
     }
   }
   async function submit() {
@@ -171,7 +176,11 @@ export function CommandForm({ draft, onClose }: { draft: Draft; onClose: () => v
                 <p>拟采用</p>
               </>
             )}
-            <Json value={publicPreview(preview.data)} />
+            {draft.kind==='api_connection' ? <dl className="connection-facts">
+              {Object.entries(preview.data.config as Record<string,unknown>).filter(([key])=>['name','base_url','model','protocol'].includes(key)).map(([key,value])=><div key={key}><dt>{{name:'连接名称',base_url:'API地址',model:'模型',protocol:'协议'}[key]}</dt><dd>{String(value)}</dd></div>)}
+              <div><dt>采用方式</dt><dd>{preview.data.bind_default?'保存并设为默认':'仅保存连接'}</dd></div>
+              <div><dt>模型调用</dt><dd>本次保存不调用模型</dd></div>
+            </dl> : <Json value={publicPreview(preview.data)} />}
             {draft.kind === 'amend' && (
               <p>
                 受影响的未完成工作：

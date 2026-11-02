@@ -135,6 +135,25 @@ class RuntimeFallbackTests(unittest.TestCase):
         self.assertEqual(executor.metadata["fallbacks"], ["secondary"])
         self.assertNotIn("secondary-key", json.dumps(executor.metadata))
 
+    def test_unknown_fallback_receipt_identifies_the_actual_endpoint(self):
+        primary=self.serve(status=401);secondary=self.serve(status=500)
+        executor=APIExecutor(self.temp.name,self.connection('primary',primary.server_port,'primary-model'),fallbacks=[self.connection('secondary',secondary.server_port,'secondary-model')])
+        job=self.job();executor._request(job,self.body());executor.jobs['probe']=job
+        from ai_union.executor import ExecutionFailure
+        with self.assertRaises(ExecutionFailure) as caught:executor.result('probe')
+        self.assertTrue(caught.exception.unknown)
+        self.assertEqual(caught.exception.usage['connection_id'],'secondary')
+        self.assertEqual(caught.exception.usage['requested_model'],'secondary-model')
+
+    def test_cached_fallback_key_cannot_appear_in_response_or_result_file(self):
+        primary=self.serve(status=401);secondary=self.serve(model='secondary-key')
+        executor=APIExecutor(self.temp.name,self.connection('primary',primary.server_port,'primary-model'),fallbacks=[self.connection('secondary',secondary.server_port,'secondary-model')])
+        job=self.job();job['package']={'kind':'connection_test'};executor._request(job,self.body());executor.jobs['probe']=job
+        from ai_union.executor import ExecutionFailure
+        with self.assertRaises(ExecutionFailure) as caught:executor.result('probe')
+        self.assertEqual(caught.exception.failure['code'],'api_secret_response')
+        self.assertFalse((Path(self.temp.name)/'result.json').exists())
+
 
 if __name__ == "__main__":
     unittest.main()

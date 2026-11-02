@@ -1,3 +1,4 @@
+import { ModelConnectionFields } from './ModelConnectionFields';
 import { useState, type InputHTMLAttributes, type ReactNode } from 'react';
 import type { Charter, CommandKind, Session, Snapshot } from '../../api/types';
 import { defaultCharter, novelCharter } from './model';
@@ -271,95 +272,42 @@ export function CommandFields({
           </label>
         </>
       );
+    case 'api_cost_allocate':
+      return <>
+        <p className="form-note">仅记录已经发生的周期费用分摊，不付款、不调用模型。原始调用不改写，同一调用不能重复分摊。</p>
+        <Field name="voucher_id" label="分摊凭证 ID" value={'cost-'+eventId} />
+        <Select name="allocation_basis" label="费用口径"><option value="subscription">订阅费用</option><option value="owned">自有资源费用</option></Select>
+        <Field name="currency" label="币种" value="USD" pattern="[A-Z]{3}" />
+        <Field name="period" label="账期" placeholder="2026-11" />
+        <Field name="amount_minor" label="周期总金额（最小货币单位）" type="number" min={0} step={1} />
+        <Area name="allocation_runs" label="需要分摊的调用 ID（逗号分隔）" />
+        <Reason />
+      </>;
+    case 'api_import':
+      return <>
+        <p className="form-note">导入仅保存连接配置，不测试、不启动。文件不应包含密钥或宿主凭据引用。</p>
+        <label className="operation-field">配置文件<input type="file" accept=".json,application/json" onChange={e=>{const form=e.currentTarget.form; const file=e.target.files?.[0]; if(file&&form) void file.text().then(value=>{const input=form.elements.namedItem('bundle') as HTMLTextAreaElement; input.value=value;});}} /></label>
+        <Area name="bundle" label="待导入配置预览" rows={8} />
+        <Select name="import_mode" label="重名处理" value="reject"><option value="reject">拒绝覆盖，保留现有配置</option><option value="rename">自动重命名导入</option><option value="replace">替换同名配置，并清除其密钥</option></Select>
+        <Field name="reason" label="导入说明" value="从配置文件导入连接" />
+      </>;
     case 'api_connection':
-      return (
-        <>
-          <input type="hidden" name="gateway_id" value={options?.gateway?.id || connection?.gateway_ref?.id || ''} />
-          <input type="hidden" name="gateway_revision" value={options?.gateway?.revision || connection?.gateway_ref?.revision || ''} />
-          {connection?.gateway_ref && <label className="check-row"><input type="checkbox" name="detach_gateway" />改为独立 API 连接（登记已变化或需要更换地址时勾选）</label>}
-          {options?.gateway && <p className="form-note">从网关 {options.gateway.config.name} 创建独立连接。请填写该公司自己的模型令牌；登记变化不会自动修改连接。</p>}
-          <input
-            type="hidden"
-            name="api_enabled"
-            value={String(connection?.config.enabled ?? true)}
-          />
-          <p className="form-note">
-            保存后设为当前公司的默认连接。保存不会调用模型，测试连接需要另行确认。
-            {connection
-              ? '编辑时密钥不回显；留空沿用原密钥。更换 API 地址需重新填写密钥。'
-              : '支持 Chat Completions 兼容接口，填入供应商提供的地址和模型名称。组织协作需要模型支持工具调用。'}
-          </p>
-          <Field
-            name="connection_id"
-            label="连接 ID"
-            value={connection?.id || newConnectionId}
-            readOnly={!!connection}
-            maxLength={80}
-          />
-          <Field
-            name="connection_name"
-            label="连接名称"
-            value={connection?.config.name || options?.gateway?.config.name || '我的模型连接'}
-            maxLength={100}
-          />
-          <Field
-            name="base_url"
-            label="API 根地址"
-            placeholder="https://your-provider.example/v1"
-            type="url"
-            value={connection?.config.base_url || options?.gateway?.config.api_base_url || ''}
-          />
-          <Field
-            name="api_model"
-            label="API 模型 ID"
-            value={connection?.config.model || ''}
-            placeholder="填写供应商提供的模型 ID"
-            maxLength={128}
-          />
-          <Field
-            name="api_key"
-            label="API Key（留空保留原密钥）"
-            type="password"
-            required={false}
-            autoComplete="new-password"
-            maxLength={4096}
-          />
-          <p className="form-note">
-            可填写根地址或完整的 /chat/completions
-            地址。正常工作使用普通文本；组织变更通过工具调用完成，无需选择 JSON 输出模式。
-          </p>
-          <Select
-            name="token_limit_field"
-            label="输出上限字段"
-            value={connection?.config.token_limit_field || 'max_tokens'}
-          >
-            <option value="max_completion_tokens">max_completion_tokens</option>
-            <option value="max_tokens">max_tokens</option>
-          </Select>
-          <div className="field-grid">
-            <Field
-              name="max_output_tokens"
-              label="最大输出 token"
-              type="number"
-              min={1}
-              max={32768}
-              value={connection?.config.max_output_tokens || 8192}
-            />
-            <Field
-              name="api_timeout"
-              label="API 超时（秒）"
-              type="number"
-              min={1}
-              max={600}
-              value={connection?.config.timeout_seconds || 180}
-            />
-          </div>
-          <Field name="reason" label="配置说明" value="为公司接入真实模型" />
-        </>
-      );
+      return <>
+        <input type="hidden" name="gateway_id" value={options?.gateway?.id || connection?.gateway_ref?.id || ''} />
+        <input type="hidden" name="gateway_revision" value={options?.gateway?.revision || connection?.gateway_ref?.revision || ''} />
+        {connection?.gateway_ref && <label className="check-row"><input type="checkbox" name="detach_gateway" />改为独立 API 连接</label>}
+        <ModelConnectionFields connection={connection} newId={newConnectionId} endpoint={options?.gateway?.config.api_base_url} hasDefault={!!data?.execution_config.api_connection_id} />
+      </>;
     case 'api_binding':
       return (
         <>
+          <Select name="binding_role" label="岗位或执行职责（留空为默认）" value="">
+            <option value="">组织默认</option>
+            {Object.entries(data.organization.positions).map(([id,p])=><option key={id} value={id}>{p.title} · {id}</option>)}
+            <option value="planner">组织决策（兼容配置）</option><option value="worker">普通工作（兼容配置）</option><option value="reviewer">评审（兼容配置）</option>
+          </Select>
+          <label className="check-field"><input type="checkbox" name="configure_fallbacks" />同时配置备用连接顺序</label>
+          <Field name="fallbacks" label="备用连接 ID（逗号分隔，最多3个）" required={false} />
           <Field
             name="connection_id"
             label="连接 ID（留空解绑）"
@@ -405,8 +353,9 @@ export function CommandFields({
     case 'api_test':
       return (
         <>
+          <input type="hidden" name="test_connection_id" value={connection?.id || ''} />
           <p>
-            测试默认连接 {data.execution_config.api_connection_id}
+            测试连接 {connection?.id || data.execution_config.api_connection_id}
             ，验证调用工具及读取结果继续回应，占用两次调用额度，分别保存用量和回执。
             {connection
               ? ` 最大输出 ${connection.config.max_output_tokens.toLocaleString()} token；实际超时 ${Math.min(connection.config.timeout_seconds, data.organization.resources.timeout_seconds)} 秒，取连接与公司单次超时中的较小值。`

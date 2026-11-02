@@ -17,6 +17,10 @@ def execution_receipt(engine, run):
     try:
         receipt = json.loads((folder / "receipt.json").read_text(encoding="utf-8"))
         expected = run["package"]["execution"]
+        if receipt.get('fallback_from'):
+            if receipt.get('fallback_from')!=expected.get('connection_id'): return False
+            expected=next((candidate for candidate in expected.get('fallback_connections',[]) if candidate.get('connection_id')==receipt.get('connection_id') and candidate.get('connection_revision')==receipt.get('connection_revision')),None)
+            if expected is None:return False
         return receipt.get("transport_source") == "provider_api" and all(receipt.get(k) == expected[k] for k in
             ("connection_id", "connection_revision", "protocol", "requested_model")) and bool(receipt.get("response_id") or receipt.get("provider_request_id"))
     except (ValueError, OSError, KeyError):

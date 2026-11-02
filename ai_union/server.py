@@ -1,5 +1,6 @@
 """Same-origin local HTTP transport. No endpoint accepts a host path or board key."""
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -30,7 +31,7 @@ class Server(ThreadingHTTPServer):
         self.document = Path(document) if document else self.static_dir / "index.html"
         super().__init__(("127.0.0.1", port), Handler)
         self.origin = f"http://127.0.0.1:{self.server_port}"
-        self.cookie_name = "union_" + app.instance[-12:]
+        self.cookie_name = "union_" + hashlib.sha256(str(app.root).encode()).hexdigest()[:12]
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -106,12 +107,15 @@ class Handler(BaseHTTPRequestHandler):
         try:
             self.transport(write)
         except Rejected as error:
+            if write: self.discard_body()
             return self.send(403, {"error": str(error)})
         app = self.server.app
         path = urlsplit(self.path)
         query = parse_qs(path.query)
         if not write and not (path.path == "/api" or path.path.startswith("/api/")):
             return self.static(path.path)
+        if path.path.startswith('/api/auth/'):
+            return self.handle_auth(path.path, write)
         if write and path.path == "/api/session":
             try:
                 require(self.headers.get("Content-Length", "0") == "0", "会话交换不接收请求体")
@@ -123,6 +127,7 @@ class Handler(BaseHTTPRequestHandler):
         try:
             app.session(token)
         except Rejected as error:
+            if write: self.discard_body()
             return self.send(401, {"error": str(error)})
         try:
             if write:
@@ -144,6 +149,19 @@ class Handler(BaseHTTPRequestHandler):
                 return self.send(200, {"receipt": app.gateways.receipt(token, query.get("id", [None])[0])})
             if path.path == "/api/model-connections":
                 return self.send(200, app.model_connections(token, org_id))
+            if path.path == '/api/model-export':
+                require(app.session(token)['role']=='board', '观察者不能导出连接')
+                from .model_portability import export_connections
+                return self.send(200, export_connections(app.engine(token, org_id)), headers={'Content-Disposition':'attachment; filename="union-models.json"'})
+            if path.path == '/api/model-catalog':
+                require(app.session(token)['role']=='board', '观察者不能配置模型')
+                from .catalog import load
+                catalog = load()
+                return self.send(200, {'version':catalog.version, 'models':catalog.records})
+            if path.path == '/api/model-costs':
+                require(app.session(token)['role']=='board', '观察者不能读取成本凭证')
+                from .model_billing import vouchers
+                return self.send(200, {'vouchers':vouchers(app.engine(token,org_id))})
             if path.path == "/api/subscriptions":
                 return self.send(200, self.server.subscriptions.status(token))
             if path.path == "/api/subscription-receipts":
@@ -169,6 +187,46 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         self.handle_api()
+
+    def discard_body(self):
+        # Windows may reset a socket closed with unread POST data before the
+        # client receives its rejection. Drain only a bounded, declared body;
+        # never parse it or dispatch an unauthenticated command.
+        try:
+            length=int(self.headers.get('Content-Length','0'))
+            if 0<length<=200000:self.rfile.read(length)
+        except (ValueError,OSError): pass
+
+    def handle_auth(self, path, write):
+        app, token = self.server.app, self.token()
+        try:
+            if not write and path == '/api/auth/status':
+                try: session = app.session(token)
+                except Rejected: session = None
+                return self.send(200, {'configured': app.identity.configured(), 'authenticated': session is not None,
+                    'can_setup': session is not None and session['role']=='board' and session['organizations'] is None,
+                    'account': session.get('account') if session else None})
+            require(write, '接口不存在')
+            require(self.headers.get('Content-Type','').split(';')[0]=='application/json', '需要application/json')
+            length = int(self.headers.get('Content-Length', '0'))
+            require(0 < length <= 4096, '请求大小无效')
+            value = json.loads(self.rfile.read(length).decode('utf-8'))
+            require(isinstance(value, dict), '请求格式无效')
+            expected = {'/api/auth/setup': {'username','password','remember'}, '/api/auth/login': {'username','password','remember'},
+                '/api/auth/recover': {'username','code','new_password'}, '/api/auth/password': {'password','new_password'}, '/api/auth/logout': set()}
+            require(path in expected and set(value)==expected[path], '请求字段无效')
+            if path == '/api/auth/logout':
+                app.identity.logout(token)
+                return self.send(200, {'ok':True}, headers={'Set-Cookie': f'{self.server.cookie_name}=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0'})
+            if path == '/api/auth/setup': result = app.identity.setup(token, **value)
+            elif path == '/api/auth/login': result = app.identity.login(**value)
+            elif path == '/api/auth/password': result = app.identity.change_password(token, **value)
+            else: result = app.identity.recover(value['username'], value['code'], value['new_password'])
+            return self.send(200, {'session': app.session_info(result['token']), 'recovery_code': result.get('recovery_code')},
+                headers={'Set-Cookie': f"{self.server.cookie_name}={result['token']}; HttpOnly; SameSite=Strict; Path=/; Max-Age={result['max_age']}"})
+        except Rejected as error: return self.send(401, {'error':str(error)})
+        except (ValueError, TypeError, KeyError): return self.send(400, {'error':'请求格式无效'})
+        except (OSError, sqlite3.Error): return self.send(503, {'error':'账号记录暂不可用'})
 
     def do_POST(self):
         self.handle_api(write=True)

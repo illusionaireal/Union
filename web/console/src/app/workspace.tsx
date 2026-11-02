@@ -28,7 +28,7 @@ interface Workspace {
   lastSuccess: string;
   selectOrg: (id: string) => void;
   setOffset: (offset: number) => void;
-  refresh: () => Promise<void>;
+  refresh: () => Promise<Snapshot | undefined>;
 }
 const Context = createContext<Workspace | null>(null);
 // One-time credentials are consumed once, including React development remounts.
@@ -86,7 +86,8 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   });
   const refresh = useCallback(async () => {
     await client.cancelQueries({ queryKey: key, exact: true });
-    await read.refetch();
+    const result=await read.refetch();
+    return result.isError ? undefined : result.data?.snapshot ?? undefined;
     // Query identity is the organization + pagination; refetch always belongs to that observer.
   }, [client, requested, offset, read.refetch]);
   useEffect(() => {

@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-01",
-  "wip_limit": 3,
+  "updated_at": "2026-11-02",
+  "wip_limit": 4,
   "modules": [
     {
       "id": "governance",
@@ -1372,6 +1372,22 @@
         ],
         "note": "6项切换测试与354项全量回归通过；每角色独立链、前端入口与真实供应商验收未做"
       }
+    },
+    {
+      "id": "U-052",
+      "title": "完成0–5批登录与模型接入工程",
+      "priority": "P0",
+      "milestone": "G0",
+      "module": "models",
+      "status": "doing",
+      "owner": "Codex（外部工程代理）",
+      "role": "工程 / 独立权限与费用复核",
+      "acceptance": "按specs/043-usable-model-access完成基线、持久身份、AU配置迁移、多协议与目录、岗位回退、上下文与成本；逐项留证，工程/真实验收分开，权限费用经独立复核",
+      "dependencies": [],
+      "blocker": null,
+      "started_at": "2026-11-02",
+      "updated_at": "2026-11-02",
+      "completion": null
     }
   ]
 }

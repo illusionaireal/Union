@@ -188,7 +188,8 @@ describe('saved API connection editing', () => {
     expect(screen.getByLabelText('连接 ID')).toHaveAttribute('readonly');
     expect(screen.getByLabelText('API Key（留空保留原密钥）')).toHaveValue('');
     const saved = readForm('api_connection', screen.getByRole('form') as HTMLFormElement);
-    expect(saved.config).toEqual({ ...connection.config, response_format: 'agent' });
+    expect(saved.config).toMatchObject({ ...connection.config, response_format: 'agent', protocol:'openai_chat_completions' });
+    expect(saved.bind_default).toBe(false);
     expect(saved).not.toHaveProperty('api_key');
   });
   it('creates a distinct new connection even when a default is already bound', () => {

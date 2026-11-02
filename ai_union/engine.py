@@ -432,6 +432,7 @@ class Engine:
         with self.transaction() as cx:
             board = self._board(cx, board_key)
             s = self._state(cx)
+            require(resources['max_calls']>=self._budget(cx,s)['calls_reserved'], '新上限不能低于累计调用占用')
             s["resources"] = resources
             s["version"] += 1
             self._event(cx, "resources_updated", {"board": board, "reason": reason, "resources": resources})
@@ -504,6 +505,8 @@ class Engine:
 
     def _budget(self, cx, s):
         calls = cx.execute("SELECT COUNT(*) FROM runs").fetchone()[0]
+        if cx.execute("SELECT 1 FROM sqlite_master WHERE name='model_extra_attempts'").fetchone():
+            calls += cx.execute('SELECT COUNT(*) FROM model_extra_attempts').fetchone()[0]
         r = s["resources"]
         reserve = r.get("cost_reserve_per_call")
         reason = None
@@ -522,6 +525,43 @@ class Engine:
                 reason = reason or "试验预算已到限；保留进度并停止新派发"
         return {"calls_reserved": calls, "max_calls": r["max_calls"], "cost_status": "unknown",
                 "estimated_cost_reserved": calls * reserve if reserve is not None else None, "blocked_reason": reason}
+
+    def reserve_model_attempt(self, run_id, attempt, connection):
+        """A fallback is another billed request, reserved before any network write."""
+        require(type(attempt) is int and 1<=attempt<=3, '备用请求序号无效')
+        with self.transaction() as cx:
+            run=self._run(cx,run_id);state=self._state(cx);package=run['package']
+            self._check_model_dispatch(cx,run,connection)
+            require(run['status']=='running' and run['executor']=='api', '原调用已经结束，不能发起备用请求')
+            require(run['kind']=='connection_test' or not self.paused(cx), '派发已暂停')
+            manifest=package.get('context_manifest')
+            require(manifest is None and run['kind']=='connection_test' or manifest is not None and state['charter_version']==manifest['charter_version'] and state['policy_version']==manifest['policy_version'], '备用请求前生效授权已变化')
+            approved=package.get('execution',{}).get('fallback_connections',[])
+            require(any(item.get('connection_id')==connection['id'] and item.get('connection_revision')==connection['revision'] for item in approved), '备用连接不在本次已绑定授权中')
+            budget=self._budget(cx,state)
+            require(budget['blocked_reason'] is None,budget['blocked_reason'])
+            cx.execute('CREATE TABLE IF NOT EXISTS model_extra_attempts(run_id TEXT NOT NULL,attempt INTEGER NOT NULL,connection_id TEXT NOT NULL,revision INTEGER NOT NULL,created_at TEXT NOT NULL,PRIMARY KEY(run_id,attempt))')
+            require(not cx.execute('SELECT 1 FROM model_extra_attempts WHERE run_id=? AND attempt=?',(run_id,attempt)).fetchone(), '备用请求已预约，不能重放')
+            cx.execute('INSERT INTO model_extra_attempts VALUES(?,?,?,?,?)',(run_id,attempt,connection['id'],connection['revision'],now()))
+            self._event(cx,'model_fallback_reserved',{'run_id':run_id,'attempt':attempt,'connection_id':connection['id'],'revision':connection['revision']})
+
+    def _check_model_dispatch(self, cx, run, connection):
+        require(run['status']=='running' and run['executor']=='api', '模型调用已结束')
+        state=self._state(cx);manifest=run['package'].get('context_manifest')
+        require(manifest is None and run['kind']=='connection_test' or manifest is not None and state['charter_version']==manifest['charter_version'] and state['policy_version']==manifest['policy_version'], '模型调用前生效授权已变化')
+        execution=run['package'].get('execution',{})
+        require(any(c.get('connection_id')==connection['id'] and c.get('connection_revision')==connection['revision'] for c in [execution,*execution.get('fallback_connections',[])]), '连接不在本次已绑定授权中')
+        row=cx.execute('SELECT * FROM model_connections WHERE id=? ORDER BY revision DESC LIMIT 1',(connection['id'],)).fetchone()
+        require(row is not None and row['revision']==connection['revision'] and json.loads(row['config']).get('enabled') is True, '模型连接已变更或停用，请重新启动有限运行')
+        from .model_api import connection_key
+        live_key,_=connection_key(row)
+        require(hmac.compare_digest(live_key,connection['api_key']), '模型凭据已轮转，请重新启动有限运行')
+        if run['work_id']:
+            work=state['work'][run['work_id']]
+            require(work['run_id']==run['id'] and state['assignments'][work['assignment_id']]['active'], '工作责任已变化')
+
+    def check_model_dispatch(self, run_id, connection):
+        with self.read_transaction() as cx:self._check_model_dispatch(cx,self._run(cx,run_id),connection)
 
     def _reserve(self, cx, s, kind, executor, package, work_id=None, allow_paused=False):
         require(allow_paused or not self.paused(cx), "派发已暂停；请由受信入口继续")
@@ -613,7 +653,24 @@ class Engine:
             for field in ("connection_revision", "elapsed_ms"):
                 if type(usage.get(field)) is int and usage[field] >= 0:
                     safe[field] = usage[field]
-        safe.update(cost=None, cost_status="unknown")
+        from .model_billing import calculate
+        billing=None
+        if r['executor']=='api' and cx.execute("SELECT 1 FROM sqlite_master WHERE name='model_connections'").fetchone():
+            expected=r['package'].get('execution',{})
+            candidates=[expected,*expected.get('fallback_connections',[])]
+            if any(c.get('connection_id')==safe.get('connection_id') and c.get('connection_revision')==safe.get('connection_revision') for c in candidates):
+                connection=cx.execute('SELECT config FROM model_connections WHERE id=? AND revision=?',(safe.get('connection_id'),safe.get('connection_revision'))).fetchone()
+                if connection: billing=json.loads(connection[0]).get('billing')
+        safe.update(calculate(billing,safe))
+        if r['executor']=='api':
+            context=usage.get('context')
+            if isinstance(context,dict):
+                safe['context']={k:v for k,v in context.items() if k in ('window','estimated_input_tokens','dropped_messages','dropped_bytes') and (v is None or type(v) is int and v>=0)}
+            fallback=usage.get('fallback_from')
+            if isinstance(fallback,str) and ID.fullmatch(fallback):safe['fallback_from']=fallback
+            attempts=usage.get('attempts')
+            if isinstance(attempts,list):
+                safe['attempts']=[{k:v for k,v in item.items() if (k=='connection_id' and isinstance(v,str) and ID.fullmatch(v)) or (k=='revision' and type(v) is int and v>0) or (k=='unknown' and type(v) is bool) or (k=='code' and isinstance(v,str) and ID.fullmatch(v))} for item in attempts[:4] if isinstance(item,dict)]
         current = state if state is not None else self._state(cx)
         if current.get("company"):
             from .company import charge

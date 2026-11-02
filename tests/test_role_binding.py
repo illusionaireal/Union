@@ -11,7 +11,7 @@ from ai_union.model_api import MAX_FALLBACKS, ROLE_BY_KIND, ROLES, resolve_conne
 from tests.support import CHARTER, RESOURCES
 
 FIXTURE = json.loads((Path(__file__).resolve().parents[1] / "examples/fixture.json").read_text(encoding="utf-8"))
-ABSENT = "UNION_TEST_ABSENT_KEY"
+ABSENT = "UNION_MODEL_TEST_ABSENT_KEY"
 
 
 class RoleBindingTests(unittest.TestCase):
@@ -22,7 +22,7 @@ class RoleBindingTests(unittest.TestCase):
         self.addCleanup(self.restore)
         self.app = Console(Path(self.temp.name) / "console", fixture=FIXTURE)
         self.addCleanup(self.app.close)
-        self.board = self.app.new_session("board")
+        self.board = self.app.new_session("board", platform_admin=True)
         self.counter = 0
         receipt = self.command("create", {"name": "role test", "goal": "test role bindings",
                                           "board_name": "test board", "charter": CHARTER, "resources": RESOURCES})

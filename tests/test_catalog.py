@@ -105,8 +105,8 @@ class LoadTests(unittest.TestCase):
     def write(self, value):
         self.path.write_text(json.dumps(value), encoding="utf-8")
 
-    def test_no_snapshot_means_empty_catalog(self):
-        self.assertIs(load(), EMPTY)
+    def test_no_override_loads_bundled_versioned_catalog(self):
+        self.assertGreater(len(load()),100)
         self.assertIsNone(EMPTY.get("solo-1"))
 
     def test_loads_explicit_path(self):

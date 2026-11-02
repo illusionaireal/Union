@@ -43,7 +43,7 @@ def configuration(value):
 def probe(config):
     """The subprocess deadline also bounds DNS and slow-drip HTTP responses."""
     try:
-        completed = subprocess.run([sys.executable, "-m", "ai_union.gateways"], input=encoded(config),
+        completed = subprocess.run([sys.executable, "-X", "utf8", "-m", "ai_union.gateways"], input=encoded(config),
                                    capture_output=True, text=True, timeout=4, check=True)
         return json.loads(completed.stdout)
     except (subprocess.SubprocessError, OSError, ValueError):

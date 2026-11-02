@@ -46,6 +46,7 @@ export default function Models() {
     queryFn: ({ signal }) => api.gatewayChoices(orgId, signal),
     retry: false, refetchInterval: 4000,
   });
+  const costs=useQuery({queryKey:['model-costs',session?.service_instance,session?.session_scope,orgId,d?.organization.version],enabled:connected&&board&&!!d,queryFn:()=>api.modelCosts(orgId),retry:false});
   return (
     <>
       <SubscriptionConnections />
@@ -56,8 +57,7 @@ export default function Models() {
         <div>
           <h2>把模型接入公司的工作流</h2>
           <p>
-            使用 Chat Completions 兼容接口。配置 API
-            根地址、密钥和模型，保存后测试工具往返能力，再回到总览启动筹建。
+            选择供应商与模型，保存连接，再测试工具往返能力。测试通过后采用为默认，回到总览开始协作。
           </p>
           <span className="security-note">
             <ShieldCheck size={14} />
@@ -71,6 +71,13 @@ export default function Models() {
           </CommandButton>
         )}
       </section>
+      {d && board && enabled && <div className="identity-actions">
+        <CommandButton kind="api_import">导入配置</CommandButton>
+        <a className="button secondary" href={api.exportModels(orgId)}>导出配置（不含密钥）</a>
+        <CommandButton kind="api_binding">配置岗位模型与备用顺序</CommandButton>
+        <CommandButton kind="api_cost_allocate">记录期末成本分摊</CommandButton>
+      </div>}
+      {d && board && <p className="form-note">默认备用顺序：{d.execution_config.fallbacks?.join(' → ') || '未设置'}。岗位绑定：{Object.entries(d.execution_config.roles || {}).map(([role,slot])=>`${d.organization.positions[role]?.title || role}：${slot.connection_id}${slot.fallbacks?.length?'（备用：'+slot.fallbacks.join(' → ')+'）':''}`).join('；') || '均继承默认'}。</p>}
       {!d ? (
         <Card title="先为连接选择一个公司">
           <Empty title="模型连接随公司保存">
@@ -171,6 +178,7 @@ export default function Models() {
                   </span>
                 </div>
                 <strong className="connected-model">{c.config.model}</strong>
+                <p className="form-note">{c.config.protocol || 'openai_chat_completions'} · 上下文 {c.catalog?.context_window?.toLocaleString() || '未知'} · 工具能力 {c.catalog?.tool_call===true?'目录声明支持':c.catalog?.tool_call===false?'目录声明不支持':'未知，需测试'} · 成本 {c.config.billing?.basis || 'unknown'}</p>
                 <div className="endpoint">
                   <Globe size={15} />
                   <span>{c.config.base_url}</span>
@@ -203,6 +211,7 @@ export default function Models() {
                     <Settings2 size={15} />
                     编辑连接
                   </CommandButton>
+                  {active !== c.id && <CommandButton kind="api_test" options={{connection:c}}>测试此连接</CommandButton>}
                   {active === c.id ? (
                     <>
                       <CommandButton kind="api_test" options={{ connection: c }} primary>
@@ -253,6 +262,11 @@ export default function Models() {
             ) : (
               <Empty title="还没有连接操作记录">保存配置和测试连接后，实际结果将在这里显示。</Empty>
             )}
+          </Card>
+          <Card title="模型用量与费用口径">
+            <p className="form-note">金额采用最小货币单位。按量金额是估算；订阅与自有成本期末分摊，未知金额保持为空。</p>
+            <div className="table-scroll"><table><thead><tr><th>调用</th><th>输入 / 输出 token</th><th>成本口径</th><th>金额</th><th>旧消息裁剪</th></tr></thead><tbody>{d.runs.slice(-10).reverse().map(run=><tr key={run.id}><td>{run.id}</td><td>{run.usage?.input_tokens??'未知'} / {run.usage?.output_tokens??'未知'}</td><td>{run.usage?.cost_basis||'unknown'}</td><td>{run.usage?.cost_minor==null?'未知':`${run.usage.cost_minor} ${run.usage.currency}（${run.usage.cost_status}）`}</td><td>{run.usage?.context?.dropped_messages??0}</td></tr>)}</tbody></table></div>
+            {!!costs.data?.vouchers.length && <details><summary>期末分摊凭证</summary>{costs.data.vouchers.map(v=><p key={v.id}>{v.id} · {v.period} · {v.amount_minor} {v.currency} · {v.basis}</p>)}</details>}
           </Card>
           <div className="next-action-banner">
             <div>

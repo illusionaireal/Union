@@ -11,18 +11,30 @@ from .failures import issue, public_failure, runtime_failure
 
 @contextmanager
 def exclusive(engine):
-    guard = file_lock(engine.root / "runner.lock")
-    try:
-        guard.__enter__()
-    except OSError as e:
-        raise Rejected("此组织已有运行进程；不能并行启动第二个派发器") from e
+    # A read-only liveness probe briefly acquires/releases the same OS lock.
+    # Wait only for lock acquisition, before mutating state or sending requests.
+    deadline=time.monotonic()+0.15
+    while True:
+        guard = file_lock(engine.root / "runner.lock")
+        try:
+            guard.__enter__()
+            break
+        except OSError as error:
+            if time.monotonic()>=deadline:
+                raise Rejected("此组织已有运行进程；不能并行启动第二个派发器") from error
+            time.sleep(0.01)
     try:
         yield
     finally:
         guard.__exit__(None, None, None)
 
 
-def step(engine, executor):
+def reserved_calls(engine):
+    with engine.read_transaction() as cx:
+        return engine._budget(cx,engine._state(cx))['calls_reserved']
+
+
+def step(engine, executor, attempt_limit=None):
     if engine.paused():
         return {"action": "paused", "reason": "派发已暂停"}
     engine.wake_due()
@@ -38,8 +50,14 @@ def step(engine, executor):
         return {"action": "wait", "reason": "三个经营周期已完成，等待董事会验收"}
     if awaiting_review:
         ready = []  # Feedback must be decided on before pre-planned work is dispatched.
-    metadata = {"execution": executor.metadata} if hasattr(executor, "metadata") else {}
-    package = engine.begin_work(ready[0], executor.name, **metadata) if ready and state["phase"] != "bootstrap" else engine.begin_decision(executor.name, **metadata)
+    kind='work' if ready and state['phase']!='bootstrap' else 'decision'
+    with engine.transaction():
+        if hasattr(executor, 'prepare'):
+            position_id=state['work'][ready[0]]['position_id'] if kind=='work' else (state.get('policy') or {}).get('decision_position_id')
+            executor.prepare(kind, position_id)
+        if attempt_limit is not None and hasattr(executor,'set_attempt_budget'): executor.set_attempt_budget(attempt_limit)
+        metadata = {"execution": executor.metadata} if hasattr(executor, "metadata") else {}
+        package = engine.begin_work(ready[0], executor.name, **metadata) if kind=='work' else engine.begin_decision(executor.name, **metadata)
     usage = {}
     try:
         result, usage = executor.execute(package)
@@ -94,9 +112,12 @@ def run(engine, executor, max_steps):
         # A factory resolves mutable host settings only after the dispatch lock is held.
         executor = executor() if callable(executor) else executor
         engine.recover()
+        initial_calls=reserved_calls(engine)
         for _ in range(max_steps):
+            remaining=max_steps-(reserved_calls(engine)-initial_calls)
+            if remaining<=0:break
             try:
-                action = step(engine, executor)
+                action = step(engine, executor, remaining)
             except Rejected as e:
                 action = {"action": "blocked", "reason": str(e)}
             actions.append(action)
@@ -117,9 +138,10 @@ def watch(engine, executor, max_steps, max_seconds, poll_seconds=1):
     with exclusive(engine), activity(engine):
         executor = executor() if callable(executor) else executor
         engine.recover()
+        initial_calls=reserved_calls(engine)
         while calls < max_steps and time.monotonic() < deadline:
             try:
-                action = step(engine, executor)
+                action = step(engine, executor, max_steps-calls)
             except Rejected as e:
                 action = {"action": "blocked", "reason": str(e)}
             if action["action"] == "wait":
@@ -130,7 +152,7 @@ def watch(engine, executor, max_steps, max_seconds, poll_seconds=1):
             actions.append(action)
             if action["action"] in ("blocked", "paused"):
                 break
-            calls += 1
+            calls=reserved_calls(engine)-initial_calls
     if actions and actions[-1]["action"] == "correction":
         actions[-1] = actions[-1] | {"action": "blocked", "reason": "本次运行额度或时间已用完；组织提议尚待修正"}
     return actions or [{"action": "wait", "reason": "等待期间没有新事件"}]

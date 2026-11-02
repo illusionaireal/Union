@@ -124,26 +124,34 @@ class Catalog:
 
 
 EMPTY = Catalog()
+_bundled_cache = None
 
 
 def load(path=None):
     """Load a snapshot from an explicit path or UNION_MODEL_CATALOG.
 
-    No configured snapshot means an empty catalog: execution continues and every
-    capability answer is None, which is reported as unknown rather than assumed.
+    Without an override, use the bundled attributed snapshot. An explicitly
+    configured missing/corrupt snapshot remains unknown rather than falling back.
     """
-    location = path or os.environ.get(ENV)
+    location = path or os.environ.get(ENV) or str(Path(__file__).resolve().parents[1] / 'data/model-catalog.json')
     if not location:
         return EMPTY
     file = Path(location)
     require(file.is_file(), "模型目录文件不存在")
+    global _bundled_cache
+    bundled=path is None and not os.environ.get(ENV)
+    stamp=(file.stat().st_mtime_ns,file.stat().st_size)
+    if bundled and _bundled_cache is not None and _bundled_cache[0]==stamp:return _bundled_cache[1]
+    require(file.stat().st_size<=10000000, '模型目录快照过大')
     try:
         data = json.loads(file.read_text(encoding="utf-8"))
     except (OSError, ValueError):
         require(False, "模型目录文件无法解析")
     require(isinstance(data, dict) and set(data) == {"version", "models"}, "模型目录文件字段不完整或不支持")
     require(isinstance(data["models"], list), "模型目录 models 必须为列表")
-    return Catalog(data["models"], data["version"])
+    result=Catalog(data["models"], data["version"])
+    if bundled:_bundled_cache=(stamp,result)
+    return result
 
 
 def metadata(model, provider=None):
