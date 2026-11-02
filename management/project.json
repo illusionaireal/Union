@@ -1556,6 +1556,22 @@
         ],
         "note": "工作区、额度与 30 个 Go 模型已在 /models 只读展示；选择不持久化、不发起调用。订阅到 AU 执行的绑定仍未实现。"
       }
+    },
+    {
+      "id": "U-060",
+      "title": "把 OpenCode Go 订阅接成 AU 可用模型连接",
+      "priority": "P1",
+      "milestone": "G0",
+      "module": "models",
+      "status": "backlog",
+      "owner": "Codex（外部工程代理）",
+      "role": "订阅接入 / 模型执行",
+      "acceptance": "方案见 specs/044-go-subscription-connection；当前等待用户确认读取宿主订阅凭据、一次最小真实调用、验证模型与是否设为默认。确认后实现受限请求头、从目录创建组织连接、失败语义、测试与独立复核",
+      "dependencies": [],
+      "blocker": null,
+      "started_at": null,
+      "updated_at": "2026-11-03",
+      "completion": null
     }
   ]
 }
