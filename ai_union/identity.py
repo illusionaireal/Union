@@ -2,6 +2,7 @@
 import hashlib
 import hmac
 import json
+import os
 import re
 import secrets
 import time
@@ -37,8 +38,18 @@ class Identity:
             return bool(cx.execute('SELECT 1 FROM owner_account').fetchone())
 
     def setup(self, token, username, password, remember=False):
-        session = self.app.session(token)
-        require(session['role'] == 'board' and session['organizations'] is None, '首次设置需要宿主发起人会话')
+        session = self.app.session(token) if token else None
+        if session is None:
+            # A single-host deployment may be claimed by the first visitor when
+            # no session cookie is present and no account exists. The owner row
+            # is unique, so a later visitor cannot re-claim it; the host resets
+            # with scripts/reset_owner.py. Platform management stays a host
+            # opt-in, because it reaches host credentials and account backends.
+            require(not self.configured(), '管理员已设置，请登录')
+            platform_admin = os.environ.get('UNION_FIRST_CLAIM_PLATFORM_ADMIN') == '1'
+        else:
+            require(session['role'] == 'board' and session['organizations'] is None, '首次设置需要宿主发起人会话')
+            platform_admin = session.get('platform_admin', False)
         require(type(remember) is bool, '记住登录字段无效')
         validate_password(password)
         require(isinstance(username, str) and re.fullmatch(r'[a-zA-Z0-9_.@-]{3,100}', username), '账号须为3至100位字母、数字或_.@-')
@@ -47,7 +58,7 @@ class Identity:
         digest = password_hash(password, salt)
         with self.app.catalog() as cx:
             require(not cx.execute('SELECT 1 FROM owner_account').fetchone(), '管理员已设置，请登录')
-            cx.execute('INSERT INTO owner_account VALUES(?,?,?,?,?)', (username, salt, digest, fingerprint(recovery), int(session.get('platform_admin', False))))
+            cx.execute('INSERT INTO owner_account VALUES(?,?,?,?,?)', (username, salt, digest, fingerprint(recovery), int(platform_admin)))
             account = cx.execute('SELECT * FROM owner_account WHERE username=?', (username,)).fetchone()
             result = self._issue_in(cx, account, remember) | {'recovery_code': recovery}
         with self.app.mutex:

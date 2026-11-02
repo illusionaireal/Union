@@ -203,8 +203,10 @@ class Handler(BaseHTTPRequestHandler):
             if not write and path == '/api/auth/status':
                 try: session = app.session(token)
                 except Rejected: session = None
-                return self.send(200, {'configured': app.identity.configured(), 'authenticated': session is not None,
-                    'can_setup': session is not None and session['role']=='board' and session['organizations'] is None,
+                configured = app.identity.configured()
+                can_setup = not configured and (session is None or (session['role']=='board' and session['organizations'] is None))
+                return self.send(200, {'configured': configured, 'authenticated': session is not None,
+                    'can_setup': can_setup,
                     'account': session.get('account') if session else None})
             require(write, '接口不存在')
             require(self.headers.get('Content-Type','').split(';')[0]=='application/json', '需要application/json')

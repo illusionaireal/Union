@@ -20,10 +20,49 @@ class IdentityTests(unittest.TestCase):
     def setup(self):
         return self.app.identity.setup(self.host, 'owner', 'correct-horse-password', True)
 
-    def test_anonymous_observer_and_scoped_board_cannot_claim_owner(self):
-        for token in (None, self.app.new_session('observer'), self.app.new_session('board', organizations=[])):
+    def test_first_claim_is_open_once_and_scoped_sessions_cannot_reclaim(self):
+        for token in (self.app.new_session('observer'), self.app.new_session('board', organizations=[])):
             with self.assertRaises(Rejected):
                 self.app.identity.setup(token, 'owner', 'correct-horse-password', True)
+        self.assertFalse(self.app.identity.configured())
+        result = self.app.identity.setup(None, 'owner', 'correct-horse-password', True)
+        self.assertTrue(self.app.session(result['token'])['role'] == 'board')
+        with self.assertRaisesRegex(Rejected, '管理员已设置'):
+            self.app.identity.setup(None, 'second', 'correct-horse-password', True)
+
+    def test_first_claim_platform_admin_is_a_host_opt_in(self):
+        with patch.dict('os.environ', {'UNION_FIRST_CLAIM_PLATFORM_ADMIN': ''}):
+            result = self.app.identity.setup(None, 'owner', 'correct-horse-password', False)
+        self.assertFalse(self.app.session(result['token'])['platform_admin'])
+
+    def test_first_claim_honors_explicit_platform_admin_opt_in(self):
+        with patch.dict('os.environ', {'UNION_FIRST_CLAIM_PLATFORM_ADMIN': '1'}):
+            result = self.app.identity.setup(None, 'owner', 'correct-horse-password', False)
+        self.assertTrue(self.app.session(result['token'])['platform_admin'])
+
+    def test_stale_cookie_cannot_take_the_anonymous_path(self):
+        with self.assertRaises(Rejected):
+            self.app.identity.setup('not-a-real-session-token-123456', 'owner', 'correct-horse-password', True)
+        self.assertFalse(self.app.identity.configured())
+
+    def test_concurrent_first_claim_creates_one_account(self):
+        barrier, results = threading.Barrier(2), []
+        def claim():
+            barrier.wait(timeout=5)
+            try:
+                results.append(self.app.identity.setup(None, 'owner', 'correct-horse-password', False))
+            except Rejected:
+                results.append(None)
+        threads = [threading.Thread(target=claim) for _ in range(2)]
+        for thread in threads: thread.start()
+        for thread in threads: thread.join(10)
+        self.assertEqual(sum(result is not None for result in results), 1)
+        self.assertTrue(self.app.identity.configured())
+
+    def test_invalid_first_claim_leaves_no_account(self):
+        for kwargs in ({'password': 'short'}, {'password': 'correct-horse-password', 'remember': 'true'}):
+            with self.assertRaises(Rejected):
+                self.app.identity.setup(None, 'owner', kwargs.get('password'), kwargs.get('remember', False))
         self.assertFalse(self.app.identity.configured())
 
     def test_restart_preserves_login_and_cookie_scope_but_not_plaintext_secrets(self):

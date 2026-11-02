@@ -1,0 +1,5 @@
+
+> union@0.0.0 management:render
+> node scripts/project-management.mjs render
+
+Management render: 15 modules, 8 milestones, 57 tasks; PASS

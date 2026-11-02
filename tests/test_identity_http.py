@@ -23,11 +23,17 @@ class IdentityHTTPTests(unittest.TestCase):
         response=client.getresponse(); result=(response.status,json.loads(response.read()),response.getheader('Set-Cookie'))
         client.close(); return result
 
-    def test_anonymous_setup_and_cross_origin_login_are_json_rejections(self):
+    def test_anonymous_first_claim_and_cross_origin_rejections(self):
         data={'username':'owner','password':'correct-horse-password','remember':True}
-        self.assertEqual(self.request('/api/auth/setup',data)[0],401)
+        self.assertEqual(self.request('/api/auth/setup',data,origin='https://other.example')[0],403)
+        self.assertTrue(self.request('/api/auth/status')[1]['can_setup'])
+        status,result,cookie=self.request('/api/auth/setup',data)
+        self.assertEqual(status,200);self.assertIn('HttpOnly',cookie);self.assertTrue(self.app.identity.configured())
+        self.assertFalse(self.request('/api/auth/status')[1]['can_setup'])
+        self.assertEqual(self.request('/api/auth/setup',{'username':'second','password':'correct-horse-password','remember':False})[0],401)
         self.assertEqual(self.request('/api/auth/login',data,origin='https://other.example')[0],403)
-        self.assertFalse(self.app.identity.configured())
+        token=cookie.split('=',1)[1].split(';')[0]
+        self.assertTrue(self.request('/api/auth/status',token=token)[1]['authenticated'])
 
     def test_account_setup_login_cookie_and_logout(self):
         host=self.app.new_session('board',platform_admin=True)

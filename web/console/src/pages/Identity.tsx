@@ -30,7 +30,7 @@ export function IdentityForm({mode, onCancel}: {mode: Mode; onCancel?: () => voi
   }
   return <section className="identity-panel" aria-label={titles[mode]}>
     <h1>{titles[mode]}</h1>
-    <p>{mode==='setup' ? '设置一次，以后直接用账号密码进入。管理员权限沿用当前宿主授权。' : mode==='recover' ? '使用首次设置时保存的恢复码。恢复后，旧密码和所有旧登录会话失效。' : mode==='password' ? '修改后其他设备的登录会话将失效。' : '登录你的工作台，继续管理目标、团队与成果。'}</p>
+    <p>{mode==='setup' ? '设置一次，以后直接用账号密码进入。此部署的第一个设置者成为管理员。' : mode==='recover' ? '使用首次设置时保存的恢复码。恢复后，旧密码和所有旧登录会话失效。' : mode==='password' ? '修改后其他设备的登录会话将失效。' : '登录你的工作台，继续管理目标、团队与成果。'}</p>
     {recovery ? <div role="status"><h2>请保存恢复码</h2><p>仅在本次显示。丢失密码时可用它恢复账号。</p><textarea aria-label="账号恢复码" readOnly value={recovery} autoComplete="off" /><button className="button primary" onClick={()=>window.location.reload()}>已保存，进入工作台</button></div>
     : <form onSubmit={submit}>
       {mode!=='password' && <label>账号<input name="username" autoComplete="username" required minLength={3} maxLength={100} pattern="[a-zA-Z0-9_.@\-]+" /></label>}
@@ -64,7 +64,7 @@ export function IdentityBoundary({children}: {children: ReactNode}) {
   if (status.isError) return <main className="identity-page"><p role="alert">暂时无法连接工作台。{errorText(status.error)}</p><button onClick={()=>void status.refetch()}>重试</button></main>;
   if (!status.data.authenticated) return <main className="identity-page"><div><span className="identity-brand">UNION</span>
     {status.data.configured ? <><IdentityForm mode={recover?'recover':'login'} /><button className="button secondary" onClick={()=>setRecover(!recover)}>{recover?'返回登录':'忘记密码，使用恢复码'}</button></>
-      : <section className="identity-panel"><h1>欢迎使用 UNION</h1><p>首次建立管理员账号需要宿主启动时提供的设置链接。完成一次设置后，即可直接用此网址登录。</p></section>}
+      : <IdentityForm mode="setup" />}
     </div></main>;
   return <>{children}</>;
 }

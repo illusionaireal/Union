@@ -1486,6 +1486,30 @@
       "started_at": "2026-11-02",
       "updated_at": "2026-11-02",
       "completion": null
+    },
+    {
+      "id": "U-057",
+      "title": "改为首次访问认领管理员并补重置入口",
+      "priority": "P0",
+      "milestone": "G0",
+      "module": "hosting",
+      "status": "done",
+      "owner": "Codex（外部工程代理）",
+      "role": "身份与部署工程",
+      "acceptance": "未设置账号时首位访问者可设置管理员且不可重复认领；平台管理需宿主显式开关；重置脚本只删账号表并先备份；文档与主账同步；独立复核",
+      "dependencies": [],
+      "blocker": null,
+      "started_at": "2026-11-02",
+      "updated_at": "2026-11-02",
+      "completion": {
+        "scope": "controlled",
+        "reviewer": "independent_first_claim_review（独立只读复核）",
+        "evidence": [
+          "docs/reviews/2026-11-02-anonymous-first-claim.md",
+          "evidence/045-anonymous-first-claim/README.md"
+        ],
+        "note": "匿名首次认领与唯一账号按用户要求实现；平台管理改为宿主显式开关，重置脚本补备份与库校验。领取窗口持续开放为产品选择，非缺陷遗漏。真实浏览器领取与并发压测未做。"
+      }
     }
   ]
 }

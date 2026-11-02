@@ -2,7 +2,7 @@
 
 ## 2026-11-02：043身份与模型配置
 
-IdentityBoundary在现有WorkspaceProvider内控制匿名入口，AccountSettings提供首次认领/改密/退出；成功登录或退出重载页面以清理旧会话缓存。ModelConnectionFields复用原命令体系，新增导入、岗位/备用配置、成本分摊及资料事件。预览前refresh返回最新snapshot，服务端仍检查组织/权限/版本与幂等。`npm run test:model-access`使用私有临时服务、实际重启和回环替身，15项/320px验收。详情见[指南](MODEL_ACCESS.md)、[043](../evidence/043-usable-model-access/README.md)。
+IdentityBoundary在现有WorkspaceProvider内控制匿名入口（未设置账号时直接显示设置表单，已设置后显示登录页），AccountSettings提供首次认领/改密/退出；成功登录或退出重载页面以清理旧会话缓存。ModelConnectionFields复用原命令体系，新增导入、岗位/备用配置、成本分摊及资料事件。预览前refresh返回最新snapshot，服务端仍检查组织/权限/版本与幂等。`npm run test:model-access`使用私有临时服务、实际重启和回环替身，15项/320px验收。详情见[指南](MODEL_ACCESS.md)、[043](../evidence/043-usable-model-access/README.md)。
 
 ## 2026-11-01：订阅认证故障修复（042）
 
