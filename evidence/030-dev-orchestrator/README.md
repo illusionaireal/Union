@@ -1,12 +1,14 @@
 # 030 / U-044：NAS 外部开发调度器部署
 
+> 2026-11-02 运维信息脱敏：实际地址、SSH 用户/端口、私有目录和证书指纹改为占位说明；历史验证结论不变。当前连接信息应取自宿主私有配置，本文件不作为连接配置。此编辑不构成对部署脚本的新复核。
+
 2026-11-01。用户要求以已授权 SSH 主机为基地完成 Astra/Sol 交接文档。交接原件仍在用户下载目录，SHA256 `95f2743843406ba172508d01771a65c13ff2b8b12de7c1f865db1af144ff8988`。
 
 ## 当前结论
 
 已部署**默认关闭**的控制器、固定容器 broker、专用 dev checkout、systemd 服务和未启用的小时 timer。工具链、Chromium、项目基线回归与网关浏览器验收有真实执行证据。真实 Astra/Sol 模型调用数 **0**，未形成双模型链，未启用自动开发，不表示公司成立或自治经营。
 
-主机实际为 Synology DSM 7.3.2 / Linux 4.4.302+，不是文档建议的 Ubuntu VPS。Docker24.0.2、约18GB内存，部署位于 `/volume1/docker/union-dev`，未覆盖原同步仓库或其他容器数据。日常控制器 UID10001；Worker/Validator UID10002；根权限仅用于安装与固定容器 broker，Docker socket 不进入执行环境。
+主机实际为 Synology DSM 7.3.2 / Linux 4.4.302+，不是文档建议的 Ubuntu VPS。Docker24.0.2、约18GB内存，部署位于 `${UNION_DEPLOY_ROOT}`，未覆盖原同步仓库或其他容器数据。日常控制器 UID10001；Worker/Validator UID10002；根权限仅用于安装与固定容器 broker，Docker socket 不进入执行环境。
 
 初始远端 `b39c06c` 不含交接后续源码。用户随后推送验证快照 `53dd96bde22bf95c149929c686ead7dc5ddaa579`，专用 dev 副本无在途作业时已快进。原六个提交 SHA 没有随快照导入，不声称其祖先关系成立。本地 Windows 原 checkout 仍有大量用户既有改动，本轮没有 reset/clean、整体暂存或覆盖。
 

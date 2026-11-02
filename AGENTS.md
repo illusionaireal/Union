@@ -46,4 +46,5 @@
 - Run `python3 -m unittest discover -v` in addition to `npm run check`. CLI operation is `python3 -m ai_union` from the checkout.
 - Fixtures and browser prototypes must be visibly simulated. Real model calls remain 0 until a separately recorded real run; design checks do not establish server-side authorization or durable execution.
 - Do not commit local databases, board keys, authentication material or private executor logs. Preserve archived input bytes and historical evidence; write new validation results to a new directory.
+- Keep actual deployment addresses, SSH ports/users and private host paths in host-local operations configuration; repository examples must use placeholders. Historical deployment notes are not current connection configuration. See docs/DEPLOYMENT_PRIVACY.md for the documented redaction scope and remaining legacy script work.
 - Cloud tasks already have an isolated checkout; use it rather than creating worktrees unless the user explicitly asks.

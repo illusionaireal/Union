@@ -1436,7 +1436,7 @@
       "status": "ready",
       "owner": null,
       "role": "发布工程 / 运维验收",
-      "acceptance": "候选构建绑定提交和依赖版本；配置/凭据/数据分离；安装升级、旧数据兼容、失败回滚及备份恢复有可重现验证和维护说明；受控包验证与真实目标环境部署分别报告",
+      "acceptance": "候选构建绑定提交和依赖版本；配置/凭据/数据分离；安装升级、旧数据兼容、失败回滚及备份恢复有可重现验证和维护说明；受控包验证与真实目标环境部署分别报告；真实连接目标与私有路径移入宿主配置，缺失参数在变更前拒绝，保留既有路径和来源安全边界",
       "dependencies": [
         "U-052",
         "U-053"
@@ -1445,6 +1445,29 @@
       "started_at": null,
       "updated_at": "2026-11-02",
       "completion": null
+    },
+    {
+      "id": "U-055",
+      "title": "脱敏部署文档并记录环境硬编码整改范围",
+      "priority": "P0",
+      "milestone": "G0",
+      "module": "hosting",
+      "status": "done",
+      "owner": "Codex（外部工程代理）",
+      "role": "文档维护 / 部署工程",
+      "acceptance": "部署说明使用占位符；标明历史脱敏，保留原文和验收结论；说明Git历史与脚本硬编码残留并纳入U-054",
+      "dependencies": [],
+      "blocker": null,
+      "started_at": "2026-11-02",
+      "updated_at": "2026-11-02",
+      "completion": {
+        "scope": "documentation",
+        "reviewer": "Codex自检（仅文档脱敏，非部署或独立权限复核）",
+        "evidence": [
+          "docs/DEPLOYMENT_PRIVACY.md"
+        ],
+        "note": "六份说明及开发规范已更新，原文保存在本机忽略目录；未重写Git历史，宿主脚本配置化仍待U-054。"
+      }
     }
   ]
 }
