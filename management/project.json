@@ -1572,6 +1572,76 @@
       "started_at": null,
       "updated_at": "2026-11-03",
       "completion": null
+    },
+    {
+      "priority": "P0",
+      "milestone": "G0",
+      "module": "models",
+      "blocker": null,
+      "updated_at": "2026-11-03",
+      "id": "U-061",
+      "title": "设计真实可用的统一模型接入与订阅执行链",
+      "status": "done",
+      "owner": "Codex（外部工程代理）",
+      "role": "架构 / 模型接入工程",
+      "acceptance": "核查最新dev与OpenCode/Hermes源码；吸收044Go直连事实，定义可复用内核、真实订阅到AU、无损流式、长任务恢复及文件级实施和真实交付标准",
+      "dependencies": [],
+      "started_at": "2026-11-03",
+      "completion": {
+        "scope": "documentation",
+        "reviewer": "Codex自检（设计交付，非运行实现或独立权限评审）",
+        "evidence": [
+          "docs/MODEL_ACCESS_ARCHITECTURE.md",
+          "specs/048-production-model-access/spec.md",
+          "specs/048-production-model-access/plan.md",
+          "evidence/048-model-access-design/README.md"
+        ],
+        "note": "固定源码核查与实施设计完成；保留并衔接已有U-060Go直连切片；U-062覆盖完整模型服务。未改变运行成熟度。"
+      }
+    },
+    {
+      "priority": "P0",
+      "milestone": "G0",
+      "module": "models",
+      "blocker": null,
+      "updated_at": "2026-11-03",
+      "id": "U-062",
+      "title": "实现正式模型服务与完整接入能力",
+      "status": "backlog",
+      "owner": null,
+      "role": "模型接入 / 组织运行时 / 前端 / 发布工程",
+      "acceptance": "按048吸收U-060的Go真实接通，补动态认证续期与AU业务闭环，再统一ChatGPT/API/网关/自托管/云身份、原生流式状态、长任务恢复、凭据池、上下文资产与计量；与U-054发布、U-002真实公司接入衔接；各承诺profile有真实使用证据，不以mock或目录登录截图收口",
+      "dependencies": [
+        "U-061",
+        "U-060"
+      ],
+      "started_at": null,
+      "completion": null
+    },
+    {
+      "id": "U-063",
+      "title": "修复 PR #12 的跨平台与浏览器检查",
+      "priority": "P0",
+      "milestone": "G0",
+      "module": "console",
+      "status": "done",
+      "owner": "Codex（外部工程代理）",
+      "role": "维护 / CI 与前端边界验证",
+      "acceptance": "创建回执与组织切换不卸载操作；占位阶段不暴露旧快照或允许写入；备份完整并释放连接；npm/Python/浏览器和 PR 检查通过，身份边界经独立复核",
+      "dependencies": [],
+      "blocker": null,
+      "started_at": "2026-11-03",
+      "updated_at": "2026-11-03",
+      "completion": {
+        "scope": "controlled",
+        "reviewer": "Codex自检；独立工程角色 review_pr12_boundaries 复核身份/备份/刷新边界",
+        "evidence": [
+          "evidence/049-pr12-check-repair/README.md",
+          "evidence/049-pr12-check-repair/browser-validation.json",
+          "evidence/049-pr12-check-repair/novel-checks.json"
+        ],
+        "note": "npm、Python404项（5平台跳过）、浏览器61+16及启动5项通过；aead418的push/PR共10项远端检查全部通过。真实模型调用0，原真实接入/发布/运营验收不升级。"
+      }
     }
   ]
 }
