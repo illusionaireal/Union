@@ -1,5 +1,9 @@
 # ai-union 当前状态
 
+## 2026-11-03：真实模型接入架构与实施计划
+
+按最新dev 63d90f6及固定OpenCode/Hermes源码完成[048方案](../MODEL_ACCESS_ARCHITECTURE.md)：订阅认证到AU采用、独立模型服务、原生流式状态、长任务、恢复与真实交付标准。U-061为documentation完成；U-062待实现，现有运行能力及U-002未升级。详见[记录](../../evidence/048-model-access-design/README.md)。
+
 ## 2026-11-02：首次访问认领管理员（U-057）
 
 用户要求去掉宿主链接门槛：未设置账号时第一个打开工作台的人即可设置管理员。实现为匿名首次认领 + 唯一账号 + 重置入口；宿主票据仍可用但不再是唯一入口。重置用 `scripts/reset_owner.py`（先备份数据库，只删账号表，重新打开认领窗口）。匿名认领默认不授予平台管理，需宿主显式 `UNION_FIRST_CLAIM_PLATFORM_ADMIN=1`，本 NAS 部署已开启。401 项 Python、37 项前端/类型/构建与独立只读复核通过；独立复核提出的平台管理越权与重置脚本失败模式已修正，领取窗口持续开放属用户确认的产品选择。未做真实浏览器领取、并发压测，未改变真实模型与订阅验收。详见[证据](../evidence/045-anonymous-first-claim/README.md)与[复核](reviews/2026-11-02-anonymous-first-claim.md)。

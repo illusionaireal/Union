@@ -1,5 +1,9 @@
 # 当前工程交接
 
+## 2026-11-03：下一模型接入实现以048为准
+
+先读[正式架构](docs/MODEL_ACCESS_ARCHITECTURE.md)与[048实施计划](specs/048-production-model-access/plan.md)。最新基线63d90f6中Go仍只读展示，未绑定AU推理；第一切片是现有Go账号驱动原AU完成真实工作和反馈。复用固定OpenCode单次模型/认证内核，不能把账号服务端口当作兼容API，也不能在Deep Agents外再套完整coding loop。U-061设计完成，U-062待实现；U-002真实使用及U-054发布门槛继续沿用。本批没有运行时变更、模型调用或部署。
+
 ## 2026-11-02：首次访问认领管理员（U-057）
 
 用户要求移除“必须从宿主链接设置账号”的门槛：未设置账号时，第一个打开工作台的人即可设置管理员，设置后不可重复认领，只能账号密码登录。新增 `scripts/reset_owner.py`：先备份数据库，只删账号表，重新打开认领窗口。匿名认领默认不授予平台管理，需要宿主 `UNION_FIRST_CLAIM_PLATFORM_ADMIN=1`（本 NAS 已开启）。401 Python、37 前端/类型/构建与独立只读复核通过；复核指出的平台管理越权和重置脚本失败模式已修正，领取窗口持续开放是用户确认的选择。未做真实浏览器领取和并发压测，真实模型/订阅验收不变。见[证据](evidence/045-anonymous-first-claim/README.md)、[复核](docs/reviews/2026-11-02-anonymous-first-claim.md)。

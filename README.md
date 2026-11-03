@@ -1,5 +1,9 @@
 # UNION / ai-union
 
+## 2026-11-03：正式模型接入设计
+
+[完整方案](docs/MODEL_ACCESS_ARCHITECTURE.md)已对照最新dev及OpenCode/Hermes源码：保留Python组织循环，新增复用OpenCode模型与认证内核的独立服务，先打通Go订阅到AU真实执行，再完成原生流式、长任务、凭据池与恢复。当前为设计交付，实施见[048计划](specs/048-production-model-access/plan.md)及U-062。
+
 **UNION——一家开箱即用的 AI 公司。**
 
 你给目标和预算，它自行组织团队、开展业务、交付成果，并向你汇报经营情况。开发主分支为 **`dev`**。
