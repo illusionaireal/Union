@@ -1,0 +1,9 @@
+bun install v1.4.2 (744846f84)
+Resolving dependencies
+Resolved, downloaded and extracted [19]
+
++ @opencode/client@workspace:packages/client
++ @opencode/plugin@workspace:packages/plugin
+
+10 packages installed [187.00ms]
+Built UNION model service from pinned source

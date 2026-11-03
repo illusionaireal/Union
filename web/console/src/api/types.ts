@@ -33,6 +33,11 @@ export interface ModelConnection {
   has_api_key: boolean;
   updated_at: string;
   config: {
+    version?: 2;
+    backend?: 'modeld';
+    grant_ref?: string | null;
+    grant_revision?: number | null;
+    deadlines?: { first_event_ms: number; idle_ms: number; task_ms: number | null };
     provider?: string;
     protocol?: string;
     api_key_env?: string;
@@ -42,12 +47,12 @@ export interface ModelConnection {
     context_policy?: {strategy?:'trim_history'|'reject';window?:number};
     billing?: {basis: 'metered' | 'subscription' | 'owned' | 'unknown'; currency?: string; revision?: string; input_per_million_minor?: number; output_per_million_minor?: number;cache_read_per_million_minor?:number};
     name: string;
-    base_url: string;
+    base_url?: string;
     model: string;
-    response_format: 'agent' | 'json_schema' | 'json_object';
-    token_limit_field: 'max_completion_tokens' | 'max_tokens';
+    response_format?: 'agent' | 'json_schema' | 'json_object';
+    token_limit_field?: 'max_completion_tokens' | 'max_tokens';
     max_output_tokens: number;
-    timeout_seconds: number;
+    timeout_seconds?: number;
     enabled: boolean;
   };
 }
@@ -116,6 +121,7 @@ export interface ExecutionFailure {
   rule?: string;
 }
 export interface Run {
+  execution?: { connection_id?: string; protocol?: string; transport_source?: string };
   id: string;
   kind: string;
   work_id: string | null;

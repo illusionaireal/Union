@@ -168,7 +168,8 @@ def main(argv=None):
                     else:
                         require(args.allow_unknown_cost, "连接测试会产生一次实际调用；需显式 --allow-unknown-cost")
                         connection = resolve_connection(engine, engine.state().get('execution_config',{}).get('api_connection_id'))
-                        executor = APIExecutor(root, connection)
+                        from .model_service import make_transport
+                        executor = make_transport(root, connection)
                         if args.tools:
                             from .harness import test_tool_connection
                             result = test_tool_connection(engine, executor)

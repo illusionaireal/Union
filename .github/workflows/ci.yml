@@ -44,6 +44,9 @@ jobs:
       - run: npm run test:novel
         env:
           UNION_PYTHON: python3
+      - run: npm run test:model-service-browser
+        env:
+          UNION_PYTHON: python3
       - uses: actions/upload-artifact@v4
         if: always()
         with:

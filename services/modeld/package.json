@@ -1,0 +1,10 @@
+{
+  "name": "@union/modeld",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "bun test --timeout 30000 test",
+    "build": "bun run build.ts"
+  }
+}

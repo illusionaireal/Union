@@ -27,6 +27,8 @@ class Server(ThreadingHTTPServer):
         self.app = app
         from .subscriptions import Subscriptions
         self.subscriptions = Subscriptions(app)
+        from .model_accounts import ModelAccounts
+        self.model_accounts = ModelAccounts(app)
         self.static_dir = Path(static_dir or REPO / "web/console/dist").resolve()
         self.document = Path(document) if document else self.static_dir / "index.html"
         super().__init__(("127.0.0.1", port), Handler)
@@ -131,18 +133,26 @@ class Handler(BaseHTTPRequestHandler):
             return self.send(401, {"error": str(error)})
         try:
             if write:
-                if path.path not in ("/api/commands", "/api/gateway-commands", "/api/subscription-commands"):
+                if path.path not in ("/api/commands", "/api/gateway-commands", "/api/subscription-commands", "/api/model-account-commands"):
                     return self.send(404, {"error": "接口不存在"})
                 require(app.session(token)["role"] == "board", "观察者不能提交操作")
                 require(self.headers.get("Content-Type", "").split(";")[0] == "application/json", "命令需要 application/json")
                 length = int(self.headers.get("Content-Length", "0"))
                 require(0 < length <= 200000, "请求体大小不允许")
                 request = json.loads(self.rfile.read(length).decode("utf-8"))
-                receipt = self.server.subscriptions.command(token, request) if path.path == "/api/subscription-commands" else app.gateways.command(token, request) if path.path == "/api/gateway-commands" else app.command(token, request)
+                receipt = self.server.model_accounts.command(token, request) if path.path == '/api/model-account-commands' else self.server.subscriptions.command(token, request) if path.path == "/api/subscription-commands" else app.gateways.command(token, request) if path.path == "/api/gateway-commands" else app.command(token, request)
                 return self.send(202 if receipt["status"] == "accepted" else 200, {"receipt": receipt})
             if path.path == "/api/session":
                 return self.send(200, app.session_info(token))
             org_id = query.get("organization_id", [None])[0]
+            if path.path == '/api/model-service':
+                return self.send(200, self.server.model_accounts.status(token))
+            if path.path == '/api/model-account-models':
+                return self.send(200, self.server.model_accounts.models(token, query.get('account_ref', [None])[0]))
+            if path.path == '/api/model-account-receipts':
+                return self.send(200, {'receipt':self.server.model_accounts.receipt(token, query.get('id', [None])[0])})
+            if path.path == '/api/model-request-events':
+                return self.send(200, self.server.model_accounts.events(token, org_id, query.get('run_id', [None])[0], int(query.get('after', ['0'])[0])))
             if path.path == "/api/gateways":
                 return self.send(200, app.gateways.list(token, org_id))
             if path.path == "/api/gateway-receipts":

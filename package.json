@@ -27,6 +27,10 @@
     "management:status": "node scripts/project-management.mjs status",
     "check:management": "node scripts/project-management.mjs check && node --test tests/project-management.test.mjs",
     "test:gateways": "node scripts/check_gateways.cjs",
-    "test:model-access": "node scripts/check_model_access.cjs"
+    "test:model-access": "node scripts/check_model_access.cjs",
+    "build:model-service": "node services/modeld/prepare.mjs",
+    "test:model-service": "bun test --timeout 30000 services/modeld/test",
+    "test:model-service-browser": "node scripts/check_model_service.cjs",
+    "start:model-service": "bun services/modeld/dist/main.js"
   }
 }

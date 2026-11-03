@@ -3,3 +3,5 @@
 docs/baseline/*.md -text
 # Uploaded handoff is an immutable input, including Markdown hard breaks.
 docs/inputs/*.md -text -whitespace
+# Unified patches use a single space to represent an empty context line.
+services/modeld/patches/*.patch -whitespace

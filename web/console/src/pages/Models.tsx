@@ -1,5 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import SubscriptionConnections from './SubscriptionConnections';
+import ModelServiceConnections from './ModelServiceConnections';
+import ModelRunStream from './ModelRunStream';
 import { Link, useLocation } from 'react-router-dom';
 import {
   Cpu,
@@ -49,6 +51,8 @@ export default function Models() {
   const costs=useQuery({queryKey:['model-costs',session?.service_instance,session?.session_scope,orgId,d?.organization.version],enabled:connected&&board&&!!d,queryFn:()=>api.modelCosts(orgId),retry:false});
   return (
     <>
+      <ModelServiceConnections />
+      <ModelRunStream />
       <SubscriptionConnections />
       <section className="model-intro">
         <span className="model-intro-icon">
@@ -182,11 +186,11 @@ export default function Models() {
                 {c.catalog?.cost && <p className="form-note">目录基础参考价（USD / 百万文本 token）：输入 {c.catalog.cost.input??'未知'}，输出 {c.catalog.cost.output??'未知'}。不自动用于本 AU 计费。</p>}
                 <div className="endpoint">
                   <Globe size={15} />
-                  <span>{c.config.base_url}</span>
+                  <span>{c.config.backend === 'modeld' ? '平台托管模型服务' : c.config.base_url}</span>
                 </div>
                 <div className="key-status">
                   <KeyRound size={15} />
-                  {c.has_api_key ? 'API Key 已保存，内容不回显' : '未保存 API Key'}
+                  {c.config.backend === 'modeld' ? c.config.grant_ref ? '当前组织已获账号使用授权' : '等待平台管理员重新授权' : c.has_api_key ? 'API Key 已保存，内容不回显' : '未保存 API Key'}
                 </div>
                 <dl className="connection-facts">
                   <div>
@@ -194,8 +198,8 @@ export default function Models() {
                     <dd>{c.config.max_output_tokens.toLocaleString()} tokens</dd>
                   </div>
                   <div>
-                    <dt>请求超时</dt>
-                    <dd>{c.config.timeout_seconds} 秒</dd>
+                    <dt>{c.config.backend === 'modeld' ? '首事件 / 空闲超时' : '请求超时'}</dt>
+                    <dd>{c.config.deadlines ? `${c.config.deadlines.first_event_ms / 1000} / ${c.config.deadlines.idle_ms / 1000} 秒` : `${c.config.timeout_seconds} 秒`}</dd>
                   </div>
                   <div>
                     <dt>输出模式</dt>

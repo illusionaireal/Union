@@ -18,6 +18,19 @@ export function ModelConnectionFields({connection, newId, endpoint, hasDefault}:
   const [basis,setBasis]=useState(connection?.config.billing?.basis || 'unknown');
   const [catalog,setCatalog]=useState<Array<{provider:string;model:string}>>([]);
   useEffect(()=>{let active=true; void api.catalog().then(result=>{if(active)setCatalog(result.models);}).catch(()=>{}); return ()=>{active=false;};},[]);
+  if (connection?.config.backend === 'modeld') return <>
+    <p>此连接使用当前组织的账号授权。更换账号或模型请重新采用；保存这里的运行设置不会调用模型。</p>
+    <input type="hidden" name="model_service_config" value={JSON.stringify(connection.config)} />
+    <input type="hidden" name="connection_id" value={connection.id} />
+    <label className="operation-field">连接名称<input name="connection_name" required maxLength={100} defaultValue={connection.config.name} /></label>
+    <label className="check-field"><input name="service_enabled" type="checkbox" defaultChecked={connection.config.enabled} />启用此连接</label>
+    <label className="operation-field">最大输出 token<input name="max_output_tokens" type="number" min={1} max={32768} required defaultValue={connection.config.max_output_tokens} /></label>
+    <label className="operation-field">首事件超时（秒）<input name="first_event_seconds" type="number" min={1} max={3600} required defaultValue={(connection.config.deadlines?.first_event_ms || 180000)/1000} /></label>
+    <label className="operation-field">空闲超时（秒）<input name="idle_seconds" type="number" min={1} max={3600} required defaultValue={(connection.config.deadlines?.idle_ms || 120000)/1000} /></label>
+    <label className="operation-field">本连接总时限（秒，可留空）<input name="task_seconds" type="number" min={1} max={3600} defaultValue={connection.config.deadlines?.task_ms ? connection.config.deadlines.task_ms/1000 : ''} /></label>
+    <p className="form-note">组织的单次运行时限始终生效。停用连接不会撤销平台账号，可随后重新启用。</p>
+    <label className="operation-field">配置说明<input name="reason" required defaultValue="调整组织模型运行设置" /></label>
+  </>;
   return <>
     <p className="form-note">选择接口，填写凭据与模型。保存不会调用模型，也不会启动组织。</p>
     <input type="hidden" name="api_enabled" value={String(connection?.config.enabled ?? true)} />

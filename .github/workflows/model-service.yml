@@ -1,0 +1,27 @@
+name: fixed model service
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  model-service:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: node services/modeld/prepare.mjs
+      - run: bun test --timeout 30000 services/modeld/test
+      - run: python scripts/check_model_service_install.py --output model-install.json

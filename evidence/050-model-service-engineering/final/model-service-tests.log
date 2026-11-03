@@ -1,0 +1,20 @@
+bun test v1.4.2 (744846f84)
+
+services\modeld\test\journal.test.ts:
+(pass) request replay returns the original state and never requeues a sent attempt [75.80ms]
+(pass) grants bind model and AU and cannot be re-created to erase revocation [71.25ms]
+(pass) restart preserves partial events and fences an interrupted result without replay [85.99ms]
+(pass) cancel is an intent; a late completion cannot become executable [72.83ms]
+
+services\modeld\test\kernel.test.ts:
+(pass) pinned native kernel preserves account scope, refresh, tools and single-attempt HTTP boundaries [3038.59ms]
+(pass) device authorization completes and persists the selected account exactly once [1474.54ms]
+
+services\modeld\test\server.test.ts:
+(pass) one accepted POST is durable, repeat lookup never starts a second inference; roles and AU are isolated [121.29ms]
+(pass) cancel and grant revocation fence late tool results without claiming remote cancellation [93.82ms]
+
+ 8 pass
+ 0 fail
+ 42 expect() calls
+Ran 8 tests across 3 files. [5.13s]

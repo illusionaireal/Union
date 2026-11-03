@@ -1,0 +1,14 @@
+{
+  "repository": "https://github.com/anomalyco/opencode.git",
+  "commit": "805a42ffaa56b29a88baef87c7567f1ab9a40a8f",
+  "version": "2.2.5",
+  "tested_bun": "1.4.2",
+  "declared_upstream_bun": "1.4.4",
+  "patch": "patches/0001-export-go-kernel-functions.patch",
+  "files": {
+    "vendor/opencode/bun.lock": "fbc0a126180543a95c9b3cadcc27c7b76abfcfad8d6759a376c1571610c66f7c",
+    "vendor/opencode/LICENSE": "625f0f619133f89bbbb2abe37369613dfa1885eba1e50d02170deb62bb42cb6b",
+    "patches/0001-export-go-kernel-functions.patch": "7ac252011e58f5c1e1004bbea34877330a39dedb9e7a682e506e62419671f1b8"
+  },
+  "hash_encoding": "sha256-utf8-lf"
+}

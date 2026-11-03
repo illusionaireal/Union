@@ -361,7 +361,7 @@ export function CommandFields({
             测试连接 {connection?.id || data.execution_config.api_connection_id}
             ，验证调用工具及读取结果继续回应，占用两次调用额度，分别保存用量和回执。
             {connection
-              ? ` 最大输出 ${connection.config.max_output_tokens.toLocaleString()} token；实际超时 ${Math.min(connection.config.timeout_seconds, data.organization.resources.timeout_seconds)} 秒，取连接与公司单次超时中的较小值。`
+              ? ` 最大输出 ${connection.config.max_output_tokens.toLocaleString()} token；实际超时 ${Math.min(connection.config.timeout_seconds ?? (connection.config.deadlines?.task_ms ? connection.config.deadlines.task_ms / 1000 : data.organization.resources.timeout_seconds), data.organization.resources.timeout_seconds)} 秒，受公司单次超时限制。`
               : ' 沿用当前连接配置的最大输出；超时同时受公司单次上限约束。'}
           </p>
           <label className="check-field">

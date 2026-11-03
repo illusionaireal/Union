@@ -119,6 +119,12 @@ export function readForm(kind: CommandKind, form: HTMLFormElement): Record<strin
           : {}),
       };
     case 'api_connection':
+      if (str('model_service_config')) return {
+        connection_id:str('connection_id'),reason,
+        config:{...JSON.parse(str('model_service_config')),name:str('connection_name'),enabled:values.get('service_enabled')==='on',
+          max_output_tokens:Number(str('max_output_tokens')),deadlines:{first_event_ms:Number(str('first_event_seconds'))*1000,
+            idle_ms:Number(str('idle_seconds'))*1000,task_ms:str('task_seconds')?Number(str('task_seconds'))*1000:null}},
+      };
       return {
         connection_id: str('connection_id'),
         reason: str('reason') || '网页配置模型连接',

@@ -1,0 +1,101 @@
+
+> union@0.0.0 check
+> npm run check:management && npm run check:plan && npm test && npm run check:console
+
+
+> union@0.0.0 check:management
+> node scripts/project-management.mjs check && node --test tests/project-management.test.mjs
+
+Management check: 15 modules, 8 milestones, 63 tasks; PASS
+✔ rejects missing owners at start and unfinished dependencies, but permits honest unassigned backlog (5.2162ms)
+✔ completion requires scope, reviewer and existing evidence, and does not promote milestones (1.9621ms)
+✔ rejects duplicate IDs, unknown references and dependency cycles (1.838ms)
+✔ blocked work needs an unblock action; already-started blocked work counts toward WIP (1.888ms)
+✔ rejects evidence outside repository, invalid scope and malformed dates (2.7931ms)
+✔ deterministic generated views reject stale output and preserve surrounding narrative (15.6903ms)
+✔ flow summary keeps empty live evidence distinct from completion counts (1.1665ms)
+✔ milestone acceptance and task scope cannot be asserted without their review metadata (1.7909ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 127.953
+
+> union@0.0.0 check:plan
+> node scripts/check-plan.mjs
+
+{"baseline":"UNION-B1","tasks":82,"dependencies":181,"cycles":0,"missingDependencies":0,"baselineFiles":5,"githubTasks":8}
+
+> union@0.0.0 test
+> node --test tests/*.test.ts
+
+✔ retry uses the same reservation; changed request is rejected (149.9293ms)
+✔ unauthorized model actions and tenant/currency changes leave budget untouched (78.9535ms)
+✔ only positive safe integer amounts and bounded keys are accepted (86.7518ms)
+✔ eight competing processes cannot exceed a 100-minor-unit hard budget (382.0009ms)
+✔ process crash after external success recovers by lookup without repeating the effect (284.0838ms)
+✔ crash before external call retains reservation when lookup is inconclusive (233.2382ms)
+✔ definitive failure releases reservation exactly once (125.8913ms)
+✔ settling below maximum releases the difference and invalid receipt rolls back (114.5031ms)
+✔ same key across test tenants remains independent (178.9652ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1802.4499
+
+> union@0.0.0 check:console
+> npm run typecheck --workspace @union/console && npm run test --workspace @union/console && npm run build:console
+
+
+> @union/console@0.1.0 typecheck
+> tsc --noEmit
+
+
+> @union/console@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 D:/Project/Union/web/console
+
+ ✓ src/api/client.test.ts (3 tests) 22ms
+ ✓ src/features/commands/receipts.test.ts (4 tests) 10ms
+ ✓ src/app/url-state.test.tsx (1 test) 210ms
+ ✓ src/pages/ModelServiceConnections.test.tsx (2 tests) 398ms
+   ✓ binds adoption to selected account, model and AU; lost reply blocks a second write  345ms
+ ✓ src/pages/Identity.test.tsx (8 tests) 745ms
+ ✓ src/features/commands/fields.test.tsx (9 tests) 741ms
+ ✓ src/pages/RuntimeObservation.test.tsx (11 tests) 466ms
+ ✓ src/pages/Gateways.test.tsx (3 tests) 537ms
+ ✓ src/app/workspace.test.tsx (4 tests) 809ms
+   ✓ workspace organization transitions > keeps the session and draft mounted while withholding old organization data and writes  372ms
+ ✓ src/pages/SubscriptionConnections.test.tsx (8 tests) 768ms
+
+ Test Files  10 passed (10)
+      Tests  53 passed (53)
+   Start at  12:35:30
+   Duration  3.96s (transform 1.68s, setup 4.57s, collect 4.95s, tests 4.71s, environment 13.13s, prepare 2.31s)
+
+
+> union@0.0.0 build:console
+> npm run build --workspace @union/console
+
+
+> @union/console@0.1.0 build
+> tsc --noEmit && vite build
+
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 2012 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.74 kB │ gzip:   0.51 kB
+dist/assets/index-CaMEXWpI.css   44.75 kB │ gzip:  10.07 kB
+dist/assets/index-CPfnp9-U.js   433.25 kB │ gzip: 135.54 kB
+✓ built in 3.25s

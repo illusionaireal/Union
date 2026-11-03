@@ -1,5 +1,9 @@
 # 当前工程交接
 
+## 2026-11-03：048 A模型服务工程链路与受控验证
+
+PR #12已合并，后续在`feat/production-model-access`实现固定OpenCode模型服务、AU grant、持久请求/流、Python outbox与Harness原生状态、React采用/设置。414项Python（5平台跳过）、53项前端、8项服务、8项新浏览器、15项既有模型浏览器、5项控制台启动和4项复制安装检查通过；权限/费用/恢复经独立复核。见[050证据](evidence/050-model-service-engineering/README.md)与[安装说明](services/modeld/README.md)。U-060仍doing，在制上限5，U-062/U-002/U-054不收口。真实模型调用0，已请求真实宿主配置、原AU及明确额度，下一步是A的真实成果与反馈；不能把本轮工程验证当作该出口。无关历史未跟踪文件保留。
+
 ## 2026-11-03：PR #12 检查修复通过远端复验
 
 U-063 修复工作区切换卸载操作回执、SQLite 备份句柄释放与浏览器脚本，并为完整机制 CI 留出 15 分钟。npm、Python 404 项（5 平台跳过）、实际 Chromium 工作台 61 / 小说 16 项及启动 5 项通过，独立身份与备份复核无阻断问题。aead418 已推送原 PR 分支，Linux/Windows 与浏览器共 10 项检查通过；Windows PR 运行 5 分 3 秒。见[049证据](evidence/049-pr12-check-repair/README.md)。已恢复在制上限 4；原模型/主机/发布任务不收口。无关未跟踪历史文件保留。

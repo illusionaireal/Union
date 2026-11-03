@@ -1,0 +1,14 @@
+{
+  "simulated": true,
+  "real_model_calls": 0,
+  "checks": [
+    "Selected account and model adopted into existing AU",
+    "Managed connection displays AU grant instead of missing API key",
+    "Connection and adoption receipt survive page reload",
+    "Existing bounded tool-roundtrip flow works through the adopted service connection",
+    "Stored model events are visible through same-origin AU-scoped API",
+    "AU board can disable managed connection and edit output limit without adding a model call",
+    "Adoption and streaming view fit 320px",
+    "No browser or host exceptions"
+  ]
+}

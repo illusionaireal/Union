@@ -120,7 +120,7 @@ export default function SubscriptionConnections() {
             </select></label>
             {selected && <p className="form-note">上下文 {selected.context ?? '未知'} · 输出上限 {selected.output ?? '未知'} · 工具 {selected.tools?'支持':'未确认'}{accountInfo.default_model===selected.id?' · 官方默认':''}</p>}
             {selected && <button className="button" type="button" onClick={()=>void navigator.clipboard?.writeText(selected.id)}>复制模型 ID</button>}
-            <p className="form-note">目录与额度为只读展示；当前版本不会以订阅身份直接发起模型调用，用于公司执行仍需另行绑定。</p>
+            <p className="form-note">此处为兼容认证服务的只读目录。正式使用请在「组织模型接入」选择账号和模型，授权给当前组织。</p>
           </div>}
         </div>}
       </section>

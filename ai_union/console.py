@@ -367,7 +367,8 @@ class Console:
                 require("max_cost" not in state["resources"], "API 不支持金额硬上限")
                 require(data.get("model") in (None, ""), "API 模型由连接配置固定；请选择或更新连接")
                 connection, fallbacks = resolve_chain(e) if kind=='start' and data.get("connection_id") is None else (resolve_connection(e, data.get("connection_id") or state.get('execution_config',{}).get('api_connection_id')), [])
-                executor = APIExecutor(e.root, connection, fallbacks=fallbacks)
+                from .model_service import make_transport
+                executor = make_transport(e.root, connection, fallbacks=fallbacks)
                 if kind == "start":
                     from .harness import HarnessExecutor
                     executor = HarnessExecutor(e, connection, roles=resolve_roles(e), fallbacks=fallbacks)

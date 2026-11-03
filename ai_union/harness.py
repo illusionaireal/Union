@@ -12,6 +12,7 @@ from .engine import Rejected, encoded, now, require, uid
 from .executor import ExecutionFailure
 from .failures import issue
 from .model_api import APIExecutor, ROLE_BY_KIND, reject_saved_secrets
+from .model_service import make_transport
 
 
 def test_tool_connection(engine, executor):
@@ -66,7 +67,7 @@ class HarnessExecutor:
         dependencies()
         require(base in ("deepagents", "langchain"), "不支持的 Harness")
         self.engine, self.base = engine, base
-        self.transport = APIExecutor(engine.root, connection, fallbacks=fallbacks)
+        self.transport = make_transport(engine.root, connection, fallbacks=fallbacks)
         self.default_connection = connection
         self.default_fallbacks = list(fallbacks)
         self.roles = dict(roles or {})
@@ -213,6 +214,7 @@ class HarnessExecutor:
                     elif m.type == "ai":
                         item = {"role": "assistant", "content": m.content or None}
                         if m.additional_kwargs.get('_provider_parts'): item['_provider_parts']=m.additional_kwargs['_provider_parts']
+                        if m.additional_kwargs.get('_native'): item['_native']=m.additional_kwargs['_native']
                         if m.tool_calls:
                             item["tool_calls"] = [{"id": c["id"], "type": "function", "function": {"name": c["name"], "arguments": encoded(c["args"])}} for c in m.tool_calls]
                         body.append(item)
@@ -223,7 +225,7 @@ class HarnessExecutor:
                 owner.usage = usage
                 calls = message.get("tool_calls", [])
                 owner.tool_count = len(calls)
-                return ChatResult(generations=[ChatGeneration(message=AIMessage(content=message.get("content") or "", additional_kwargs={'_provider_parts':message['_provider_parts']} if message.get('_provider_parts') else {}, tool_calls=[
+                return ChatResult(generations=[ChatGeneration(message=AIMessage(content=message.get("content") or "", additional_kwargs={key:message[key] for key in ('_provider_parts','_native') if message.get(key)}, tool_calls=[
                     {"id": c["id"], "name": c["function"]["name"], "args": json.loads(c["function"]["arguments"])} for c in calls]))])
 
         return ControlledChat(cache=False, model_name="union:controlled-chat" if self.package["kind"] == "work" else "union:controlled-organization")
@@ -252,7 +254,7 @@ class HarnessExecutor:
         fallbacks=connection.get('_fallback_connections',self.default_fallbacks)
         if (connection["id"], connection["revision"]) == (self.metadata["connection_id"], self.metadata["connection_revision"]) and [(c['id'],c['revision']) for c in self.transport.fallbacks]==[(c['id'],c['revision']) for c in fallbacks]:
             return
-        self.transport = APIExecutor(self.engine.root, connection, fallbacks=fallbacks)
+        self.transport = make_transport(self.engine.root, connection, fallbacks=fallbacks)
         self.transport.secret_guard = self._check_secrets
         self.model = self.transport.model
         self.metadata = self.transport.metadata | {"harness": self.base,

@@ -7,8 +7,13 @@ PRIVATE_FIELDS = {'api_key_env', 'api_key_file'}
 
 
 def export_connections(engine):
-    return {'version': 1, 'connections': [{'id': c['id'], 'config': {k:v for k,v in c['config'].items() if k not in PRIVATE_FIELDS}}
-                                         for c in list_connections(engine)]}
+    items = []
+    for c in list_connections(engine):
+        config = {k:v for k,v in c['config'].items() if k not in PRIVATE_FIELDS}
+        if config.get('backend') == 'modeld':
+            config.update(grant_ref=None, grant_revision=None, enabled=False)
+        items.append({'id':c['id'], 'config':config})
+    return {'version': 1, 'connections': items}
 
 
 def validate_bundle(bundle):
@@ -21,6 +26,9 @@ def validate_bundle(bundle):
         require(item['id'] not in ids, '导入文件含重复连接ID')
         ids.add(item['id'])
         require(isinstance(item['config'], dict) and not PRIVATE_FIELDS.intersection(item['config']), '导入文件不能携带宿主凭据引用')
+        if item['config'].get('backend') == 'modeld':
+            require(item['config'].get('grant_ref') is None and item['config'].get('grant_revision') is None
+                    and item['config'].get('enabled') is False, '导入不能转移模型使用授权；请由平台管理员重新授予')
         result.append({'id':item['id'], 'config':validate_config(item['config'])})
     return result
 

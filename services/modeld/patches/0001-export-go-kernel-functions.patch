@@ -1,0 +1,31 @@
+diff --git a/packages/core/src/plugin/provider/opencode.ts b/packages/core/src/plugin/provider/opencode.ts
+index 18098bb..742df66 100644
+--- a/packages/core/src/plugin/provider/opencode.ts
++++ b/packages/core/src/plugin/provider/opencode.ts
+@@ -90,7 +90,7 @@ class SignedOutError extends Schema.TaggedError<SignedOutError>()("OpencodeConso
+   }
+ }
+ 
+-function oauth(http: HttpClient.HttpClient) {
++export function oauth(http: HttpClient.HttpClient) {
+   return {
+     integrationID: Integration.ID.make("opencode"),
+     method: {
+@@ -494,7 +494,7 @@ export const OpencodePlugin = define<
+   }),
+ })
+ 
+-function fetchConfig(http: HttpClient.HttpClient, value: Credential.Key | Credential.OAuth) {
++export function fetchConfig(http: HttpClient.HttpClient, value: Credential.Key | Credential.OAuth) {
+   // Scoped so responses whose body is never read (404, errors) are released here instead of by a GC-time abort.
+   return HttpClient.withScope(http)
+     .execute(
+@@ -537,7 +537,7 @@ function ssoUrl(server: string, connectionID: string) {
+   )
+ }
+ 
+-function connectionStatus(cause: unknown): IntegrationConnection.Status | undefined {
++export function connectionStatus(cause: unknown): IntegrationConnection.Status | undefined {
+   if (cause instanceof SsoRequiredError)
+     return {
+       status: "needs_auth",

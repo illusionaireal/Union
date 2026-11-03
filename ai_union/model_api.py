@@ -55,6 +55,9 @@ def api_connection(parts, timeout):
 
 
 def validate_config(config):
+    if isinstance(config, dict) and config.get('backend') == 'modeld':
+        from .model_service import validate_service_config
+        return validate_service_config(config)
     require(isinstance(config, dict) and CONFIG_FIELDS - OPTIONAL_CONFIG <= set(config) <= CONFIG_FIELDS, "API 配置字段缺失或不支持")
     result = copy.deepcopy(config)
     text(result["name"], "连接名称", 100)
@@ -170,6 +173,7 @@ def list_connections(engine):
 def connection_key(row):
     """Resolve a credential at use time; an environment reference is never persisted."""
     config = json.loads(row["config"])
+    if config.get('backend') == 'modeld': return '', 'model_service'
     if config.get('auth_type')=='none': return '', 'none'
     if row["api_key"]:
         return row["api_key"], "inline"
@@ -204,13 +208,26 @@ def public_connection(row):
 def configure_connection(engine, board_key, connection_id, config, reason, api_key=None, *, gateway_ref=None):
     identifier(connection_id)
     config = validate_config(config)
+    service = config.get('backend') == 'modeld'
+    if service:
+        with engine.read_transaction() as cx:
+            engine._board(cx, board_key)
+        require(api_key in (None, '') and gateway_ref is None, '托管模型不能携带 API 密钥或网关引用')
+        if config['enabled']:
+            from .model_service import ModelServiceClient, ServiceError
+            try:
+                grant = ModelServiceClient().call('GET', '/v1/grants/' + config['grant_ref'], admin=True)
+            except ServiceError:
+                raise Rejected('模型使用授权暂不可核实') from None
+            require(grant['au_id'] == engine.state()['id'] and grant['revision'] == config['grant_revision']
+                    and not grant['revoked_at'] and config['model'] in grant['model_ids'], '模型使用授权不匹配或已撤销')
     text(reason, "API 配置依据", 1000)
     require(api_key is None or (isinstance(api_key, str) and len(api_key) <= 4096 and all(33 <= ord(c) <= 126 for c in api_key)), "API Key 格式无效")
     with engine.transaction() as cx:
         board = engine._board(cx, board_key)
         schema_table(cx)
         old = cx.execute("SELECT * FROM model_connections WHERE id=? ORDER BY revision DESC LIMIT 1", (connection_id,)).fetchone()
-        if config.get('auth_type')=='none':
+        if service or config.get('auth_type')=='none':
             require(api_key in (None,''), '无需认证不能同时提供密钥')
             secret=''
         elif config.get("api_key_env") or config.get('api_key_file'):
@@ -219,7 +236,7 @@ def configure_connection(engine, board_key, connection_id, config, reason, api_k
         else:
             secret = api_key if api_key is not None else old["api_key"] if old else ""
         # A changed endpoint never inherits a key intended for a different destination.
-        require(not old or (json.loads(old["config"])["base_url"] == config["base_url"] and json.loads(old['config']).get('protocol','openai_chat_completions')==config.get('protocol','openai_chat_completions')) or api_key is not None or config.get("api_key_env") or config.get('api_key_file'),
+        require(not old or (json.loads(old["config"]).get("base_url") == config.get("base_url") and json.loads(old['config']).get('protocol','openai_chat_completions')==config.get('protocol','openai_chat_completions')) or api_key is not None or config.get("api_key_env") or config.get('api_key_file'),
                 "API 地址变更必须明确重新提供或清除密钥")
         effective_secret, _ = connection_key({'api_key':secret, 'config':encoded(config)})
         reject_saved_secrets(cx, [connection_id, config, reason], effective_secret or secret)
@@ -253,7 +270,7 @@ def _resolved(cx, connection_id):
     secret, source = connection_key(row)
     if source == "missing":
         require(False, "API Key 环境变量未设置或为空：" + config["api_key_env"])
-    require(source=='none' or bool(secret), "API Key 或宿主凭据文件尚未配置")
+    require(source in ('none', 'model_service') or bool(secret), "API Key 或宿主凭据文件尚未配置")
     return public_connection(row) | {"api_key": secret}
 
 
