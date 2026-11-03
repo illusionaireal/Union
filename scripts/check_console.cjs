@@ -39,10 +39,17 @@ async function command(page,kind,fill=async()=>{}){
 }
 const snap=page=>page.evaluate(async()=>{const id=document.querySelector('#org-select').value;return(await fetch('/api/snapshot?organization_id='+encodeURIComponent(id))).json();});
 const fresh=async page=>{
-  const result=page.waitForResponse(r=>r.url().includes('/api/snapshot?') || (r.url().endsWith('/api/session') && r.status()!==200));
+  // Reconnect/polling can start a read that the manual refresh then cancels.
+  // Wait for a readable body, not just the headers of that abandoned request.
+  const snapshots=new Map();
+  const result=page.waitForResponse(async response=>{
+    if(response.url().endsWith('/api/session') && response.status()!==200)return true;
+    if(!response.url().includes('/api/snapshot?'))return false;
+    try{snapshots.set(response,await response.json());return true;}catch{return false;}
+  });
   await page.locator('#refresh').click();const response=await result;
   if(!response.ok())throw new Error('Session unavailable');
-  const snapshot=await response.json();
+  const snapshot=snapshots.get(response);
   await page.waitForFunction(sequence=>document.querySelector('#connection-label').textContent==='已连接本机服务' && Number(document.querySelector('#snapshot-meta').textContent.match(/快照 (\d+)/)?.[1])>=sequence,snapshot.snapshot_sequence);
 };
 async function waitFor(page,predicate){await page.waitForFunction(predicate,null,{timeout:15000});}

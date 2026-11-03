@@ -11,6 +11,7 @@ Usage (paths are host paths, not container paths):
   python scripts/reset_owner.py /volume1/docker/union-dev/ui-private/console --yes
 """
 import argparse
+from contextlib import closing
 import sqlite3
 import sys
 import time
@@ -40,7 +41,7 @@ def reset(root, confirm=False, backup=True):
         copy = None
         if backup:
             copy = db.with_name(db.name + '.bak-' + str(int(time.time())))
-            with sqlite3.connect(copy) as target:
+            with closing(sqlite3.connect(copy)) as target:
                 cx.backup(target)
             copy.chmod(0o600)
         for name in TABLES:

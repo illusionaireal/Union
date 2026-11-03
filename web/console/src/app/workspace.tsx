@@ -51,9 +51,12 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const [launchError, setLaunchError] = useState('');
   const initialized = useRef(false);
   const key = ['workspace', requested, offset] as const;
-  const read = useQuery({
+  const read = useQuery<ReadResult>({
     queryKey: key,
     enabled: ready,
+    // Organization/pagination reads keep the login boundary mounted, but must
+    // never expose the previous organization's snapshot or enable commands.
+    placeholderData: (previous) => previous ? { ...previous, snapshot: null } : undefined,
     queryFn: async ({ signal }): Promise<ReadResult> => {
       const session = await api.session(signal);
       const target = session.organizations.some((o) => o.id === requested)
@@ -158,8 +161,8 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
         selectOrg,
         setOffset,
         refresh,
-        connected: ready && online && read.isSuccess && read.isFetchedAfterMount && !launchError,
-        loading: !launchError && (read.isPending || !read.isFetchedAfterMount || !ready),
+        connected: ready && online && read.isSuccess && !read.isPlaceholderData && read.isFetchedAfterMount && !launchError,
+        loading: !launchError && (read.isPending || read.isPlaceholderData || !read.isFetchedAfterMount || !ready),
         error: !online
           ? '浏览器网络已断开'
           : launchError || (read.isError ? errorText(read.error) : ''),

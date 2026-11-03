@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "updated_at": "2026-11-03",
-  "wip_limit": 4,
+  "wip_limit": 5,
   "modules": [
     {
       "id": "governance",
@@ -1616,6 +1616,22 @@
         "U-060"
       ],
       "started_at": null,
+      "completion": null
+    },
+    {
+      "id": "U-063",
+      "title": "修复 PR #12 的跨平台与浏览器检查",
+      "priority": "P0",
+      "milestone": "G0",
+      "module": "console",
+      "status": "review",
+      "owner": "Codex（外部工程代理）",
+      "role": "维护 / CI 与前端边界验证",
+      "acceptance": "创建回执与组织切换不卸载操作；占位阶段不暴露旧快照或允许写入；备份完整并释放连接；npm/Python/浏览器和 PR 检查通过，身份边界经独立复核",
+      "dependencies": [],
+      "blocker": null,
+      "started_at": "2026-11-03",
+      "updated_at": "2026-11-03",
       "completion": null
     }
   ]

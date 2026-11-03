@@ -48,6 +48,7 @@ async function command(page, kind, fill = async () => {}) {
   check('Settings has configuration actions without repeated create/run buttons', await page.locator('[data-command="create"], [data-command="start"]').count() === 0);
   const secret = 'browser-test-key-not-real';
   await page.locator('[data-command="api_connection"]').first().click();
+  await page.locator('#operation-form summary').filter({ hasText: '高级设置' }).click();
   await page.locator('[name="connection_id"]').fill('primary');
   await page.locator('[name="base_url"]').fill(ready.provider_url);
   await page.locator('[name="api_model"]').fill('local-test-model');
