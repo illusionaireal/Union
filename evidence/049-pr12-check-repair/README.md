@@ -10,7 +10,7 @@
 2. 定向验证身份边界、备份释放和浏览器操作；最小修复新暴露的检查竞态。
 3. 完成 npm、Python、浏览器与独立工程复核，推送原 PR 分支并核对远端结果。
 
-本项是用户指定的维护插单；执行期间在制上限从 4 临时调整为 5，收口恢复 4，原阻塞任务保持原状态。
+本项是用户指定的维护插单；执行期间在制上限从 4 临时调整为 5，远端验收通过后已恢复 4，原阻塞任务保持原状态。
 
 ## 原始失败与修复
 
@@ -26,7 +26,15 @@
 
 备份测试新增禁用 GC、内容与完整性、立即删除验证；仅在内存中恢复旧连接写法时确定触发 Windows `WinError 32`，当前写法的 3 项重置测试全部通过。独立复核也检查了新增测试与刷新辅助方法，未发现断连检查被削弱。
 
-本地工程验证完成；本条记录提交时 PR 远端复验待完成。
+启动检查 `scripts/check_console_start.py` 5 项通过。
+
+修复提交 `aead41804c381788e36dd0c16418451418f1176c` 的 push / pull_request 共 10 项远端检查全部成功（2026-11-03）：
+
+- [push 前端与浏览器](https://github.com/illusionaireal/Union/actions/runs/41567196985)、[PR 前端与浏览器](https://github.com/illusionaireal/Union/actions/runs/41567202623)。
+- [push Linux/Windows 机制与模拟 CLI](https://github.com/illusionaireal/Union/actions/runs/41567196867)、[PR Linux/Windows 机制与模拟 CLI](https://github.com/illusionaireal/Union/actions/runs/41567202502)。
+- PR Windows 任务总时长 5 分 3 秒，依赖安装 55 秒、机制与 CLI 3 分 56 秒；验证了旧 5 分钟上限不足。测试退出 0，模拟 evaluate 按预期退出 3，真实模型调用 0。
+
+U-063 按 controlled 范围完成；后续仅验收记录变更，代码修复与实际集成/发布门槛保持分开。
 
 独立工程角色 `review_pr12_boundaries` 只读复核无阻断发现：前端身份与工作区 12 项、重置 3 项通过；Windows 禁用 GC 时备份含原账号、`integrity_check=ok`，原账号清空且备份可立即删除。无授权/删除范围变更。
 

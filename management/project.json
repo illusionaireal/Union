@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "updated_at": "2026-11-03",
-  "wip_limit": 5,
+  "wip_limit": 4,
   "modules": [
     {
       "id": "governance",
@@ -1624,7 +1624,7 @@
       "priority": "P0",
       "milestone": "G0",
       "module": "console",
-      "status": "review",
+      "status": "done",
       "owner": "Codex（外部工程代理）",
       "role": "维护 / CI 与前端边界验证",
       "acceptance": "创建回执与组织切换不卸载操作；占位阶段不暴露旧快照或允许写入；备份完整并释放连接；npm/Python/浏览器和 PR 检查通过，身份边界经独立复核",
@@ -1632,7 +1632,16 @@
       "blocker": null,
       "started_at": "2026-11-03",
       "updated_at": "2026-11-03",
-      "completion": null
+      "completion": {
+        "scope": "controlled",
+        "reviewer": "Codex自检；独立工程角色 review_pr12_boundaries 复核身份/备份/刷新边界",
+        "evidence": [
+          "evidence/049-pr12-check-repair/README.md",
+          "evidence/049-pr12-check-repair/browser-validation.json",
+          "evidence/049-pr12-check-repair/novel-checks.json"
+        ],
+        "note": "npm、Python404项（5平台跳过）、浏览器61+16及启动5项通过；aead418的push/PR共10项远端检查全部通过。真实模型调用0，原真实接入/发布/运营验收不升级。"
+      }
     }
   ]
 }
