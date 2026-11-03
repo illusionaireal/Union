@@ -1,5 +1,9 @@
 # 当前工程交接
 
+## 2026-11-03：048 A续接与Windows CLI退出修复
+
+用户确认继续模型接入。核对`f46700a`远端7项push检查通过；本地复验发现Windows启动器超时后子进程占用日志，新增稳定复现并修复整棵本地进程树退出。Python415项成功（5平台跳过），原始失败与修复证据见[051](evidence/051-model-service-resume/README.md)。本地取消仍不证明远端取消，unknown/预约/核对语义不变。U-060继续doing；已请求宿主配置位置、目标AU及调用/费用额度，真实模型调用0，A真实成果/反馈和B/C/D仍待验。
+
 ## 2026-11-03：048 A模型服务工程链路与受控验证
 
 PR #12已合并，后续在`feat/production-model-access`实现固定OpenCode模型服务、AU grant、持久请求/流、Python outbox与Harness原生状态、React采用/设置。414项Python（5平台跳过）、53项前端、8项服务、8项新浏览器、15项既有模型浏览器、5项控制台启动和4项复制安装检查通过；权限/费用/恢复经独立复核。见[050证据](evidence/050-model-service-engineering/README.md)与[安装说明](services/modeld/README.md)。U-060仍doing，在制上限5，U-062/U-002/U-054不收口。真实模型调用0，已请求真实宿主配置、原AU及明确额度，下一步是A的真实成果与反馈；不能把本轮工程验证当作该出口。无关历史未跟踪文件保留。

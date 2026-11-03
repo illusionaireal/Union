@@ -64,11 +64,12 @@ class CodexExecutor:
             proc.stdin.write(prompt.encode("utf-8"))
             proc.stdin.close()
         except OSError as e:
-            if 'proc' in locals() and proc.poll() is None:
-                proc.terminate() if os.name == "nt" else os.killpg(proc.pid, signal.SIGTERM)
-                proc.wait(timeout=2)
-            out.close()
-            err.close()
+            try:
+                if 'proc' in locals():
+                    self._stop(proc)
+            finally:
+                out.close()
+                err.close()
             raise ExecutionFailure("Codex CLI 无法启动或接收工作包：" + type(e).__name__, unknown='proc' in locals()) from e
         self.jobs[rid] = {"process": proc, "folder": folder, "out": out, "err": err,
                           "deadline": time.monotonic() + package["timeout_seconds"], "timed_out": False}
@@ -79,6 +80,33 @@ class CodexExecutor:
     def _close(self, job):
         job["out"].close()
         job["err"].close()
+
+    @staticmethod
+    def _stop(proc):
+        if proc.poll() is not None:
+            return
+        if os.name == "nt":
+            # Terminate the tree before its launcher exits: killing just the
+            # parent leaves CLI workers running with inherited log handles.
+            try:
+                stopped = subprocess.run(
+                    ["taskkill", "/PID", str(proc.pid), "/T", "/F"],
+                    stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                    timeout=5, creationflags=subprocess.CREATE_NO_WINDOW)
+                if stopped.returncode != 0 and proc.poll() is None:
+                    raise ExecutionFailure("无法确认 Codex 本地进程树已停止；请核对原执行", unknown=True)
+                proc.wait(timeout=2)
+            except (OSError, subprocess.TimeoutExpired) as error:
+                raise ExecutionFailure("无法确认 Codex 本地进程树已停止；请核对原执行", unknown=True) from error
+            return
+        try:
+            os.killpg(proc.pid, signal.SIGTERM)
+            proc.wait(timeout=2)
+        except subprocess.TimeoutExpired:
+            os.killpg(proc.pid, signal.SIGKILL)
+            proc.wait(timeout=2)
+        except ProcessLookupError:
+            proc.wait()
 
     def status(self, rid):
         job = self.jobs.get(rid)
@@ -99,18 +127,11 @@ class CodexExecutor:
 
     def cancel(self, rid):
         job = self.jobs[rid]
-        proc = job["process"]
-        if proc.poll() is None:
-            try:
-                proc.terminate() if os.name == "nt" else os.killpg(proc.pid, signal.SIGTERM)
-                proc.wait(timeout=2)
-            except subprocess.TimeoutExpired:
-                proc.kill() if os.name == "nt" else os.killpg(proc.pid, signal.SIGKILL)
-                proc.wait(timeout=2)
-            except ProcessLookupError:
-                proc.wait()
-        self._close(job)
         job["timed_out"] = True
+        try:
+            self._stop(job["process"])
+        finally:
+            self._close(job)
 
     def result(self, rid):
         state = self.status(rid)

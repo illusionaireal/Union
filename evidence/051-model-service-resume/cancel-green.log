@@ -1,0 +1,9 @@
+test_cancel_stops_local_child_process_and_releases_logs (tests.test_integration.CodexContract.test_cancel_stops_local_child_process_and_releases_logs) ... ok
+test_out_of_scope_tool_receipt_is_not_accepted (tests.test_integration.CodexContract.test_out_of_scope_tool_receipt_is_not_accepted) ... ok
+test_submit_status_result_and_usage (tests.test_integration.CodexContract.test_submit_status_result_and_usage) ... ok
+test_timeout_is_unknown_and_requires_reconciliation (tests.test_integration.CodexContract.test_timeout_is_unknown_and_requires_reconciliation) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 1.807s
+
+OK

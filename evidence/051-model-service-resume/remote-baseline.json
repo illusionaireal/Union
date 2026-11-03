@@ -1,0 +1,58 @@
+[
+  {
+    "conclusion": "success",
+    "headSha": "f46700ab4bb3e5297c854adf933a9d74e8599d44",
+    "jobs": [
+      {
+        "name": "offline-checks (windows-latest)",
+        "conclusion": "success",
+        "url": "https://github.com/illusionaireal/Union/actions/runs/41579969422/job/125732244297"
+      },
+      {
+        "name": "offline-checks (ubuntu-latest)",
+        "conclusion": "success",
+        "url": "https://github.com/illusionaireal/Union/actions/runs/41579969422/job/125732244520"
+      },
+      {
+        "name": "console-browser",
+        "conclusion": "success",
+        "url": "https://github.com/illusionaireal/Union/actions/runs/41579969422/job/125732244918"
+      }
+    ],
+    "url": "https://github.com/illusionaireal/Union/actions/runs/41579969422"
+  },
+  {
+    "conclusion": "success",
+    "headSha": "f46700ab4bb3e5297c854adf933a9d74e8599d44",
+    "jobs": [
+      {
+        "name": "model-service (ubuntu-latest)",
+        "conclusion": "success",
+        "url": "https://github.com/illusionaireal/Union/actions/runs/41579969484/job/125732244313"
+      },
+      {
+        "name": "model-service (windows-latest)",
+        "conclusion": "success",
+        "url": "https://github.com/illusionaireal/Union/actions/runs/41579969484/job/125732244584"
+      }
+    ],
+    "url": "https://github.com/illusionaireal/Union/actions/runs/41579969484"
+  },
+  {
+    "conclusion": "success",
+    "headSha": "f46700ab4bb3e5297c854adf933a9d74e8599d44",
+    "jobs": [
+      {
+        "name": "unittest (ubuntu-latest)",
+        "conclusion": "success",
+        "url": "https://github.com/illusionaireal/Union/actions/runs/41579969447/job/125732244155"
+      },
+      {
+        "name": "unittest (windows-latest)",
+        "conclusion": "success",
+        "url": "https://github.com/illusionaireal/Union/actions/runs/41579969447/job/125732244566"
+      }
+    ],
+    "url": "https://github.com/illusionaireal/Union/actions/runs/41579969447"
+  }
+]

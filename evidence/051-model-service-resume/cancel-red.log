@@ -1,0 +1,17 @@
+test_cancel_stops_local_child_process_and_releases_logs (tests.test_integration.CodexContract.test_cancel_stops_local_child_process_and_releases_logs) ... FAIL
+
+======================================================================
+FAIL: test_cancel_stops_local_child_process_and_releases_logs (tests.test_integration.CodexContract.test_cancel_stops_local_child_process_and_releases_logs)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_integration.py", line 170, in test_cancel_stops_local_child_process_and_releases_logs
+    self.assertNotEqual(probe.connect_ex(('127.0.0.1', port)), 0,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        "cancel left the CLI worker running")
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : cancel left the CLI worker running
+
+----------------------------------------------------------------------
+Ran 1 test in 0.581s
+
+FAILED (failures=1)

@@ -1,0 +1,104 @@
+
+> union@0.0.0 check
+> npm run check:management && npm run check:plan && npm test && npm run check:console
+
+
+> union@0.0.0 check:management
+> node scripts/project-management.mjs check && node --test tests/project-management.test.mjs
+
+Management check: 15 modules, 8 milestones, 63 tasks; PASS
+✔ rejects missing owners at start and unfinished dependencies, but permits honest unassigned backlog (7.2821ms)
+✔ completion requires scope, reviewer and existing evidence, and does not promote milestones (3.8516ms)
+✔ rejects duplicate IDs, unknown references and dependency cycles (2.9864ms)
+✔ blocked work needs an unblock action; already-started blocked work counts toward WIP (3.2774ms)
+✔ rejects evidence outside repository, invalid scope and malformed dates (3.7238ms)
+✔ deterministic generated views reject stale output and preserve surrounding narrative (19.3345ms)
+✔ flow summary keeps empty live evidence distinct from completion counts (1.717ms)
+✔ milestone acceptance and task scope cannot be asserted without their review metadata (3.5819ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 176.2384
+
+> union@0.0.0 check:plan
+> node scripts/check-plan.mjs
+
+{"baseline":"UNION-B1","tasks":82,"dependencies":181,"cycles":0,"missingDependencies":0,"baselineFiles":5,"githubTasks":8}
+
+> union@0.0.0 test
+> node --test tests/*.test.ts
+
+✔ retry uses the same reservation; changed request is rejected (278.6213ms)
+✔ unauthorized model actions and tenant/currency changes leave budget untouched (124.1124ms)
+✔ only positive safe integer amounts and bounded keys are accepted (108.5152ms)
+✔ eight competing processes cannot exceed a 100-minor-unit hard budget (497.0762ms)
+✔ process crash after external success recovers by lookup without repeating the effect (323.6752ms)
+✔ crash before external call retains reservation when lookup is inconclusive (272.5827ms)
+✔ definitive failure releases reservation exactly once (131.6145ms)
+✔ settling below maximum releases the difference and invalid receipt rolls back (124.1429ms)
+✔ same key across test tenants remains independent (207.8629ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2255.1944
+
+> union@0.0.0 check:console
+> npm run typecheck --workspace @union/console && npm run test --workspace @union/console && npm run build:console
+
+
+> @union/console@0.1.0 typecheck
+> tsc --noEmit
+
+
+> @union/console@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 D:/Project/Union/web/console
+
+ ✓ src/api/client.test.ts (3 tests) 24ms
+ ✓ src/features/commands/receipts.test.ts (4 tests) 12ms
+ ✓ src/app/url-state.test.tsx (1 test) 298ms
+ ✓ src/features/commands/fields.test.tsx (9 tests) 971ms
+ ✓ src/pages/Gateways.test.tsx (3 tests) 750ms
+ ✓ src/app/workspace.test.tsx (4 tests) 980ms
+   ✓ workspace organization transitions > keeps the session and draft mounted while withholding old organization data and writes  365ms
+   ✓ workspace organization transitions > rechecks identity when session_scope changes  338ms
+ ✓ src/pages/Identity.test.tsx (8 tests) 1040ms
+   ✓ identity boundary > shows the setup form on an unconfigured deployment and keeps its fields  339ms
+ ✓ src/pages/ModelServiceConnections.test.tsx (2 tests) 494ms
+   ✓ binds adoption to selected account, model and AU; lost reply blocks a second write  419ms
+ ✓ src/pages/SubscriptionConnections.test.tsx (8 tests) 1081ms
+   ✓ subscription configuration > clears the key and blocks duplicate writes while original result is unknown  394ms
+ ✓ src/pages/RuntimeObservation.test.tsx (11 tests) 555ms
+
+ Test Files  10 passed (10)
+      Tests  53 passed (53)
+   Start at  15:31:06
+   Duration  8.40s (transform 1.32s, setup 11.63s, collect 4.43s, tests 6.21s, environment 44.75s, prepare 4.86s)
+
+
+> union@0.0.0 build:console
+> npm run build --workspace @union/console
+
+
+> @union/console@0.1.0 build
+> tsc --noEmit && vite build
+
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 2012 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.74 kB │ gzip:   0.51 kB
+dist/assets/index-CaMEXWpI.css   44.75 kB │ gzip:  10.07 kB
+dist/assets/index-CPfnp9-U.js   433.25 kB │ gzip: 135.54 kB
+✓ built in 4.64s

@@ -1,5 +1,6 @@
 import json
 import os
+import socket
 import sys
 import threading
 import time
@@ -129,6 +130,64 @@ print(json.dumps({'type':'turn.completed','usage':{'input_tokens':12,'output_tok
         with self.assertRaises(ExecutionFailure) as caught:
             ex.execute(p)
         self.assertTrue(caught.exception.unknown)
+
+    def test_cancel_stops_local_child_process_and_releases_logs(self):
+        # A CLI launcher can spawn a worker that inherits its output handles.
+        # Wait for the worker so this covers termination after startup on Windows.
+        child = self.root / "worker.py"
+        child.write_text('''import socket,time
+from pathlib import Path
+with socket.socket() as listener:
+    listener.bind(('127.0.0.1',0))
+    listener.listen()
+    Path('worker-ready.tmp').write_text(str(listener.getsockname()[1]))
+    Path('worker-ready.tmp').replace('worker-ready')
+    while not Path('worker-stop').exists():
+        time.sleep(.01)
+''', encoding="utf-8")
+        fake = self.fake('''import subprocess,sys
+sys.stdin.read()
+child=subprocess.Popen([sys.executable,sys.argv[1]])
+child.wait()
+''')
+        ex = CodexExecutor(self.root, command=fake + [str(child)])
+        rid = ex.submit(self.package() | {"timeout_seconds": 30})
+        folder = self.root / "executions" / rid
+        ready = folder / "worker-ready"
+        port = None
+        try:
+            deadline = time.monotonic() + 10
+            while not ready.exists():
+                self.assertLess(time.monotonic(), deadline, "local worker did not start")
+                time.sleep(.01)
+            port = int(ready.read_text())
+            ex.cancel(rid)
+            self.assertEqual(ex.status(rid), "unknown")
+            with self.assertRaises(ExecutionFailure) as caught:
+                ex.result(rid)
+            self.assertTrue(caught.exception.unknown)
+            with socket.socket() as probe:
+                probe.settimeout(.1)
+                self.assertNotEqual(probe.connect_ex(('127.0.0.1', port)), 0,
+                                    "cancel left the CLI worker running")
+            # Windows refuses rename while a child still holds the log handle.
+            for name in ("events.jsonl", "stderr.log"):
+                source = folder / name
+                moved = source.with_suffix('.closed')
+                source.rename(moved)
+                moved.rename(source)
+        finally:
+            (folder / "worker-stop").touch()
+            ex.cancel(rid)
+            # Let the cooperative test worker exit even when the assertion fails.
+            if port is not None:
+                deadline = time.monotonic() + 5
+                while time.monotonic() < deadline:
+                    with socket.socket() as probe:
+                        probe.settimeout(.1)
+                        if probe.connect_ex(('127.0.0.1', port)) != 0:
+                            break
+                    time.sleep(.01)
 
     def test_out_of_scope_tool_receipt_is_not_accepted(self):
         fake = self.fake('''import sys,json
