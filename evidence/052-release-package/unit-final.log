@@ -1,0 +1,14 @@
+test_atomic_switch_failed_preflight_and_explicit_rollback_preserve_latest_business_bytes (tests.test_release_package.ReleasePackageTests.test_atomic_switch_failed_preflight_and_explicit_rollback_preserve_latest_business_bytes) ... ok
+test_bad_digest_rejected_before_installation_directory_is_created (tests.test_release_package.ReleasePackageTests.test_bad_digest_rejected_before_installation_directory_is_created) ... ok
+test_installation_conflict_and_failed_extract_preserve_existing_version (tests.test_release_package.ReleasePackageTests.test_installation_conflict_and_failed_extract_preserve_existing_version) ... ok
+test_missing_and_overlapping_config_paths_are_rejected_before_any_write (tests.test_release_package.ReleasePackageTests.test_missing_and_overlapping_config_paths_are_rejected_before_any_write) ... ok
+test_mutated_release_and_running_services_do_not_switch_pointer (tests.test_release_package.ReleasePackageTests.test_mutated_release_and_running_services_do_not_switch_pointer) ... ok
+test_operation_lock_is_not_removed_or_stolen_by_another_operation (tests.test_release_package.ReleasePackageTests.test_operation_lock_is_not_removed_or_stolen_by_another_operation) ... ok
+test_pointer_replace_failure_preserves_original_and_removes_temporary_pointer (tests.test_release_package.ReleasePackageTests.test_pointer_replace_failure_preserves_original_and_removes_temporary_pointer) ... ok
+test_traversal_extra_duplicate_and_link_members_are_rejected (tests.test_release_package.ReleasePackageTests.test_traversal_extra_duplicate_and_link_members_are_rejected) ... ok
+test_valid_python_dunder_path_installs_without_creating_business_state (tests.test_release_package.ReleasePackageTests.test_valid_python_dunder_path_installs_without_creating_business_state) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.346s
+
+OK

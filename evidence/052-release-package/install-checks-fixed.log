@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "D:\Project\Union\scripts\check_release_install.py", line 150, in <module>
+    main()
+    ~~~~^^
+  File "D:\Project\Union\scripts\check_release_install.py", line 110, in main
+    assert modeld.poll() is None and console.poll() is None, 'Installed runtime exited before readiness'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Installed runtime exited before readiness

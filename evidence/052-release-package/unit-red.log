@@ -1,0 +1,134 @@
+test_atomic_switch_failed_preflight_and_explicit_rollback_preserve_latest_business_bytes (tests.test_release_package.ReleasePackageTests.test_atomic_switch_failed_preflight_and_explicit_rollback_preserve_latest_business_bytes) ... ERROR
+test_bad_digest_rejected_before_installation_directory_is_created (tests.test_release_package.ReleasePackageTests.test_bad_digest_rejected_before_installation_directory_is_created) ... ok
+test_installation_conflict_and_failed_extract_preserve_existing_version (tests.test_release_package.ReleasePackageTests.test_installation_conflict_and_failed_extract_preserve_existing_version) ... ERROR
+test_missing_and_overlapping_config_paths_are_rejected_before_any_write (tests.test_release_package.ReleasePackageTests.test_missing_and_overlapping_config_paths_are_rejected_before_any_write) ... ok
+test_mutated_release_and_running_services_do_not_switch_pointer (tests.test_release_package.ReleasePackageTests.test_mutated_release_and_running_services_do_not_switch_pointer) ... ERROR
+test_operation_lock_is_not_removed_or_stolen_by_another_operation (tests.test_release_package.ReleasePackageTests.test_operation_lock_is_not_removed_or_stolen_by_another_operation) ... ok
+test_pointer_replace_failure_preserves_original_and_removes_temporary_pointer (tests.test_release_package.ReleasePackageTests.test_pointer_replace_failure_preserves_original_and_removes_temporary_pointer) ... ERROR
+test_traversal_extra_duplicate_and_link_members_are_rejected (tests.test_release_package.ReleasePackageTests.test_traversal_extra_duplicate_and_link_members_are_rejected) ... ok
+test_valid_python_dunder_path_installs_without_creating_business_state (tests.test_release_package.ReleasePackageTests.test_valid_python_dunder_path_installs_without_creating_business_state) ... ERROR
+
+======================================================================
+ERROR: test_atomic_switch_failed_preflight_and_explicit_rollback_preserve_latest_business_bytes (tests.test_release_package.ReleasePackageTests.test_atomic_switch_failed_preflight_and_explicit_rollback_preserve_latest_business_bytes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_release_package.py", line 85, in test_atomic_switch_failed_preflight_and_explicit_rollback_preserve_latest_business_bytes
+    release.install(self.package(release_id), self.config)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\scripts\release_package.py", line 211, in install
+    manifest = verify_archive(archive)  # Reject bad inputs before any installation write.
+  File "D:\Project\Union\scripts\release_package.py", line 144, in verify_archive
+    member_path(info.filename)
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "D:\Project\Union\scripts\release_package.py", line 57, in member_path
+    name(part) if len(part) <= 80 else require(bool(re.fullmatch(r'[a-zA-Z0-9._-]+', part)), 'Invalid package path')
+    ~~~~^^^^^^
+  File "D:\Project\Union\scripts\release_package.py", line 42, in name
+    require(isinstance(value, str) and re.fullmatch(r'[a-zA-Z0-9][a-zA-Z0-9._-]{0,79}', value)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            and value not in ('.', '..'), 'Invalid release ID')
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\scripts\release_package.py", line 30, in require
+    raise ReleaseError(message)
+scripts.release_package.ReleaseError: Invalid release ID
+
+======================================================================
+ERROR: test_installation_conflict_and_failed_extract_preserve_existing_version (tests.test_release_package.ReleasePackageTests.test_installation_conflict_and_failed_extract_preserve_existing_version)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_release_package.py", line 68, in test_installation_conflict_and_failed_extract_preserve_existing_version
+    release.install(archive, self.config)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\scripts\release_package.py", line 211, in install
+    manifest = verify_archive(archive)  # Reject bad inputs before any installation write.
+  File "D:\Project\Union\scripts\release_package.py", line 144, in verify_archive
+    member_path(info.filename)
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "D:\Project\Union\scripts\release_package.py", line 57, in member_path
+    name(part) if len(part) <= 80 else require(bool(re.fullmatch(r'[a-zA-Z0-9._-]+', part)), 'Invalid package path')
+    ~~~~^^^^^^
+  File "D:\Project\Union\scripts\release_package.py", line 42, in name
+    require(isinstance(value, str) and re.fullmatch(r'[a-zA-Z0-9][a-zA-Z0-9._-]{0,79}', value)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            and value not in ('.', '..'), 'Invalid release ID')
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\scripts\release_package.py", line 30, in require
+    raise ReleaseError(message)
+scripts.release_package.ReleaseError: Invalid release ID
+
+======================================================================
+ERROR: test_mutated_release_and_running_services_do_not_switch_pointer (tests.test_release_package.ReleasePackageTests.test_mutated_release_and_running_services_do_not_switch_pointer)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_release_package.py", line 118, in test_mutated_release_and_running_services_do_not_switch_pointer
+    release.install(self.package(), self.config)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\scripts\release_package.py", line 211, in install
+    manifest = verify_archive(archive)  # Reject bad inputs before any installation write.
+  File "D:\Project\Union\scripts\release_package.py", line 144, in verify_archive
+    member_path(info.filename)
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "D:\Project\Union\scripts\release_package.py", line 57, in member_path
+    name(part) if len(part) <= 80 else require(bool(re.fullmatch(r'[a-zA-Z0-9._-]+', part)), 'Invalid package path')
+    ~~~~^^^^^^
+  File "D:\Project\Union\scripts\release_package.py", line 42, in name
+    require(isinstance(value, str) and re.fullmatch(r'[a-zA-Z0-9][a-zA-Z0-9._-]{0,79}', value)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            and value not in ('.', '..'), 'Invalid release ID')
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\scripts\release_package.py", line 30, in require
+    raise ReleaseError(message)
+scripts.release_package.ReleaseError: Invalid release ID
+
+======================================================================
+ERROR: test_pointer_replace_failure_preserves_original_and_removes_temporary_pointer (tests.test_release_package.ReleasePackageTests.test_pointer_replace_failure_preserves_original_and_removes_temporary_pointer)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_release_package.py", line 106, in test_pointer_replace_failure_preserves_original_and_removes_temporary_pointer
+    release.install(self.package(), self.config)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\scripts\release_package.py", line 211, in install
+    manifest = verify_archive(archive)  # Reject bad inputs before any installation write.
+  File "D:\Project\Union\scripts\release_package.py", line 144, in verify_archive
+    member_path(info.filename)
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "D:\Project\Union\scripts\release_package.py", line 57, in member_path
+    name(part) if len(part) <= 80 else require(bool(re.fullmatch(r'[a-zA-Z0-9._-]+', part)), 'Invalid package path')
+    ~~~~^^^^^^
+  File "D:\Project\Union\scripts\release_package.py", line 42, in name
+    require(isinstance(value, str) and re.fullmatch(r'[a-zA-Z0-9][a-zA-Z0-9._-]{0,79}', value)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            and value not in ('.', '..'), 'Invalid release ID')
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\scripts\release_package.py", line 30, in require
+    raise ReleaseError(message)
+scripts.release_package.ReleaseError: Invalid release ID
+
+======================================================================
+ERROR: test_valid_python_dunder_path_installs_without_creating_business_state (tests.test_release_package.ReleasePackageTests.test_valid_python_dunder_path_installs_without_creating_business_state)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_release_package.py", line 40, in test_valid_python_dunder_path_installs_without_creating_business_state
+    release.install(archive, self.config)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\scripts\release_package.py", line 211, in install
+    manifest = verify_archive(archive)  # Reject bad inputs before any installation write.
+  File "D:\Project\Union\scripts\release_package.py", line 144, in verify_archive
+    member_path(info.filename)
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "D:\Project\Union\scripts\release_package.py", line 57, in member_path
+    name(part) if len(part) <= 80 else require(bool(re.fullmatch(r'[a-zA-Z0-9._-]+', part)), 'Invalid package path')
+    ~~~~^^^^^^
+  File "D:\Project\Union\scripts\release_package.py", line 42, in name
+    require(isinstance(value, str) and re.fullmatch(r'[a-zA-Z0-9][a-zA-Z0-9._-]{0,79}', value)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            and value not in ('.', '..'), 'Invalid release ID')
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\scripts\release_package.py", line 30, in require
+    raise ReleaseError(message)
+scripts.release_package.ReleaseError: Invalid release ID
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.064s
+
+FAILED (errors=5)

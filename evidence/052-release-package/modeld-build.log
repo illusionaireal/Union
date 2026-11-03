@@ -1,0 +1,13 @@
+
+> union@0.0.0 build:model-service
+> node services/modeld/prepare.mjs
+
+bun install v1.4.2 (744846f84)
+Resolving dependencies
+Resolved, downloaded and extracted [19]
+
++ @opencode/client@workspace:packages/client
++ @opencode/plugin@workspace:packages/plugin
+
+10 packages installed [435.00ms]
+Built UNION model service from pinned source

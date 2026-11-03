@@ -890,7 +890,7 @@ npm、Python404项（5平台跳过）、浏览器61+16及启动5项通过；aead
 
 依赖：无。
 
-验收条件：按048 A及implementation.md落实固定模型服务、AU账号grant、动态认证、持久请求与Python工具循环和React采用；原AU真实工作/反馈为最终出口，真实环境和额度须明确，不以受控回归代替。用户2026-11-03要求按PR12完成后续开发，工程实现已授权。 固定服务、AU采用与Harness工程证据见evidence/050-model-service-engineering/README.md；真实Go账号、原AU交付/反馈与部署未验，不勾选048 A。 续接远端检查与Windows CLI子进程退出修复见evidence/051-model-service-resume/README.md；本次真实模型调用0。
+验收条件：按048 A及implementation.md落实固定模型服务、AU账号grant、动态认证、持久请求与Python工具循环和React采用；原AU真实工作/反馈为最终出口，真实环境和额度须明确，不以受控回归代替。用户2026-11-03要求按PR12完成后续开发，工程实现已授权。 固定服务、AU采用与Harness工程证据见evidence/050-model-service-engineering/README.md；真实Go账号、原AU交付/反馈与部署未验，不勾选048 A。 续接远端检查与Windows CLI子进程退出修复见evidence/051-model-service-resume/README.md；本次真实模型调用0。 续接会话后新增完整Python/React/modeld候选包、显式宿主配置、完整性验证、代码指针与回滚，受控复制启动/测试登录兼容见evidence/052-release-package/README.md；真实出口、U-054配置化/迁移/目标部署仍未完成。
 
 ## U-013
 

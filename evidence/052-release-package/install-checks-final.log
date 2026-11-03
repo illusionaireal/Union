@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "D:\Project\Union\scripts\check_release_install.py", line 150, in <module>
+    main()
+    ~~~~^^
+  File "D:\Project\Union\scripts\check_release_install.py", line 112, in main
+    status = json.loads(http(config['console_port'], '/api/auth/status'))
+                        ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\scripts\check_release_install.py", line 29, in http
+    connection = http.client.HTTPConnection('127.0.0.1', number, timeout=5)
+                 ^^^^^^^^^^^
+AttributeError: 'function' object has no attribute 'client'

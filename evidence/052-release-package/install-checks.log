@@ -1,0 +1,15 @@
+Traceback (most recent call last):
+  File "D:\Project\Union\scripts\check_release_install.py", line 150, in <module>
+    main()
+    ~~~~^^
+  File "D:\Project\Union\scripts\check_release_install.py", line 98, in main
+    activate(release_id, config, stopped=True)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\scripts\release_package.py", line 290, in activate
+    manifest = preflight(target, config)
+  File "D:\Project\Union\scripts\release_package.py", line 275, in preflight
+    require(result.returncode == 0 and result.stdout.strip() == manifest['toolchain']['bun'], 'Bun version does not match release')
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\scripts\release_package.py", line 29, in require
+    raise ReleaseError(message)
+release_package.ReleaseError: Bun version does not match release

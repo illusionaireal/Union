@@ -1,0 +1,8 @@
+{
+  "installation_root": "/path/to/union-installation",
+  "console_state": "/path/to/private/union-console",
+  "modeld_config": "/path/to/private/union-modeld/modeld.json",
+  "python": "/path/to/python-environment/bin/python",
+  "bun": "/path/to/bun",
+  "console_port": 8766
+}

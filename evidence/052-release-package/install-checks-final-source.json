@@ -1,0 +1,30 @@
+{
+  "checks": [
+    "Actual Python, React, catalog and pinned model service install without checkout dependencies",
+    "Initial install starts both services and local test administrator setup",
+    "New code selection preserves the existing test login",
+    "Explicit code rollback preserves the latest test login and empty model account state",
+    "Switch and rollback never replace newest business bytes or private service tokens"
+  ],
+  "passed": 5,
+  "archives": [
+    {
+      "id": "candidate-a",
+      "sha256": "a516d68a707b5fa37085795508842bebde652754548095936cf83b3abffea2e6",
+      "files": 65,
+      "git_baseline": "dd431e5855d2bbf1540481a5597372664447aad2",
+      "source_state": "working_tree"
+    },
+    {
+      "id": "candidate-b",
+      "sha256": "59b1380581586811854d20794ba31e3d6c634ea39d9c9959f49d6dddf73245fb",
+      "files": 65,
+      "git_baseline": "dd431e5855d2bbf1540481a5597372664447aad2",
+      "source_state": "working_tree"
+    }
+  ],
+  "real_model_calls": 0,
+  "real_accounts": 0,
+  "deployment": false,
+  "scope": "Same source in two candidate IDs; code switching and existing login compatibility, no schema migration"
+}
