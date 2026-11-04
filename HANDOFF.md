@@ -4,6 +4,8 @@
 
 用户要求纠正原则未贯彻与工程缺少统一规划的问题，先建立可拆解PRD、总体设计及编码前ADR，再按垂直切片同步AGENTS、严格TDD。本轮交付范围是供下一人接手的文档检查点及提交推送；没有开始重写运行时代码。分支为`rewrite/charter-v1`，基于`ddd76e0`；`dev`仍是开发主线。本次Git发布、验证和剩余限制见[053证据](evidence/053-rewrite-checkpoint/README.md)。
 
+文档提交`8aa811c`已推送并核对远端SHA，U-064以documentation收口，U-065已就绪。在制上限已恢复5，现有5项占用保持原状态；下一人正式认领S00前需按管理约定处理容量，不能把阻塞卡退回待办来隐藏占用。
+
 按顺序读[PRD v0.7](docs/PRD.md)、[总体架构](docs/ARCHITECTURE.md)、[ADR-0004](docs/decisions/0004-rewrite-delivery-contract.md)/[0005](docs/decisions/0005-au-runtime-boundaries.md)/[0006](docs/decisions/0006-charter-policy-adoption.md)、[053接手计划](specs/053-union-rewrite/plan.md)与[切片任务](specs/053-union-rewrite/tasks.md)。原PRD原始字节保存在[历史快照](docs/PRD.pre-rewrite-2026-11-04.md)。ADR-0004只接受已由用户选择的方法；架构、ADR-0005/0006及PRD新增细化仍是待评审提案，不把文档齐备当成批准或实现。
 
 **下一项是S00/U-065：需求/架构处置与S01精确契约。** 核对是否还有未提供的chapter/Charter来源；处置PRD Q-01–Q-03及相关ADR，确定创建/重开同一AU的输入、回执、身份/版本、错误、事务和旧客户端映射，并列对应行为测试。先明确受影响行为，再开始S01；不要先搭空目录或第二套运行时。真实环境、profile、样本、窗口和资源授权在Q-04保留，不能由无回复推定。

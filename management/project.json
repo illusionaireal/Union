@@ -1,7 +1,7 @@
 {
     "schema_version": 1,
     "updated_at": "2026-11-04",
-    "wip_limit": 6,
+    "wip_limit": 5,
     "modules": [
         {
             "id": "governance",
@@ -1650,7 +1650,7 @@
             "priority": "P0",
             "milestone": "G0",
             "module": "management",
-            "status": "review",
+            "status": "done",
             "owner": "codex/rewrite-planning-20261104（外部工程代理）",
             "role": "产品梳理 / 架构规划 / 工程交接",
             "acceptance": "统一PRD及来源与验收映射，形成总体架构/编码前ADR提案、垂直切片任务和AGENTS约束，列明未决问题与下一步；通过文档/管理检查及现有工程回归，提交并推送规划分支供接手。文档检查点不表示重写实现、架构提案批准或真实业务验收。",
@@ -1658,7 +1658,14 @@
             "blocker": null,
             "started_at": "2026-11-04",
             "updated_at": "2026-11-04",
-            "completion": null,
+            "completion": {
+                "scope": "documentation",
+                "reviewer": "Codex独立需求评审与架构评审；协调者核验",
+                "evidence": [
+                    "evidence/053-rewrite-checkpoint/README.md"
+                ],
+                "note": "PRD、架构与ADR提案、切片/AGENTS、交接和检查已完成；8aa811ca89b8912d3df5f5e4341abcfdc61a8ecc已推送rewrite/charter-v1并核对远端SHA。仅文档检查点，不代表技术提案采用、重写实现或真实产品验收。"
+            },
             "history": [
                 {
                     "at": "2026-11-04T09:55:23.861Z",
@@ -1666,13 +1673,16 @@
                     "from": "candidate",
                     "to": "ready",
                     "note": "用户直接要求规划到可提交推送的交接点；工程代理为本次有界文档任务临时将WIP 5 调整为 6，完成后恢复 5。原任务状态、依赖和外部阻塞不变。"
+                },
+                {
+                    "at": "2026-11-04T10:23:14.946Z",
+                    "actor": "codex/rewrite-planning-20261104（外部工程代理）",
+                    "from": "review",
+                    "to": "done",
+                    "note": "8aa811c检查点已推送且远端SHA相等；记录documentation完成并恢复临时扩展前的WIP上限5。U-065依赖已满足置ready，既有5项在制保持原状态；认领下一项仍须满足容量。"
                 }
             ],
-            "claim": {
-                "actor": "codex/rewrite-planning-20261104（外部工程代理）",
-                "at": "2026-11-04T09:55:23.861Z",
-                "lease_until": "2026-11-04T12:55:23.861Z"
-            }
+            "claim": null
         },
         {
             "id": "U-065",
@@ -1685,12 +1695,13 @@
                 "U-064"
             ],
             "acceptance": "完成053 S00：核对PRD Q-01–Q-03和来源，处置ADR-0005/0006；固定S01创建/重开AU的输入输出、身份/版本、错误、事务、旧客户端兼容及行为测试。产品语义新取舍由产品负责人决定；仅工程细节在已确认要求内选择并记录。范围为设计，不实现运行时。",
-            "status": "backlog",
+            "status": "ready",
             "owner": null,
             "blocker": null,
             "started_at": null,
             "updated_at": "2026-11-04",
-            "completion": null
+            "completion": null,
+            "claim": null
         },
         {
             "id": "U-066",
