@@ -1,5 +1,7 @@
 # UNION / ai-union
 
+项目宪章：[UNION Project Charter · v1.0](docs/UNION_CHARTER_v1.0.md)。
+
 **用户给出目标，ai-union 自行形成组织、开展行动，并根据结果持续调整。**
 
 首版目标：**“一个持续经营线上内容品牌的 AI 内容工作室。”** 岗位、成员、经营策略和内容流程由组织在授权资源内形成；成员执行循环复用现有 Agent，开发重点是组织层 loop。
