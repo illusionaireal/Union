@@ -1,5 +1,17 @@
 # 当前工程交接
 
+## 2026-11-04：重写规划检查点（053）
+
+用户要求纠正原则未贯彻与工程缺少统一规划的问题，先建立可拆解PRD、总体设计及编码前ADR，再按垂直切片同步AGENTS、严格TDD。本轮交付范围是供下一人接手的文档检查点及提交推送；没有开始重写运行时代码。分支为`rewrite/charter-v1`，基于`ddd76e0`；`dev`仍是开发主线。本次Git发布、验证和剩余限制见[053证据](evidence/053-rewrite-checkpoint/README.md)。
+
+按顺序读[PRD v0.7](docs/PRD.md)、[总体架构](docs/ARCHITECTURE.md)、[ADR-0004](docs/decisions/0004-rewrite-delivery-contract.md)/[0005](docs/decisions/0005-au-runtime-boundaries.md)/[0006](docs/decisions/0006-charter-policy-adoption.md)、[053接手计划](specs/053-union-rewrite/plan.md)与[切片任务](specs/053-union-rewrite/tasks.md)。原PRD原始字节保存在[历史快照](docs/PRD.pre-rewrite-2026-11-04.md)。ADR-0004只接受已由用户选择的方法；架构、ADR-0005/0006及PRD新增细化仍是待评审提案，不把文档齐备当成批准或实现。
+
+**下一项是S00/U-065：需求/架构处置与S01精确契约。** 核对是否还有未提供的chapter/Charter来源；处置PRD Q-01–Q-03及相关ADR，确定创建/重开同一AU的输入、回执、身份/版本、错误、事务和旧客户端映射，并列对应行为测试。先明确受影响行为，再开始S01；不要先搭空目录或第二套运行时。真实环境、profile、样本、窗口和资源授权在Q-04保留，不能由无回复推定。
+
+认领前重新查看主账、实际分支/HEAD和在制容量。S00之后的新增重组工程映射U-066–U-070；模型接入、自改进、发布等复用原卡，原U-002/U-005/U-007/U-008及048真实出口不被规划完成关闭。阻塞任务仍占在制，不通过把已开工卡退回待办隐藏占用。当前状态只看[TASKS](TASKS.md)及[管理主账](management/project.json)。
+
+工具链与验证命令见053 plan。本轮原工程回归为`npm run check`通过（53项前端），Python 3.13.14在UTF-8下424项成功（5平台跳过）；它们不证明重写、真实模型或持续运行。工作区另有其他人的看板、脚本、模型子模块及历史未跟踪文件，本轮仅提交规划增量；接手不要清理或混入下一次提交。
+
 ## 2026-11-03：续接session与候选包安装工程（052）
 
 已查阅用户指定`C:/Users/曾驳/.codex/sessions/2026/11/03`的本仓库会话，确认上一轮为048 A工程与`dd431e5`Windows退出修复。本轮外部工程代理新增完整Python/React/modeld候选ZIP、来源/文件摘要、显式宿主配置、严格完整性/路径检查、新版本安装、原子代码指针、明确目标回滚及前台启动。使用见[ops/release](ops/release/README.md)，证据见[052](evidence/052-release-package/README.md)。

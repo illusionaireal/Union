@@ -1,6 +1,6 @@
 # 项目总览：目标、成熟度与路线
 
-**开发阶段：正式开发（用户于2026-11-02确认）。** 后续采用[工程、真实集成、用户验收、发布与持续运行分层门槛](docs/FORMAL_DEVELOPMENT.md)。这不是生产就绪声明；下方成熟度和历史验收不因阶段变更提升。下一工程项为U-054候选版安装升级回滚包。
+**开发阶段：正式开发（用户于2026-11-02确认）。** 后续采用[工程、真实集成、用户验收、发布与持续运行分层门槛](docs/FORMAL_DEVELOPMENT.md)。这不是生产就绪声明；下方成熟度和历史验收不因阶段变更提升。2026-11-04新增[重写规划检查点](specs/053-union-rewrite/plan.md)，先以S00/U-065完成需求、ADR处置和首片契约；U-054继续承担安装升级回滚的独立验收，不被规划完成替代。实际优先级、在制与阻塞以本页生成视图及TASKS为准。
 
 管理更新：2026-11-01。本轮在 `dev@e0d04c7` 加检查点元数据探测修复上只读复查原公司，仍筹建/暂停，成员/工作/成果/模型调用均0；见[040诊断](evidence/040-checkpoint-metadata/company-status.json)。既有公司能力审计基线为 `9bf6d54`（2026-10-27）；当前工程验收见下表。观察不再打开任何原检查点库，仅lstat；存在或异常为未知，明确缺失为无，本实现不产生true。移除了观察连接引发sidecars的路径，不承诺外部文件不变或跨库原子；真实运营/托管未验。本地复查不代表远端生产检查。
 
@@ -58,7 +58,7 @@
 | 预算与经营记录 / 运行时及业务 | 调用额度、用量与未知费用记录、小说 mock 账本 | V1；真实运行曾按调用上限停止 | 真实成本核对与可执行预算控制；无真实支付/收入能力 | [evidence/014-real-loop/README.md](evidence/014-real-loop/README.md)、[evidence/006-novel-company/README.md](evidence/006-novel-company/README.md) |
 | 质量与评估 / 工程支撑 | 机制回归、模拟与真实标记、E1/E2 检查及证据留存 | V1；真实完整业务验收未通过 | 首个真实任务及指标口径已定义，U-006/U-019/U-020真实采集和效果待验 | [specs/014-real-loop/spec.md](specs/014-real-loop/spec.md)、[evidence/016-member-workspace/README.md](evidence/016-member-workspace/README.md) |
 | 目标公司实例 / ai-union-corp | 固定身份、目标、阶段章程、只读诊断、正式工作台入口 | V1：准备入口；运营 V0 | 真实筹建 → 研发交付 → 反馈 → 持续运营 | [specs/015-corp-startup/tasks.md](specs/015-corp-startup/tasks.md) |
-| 项目管理与组织改进 / 工程支撑 | 单一主账、生成视图、管理检查、维护/评审/改进流程及评估协议 | V1：管理规则受控验证；真实自主改进未验收 | U-033诊断/U-034申请/U-035时间记录已实现；U-019真实自主改善仍待验 | [evidence/017-project-management/README.md](evidence/017-project-management/README.md) |
+| 项目管理与组织改进 / 工程支撑 | 单一主账、生成视图、管理检查、维护/评审/改进流程及评估协议；053重写PRD/架构提案/垂直切片和交接规则 | V1：管理规则受控验证；真实自主改进未验收 | U-065待处置重写需求/ADR及首片契约；U-033诊断/U-034申请/U-035时间记录已实现，U-019真实自主改善仍待验 | [evidence/017-project-management/README.md](evidence/017-project-management/README.md)、[evidence/053-rewrite-checkpoint/README.md](evidence/053-rewrite-checkpoint/README.md) |
 | 跨 AU 协作与组织演进 / ai-union | AU关系与委托契约已定义；现有本地目录可复用，跨AU执行/派生/重构尚未实现 | V0：规划，运行未验 | U-028先满足真实单AU交付/恢复依赖，再实现双边委托和演进 | [docs/DEVELOPMENT_ROADMAP.md](docs/DEVELOPMENT_ROADMAP.md)、[specs/025-au-delegation-contract/spec.md](specs/025-au-delegation-contract/spec.md) |
 | 可选管理工具服务 / platform | 工具服务契约完成，仓库管理与观察可复用；尚未服务化或接入付费工具 | V0：服务规划，运行未验 | U-026依真实需求接首个免费工具；U-032付费开通和结算另验 | [docs/DEVELOPMENT_ROADMAP.md](docs/DEVELOPMENT_ROADMAP.md) |
 <!-- management:modules:end -->
@@ -89,7 +89,7 @@
 任务唯一主账为 `management/project.json`，保留 U 编号；以下视图由 `npm run management:render` 生成。实际负责人和所需责任角色分开，未认领不虚构为公司成员。
 
 <!-- management:tasks:start -->
-数据日期：2026-11-03；在制 5/5，就绪 1，阻塞 7，完成 32。这是工作项统计，不是产品完成率。
+数据日期：2026-11-04；在制 6/6，就绪 1，阻塞 7，完成 32。这是工作项统计，不是产品完成率。
 
 | 任务 | 内容 | 优先级 / 阶段 | 状态 | 实际负责人 | 依赖 |
 | --- | --- | --- | --- | --- | --- |
@@ -125,6 +125,9 @@
 | [U-061](TASKS.md#u-061) | 设计真实可用的统一模型接入与订阅执行链 | P0 / G0 | 完成 | Codex（外部工程代理） | — |
 | [U-062](TASKS.md#u-062) | 实现正式模型服务与完整接入能力 | P0 / G0 | 待依赖 | 待认领 | U-061, U-060 |
 | [U-063](TASKS.md#u-063) | 修复 PR #12 的跨平台与浏览器检查 | P0 / G0 | 完成 | Codex（外部工程代理） | — |
+| [U-064](TASKS.md#u-064) | 形成UNION重写规划与可交接检查点 | P0 / G0 | 待验收 | codex/rewrite-planning-20261104（外部工程代理） | — |
+| [U-065](TASKS.md#u-065) | 评审重写需求架构并固定首片契约 | P0 / G0 | 待依赖 | 待认领 | U-064 |
+| [U-066](TASKS.md#u-066) | 按重写契约贯通创建与重开同一AU | P0 / G1 | 待依赖 | 待认领 | U-065 |
 | [U-008](TASKS.md#u-008) | 部署持久服务 | P1 / G3 | 阻塞 | 待认领 | — |
 | [U-009](TASKS.md#u-009) | 演练恢复与资源控制 | P1 / G3 | 待依赖 | 待认领 | U-006, U-008 |
 | [U-010](TASKS.md#u-010) | 接通发布、观察和回滚 | P1 / G3 | 待依赖 | 待认领 | U-006, U-008 |
@@ -148,6 +151,10 @@
 | [U-058](TASKS.md#u-058) | 订阅授权结果在刷新后保持可见 | P1 / G0 | 完成 | Codex（外部工程代理） | — |
 | [U-059](TASKS.md#u-059) | 展示 Go 订阅的工作区、额度与可用模型 | P1 / G0 | 完成 | Codex（外部工程代理） | — |
 | [U-060](TASKS.md#u-060) | 把 OpenCode Go 订阅接成 AU 可用模型连接 | P1 / G0 | 进行中 | Codex（外部工程代理） | — |
+| [U-067](TASKS.md#u-067) | 按垂直切片重组筹建与依赖工作执行 | P1 / G1 | 待依赖 | 待认领 | U-066 |
+| [U-068](TASKS.md#u-068) | 贯通正式成果反馈与后续交付契约 | P1 / G2 | 待依赖 | 待认领 | U-067 |
+| [U-069](TASKS.md#u-069) | 按有效章程重组治理调整与任职交接 | P1 / G2 | 待依赖 | 待认领 | U-066, U-067 |
+| [U-070](TASKS.md#u-070) | 贯通等待重启与未知执行核对 | P1 / G3 | 待依赖 | 待认领 | U-068, U-069 |
 | [U-013](TASKS.md#u-013) | 评估成员执行器选型 | P2 / G0 | 候选 | 待认领 | — |
 | [U-014](TASKS.md#u-014) | 定义外部试点 | P2 / G4 | 待依赖 | 待认领 | U-009, U-010, U-011, U-019 |
 | [U-015](TASKS.md#u-015) | 按需求接入业务系统 | P2 / G5 | 候选 | 待认领 | U-014 |

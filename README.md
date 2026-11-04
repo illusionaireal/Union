@@ -1,5 +1,9 @@
 # UNION / ai-union
 
+## 2026-11-04：重写规划交接
+
+重写按「原则/章节 → 可拆解PRD → 总体设计与编码前ADR → 垂直切片与AGENTS → 严格TDD」推进。[PRD v0.7](docs/PRD.md)、[总体架构提案](docs/ARCHITECTURE.md)和[053切片](specs/053-union-rewrite/tasks.md)已整理为评审材料；下一人从[交接入口](HANDOFF.md)及S00/U-065开始。具体技术方案仍待采用，真实验收与[正式发布门槛](docs/FORMAL_DEVELOPMENT.md)保持独立。检查点分支为 `rewrite/charter-v1`，`dev`仍是日常主线；下方日期条目保留历史范围。
+
 ## 2026-11-03：正式模型接入设计
 
 [完整方案](docs/MODEL_ACCESS_ARCHITECTURE.md)已对照最新dev及OpenCode/Hermes源码：保留Python组织循环，新增复用OpenCode模型与认证内核的独立服务，先打通Go订阅到AU真实执行，再完成原生流式、长任务、凭据池与恢复。当前为设计交付，实施见[048计划](specs/048-production-model-access/plan.md)及U-062。

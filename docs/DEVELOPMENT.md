@@ -1,5 +1,9 @@
 # 从新环境接手开发
 
+## 2026-11-04：重写从需求和首片契约接手
+
+用户本轮明确要求先补齐PRD、总体设计与编码前ADR，按垂直切片同步AGENTS，再严格TDD。先读[053接手计划](../specs/053-union-rewrite/plan.md)、[PRD v0.7](PRD.md)、[总体架构](ARCHITECTURE.md)和根[HANDOFF](../HANDOFF.md)的本次条目，认领S00/U-065完成提案处置及S01精确契约。该检查点在`rewrite/charter-v1`，不自动合并dev或开始全量重写。原正式开发、真实模型与发布门槛继续有效；下面历史条目的“下一步”和测试数不代替当前主账。
+
 ## 2026-11-02：进入正式开发
 
 用户确认从MVP进入正式开发。后续按[正式开发与交付标准](FORMAL_DEVELOPMENT.md)推进：工程子项、真实集成、用户闭环、发布与持续运行分别验收。043的受控证据保留，未通过的真实账号/模型/部署/经营不升级。下一工程切片为候选版安装升级回滚包，任务状态见主账与TASKS。
@@ -28,7 +32,7 @@
 
 ## 1. 读取顺序与当前任务
 
-先读 [当前状态](ai-union/STATUS.md)、[工程交接](../HANDOFF.md)、[PRD v0.6](PRD.md)和[产品设计](product-design.md)。[004 组织操作工作台](../specs/004-organization-console/tasks.md)的 W2–W8 及 [003 观察模块](../specs/003-runtime-dashboard/spec.md)已完成本地 fixture 验收；[005 工程化前端](../specs/005-frontend-engineering/tasks.md)已迁移至 React + TypeScript + Vite；后续从真实执行器的有限试跑缺口继续，不重做已完成原型与服务。
+先读 [当前状态](ai-union/STATUS.md)、[工程交接](../HANDOFF.md)、[当前PRD](PRD.md)和[产品设计](product-design.md)。[004 组织操作工作台](../specs/004-organization-console/tasks.md)的 W2–W8 及 [003 观察模块](../specs/003-runtime-dashboard/spec.md)已完成本地 fixture 验收；[005 工程化前端](../specs/005-frontend-engineering/tasks.md)已迁移至 React + TypeScript + Vite；后续从真实执行器的有限试跑缺口继续，不重做已完成原型与服务。
 
 已实现 Python 本地运行时、CLI 和正式 React 工作台；旧独立演示/原型已退役。OpenRouter 普通对话与 CLI 连接已实测，工具协作和业务质量尚未验收；本地 fixture 使用不需要模型凭据。运行入口及恢复见 [CONSOLE.md](CONSOLE.md)。
 
