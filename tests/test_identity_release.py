@@ -45,7 +45,7 @@ class IdentityReleaseTests(unittest.TestCase):
 
     def test_incompatible_activation_and_rollback_preserve_pointer_and_latest_identity(self):
         self.install("old")
-        self.install("current", {"auth": 1, "catalog": 1})
+        self.install("current", {"auth": 2, "catalog": 1})
         self.install("future", {"auth": 2, "catalog": 2})
         current_bytes = self.create_current_catalog()
         # Only external dependency checks are replaced; real manifests and SQLite
@@ -72,8 +72,8 @@ class IdentityReleaseTests(unittest.TestCase):
         self.assertEqual((self.config["console_state"] / "console.sqlite3").read_bytes(), current_bytes)
 
     def test_incomplete_current_schema_rejects_before_switching_code_pointer(self):
-        self.install("current", {"auth": 1, "catalog": 1})
-        self.install("candidate", {"auth": 1, "catalog": 1})
+        self.install("current", {"auth": 2, "catalog": 1})
+        self.install("candidate", {"auth": 2, "catalog": 1})
         self.create_current_catalog()
         with patch.object(release, "preflight", side_effect=lambda p, c: release.verify_directory(p)):
             release.activate("current", self.config, stopped=True)

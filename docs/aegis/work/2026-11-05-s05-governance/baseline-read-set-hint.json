@@ -1,0 +1,10 @@
+{
+  "schemaVersion": "aegis.schema.v0",
+  "candidateDocs": [
+    "specs/053-union-rewrite/tasks.md",
+    "docs/decisions/0006-charter-policy-adoption.md",
+    "docs/UNION_CHARTER_v1.0.md"
+  ],
+  "whyRelevant": "Baseline read-set requires agent review.",
+  "missingAuthority": []
+}

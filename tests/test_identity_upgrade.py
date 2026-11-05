@@ -176,7 +176,7 @@ class IdentityUpgradeTests(unittest.TestCase):
         with patch.object(identity_schema, "_write_receipt", side_effect=OSError("controlled receipt interruption")):
             with self.assertRaises((OSError, Rejected)):
                 identity_schema.upgrade(self.root, services_stopped=True)
-        self.assertEqual(identity_schema.versions(self.db), {"auth": 1, "catalog": 1})
+        self.assertEqual(identity_schema.versions(self.db), {"auth": 2, "catalog": 1})
         committed = dump(self.db)
         result = self.upgrade()
         self.assertEqual(result.returncode, 0, result.stderr)

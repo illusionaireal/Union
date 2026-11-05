@@ -1,0 +1,13 @@
+{
+  "checks": [
+    "Account exposes its stable principal for explicit nominations and appointments",
+    "Registration retains the recovery code through background authentication reads",
+    "Account exposes its stable principal for explicit nominations and appointments",
+    "Registered core participant starts with no AU, legacy or platform permissions",
+    "Registration retains the recovery code through background authentication reads",
+    "Account exposes its stable principal for explicit nominations and appointments",
+    "Registered core participant starts with no AU, legacy or platform permissions"
+  ],
+  "error": "The UI did not refresh the saved command version: {\"kind\":\"adopt_governance\",\"receipt_version\":1,\"current_status\":200,\"current_version\":1,\"metadata\":{\"rendered\":\"\",\"content\":\"org-4abbf06a8233417c964eb174253862b3 · 状态 v1 · 章程 v1 · 本地治理\",\"expanded\":false}}",
+  "errors": []
+}

@@ -5,7 +5,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { api } from '../api/client';
 import { IdentityBoundary } from './Identity';
 
-const workspace = vi.hoisted(() => ({ session: undefined as undefined | { service_instance: string; session_scope: string }, loading: false }));
+const workspace = vi.hoisted(() => ({ session: undefined as undefined | { service_instance: string; session_scope: string; principal_id?: string }, loading: false }));
 vi.mock('../app/workspace', () => ({ useWorkspace: () => workspace }));
 
 const unconfigured = { configured: false, authenticated: false, can_setup: true, account: null };
@@ -123,6 +123,106 @@ describe('identity boundary', () => {
     expect(screen.getByLabelText('恢复码')).toBeVisible();
     fireEvent.click(screen.getByRole('button', { name: '返回登录' }));
     expect(screen.getByRole('heading', { name: '登录 UNION' })).toBeVisible();
+  });
+
+  it('registers a core participant without AU permissions and keeps the recovery code until acknowledged', async () => {
+    const status = vi.spyOn(api, 'authStatus').mockResolvedValue(configured);
+    const auth = vi.spyOn(api, 'auth').mockResolvedValue({ recovery_code: 'PARTICIPANT-RECOVERY' });
+    const { client } = mount();
+    fireEvent.click(await screen.findByRole('button', { name: '登记核心参与者' }));
+    expect(screen.getByText('登记仅建立独立登录身份，不授予任何 AU、旧版管理或平台管理权限。')).toBeVisible();
+    expect(screen.getByLabelText('密码')).toHaveAttribute('minlength', '12');
+    expect(screen.getByLabelText('密码')).toHaveAttribute('autocomplete', 'new-password');
+    fireEvent.change(screen.getByLabelText('账号'), { target: { value: 'participant' } });
+    fireEvent.change(screen.getByLabelText('密码'), { target: { value: 'participant-safe-password' } });
+    fireEvent.click(screen.getByLabelText('记住此设备，最长30天'));
+    submitForm(screen.getByRole('button', { name: '登记核心参与者' }));
+    await waitFor(() => expect(auth).toHaveBeenCalledWith('register', {
+      username: 'participant', password: 'participant-safe-password', remember: true,
+    }));
+    expect(await screen.findByLabelText('账号恢复码')).toHaveValue('PARTICIPANT-RECOVERY');
+    status.mockResolvedValue({ ...signedIn, account: 'participant' });
+    await act(async () => { await client.refetchQueries({ queryKey: ['identity'] }); });
+    expect(screen.getByLabelText('账号恢复码')).toHaveValue('PARTICIPANT-RECOVERY');
+    expect(screen.queryByText('工作台内容')).not.toBeInTheDocument();
+    expect(reload).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole('button', { name: '已保存，进入工作台' }));
+    expect(reload).toHaveBeenCalledTimes(1);
+  });
+
+  it('retains a participant draft and focus after an error and background reads', async () => {
+    vi.spyOn(api, 'authStatus').mockResolvedValue(configured);
+    vi.spyOn(api, 'auth').mockRejectedValue(new Error('账号已存在，请换一个账号名'));
+    const { client } = mount();
+    fireEvent.click(await screen.findByRole('button', { name: '登记核心参与者' }));
+    const password = screen.getByLabelText('密码');
+    fireEvent.change(screen.getByLabelText('账号'), { target: { value: 'participant' } });
+    fireEvent.change(password, { target: { value: 'participant-safe-password' } });
+    password.focus();
+    submitForm(screen.getByRole('button', { name: '登记核心参与者' }));
+    expect(await screen.findByRole('alert')).toHaveTextContent('账号已存在');
+    await act(async () => { await client.refetchQueries({ queryKey: ['identity'] }); });
+    expect(screen.getByLabelText('密码')).toBe(password);
+    expect(password).toHaveValue('participant-safe-password');
+    expect(password).toHaveFocus();
+    expect(screen.getByLabelText('账号')).toHaveValue('participant');
+  });
+
+  it('keeps the participant form in place until registration returns its recovery code', async () => {
+    vi.spyOn(api, 'authStatus').mockResolvedValue(configured);
+    let finish!: (value: { recovery_code: string }) => void;
+    vi.spyOn(api, 'auth').mockImplementation(() => new Promise(resolve => { finish = resolve; }));
+    mount();
+    fireEvent.click(await screen.findByRole('button', { name: '登记核心参与者' }));
+    fireEvent.change(screen.getByLabelText('账号'), { target: { value: 'participant' } });
+    fireEvent.change(screen.getByLabelText('密码'), { target: { value: 'participant-safe-password' } });
+    submitForm(screen.getByRole('button', { name: '登记核心参与者' }));
+    expect(await screen.findByRole('button', { name: '正在处理…' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: '返回登录' })).toBeDisabled();
+    await act(async () => { finish({ recovery_code: 'SAFE-RECOVERY-CODE' }); });
+    expect(screen.getByLabelText('账号恢复码')).toHaveValue('SAFE-RECOVERY-CODE');
+  });
+
+  it.each(['register', 'setup'] as const)('retains the %s recovery code when authenticated polling finishes before the response body', async (mode) => {
+    const status = vi.spyOn(api, 'authStatus').mockResolvedValue(mode === 'setup' ? unconfigured : configured);
+    let finish!: (value: { recovery_code: string }) => void;
+    vi.spyOn(api, 'auth').mockImplementation(() => new Promise(resolve => { finish = resolve; }));
+    const { client } = mount();
+    if (mode === 'register') fireEvent.click(await screen.findByRole('button', { name: '登记核心参与者' }));
+    fireEvent.change(await screen.findByLabelText('账号'), { target: { value: 'participant' } });
+    fireEvent.change(screen.getByLabelText('密码'), { target: { value: 'participant-safe-password' } });
+    submitForm(screen.getByRole('button', { name: mode === 'setup' ? '建立管理员账号' : '登记核心参与者' }));
+    await screen.findByRole('button', { name: '正在处理…' });
+    status.mockResolvedValue({ ...signedIn, account: 'participant' });
+    await act(async () => {
+      await client.refetchQueries({ queryKey: ['identity'] });
+      await new Promise(resolve => setTimeout(resolve, 0));
+    });
+    await act(async () => { finish({ recovery_code: 'BODY-AFTER-COOKIE-RECOVERY' }); });
+    expect(await screen.findByLabelText('账号恢复码')).toHaveValue('BODY-AFTER-COOKIE-RECOVERY');
+    expect(screen.queryByText('工作台内容')).not.toBeInTheDocument();
+    expect(reload).not.toHaveBeenCalled();
+  });
+
+  it('keeps the registering form and recovery code while a newly observed identity is still loading', async () => {
+    const status = vi.spyOn(api, 'authStatus').mockResolvedValue(configured);
+    let finish!: (value: { recovery_code: string }) => void;
+    vi.spyOn(api, 'auth').mockImplementation(() => new Promise(resolve => { finish = resolve; }));
+    const { view, tree } = mount();
+    fireEvent.click(await screen.findByRole('button', { name: '登记核心参与者' }));
+    fireEvent.change(screen.getByLabelText('账号'), { target: { value: 'participant' } });
+    fireEvent.change(screen.getByLabelText('密码'), { target: { value: 'participant-safe-password' } });
+    submitForm(screen.getByRole('button', { name: '登记核心参与者' }));
+    await screen.findByRole('button', { name: '正在处理…' });
+    let finishStatus!: (value: typeof signedIn) => void;
+    status.mockImplementation(() => new Promise(resolve => { finishStatus = resolve; }));
+    workspace.session = { service_instance: 'same-service', session_scope: 'new-login', principal_id: 'new-principal' };
+    view.rerender(tree(<p>工作台内容</p>));
+    await act(async () => { finish({ recovery_code: 'NEW-PRINCIPAL-RECOVERY' }); });
+    expect(await screen.findByLabelText('账号恢复码')).toHaveValue('NEW-PRINCIPAL-RECOVERY');
+    await act(async () => { finishStatus(signedIn); });
+    expect(screen.getByLabelText('账号恢复码')).toHaveValue('NEW-PRINCIPAL-RECOVERY');
+    expect(screen.queryByText('工作台内容')).not.toBeInTheDocument();
   });
 
   it('renders the workspace only after authentication', async () => {

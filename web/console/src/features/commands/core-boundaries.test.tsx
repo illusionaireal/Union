@@ -31,6 +31,20 @@ function mountApp() {
   return client;
 }
 
+it('lets a core participant prepare its own AU while withholding legacy operations and showing its stable identity', async () => {
+  vi.mocked(api.session).mockResolvedValue({ ...session, role: 'core', platform_admin: false });
+  vi.mocked(api.authStatus).mockResolvedValue({ ...auth, account: 'participant' });
+  mountApp();
+  await waitFor(() => expect(screen.getByRole('button', { name: /^创建 AU$/ })).toBeEnabled());
+  expect(screen.getByRole('button', { name: '旧版兼容试验（含小说）' })).toBeDisabled();
+  expect(screen.getByText('核心参与者')).toBeVisible();
+  const ownIdentity = screen.getByLabelText('当前核心身份标识');
+  expect(ownIdentity).toHaveValue(principal);
+  expect(ownIdentity).toHaveAttribute('readonly');
+  fireEvent.click(screen.getByRole('button', { name: /^创建 AU$/ }));
+  expect(await screen.findByLabelText('AU目标')).toBeVisible();
+});
+
 async function preview() {
   await waitFor(() => expect(screen.getByRole('button', { name: /^创建 AU$/ })).toBeEnabled());
   fireEvent.click(screen.getByRole('button', { name: /^创建 AU$/ }));

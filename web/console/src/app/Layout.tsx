@@ -22,6 +22,9 @@ import { CommandButton, useCommands } from '../features/commands/CommandProvider
 import { Card, Empty, sourceName } from '../components/ui';
 import { AccountSettings } from '../pages/Identity';
 import PreparedAU from '../pages/PreparedAU';
+import { isGovernedAU } from '../api/core-boundary';
+import { GovernanceWorkspace } from '../features/governance/GovernanceWorkspace';
+import { GovernanceRecovery } from '../features/governance/GovernanceProvider';
 
 const pages = [
   {
@@ -94,8 +97,11 @@ export function Layout() {
   const { pending, inspect } = useCommands();
   const location = useLocation();
   const coreMode = !!core || session?.organizations.find((item) => item.id === orgId)?.profile === 'core_v1';
+  const governed = core && isGovernedAU(core) ? core : undefined;
   const selectedPage = pages.find((p) => '/' + p.key === location.pathname) || pages.find((p) => p.key === 'overview')!;
-  const page = coreMode ? { ...selectedPage, label: 'AU准备记录', title: 'AU准备记录', description: '目标、初始治理主体、章程与资源计划。业务自治尚未启用。' } : selectedPage;
+  const governanceLabel = selectedPage.key === 'tasks' ? '责任与工作' : selectedPage.key === 'settings' ? '章程与记录' : 'AU与治理';
+  const page = governed ? { ...selectedPage, label: governanceLabel, title: governanceLabel, description: '按当前身份与有效规则处理治理、责任和内部记录。' }
+    : coreMode ? { ...selectedPage, label: 'AU准备记录', title: 'AU准备记录', description: '目标、初始治理主体、章程与资源计划。业务自治尚未启用。' } : selectedPage;
   const search = orgId ? '?organization=' + encodeURIComponent(orgId) : '';
   const openPage = page.key === 'overview' || page.key === 'models' || page.key === 'gateways';
   useEffect(() => {
@@ -133,7 +139,7 @@ export function Layout() {
           </span>
         </label>
         <nav id="navigation">
-          {pages.filter((p) => (!coreMode || ['overview', 'settings'].includes(p.key)) && (p.key !== 'gateways' || session?.platform_admin)).map(({ key, label, icon: Icon, group }) => (
+          {pages.filter((p) => (!coreMode || (governed ? ['overview', 'tasks', 'settings'] : ['overview', 'settings']).includes(p.key)) && (p.key !== 'gateways' || session?.platform_admin)).map(({ key, label, icon: Icon, group }) => (
             <div className="nav-entry" key={key}>
               {group && <div className="nav-caption">{group}</div>}
               <NavLink
@@ -142,7 +148,7 @@ export function Layout() {
                 className={({ isActive }) => 'nav-button' + (isActive ? ' active' : '')}
               >
                 <Icon size={19} strokeWidth={1.7} />
-                <span>{coreMode ? key === 'overview' ? 'AU准备记录' : '治理与资源计划' : label}</span>
+                <span>{governed ? key === 'overview' ? 'AU与治理' : key === 'tasks' ? '责任与工作' : '章程与记录' : coreMode ? key === 'overview' ? 'AU准备记录' : '治理与资源计划' : label}</span>
                 {key === 'models' && !data?.execution_config.api_connection_id && (
                   <span className="nav-tag">配置</span>
                 )}
@@ -164,7 +170,7 @@ export function Layout() {
             <div>
               <strong id="role-label">
                 {session
-                  ? session.role === 'board'
+                  ? session.role === 'core' ? '核心参与者' : session.role === 'board'
                     ? '本机发起人'
                     : '本机观察者'
                   : '等待本机会话'}
@@ -183,7 +189,7 @@ export function Layout() {
           </div>
           <div className="topbar-actions">
             <span id="source-label" className="source-label">
-              {core ? '准备态 · 未激活' : data ? sourceName(data.source) : '尚未执行'}
+              {governed ? '受控内部记录' : core ? '准备态 · 未激活' : data ? sourceName(data.source) : '尚未执行'}
             </span>
             <button
               id="refresh"
@@ -267,8 +273,9 @@ export function Layout() {
                 </button>
               </p>
             ))}
+          <GovernanceRecovery />
           <div id="view">
-            {core ? <PreparedAU /> : data || openPage ? (
+            {governed ? <GovernanceWorkspace read={governed} /> : core ? <PreparedAU /> : data || openPage ? (
               <Outlet />
             ) : (
               <Card title="先建立你的公司">
@@ -286,6 +293,7 @@ export function Layout() {
               </Card>
             )}
           </div>
+          {governed && <CommandButton kind="create_v1">创建另一个 AU</CommandButton>}
           {(data || core) && <div className="legacy-creation">
             <p>旧版试验继续使用原有运行时；小说公司保留独立的兼容入口。</p>
             <CommandButton kind="create">旧版兼容试验（含小说）</CommandButton>
@@ -297,7 +305,7 @@ export function Layout() {
                 数据与运行记录
               </summary>
               <span id="snapshot-meta">
-                {core ? `${core.au.id} · 状态 v${core.au.version} · 章程 v${core.au.charter_version} · 准备态` : data
+                {core ? `${core.au.id} · 状态 v${core.au.version} · 章程 v${core.au.charter_version} · ${governed ? '本地治理' : '准备态'}` : data
                   ? data.organization.id +
                     ' · 状态 v' +
                     data.organization.version +

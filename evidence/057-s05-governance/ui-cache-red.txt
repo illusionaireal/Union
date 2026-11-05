@@ -1,0 +1,86 @@
+
+> @union/console@0.1.0 test
+> vitest run src/app/governance-workspace.test.tsx --reporter=verbose
+
+
+ RUN  v3.2.7 D:/Project/Union/web/console
+
+ × src/app/governance-workspace.test.tsx > current governance access projection > does not resurrect a cached AU after observing a changed principal_id 217ms
+   → expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  无 AU 投影
+Received:
+  有明确责任的 AU
+ × src/app/governance-workspace.test.tsx > current governance access projection > does not resurrect a cached AU after observing a changed service_instance 53ms
+   → expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  无 AU 投影
+Received:
+  有明确责任的 AU
+ ✓ src/app/governance-workspace.test.tsx > current governance access projection > keeps writes disabled when the same principal revisits a cached AU before a fresh read 81ms
+ ✓ src/app/governance-workspace.test.tsx > current governance access projection > keeps a disconnected snapshot during an ordinary session network failure 72ms
+ × src/app/governance-workspace.test.tsx > current governance access projection > clears a revoked session and its AU projection even if the next refresh loses the network 73ms
+   → expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  无 AU 投影
+Received:
+  有明确责任的 AU
+ ✓ src/app/governance-workspace.test.tsx > current governance access projection > accepts the current governor from server access instead of requiring the immutable creator identity 35ms
+ ✓ src/app/governance-workspace.test.tsx > current governance access projection > withholds a schema 2 projection bound to another principal_id 33ms
+ ✓ src/app/governance-workspace.test.tsx > current governance access projection > withholds a schema 2 projection bound to another service_instance 30ms
+ ✓ src/app/governance-workspace.test.tsx > current governance access projection > clears a previously readable prepared AU immediately when current access is revoked 62ms
+ ✓ src/app/governance-workspace.test.tsx > current governance access projection > does not retain an old principal projection when the new principal cannot read it 64ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/app/governance-workspace.test.tsx > current governance access projection > does not resurrect a cached AU after observing a changed principal_id
+ FAIL  src/app/governance-workspace.test.tsx > current governance access projection > does not resurrect a cached AU after observing a changed service_instance
+Error: expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  无 AU 投影
+Received:
+  有明确责任的 AU
+ ❯ src/app/governance-workspace.test.tsx:101:47
+     99|       vi.mocked(api.session).mockImplementation(() => new Promise(() =…
+    100|       fireEvent.click(screen.getByRole('button', { name: '返回原 AU 地址' }…
+    101|       expect(screen.getByTestId('core-name')).toHaveTextContent('无 AU …
+       |                                               ^
+    102|       expect(screen.getByTestId('principal')).toHaveTextContent(nextSe…
+    103|       expect(screen.getByRole('button', { name: '操作' })).toBeDisabled(…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/app/governance-workspace.test.tsx > current governance access projection > clears a revoked session and its AU projection even if the next refresh loses the network
+Error: expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  无 AU 投影
+Received:
+  有明确责任的 AU
+ ❯ src/app/governance-workspace.test.tsx:154:45
+    152|     fireEvent.click(screen.getByRole('button', { name: '刷新当前权限' }));
+    153|     await waitFor(() => expect(screen.getByRole('alert')).toHaveTextCo…
+    154|     expect(screen.getByTestId('core-name')).toHaveTextContent('无 AU 投影…
+       |                                             ^
+    155|     expect(screen.getByTestId('principal')).toHaveTextContent('无身份');
+    156|     expect(screen.getByRole('button', { name: '操作' })).toBeDisabled();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 7 passed (10)
+   Start at  20:40:44
+   Duration  2.01s (transform 82ms, setup 180ms, collect 130ms, tests 722ms, environment 491ms, prepare 139ms)
+
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path D:\Project\Union\web\console
+npm error workspace @union/console@0.1.0
+npm error location D:\Project\Union\web\console
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c vitest run src/app/governance-workspace.test.tsx --reporter=verbose

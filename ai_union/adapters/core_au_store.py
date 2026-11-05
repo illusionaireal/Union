@@ -40,6 +40,11 @@ class CoreAUStore:
             require(row is not None, INCOMPATIBLE)
             state = json.loads(row[0])
             require(isinstance(state, dict) and state.get("id") == au_id, INCOMPATIBLE)
+            governed = state if type(state.get("schema_version")) is int and state["schema_version"] == 2 else None
+            if governed is not None:
+                from .governance_store import origin_in
+                state, _ = origin_in(cx)
+                require(isinstance(state, dict) and state.get("id") == au_id, INCOMPATIBLE)
             require(state.get("runtime_profile") == "core_v1" and type(state.get("schema_version")) is int and state["schema_version"] == 1, INCOMPATIBLE)
             require(state.get("autonomy_state") == "inactive" and state.get("resource_state") == "planned", INCOMPATIBLE)
             for name, expected in (("version", 0), ("charter_version", 1), ("policy_version", 0)):
@@ -64,6 +69,12 @@ class CoreAUStore:
                                                 "core_v1", 1, receipt["created_at"]), INCOMPATIBLE)
                 require(request["id"] == creation["id"] and request["kind"] == "create_v1"
                         and request["data"] == data, INCOMPATIBLE)
+            if governed is not None:
+                from .governance_store import read_in
+                return read_in(cx, governed, state)
+            from .governance_store import GovernanceStore, commands_in
+            if GovernanceStore.has_commands(cx):
+                commands_in(cx, au_id)
             return {"protocol": "core.au.v1", "au": state | {"charter": data["charter"]}, "capabilities": dict(CAPABILITIES)}
         except (Rejected, ValueError, TypeError, KeyError) as error:
             raise CoreError("incompatible_state", INCOMPATIBLE) from error

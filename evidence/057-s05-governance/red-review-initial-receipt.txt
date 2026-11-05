@@ -1,0 +1,28 @@
+test_initial_version_rejection_retains_original_receipt_without_adopting_schema_two (tests.test_governance.GovernanceAdoptionTests.test_initial_version_rejection_retains_original_receipt_without_adopting_schema_two) ... FAIL
+test_lost_successor_identity_blocks_actions_until_current_governor_reconfigures (tests.test_governance_succession.GovernanceSuccessionTests.test_lost_successor_identity_blocks_actions_until_current_governor_reconfigures) ... FAIL
+
+======================================================================
+FAIL: test_initial_version_rejection_retains_original_receipt_without_adopting_schema_two (tests.test_governance.GovernanceAdoptionTests.test_initial_version_rejection_retains_original_receipt_without_adopting_schema_two)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_governance.py", line 96, in test_initial_version_rejection_retains_original_receipt_without_adopting_schema_two
+    self.assertEqual(status, 200, value)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: 409 != 200 : {'code': 'unsupported_capability', 'error': 'AU 版本已变化；请读取最新状态后检查原输入'}
+
+======================================================================
+FAIL: test_lost_successor_identity_blocks_actions_until_current_governor_reconfigures (tests.test_governance_succession.GovernanceSuccessionTests.test_lost_successor_identity_blocks_actions_until_current_governor_reconfigures)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_governance_succession.py", line 152, in test_lost_successor_identity_blocks_actions_until_current_governor_reconfigures
+    self.assertFalse(self.read()["capabilities"]["local_submission"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false
+
+----------------------------------------------------------------------
+Ran 2 tests in 2.442s
+
+FAILED (failures=2)
+已重置 D:\Temp\tmp4wr23di6\console.sqlite3
+重置前备份: D:\Temp\tmp4wr23di6\console.sqlite3.bak-1793881207
+重启工作台后，任意第一个访问者都可以重新设置管理员账号。

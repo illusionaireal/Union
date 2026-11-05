@@ -73,10 +73,10 @@ class CreationCatalog:
             rows = cx.execute("SELECT * FROM creations WHERE allocated_au_id=? AND profile='core_v1'", (au_id,)).fetchall()
         return dict(rows[0]) if len(rows) == 1 else None
 
-    def authorized_entry(self, au_id, principal):
+    def located_entry(self, au_id):
         with self.app.read_catalog() as cx:
             row = cx.execute("SELECT * FROM organizations WHERE id=?", (au_id,)).fetchone()
         intent = self.intent_for_au(au_id)
-        if row is None or intent is None or intent["creator_principal_id"] != principal:
+        if row is None or intent is None:
             raise CoreError("not_authorized")
         return dict(row), intent

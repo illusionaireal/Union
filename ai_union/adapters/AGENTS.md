@@ -1,6 +1,15 @@
 # AU persistence adapters
 
 - Follow the root AGENTS, ADR-0005/0006 and the active S01 contract.
+- S05 extends the explicit contract in specs/053-union-rewrite/s05-contract.md.
+  `governance_store.py` alone writes adopted V1 governance state, audit and
+  receipts. The explicit first adoption snapshots schema 1 bytes, then moves
+  that AU to schema 2 in one SQLite transaction; reads never migrate.
+- Authorized initial rule/version refusals keep their original command receipt
+  in schema 1 without adopting governance or rewriting creation facts.
+- CoreAUStore validates original creation against its catalog intent separately
+  from the current version/audit chain. Current authority lives in the AU;
+  catalog creator remains the original creation-receipt owner only.
 - `au_catalog.py` owns read-only validation of a catalog locator against the
   stored AU identity before Console/discovery callers construct a runtime.
   The catalog is a locator; the AU database owns its ID/profile.

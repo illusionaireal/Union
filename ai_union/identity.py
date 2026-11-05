@@ -1,4 +1,4 @@
-"""Host-provisioned owner login. Only opaque, revocable session hashes persist."""
+"""One authentication owner for host owners and unprivileged core principals."""
 import hashlib
 import hmac
 import json
@@ -32,7 +32,7 @@ class Identity:
 
     def configured(self):
         with self.app.read_catalog() as cx:
-            return bool(cx.execute('SELECT 1 FROM owner_account').fetchone())
+            return bool(cx.execute("SELECT 1 FROM owner_account WHERE account_kind='owner'").fetchone())
 
     def setup(self, token, username, password, remember=False):
         session = self.app.session(token) if token else None
@@ -54,7 +54,8 @@ class Identity:
         salt, recovery = secrets.token_hex(16), secrets.token_urlsafe(32)
         digest = password_hash(password, salt)
         with self.app.catalog() as cx:
-            require(not cx.execute('SELECT 1 FROM owner_account').fetchone(), '管理员已设置，请登录')
+            require(not cx.execute("SELECT 1 FROM owner_account WHERE account_kind='owner'").fetchone(), '管理员已设置，请登录')
+            require(not cx.execute('SELECT 1 FROM owner_account WHERE username=?', (username,)).fetchone(), '账号已存在')
             cx.execute('INSERT INTO owner_account(username,salt,password_hash,recovery_hash,platform_admin,principal_id) VALUES(?,?,?,?,?,?)',
                        (username, salt, digest, fingerprint(recovery), int(platform_admin), str(uuid.uuid4())))
             account = cx.execute('SELECT * FROM owner_account WHERE username=?', (username,)).fetchone()
@@ -62,6 +63,23 @@ class Identity:
         with self.app.mutex:
             self.app.sessions.pop(token, None)
         return result
+
+    def register(self, username, password, remember=False):
+        """A self-authenticated identity; all AU authority is granted separately."""
+        self._check_limit()
+        require(type(remember) is bool, '记住登录字段无效')
+        validate_password(password)
+        require(isinstance(username, str) and re.fullmatch(r'[a-zA-Z0-9_.@-]{3,100}', username), '账号须为3至100位字母、数字或_.@-')
+        username = username.lower()
+        salt, recovery = secrets.token_hex(16), secrets.token_urlsafe(32)
+        digest = password_hash(password, salt)
+        with self.app.catalog() as cx:
+            require(cx.execute("SELECT 1 FROM owner_account WHERE account_kind='owner'").fetchone(), '请先完成首次设置')
+            require(not cx.execute('SELECT 1 FROM owner_account WHERE username=?', (username,)).fetchone(), '账号已存在')
+            cx.execute("INSERT INTO owner_account(username,salt,password_hash,recovery_hash,platform_admin,principal_id,account_kind) VALUES(?,?,?,?,0,?,'core')",
+                       (username, salt, digest, fingerprint(recovery), str(uuid.uuid4())))
+            account = cx.execute('SELECT * FROM owner_account WHERE username=?', (username,)).fetchone()
+            return self._issue_in(cx, account, remember) | {'recovery_code': recovery}
 
     def _issue(self, username, remember, expected_password_hash=None):
         require(type(remember) is bool, '记住登录字段无效')
@@ -75,7 +93,9 @@ class Identity:
         lifetime = REMEMBER_SECONDS if remember else SESSION_SECONDS
         current = time.time()
         username = account['username']
-        data = {'role': 'board', 'organizations': None, 'platform_admin': bool(account['platform_admin']), 'actor': 'account:'+username,
+        owner = account['account_kind'] == 'owner'
+        data = {'role': 'board' if owner else 'core', 'organizations': None if owner else [],
+                'platform_admin': owner and bool(account['platform_admin']), 'actor': 'account:'+username,
                 'view_id': secrets.token_urlsafe(16), 'account': username, 'remember': remember,
                 'principal_id': account['principal_id']}
         cx.execute('DELETE FROM login_sessions WHERE deadline<=?', (current,))
@@ -99,9 +119,12 @@ class Identity:
         row = cx.execute('SELECT * FROM login_sessions WHERE digest=?', (fingerprint(token),)).fetchone()
         require(row is not None and min(row['expires'], row['deadline']) > current, '登录已过期，请重新登录')
         data = json.loads(row['data'])
-        account = cx.execute('SELECT principal_id FROM owner_account WHERE username=?', (row['username'],)).fetchone()
+        account = cx.execute('SELECT principal_id,account_kind FROM owner_account WHERE username=?', (row['username'],)).fetchone()
         require(account is not None and isinstance(data.get('principal_id'), str)
                 and data['principal_id'] == account['principal_id'], '登录主体已失效，请重新登录')
+        if account['account_kind'] == 'core':
+            require(data['role'] == 'core' and data['organizations'] == [] and data['platform_admin'] is False,
+                    '账户权限已变化，请重新登录')
         # The server enforces both inactivity and absolute expiry. Cookies
         # cannot extend the deadline; revocation deletes the hashed record.
         expiry = min(row['deadline'], current+(REMEMBER_SECONDS if data['remember'] else SESSION_SECONDS))
@@ -109,29 +132,38 @@ class Identity:
             cx.execute('UPDATE login_sessions SET expires=? WHERE digest=?', (expiry, fingerprint(token)))
         return data | {'expires': expiry}
 
-    def _check_limit(self):
+    def _check_limit(self, username=None):
         with self.app.read_catalog() as cx:
             row = cx.execute('SELECT * FROM login_limit WHERE id=1').fetchone()
-        require(row is None or row['until'] <= time.time(), '登录尝试过多，请稍后再试')
+            require(row is None or row['until'] <= time.time(), '登录尝试过多，请稍后再试')
+            if isinstance(username, str) and len(username) <= 100:
+                row = cx.execute('SELECT * FROM account_login_limit WHERE username=?', (username.lower(),)).fetchone()
+                require(row is None or row['until'] <= time.time(), '登录尝试过多，请稍后再试')
 
-    def _failure(self):
+    def _failure(self, username):
         current = time.time()
         with self.app.catalog() as cx:
-            row = cx.execute('SELECT * FROM login_limit WHERE id=1').fetchone()
-            failures = row['failures']+1 if row and current-row['until'] < 900 else 1
-            cx.execute('INSERT OR REPLACE INTO login_limit VALUES(1,?,?)', (failures, current+60 if failures >= 8 else current-1))
+            for table, column, key in (("login_limit", "id", 1), ("account_login_limit", "username", username.lower())):
+                row = cx.execute(f'SELECT * FROM {table} WHERE {column}=?', (key,)).fetchone()
+                failures = row['failures']+1 if row and current-row['until'] < 900 else 1
+                cx.execute(f'INSERT OR REPLACE INTO {table} VALUES(?,?,?)', (key, failures, current+60 if failures >= 8 else current-1))
+
+    @staticmethod
+    def _clear_failures(cx, username):
+        cx.execute('DELETE FROM login_limit')
+        cx.execute('DELETE FROM account_login_limit WHERE username=?', (username.lower(),))
 
     def login(self, username, password, remember=False):
-        self._check_limit()
+        self._check_limit(username)
         require(isinstance(username, str) and isinstance(password, str) and len(username)<=100 and len(password)<=256, '账号或密码不正确')
         with self.app.read_catalog() as cx:
             row = cx.execute('SELECT * FROM owner_account WHERE username=?', (username.lower(),)).fetchone()
         digest = password_hash(password, row['salt'] if row else '00'*16)
         if row is None or not hmac.compare_digest(digest, row['password_hash']):
-            self._failure()
+            self._failure(username)
             require(False, '账号或密码不正确')
         with self.app.catalog() as cx:
-            cx.execute('DELETE FROM login_limit')
+            self._clear_failures(cx, username)
         return self._issue(row['username'], remember, row['password_hash'])
 
     def logout(self, token):
@@ -163,14 +195,14 @@ class Identity:
             return self._issue_in(cx, account, remember)
 
     def recover(self, username, code, new_password):
-        self._check_limit()
+        self._check_limit(username)
         validate_password(new_password)
-        require(isinstance(username, str) and isinstance(code, str) and len(code)<=128, '恢复信息不正确')
+        require(isinstance(username, str) and len(username) <= 100 and isinstance(code, str) and len(code)<=128, '恢复信息不正确')
         with self.app.read_catalog() as cx:
             row = cx.execute('SELECT * FROM owner_account WHERE username=?', (username.lower(),)).fetchone()
         if row is None or not hmac.compare_digest(fingerprint(code), row['recovery_hash']):
-            self._failure(); require(False, '恢复信息不正确')
+            self._failure(username); require(False, '恢复信息不正确')
         recovery = secrets.token_urlsafe(32)
         result = self._replace(row['username'], new_password, False, recovery, expected_recovery_hash=row['recovery_hash'])
-        with self.app.catalog() as cx: cx.execute('DELETE FROM login_limit')
+        with self.app.catalog() as cx: self._clear_failures(cx, username)
         return result | {'recovery_code': recovery}

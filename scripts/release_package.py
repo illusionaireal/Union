@@ -6,7 +6,7 @@ the installation. Hashes detect corruption, not an untrusted package publisher.
 from __future__ import annotations
 
 import argparse
-from contextlib import contextmanager
+from contextlib import closing, contextmanager
 import hashlib
 import json
 import os
@@ -88,7 +88,7 @@ def pack(root, output, release_id):
               'services/modeld/upstream.lock.json', 'services/modeld/init.mjs', 'services/modeld/README.md'}))
     payload = {p: regular(root / p) for p in source_names}
     # Explicit additional sources belong to this release tool, never all untracked files.
-    for p in ('scripts/release_package.py', 'scripts/upgrade_core_identity.py', 'ops/release/README.md', 'ops/release/deployment.example.json'):
+    for p in ('scripts/release_package.py', 'scripts/upgrade_core_identity.py', 'scripts/reset_owner.py', 'ops/release/README.md', 'ops/release/deployment.example.json'):
         payload[p] = regular(root / p)
         source_names.append(p)
     build_sources = [p for p in tracked if p and (
@@ -122,7 +122,8 @@ def pack(root, output, release_id):
         ['git', 'diff', '--name-only', '-z', 'HEAD', '--', *source_bytes], cwd=root).decode().split('\0')) - {''}
         | (set(source_bytes) - set(tracked)))
     manifest = {'schema_version': 1, 'release_id': release_id, 'git_baseline': baseline,
-                'core_schemas': {'auth': 1, 'catalog': 1},
+                'core_schemas': {'auth': 2, 'catalog': 1},
+                'core_au_schemas': [1, 2],
                 'source_state': 'working_tree' if changed else 'committed', 'changed_sources': changed,
                 'source_hashes': source_hashes, 'upstream': json.loads(payload['services/modeld/upstream.lock.json']),
                 'toolchain': {'python_minimum': '3.11', 'node_build_required': '24.19.0', 'bun': '1.4.2'},
@@ -146,6 +147,9 @@ def validate_manifest(manifest):
     schemas = manifest.get('core_schemas', {'auth': 0, 'catalog': 0})
     require(isinstance(schemas, dict) and set(schemas) == {'auth', 'catalog'}
             and all(type(value) is int and value >= 0 for value in schemas.values()), 'Invalid core schema declaration')
+    au_schemas = manifest.get('core_au_schemas', [])
+    require(isinstance(au_schemas, list) and all(type(value) is int and value >= 1 for value in au_schemas)
+            and len(set(au_schemas)) == len(au_schemas), 'Invalid core AU schema declaration')
     files = manifest.get('files')
     require(isinstance(files, dict) and 1 <= len(files) <= 10000, 'Invalid release file list')
     case_names = set()
@@ -278,8 +282,28 @@ def check_core_schemas(manifest, config):
             return
         require(actual == manifest.get('core_schemas', {'auth': 0, 'catalog': 0}),
                 'Candidate auth/catalog schema is incompatible; explicitly upgrade or select compatible code, never erase newer state')
+        if actual['catalog'] >= 1:
+            check_au_schemas(database, manifest, config['console_state'])
     except (ValueError, OSError, sqlite3.Error) as error:
         raise ReleaseError('Core catalog compatibility cannot be verified; retain current code and data') from error
+
+
+def check_au_schemas(database, manifest, root):
+    """Use the same identity/creation validator as runtime before code selection."""
+    from ai_union.adapters.au_catalog import resolve_directory
+    from ai_union.adapters.core_au_store import CoreAUStore
+    with closing(sqlite3.connect(database.as_uri() + '?mode=ro', uri=True)) as cx:
+        cx.row_factory = sqlite3.Row
+        cx.execute('PRAGMA query_only=ON')
+        cx.execute('BEGIN')
+        for entry in cx.execute("SELECT * FROM organizations WHERE profile='core_v1'").fetchall():
+            intents = cx.execute("SELECT * FROM creations WHERE allocated_au_id=? AND profile='core_v1'", (entry['id'],)).fetchall()
+            require(len(intents) == 1, 'Core AU has no unique original creation intent')
+            intent = dict(intents[0])
+            directory, _ = resolve_directory(root, dict(entry), creation=intent)
+            state = CoreAUStore().read(directory, entry['id'], creation=intent)['au']
+            require(state['schema_version'] in manifest.get('core_au_schemas', []),
+                    'Candidate does not declare support for the persisted AU schema; keep compatible code and original history')
 
 
 def preflight(directory, config):

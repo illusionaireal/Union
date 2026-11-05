@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "aegis.schema.v0",
+  "baselineRefs": [
+    "specs/053-union-rewrite/s05-contract.md",
+    "docs/decisions/0006-charter-policy-adoption.md"
+  ],
+  "impactStatement": "docs/aegis/work/2026-11-05-s05-governance/impact-statement-draft.json",
+  "compatPlan": "S01 schema 1 创建/原回执和 legacy 执行保持；auth 0/1 仅显式升级到 2，已采用治理的 AU schema 2 拒绝不兼容候选；无读取迁移或真实数据操作。",
+  "retirementPlan": "原creator不再决定当前AU权，原回执归属与legacy兼容保留；无真实数据迁移或双派发。",
+  "evidenceBundle": [
+    "docs/aegis/work/2026-11-05-s05-governance/evidence-bundle-draft-S05.json"
+  ]
+}

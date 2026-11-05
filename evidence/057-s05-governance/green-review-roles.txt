@@ -1,0 +1,148 @@
+test_authorized_local_work_persists_a_checked_result_without_external_execution (tests.test_governance_responsibility.ResponsibilityTests.test_authorized_local_work_persists_a_checked_result_without_external_execution) ... ok
+test_changed_appointment_duty_invalidates_old_authority (tests.test_governance_responsibility.ResponsibilityTests.test_changed_appointment_duty_invalidates_old_authority) ... ok
+test_changed_goal_invalidates_old_actions_and_result_acceptance (tests.test_governance_responsibility.ResponsibilityTests.test_changed_goal_invalidates_old_actions_and_result_acceptance) ... ok
+test_charter_revocation_changes_the_same_local_action_and_acceptance_path (tests.test_governance_responsibility.ResponsibilityTests.test_charter_revocation_changes_the_same_local_action_and_acceptance_path) ... ok
+test_expired_governance_rejects_old_result_and_new_action (tests.test_governance_responsibility.ResponsibilityTests.test_expired_governance_rejects_old_result_and_new_action) ... ok
+test_finite_redelegation_revokes_through_ancestors_without_stopping_unrelated_work (tests.test_governance_responsibility.ResponsibilityTests.test_finite_redelegation_revokes_through_ancestors_without_stopping_unrelated_work) ... ok
+test_governance_nomination_does_not_replace_an_independent_member_mandate (tests.test_governance_responsibility.ResponsibilityTests.test_governance_nomination_does_not_replace_an_independent_member_mandate) ... ok
+test_handoff_of_outstanding_responsibility_does_not_require_the_lost_subject_account (tests.test_governance_responsibility.ResponsibilityTests.test_handoff_of_outstanding_responsibility_does_not_require_the_lost_subject_account) ... ----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 61414)
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\http\server.py", line 447, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\http\server.py", line 435, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "D:\Project\Union\ai_union\server.py", line 263, in do_POST
+    self.handle_api(write=True)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "D:\Project\Union\ai_union\server.py", line 151, in handle_api
+    receipt = app.governance.command(token, request) if path.path == '/api/v1/governance/commands' else self.server.model_accounts.command(token, request) if path.path == '/api/model-account-commands' else self.server.subscriptions.command(token, request) if path.path == "/api/subscription-commands" else app.gateways.command(token, request) if path.path == "/api/gateway-commands" else app.command(token, request)
+              ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\ai_union\application\governance.py", line 95, in command
+    refusal = responsibility.apply(state, charter, request["kind"], request["data"], principal, time.time(), principals)
+  File "D:\Project\Union\ai_union\domain\responsibility.py", line 170, in apply
+    source = appointment(state, data["from_binding_id"])
+             ^^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'appointment' where it is not associated with a value
+----------------------------------------
+ERROR
+test_handoff_preserves_original_work_history_and_delivered_ownership (tests.test_governance_responsibility.ResponsibilityTests.test_handoff_preserves_original_work_history_and_delivered_ownership) ... ----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 61446)
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\http\server.py", line 447, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\http\server.py", line 435, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "D:\Project\Union\ai_union\server.py", line 263, in do_POST
+    self.handle_api(write=True)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "D:\Project\Union\ai_union\server.py", line 151, in handle_api
+    receipt = app.governance.command(token, request) if path.path == '/api/v1/governance/commands' else self.server.model_accounts.command(token, request) if path.path == '/api/model-account-commands' else self.server.subscriptions.command(token, request) if path.path == "/api/subscription-commands" else app.gateways.command(token, request) if path.path == "/api/gateway-commands" else app.command(token, request)
+              ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\ai_union\application\governance.py", line 95, in command
+    refusal = responsibility.apply(state, charter, request["kind"], request["data"], principal, time.time(), principals)
+  File "D:\Project\Union\ai_union\domain\responsibility.py", line 170, in apply
+    source = appointment(state, data["from_binding_id"])
+             ^^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'appointment' where it is not associated with a value
+----------------------------------------
+ERROR
+test_other_account_or_au_cannot_reuse_a_scoped_mandate_or_attempt (tests.test_governance_responsibility.ResponsibilityTests.test_other_account_or_au_cannot_reuse_a_scoped_mandate_or_attempt) ... ok
+test_redelegation_cannot_expand_actions_work_or_permission_to_delegate (tests.test_governance_responsibility.ResponsibilityTests.test_redelegation_cannot_expand_actions_work_or_permission_to_delegate) ... ok
+test_result_acceptance_rechecks_authority_after_a_valid_submission (tests.test_governance_responsibility.ResponsibilityTests.test_result_acceptance_rechecks_authority_after_a_valid_submission) ... ok
+test_revocation_blocks_new_action_and_retains_late_content_only_as_unadopted_evidence (tests.test_governance_responsibility.ResponsibilityTests.test_revocation_blocks_new_action_and_retains_late_content_only_as_unadopted_evidence) ... ok
+test_successor_member_and_nominee_rights_compose_without_shadowing (tests.test_governance_responsibility.ResponsibilityTests.test_successor_member_and_nominee_rights_compose_without_shadowing) ... ok
+test_work_scope_and_stop_changes_invalidate_pending_attempts (tests.test_governance_responsibility.ResponsibilityTests.test_work_scope_and_stop_changes_invalidate_pending_attempts) ... ok
+test_failed_amendment_is_atomic_and_original_id_recovers_one_adoption (tests.test_governance_succession.GovernanceSuccessionTests.test_failed_amendment_is_atomic_and_original_id_recovers_one_adoption) ... ok
+test_independent_acceptance_moves_current_authority_but_not_initial_root_or_receipts (tests.test_governance_succession.GovernanceSuccessionTests.test_independent_acceptance_moves_current_authority_but_not_initial_root_or_receipts) ... ok
+test_old_charter_must_authorize_amendment_and_initial_creation_stays_immutable (tests.test_governance_succession.GovernanceSuccessionTests.test_old_charter_must_authorize_amendment_and_initial_creation_stays_immutable) ... ok
+test_policy_revision_cancels_old_nominations_and_recovery_confirmations (tests.test_governance_succession.GovernanceSuccessionTests.test_policy_revision_cancels_old_nominations_and_recovery_confirmations) ... ok
+test_preconfirmed_successor_recovers_after_timeout_without_failed_governor_approval (tests.test_governance_succession.GovernanceSuccessionTests.test_preconfirmed_successor_recovers_after_timeout_without_failed_governor_approval) ... ok
+test_single_subject_timeout_exit_cannot_be_renewed_back_into_authority (tests.test_governance_succession.GovernanceSuccessionTests.test_single_subject_timeout_exit_cannot_be_renewed_back_into_authority) ... ok
+test_command_payload_and_receipt_corruption_are_detected_before_read_or_replay (tests.test_governance_persistence.GovernancePersistenceTests.test_command_payload_and_receipt_corruption_are_detected_before_read_or_replay) ... ok
+test_current_state_cannot_be_rewritten_without_its_adoption_evidence (tests.test_governance_persistence.GovernancePersistenceTests.test_current_state_cannot_be_rewritten_without_its_adoption_evidence) ... ok
+test_historical_charter_corruption_is_rejected_even_after_a_later_amendment (tests.test_governance_persistence.GovernancePersistenceTests.test_historical_charter_corruption_is_rejected_even_after_a_later_amendment) ... ok
+test_response_loss_after_commit_recovers_original_receipt_without_reexecution (tests.test_governance_persistence.GovernancePersistenceTests.test_response_loss_after_commit_recovers_original_receipt_without_reexecution) ... ok
+test_wrong_catalog_mapping_cannot_mutate_another_governed_au (tests.test_governance_persistence.GovernancePersistenceTests.test_wrong_catalog_mapping_cannot_mutate_another_governed_au) ... ok
+
+======================================================================
+ERROR: test_handoff_of_outstanding_responsibility_does_not_require_the_lost_subject_account (tests.test_governance_responsibility.ResponsibilityTests.test_handoff_of_outstanding_responsibility_does_not_require_the_lost_subject_account)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_governance_responsibility.py", line 209, in test_handoff_of_outstanding_responsibility_does_not_require_the_lost_subject_account
+    self.success("handoff_responsibility", {"from_binding_id": "binding-a", "to_binding_id": "binding-b", "reason": "Old subject is unavailable; retain and transfer their original responsibility"})
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\tests\governance_support.py", line 53, in success
+    status, result, request = self.command(kind, data, **kwargs)
+                              ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\tests\governance_support.py", line 49, in command
+    status, result, _ = self.request("/api/v1/governance/commands", request, token)
+                        ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\tests\test_core_creation.py", line 60, in request
+    response = client.getresponse()
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\http\client.py", line 1459, in getresponse
+    response.begin()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\http\client.py", line 336, in begin
+    version, status, reason = self._read_status()
+                              ~~~~~~~~~~~~~~~~~^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\http\client.py", line 305, in _read_status
+    raise RemoteDisconnected("Remote end closed connection without"
+                             " response")
+http.client.RemoteDisconnected: Remote end closed connection without response
+
+======================================================================
+ERROR: test_handoff_preserves_original_work_history_and_delivered_ownership (tests.test_governance_responsibility.ResponsibilityTests.test_handoff_preserves_original_work_history_and_delivered_ownership)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_governance_responsibility.py", line 147, in test_handoff_preserves_original_work_history_and_delivered_ownership
+    self.success("handoff_responsibility", {"from_binding_id": "binding-a", "to_binding_id": "binding-b", "reason": "Hand over the checked materials and outstanding obligation"})
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\tests\governance_support.py", line 53, in success
+    status, result, request = self.command(kind, data, **kwargs)
+                              ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\tests\governance_support.py", line 49, in command
+    status, result, _ = self.request("/api/v1/governance/commands", request, token)
+                        ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\tests\test_core_creation.py", line 60, in request
+    response = client.getresponse()
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\http\client.py", line 1459, in getresponse
+    response.begin()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\http\client.py", line 336, in begin
+    version, status, reason = self._read_status()
+                              ~~~~~~~~~~~~~~~~~^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\http\client.py", line 305, in _read_status
+    raise RemoteDisconnected("Remote end closed connection without"
+                             " response")
+http.client.RemoteDisconnected: Remote end closed connection without response
+
+----------------------------------------------------------------------
+Ran 26 tests in 36.056s
+
+FAILED (errors=2)
+已重置 D:\Temp\tmplk76dmrl\console.sqlite3
+重置前备份: D:\Temp\tmplk76dmrl\console.sqlite3.bak-1793880702
+重启工作台后，任意第一个访问者都可以重新设置管理员账号。

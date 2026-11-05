@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "aegis.schema.v0",
+  "affectedLayers": [
+    "核心认证/显式升级、AU 领域规则、应用编排、SQLite 事务/历史、HTTP/React、安装兼容。"
+  ],
+  "owners": [
+    "Identity/identity_schema；domain governance/responsibility；application governance；governance_store；React governance；既有 release_package。",
+    "协调者 codex/gpt-6/session-01a1a9fa-d89d-7091-ba52-c31a1df00b23 独占主账、Kanban 和 Git。"
+  ],
+  "invariants": [
+    "原创建证据不可变；当前授权由 AU 规则持有；无 legacy 绕过"
+  ],
+  "compatBoundary": "S01 schema 1 创建/原回执和 legacy 执行保持；auth 0/1 仅显式升级到 2，已采用治理的 AU schema 2 拒绝不兼容候选；无读取迁移或真实数据操作。",
+  "nonGoals": [
+    "S02/S03 自动执行、真实模型、真实数据迁移、部署和真实业务治理验收"
+  ]
+}

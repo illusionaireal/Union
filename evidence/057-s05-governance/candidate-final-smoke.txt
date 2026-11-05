@@ -1,0 +1,8 @@
+test_authorized_local_work_persists_a_checked_result_without_external_execution (tests.test_governance_responsibility.ResponsibilityTests.test_authorized_local_work_persists_a_checked_result_without_external_execution) ... ok
+test_independent_acceptance_moves_current_authority_but_not_initial_root_or_receipts (tests.test_governance_succession.GovernanceSuccessionTests.test_independent_acceptance_moves_current_authority_but_not_initial_root_or_receipts) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 3.725s
+
+OK
+{"mode": "final_candidate_smoke", "isolated_import_checks": 9, "shipped_upgrade_cli": [{"from_auth": 0, "to_auth": 2, "original_bytes_preserved": true, "had_stable_principal_before": false, "principal_after_upgrade": "first_stable_identity_created", "repeat_is_read_only": true, "pristine_rollback_restored_input_schema": true}, {"from_auth": 1, "to_auth": 2, "original_bytes_preserved": true, "had_stable_principal_before": true, "principal_after_upgrade": "original_preserved", "repeat_is_read_only": true, "pristine_rollback_restored_input_schema": true}], "tests": 2, "seconds": 3.725, "failures": 0, "errors": 0, "skipped": 0, "exit_code": 0}

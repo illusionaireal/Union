@@ -47,6 +47,8 @@ class Console:
             from .identity import Identity
             self.identity = Identity(self)
             self.creation = CreationService(self)
+            from .application.governance import GovernanceService
+            self.governance = GovernanceService(self)
             self.creation.catalog.recover()
             # Validate the whole catalog before any AU receives recovery writes.
             engines = self._legacy_engines()
@@ -152,9 +154,14 @@ class Console:
         for item in self._catalog_entries():
             creator = self.creation.catalog.creator(item["id"])
             if creator is not None or item.get("profile") != "legacy_v0":
-                if creator is not None and creator == session.get("principal_id"):
-                    state = self.creation.read(session, item["id"])["au"]
-                    orgs.append({"id": state["id"], "name": state["name"], "profile": "core_v1"})
+                if session.get("principal_id"):
+                    try:
+                        state = self.creation.read(session, item["id"])["au"]
+                    except CoreError as error:
+                        if error.code != "not_authorized":
+                            raise
+                    else:
+                        orgs.append({"id": state["id"], "name": state["name"], "profile": "core_v1"})
                 continue
             if session["organizations"] is None or item["id"] in session["organizations"]:
                 e = self.engine(token, item["id"])

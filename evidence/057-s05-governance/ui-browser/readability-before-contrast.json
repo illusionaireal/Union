@@ -1,0 +1,786 @@
+[
+  {
+    "label": "governance status at 1440px",
+    "selector": ".governance-workspace .quiet-pill",
+    "minimum_font": 12,
+    "minimum_contrast": 4.5,
+    "measurements": [
+      {
+        "font_size": 10,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      }
+    ]
+  },
+  {
+    "label": "governance status at 1024px",
+    "selector": ".governance-workspace .quiet-pill",
+    "minimum_font": 12,
+    "minimum_contrast": 4.5,
+    "measurements": [
+      {
+        "font_size": 10,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      }
+    ]
+  },
+  {
+    "label": "governance status at 390px",
+    "selector": ".governance-workspace .quiet-pill",
+    "minimum_font": 12,
+    "minimum_contrast": 4.5,
+    "measurements": [
+      {
+        "font_size": 9,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      }
+    ]
+  },
+  {
+    "label": "governance status at 320px",
+    "selector": ".governance-workspace .quiet-pill",
+    "minimum_font": 12,
+    "minimum_contrast": 4.5,
+    "measurements": [
+      {
+        "font_size": 9,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      }
+    ]
+  },
+  {
+    "label": "responsibility status at 1440px",
+    "selector": ".governance-workspace .quiet-pill",
+    "minimum_font": 12,
+    "minimum_contrast": 4.5,
+    "measurements": [
+      {
+        "font_size": 10,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      },
+      {
+        "font_size": 10,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      },
+      {
+        "font_size": 10,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      },
+      {
+        "font_size": 10,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      },
+      {
+        "font_size": 10,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      },
+      {
+        "font_size": 10,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      },
+      {
+        "font_size": 10,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      },
+      {
+        "font_size": 10,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      },
+      {
+        "font_size": 10,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      },
+      {
+        "font_size": 10,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      }
+    ]
+  },
+  {
+    "label": "responsibility status at 1024px",
+    "selector": ".governance-workspace .quiet-pill",
+    "minimum_font": 12,
+    "minimum_contrast": 4.5,
+    "measurements": [
+      {
+        "font_size": 10,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      },
+      {
+        "font_size": 10,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      },
+      {
+        "font_size": 10,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      },
+      {
+        "font_size": 10,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      },
+      {
+        "font_size": 10,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      },
+      {
+        "font_size": 10,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      },
+      {
+        "font_size": 10,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      },
+      {
+        "font_size": 10,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      },
+      {
+        "font_size": 10,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      },
+      {
+        "font_size": 10,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      }
+    ]
+  },
+  {
+    "label": "responsibility status at 390px",
+    "selector": ".governance-workspace .quiet-pill",
+    "minimum_font": 12,
+    "minimum_contrast": 4.5,
+    "measurements": [
+      {
+        "font_size": 9,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      },
+      {
+        "font_size": 9,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      },
+      {
+        "font_size": 9,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      },
+      {
+        "font_size": 9,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      },
+      {
+        "font_size": 9,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      },
+      {
+        "font_size": 9,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      },
+      {
+        "font_size": 9,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      },
+      {
+        "font_size": 9,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      },
+      {
+        "font_size": 9,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      },
+      {
+        "font_size": 9,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      }
+    ]
+  },
+  {
+    "label": "responsibility status at 320px",
+    "selector": ".governance-workspace .quiet-pill",
+    "minimum_font": 12,
+    "minimum_contrast": 4.5,
+    "measurements": [
+      {
+        "font_size": 9,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      },
+      {
+        "font_size": 9,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      },
+      {
+        "font_size": 9,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      },
+      {
+        "font_size": 9,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      },
+      {
+        "font_size": 9,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      },
+      {
+        "font_size": 9,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      },
+      {
+        "font_size": 9,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      },
+      {
+        "font_size": 9,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      },
+      {
+        "font_size": 9,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      },
+      {
+        "font_size": 9,
+        "color": "rgb(105, 121, 142)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.179083635926017
+      }
+    ]
+  },
+  {
+    "label": "confirmation effects and versions at 1440px",
+    "selector": "#governance-dialog .preview-panel > p:not(.form-note)",
+    "minimum_font": 14,
+    "minimum_contrast": 4.5,
+    "measurements": [
+      {
+        "font_size": 11,
+        "color": "rgb(165, 139, 174)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 2.860784996316147
+      },
+      {
+        "font_size": 11,
+        "color": "rgb(165, 139, 174)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 2.860784996316147
+      },
+      {
+        "font_size": 11,
+        "color": "rgb(165, 139, 174)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 2.860784996316147
+      },
+      {
+        "font_size": 11,
+        "color": "rgb(165, 139, 174)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 2.860784996316147
+      }
+    ]
+  },
+  {
+    "label": "confirmation effective-result notice at 1440px",
+    "selector": "#governance-dialog .preview-panel .form-note",
+    "minimum_font": 14,
+    "minimum_contrast": 4.5,
+    "measurements": [
+      {
+        "font_size": 11,
+        "color": "rgb(128, 107, 140)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.489306099020926
+      }
+    ]
+  },
+  {
+    "label": "confirmation field labels at 1440px",
+    "selector": "#governance-dialog .preview-panel .au-facts dt",
+    "minimum_font": 14,
+    "minimum_contrast": 4.5,
+    "measurements": [
+      {
+        "font_size": 14,
+        "color": "rgb(104, 116, 138)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.4347174115552495
+      },
+      {
+        "font_size": 14,
+        "color": "rgb(104, 116, 138)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.4347174115552495
+      }
+    ]
+  },
+  {
+    "label": "confirmation values at 1440px",
+    "selector": "#governance-dialog .preview-panel .au-facts dd",
+    "minimum_font": 14,
+    "minimum_contrast": 4.5,
+    "measurements": [
+      {
+        "font_size": 14,
+        "color": "rgb(52, 68, 93)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 9.268832493255792
+      },
+      {
+        "font_size": 14,
+        "color": "rgb(52, 68, 93)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 9.268832493255792
+      }
+    ]
+  },
+  {
+    "label": "confirmation heading at 1440px",
+    "selector": "#governance-dialog .preview-panel h3",
+    "minimum_font": 14,
+    "minimum_contrast": 4.5,
+    "measurements": [
+      {
+        "font_size": 13,
+        "color": "rgb(52, 68, 93)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 9.268832493255792
+      }
+    ]
+  },
+  {
+    "label": "confirmation full-content control at 1440px",
+    "selector": "#governance-dialog .preview-panel summary",
+    "minimum_font": 14,
+    "minimum_contrast": 4.5,
+    "measurements": [
+      {
+        "font_size": 11,
+        "color": "rgb(126, 96, 143)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.991571572678581
+      }
+    ]
+  },
+  {
+    "label": "confirmation effects and versions at 1024px",
+    "selector": "#governance-dialog .preview-panel > p:not(.form-note)",
+    "minimum_font": 14,
+    "minimum_contrast": 4.5,
+    "measurements": [
+      {
+        "font_size": 11,
+        "color": "rgb(165, 139, 174)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 2.860784996316147
+      },
+      {
+        "font_size": 11,
+        "color": "rgb(165, 139, 174)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 2.860784996316147
+      },
+      {
+        "font_size": 11,
+        "color": "rgb(165, 139, 174)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 2.860784996316147
+      },
+      {
+        "font_size": 11,
+        "color": "rgb(165, 139, 174)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 2.860784996316147
+      }
+    ]
+  },
+  {
+    "label": "confirmation effective-result notice at 1024px",
+    "selector": "#governance-dialog .preview-panel .form-note",
+    "minimum_font": 14,
+    "minimum_contrast": 4.5,
+    "measurements": [
+      {
+        "font_size": 11,
+        "color": "rgb(128, 107, 140)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.489306099020926
+      }
+    ]
+  },
+  {
+    "label": "confirmation field labels at 1024px",
+    "selector": "#governance-dialog .preview-panel .au-facts dt",
+    "minimum_font": 14,
+    "minimum_contrast": 4.5,
+    "measurements": [
+      {
+        "font_size": 14,
+        "color": "rgb(104, 116, 138)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.4347174115552495
+      },
+      {
+        "font_size": 14,
+        "color": "rgb(104, 116, 138)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.4347174115552495
+      }
+    ]
+  },
+  {
+    "label": "confirmation values at 1024px",
+    "selector": "#governance-dialog .preview-panel .au-facts dd",
+    "minimum_font": 14,
+    "minimum_contrast": 4.5,
+    "measurements": [
+      {
+        "font_size": 14,
+        "color": "rgb(52, 68, 93)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 9.268832493255792
+      },
+      {
+        "font_size": 14,
+        "color": "rgb(52, 68, 93)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 9.268832493255792
+      }
+    ]
+  },
+  {
+    "label": "confirmation heading at 1024px",
+    "selector": "#governance-dialog .preview-panel h3",
+    "minimum_font": 14,
+    "minimum_contrast": 4.5,
+    "measurements": [
+      {
+        "font_size": 13,
+        "color": "rgb(52, 68, 93)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 9.268832493255792
+      }
+    ]
+  },
+  {
+    "label": "confirmation full-content control at 1024px",
+    "selector": "#governance-dialog .preview-panel summary",
+    "minimum_font": 14,
+    "minimum_contrast": 4.5,
+    "measurements": [
+      {
+        "font_size": 11,
+        "color": "rgb(126, 96, 143)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.991571572678581
+      }
+    ]
+  },
+  {
+    "label": "confirmation effects and versions at 390px",
+    "selector": "#governance-dialog .preview-panel > p:not(.form-note)",
+    "minimum_font": 14,
+    "minimum_contrast": 4.5,
+    "measurements": [
+      {
+        "font_size": 11,
+        "color": "rgb(165, 139, 174)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 2.860784996316147
+      },
+      {
+        "font_size": 11,
+        "color": "rgb(165, 139, 174)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 2.860784996316147
+      },
+      {
+        "font_size": 11,
+        "color": "rgb(165, 139, 174)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 2.860784996316147
+      },
+      {
+        "font_size": 11,
+        "color": "rgb(165, 139, 174)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 2.860784996316147
+      }
+    ]
+  },
+  {
+    "label": "confirmation effective-result notice at 390px",
+    "selector": "#governance-dialog .preview-panel .form-note",
+    "minimum_font": 14,
+    "minimum_contrast": 4.5,
+    "measurements": [
+      {
+        "font_size": 11,
+        "color": "rgb(128, 107, 140)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.489306099020926
+      }
+    ]
+  },
+  {
+    "label": "confirmation field labels at 390px",
+    "selector": "#governance-dialog .preview-panel .au-facts dt",
+    "minimum_font": 14,
+    "minimum_contrast": 4.5,
+    "measurements": [
+      {
+        "font_size": 14,
+        "color": "rgb(104, 116, 138)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.4347174115552495
+      },
+      {
+        "font_size": 14,
+        "color": "rgb(104, 116, 138)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.4347174115552495
+      }
+    ]
+  },
+  {
+    "label": "confirmation values at 390px",
+    "selector": "#governance-dialog .preview-panel .au-facts dd",
+    "minimum_font": 14,
+    "minimum_contrast": 4.5,
+    "measurements": [
+      {
+        "font_size": 14,
+        "color": "rgb(52, 68, 93)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 9.268832493255792
+      },
+      {
+        "font_size": 14,
+        "color": "rgb(52, 68, 93)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 9.268832493255792
+      }
+    ]
+  },
+  {
+    "label": "confirmation heading at 390px",
+    "selector": "#governance-dialog .preview-panel h3",
+    "minimum_font": 14,
+    "minimum_contrast": 4.5,
+    "measurements": [
+      {
+        "font_size": 13,
+        "color": "rgb(52, 68, 93)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 9.268832493255792
+      }
+    ]
+  },
+  {
+    "label": "confirmation full-content control at 390px",
+    "selector": "#governance-dialog .preview-panel summary",
+    "minimum_font": 14,
+    "minimum_contrast": 4.5,
+    "measurements": [
+      {
+        "font_size": 11,
+        "color": "rgb(126, 96, 143)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.991571572678581
+      }
+    ]
+  },
+  {
+    "label": "confirmation effects and versions at 320px",
+    "selector": "#governance-dialog .preview-panel > p:not(.form-note)",
+    "minimum_font": 14,
+    "minimum_contrast": 4.5,
+    "measurements": [
+      {
+        "font_size": 11,
+        "color": "rgb(165, 139, 174)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 2.860784996316147
+      },
+      {
+        "font_size": 11,
+        "color": "rgb(165, 139, 174)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 2.860784996316147
+      },
+      {
+        "font_size": 11,
+        "color": "rgb(165, 139, 174)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 2.860784996316147
+      },
+      {
+        "font_size": 11,
+        "color": "rgb(165, 139, 174)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 2.860784996316147
+      }
+    ]
+  },
+  {
+    "label": "confirmation effective-result notice at 320px",
+    "selector": "#governance-dialog .preview-panel .form-note",
+    "minimum_font": 14,
+    "minimum_contrast": 4.5,
+    "measurements": [
+      {
+        "font_size": 11,
+        "color": "rgb(128, 107, 140)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.489306099020926
+      }
+    ]
+  },
+  {
+    "label": "confirmation field labels at 320px",
+    "selector": "#governance-dialog .preview-panel .au-facts dt",
+    "minimum_font": 14,
+    "minimum_contrast": 4.5,
+    "measurements": [
+      {
+        "font_size": 14,
+        "color": "rgb(104, 116, 138)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.4347174115552495
+      },
+      {
+        "font_size": 14,
+        "color": "rgb(104, 116, 138)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.4347174115552495
+      }
+    ]
+  },
+  {
+    "label": "confirmation values at 320px",
+    "selector": "#governance-dialog .preview-panel .au-facts dd",
+    "minimum_font": 14,
+    "minimum_contrast": 4.5,
+    "measurements": [
+      {
+        "font_size": 14,
+        "color": "rgb(52, 68, 93)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 9.268832493255792
+      },
+      {
+        "font_size": 14,
+        "color": "rgb(52, 68, 93)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 9.268832493255792
+      }
+    ]
+  },
+  {
+    "label": "confirmation heading at 320px",
+    "selector": "#governance-dialog .preview-panel h3",
+    "minimum_font": 14,
+    "minimum_contrast": 4.5,
+    "measurements": [
+      {
+        "font_size": 13,
+        "color": "rgb(52, 68, 93)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 9.268832493255792
+      }
+    ]
+  },
+  {
+    "label": "confirmation full-content control at 320px",
+    "selector": "#governance-dialog .preview-panel summary",
+    "minimum_font": 14,
+    "minimum_contrast": 4.5,
+    "measurements": [
+      {
+        "font_size": 11,
+        "color": "rgb(126, 96, 143)",
+        "background": "rgb(246, 248, 252)",
+        "contrast": 4.991571572678581
+      }
+    ]
+  }
+]

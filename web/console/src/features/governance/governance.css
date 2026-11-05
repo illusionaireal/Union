@@ -1,0 +1,138 @@
+.governance-workspace {
+  display: grid;
+  gap: 1.25rem;
+  min-width: 0;
+}
+.governance-workspace .mission-panel {
+  grid-template-columns: minmax(0, 1fr);
+}
+.governance-workspace .mission-copy {
+  min-width: 0;
+}
+.governance-workspace p,
+.governance-workspace h2,
+.governance-workspace h3,
+.governance-workspace details,
+.governance-form p,
+.governance-receipt p,
+.governance-recovery {
+  overflow-wrap: anywhere;
+  line-height: 1.7;
+}
+.governance-boundary {
+  margin: 0;
+  padding: 1rem 1.25rem;
+  background: #f0f1f8;
+  border-left: 3px solid var(--accent, #6951a5);
+}
+.governance-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 1rem;
+}
+.governance-actions .button {
+  white-space: normal;
+}
+.governance-records {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.governance-records > li {
+  padding: 1.25rem 0;
+  border-top: 1px solid var(--line, #e4e7ed);
+  min-width: 0;
+}
+.governance-records > li:first-child {
+  border-top: 0;
+  padding-top: 0.5rem;
+}
+.governance-records h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+.governance-record-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.governance-records blockquote,
+.governance-form blockquote {
+  margin: 1rem 0;
+  padding: 0.8rem 1rem;
+  border-left: 3px solid #d0d5e2;
+  background: #f7f8fb;
+}
+.governance-form .operation-field,
+.governance-form .operation-field input,
+.governance-form .operation-field textarea,
+.governance-form .operation-field select {
+  font-size: 0.9rem;
+}
+.governance-form .check-field {
+  font-size: 0.85rem;
+}
+.governance-form .preview-panel h3 {
+  font-size: 1.125rem;
+}
+.governance-form .preview-panel p,
+.governance-form .preview-panel dt,
+.governance-form .preview-panel summary {
+  font-size: 1rem;
+  color: #475569;
+}
+.governance-form .preview-panel .form-note {
+  font-size: 1rem !important;
+  color: #475569 !important;
+}
+.governance-workspace .quiet-pill {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #475569;
+}
+.governance-recovery {
+  border: 1px solid var(--line, #e4e7ed);
+  background: #fff;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1.25rem;
+}
+.governance-recovery summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.governance-recovery ul {
+  padding-left: 1rem;
+}
+.governance-recovery li {
+  margin: 0.75rem 0;
+  display: grid;
+  gap: 0.2rem;
+}
+.governance-recovery button {
+  text-align: left;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.governance-result {
+  margin-top: 1.25rem;
+}
+.governance-receipt h3,
+.governance-result p {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 600px) {
+  .governance-workspace .card-heading {
+    flex-wrap: wrap;
+    gap: 0.8rem;
+  }
+  .governance-workspace .card-heading .button {
+    white-space: normal;
+  }
+  .governance-form .operation-footer {
+    flex-wrap: wrap;
+  }
+}

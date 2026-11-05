@@ -1,0 +1,130 @@
+
+> union@0.0.0 check
+> npm run check:management && npm run check:plan && npm test && npm run check:console
+
+
+> union@0.0.0 check:management
+> node scripts/project-management.mjs check && node --test tests/project-management.test.mjs tests/union-board.test.mjs
+
+Management check: 15 modules, 8 milestones, 76 tasks; PASS
+✔ rejects missing owners at start and unfinished dependencies, but permits honest unassigned backlog (5.0191ms)
+✔ completion requires scope, reviewer and existing evidence, and does not promote milestones (3.1691ms)
+✔ rejects duplicate IDs, unknown references and dependency cycles (2.3805ms)
+✔ blocked work needs an unblock action; already-started blocked work counts toward WIP (2.7058ms)
+✔ rejects evidence outside repository, invalid scope and malformed dates (1.7054ms)
+✔ deterministic generated views reject stale output and preserve surrounding narrative (16.2236ms)
+✔ flow summary keeps empty live evidence distinct from completion counts (1.2291ms)
+✔ milestone acceptance and task scope cannot be asserted without their review metadata (2.0176ms)
+✔ claim writes a lease and enters doing, and blocks a second harness until the lease expires (5.4391ms)
+✔ claim refuses cards that are not ready and refuses to exceed the WIP limit (3.3568ms)
+✔ claim requires a real actor and refuses unknown cards (1.6766ms)
+✔ release only gives back an unstarted claim and clears the lease (2.1644ms)
+✔ done needs scope, reviewer, note and real evidence; completion clears the lease (2.8102ms)
+✔ a non-holder cannot move a card, and force cannot smuggle a foreign lease silently (2.0811ms)
+✔ blocked needs a reason and an unblock action, and started work cannot hide back in ready (3.2582ms)
+✔ board view exposes columns, the ready queue and lease state (14.6565ms)
+✔ serializeLedger keeps the ledger byte format (4 spaces, CRLF, trailing newline) (1.7169ms)
+✔ the ledger lock refuses a second writer, then recovers after the holder finishes (139.9071ms)
+✔ mutateLedger writes the ledger and rebuilds both generated views in one locked step (6.2459ms)
+✔ a rejected mutation leaves the ledger untouched (2.6736ms)
+✔ a doing card with no live lease can be claimed, but a live lease still blocks it (1.5007ms)
+✔ a view failure cannot leave a half-written ledger behind (3.1757ms)
+✔ a forced transition must record why and keeps the reason in the task history (1.8024ms)
+✔ a failed view write keeps the ledger unchanged, so the state stays recoverable (3.5004ms)
+✔ the MCP server passes note through, so a forced record can explain itself (99.423ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 25
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 411.9649
+
+> union@0.0.0 check:plan
+> node scripts/check-plan.mjs
+
+{"baseline":"UNION-B1","tasks":82,"dependencies":181,"cycles":0,"missingDependencies":0,"baselineFiles":5,"githubTasks":8}
+
+> union@0.0.0 test
+> node --test tests/*.test.ts
+
+✔ retry uses the same reservation; changed request is rejected (132.6332ms)
+✔ unauthorized model actions and tenant/currency changes leave budget untouched (70.8896ms)
+✔ only positive safe integer amounts and bounded keys are accepted (71.2393ms)
+✔ eight competing processes cannot exceed a 100-minor-unit hard budget (358.9425ms)
+✔ process crash after external success recovers by lookup without repeating the effect (292.7147ms)
+✔ crash before external call retains reservation when lookup is inconclusive (232.639ms)
+✔ definitive failure releases reservation exactly once (127.2958ms)
+✔ settling below maximum releases the difference and invalid receipt rolls back (118.7631ms)
+✔ same key across test tenants remains independent (169.9261ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1721.323
+
+> union@0.0.0 check:console
+> npm run typecheck --workspace @union/console && npm run test --workspace @union/console && npm run build:console
+
+
+> @union/console@0.1.0 typecheck
+> tsc --noEmit
+
+
+> @union/console@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 D:/Project/Union/web/console
+
+ ✓ src/pages/ModelServiceConnections.test.tsx (2 tests) 355ms
+   ✓ binds adoption to selected account, model and AU; lost reply blocks a second write  304ms
+ ✓ src/pages/Gateways.test.tsx (3 tests) 515ms
+ ✓ src/features/commands/fields.test.tsx (9 tests) 700ms
+ ✓ src/pages/RuntimeObservation.test.tsx (11 tests) 431ms
+ ✓ src/app/workspace.test.tsx (4 tests) 738ms
+   ✓ workspace organization transitions > keeps the session and draft mounted while withholding old organization data and writes  315ms
+ ✓ src/app/governance-workspace.test.tsx (11 tests) 833ms
+   ✓ current governance access projection > does not resurrect a cached AU after observing a changed principal_id  330ms
+ ✓ src/pages/SubscriptionConnections.test.tsx (8 tests) 795ms
+ ✓ src/pages/Identity.test.tsx (14 tests) 1211ms
+ ✓ src/features/commands/receipts.test.ts (5 tests) 13ms
+ ✓ src/api/client.test.ts (3 tests) 17ms
+ ✓ src/app/url-state.test.tsx (1 test) 154ms
+ ✓ src/features/commands/core-creation.test.tsx (7 tests) 2091ms
+   ✓ core creation through the workspace > keeps explicit legacy company creation reachable after reopening a prepared AU  759ms
+   ✓ core creation through the workspace > opens the saved prepared AU through V1 and shows bound governance without legacy snapshot calls  426ms
+ ✓ src/features/commands/core-boundaries.test.tsx (10 tests) 2629ms
+   ✓ lets a core participant prepare its own AU while withholding legacy operations and showing its stable identity  623ms
+   ✓ core creation identity and receipt boundaries > rejects a POST receipt with the wrong id and retains the original V1 request  358ms
+   ✓ core creation identity and receipt boundaries > rejects a POST receipt with the wrong kind and retains the original V1 request  315ms
+ ✓ src/features/governance/Governance.test.tsx (53 tests) 9361ms
+   ✓ governance user journey > keeps account-level AU creation available from a governed overview page without governing commands  627ms
+   ✓ governance command recovery boundaries > keeps an unknown action local and lets a different work proceed with its own request  324ms
+
+ Test Files  14 passed (14)
+      Tests  141 passed (141)
+   Start at  20:51:42
+   Duration  13.28s (transform 2.02s, setup 4.89s, collect 9.05s, tests 19.84s, environment 16.99s, prepare 2.66s)
+
+
+> union@0.0.0 build:console
+> npm run build --workspace @union/console
+
+
+> @union/console@0.1.0 build
+> tsc --noEmit && vite build
+
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 2031 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.74 kB │ gzip:   0.51 kB
+dist/assets/index-CwCntRDS.css   48.01 kB │ gzip:  10.66 kB
+dist/assets/index-De9Yryh6.js   484.64 kB │ gzip: 149.88 kB
+✓ built in 2.96s

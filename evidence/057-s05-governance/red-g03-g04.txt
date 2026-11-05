@@ -1,0 +1,87 @@
+test_failed_amendment_is_atomic_and_original_id_recovers_one_adoption (tests.test_governance_succession.GovernanceSuccessionTests.test_failed_amendment_is_atomic_and_original_id_recovers_one_adoption) ... FAIL
+test_independent_acceptance_moves_current_authority_but_not_initial_root_or_receipts (tests.test_governance_succession.GovernanceSuccessionTests.test_independent_acceptance_moves_current_authority_but_not_initial_root_or_receipts) ... FAIL
+test_old_charter_must_authorize_amendment_and_initial_creation_stays_immutable (tests.test_governance_succession.GovernanceSuccessionTests.test_old_charter_must_authorize_amendment_and_initial_creation_stays_immutable) ... FAIL
+test_policy_revision_cancels_old_nominations_and_recovery_confirmations (tests.test_governance_succession.GovernanceSuccessionTests.test_policy_revision_cancels_old_nominations_and_recovery_confirmations) ... FAIL
+test_preconfirmed_successor_recovers_after_timeout_without_failed_governor_approval (tests.test_governance_succession.GovernanceSuccessionTests.test_preconfirmed_successor_recovers_after_timeout_without_failed_governor_approval) ... FAIL
+test_single_subject_timeout_exit_cannot_be_renewed_back_into_authority (tests.test_governance_succession.GovernanceSuccessionTests.test_single_subject_timeout_exit_cannot_be_renewed_back_into_authority) ... FAIL
+
+======================================================================
+FAIL: test_failed_amendment_is_atomic_and_original_id_recovers_one_adoption (tests.test_governance_succession.GovernanceSuccessionTests.test_failed_amendment_is_atomic_and_original_id_recovers_one_adoption)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_governance_succession.py", line 112, in test_failed_amendment_is_atomic_and_original_id_recovers_one_adoption
+    self.assertEqual((status, result.get("code")), (503, "storage_unavailable"), result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (400, 'invalid_request') != (503, 'storage_unavailable')
+
+First differing element 0:
+400
+503
+
+- (400, 'invalid_request')
++ (503, 'storage_unavailable') : {'code': 'invalid_request', 'error': '不支持的本地治理命令'}
+
+======================================================================
+FAIL: test_independent_acceptance_moves_current_authority_but_not_initial_root_or_receipts (tests.test_governance_succession.GovernanceSuccessionTests.test_independent_acceptance_moves_current_authority_but_not_initial_root_or_receipts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_governance_succession.py", line 36, in test_independent_acceptance_moves_current_authority_but_not_initial_root_or_receipts
+    nomination, original_request = self.success("nominate_governor", {"principal_id": successor[1], "reason": "Transfer current governing duty"})
+                                   ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\tests\governance_support.py", line 54, in success
+    self.assertEqual(status, 200, result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 400 != 200 : {'code': 'invalid_request', 'error': '不支持的本地治理命令'}
+
+======================================================================
+FAIL: test_old_charter_must_authorize_amendment_and_initial_creation_stays_immutable (tests.test_governance_succession.GovernanceSuccessionTests.test_old_charter_must_authorize_amendment_and_initial_creation_stays_immutable)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_governance_succession.py", line 18, in test_old_charter_must_authorize_amendment_and_initial_creation_stays_immutable
+    receipt, request = self.success("amend_charter", {"charter": charter, "reason": "Adopt under old permitted rules"})
+                       ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\tests\governance_support.py", line 54, in success
+    self.assertEqual(status, 200, result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 400 != 200 : {'code': 'invalid_request', 'error': '不支持的本地治理命令'}
+
+======================================================================
+FAIL: test_policy_revision_cancels_old_nominations_and_recovery_confirmations (tests.test_governance_succession.GovernanceSuccessionTests.test_policy_revision_cancels_old_nominations_and_recovery_confirmations)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_governance_succession.py", line 64, in test_policy_revision_cancels_old_nominations_and_recovery_confirmations
+    self.success("nominate_governor", {"principal_id": successor[1], "reason": "Pending nomination"})
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\tests\governance_support.py", line 54, in success
+    self.assertEqual(status, 200, result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 400 != 200 : {'code': 'invalid_request', 'error': '不支持的本地治理命令'}
+
+======================================================================
+FAIL: test_preconfirmed_successor_recovers_after_timeout_without_failed_governor_approval (tests.test_governance_succession.GovernanceSuccessionTests.test_preconfirmed_successor_recovers_after_timeout_without_failed_governor_approval)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_governance_succession.py", line 77, in test_preconfirmed_successor_recovers_after_timeout_without_failed_governor_approval
+    self.reject("recover_governance", {"reason": "Too early"}, token=successor[0])
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\tests\governance_support.py", line 60, in reject
+    self.assertEqual(status, 200, result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 403 != 200 : {'code': 'not_authorized', 'error': '当前核心账户无权访问此记录'}
+
+======================================================================
+FAIL: test_single_subject_timeout_exit_cannot_be_renewed_back_into_authority (tests.test_governance_succession.GovernanceSuccessionTests.test_single_subject_timeout_exit_cannot_be_renewed_back_into_authority)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_governance_succession.py", line 93, in test_single_subject_timeout_exit_cannot_be_renewed_back_into_authority
+    self.success("renew_governance", {"reason": "Explicit timely renewal"})
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\tests\governance_support.py", line 54, in success
+    self.assertEqual(status, 200, result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 400 != 200 : {'code': 'invalid_request', 'error': '不支持的本地治理命令'}
+
+----------------------------------------------------------------------
+Ran 6 tests in 5.812s
+
+FAILED (failures=6)

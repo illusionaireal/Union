@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "Account exposes its stable principal for explicit nominations and appointments",
+    "Registration retains the recovery code through background authentication reads",
+    "Account exposes its stable principal for explicit nominations and appointments",
+    "Registered core participant starts with no AU, legacy or platform permissions",
+    "Registration retains the recovery code through background authentication reads",
+    "Account exposes its stable principal for explicit nominations and appointments",
+    "Registered core participant starts with no AU, legacy or platform permissions",
+    "The real forms preserve legal 200-character AU, member and unbroken Work names",
+    "A single human principal completes Work → Mandate → local submission → accepted record through React and HTTP",
+    "Local governance does not activate autonomous business, model dispatch, resource use or external commitment",
+    "The same production grant boundary rejects record_memory after its charter permission is withdrawn",
+    "Lost governance POST response leaves the form, original ID and no resubmit control",
+    "Browser recovery storage contains only request metadata, never private form content or credentials",
+    "Reload and server restart recover the original issuer receipt without another POST",
+    "A → B → C delegation uses real accounts and the original Work with a three-mandate chain",
+    "Revoked descendant content is preserved as evidence_only and does not complete or alter accepted Work results",
+    "A new action under a revoked ancestor is rejected at the production HTTP boundary",
+    "An unrelated Work continues through submission and acceptance after revocation",
+    "Responsibility handoff retains the original Work and failed attempt while invalidating the old binding"
+  ],
+  "error": "Governance option missing: {\"kind\":\"begin_local_action\",\"organization_id\":\"org-4b850a116bb14a969719d81ae6783da3\",\"rendered_when_opened\":\"org-4b850a116bb14a969719d81ae6783da3 · 状态 v27 · 章程 v3 · 本地治理\",\"field\":\"mandate_id\",\"expected_option\":\"9fa9ae1d-a797-4165-a006-64fd82d5bf97\",\"rendered_at_failure\":\"org-4b850a116bb14a969719d81ae6783da3 · 状态 v31 · 章程 v3 · 本地治理\",\"rendered_options\":[\"d51727ff-c914-4768-985d-58d48f416501\"],\"current_read\":{\"status\":200,\"version\":31,\"mandate\":{\"actions\":[\"record_memory\"],\"active\":true,\"binding_id\":\"26cf603f-f6ee-47f8-95ab-5e5cec19c3a5\",\"binding_version\":1,\"can_delegate\":false,\"charter_version\":3,\"goal_version\":3,\"id\":\"9fa9ae1d-a797-4165-a006-64fd82d5bf97\",\"issuer_principal_id\":\"e345e9a0-4c63-4519-834a-f59c26a04ebc\",\"parent_id\":null,\"policy_version\":3,\"version\":1,\"work_id\":\"c1b18cee-3d8f-4e24-a772-d79938d9128f\",\"work_version\":3},\"binding\":{\"id\":\"26cf603f-f6ee-47f8-95ab-5e5cec19c3a5\",\"active\":true,\"version\":1},\"work\":{\"id\":\"c1b18cee-3d8f-4e24-a772-d79938d9128f\",\"status\":\"open\",\"version\":3}},\"error\":\"locator.selectOption: Timeout 5000ms exceeded.\\nCall log:\\n\\u001b[2m  - waiting for locator('#governance-dialog').locator('[name=\\\"mandate_id\\\"]')\\u001b[22m\\n\\u001b[2m    - locator resolved to <select required=\\\"\\\" name=\\\"mandate_id\\\">…</select>\\u001b[22m\\n\\u001b[2m  - attempting select option action\\u001b[22m\\n\\u001b[2m    2 × waiting for element to be visible and enabled\\u001b[22m\\n\\u001b[2m      - did not find some options\\u001b[22m\\n\\u001b[2m    - retrying select option action\\u001b[22m\\n\\u001b[2m    - waiting 20ms\\u001b[22m\\n\\u001b[2m    2 × waiting for element to be visible and enabled\\u001b[22m\\n\\u001b[2m      - did not find some options\\u001b[22m\\n\\u001b[2m    - retrying select option action\\u001b[22m\\n\\u001b[2m      - waiting 100ms\\u001b[22m\\n\\u001b[2m    10 × waiting for element to be visible and enabled\\u001b[22m\\n\\u001b[2m       - did not find some options\\u001b[22m\\n\\u001b[2m     - retrying select option action\\u001b[22m\\n\\u001b[2m       - waiting 500ms\\u001b[22m\\n\"}",
+  "errors": []
+}

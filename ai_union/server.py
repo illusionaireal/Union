@@ -139,19 +139,21 @@ class Handler(BaseHTTPRequestHandler):
                              | ({"code": "storage_unavailable"} if core_request or path.path == '/api/commands' else {}))
         try:
             if write:
-                if path.path not in ("/api/commands", "/api/gateway-commands", "/api/subscription-commands", "/api/model-account-commands"):
+                if path.path not in ("/api/commands", "/api/v1/governance/commands", "/api/gateway-commands", "/api/subscription-commands", "/api/model-account-commands"):
                     return self.send(404, {"error": "接口不存在"})
                 require(self.headers.get("Content-Type", "").split(";")[0] == "application/json", "命令需要 application/json")
                 length = int(self.headers.get("Content-Length", "0"))
                 require(0 < length <= 200000, "请求体大小不允许")
                 request = json.loads(self.rfile.read(length).decode("utf-8"))
-                core_request = path.path == '/api/commands' and isinstance(request, dict) and request.get('kind') == 'create_v1'
+                core_request = path.path == '/api/v1/governance/commands' or (path.path == '/api/commands' and isinstance(request, dict) and request.get('kind') == 'create_v1')
                 if not core_request:
                     require(app.session(token)["role"] == "board", "观察者不能提交操作")
-                receipt = self.server.model_accounts.command(token, request) if path.path == '/api/model-account-commands' else self.server.subscriptions.command(token, request) if path.path == "/api/subscription-commands" else app.gateways.command(token, request) if path.path == "/api/gateway-commands" else app.command(token, request)
+                receipt = app.governance.command(token, request) if path.path == '/api/v1/governance/commands' else self.server.model_accounts.command(token, request) if path.path == '/api/model-account-commands' else self.server.subscriptions.command(token, request) if path.path == "/api/subscription-commands" else app.gateways.command(token, request) if path.path == "/api/gateway-commands" else app.command(token, request)
                 return self.send(202 if receipt["status"] == "accepted" else 200, {"receipt": receipt})
             if path.path == "/api/session":
                 return self.send(200, app.session_info(token))
+            if path.path == '/api/v1/governance/receipts':
+                return self.send(200, {"receipt": app.governance.receipt(token, query.get('organization_id', [None])[0], query.get('id', [None])[0])})
             if path.path.startswith('/api/v1/aus/'):
                 return self.send(200, app.core_au(token, path.path.removeprefix('/api/v1/aus/')))
             if path.path == '/api/v1/receipts':
@@ -240,13 +242,14 @@ class Handler(BaseHTTPRequestHandler):
             require(0 < length <= 4096, '请求大小无效')
             value = json.loads(self.rfile.read(length).decode('utf-8'))
             require(isinstance(value, dict), '请求格式无效')
-            expected = {'/api/auth/setup': {'username','password','remember'}, '/api/auth/login': {'username','password','remember'},
+            expected = {'/api/auth/setup': {'username','password','remember'}, '/api/auth/register': {'username','password','remember'}, '/api/auth/login': {'username','password','remember'},
                 '/api/auth/recover': {'username','code','new_password'}, '/api/auth/password': {'password','new_password'}, '/api/auth/logout': set()}
             require(path in expected and set(value)==expected[path], '请求字段无效')
             if path == '/api/auth/logout':
                 app.identity.logout(token)
                 return self.send(200, {'ok':True}, headers={'Set-Cookie': f'{self.server.cookie_name}=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0'})
             if path == '/api/auth/setup': result = app.identity.setup(token, **value)
+            elif path == '/api/auth/register': result = app.identity.register(**value)
             elif path == '/api/auth/login': result = app.identity.login(**value)
             elif path == '/api/auth/password': result = app.identity.change_password(token, **value)
             else: result = app.identity.recover(value['username'], value['code'], value['new_password'])

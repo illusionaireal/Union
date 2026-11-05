@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "aegis.schema.v0",
+  "taskId": "U-069",
+  "taskIntentRef": "docs/aegis/work/2026-11-05-s05-governance/task-intent-draft.json",
+  "baselineRefs": [
+    "specs/053-union-rewrite/s05-contract.md",
+    "docs/decisions/0006-charter-policy-adoption.md"
+  ],
+  "scopeStatus": "S05 G01–G10受控工程已验证；按用户追加要求提交一页近期路线，不执行未来卡或批量管理改造。",
+  "compatStatus": "原创建/回执/身份连续，schema显式采用与旧候选拒绝已验证；最终包与浏览器资产和已评审源码一致。",
+  "retirementStatus": "原creator不再决定当前AU权，原回执归属与legacy兼容保留；无真实数据迁移或双派发。",
+  "newRiskSignals": [
+    "路线评估发现真实治理验收尚未完整写入U-070主账；作为明确后续补项，不宣称本片完成真实治理或整体产品。"
+  ],
+  "decision": "continue"
+}

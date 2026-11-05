@@ -9,14 +9,16 @@ import {
 } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useUrlState } from './url-state';
-import { api, errorText } from '../api/client';
+import { api, ApiError, errorText } from '../api/client';
+import { matchesCoreRead } from '../api/core-boundary';
 import type { CoreAURead, Session, Snapshot } from '../api/types';
 
 interface ReadResult {
-  session: Session;
+  session?: Session;
   snapshot: Snapshot | null;
   core: CoreAURead | null;
   successAt: string;
+  readError?: string;
 }
 interface Workspace {
   session?: Session;
@@ -33,6 +35,11 @@ interface Workspace {
   refresh: () => Promise<Snapshot | undefined>;
 }
 const Context = createContext<Workspace | null>(null);
+function sameIdentity(left: Session | undefined, right: Session | undefined) {
+  if (!left || !right) return left === right;
+  return left.service_instance === right.service_instance &&
+    (left.principal_id ?? left.session_scope) === (right.principal_id ?? right.session_scope);
+}
 // One-time credentials are consumed once, including React development remounts.
 let exchange: Promise<void> | undefined;
 function exchangeLaunch() {
@@ -51,6 +58,8 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const [ready, setReady] = useState(false);
   const [online, setOnline] = useState(navigator.onLine);
   const [launchError, setLaunchError] = useState('');
+  // Only an actual session read can change the current identity; an AU cache cannot.
+  const [currentSession, setCurrentSession] = useState<Session>();
   const initialized = useRef(false);
   const key = ['workspace', requested, offset] as const;
   const read = useQuery<ReadResult>({
@@ -60,22 +69,41 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     // never expose the previous organization's snapshot or enable commands.
     placeholderData: (previous) => previous ? { ...previous, snapshot: null, core: null } : undefined,
     queryFn: async ({ signal }): Promise<ReadResult> => {
-      const session = await api.session(signal);
+      let session: Session;
+      try {
+        session = await api.session(signal);
+        signal.throwIfAborted();
+      } catch (failure) {
+        if (!signal.aborted && failure instanceof ApiError && [401, 403].includes(failure.status ?? 0)) {
+          setCurrentSession(undefined);
+          return { snapshot: null, core: null, successAt: '', readError: errorText(failure) };
+        }
+        throw failure;
+      }
+      setCurrentSession(session);
+      const old = client.getQueryData<ReadResult>(key);
+      const identityChanged = !!old && !sameIdentity(old.session, session);
       const target = session.organizations.find((o) => o.id === requested) ?? session.organizations[0];
       let snapshot: Snapshot | null = null;
       let core: CoreAURead | null = null;
-      if (target?.profile === 'core_v1') {
+      try { if (target?.profile === 'core_v1') {
         if (session.core_protocol !== 'core.au.v1' || !session.principal_id)
           throw new Error('服务版本或核心身份不兼容，请重新登录并核对服务版本');
         core = await api.coreAU(target.id, signal);
-        if (core.protocol !== 'core.au.v1' || core.au.id !== target.id ||
-            core.au.runtime_profile !== 'core_v1' || core.au.schema_version !== 1 ||
-            core.au.governance_root.governor_principal_id !== session.principal_id)
-          throw new Error('AU记录与当前身份不一致，请保留原记录核对');
+        if (!matchesCoreRead(core, session, target.id))
+          throw new ApiError('AU记录与当前身份不一致，请保留原记录核对', 409, 'incompatible_state');
       } else if (target) {
         if (target.profile !== undefined && target.profile !== 'legacy_v0')
           throw new Error('AU版本不兼容，请保留原记录核对');
         snapshot = await api.snapshot(target.id, offset, signal);
+      } } catch (failure) {
+        // A denial or changed principal must erase the old projection, while
+        // retaining the current login for its own original receipt lookups.
+        if (identityChanged || !old || (failure instanceof ApiError &&
+            ([401, 403].includes(failure.status ?? 0) || failure.code === 'incompatible_state'))) {
+          return { session, snapshot: null, core: null, successAt: '', readError: errorText(failure) };
+        }
+        throw failure;
       }
       if (
         snapshot &&
@@ -84,9 +112,9 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       ) {
         throw new Error('服务或组织已切换，请重新读取');
       }
-      const old = client.getQueryData<ReadResult>(key);
       if (
         snapshot &&
+        !identityChanged &&
         old?.snapshot?.service_instance === snapshot.service_instance &&
         old.snapshot.organization.id === target?.id &&
         old.snapshot.snapshot_sequence >= snapshot.snapshot_sequence
@@ -98,7 +126,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     networkMode: 'always',
     // Only poll once a read succeeded. Anonymous visitors get 401 on every
     // tick, and the repeated failures would otherwise churn the identity form.
-    refetchInterval: (query) => (query.state.data ? 4000 : false),
+    refetchInterval: (query) => (query.state.data?.session ? 4000 : false),
     refetchIntervalInBackground: false,
     refetchOnWindowFocus: 'always',
     staleTime: 0,
@@ -106,7 +134,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const refresh = useCallback(async () => {
     await client.cancelQueries({ queryKey: key, exact: true });
     const result=await read.refetch();
-    return result.isError ? undefined : result.data?.snapshot ?? undefined;
+    return result.isError || result.data?.readError ? undefined : result.data?.snapshot ?? undefined;
     // Query identity is the organization + pagination; refetch always belongs to that observer.
   }, [client, requested, offset, read.refetch]);
   useEffect(() => {
@@ -150,8 +178,11 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       window.removeEventListener('online', reconnect);
     };
   }, [ready, refresh]);
-  const data = read.data?.snapshot ?? undefined;
-  const core = read.data?.core ?? undefined;
+  const projectedId = read.data?.core?.au.id ?? read.data?.snapshot?.organization.id;
+  const inCurrentScope = !projectedId || currentSession?.organizations.some((item) => item.id === projectedId);
+  const currentRead = sameIdentity(read.data?.session, currentSession) && inCurrentScope ? read.data : undefined;
+  const data = currentRead?.snapshot ?? undefined;
+  const core = currentRead?.core ?? undefined;
   const orgId = core?.au.id || data?.organization.id || requested;
   const selectOrg = useCallback(
     (id: string) => {
@@ -169,7 +200,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   return (
     <Context.Provider
       value={{
-        session: read.data?.session,
+        session: currentSession,
         data,
         core,
         orgId,
@@ -177,12 +208,12 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
         selectOrg,
         setOffset,
         refresh,
-        connected: ready && online && read.isSuccess && !read.isPlaceholderData && read.isFetchedAfterMount && !launchError,
+        connected: ready && online && !!currentRead?.session && read.isSuccess && !currentRead.readError && !read.isPlaceholderData && read.isFetchedAfterMount && !launchError,
         loading: !launchError && (read.isPending || read.isPlaceholderData || !read.isFetchedAfterMount || !ready),
         error: !online
           ? '浏览器网络已断开'
-          : launchError || (read.isError ? errorText(read.error) : ''),
-        lastSuccess: read.data?.successAt || '',
+          : launchError || (read.isError ? errorText(read.error) : currentRead?.readError || ''),
+        lastSuccess: currentRead?.successAt || '',
       }}
     >
       {children}

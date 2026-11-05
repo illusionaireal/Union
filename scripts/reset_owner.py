@@ -17,7 +17,7 @@ import sys
 import time
 from pathlib import Path
 
-TABLES = ('owner_account', 'login_sessions', 'login_limit')
+TABLES = ('owner_account', 'login_sessions', 'login_limit', 'account_login_limit')
 
 
 def reset(root, confirm=False, backup=True):
@@ -32,7 +32,11 @@ def reset(root, confirm=False, backup=True):
         present = {row[0] for row in cx.execute("select name from sqlite_master where type='table'")}
         if 'owner_account' not in present:
             raise SystemExit('不是 UNION 工作台数据库（缺少 owner_account 表）: %s' % db)
-        counts = {name: cx.execute('select count(*) from ' + name).fetchone()[0] for name in TABLES if name in present}
+        scoped = 'account_kind' in {row[1] for row in cx.execute('PRAGMA table_info(owner_account)')}
+        predicates = {'owner_account': " WHERE account_kind='owner'",
+                      'login_sessions': " WHERE username IN (SELECT username FROM owner_account WHERE account_kind='owner')",
+                      'account_login_limit': " WHERE username IN (SELECT username FROM owner_account WHERE account_kind='owner')"} if scoped else {}
+        counts = {name: cx.execute('select count(*) from ' + name + predicates.get(name, '')).fetchone()[0] for name in TABLES if name in present}
         if not confirm:
             print('数据库: %s' % db)
             print('将删除: %s' % counts)
@@ -44,9 +48,10 @@ def reset(root, confirm=False, backup=True):
             with closing(sqlite3.connect(copy)) as target:
                 cx.backup(target)
             copy.chmod(0o600)
-        for name in TABLES:
+        # Remove the scoped sessions before deleting the owner used by their predicate.
+        for name in ('login_sessions', 'account_login_limit', 'owner_account', 'login_limit'):
             if name in present:
-                cx.execute('delete from ' + name)
+                cx.execute('delete from ' + name + predicates.get(name, ''))
         cx.commit()
     except sqlite3.DatabaseError as error:
         raise SystemExit('数据库操作失败（请确认已停止工作台服务，且文件是有效的 SQLite 数据库）: %s' % error)

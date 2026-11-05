@@ -1,0 +1,129 @@
+test_adoption_and_activation_keep_initial_identity_and_creation_bytes (tests.test_governance.GovernanceAdoptionTests.test_adoption_and_activation_keep_initial_identity_and_creation_bytes) ... FAIL
+test_incomplete_unknown_or_untrusted_governance_never_upgrades_the_prepared_au (tests.test_governance.GovernanceAdoptionTests.test_incomplete_unknown_or_untrusted_governance_never_upgrades_the_prepared_au) ... 
+  test_incomplete_unknown_or_untrusted_governance_never_upgrades_the_prepared_au (tests.test_governance.GovernanceAdoptionTests.test_incomplete_unknown_or_untrusted_governance_never_upgrades_the_prepared_au) (config={'profile': 'local_governance.v1', 'reserved_matters': ['charter', 'goal', 'resources', 'appointments', 'mandates', 'dissolution'], 'unavailability': {'mode': 'exit_after_timeout', 'timeout_seconds': 3600}}) ... FAIL
+  test_incomplete_unknown_or_untrusted_governance_never_upgrades_the_prepared_au (tests.test_governance.GovernanceAdoptionTests.test_incomplete_unknown_or_untrusted_governance_never_upgrades_the_prepared_au) (config={'profile': 'local_governance.v1', 'final_decision_principal_id': 'f24a7ea2-b6c3-413e-be28-ad8d5a717a73', 'unavailability': {'mode': 'exit_after_timeout', 'timeout_seconds': 3600}}) ... FAIL
+  test_incomplete_unknown_or_untrusted_governance_never_upgrades_the_prepared_au (tests.test_governance.GovernanceAdoptionTests.test_incomplete_unknown_or_untrusted_governance_never_upgrades_the_prepared_au) (config={'profile': 'local_governance.v1', 'final_decision_principal_id': 'f24a7ea2-b6c3-413e-be28-ad8d5a717a73', 'reserved_matters': ['charter', 'goal', 'resources', 'appointments', 'mandates', 'dissolution']}) ... FAIL
+  test_incomplete_unknown_or_untrusted_governance_never_upgrades_the_prepared_au (tests.test_governance.GovernanceAdoptionTests.test_incomplete_unknown_or_untrusted_governance_never_upgrades_the_prepared_au) (config={'profile': 'local_governance.v1', 'final_decision_principal_id': 'f24a7ea2-b6c3-413e-be28-ad8d5a717a73', 'reserved_matters': ['charter', 'goal', 'resources', 'appointments', 'mandates', 'dissolution'], 'unavailability': {'mode': 'prompt_decides', 'timeout_seconds': 3600}}) ... FAIL
+  test_incomplete_unknown_or_untrusted_governance_never_upgrades_the_prepared_au (tests.test_governance.GovernanceAdoptionTests.test_incomplete_unknown_or_untrusted_governance_never_upgrades_the_prepared_au) (config={'profile': 'local_governance.v1', 'final_decision_principal_id': '23a1c80b-b6f4-4a58-999f-b38159dd46a6', 'reserved_matters': ['charter', 'goal', 'resources', 'appointments', 'mandates', 'dissolution'], 'unavailability': {'mode': 'exit_after_timeout', 'timeout_seconds': 3600}}) ... FAIL
+  test_incomplete_unknown_or_untrusted_governance_never_upgrades_the_prepared_au (tests.test_governance.GovernanceAdoptionTests.test_incomplete_unknown_or_untrusted_governance_never_upgrades_the_prepared_au) (config={'profile': 'local_governance.v1', 'final_decision_principal_id': 'f24a7ea2-b6c3-413e-be28-ad8d5a717a73', 'reserved_matters': ['charter'], 'unavailability': {'mode': 'exit_after_timeout', 'timeout_seconds': 3600}}) ... FAIL
+  test_incomplete_unknown_or_untrusted_governance_never_upgrades_the_prepared_au (tests.test_governance.GovernanceAdoptionTests.test_incomplete_unknown_or_untrusted_governance_never_upgrades_the_prepared_au) (config={'profile': 'local_governance.v1', 'final_decision_principal_id': 'f24a7ea2-b6c3-413e-be28-ad8d5a717a73', 'reserved_matters': ['charter', 'goal', 'resources', 'appointments', 'mandates', 'dissolution'], 'unavailability': {'mode': 'exit_after_timeout', 'timeout_seconds': 3600}, 'extra_authority': True}) ... FAIL
+test_incomplete_unknown_or_untrusted_governance_never_upgrades_the_prepared_au (tests.test_governance.GovernanceAdoptionTests.test_incomplete_unknown_or_untrusted_governance_never_upgrades_the_prepared_au) ... FAIL
+test_partial_adoption_failure_leaves_original_prepared_records_only (tests.test_governance.GovernanceAdoptionTests.test_partial_adoption_failure_leaves_original_prepared_records_only) ... FAIL
+test_successor_must_confirm_before_activation (tests.test_governance.GovernanceAdoptionTests.test_successor_must_confirm_before_activation) ... FAIL
+
+======================================================================
+FAIL: test_adoption_and_activation_keep_initial_identity_and_creation_bytes (tests.test_governance.GovernanceAdoptionTests.test_adoption_and_activation_keep_initial_identity_and_creation_bytes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_governance.py", line 19, in test_adoption_and_activation_keep_initial_identity_and_creation_bytes
+    receipt, _ = self.success("adopt_governance", {"config": self.config(), "reason": "Adopt explicit program"})
+                 ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\tests\governance_support.py", line 54, in success
+    self.assertEqual(status, 200, result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 404 != 200 : {'error': '接口不存在'}
+
+======================================================================
+FAIL: test_incomplete_unknown_or_untrusted_governance_never_upgrades_the_prepared_au (tests.test_governance.GovernanceAdoptionTests.test_incomplete_unknown_or_untrusted_governance_never_upgrades_the_prepared_au) (config={'profile': 'local_governance.v1', 'reserved_matters': ['charter', 'goal', 'resources', 'appointments', 'mandates', 'dissolution'], 'unavailability': {'mode': 'exit_after_timeout', 'timeout_seconds': 3600}})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_governance.py", line 60, in test_incomplete_unknown_or_untrusted_governance_never_upgrades_the_prepared_au
+    self.assertEqual(status, 400, result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 404 != 400 : {'error': '接口不存在'}
+
+======================================================================
+FAIL: test_incomplete_unknown_or_untrusted_governance_never_upgrades_the_prepared_au (tests.test_governance.GovernanceAdoptionTests.test_incomplete_unknown_or_untrusted_governance_never_upgrades_the_prepared_au) (config={'profile': 'local_governance.v1', 'final_decision_principal_id': 'f24a7ea2-b6c3-413e-be28-ad8d5a717a73', 'unavailability': {'mode': 'exit_after_timeout', 'timeout_seconds': 3600}})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_governance.py", line 60, in test_incomplete_unknown_or_untrusted_governance_never_upgrades_the_prepared_au
+    self.assertEqual(status, 400, result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 404 != 400 : {'error': '接口不存在'}
+
+======================================================================
+FAIL: test_incomplete_unknown_or_untrusted_governance_never_upgrades_the_prepared_au (tests.test_governance.GovernanceAdoptionTests.test_incomplete_unknown_or_untrusted_governance_never_upgrades_the_prepared_au) (config={'profile': 'local_governance.v1', 'final_decision_principal_id': 'f24a7ea2-b6c3-413e-be28-ad8d5a717a73', 'reserved_matters': ['charter', 'goal', 'resources', 'appointments', 'mandates', 'dissolution']})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_governance.py", line 60, in test_incomplete_unknown_or_untrusted_governance_never_upgrades_the_prepared_au
+    self.assertEqual(status, 400, result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 404 != 400 : {'error': '接口不存在'}
+
+======================================================================
+FAIL: test_incomplete_unknown_or_untrusted_governance_never_upgrades_the_prepared_au (tests.test_governance.GovernanceAdoptionTests.test_incomplete_unknown_or_untrusted_governance_never_upgrades_the_prepared_au) (config={'profile': 'local_governance.v1', 'final_decision_principal_id': 'f24a7ea2-b6c3-413e-be28-ad8d5a717a73', 'reserved_matters': ['charter', 'goal', 'resources', 'appointments', 'mandates', 'dissolution'], 'unavailability': {'mode': 'prompt_decides', 'timeout_seconds': 3600}})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_governance.py", line 60, in test_incomplete_unknown_or_untrusted_governance_never_upgrades_the_prepared_au
+    self.assertEqual(status, 400, result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 404 != 400 : {'error': '接口不存在'}
+
+======================================================================
+FAIL: test_incomplete_unknown_or_untrusted_governance_never_upgrades_the_prepared_au (tests.test_governance.GovernanceAdoptionTests.test_incomplete_unknown_or_untrusted_governance_never_upgrades_the_prepared_au) (config={'profile': 'local_governance.v1', 'final_decision_principal_id': '23a1c80b-b6f4-4a58-999f-b38159dd46a6', 'reserved_matters': ['charter', 'goal', 'resources', 'appointments', 'mandates', 'dissolution'], 'unavailability': {'mode': 'exit_after_timeout', 'timeout_seconds': 3600}})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_governance.py", line 60, in test_incomplete_unknown_or_untrusted_governance_never_upgrades_the_prepared_au
+    self.assertEqual(status, 400, result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 404 != 400 : {'error': '接口不存在'}
+
+======================================================================
+FAIL: test_incomplete_unknown_or_untrusted_governance_never_upgrades_the_prepared_au (tests.test_governance.GovernanceAdoptionTests.test_incomplete_unknown_or_untrusted_governance_never_upgrades_the_prepared_au) (config={'profile': 'local_governance.v1', 'final_decision_principal_id': 'f24a7ea2-b6c3-413e-be28-ad8d5a717a73', 'reserved_matters': ['charter'], 'unavailability': {'mode': 'exit_after_timeout', 'timeout_seconds': 3600}})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_governance.py", line 60, in test_incomplete_unknown_or_untrusted_governance_never_upgrades_the_prepared_au
+    self.assertEqual(status, 400, result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 404 != 400 : {'error': '接口不存在'}
+
+======================================================================
+FAIL: test_incomplete_unknown_or_untrusted_governance_never_upgrades_the_prepared_au (tests.test_governance.GovernanceAdoptionTests.test_incomplete_unknown_or_untrusted_governance_never_upgrades_the_prepared_au) (config={'profile': 'local_governance.v1', 'final_decision_principal_id': 'f24a7ea2-b6c3-413e-be28-ad8d5a717a73', 'reserved_matters': ['charter', 'goal', 'resources', 'appointments', 'mandates', 'dissolution'], 'unavailability': {'mode': 'exit_after_timeout', 'timeout_seconds': 3600}, 'extra_authority': True})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_governance.py", line 60, in test_incomplete_unknown_or_untrusted_governance_never_upgrades_the_prepared_au
+    self.assertEqual(status, 400, result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 404 != 400 : {'error': '接口不存在'}
+
+======================================================================
+FAIL: test_incomplete_unknown_or_untrusted_governance_never_upgrades_the_prepared_au (tests.test_governance.GovernanceAdoptionTests.test_incomplete_unknown_or_untrusted_governance_never_upgrades_the_prepared_au)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_governance.py", line 63, in test_incomplete_unknown_or_untrusted_governance_never_upgrades_the_prepared_au
+    self.assertEqual(self.command("adopt_governance", {"config": self.config(), "reason": "Host cannot bind"}, token=host, version=0)[0], 403)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 404 != 403
+
+======================================================================
+FAIL: test_partial_adoption_failure_leaves_original_prepared_records_only (tests.test_governance.GovernanceAdoptionTests.test_partial_adoption_failure_leaves_original_prepared_records_only)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_governance.py", line 84, in test_partial_adoption_failure_leaves_original_prepared_records_only
+    self.assertEqual((status, result.get("code")), (503, "storage_unavailable"), result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (404, None) != (503, 'storage_unavailable')
+
+First differing element 0:
+404
+503
+
+- (404, None)
++ (503, 'storage_unavailable') : {'error': '接口不存在'}
+
+======================================================================
+FAIL: test_successor_must_confirm_before_activation (tests.test_governance.GovernanceAdoptionTests.test_successor_must_confirm_before_activation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_governance.py", line 70, in test_successor_must_confirm_before_activation
+    self.success("adopt_governance", {"config": self.config(successor[1]), "reason": "Preselect recovery"})
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\tests\governance_support.py", line 54, in success
+    self.assertEqual(status, 200, result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 404 != 200 : {'error': '接口不存在'}
+
+----------------------------------------------------------------------
+Ran 4 tests in 3.521s
+
+FAILED (failures=11)

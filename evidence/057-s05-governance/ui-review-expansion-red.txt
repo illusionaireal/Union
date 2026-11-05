@@ -1,0 +1,146 @@
+
+> @union/console@0.1.0 test
+> vitest run src/app/governance-workspace.test.tsx src/pages/Identity.test.tsx -t organization_scope|newly observed identity --reporter=verbose
+
+
+ RUN  v3.2.7 D:/Project/Union/web/console
+
+ ↓ src/pages/Identity.test.tsx > identity boundary > shows the setup form on an unconfigured deployment and keeps its fields
+ ↓ src/pages/Identity.test.tsx > identity boundary > keeps what the user typed while background refreshes run
+ ↓ src/pages/Identity.test.tsx > identity boundary > submits the first claim once, shows the recovery code and does not reload
+ ↓ src/pages/Identity.test.tsx > identity boundary > sends the remember option and shows server errors without leaving the form
+ ↓ src/pages/Identity.test.tsx > identity boundary > disables the submit button while a request is in flight
+ ↓ src/pages/Identity.test.tsx > identity boundary > shows login once configured and switches to the recovery form
+ ↓ src/pages/Identity.test.tsx > identity boundary > registers a core participant without AU permissions and keeps the recovery code until acknowledged
+ ↓ src/pages/Identity.test.tsx > identity boundary > retains a participant draft and focus after an error and background reads
+ ↓ src/pages/Identity.test.tsx > identity boundary > keeps the participant form in place until registration returns its recovery code
+ ↓ src/pages/Identity.test.tsx > identity boundary > retains the register recovery code when authenticated polling finishes before the response body
+ ↓ src/pages/Identity.test.tsx > identity boundary > retains the setup recovery code when authenticated polling finishes before the response body
+ ↓ src/app/governance-workspace.test.tsx > current governance access projection > does not resurrect a cached AU after observing a changed principal_id
+ ↓ src/app/governance-workspace.test.tsx > current governance access projection > does not resurrect a cached AU after observing a changed service_instance
+ × src/app/governance-workspace.test.tsx > current governance access projection > does not resurrect a cached AU after observing a changed organization_scope 159ms
+   → expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  无 AU 投影
+Received:
+  有明确责任的 AU
+ ↓ src/app/governance-workspace.test.tsx > current governance access projection > keeps writes disabled when the same principal revisits a cached AU before a fresh read
+ ↓ src/app/governance-workspace.test.tsx > current governance access projection > keeps a disconnected snapshot during an ordinary session network failure
+ ↓ src/app/governance-workspace.test.tsx > current governance access projection > clears a revoked session and its AU projection even if the next refresh loses the network
+ ↓ src/app/governance-workspace.test.tsx > current governance access projection > accepts the current governor from server access instead of requiring the immutable creator identity
+ ↓ src/app/governance-workspace.test.tsx > current governance access projection > withholds a schema 2 projection bound to another principal_id
+ ↓ src/app/governance-workspace.test.tsx > current governance access projection > withholds a schema 2 projection bound to another service_instance
+ ↓ src/app/governance-workspace.test.tsx > current governance access projection > clears a previously readable prepared AU immediately when current access is revoked
+ ↓ src/app/governance-workspace.test.tsx > current governance access projection > does not retain an old principal projection when the new principal cannot read it
+ × src/pages/Identity.test.tsx > identity boundary > keeps the registering form and recovery code while a newly observed identity is still loading 1172ms
+   → Unable to find a label with the text of: 账号恢复码
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"identity-page"[39m
+    [36m>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"status"[39m
+      [36m>[39m
+        [0m正在连接工作台…[0m
+      [36m</p>[39m
+    [36m</main>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"identity-page"[39m
+    [36m>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"status"[39m
+      [36m>[39m
+        [0m正在连接工作台…[0m
+      [36m</p>[39m
+    [36m</main>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ↓ src/pages/Identity.test.tsx > identity boundary > renders the workspace only after authentication
+ ↓ src/pages/Identity.test.tsx > identity boundary > reports a failed first read and offers a retry
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/app/governance-workspace.test.tsx > current governance access projection > does not resurrect a cached AU after observing a changed organization_scope
+Error: expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  无 AU 投影
+Received:
+  有明确责任的 AU
+ ❯ src/app/governance-workspace.test.tsx:102:47
+    100|       vi.mocked(api.session).mockImplementation(() => new Promise(() =…
+    101|       fireEvent.click(screen.getByRole('button', { name: '返回原 AU 地址' }…
+    102|       expect(screen.getByTestId('core-name')).toHaveTextContent('无 AU …
+       |                                               ^
+    103|       expect(screen.getByTestId('principal')).toHaveTextContent(nextSe…
+    104|       expect(screen.getByRole('button', { name: '操作' })).toBeDisabled(…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/pages/Identity.test.tsx > identity boundary > keeps the registering form and recovery code while a newly observed identity is still loading
+TestingLibraryElementError: Unable to find a label with the text of: 账号恢复码
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main
+      class="identity-page"
+    >
+      <p
+        role="status"
+      >
+        正在连接工作台…
+      </p>
+    </main>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main
+      class="identity-page"
+    >
+      <p
+        role="status"
+      >
+        正在连接工作台…
+      </p>
+    </main>
+  </div>
+</body>
+ ❯ waitForWrapper ../../node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/pages/Identity.test.tsx:222:25
+    220|     view.rerender(tree(<p>工作台内容</p>));
+    221|     await act(async () => { finish({ recovery_code: 'NEW-PRINCIPAL-REC…
+    222|     expect(await screen.findByLabelText('账号恢复码')).toHaveValue('NEW-PRI…
+       |                         ^
+    223|     await act(async () => { finishStatus(signedIn); });
+    224|     expect(screen.getByLabelText('账号恢复码')).toHaveValue('NEW-PRINCIPAL-…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  2 failed | 23 skipped (25)
+   Start at  20:47:06
+   Duration  2.60s (transform 156ms, setup 378ms, collect 336ms, tests 1.33s, environment 1.06s, prepare 306ms)
+
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path D:\Project\Union\web\console
+npm error workspace @union/console@0.1.0
+npm error location D:\Project\Union\web\console
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c vitest run src/app/governance-workspace.test.tsx src/pages/Identity.test.tsx -t ^^^"organization_scope^^^|newly^^^ observed^^^ identity^^^" --reporter=verbose

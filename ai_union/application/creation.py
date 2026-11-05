@@ -67,12 +67,11 @@ class CreationService:
             identifier(au_id)
         except Rejected as error:
             raise CoreError("invalid_request", str(error)) from error
-        entry, intent = self.catalog.authorized_entry(au_id, principal)
+        entry, intent = self.catalog.located_entry(au_id)
         try:
             directory, profile = resolve_directory(self.app.root, entry, creation=intent)
             require(profile == "core_v1", "AU profile 不兼容")
             result = self.core.read(directory, au_id, creation=intent)
-            require(result["au"]["governance_root"]["governor_principal_id"] == principal, "AU 治理根与原创建记录不一致")
         except Rejected as error:
             raise CoreError("incompatible_state", "AU 目录或治理记录不完整或不兼容；请保留原记录核对") from error
-        return result
+        return self.app.governance.project(result, principal)

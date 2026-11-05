@@ -1,0 +1,108 @@
+test_nonnullable_object_ids_are_rejected_before_any_persistent_change (tests.test_governance_persistence.GovernancePersistenceTests.test_nonnullable_object_ids_are_rejected_before_any_persistent_change) ... 
+  test_nonnullable_object_ids_are_rejected_before_any_persistent_change (tests.test_governance_persistence.GovernancePersistenceTests.test_nonnullable_object_ids_are_rejected_before_any_persistent_change) (kind='create_work', field='responsible_binding_id') ... FAIL
+  test_nonnullable_object_ids_are_rejected_before_any_persistent_change (tests.test_governance_persistence.GovernancePersistenceTests.test_nonnullable_object_ids_are_rejected_before_any_persistent_change) (kind='grant_mandate', field='work_id') ... FAIL
+  test_nonnullable_object_ids_are_rejected_before_any_persistent_change (tests.test_governance_persistence.GovernancePersistenceTests.test_nonnullable_object_ids_are_rejected_before_any_persistent_change) (kind='grant_mandate', field='binding_id') ... FAIL
+  test_nonnullable_object_ids_are_rejected_before_any_persistent_change (tests.test_governance_persistence.GovernancePersistenceTests.test_nonnullable_object_ids_are_rejected_before_any_persistent_change) (kind='begin_local_action', field='work_id') ... FAIL
+  test_nonnullable_object_ids_are_rejected_before_any_persistent_change (tests.test_governance_persistence.GovernancePersistenceTests.test_nonnullable_object_ids_are_rejected_before_any_persistent_change) (kind='begin_local_action', field='mandate_id') ... FAIL
+  test_nonnullable_object_ids_are_rejected_before_any_persistent_change (tests.test_governance_persistence.GovernancePersistenceTests.test_nonnullable_object_ids_are_rejected_before_any_persistent_change) (kind='submit_local_result', field='attempt_id') ... FAIL
+
+======================================================================
+FAIL: test_nonnullable_object_ids_are_rejected_before_any_persistent_change (tests.test_governance_persistence.GovernancePersistenceTests.test_nonnullable_object_ids_are_rejected_before_any_persistent_change) (kind='create_work', field='responsible_binding_id')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_governance_persistence.py", line 134, in test_nonnullable_object_ids_are_rejected_before_any_persistent_change
+    self.assertEqual((status, value.get("code")), (400, "invalid_request"))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (200, None) != (400, 'invalid_request')
+
+First differing element 0:
+200
+400
+
+- (200, None)
++ (400, 'invalid_request')
+
+======================================================================
+FAIL: test_nonnullable_object_ids_are_rejected_before_any_persistent_change (tests.test_governance_persistence.GovernancePersistenceTests.test_nonnullable_object_ids_are_rejected_before_any_persistent_change) (kind='grant_mandate', field='work_id')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_governance_persistence.py", line 134, in test_nonnullable_object_ids_are_rejected_before_any_persistent_change
+    self.assertEqual((status, value.get("code")), (400, "invalid_request"))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (200, None) != (400, 'invalid_request')
+
+First differing element 0:
+200
+400
+
+- (200, None)
++ (400, 'invalid_request')
+
+======================================================================
+FAIL: test_nonnullable_object_ids_are_rejected_before_any_persistent_change (tests.test_governance_persistence.GovernancePersistenceTests.test_nonnullable_object_ids_are_rejected_before_any_persistent_change) (kind='grant_mandate', field='binding_id')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_governance_persistence.py", line 134, in test_nonnullable_object_ids_are_rejected_before_any_persistent_change
+    self.assertEqual((status, value.get("code")), (400, "invalid_request"))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (200, None) != (400, 'invalid_request')
+
+First differing element 0:
+200
+400
+
+- (200, None)
++ (400, 'invalid_request')
+
+======================================================================
+FAIL: test_nonnullable_object_ids_are_rejected_before_any_persistent_change (tests.test_governance_persistence.GovernancePersistenceTests.test_nonnullable_object_ids_are_rejected_before_any_persistent_change) (kind='begin_local_action', field='work_id')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_governance_persistence.py", line 134, in test_nonnullable_object_ids_are_rejected_before_any_persistent_change
+    self.assertEqual((status, value.get("code")), (400, "invalid_request"))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (200, None) != (400, 'invalid_request')
+
+First differing element 0:
+200
+400
+
+- (200, None)
++ (400, 'invalid_request')
+
+======================================================================
+FAIL: test_nonnullable_object_ids_are_rejected_before_any_persistent_change (tests.test_governance_persistence.GovernancePersistenceTests.test_nonnullable_object_ids_are_rejected_before_any_persistent_change) (kind='begin_local_action', field='mandate_id')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_governance_persistence.py", line 134, in test_nonnullable_object_ids_are_rejected_before_any_persistent_change
+    self.assertEqual((status, value.get("code")), (400, "invalid_request"))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (200, None) != (400, 'invalid_request')
+
+First differing element 0:
+200
+400
+
+- (200, None)
++ (400, 'invalid_request')
+
+======================================================================
+FAIL: test_nonnullable_object_ids_are_rejected_before_any_persistent_change (tests.test_governance_persistence.GovernancePersistenceTests.test_nonnullable_object_ids_are_rejected_before_any_persistent_change) (kind='submit_local_result', field='attempt_id')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_governance_persistence.py", line 134, in test_nonnullable_object_ids_are_rejected_before_any_persistent_change
+    self.assertEqual((status, value.get("code")), (400, "invalid_request"))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (403, 'not_authorized') != (400, 'invalid_request')
+
+First differing element 0:
+403
+400
+
+- (403, 'not_authorized')
++ (400, 'invalid_request')
+
+----------------------------------------------------------------------
+Ran 1 test in 2.059s
+
+FAILED (failures=6)

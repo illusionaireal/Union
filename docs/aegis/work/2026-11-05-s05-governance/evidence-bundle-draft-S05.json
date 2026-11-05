@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "aegis.schema.v0",
+  "artifactKey": "near-term-route",
+  "type": "documentation-review",
+  "source": "docs/NEAR_TERM_DELIVERY.md",
+  "summary": "用户新增六项路线质询；一页用户交付路线经独立核对并单独提交5d6fba1。明确工程顺序、真实验收承接漏项、未认领负责人及旧WIP/里程碑问题；管理改造是建议，尚未实施。",
+  "verifier": "s05_boundary_review; coordinator",
+  "sliceId": "S05",
+  "evidenceStatus": "evidence-finalized",
+  "updatedAt": "2026-11-05"
+}

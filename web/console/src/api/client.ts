@@ -59,7 +59,7 @@ export const api = {
   exportModels: (organization_id: string) => '/api/model-export?' + query({organization_id}),
   modelCosts: (organization_id: string) => request<{vouchers:Array<{id:string;basis:string;period:string;amount_minor:number;currency:string}>}>('/api/model-costs?'+query({organization_id})),
   authStatus: () => request<{configured: boolean; authenticated: boolean; can_setup: boolean; account: string | null}>('/api/auth/status'),
-  auth: (action: 'setup' | 'login' | 'recover' | 'password' | 'logout', data: Record<string, unknown>) =>
+  auth: (action: 'setup' | 'register' | 'login' | 'recover' | 'password' | 'logout', data: Record<string, unknown>) =>
     request<{recovery_code?: string | null}>('/api/auth/' + action, {method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(data)}),
   gateways: (organization_id?: string, signal?: AbortSignal) =>
     request<GatewayList>('/api/gateways' + (organization_id ? '?' + query({ organization_id }) : ''), { signal }),

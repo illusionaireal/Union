@@ -1,0 +1,66 @@
+{
+  "candidate_source": "git checkout-index with only task-owned source staged; LF export",
+  "baseline": "d9ff5ad23201ee0813707a00f65a0b0d9012a3ee",
+  "archive_sha256": "cd0c571691ddfaa2c7afb06a5e783625ac785df6ec875c730714a44a51819a11",
+  "files_verified": 79,
+  "source_hashes_verified": 162,
+  "core_schemas": {
+    "auth": 2,
+    "catalog": 1
+  },
+  "core_au_schemas": [
+    1,
+    2
+  ],
+  "checks": [
+    "Fresh frontend build from exported staged sources",
+    "Full archive installed and every installed payload digest verified",
+    "Installed release tool activated candidate with real dependency/import/config preflight"
+  ],
+  "modeld_build": {
+    "reused_verified_s01_archive_sha256": "ce1abdf98bcf46eb634df27c8a5e214b89b41b123aba1e40c75a850c0466d273",
+    "unchanged_source_hashes_verified": 10,
+    "runtime_calls": 0
+  },
+  "real_model_calls": 0,
+  "backend_regression": {
+    "evidence": "candidate-backend-regression.json",
+    "regression_archive_sha256": "76c8f675ec4c133edafcb45e92852d04bf3806756238dff1c92b1095677d1f55",
+    "tests_on_regression_candidate": 166,
+    "runtime_python_and_script_files_identical": 54,
+    "source_changes_since_regression": [
+      "web/console/src/features/governance/governance.css"
+    ],
+    "scope": "166 tests ran on the earlier candidate; final candidate differs only in scoped CSS and receives its own install/import/upgrade/smoke verification."
+  },
+  "final_candidate_checks": {
+    "mode": "final_candidate_smoke",
+    "isolated_import_checks": 9,
+    "shipped_upgrade_cli": [
+      {
+        "from_auth": 0,
+        "to_auth": 2,
+        "original_bytes_preserved": true,
+        "had_stable_principal_before": false,
+        "principal_after_upgrade": "first_stable_identity_created",
+        "repeat_is_read_only": true,
+        "pristine_rollback_restored_input_schema": true
+      },
+      {
+        "from_auth": 1,
+        "to_auth": 2,
+        "original_bytes_preserved": true,
+        "had_stable_principal_before": true,
+        "principal_after_upgrade": "original_preserved",
+        "repeat_is_read_only": true,
+        "pristine_rollback_restored_input_schema": true
+      }
+    ],
+    "tests": 2,
+    "seconds": 3.725,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "exit_code": 0
+  }
+}

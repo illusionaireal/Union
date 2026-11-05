@@ -1,4 +1,5 @@
 /** Wire contracts of ai_union.console / observation. No host paths or credentials. */
+import type { GovernanceAUFields, GovernanceReadFields } from '../features/governance/types';
 export type CommandKind =
   | 'create'
   | 'create_v1'
@@ -21,32 +22,42 @@ export interface Session {
   core_protocol?: 'core.au.v1';
   principal_id?: string | null;
   session_scope?: string;
-  role: 'board' | 'observer';
+  role: 'board' | 'observer' | 'core';
   platform_admin?: boolean;
   organizations: { id: string; name: string; profile?: 'legacy_v0' | 'core_v1' }[];
   service_instance: string;
   executors: ('fixture' | 'codex' | 'api')[];
 }
-export interface CoreAURead {
+export interface CoreAUBase {
+  id: string;
+  name: string;
+  goal: string;
+  board_name: string;
+  version: number;
+  charter_version: number;
+  policy_version: number;
+  runtime_profile: 'core_v1';
+  autonomy_state: 'inactive';
+  resource_state: 'planned';
+  governance_root: { creator_principal_id: string; governor_principal_id: string };
+  charter: Charter;
+  resources: Pick<Resources, 'max_calls' | 'timeout_seconds'>;
+}
+export interface PreparedAURead {
   protocol: 'core.au.v1';
-  au: {
-    id: string;
-    name: string;
-    goal: string;
-    board_name: string;
+  au: CoreAUBase & {
     version: 0;
     charter_version: 1;
     policy_version: 0;
-    runtime_profile: 'core_v1';
     schema_version: 1;
-    autonomy_state: 'inactive';
-    resource_state: 'planned';
-    governance_root: { creator_principal_id: string; governor_principal_id: string };
-    charter: Charter;
-    resources: Pick<Resources, 'max_calls' | 'timeout_seconds'>;
   };
   capabilities: { read: true; autonomous_business: false; charter_enforcement: 'not_activated' };
 }
+export interface GovernedAURead extends GovernanceReadFields {
+  protocol: 'core.au.v1';
+  au: CoreAUBase & GovernanceAUFields;
+}
+export type CoreAURead = PreparedAURead | GovernedAURead;
 export interface ModelConnection {
   key_source?: string | null;
   catalog?: {context_window?:number; tool_call?:boolean; input_modalities?:string[]; revision?:string; cost?:{input?:number;output?:number}} | null;

@@ -2,6 +2,7 @@ import { useWorkspace } from '../app/workspace';
 import { Card, Json } from '../components/ui';
 import { CommandButton } from '../features/commands/CommandProvider';
 import { blocked } from '../features/commands/model';
+import { GovernanceButton } from '../features/governance/GovernanceProvider';
 import './PreparedAU.css';
 
 export function CreateAUIntro() {
@@ -37,6 +38,10 @@ export default function PreparedAU() {
     <Card title="业务自治尚未启用">
       <p>当前支持保存和读取准备记录。启用前还需完成可执行治理规则、资源授权与执行能力的验证。</p>
       <p>此次创建没有调用模型、安排成员工作或作出外部承诺。</p>
+    </Card>
+    <Card title="准备本地治理">
+      <p>先确定可执行的保留事项与失能程序。单主体可选择到期退出；采用后还需明确启用。</p>
+      <GovernanceButton kind="adopt_governance" primary />
     </Card>
     <Card title="初始治理主体">
       <p>创建者与初始治理主体为同一个核心账户。显示名称仅用于识别，不授予权限。</p>

@@ -2,7 +2,7 @@ import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { api } from '../api/client';
+import { api, ApiError } from '../api/client';
 import type { Session, Snapshot } from '../api/types';
 import { IdentityBoundary } from '../pages/Identity';
 import { WorkspaceProvider, useWorkspace } from './workspace';
@@ -92,7 +92,7 @@ describe('workspace organization transitions', () => {
     vi.spyOn(api, 'snapshot').mockImplementation(async (id) => snapshot(id));
     mount();
     await waitFor(() => expect(screen.getByTestId('organization')).toHaveTextContent('first'));
-    vi.mocked(api.session).mockRejectedValue(new Error('HTTP 401: session expired'));
+    vi.mocked(api.session).mockRejectedValue(new ApiError('session expired', 401));
     auth.mockResolvedValue({ configured: true, authenticated: false, can_setup: false, account: null });
     fireEvent.click(screen.getByText('Switch organization'));
     await waitFor(() => expect(screen.getByRole('heading', { name: '登录 UNION' })).toBeVisible());

@@ -1,0 +1,36 @@
+{
+  "task": "U-069",
+  "status": "done",
+  "scope": "controlled",
+  "wip": 5,
+  "wip_limit": 5,
+  "unchanged_other_tasks": 75,
+  "old_wip": [
+    {
+      "id": "U-007",
+      "status": "blocked",
+      "owner": "Codex（外部工程代理）"
+    },
+    {
+      "id": "U-041",
+      "status": "blocked",
+      "owner": "Codex / GPT-6.1 Sol（外部工程代理；GPT-6 Astra规划）"
+    },
+    {
+      "id": "U-044",
+      "status": "blocked",
+      "owner": "Codex（外部工程代理）"
+    },
+    {
+      "id": "U-056",
+      "status": "doing",
+      "owner": "Codex（外部工程代理）"
+    },
+    {
+      "id": "U-060",
+      "status": "doing",
+      "owner": "Codex（外部工程代理）"
+    }
+  ],
+  "adapter": "host-local unified project-management.mjs mutateLedger and MCP record; adapter changes not included in this delivery"
+}

@@ -1,0 +1,43 @@
+
+> union@0.0.0 management:render
+> node scripts/project-management.mjs render
+
+Management render: 15 modules, 8 milestones, 76 tasks; PASS
+
+> union@0.0.0 check:management
+> node scripts/project-management.mjs check && node --test tests/project-management.test.mjs tests/union-board.test.mjs
+
+Management check: 15 modules, 8 milestones, 76 tasks; PASS
+✔ rejects missing owners at start and unfinished dependencies, but permits honest unassigned backlog (5.1008ms)
+✔ completion requires scope, reviewer and existing evidence, and does not promote milestones (2.2678ms)
+✔ rejects duplicate IDs, unknown references and dependency cycles (1.8909ms)
+✔ blocked work needs an unblock action; already-started blocked work counts toward WIP (2.5973ms)
+✔ rejects evidence outside repository, invalid scope and malformed dates (2.2138ms)
+✔ deterministic generated views reject stale output and preserve surrounding narrative (17.4849ms)
+✔ flow summary keeps empty live evidence distinct from completion counts (1.1722ms)
+✔ milestone acceptance and task scope cannot be asserted without their review metadata (1.9098ms)
+✔ claim writes a lease and enters doing, and blocks a second harness until the lease expires (8.606ms)
+✔ claim refuses cards that are not ready and refuses to exceed the WIP limit (2.9657ms)
+✔ claim requires a real actor and refuses unknown cards (1.7969ms)
+✔ release only gives back an unstarted claim and clears the lease (2.0249ms)
+✔ done needs scope, reviewer, note and real evidence; completion clears the lease (3.4984ms)
+✔ a non-holder cannot move a card, and force cannot smuggle a foreign lease silently (2.0492ms)
+✔ blocked needs a reason and an unblock action, and started work cannot hide back in ready (2.2403ms)
+✔ board view exposes columns, the ready queue and lease state (14.1867ms)
+✔ serializeLedger keeps the ledger byte format (4 spaces, CRLF, trailing newline) (1.7558ms)
+✔ the ledger lock refuses a second writer, then recovers after the holder finishes (135.2645ms)
+✔ mutateLedger writes the ledger and rebuilds both generated views in one locked step (6.6379ms)
+✔ a rejected mutation leaves the ledger untouched (2.7062ms)
+✔ a doing card with no live lease can be claimed, but a live lease still blocks it (1.5348ms)
+✔ a view failure cannot leave a half-written ledger behind (2.9792ms)
+✔ a forced transition must record why and keeps the reason in the task history (3.0021ms)
+✔ a failed view write keeps the ledger unchanged, so the state stays recoverable (5.6539ms)
+✔ the MCP server passes note through, so a forced record can explain itself (103.5494ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 25
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 421.2545

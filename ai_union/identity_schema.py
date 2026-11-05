@@ -11,7 +11,7 @@ import uuid
 from .errors import Rejected, require
 from .locking import file_lock
 
-CURRENT = {"auth": 1, "catalog": 1}
+CURRENT = {"auth": 2, "catalog": 1}
 UPGRADE_RECEIPT = "core-identity-upgrade.json"
 LEGACY_COLUMNS = {
     "organizations": {"id", "folder"},
@@ -45,7 +45,7 @@ def _versions(cx):
     rows = cx.execute("SELECT auth_version,catalog_version FROM core_schema WHERE id=1").fetchall()
     require(len(rows) == 1 and all(type(n) is int and n >= 1 for n in rows[0]), "核心身份版本无效")
     versions = dict(zip(("auth", "catalog"), rows[0]))
-    if versions == CURRENT:
+    if versions in ({"auth": 1, "catalog": 1}, CURRENT):
         require({"write_revision", "upgrade_receipt"} <= marker, "核心身份版本缺少必要列")
         markers = cx.execute("SELECT id,write_revision FROM core_schema").fetchall()
         require(len(markers) == 1 and markers[0][0] == 1
@@ -57,6 +57,14 @@ def _versions(cx):
                 require(str(uuid.UUID(row[0])) == row[0], "核心主体标识无效")
             except (ValueError, TypeError, AttributeError) as error:
                 raise Rejected("核心主体标识无效") from error
+        if versions["auth"] == 2:
+            require("account_kind" in _columns(cx, "owner_account"), "核心账户缺少权限类别")
+            require({"username", "failures", "until"} <= _columns(cx, "account_login_limit"), "核心账户缺少独立登录限流记录")
+            kinds = [row[0] for row in cx.execute("SELECT account_kind FROM owner_account")]
+            require(all(kind in ("owner", "core") for kind in kinds) and kinds.count("owner") <= 1,
+                    "核心账户权限类别无效")
+            require(cx.execute("SELECT 1 FROM owner_account WHERE account_kind='core' AND platform_admin!=0").fetchone() is None,
+                    "普通核心账户不能拥有宿主平台权限")
     return versions
 
 
@@ -74,15 +82,15 @@ def versions(database):
 def _revision_triggers(cx):
     # Even an insert subsequently deleted invalidates an upgrade-time backup.
     # Other catalog changes are additionally covered by the full logical digest.
-    for table in LEGACY_COLUMNS:
+    for table in (*LEGACY_COLUMNS, "account_login_limit"):
         for action in ("INSERT", "UPDATE", "DELETE"):
-            cx.execute(f"CREATE TRIGGER core_revision_{table}_{action.lower()} AFTER {action} ON {table} "
+            cx.execute(f"CREATE TRIGGER IF NOT EXISTS core_revision_{table}_{action.lower()} AFTER {action} ON {table} "
                        "BEGIN UPDATE core_schema SET write_revision=write_revision+1 WHERE id=1; END")
 
 
 def _marker(cx):
     cx.execute("CREATE TABLE core_schema(id INTEGER PRIMARY KEY CHECK(id=1), auth_version INTEGER NOT NULL, catalog_version INTEGER NOT NULL, write_revision INTEGER NOT NULL, upgrade_receipt TEXT)")
-    cx.execute("INSERT INTO core_schema VALUES(1,1,1,0,NULL)")
+    cx.execute("INSERT INTO core_schema VALUES(1,?,?,0,NULL)", (CURRENT["auth"], CURRENT["catalog"]))
     _revision_triggers(cx)
 
 
@@ -102,9 +110,11 @@ def ensure_current(database):
         require(_versions(cx) is None, "核心身份目录在初始化前发生变化")
         cx.execute("CREATE TABLE organizations(id TEXT PRIMARY KEY, folder TEXT NOT NULL, profile TEXT NOT NULL DEFAULT 'legacy_v0')")
         cx.execute("CREATE TABLE creations(id TEXT PRIMARY KEY, payload TEXT NOT NULL, receipt TEXT NOT NULL, folder TEXT NOT NULL, profile TEXT NOT NULL DEFAULT 'legacy_v0', creator_principal_id TEXT, allocated_au_id TEXT)")
-        cx.execute("CREATE TABLE owner_account(username TEXT PRIMARY KEY, salt TEXT NOT NULL, password_hash TEXT NOT NULL, recovery_hash TEXT NOT NULL, platform_admin INTEGER NOT NULL, principal_id TEXT NOT NULL UNIQUE)")
+        cx.execute("CREATE TABLE owner_account(username TEXT PRIMARY KEY, salt TEXT NOT NULL, password_hash TEXT NOT NULL, recovery_hash TEXT NOT NULL, platform_admin INTEGER NOT NULL, principal_id TEXT NOT NULL UNIQUE, account_kind TEXT NOT NULL DEFAULT 'owner' CHECK(account_kind IN ('owner','core')))")
+        cx.execute("CREATE UNIQUE INDEX core_single_owner ON owner_account(account_kind) WHERE account_kind='owner'")
         cx.execute("CREATE TABLE login_sessions(digest TEXT PRIMARY KEY, username TEXT NOT NULL, data TEXT NOT NULL, expires REAL NOT NULL, deadline REAL NOT NULL)")
         cx.execute("CREATE TABLE login_limit(id INTEGER PRIMARY KEY, failures INTEGER NOT NULL, until REAL NOT NULL)")
+        cx.execute("CREATE TABLE account_login_limit(username TEXT PRIMARY KEY, failures INTEGER NOT NULL, until REAL NOT NULL)")
         _marker(cx)
     database.chmod(0o600)
 
@@ -158,7 +168,7 @@ def _upgrade(root, database):
             _write_receipt(root, receipt)
             return receipt | {"already_current": True}
         return {"schema": CURRENT, "already_current": True, "backup": None}
-    require(current == {"auth": 0, "catalog": 0}, "只能显式升级已知旧版身份目录")
+    require(current in ({"auth": 0, "catalog": 0}, {"auth": 1, "catalog": 1}), "只能显式升级已知旧版身份目录")
     backup = root / ("console.pre-core-v1." + uuid.uuid4().hex + ".sqlite3")
     fd = os.open(backup, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
     os.close(fd)
@@ -167,17 +177,25 @@ def _upgrade(root, database):
     with closing(sqlite3.connect(database)) as cx, cx:
         cx.execute("BEGIN IMMEDIATE")
         require(_versions(cx) == current, "升级前身份目录版本发生变化")
-        cx.execute("ALTER TABLE owner_account ADD COLUMN principal_id TEXT")
-        for (username,) in cx.execute("SELECT username FROM owner_account").fetchall():
-            cx.execute("UPDATE owner_account SET principal_id=? WHERE username=?", (str(uuid.uuid4()), username))
-        cx.execute("CREATE UNIQUE INDEX core_owner_principal ON owner_account(principal_id)")
-        cx.execute("ALTER TABLE organizations ADD COLUMN profile TEXT NOT NULL DEFAULT 'legacy_v0'")
-        cx.execute("ALTER TABLE creations ADD COLUMN profile TEXT NOT NULL DEFAULT 'legacy_v0'")
-        cx.execute("ALTER TABLE creations ADD COLUMN creator_principal_id TEXT")
-        cx.execute("ALTER TABLE creations ADD COLUMN allocated_au_id TEXT")
+        if current["auth"] == 0:
+            cx.execute("ALTER TABLE owner_account ADD COLUMN principal_id TEXT")
+            for (username,) in cx.execute("SELECT username FROM owner_account").fetchall():
+                cx.execute("UPDATE owner_account SET principal_id=? WHERE username=?", (str(uuid.uuid4()), username))
+            cx.execute("CREATE UNIQUE INDEX core_owner_principal ON owner_account(principal_id)")
+            cx.execute("ALTER TABLE organizations ADD COLUMN profile TEXT NOT NULL DEFAULT 'legacy_v0'")
+            cx.execute("ALTER TABLE creations ADD COLUMN profile TEXT NOT NULL DEFAULT 'legacy_v0'")
+            cx.execute("ALTER TABLE creations ADD COLUMN creator_principal_id TEXT")
+            cx.execute("ALTER TABLE creations ADD COLUMN allocated_au_id TEXT")
+        cx.execute("ALTER TABLE owner_account ADD COLUMN account_kind TEXT NOT NULL DEFAULT 'owner' CHECK(account_kind IN ('owner','core'))")
+        cx.execute("CREATE UNIQUE INDEX core_single_owner ON owner_account(account_kind) WHERE account_kind='owner'")
+        cx.execute("CREATE TABLE account_login_limit(username TEXT PRIMARY KEY, failures INTEGER NOT NULL, until REAL NOT NULL)")
         cx.execute("DELETE FROM login_sessions")
-        _marker(cx)
-        receipt = {"protocol": "core.identity.upgrade.v1", "schema": CURRENT, "backup": backup.name,
+        if current["auth"] == 0:
+            _marker(cx)
+        else:
+            cx.execute("UPDATE core_schema SET auth_version=2,upgrade_receipt=NULL WHERE id=1")
+            _revision_triggers(cx)
+        receipt = {"protocol": "core.identity.upgrade.v1", "from_schema": current, "schema": CURRENT, "backup": backup.name,
                    "backup_sha256": hashlib.sha256(backup.read_bytes()).hexdigest(), "after_sha256": _digest_in(cx)}
         cx.execute("UPDATE core_schema SET upgrade_receipt=? WHERE id=1", (json.dumps(receipt, sort_keys=True),))
     _write_receipt(root, receipt)
@@ -199,7 +217,7 @@ def _rollback(root, database):
             "升级后已有写入或目录变化；禁止用旧备份抹去新事实")
     with closing(sqlite3.connect(backup)) as source, closing(sqlite3.connect(database)) as target:
         source.backup(target)
-    return {"schema": {"auth": 0, "catalog": 0}, "rolled_back": True, "backup": backup.name}
+    return {"schema": receipt["from_schema"], "rolled_back": True, "backup": backup.name}
 
 
 def upgrade(root, *, services_stopped=False, rollback=False):

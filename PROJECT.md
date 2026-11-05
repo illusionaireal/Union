@@ -32,7 +32,7 @@
 <!-- management:modules:start -->
 | 模块 | 已实现 | 验收范围 | 下一缺口 | 证据 |
 | --- | --- | --- | --- | --- |
-| 组织治理与状态 / ai-union | 版本化章程、成员/岗位/任职、组织决定、SQLite 持久化 | V1；真实筹建用过部分机制 | U-023兼容投影/治理描述和U-034申请机制已受控验证；真实运行职责调整、企业身份集成仍待验 | [specs/001-org-bootstrap/spec.md](specs/001-org-bootstrap/spec.md)、[evidence/014-real-loop/README.md](evidence/014-real-loop/README.md)、[evidence/022-au-contract-implementation/README.md](evidence/022-au-contract-implementation/README.md) |
+| 组织治理与状态 / ai-union | V1稳定核心主体、本地治理、旧规则修章、可信接班/超时退出、有限授权与原Work责任交接；legacy版本化章程/决定等机制保留 | S01/S05受控工程及实际浏览器已验证；legacy真实筹建只证明原场景，V1真实业务治理未验 | 真实模型工作中的治理修订、撤权和责任交接未验；计划指向S06/U-070，但主账acceptance尚需显式补入。企业身份集成仍未验，不作近期单AU成果前置。 | [specs/001-org-bootstrap/spec.md](specs/001-org-bootstrap/spec.md)、[evidence/014-real-loop/README.md](evidence/014-real-loop/README.md)、[evidence/022-au-contract-implementation/README.md](evidence/022-au-contract-implementation/README.md)、[specs/053-union-rewrite/s05-contract.md](specs/053-union-rewrite/s05-contract.md)、[evidence/057-s05-governance/README.md](evidence/057-s05-governance/README.md) |
 | 筹建与自我调整 / ai-union | 分批筹建草案、成立事务、组织更新工具 | V2：试验组织真实成立 | 当前公司成立；证明初始化之后仍能按目标扩展和调整 | [specs/010-organization-harness/spec.md](specs/010-organization-harness/spec.md)、[evidence/014-real-loop/README.md](evidence/014-real-loop/README.md) |
 | 成员执行循环 / ai-union | Deep Agents / LangGraph、工具调用、任务检查点 | V2：规划文本交付 | 有效业务成果、长任务可靠性、失败后的正确后续动作 | [docs/ORGANIZATION_HARNESS.md](docs/ORGANIZATION_HARNESS.md)、[evidence/014-real-loop/README.md](evidence/014-real-loop/README.md) |
 | 模型连接 / 公共接入 | AU独立多连接/导入导出、版本化目录、四协议、受限凭据、岗位/回退、上下文/媒体及四类费用 | V2历史局部；043新增范围V1受控验证与独立权限费用复核 | 真实供应商各协议工具往返、私有订阅最终账号至AU执行、真实自托管与整体031对标仍未验 | [docs/API_MODELS.md](docs/API_MODELS.md)、[evidence/011-openrouter-smoke/README.md](evidence/011-openrouter-smoke/README.md)、[evidence/027-gateway-management/README.md](evidence/027-gateway-management/README.md)、[evidence/043-usable-model-access/README.md](evidence/043-usable-model-access/README.md) |
@@ -75,7 +75,7 @@
 任务唯一主账为 `management/project.json`，保留 U 编号；以下视图由 `npm run management:render` 生成。实际负责人和所需责任角色分开，未认领不虚构为公司成员。
 
 <!-- management:tasks:start -->
-数据日期：2026-11-05；在制 5/5，就绪 1，阻塞 7，完成 35。这是工作项统计，不是产品完成率。
+数据日期：2026-11-05；在制 5/5，就绪 1，阻塞 7，完成 36。这是工作项统计，不是产品完成率。
 
 | 任务 | 内容 | 优先级 / 阶段 | 状态 | 实际负责人 | 依赖 |
 | --- | --- | --- | --- | --- | --- |
@@ -139,7 +139,7 @@
 | [U-060](TASKS.md#u-060) | 把 OpenCode Go 订阅接成 AU 可用模型连接 | P1 / G0 | 进行中 | Codex（外部工程代理） | — |
 | [U-067](TASKS.md#u-067) | 按垂直切片重组筹建与依赖工作执行 | P1 / G1 | 待依赖 | 待认领 | U-066, U-069, U-072 |
 | [U-068](TASKS.md#u-068) | 贯通正式成果反馈与后续交付契约 | P1 / G2 | 待依赖 | 待认领 | U-067 |
-| [U-069](TASKS.md#u-069) | 按有效章程重组治理调整与任职交接 | P1 / G2 | 待依赖 | 待认领 | U-066 |
+| [U-069](TASKS.md#u-069) | 按有效章程重组治理调整与任职交接 | P1 / G2 | 完成 | codex/gpt-6/session-01a1a9fa-d89d-7091-ba52-c31a1df00b23 | U-066 |
 | [U-070](TASKS.md#u-070) | 贯通等待重启与未知执行核对 | P1 / G3 | 待依赖 | 待认领 | U-068, U-069 |
 | [U-071](TASKS.md#u-071) | 通过核心公开契约接入可选平台和管理工具 | P1 / G0 | 待依赖 | 待认领 | U-066, U-067 |
 | [U-072](TASKS.md#u-072) | V1核心中配置模型并完成受控工具往返 | P1 / G0 | 待依赖 | 待认领 | U-066, U-069 |

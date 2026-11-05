@@ -1,0 +1,13 @@
+{
+  "checks": [
+    "Account exposes its stable principal for explicit nominations and appointments",
+    "Registration retains the recovery code through background authentication reads",
+    "Account exposes its stable principal for explicit nominations and appointments",
+    "Registered core participant starts with no AU, legacy or platform permissions",
+    "Registration retains the recovery code through background authentication reads",
+    "Account exposes its stable principal for explicit nominations and appointments",
+    "Registered core participant starts with no AU, legacy or platform permissions"
+  ],
+  "error": "The UI did not refresh the saved command version",
+  "errors": []
+}

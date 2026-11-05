@@ -1,0 +1,1387 @@
+
+> @union/console@0.1.0 test
+> vitest run src/features/governance/governance.test.tsx -t command endpoint 401|identity verification fails --reporter=verbose
+
+
+ RUN  v3.2.7 D:/Project/Union/web/console
+
+ ↓ src/features/governance/Governance.test.tsx > governance user journey > keeps account-level AU creation available from a governed overview page without governing commands
+ ↓ src/features/governance/Governance.test.tsx > governance user journey > keeps account-level AU creation available from a governed tasks page without governing commands
+ ↓ src/features/governance/Governance.test.tsx > governance user journey > keeps account-level AU creation available from a governed settings page without governing commands
+ ↓ src/features/governance/Governance.test.tsx > governance user journey > renders server readiness gaps without misreporting missing governing identities as an expired deadline
+ ↓ src/features/governance/Governance.test.tsx > governance user journey > separates the original root from current authority and renders only server-provided actions
+ ↓ src/features/governance/Governance.test.tsx > governance user journey > previews and adopts a single-principal exit procedure without activating business
+ ↓ src/features/governance/Governance.test.tsx > governance user journey > configures an explicit successor principal without treating its name as authority
+ ↓ src/features/governance/Governance.test.tsx > governance user journey > previews and explicitly submits acknowledge_recovery using the current server version
+ ↓ src/features/governance/Governance.test.tsx > governance user journey > previews and explicitly submits activate_governance using the current server version
+ ↓ src/features/governance/Governance.test.tsx > governance user journey > previews and explicitly submits renew_governance using the current server version
+ ↓ src/features/governance/Governance.test.tsx > governance user journey > previews and explicitly submits accept_governance using the current server version
+ ↓ src/features/governance/Governance.test.tsx > governance user journey > previews and explicitly submits recover_governance using the current server version
+ ↓ src/features/governance/Governance.test.tsx > governance user journey > previews and explicitly submits exit_governance using the current server version
+ ↓ src/features/governance/Governance.test.tsx > governance user journey > nominates another core identity and offers explicit cancellation of an existing nomination
+ ↓ src/features/governance/Governance.test.tsx > governance user journey > revises only the displayed charter fields while preserving other stored fields
+ ↓ src/features/governance/Governance.test.tsx > governance user journey > retains a new goal draft and focus across same-principal renewal and polling
+ ↓ src/features/governance/Governance.test.tsx > controlled responsibility forms > appoints a human member with separate generated member and responsibility IDs
+ ↓ src/features/governance/Governance.test.tsx > controlled responsibility forms > uses existing record choices for 'update_appointment' and sends its exact responsibility payload
+ ↓ src/features/governance/Governance.test.tsx > controlled responsibility forms > uses existing record choices for 'create_work' and sends its exact responsibility payload
+ ↓ src/features/governance/Governance.test.tsx > controlled responsibility forms > uses existing record choices for 'update_work' and sends its exact responsibility payload
+ ↓ src/features/governance/Governance.test.tsx > controlled responsibility forms > uses existing record choices for 'grant_mandate' and sends its exact responsibility payload
+ ↓ src/features/governance/Governance.test.tsx > controlled responsibility forms > uses existing record choices for 'revoke_mandate' and sends its exact responsibility payload
+ ↓ src/features/governance/Governance.test.tsx > controlled responsibility forms > uses existing record choices for 'handoff_responsibility' and sends its exact responsibility payload
+ ↓ src/features/governance/Governance.test.tsx > controlled responsibility forms > uses existing record choices for 'begin_local_action' and sends its exact responsibility payload
+ ↓ src/features/governance/Governance.test.tsx > controlled responsibility forms > uses existing record choices for 'submit_local_result' and sends its exact responsibility payload
+ ↓ src/features/governance/Governance.test.tsx > controlled responsibility forms > uses existing record choices for 'accept_local_result' and sends its exact responsibility payload
+ × src/features/governance/Governance.test.tsx > governance command recovery boundaries > keeps an editable draft after a command endpoint 401 with code undefined 564ms
+   → Unable to find an accessible element with the role "button" and name "预览影响"
+
+Here are the accessible roles:
+
+  link:
+
+  Name "跳转到正文":
+  [36m<a[39m
+    [33mclass[39m=[32m"skip"[39m
+    [33mhref[39m=[32m"#main"[39m
+  [36m/>[39m
+
+  Name "u UNION AI-UNION / AU":
+  [36m<a[39m
+    [33maria-current[39m=[32m"page"[39m
+    [33mclass[39m=[32m"brand active"[39m
+    [33mdata-discover[39m=[32m"true"[39m
+    [33mhref[39m=[32m"/overview?organization=core-au"[39m
+  [36m/>[39m
+
+  Name "AU与治理":
+  [36m<a[39m
+    [33maria-current[39m=[32m"page"[39m
+    [33mclass[39m=[32m"nav-button active"[39m
+    [33mdata-discover[39m=[32m"true"[39m
+    [33mdata-nav[39m=[32m"overview"[39m
+    [33mhref[39m=[32m"/overview?organization=core-au"[39m
+  [36m/>[39m
+
+  Name "责任与工作":
+  [36m<a[39m
+    [33mclass[39m=[32m"nav-button"[39m
+    [33mdata-discover[39m=[32m"true"[39m
+    [33mdata-nav[39m=[32m"tasks"[39m
+    [33mhref[39m=[32m"/tasks?organization=core-au"[39m
+  [36m/>[39m
+
+  Name "章程与记录":
+  [36m<a[39m
+    [33mclass[39m=[32m"nav-button"[39m
+    [33mdata-discover[39m=[32m"true"[39m
+    [33mdata-nav[39m=[32m"settings"[39m
+    [33mhref[39m=[32m"/settings?organization=core-au"[39m
+  [36m/>[39m
+
+  Name "责任与工作":
+  [36m<a[39m
+    [33mclass[39m=[32m"text-button"[39m
+    [33mdata-discover[39m=[32m"true"[39m
+    [33mhref[39m=[32m"/tasks?organization=core-au"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  complementary:
+
+  Name "工作台导航":
+  [36m<aside[39m
+    [33maria-label[39m=[32m"工作台导航"[39m
+    [33mclass[39m=[32m"sidebar"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  combobox:
+
+  Name "当前组织":
+  [36m<select[39m
+    [33maria-label[39m=[32m"当前组织"[39m
+    [33mid[39m=[32m"org-select"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  option:
+
+  Name "内部记录 AU":
+  [36m<option[39m
+    [33mvalue[39m=[32m"core-au"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  navigation:
+
+  Name "":
+  [36m<nav[39m
+    [33mid[39m=[32m"navigation"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  strong:
+
+  Name "":
+  [36m<strong[39m
+    [33mid[39m=[32m"role-label"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<strong[39m
+    [33mid[39m=[32m"breadcrumb-page"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  banner:
+
+  Name "":
+  [36m<header[39m
+    [33mclass[39m=[32m"topbar"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "刷新":
+  [36m<button[39m
+    [33mclass[39m=[32m"button secondary compact"[39m
+    [33mid[39m=[32m"refresh"[39m
+  [36m/>[39m
+
+  Name "修改密码":
+  [36m<button[39m
+    [33mclass[39m=[32m"button secondary"[39m
+  [36m/>[39m
+
+  Name "退出登录":
+  [36m<button[39m
+    [33mclass[39m=[32m"button secondary"[39m
+  [36m/>[39m
+
+  Name "查询原请求 b0c9dbd3-9f65-43c8-8b95-74cdf962ea72":
+  [36m<button[39m
+    [33maria-label[39m=[32m"查询原请求 b0c9dbd3-9f65-43c8-8b95-74cdf962ea72"[39m
+    [33mclass[39m=[32m"text-button"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "更新目标":
+  [36m<button[39m
+    [33mclass[39m=[32m"button secondary"[39m
+    [33mdata-governance[39m=[32m"set_goal"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "启用本地治理":
+  [36m<button[39m
+    [33mclass[39m=[32m"button primary"[39m
+    [33mdata-governance[39m=[32m"activate_governance"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "续期治理":
+  [36m<button[39m
+    [33mclass[39m=[32m"button secondary"[39m
+    [33mdata-governance[39m=[32m"renew_governance"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "确认恢复职责":
+  [36m<button[39m
+    [33mclass[39m=[32m"button secondary"[39m
+    [33mdata-governance[39m=[32m"acknowledge_recovery"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "确认接任治理":
+  [36m<button[39m
+    [33mclass[39m=[32m"button primary"[39m
+    [33mdata-governance[39m=[32m"accept_governance"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "按失能程序接任":
+  [36m<button[39m
+    [33mclass[39m=[32m"button secondary"[39m
+    [33mdata-governance[39m=[32m"recover_governance"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "调整治理程序":
+  [36m<button[39m
+    [33mclass[39m=[32m"button secondary"[39m
+    [33mdata-governance[39m=[32m"configure_governance"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "提名治理接任者":
+  [36m<button[39m
+    [33mclass[39m=[32m"button secondary"[39m
+    [33mdata-governance[39m=[32m"nominate_governor"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "退出治理":
+  [36m<button[39m
+    [33mclass[39m=[32m"button secondary"[39m
+    [33mdata-governance[39m=[32m"exit_governance"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "创建另一个 AU":
+  [36m<button[39m
+    [33mclass[39m=[32m"button secondary"[39m
+    [33mdata-command[39m=[32m"create_v1"[39m
+    [33mtitle[39m=[32m"创建 AU"[39m
+  [36m/>[39m
+
+  Name "旧版兼容试验（含小说）":
+  [36m<button[39m
+    [33mclass[39m=[32m"button secondary"[39m
+    [33mdata-command[39m=[32m"create"[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mtitle[39m=[32m"旧版操作需要受权发起人会话"[39m
+  [36m/>[39m
+
+  Name "关闭":
+  [36m<button[39m
+    [33maria-label[39m=[32m"关闭"[39m
+    [33mclass[39m=[32m"icon-button"[39m
+    [33mid[39m=[32m"close-governance"[39m
+  [36m/>[39m
+
+  Name "取消":
+  [36m<button[39m
+    [33mclass[39m=[32m"button secondary"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "查询原请求回执":
+  [36m<button[39m
+    [33mclass[39m=[32m"button secondary"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  main:
+
+  Name "":
+  [36m<main[39m
+    [33mid[39m=[32m"main"[39m
+    [33mtabindex[39m=[32m"-1"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "账号与登录":
+  [36m<h2 />[39m
+
+  Name "AU与治理":
+  [36m<h1[39m
+    [33mid[39m=[32m"page-title"[39m
+  [36m/>[39m
+
+  Name "内部记录 AU":
+  [36m<h2 />[39m
+
+  Name "当前治理与期限":
+  [36m<h2 />[39m
+
+  Name "已采用的治理程序":
+  [36m<h2 />[39m
+
+  Name "内部责任与工作":
+  [36m<h2 />[39m
+
+  Name "更新目标":
+  [36m<h2[39m
+    [33mid[39m=[32m"operation-title"[39m
+  [36m/>[39m
+
+  Name "结果尚未确认":
+  [36m<h3 />[39m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p[39m
+    [33mid[39m=[32m"page-description"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"au-text"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"governance-boundary"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"form-note"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  --------------------------------------------------
+  textbox:
+
+  Name "当前核心身份标识":
+  [36m<input[39m
+    [33maria-label[39m=[32m"当前核心身份标识"[39m
+    [33mreadonly[39m=[32m""[39m
+    [33mvalue[39m=[32m"ad0d511c-eac5-4acf-b92c-6100b3d55ea9"[39m
+  [36m/>[39m
+
+  Name "AU目标":
+  [36m<textarea[39m
+    [33mmaxlength[39m=[32m"100000"[39m
+    [33mname[39m=[32m"goal"[39m
+    [33mrequired[39m=[32m""[39m
+    [33mrows[39m=[32m"3"[39m
+  [36m/>[39m
+
+  Name "决定依据":
+  [36m<textarea[39m
+    [33mmaxlength[39m=[32m"10000"[39m
+    [33mname[39m=[32m"reason"[39m
+    [33mrequired[39m=[32m""[39m
+    [33mrows[39m=[32m"3"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  group:
+
+  Name "":
+  [36m<details[39m
+    [33mclass[39m=[32m"governance-recovery"[39m
+    [33mopen[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<details />[39m
+
+  Name "":
+  [36m<fieldset[39m
+    [33mdisabled[39m=[32m""[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  list:
+
+  Name "":
+  [36m<ul />[39m
+
+  --------------------------------------------------
+  listitem:
+
+  Name "":
+  [36m<li />[39m
+
+  --------------------------------------------------
+  region:
+
+  Name "本地治理":
+  [36m<section[39m
+    [33maria-label[39m=[32m"本地治理"[39m
+    [33mclass[39m=[32m"governance-workspace"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  term:
+
+  Name "":
+  [36m<dt />[39m
+
+  Name "":
+  [36m<dt />[39m
+
+  Name "":
+  [36m<dt />[39m
+
+  Name "":
+  [36m<dt />[39m
+
+  Name "":
+  [36m<dt />[39m
+
+  Name "":
+  [36m<dt />[39m
+
+  Name "":
+  [36m<dt />[39m
+
+  --------------------------------------------------
+  definition:
+
+  Name "":
+  [36m<dd />[39m
+
+  Name "":
+  [36m<dd />[39m
+
+  Name "":
+  [36m<dd />[39m
+
+  Name "":
+  [36m<dd />[39m
+
+  Name "":
+  [36m<dd />[39m
+
+  Name "":
+  [36m<dd />[39m
+
+  Name "":
+  [36m<dd />[39m
+
+  --------------------------------------------------
+  contentinfo:
+
+  Name "":
+  [36m<footer[39m
+    [33mclass[39m=[32m"data-footer"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  dialog:
+
+  Name "更新目标":
+  [36m<dialog[39m
+    [33maria-labelledby[39m=[32m"operation-title"[39m
+    [33mid[39m=[32m"governance-dialog"[39m
+    [33mopen[39m=[32m""[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  alert:
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"operation-error"[39m
+    [33mrole[39m=[32m"alert"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  status:
+
+  Name "":
+  [36m<div[39m
+    [33mclass[39m=[32m"governance-result"[39m
+    [33mrole[39m=[32m"status"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<a[39m
+      [33mclass[39m=[32m"skip"[39m
+      [33mhref[39m=[32m"#main"[39m
+    [36m>[39m
+      [0m跳转到正文[0m
+    [36m</a>[39m
+    [36m<aside[39m
+      [33maria-label[39m=[32m"工作台导航"[39m
+      [33mclass[39m=[32m"sidebar"[39m
+    [36m>[39m
+      [36m<a[39m
+        [33maria-current[39m=[32m"page"[39m
+        [33mclass[39m=[32m"brand active"[39m
+        [33mdata-discover[39m=[32m"true"[39m
+        [33mhref[39m=[32m"/overview?organization=core-au"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"brand-symbol"[39m
+        [36m>[39m
+          [0mu[0m
+        [36m</span>[39m
+        [36m<span>[39m
+          [0mUNION[0m
+          [36m<small>[39m
+            [0mAI-UNION / AU[0m
+          [36m</small>[39m
+        [36m</span>[39m
+      [36m</a>[39m
+      [36m<label[39m
+        [33mclass[39m=[32m"workspace-switch"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"org-icon"[39m
+        [36m>[39m
+          [0m内[0m
+        [36m</span>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"workspace-select"[39m
+        [36m>[39m
+          [36m<small>[39m
+            [0m当前 AU[0m
+          [36m</small>[39m
+          [36m<select[39m
+            [33maria-label[39m=[32m"当前组织"[39m
+            [33mid[39m=[32m"org-select"[39m
+          [36m>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"core-au"[39m
+            [36m>[39m
+              [0m内部记录 AU[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</span>[39m
+      [36m</label>[39m
+      [36m<nav[39m
+        [33mid[39m=[32m"navigation"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"nav-entry"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"nav-caption"[39m
+          [36m>[39m
+            [0m工作空间[0m
+          [36m</div>[39m
+          [36m<a[39m
+            [33maria-current[39m=[32m"page"[39m
+            [33mclass[39m=[32m"nav-button active"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mdata-nav[39m=[32m"overview"[39m
+            [33mhref[39m=[32m"/overview?organization=core-au"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-layout-dashboard"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"19"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.7"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"19"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"9"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"3"[39m
+                [33my[39m=[32m"3"[39m
+              [36m/>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"5"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"14"[39m
+                [33my[39m=[32m"3"[39m
+              [36m/>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"9"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"14"[39m
+                [33my[39m=[32m"12"[39m
+              [36m/>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"5"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"3"[39m
+                [33my[39m=[32m"16"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [36m<span>[39m
+              [0mAU与治理[0m
+            [36m</span>[39m
+          [36m</a>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"nav-entry"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"nav-button"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mdata-nav[39m=[32m"tasks"[39m
+            [33mhref[39m=[32m"/tasks?organization=core-au"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-list-checks"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"19"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.7"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"19"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M13 5h8"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M13 12h8"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M13 19h8"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"m3 17 2 2 4-4"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"m3 7 2 2 4-4"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [36m<span>[39m
+              [0m责任与工作[0m
+            [36m</span>[39m
+          [36m</a>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"nav-entry"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"nav-button"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mdata-nav[39m=[32m"settings"[39m
+            [33mhref[39m=[32m"/settings?organization=core-au"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-settings"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"19"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.7"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"19"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+     ...
+ ✓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > keeps an editable draft after a command endpoint 401 with code not_authenticated 208ms
+ ✓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > retains the original request when identity verification fails with 401/'not_authenticated' after a successful POST 230ms
+ ✓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > retains the original request when identity verification fails with 401/undefined after a successful POST 209ms
+ ✓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > retains the original request when identity verification fails with 409/'incompatible_state' after a successful POST 230ms
+ ↓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > treats an explicit unsupported adoption as a known rejection and keeps an editable draft
+ ↓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > recognizes a rejected original receipt even when the server version is lower than its requested base
+ ↓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > preserves rejected input and requires a new preview after a server version rejection
+ ↓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > keeps an unknown original ID and only queries it without persisting or replaying its content
+ ↓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > keeps query errors next to the original request and never offers a replay
+ ↓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > does not create a second request for the same action after closing an unknown result
+ ↓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > keeps an unknown action local and lets a different work proceed with its own request
+ ↓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > recovers an original request after reload onto a new service instance with the same principal
+ ↓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > refreshes evidence-only rejection while retaining the unadopted content and its original request
+ ↓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > does not send when browser request-identity storage is unavailable
+ ↓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > stops before POST when the current AU version changed after preview
+ ↓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > stops a preflight when principal_id changes before the workspace poll
+ ↓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > stops a preflight when service_instance changes before the workspace poll
+ ↓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > does not send a command when the user cancels a pending identity preflight
+ ↓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > rejects an unrelated receipt with a mismatched id
+ ↓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > rejects an unrelated receipt with a mismatched kind
+ ↓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > rejects an unrelated receipt with a mismatched organization_id
+ ↓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > rejects an unrelated receipt with a mismatched actor_principal_id
+ ↓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > rejects an unrelated receipt with a mismatched base_version
+ ↓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > does not apply a late POST response after the current principal_id changed
+ ↓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > does not apply a late POST response after the current service_instance changed
+ ↓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > lets the original issuer query its own receipt after losing current AU access
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/governance/Governance.test.tsx > governance command recovery boundaries > keeps an editable draft after a command endpoint 401 with code undefined
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "预览影响"
+
+Here are the accessible roles:
+
+  link:
+
+  Name "跳转到正文":
+  <a
+    class="skip"
+    href="#main"
+  />
+
+  Name "u UNION AI-UNION / AU":
+  <a
+    aria-current="page"
+    class="brand active"
+    data-discover="true"
+    href="/overview?organization=core-au"
+  />
+
+  Name "AU与治理":
+  <a
+    aria-current="page"
+    class="nav-button active"
+    data-discover="true"
+    data-nav="overview"
+    href="/overview?organization=core-au"
+  />
+
+  Name "责任与工作":
+  <a
+    class="nav-button"
+    data-discover="true"
+    data-nav="tasks"
+    href="/tasks?organization=core-au"
+  />
+
+  Name "章程与记录":
+  <a
+    class="nav-button"
+    data-discover="true"
+    data-nav="settings"
+    href="/settings?organization=core-au"
+  />
+
+  Name "责任与工作":
+  <a
+    class="text-button"
+    data-discover="true"
+    href="/tasks?organization=core-au"
+  />
+
+  --------------------------------------------------
+  complementary:
+
+  Name "工作台导航":
+  <aside
+    aria-label="工作台导航"
+    class="sidebar"
+  />
+
+  --------------------------------------------------
+  combobox:
+
+  Name "当前组织":
+  <select
+    aria-label="当前组织"
+    id="org-select"
+  />
+
+  --------------------------------------------------
+  option:
+
+  Name "内部记录 AU":
+  <option
+    value="core-au"
+  />
+
+  --------------------------------------------------
+  navigation:
+
+  Name "":
+  <nav
+    id="navigation"
+  />
+
+  --------------------------------------------------
+  strong:
+
+  Name "":
+  <strong
+    id="role-label"
+  />
+
+  Name "":
+  <strong
+    id="breadcrumb-page"
+  />
+
+  --------------------------------------------------
+  banner:
+
+  Name "":
+  <header
+    class="topbar"
+  />
+
+  --------------------------------------------------
+  button:
+
+  Name "刷新":
+  <button
+    class="button secondary compact"
+    id="refresh"
+  />
+
+  Name "修改密码":
+  <button
+    class="button secondary"
+  />
+
+  Name "退出登录":
+  <button
+    class="button secondary"
+  />
+
+  Name "查询原请求 b0c9dbd3-9f65-43c8-8b95-74cdf962ea72":
+  <button
+    aria-label="查询原请求 b0c9dbd3-9f65-43c8-8b95-74cdf962ea72"
+    class="text-button"
+    type="button"
+  />
+
+  Name "更新目标":
+  <button
+    class="button secondary"
+    data-governance="set_goal"
+    type="button"
+  />
+
+  Name "启用本地治理":
+  <button
+    class="button primary"
+    data-governance="activate_governance"
+    type="button"
+  />
+
+  Name "续期治理":
+  <button
+    class="button secondary"
+    data-governance="renew_governance"
+    type="button"
+  />
+
+  Name "确认恢复职责":
+  <button
+    class="button secondary"
+    data-governance="acknowledge_recovery"
+    type="button"
+  />
+
+  Name "确认接任治理":
+  <button
+    class="button primary"
+    data-governance="accept_governance"
+    type="button"
+  />
+
+  Name "按失能程序接任":
+  <button
+    class="button secondary"
+    data-governance="recover_governance"
+    type="button"
+  />
+
+  Name "调整治理程序":
+  <button
+    class="button secondary"
+    data-governance="configure_governance"
+    type="button"
+  />
+
+  Name "提名治理接任者":
+  <button
+    class="button secondary"
+    data-governance="nominate_governor"
+    type="button"
+  />
+
+  Name "退出治理":
+  <button
+    class="button secondary"
+    data-governance="exit_governance"
+    type="button"
+  />
+
+  Name "创建另一个 AU":
+  <button
+    class="button secondary"
+    data-command="create_v1"
+    title="创建 AU"
+  />
+
+  Name "旧版兼容试验（含小说）":
+  <button
+    class="button secondary"
+    data-command="create"
+    disabled=""
+    title="旧版操作需要受权发起人会话"
+  />
+
+  Name "关闭":
+  <button
+    aria-label="关闭"
+    class="icon-button"
+    id="close-governance"
+  />
+
+  Name "取消":
+  <button
+    class="button secondary"
+    type="button"
+  />
+
+  Name "查询原请求回执":
+  <button
+    class="button secondary"
+    type="button"
+  />
+
+  --------------------------------------------------
+  main:
+
+  Name "":
+  <main
+    id="main"
+    tabindex="-1"
+  />
+
+  --------------------------------------------------
+  heading:
+
+  Name "账号与登录":
+  <h2 />
+
+  Name "AU与治理":
+  <h1
+    id="page-title"
+  />
+
+  Name "内部记录 AU":
+  <h2 />
+
+  Name "当前治理与期限":
+  <h2 />
+
+  Name "已采用的治理程序":
+  <h2 />
+
+  Name "内部责任与工作":
+  <h2 />
+
+  Name "更新目标":
+  <h2
+    id="operation-title"
+  />
+
+  Name "结果尚未确认":
+  <h3 />
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  <p />
+
+  Name "":
+  <p
+    id="page-description"
+  />
+
+  Name "":
+  <p />
+
+  Name "":
+  <p
+    class="au-text"
+  />
+
+  Name "":
+  <p
+    class="governance-boundary"
+  />
+
+  Name "":
+  <p
+    class="form-note"
+  />
+
+  Name "":
+  <p />
+
+  Name "":
+  <p />
+
+  Name "":
+  <p />
+
+  Name "":
+  <p />
+
+  --------------------------------------------------
+  textbox:
+
+  Name "当前核心身份标识":
+  <input
+    aria-label="当前核心身份标识"
+    readonly=""
+    value="ad0d511c-eac5-4acf-b92c-6100b3d55ea9"
+  />
+
+  Name "AU目标":
+  <textarea
+    maxlength="100000"
+    name="goal"
+    required=""
+    rows="3"
+  />
+
+  Name "决定依据":
+  <textarea
+    maxlength="10000"
+    name="reason"
+    required=""
+    rows="3"
+  />
+
+  --------------------------------------------------
+  group:
+
+  Name "":
+  <details
+    class="governance-recovery"
+    open=""
+  />
+
+  Name "":
+  <details />
+
+  Name "":
+  <fieldset
+    disabled=""
+  />
+
+  --------------------------------------------------
+  list:
+
+  Name "":
+  <ul />
+
+  --------------------------------------------------
+  listitem:
+
+  Name "":
+  <li />
+
+  --------------------------------------------------
+  region:
+
+  Name "本地治理":
+  <section
+    aria-label="本地治理"
+    class="governance-workspace"
+  />
+
+  --------------------------------------------------
+  term:
+
+  Name "":
+  <dt />
+
+  Name "":
+  <dt />
+
+  Name "":
+  <dt />
+
+  Name "":
+  <dt />
+
+  Name "":
+  <dt />
+
+  Name "":
+  <dt />
+
+  Name "":
+  <dt />
+
+  --------------------------------------------------
+  definition:
+
+  Name "":
+  <dd />
+
+  Name "":
+  <dd />
+
+  Name "":
+  <dd />
+
+  Name "":
+  <dd />
+
+  Name "":
+  <dd />
+
+  Name "":
+  <dd />
+
+  Name "":
+  <dd />
+
+  --------------------------------------------------
+  contentinfo:
+
+  Name "":
+  <footer
+    class="data-footer"
+  />
+
+  --------------------------------------------------
+  dialog:
+
+  Name "更新目标":
+  <dialog
+    aria-labelledby="operation-title"
+    id="governance-dialog"
+    open=""
+  />
+
+  --------------------------------------------------
+  alert:
+
+  Name "":
+  <p
+    class="operation-error"
+    role="alert"
+  />
+
+  --------------------------------------------------
+  status:
+
+  Name "":
+  <div
+    class="governance-result"
+    role="status"
+  />
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <a
+      class="skip"
+      href="#main"
+    >
+      跳转到正文
+    </a>
+    <aside
+      aria-label="工作台导航"
+      class="sidebar"
+    >
+      <a
+        aria-current="page"
+        class="brand active"
+        data-discover="true"
+        href="/overview?organization=core-au"
+      >
+        <span
+          class="brand-symbol"
+        >
+          u
+        </span>
+        <span>
+          UNION
+          <small>
+            AI-UNION / AU
+          </small>
+        </span>
+      </a>
+      <label
+        class="workspace-switch"
+      >
+        <span
+          class="org-icon"
+        >
+          内
+        </span>
+        <span
+          class="workspace-select"
+        >
+          <small>
+            当前 AU
+          </small>
+          <select
+            aria-label="当前组织"
+            id="org-select"
+          >
+            <option
+              value="core-au"
+            >
+              内部记录 AU
+            </option>
+          </select>
+        </span>
+      </label>
+      <nav
+        id="navigation"
+      >
+        <div
+          class="nav-entry"
+        >
+          <div
+            class="nav-caption"
+          >
+            工作空间
+          </div>
+          <a
+            aria-current="page"
+            class="nav-button active"
+            data-discover="true"
+            data-nav="overview"
+            href="/overview?organization=core-au"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-layout-dashboard"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="19"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect
+                height="9"
+                rx="1"
+                width="7"
+                x="3"
+                y="3"
+              />
+              <rect
+                height="5"
+                rx="1"
+                width="7"
+                x="14"
+                y="3"
+              />
+              <rect
+                height="9"
+                rx="1"
+                width="7"
+                x="14"
+                y="12"
+              />
+              <rect
+                height="5"
+                rx="1"
+                width="7"
+                x="3"
+                y="16"
+              />
+            </svg>
+            <span>
+              AU与治理
+            </span>
+          </a>
+        </div>
+        <div
+          class="nav-entry"
+        >
+          <a
+            class="nav-button"
+            data-discover="true"
+            data-nav="tasks"
+            href="/tasks?organization=core-au"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-list-checks"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="19"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M13 5h8"
+              />
+              <path
+                d="M13 12h8"
+              />
+              <path
+                d="M13 19h8"
+              />
+              <path
+                d="m3 17 2 2 4-4"
+              />
+              <path
+                d="m3 7 2 2 4-4"
+              />
+            </svg>
+            <span>
+              责任与工作
+            </span>
+          </a>
+        </div>
+        <div
+          class="nav-entry"
+        >
+          <a
+            class="nav-button"
+            data-discover="true"
+            data-nav="settings"
+            href="/settings?organization=core-au"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-settings"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="19"
+              xmlns="http://www.w3.org/2000/svg"
+     ...
+ ❯ Object.getElementError ../../node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ ../../node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ ../../node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ ../../node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/features/governance/Governance.test.tsx:390:19
+    388|     const request = await commit();
+    389|     expect(await screen.findByText(/命令入口拒绝登录/)).toBeVisible();
+    390|     expect(screen.getByRole('button', { name: '预览影响' })).toBeEnabled();
+       |                   ^
+    391|     expect(screen.getByLabelText('AU目标')).toHaveValue('尚未提交的目标');
+    392|     expect(screen.queryByText('结果尚未确认')).not.toBeInTheDocument();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 passed | 48 skipped (53)
+   Start at  20:44:14
+   Duration  3.48s (transform 511ms, setup 181ms, collect 858ms, tests 1.44s, environment 512ms, prepare 137ms)
+
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path D:\Project\Union\web\console
+npm error workspace @union/console@0.1.0
+npm error location D:\Project\Union\web\console
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c vitest run src/features/governance/governance.test.tsx -t ^^^"command^^^ endpoint^^^ 401^^^|identity^^^ verification^^^ fails^^^" --reporter=verbose

@@ -52,12 +52,12 @@ export function blocked(
   data?: Snapshot,
 ): string {
   if (!connected) return '连接断开，先读取最新状态';
-  if (session?.role !== 'board') return '观察者可查看，操作需要发起人会话';
   if (kind === 'create_v1') {
-    if (session.core_protocol !== 'core.au.v1') return '服务版本不兼容，尚不支持 V1 创建；请更新服务，输入会保留';
-    if (!session.principal_id) return '请先设置并登录核心账户，绑定稳定的初始治理主体';
+    if (session?.core_protocol !== 'core.au.v1') return '服务版本不兼容，尚不支持 V1 创建；请更新服务，输入会保留';
+    if (!session?.principal_id) return '请先设置并登录核心账户，绑定稳定的初始治理主体';
     return '';
   }
+  if (session?.role !== 'board') return '旧版操作需要受权发起人会话';
   if (kind === 'create') return '';
   if (!data) return '请先创建组织';
   if (

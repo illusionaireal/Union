@@ -1,0 +1,80 @@
+test_a_previously_selected_prepared_only_candidate_cannot_run_after_governance_adoption (tests.test_governance_release.GovernanceReleaseTests.test_a_previously_selected_prepared_only_candidate_cannot_run_after_governance_adoption) ... ERROR
+test_candidate_cannot_select_or_roll_back_to_code_without_adopted_au_schema_support (tests.test_governance_release.GovernanceReleaseTests.test_candidate_cannot_select_or_roll_back_to_code_without_adopted_au_schema_support) ... 
+  test_candidate_cannot_select_or_roll_back_to_code_without_adopted_au_schema_support (tests.test_governance_release.GovernanceReleaseTests.test_candidate_cannot_select_or_roll_back_to_code_without_adopted_au_schema_support) (candidate='prepared-only') ... FAIL
+test_candidate_cannot_select_or_roll_back_to_code_without_adopted_au_schema_support (tests.test_governance_release.GovernanceReleaseTests.test_candidate_cannot_select_or_roll_back_to_code_without_adopted_au_schema_support) ... FAIL
+test_malformed_au_schema_declaration_is_rejected_before_install (tests.test_governance_release.GovernanceReleaseTests.test_malformed_au_schema_declaration_is_rejected_before_install) ... 
+  test_malformed_au_schema_declaration_is_rejected_before_install (tests.test_governance_release.GovernanceReleaseTests.test_malformed_au_schema_declaration_is_rejected_before_install) (value=[True]) ... FAIL
+  test_malformed_au_schema_declaration_is_rejected_before_install (tests.test_governance_release.GovernanceReleaseTests.test_malformed_au_schema_declaration_is_rejected_before_install) (value=[1, 1]) ... FAIL
+  test_malformed_au_schema_declaration_is_rejected_before_install (tests.test_governance_release.GovernanceReleaseTests.test_malformed_au_schema_declaration_is_rejected_before_install) (value=[0]) ... FAIL
+  test_malformed_au_schema_declaration_is_rejected_before_install (tests.test_governance_release.GovernanceReleaseTests.test_malformed_au_schema_declaration_is_rejected_before_install) (value='2') ... FAIL
+
+======================================================================
+ERROR: test_a_previously_selected_prepared_only_candidate_cannot_run_after_governance_adoption (tests.test_governance_release.GovernanceReleaseTests.test_a_previously_selected_prepared_only_candidate_cannot_run_after_governance_adoption)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_governance_release.py", line 54, in test_a_previously_selected_prepared_only_candidate_cannot_run_after_governance_adoption
+    self.activate()
+    ~~~~~~~~~~~~~^^
+  File "D:\Project\Union\tests\governance_support.py", line 73, in activate
+    self.success("adopt_governance", {"config": self.config(successor[1] if successor else None), "reason": "Adopt known local governance"})
+                                                ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: 'dict' object is not callable
+
+======================================================================
+FAIL: test_candidate_cannot_select_or_roll_back_to_code_without_adopted_au_schema_support (tests.test_governance_release.GovernanceReleaseTests.test_candidate_cannot_select_or_roll_back_to_code_without_adopted_au_schema_support) (candidate='prepared-only')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_governance_release.py", line 41, in test_candidate_cannot_select_or_roll_back_to_code_without_adopted_au_schema_support
+    with self.subTest(candidate=candidate), self.assertRaises(release.ReleaseError):
+                                            ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ReleaseError not raised
+
+======================================================================
+FAIL: test_candidate_cannot_select_or_roll_back_to_code_without_adopted_au_schema_support (tests.test_governance_release.GovernanceReleaseTests.test_candidate_cannot_select_or_roll_back_to_code_without_adopted_au_schema_support)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_governance_release.py", line 43, in test_candidate_cannot_select_or_roll_back_to_code_without_adopted_au_schema_support
+    self.assertEqual((self.config["installation_root"] / "current.json").read_bytes(), pointer)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: b'{\n[20 chars]id": "supported",\n  "release_id": "prepared-o[29 chars]n}\n' != b'{\n[20 chars]id": null,\n  "release_id": "supported",\n  "s[18 chars]n}\n'
+
+======================================================================
+FAIL: test_malformed_au_schema_declaration_is_rejected_before_install (tests.test_governance_release.GovernanceReleaseTests.test_malformed_au_schema_declaration_is_rejected_before_install) (value=[True])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_governance_release.py", line 63, in test_malformed_au_schema_declaration_is_rejected_before_install
+    with self.subTest(value=value), self.assertRaises(release.ReleaseError):
+                                    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ReleaseError not raised
+
+======================================================================
+FAIL: test_malformed_au_schema_declaration_is_rejected_before_install (tests.test_governance_release.GovernanceReleaseTests.test_malformed_au_schema_declaration_is_rejected_before_install) (value=[1, 1])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_governance_release.py", line 63, in test_malformed_au_schema_declaration_is_rejected_before_install
+    with self.subTest(value=value), self.assertRaises(release.ReleaseError):
+                                    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ReleaseError not raised
+
+======================================================================
+FAIL: test_malformed_au_schema_declaration_is_rejected_before_install (tests.test_governance_release.GovernanceReleaseTests.test_malformed_au_schema_declaration_is_rejected_before_install) (value=[0])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_governance_release.py", line 63, in test_malformed_au_schema_declaration_is_rejected_before_install
+    with self.subTest(value=value), self.assertRaises(release.ReleaseError):
+                                    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ReleaseError not raised
+
+======================================================================
+FAIL: test_malformed_au_schema_declaration_is_rejected_before_install (tests.test_governance_release.GovernanceReleaseTests.test_malformed_au_schema_declaration_is_rejected_before_install) (value='2')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_governance_release.py", line 63, in test_malformed_au_schema_declaration_is_rejected_before_install
+    with self.subTest(value=value), self.assertRaises(release.ReleaseError):
+                                    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ReleaseError not raised
+
+----------------------------------------------------------------------
+Ran 3 tests in 2.715s
+
+FAILED (failures=6, errors=1)

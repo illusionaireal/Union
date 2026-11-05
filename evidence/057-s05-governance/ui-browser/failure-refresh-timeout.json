@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "Account exposes its stable principal for explicit nominations and appointments",
+    "Registration retains the recovery code through background authentication reads",
+    "Account exposes its stable principal for explicit nominations and appointments",
+    "Registered core participant starts with no AU, legacy or platform permissions",
+    "Registration retains the recovery code through background authentication reads",
+    "Account exposes its stable principal for explicit nominations and appointments",
+    "Registered core participant starts with no AU, legacy or platform permissions",
+    "The real forms preserve legal 200-character AU, member and unbroken Work names",
+    "A single human principal completes Work → Mandate → local submission → accepted record through React and HTTP",
+    "Local governance does not activate autonomous business, model dispatch, resource use or external commitment",
+    "The same production grant boundary rejects record_memory after its charter permission is withdrawn",
+    "Lost governance POST response leaves the form, original ID and no resubmit control",
+    "Browser recovery storage contains only request metadata, never private form content or credentials",
+    "Reload and server restart recover the original issuer receipt without another POST",
+    "A → B → C delegation uses real accounts and the original Work with a three-mandate chain",
+    "Revoked descendant content is preserved as evidence_only and does not complete or alter accepted Work results",
+    "A new action under a revoked ancestor is rejected at the production HTTP boundary",
+    "An unrelated Work continues through submission and acceptance after revocation",
+    "Responsibility handoff retains the original Work and failed attempt while invalidating the old binding"
+  ],
+  "error": "locator.selectOption: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#governance-dialog').locator('[name=\"mandate_id\"]')\u001b[22m\n\u001b[2m    - locator resolved to <select required=\"\" name=\"mandate_id\">…</select>\u001b[22m\n\u001b[2m  - attempting select option action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible and enabled\u001b[22m\n\u001b[2m      - did not find some options\u001b[22m\n\u001b[2m    - retrying select option action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible and enabled\u001b[22m\n\u001b[2m      - did not find some options\u001b[22m\n\u001b[2m    - retrying select option action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    59 × waiting for element to be visible and enabled\u001b[22m\n\u001b[2m       - did not find some options\u001b[22m\n\u001b[2m     - retrying select option action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n",
+  "errors": []
+}

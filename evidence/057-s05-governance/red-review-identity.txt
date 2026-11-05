@@ -1,0 +1,54 @@
+test_other_account_login_cannot_clear_target_account_failure_throttle (tests.test_core_participants.CoreParticipantTests.test_other_account_login_cannot_clear_target_account_failure_throttle) ... FAIL
+test_successful_login_clears_only_its_own_failed_attempts (tests.test_core_participants.CoreParticipantTests.test_successful_login_clears_only_its_own_failed_attempts) ... ok
+test_activation_revalidates_the_preconfirmed_successor_account (tests.test_governance_succession.GovernanceSuccessionTests.test_activation_revalidates_the_preconfirmed_successor_account) ... FAIL
+test_lost_successor_identity_blocks_actions_until_current_governor_reconfigures (tests.test_governance_succession.GovernanceSuccessionTests.test_lost_successor_identity_blocks_actions_until_current_governor_reconfigures) ... FAIL
+
+======================================================================
+已重置 D:\Temp\tmpe_efbiwj\console.sqlite3
+重置前备份: D:\Temp\tmpe_efbiwj\console.sqlite3.bak-1793881035
+FAIL: test_other_account_login_cannot_clear_target_account_failure_throttle (tests.test_core_participants.CoreParticipantTests.test_other_account_login_cannot_clear_target_account_failure_throttle)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_participants.py", line 91, in test_other_account_login_cannot_clear_target_account_failure_throttle
+    self.assertEqual(status, 401, "An unrelated successful login must not reset the owner's failed-attempt limit")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 200 != 401 : An unrelated successful login must not reset the owner's failed-attempt limit
+
+======================================================================
+重启工作台后，任意第一个访问者都可以重新设置管理员账号。
+已重置 D:\Temp\tmpbemfov2t\console.sqlite3
+重置前备份: D:\Temp\tmpbemfov2t\console.sqlite3.bak-1793881037
+重启工作台后，任意第一个访问者都可以重新设置管理员账号。
+FAIL: test_activation_revalidates_the_preconfirmed_successor_account (tests.test_governance_succession.GovernanceSuccessionTests.test_activation_revalidates_the_preconfirmed_successor_account)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_governance_succession.py", line 137, in test_activation_revalidates_the_preconfirmed_successor_account
+    self.reject("activate_governance", {"reason": "Former confirmation cannot substitute for a current identity"})
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\tests\governance_support.py", line 61, in reject
+    self.assertEqual(result["receipt"]["status"], "rejected", result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'succeeded' != 'rejected'
+- succeeded
++ rejected
+ : {'receipt': {'actor_principal_id': '81327d44-26d0-478c-ad0f-e66e23ef7378', 'base_version': 2, 'created_at': '2026-11-05T12:17:15.773490+00:00', 'effect': 'applied', 'id': '823217f9-f6bd-4207-b6d2-1dd9f3602a29', 'kind': 'activate_governance', 'message': '本地治理操作已保存', 'organization_id': 'org-dcaa8259fbe4483b8cc0005287a4c8ab', 'status': 'succeeded', 'version': 3}}
+
+======================================================================
+FAIL: test_lost_successor_identity_blocks_actions_until_current_governor_reconfigures (tests.test_governance_succession.GovernanceSuccessionTests.test_lost_successor_identity_blocks_actions_until_current_governor_reconfigures)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_governance_succession.py", line 152, in test_lost_successor_identity_blocks_actions_until_current_governor_reconfigures
+    self.reject("begin_local_action", {"attempt_id": "no-recovery", "work_id": "work-a", "mandate_id": "mandate-a"})
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\tests\governance_support.py", line 61, in reject
+    self.assertEqual(result["receipt"]["status"], "rejected", result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'succeeded' != 'rejected'
+- succeeded
++ rejected
+ : {'receipt': {'actor_principal_id': 'e96e885b-eeaa-434a-bbe9-c5bca6fe08a4', 'base_version': 6, 'created_at': '2026-11-05T12:17:17.620254+00:00', 'effect': 'applied', 'id': 'b20fb1fe-7c32-4e7c-a496-43bdd35ebb06', 'kind': 'begin_local_action', 'message': '本地治理操作已保存', 'organization_id': 'org-50ff3da5bce04c5c927e1d2b68b19542', 'status': 'succeeded', 'version': 7}}
+
+----------------------------------------------------------------------
+Ran 4 tests in 6.495s
+
+FAILED (failures=3)

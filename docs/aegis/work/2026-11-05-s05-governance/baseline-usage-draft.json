@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "aegis.schema.v0",
+  "taskId": "U-069",
+  "requiredBaselineRefs": [
+    "docs/UNION_CHARTER_v1.0.md",
+    "docs/PRD.md",
+    "docs/ARCHITECTURE.md",
+    "docs/decisions/0006-charter-policy-adoption.md",
+    "specs/053-union-rewrite/s05-contract.md"
+  ],
+  "deliveredContextRefs": [],
+  "acknowledgedBeforePlanRefs": [
+    "specs/053-union-rewrite/plan.md",
+    "docs/decisions/0006-charter-policy-adoption.md"
+  ],
+  "citedInPlanRefs": [
+    "evidence/057-s05-governance/review-contract.md",
+    "specs/053-union-rewrite/s05-contract.md"
+  ],
+  "missingRefs": [],
+  "decision": "continue"
+}

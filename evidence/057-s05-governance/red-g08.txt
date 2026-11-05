@@ -1,0 +1,60 @@
+test_command_payload_and_receipt_corruption_are_detected_before_read_or_replay (tests.test_governance_persistence.GovernancePersistenceTests.test_command_payload_and_receipt_corruption_are_detected_before_read_or_replay) ... 
+  test_command_payload_and_receipt_corruption_are_detected_before_read_or_replay (tests.test_governance_persistence.GovernancePersistenceTests.test_command_payload_and_receipt_corruption_are_detected_before_read_or_replay) (column='payload') ... FAIL
+  test_command_payload_and_receipt_corruption_are_detected_before_read_or_replay (tests.test_governance_persistence.GovernancePersistenceTests.test_command_payload_and_receipt_corruption_are_detected_before_read_or_replay) (column='receipt') ... FAIL
+test_current_state_cannot_be_rewritten_without_its_adoption_evidence (tests.test_governance_persistence.GovernancePersistenceTests.test_current_state_cannot_be_rewritten_without_its_adoption_evidence) ... ok
+test_historical_charter_corruption_is_rejected_even_after_a_later_amendment (tests.test_governance_persistence.GovernancePersistenceTests.test_historical_charter_corruption_is_rejected_even_after_a_later_amendment) ... FAIL
+test_response_loss_after_commit_recovers_original_receipt_without_reexecution (tests.test_governance_persistence.GovernancePersistenceTests.test_response_loss_after_commit_recovers_original_receipt_without_reexecution) ... ok
+test_wrong_catalog_mapping_cannot_mutate_another_governed_au (tests.test_governance_persistence.GovernancePersistenceTests.test_wrong_catalog_mapping_cannot_mutate_another_governed_au) ... ok
+
+======================================================================
+FAIL: test_command_payload_and_receipt_corruption_are_detected_before_read_or_replay (tests.test_governance_persistence.GovernancePersistenceTests.test_command_payload_and_receipt_corruption_are_detected_before_read_or_replay) (column='payload')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_governance_persistence.py", line 51, in test_command_payload_and_receipt_corruption_are_detected_before_read_or_replay
+    self.assertEqual((status, value.get("code")), (409, "incompatible_state"))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (200, None) != (409, 'incompatible_state')
+
+First differing element 0:
+200
+409
+
+- (200, None)
++ (409, 'incompatible_state')
+
+======================================================================
+FAIL: test_command_payload_and_receipt_corruption_are_detected_before_read_or_replay (tests.test_governance_persistence.GovernancePersistenceTests.test_command_payload_and_receipt_corruption_are_detected_before_read_or_replay) (column='receipt')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_governance_persistence.py", line 51, in test_command_payload_and_receipt_corruption_are_detected_before_read_or_replay
+    self.assertEqual((status, value.get("code")), (409, "incompatible_state"))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (200, None) != (409, 'incompatible_state')
+
+First differing element 0:
+200
+409
+
+- (200, None)
++ (409, 'incompatible_state')
+
+======================================================================
+FAIL: test_historical_charter_corruption_is_rejected_even_after_a_later_amendment (tests.test_governance_persistence.GovernancePersistenceTests.test_historical_charter_corruption_is_rejected_even_after_a_later_amendment)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_governance_persistence.py", line 32, in test_historical_charter_corruption_is_rejected_even_after_a_later_amendment
+    self.assertEqual((status, value.get("code")), (409, "incompatible_state"), "Historical rules are part of effective-authority evidence")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (200, None) != (409, 'incompatible_state')
+
+First differing element 0:
+200
+409
+
+- (200, None)
++ (409, 'incompatible_state') : Historical rules are part of effective-authority evidence
+
+----------------------------------------------------------------------
+Ran 5 tests in 4.926s
+
+FAILED (failures=3)

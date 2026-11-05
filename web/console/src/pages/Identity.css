@@ -16,4 +16,5 @@
 .table-scroll td:first-child{white-space:normal;overflow-wrap:anywhere;min-width:12rem;max-width:18rem}
 .identity-settings{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem;padding:1.5rem;border:1px solid var(--border,#dfe3e8);border-radius:10px}
 .identity-settings h2{font-size:1.1rem;margin:0}.identity-settings p{flex:1 1 12rem;margin:0}
+.identity-principal{display:grid;gap:.3rem;flex:1 1 23rem;min-width:0;font-size:.85rem}.identity-principal input{width:100%;min-width:0;padding:.5rem;border:1px solid var(--border,#dfe3e8);border-radius:5px;font:inherit}.identity-principal small{color:var(--muted,#536071)}
 @media(max-width:480px){.identity-page{padding:1rem}.identity-panel{padding:1.25rem}.identity-settings{padding:1rem}}

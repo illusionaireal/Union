@@ -1,0 +1,56 @@
+test_governance_nomination_does_not_replace_an_independent_member_mandate (tests.test_governance_responsibility.ResponsibilityTests.test_governance_nomination_does_not_replace_an_independent_member_mandate) ... FAIL
+test_successor_member_and_nominee_rights_compose_without_shadowing (tests.test_governance_responsibility.ResponsibilityTests.test_successor_member_and_nominee_rights_compose_without_shadowing) ... FAIL
+test_handoff_of_outstanding_responsibility_does_not_require_the_lost_subject_account (tests.test_governance_responsibility.ResponsibilityTests.test_handoff_of_outstanding_responsibility_does_not_require_the_lost_subject_account) ... FAIL
+
+======================================================================
+FAIL: test_governance_nomination_does_not_replace_an_independent_member_mandate (tests.test_governance_responsibility.ResponsibilityTests.test_governance_nomination_does_not_replace_an_independent_member_mandate)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_governance_responsibility.py", line 180, in test_governance_nomination_does_not_replace_an_independent_member_mandate
+    self.begin("after-nomination", "member-authority", member[0])
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\tests\test_governance_responsibility.py", line 20, in begin
+    return self.success("begin_local_action", {"attempt_id": attempt, "work_id": "work-a", "mandate_id": mandate}, token=token, **extra)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\tests\governance_support.py", line 54, in success
+    self.assertEqual(status, 200, result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 403 != 200 : {'code': 'not_authorized', 'error': '当前核心账户无权访问此记录'}
+
+======================================================================
+FAIL: test_successor_member_and_nominee_rights_compose_without_shadowing (tests.test_governance_responsibility.ResponsibilityTests.test_successor_member_and_nominee_rights_compose_without_shadowing)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_governance_responsibility.py", line 190, in test_successor_member_and_nominee_rights_compose_without_shadowing
+    self.begin("successor-member-attempt", "member-authority", member[0])
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\tests\test_governance_responsibility.py", line 20, in begin
+    return self.success("begin_local_action", {"attempt_id": attempt, "work_id": "work-a", "mandate_id": mandate}, token=token, **extra)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\tests\governance_support.py", line 54, in success
+    self.assertEqual(status, 200, result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 403 != 200 : {'code': 'not_authorized', 'error': '当前核心账户无权访问此记录'}
+
+======================================================================
+FAIL: test_handoff_of_outstanding_responsibility_does_not_require_the_lost_subject_account (tests.test_governance_responsibility.ResponsibilityTests.test_handoff_of_outstanding_responsibility_does_not_require_the_lost_subject_account)
+已重置 D:\Temp\tmpthxw64x_\console.sqlite3
+重置前备份: D:\Temp\tmpthxw64x_\console.sqlite3.bak-1793880660
+重启工作台后，任意第一个访问者都可以重新设置管理员账号。
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_governance_responsibility.py", line 209, in test_handoff_of_outstanding_responsibility_does_not_require_the_lost_subject_account
+    self.success("handoff_responsibility", {"from_binding_id": "binding-a", "to_binding_id": "binding-b", "reason": "Old subject is unavailable; retain and transfer their original responsibility"})
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\tests\governance_support.py", line 55, in success
+    self.assertEqual(result["receipt"]["status"], "succeeded", result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'rejected' != 'succeeded'
+- rejected
++ succeeded
+ : {'receipt': {'actor_principal_id': 'a609e7e4-2082-4acd-a032-e102e5dc19f9', 'base_version': 10, 'created_at': '2026-11-05T12:11:01.220735+00:00', 'effect': 'none', 'id': '30513ad9-d3fb-4727-b54a-56701462f686', 'kind': 'handoff_responsibility', 'message': '责任主体身份已失效', 'organization_id': 'org-10010d0efabd48b7ac9bc4732b15e7c0', 'status': 'rejected', 'version': 10}}
+
+----------------------------------------------------------------------
+Ran 3 tests in 5.028s
+
+FAILED (failures=3)

@@ -101,3 +101,29 @@ TDD Route 为 `Mode: off / Decision: strict / Strict authority: explicit user/pr
 共享 schema、创建与入口集成由协调者顺序完成；独立工程评审者只读复核，不修改主账、在线卡或 Git。完整 S01 通过后停止，S02/S03/S05 等仍按后续任务授权。
 
 实施核对：上述 S01b/S01c 和 T01–T12 已有 [056 证据](../../evidence/056-s01-core-creation/README.md)及[独立身份/持久化、前端评审](../../docs/reviews/2026-11-05-s01-core-creation.md)。最终全量为 Python 481 项（5 平台跳过）、前端 70 项，实际浏览器 S01 30 项/legacy 71 项，实际安装候选 133 项；各自覆盖范围和未验条件保留在证据说明中。任务完成记录与 Git/在线交付读回以唯一主账及本批交付收据为准。
+
+## 9. 2026-11-05：完整 S05 受控治理
+
+用户进一步授权完整 U-069 / #24，起点 `d9ff5ad23201ee0813707a00f65a0b0d9012a3ee`。Goal 是可执行治理、撤权和责任交接的完整受控工程；Architecture/Tech Stack 延续 Python/SQLite、React/TypeScript、既有 HTTP/Identity/发布器。依据 PRD F07/F09/F20、ADR-0006 编码前细化和 [S05 精确契约](s05-contract.md)，不是创建第二个规划基线。
+
+Change Necessity：S01 当前状态故意固定为创建者/准备态；只改说明或保存 DTO 不能执行旧规则修章、可信继任或拒绝旧授权。最小新增所有者为真实治理规则/责任规则、应用和 AU 事务适配器；Console/HTTP 只装配，Identity 保持唯一认证所有者。预评审确认需要 V1 真实本地责任用例，不能以 legacy 测试代替。
+
+| 顺序 | 文件/所有者与最小变化 | 验证出口 |
+| --- | --- | --- |
+| S05.1 | `identity.py`/`identity_schema.py`、reset 工具及既有 release_package：无权 core 参与者、显式 auth 0/1→2 升级、只重置 owner | G01 真实注册/登录/权限/升级/故障/回退；现有 identity/creation 回归 |
+| S05.2 | `domain/governance.py`、`adapters/governance_store.py`、`application/governance.py`；CoreAUStore/CreationCatalog/CreationService/Console/HTTP 只按新所有者装配 | G02–G04/G08：真实 HTTP 采用/修订/交接/超时；原创建快照、审计、回执与失败事务 |
+| S05.3 | `domain/responsibility.py` 由治理事务调用，显式本地 Member/绑定/Work/Mandate/尝试/内部结果 | G05–G07：派生授权、行动/接受两边界、旧版本/跨 AU/迟到拒绝、交接原责任 |
+| S05.4 | `web/console` 的 API/types/workspace、Identity、PreparedAU 与实际 `features/governance`；局部 AGENTS 随模块落地 | G10：先界面行为 RED；类型/组件检查、真实浏览器闭环、恢复与设备条件；旧 S01/legacy 浏览器 |
+| S05.5 | 现有发布器声明 core AU schema、安装后的真实模块/升级验证；文档、主账、在线 #24、HANDOFF 和本次 evidence | G09/G10、固定全量检查、独立工程权限/持久化和 UI 复核、Aegis bundle/check、精确暂存提交推送及远端 SHA |
+
+TDD Route：`Mode: off / Decision: strict / Strict authority: explicit user/project request`。每个行为先观察真实缺口的失败，不破坏已正确的测试。文档/生成视图执行结构检查。命令见 §6；新测试位于 tests/test_governance*.py、tests/test_core_participants.py 和对应前端模块，浏览器沿 scripts 的既有 Playwright Core / Chromium 路径。
+
+Complexity Budget / Owner Fit：Engine 已超 800 行，Console 混合多职责，本片不添加治理业务；后者只装配新应用。Identity/Schema 在现有单一职责内扩展；纯规则分别按治理和责任拆分，事务/历史单一适配器。目标为每新增规则/应用文件约 250–400 行；触及上限先检查职责而非硬拆零碎 helper。共享事务/schema/接口由协调者顺序集成；类型契约冻结后只委派无冲突界面实现，独立复核只读。
+
+Compatibility / Retirement：S01 schema 1 创建/重开原样保留，只有明确采用升级 schema 2；原 creator 授权分支在当前读取中退役，以 AU 当前规则替代，历史创建回执仍保留 creator 归属。legacy profile 只兼容既有行为并继续拒绝 V1。无双写/双派发/读迁移；真实模型、资源、AI Execution、部署和真实业务验收不在此授权。
+
+执行就绪：PRD/ADR/当前代码与独立编码前复核已核对；无缺失用户决策。当前 checkout/上游及既有 dirty 快照见 Aegis work 和本次证据。意图/身份/版本/原创建连续性或兼容证据不一致时先回到契约所有者；不以宽松 fallback 或删测试过关。完成须覆盖全部 G01–G10，不将部分实现关闭 U-069。
+
+实施核对：完整 G01–G10 已有 [057](../../evidence/057-s05-governance/README.md)的行为、独立评审、实际浏览器与安装证据，主账记录为 controlled。S05 人类内部记录不替代 AI Execution；新 V1 模型/工具入口仍由 S02/S03 交付，真实治理与持续运行未在此验收。
+
+用户要求重新核对近期用户结果及管理路线后，新增[一页近期路线建议](../../docs/NEAR_TERM_DELIVERY.md)。它明确整卡 S05 前置是本计划的工程选择，并指出本节 S05 真实出口虽与 S06 并列，U-070 主账验收尚未明确写入治理修订/交接。建议补入该卡及重映射里程碑/历史暂停；未据本页擅自变更未来卡依赖、认领或旧任务状态。

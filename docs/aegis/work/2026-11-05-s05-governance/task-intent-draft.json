@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "aegis.schema.v0",
+  "requestedOutcome": "完整交付 U-069 / S05 / 在线 #24 并验证提交推送",
+  "goal": "完整交付 U-069 / S05 / 在线 #24 并验证提交推送",
+  "successEvidence": [
+    "S05 G01–G10 的真实 RED/GREEN、独立身份/持久化与 UI 复核、固定工具链全量、实际浏览器及安装候选证据齐备。",
+    "U-069 通过统一适配器以 controlled 记录，在线 #24 读回完成；仅本轮增量提交推送 rewrite/charter-v1 并核对远端 SHA。"
+  ],
+  "stopCondition": "全部 S05 受控验收和交付满足后停止，不继续后续切片；尚未满足的证据明确保留为待验证。",
+  "nonGoals": [
+    "S02/S03 自动执行、真实模型、真实数据迁移、部署和真实业务治理验收"
+  ],
+  "scope": "受控核心治理、参与者身份、显式采用、有效修订、继任退出、责任与本地结果接受、用户闭环",
+  "changeKinds": [
+    "feature"
+  ],
+  "riskHints": [
+    "身份与权限 / 持久化升级 / 生产者消费者"
+  ]
+}

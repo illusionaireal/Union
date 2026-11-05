@@ -1,0 +1,73 @@
+test_core_account_creates_prepared_au_and_reopens_same_identity_after_restart (tests.test_core_creation.CoreCreationTests.test_core_account_creates_prepared_au_and_reopens_same_identity_after_restart) ... ok
+test_failed_registration_keeps_allocated_id_and_original_unknown_query (tests.test_core_creation.CoreCreationTests.test_failed_registration_keeps_allocated_id_and_original_unknown_query) ... ok
+test_host_ticket_and_platform_admin_do_not_substitute_for_core_principal (tests.test_core_creation.CoreCreationTests.test_host_ticket_and_platform_admin_do_not_substitute_for_core_principal) ... ok
+test_invalid_new_requests_do_not_allocate_an_intent_or_directory (tests.test_core_creation.CoreCreationTests.test_invalid_new_requests_do_not_allocate_an_intent_or_directory) ... ok
+test_same_name_owner_reset_cannot_take_old_au_or_creation_receipt (tests.test_core_creation.CoreCreationTests.test_same_name_owner_reset_cannot_take_old_au_or_creation_receipt) ... ok
+test_same_principal_replays_original_payload_without_new_validation (tests.test_core_creation.CoreCreationTests.test_same_principal_replays_original_payload_without_new_validation) ... ok
+test_registration_cannot_choose_privilege_or_reuse_an_existing_name (tests.test_core_participants.CoreParticipantTests.test_registration_cannot_choose_privilege_or_reuse_an_existing_name) ... FAIL
+test_registration_gives_stable_core_identity_without_host_or_existing_au_rights (tests.test_core_participants.CoreParticipantTests.test_registration_gives_stable_core_identity_without_host_or_existing_au_rights) ... FAIL
+test_reset_owner_preserves_participant_credentials_and_never_transfers_au_authority (tests.test_core_participants.CoreParticipantTests.test_reset_owner_preserves_participant_credentials_and_never_transfers_au_authority) ... FAIL
+test_failed_schema_one_upgrade_does_not_lose_the_original_identity (tests.test_core_participants.ParticipantUpgradeTests.test_failed_schema_one_upgrade_does_not_lose_the_original_identity) ... FAIL
+test_schema_one_requires_explicit_upgrade_and_preserves_principal_and_original_bytes (tests.test_core_participants.ParticipantUpgradeTests.test_schema_one_requires_explicit_upgrade_and_preserves_principal_and_original_bytes) ... FAIL
+
+======================================================================
+FAIL: test_registration_cannot_choose_privilege_or_reuse_an_existing_name (tests.test_core_participants.CoreParticipantTests.test_registration_cannot_choose_privilege_or_reuse_an_existing_name)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_participants.py", line 72, in test_registration_cannot_choose_privilege_or_reuse_an_existing_name
+    self.register()
+    ~~~~~~~~~~~~~^^
+  File "D:\Project\Union\tests\test_core_participants.py", line 28, in register
+    self.assertEqual(status, 200, value)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: 401 != 200 : {'error': '请求字段无效'}
+
+======================================================================
+FAIL: test_registration_gives_stable_core_identity_without_host_or_existing_au_rights (tests.test_core_participants.CoreParticipantTests.test_registration_gives_stable_core_identity_without_host_or_existing_au_rights)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_participants.py", line 33, in test_registration_gives_stable_core_identity_without_host_or_existing_au_rights
+    token, result = self.register()
+                    ~~~~~~~~~~~~~^^
+  File "D:\Project\Union\tests\test_core_participants.py", line 28, in register
+    self.assertEqual(status, 200, value)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: 401 != 200 : {'error': '请求字段无效'}
+
+======================================================================
+FAIL: test_reset_owner_preserves_participant_credentials_and_never_transfers_au_authority (tests.test_core_participants.CoreParticipantTests.test_reset_owner_preserves_participant_credentials_and_never_transfers_au_authority)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_participants.py", line 56, in test_reset_owner_preserves_participant_credentials_and_never_transfers_au_authority
+    token, _ = self.register()
+               ~~~~~~~~~~~~~^^
+  File "D:\Project\Union\tests\test_core_participants.py", line 28, in register
+    self.assertEqual(status, 200, value)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: 401 != 200 : {'error': '请求字段无效'}
+
+======================================================================
+FAIL: test_failed_schema_one_upgrade_does_not_lose_the_original_identity (tests.test_core_participants.ParticipantUpgradeTests.test_failed_schema_one_upgrade_does_not_lose_the_original_identity)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_participants.py", line 133, in test_failed_schema_one_upgrade_does_not_lose_the_original_identity
+    with self.assertRaises(sqlite3.DatabaseError):
+已重置 D:\Temp\tmp6rwbthpr\console.sqlite3
+重置前备份: D:\Temp\tmp6rwbthpr\console.sqlite3.bak-1793879363
+重启工作台后，任意第一个访问者都可以重新设置管理员账号。
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: DatabaseError not raised
+
+======================================================================
+FAIL: test_schema_one_requires_explicit_upgrade_and_preserves_principal_and_original_bytes (tests.test_core_participants.ParticipantUpgradeTests.test_schema_one_requires_explicit_upgrade_and_preserves_principal_and_original_bytes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_participants.py", line 110, in test_schema_one_requires_explicit_upgrade_and_preserves_principal_and_original_bytes
+    self.assertIsNotNone(rejected, "S01 identities require explicit schema 2 upgrade before writes")
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: unexpectedly None : S01 identities require explicit schema 2 upgrade before writes
+
+----------------------------------------------------------------------
+Ran 11 tests in 8.943s
+
+FAILED (failures=5)

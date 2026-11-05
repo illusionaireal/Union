@@ -6,9 +6,9 @@
 
 核心目标是让用户安装、登录、连接模型工具、设定目标后持续取得真实成果，并能反馈、恢复和维护；核心包含基础认证、AU权限与审计，不依赖私有平台账户/仓库凭据/许可证服务。方向已采用，运行能力和实际开源发布仍以各自证据为准，具体许可证尚未选择。
 
-当前已实现 [U-066/S01](specs/053-union-rewrite/s01-contract.md) 的受控工程范围：稳定核心身份、准备态 AU 创建与重开、旧目录完整性及旧入口隔离，验证见 [056 证据](evidence/056-s01-core-creation/README.md)。新 AU 尚未启用自主业务或授予资源；下一计划切片为 S05/U-069 的治理准备与激活条件。使用 `rewrite/charter-v1` 交接，`dev` 仍为日常开发主线；main 用于本次宪章来源。
+当前已实现 [U-066/S01](specs/053-union-rewrite/s01-contract.md) 的稳定核心身份、准备态 AU 创建/重开和兼容隔离，以及 [U-069/S05](specs/053-union-rewrite/s05-contract.md) 的受控本地治理、旧规则修章、继任/退出、撤权和内部记录责任交接。验证范围分别见 [056](evidence/056-s01-core-creation/README.md) 与 [057](evidence/057-s05-governance/README.md)。本地治理激活仍不启用自主业务、模型或资源；完整 S05 受控验收后的下一计划为 S02/U-072。使用 `rewrite/charter-v1` 交接，`dev` 仍为日常开发主线；main 用于本次宪章来源。
 
-[项目总览](PROJECT.md) · [唯一任务主账与生成看板](TASKS.md) · [管理方法](management/README.md) · [在线Kanban约定](management/KANBAN.md) · [正式开发门槛](docs/FORMAL_DEVELOPMENT.md)。
+[近期交付路线（一页）](docs/NEAR_TERM_DELIVERY.md) · [项目总览](PROJECT.md) · [唯一任务主账与生成看板](TASKS.md) · [管理方法](management/README.md) · [在线Kanban约定](management/KANBAN.md) · [正式开发门槛](docs/FORMAL_DEVELOPMENT.md)。
 
 以下日期条目描述各自历史实现和验证，不代替V1需求或当前任务状态。
 

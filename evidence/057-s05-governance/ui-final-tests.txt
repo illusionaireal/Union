@@ -1,0 +1,154 @@
+
+> @union/console@0.1.0 test
+> vitest run --reporter=verbose
+
+
+ RUN  v3.2.7 D:/Project/Union/web/console
+
+ ✓ src/pages/ModelServiceConnections.test.tsx > does not expose or read host accounts for AU-only sessions 45ms
+ ✓ src/pages/Identity.test.tsx > identity boundary > shows the setup form on an unconfigured deployment and keeps its fields 288ms
+ ✓ src/features/commands/fields.test.tsx > operation form interactions > keeps edited content and focus across snapshot refreshes 282ms
+ ✓ src/features/commands/fields.test.tsx > operation form interactions > rejects whitespace required values and invalid model IDs, but allows clearing defaults 34ms
+ ✓ src/pages/Identity.test.tsx > identity boundary > keeps what the user typed while background refreshes run 72ms
+ ✓ src/pages/SubscriptionConnections.test.tsx > subscription configuration > does not request host account data for ordinary sessions 40ms
+ ✓ src/pages/Gateways.test.tsx > gateway platform boundary and operations > does not fetch or show operations without explicit platform permission 190ms
+ ✓ src/pages/RuntimeObservation.test.tsx > member runtime observation > shows the same needs_review dispatch description in both resource cards 88ms
+ ✓ src/features/commands/fields.test.tsx > operation form interactions > uses the configured model only for Codex and requires acceptance of unknown costs 80ms
+ ✓ src/app/governance-workspace.test.tsx > current governance access projection > does not resurrect a cached AU after observing a changed principal_id 456ms
+ ✓ src/pages/Identity.test.tsx > identity boundary > submits the first claim once, shows the recovery code and does not reload 121ms
+ ✓ src/pages/SubscriptionConnections.test.tsx > subscription configuration > clears the key and blocks duplicate writes while original result is unknown 278ms
+ ✓ src/pages/RuntimeObservation.test.tsx > member runtime observation > shows the same pause_requested dispatch description in both resource cards 73ms
+ ✓ src/features/commands/fields.test.tsx > operation form interactions > recognizes a bound API executor and requires its own cost acceptance 136ms
+ ✓ src/features/commands/fields.test.tsx > novel company setup > adopts the novel charter with integer monetary configuration 48ms
+ ✓ src/app/governance-workspace.test.tsx > current governance access projection > does not resurrect a cached AU after observing a changed service_instance 109ms
+ ✓ src/pages/ModelServiceConnections.test.tsx > binds adoption to selected account, model and AU; lost reply blocks a second write 438ms
+ ✓ src/pages/Identity.test.tsx > identity boundary > sends the remember option and shows server errors without leaving the form 156ms
+ ✓ src/pages/SubscriptionConnections.test.tsx > subscription configuration > does not display a late authorization response after switching sessions 109ms
+ ✓ src/pages/SubscriptionConnections.test.tsx > subscription configuration > starts Go account authorization without asking for a key 90ms
+ ✓ src/pages/RuntimeObservation.test.tsx > member runtime observation > shows checkpoint evidence true without claiming safe resume 144ms
+ ✓ src/pages/RuntimeObservation.test.tsx > member runtime observation > shows checkpoint evidence false without claiming safe resume 33ms
+ ✓ src/pages/RuntimeObservation.test.tsx > member runtime observation > shows checkpoint evidence null without claiming safe resume 34ms
+ ✓ src/app/governance-workspace.test.tsx > current governance access projection > does not resurrect a cached AU after observing a changed organization_scope 108ms
+ ✓ src/app/governance-workspace.test.tsx > current governance access projection > keeps writes disabled when the same principal revisits a cached AU before a fresh read 96ms
+ ✓ src/app/workspace.test.tsx > workspace organization transitions > keeps the session and draft mounted while withholding old organization data and writes 349ms
+ ✓ src/pages/Gateways.test.tsx > gateway platform boundary and operations > separates unavailable health from unknown deployment, hides unsupported controls and opens isolated links 261ms
+ ✓ src/pages/Identity.test.tsx > identity boundary > disables the submit button while a request is in flight 123ms
+ ✓ src/features/commands/fields.test.tsx > novel company setup > saves and binds API config, retaining a blank key instead of clearing it 101ms
+ ✓ src/features/commands/fields.test.tsx > saved API connection editing > prefills the selected public configuration and retains its key without putting it in the form 60ms
+ ✓ src/features/commands/fields.test.tsx > saved API connection editing > creates a distinct new connection even when a default is already bound 38ms
+ ✓ src/pages/RuntimeObservation.test.tsx > member runtime observation > keeps member work state separate from identity and does not render private workspace details 50ms
+ ✓ src/pages/RuntimeObservation.test.tsx > member runtime observation > keeps unregistered deployment separate from unknown host activity 55ms
+ ✓ src/pages/Gateways.test.tsx > gateway platform boundary and operations > uses the original registration revision after a background refresh 193ms
+ ✓ src/features/commands/fields.test.tsx > gateway connection snapshots > prefills a public gateway without inheriting a token and permits explicit detachment 108ms
+ ✓ src/pages/SubscriptionConnections.test.tsx > subscription configuration > clears callback input and never persists callback credentials 79ms
+ ✓ src/app/workspace.test.tsx > workspace organization transitions > rechecks identity when session_scope changes 241ms
+ ✓ src/app/governance-workspace.test.tsx > current governance access projection > keeps a disconnected snapshot during an ordinary session network failure 79ms
+ ✓ src/pages/Identity.test.tsx > identity boundary > shows login once configured and switches to the recovery form 128ms
+ ✓ src/pages/RuntimeObservation.test.tsx > member runtime observation > preserves confirmed host evidence without guessing deployment 51ms
+ ✓ src/pages/RuntimeObservation.test.tsx > member runtime observation > keeps display compatibility for an explicit embedded mode fixture 41ms
+ ✓ src/pages/RuntimeObservation.test.tsx > member runtime observation > keeps display compatibility for an explicit managed_local mode fixture 35ms
+ ✓ src/app/governance-workspace.test.tsx > current governance access projection > clears a revoked session and its AU projection even if the next refresh loses the network 78ms
+ ✓ src/app/governance-workspace.test.tsx > current governance access projection > accepts the current governor from server access instead of requiring the immutable creator identity 28ms
+ ✓ src/app/governance-workspace.test.tsx > current governance access projection > withholds a schema 2 projection bound to another principal_id 31ms
+ ✓ src/app/governance-workspace.test.tsx > current governance access projection > withholds a schema 2 projection bound to another service_instance 31ms
+ ✓ src/app/workspace.test.tsx > workspace organization transitions > rechecks identity when service_instance changes 96ms
+ ✓ src/pages/SubscriptionConnections.test.tsx > subscription configuration > an unknown ChatGPT request does not block Go authorization 100ms
+ ✓ src/pages/SubscriptionConnections.test.tsx > subscription configuration > keeps the last successful authorization visible after a reload 75ms
+ ✓ src/pages/Identity.test.tsx > identity boundary > registers a core participant without AU permissions and keeps the recovery code until acknowledged 111ms
+ ✓ src/app/governance-workspace.test.tsx > current governance access projection > clears a previously readable prepared AU immediately when current access is revoked 65ms
+ ✓ src/pages/RuntimeObservation.test.tsx > member runtime observation > keeps display compatibility for an explicit external mode fixture 23ms
+ ✓ src/app/workspace.test.tsx > workspace organization transitions > drops the placeholder when the new workspace read rejects an expired session 114ms
+ ✓ src/pages/SubscriptionConnections.test.tsx > subscription configuration > shows the connected workspace, plan windows and Go models 121ms
+ ✓ src/app/governance-workspace.test.tsx > current governance access projection > does not retain an old principal projection when the new principal cannot read it 52ms
+ ✓ src/pages/Identity.test.tsx > identity boundary > retains a participant draft and focus after an error and background reads 108ms
+ ✓ src/pages/Identity.test.tsx > identity boundary > keeps the participant form in place until registration returns its recovery code 106ms
+ ✓ src/pages/Identity.test.tsx > identity boundary > retains the register recovery code when authenticated polling finishes before the response body 125ms
+ ✓ src/pages/Identity.test.tsx > identity boundary > retains the setup recovery code when authenticated polling finishes before the response body 119ms
+ ✓ src/pages/Identity.test.tsx > identity boundary > keeps the registering form and recovery code while a newly observed identity is still loading 207ms
+ ✓ src/pages/Identity.test.tsx > identity boundary > renders the workspace only after authentication 33ms
+ ✓ src/pages/Identity.test.tsx > identity boundary > reports a failed first read and offers a retry 38ms
+ ✓ src/features/commands/core-boundaries.test.tsx > lets a core participant prepare its own AU while withholding legacy operations and showing its stable identity 689ms
+ ✓ src/features/governance/Governance.test.tsx > governance user journey > keeps account-level AU creation available from a governed overview page without governing commands 738ms
+ ✓ src/features/commands/core-creation.test.tsx > core creation through the workspace > keeps explicit legacy company creation reachable after reopening a prepared AU 902ms
+ ✓ src/features/governance/Governance.test.tsx > governance user journey > keeps account-level AU creation available from a governed tasks page without governing commands 257ms
+ ✓ src/features/commands/core-creation.test.tsx > core creation through the workspace > explains the prepared boundary at the empty model entry instead of promising immediate configuration 227ms
+ ✓ src/features/commands/core-boundaries.test.tsx > core creation identity and receipt boundaries > rejects a POST receipt with the wrong id and retains the original V1 request 465ms
+ ✓ src/api/client.test.ts > same-origin API client > sends one command with the original ID and does not retry a rejected request 7ms
+ ✓ src/api/client.test.ts > same-origin API client > aborts a timed-out write and reports uncertainty without replay 6ms
+ ✓ src/api/client.test.ts > same-origin API client > propagates Query cancellation to the actual request 3ms
+ ✓ src/features/commands/receipts.test.ts > receipt recovery > persists V1 request kind and queries its original receipt even with an allocated AU ID 13ms
+ ✓ src/features/commands/receipts.test.ts > receipt recovery > advances accepted to succeeded and never replaces a terminal receipt with a late result 1ms
+ ✓ src/features/commands/receipts.test.ts > receipt recovery > retains unknown and rejected outcomes for explicit handling 0ms
+ ✓ src/features/commands/receipts.test.ts > receipt recovery > persists original identities without command bodies and tolerates corrupt storage 1ms
+ ✓ src/features/commands/receipts.test.ts > receipt recovery > recovers API request identities without persisting credentials or command bodies 1ms
+ ✓ src/features/governance/Governance.test.tsx > governance user journey > keeps account-level AU creation available from a governed settings page without governing commands 216ms
+ ✓ src/app/url-state.test.tsx > URL filter state > composes rapid edits without restoring a cleared search and preserves organization scope 191ms
+ ✓ src/features/governance/Governance.test.tsx > governance user journey > renders server readiness gaps without misreporting missing governing identities as an expired deadline 165ms
+ ✓ src/features/commands/core-boundaries.test.tsx > core creation identity and receipt boundaries > rejects a POST receipt with the wrong kind and retains the original V1 request 376ms
+ ✓ src/features/governance/Governance.test.tsx > governance user journey > separates the original root from current authority and renders only server-provided actions 185ms
+ ✓ src/features/commands/core-creation.test.tsx > core creation through the workspace > opens the saved prepared AU through V1 and shows bound governance without legacy snapshot calls 524ms
+ ✓ src/features/commands/core-boundaries.test.tsx > core creation identity and receipt boundaries > keeps an unsubmitted creation draft and focus through a same-principal session renewal 289ms
+ ✓ src/features/commands/core-boundaries.test.tsx > core creation identity and receipt boundaries > checks the current principal again before sending a prepared draft 107ms
+ ✓ src/features/governance/Governance.test.tsx > governance user journey > previews and adopts a single-principal exit procedure without activating business 348ms
+ ✓ src/features/commands/core-creation.test.tsx > core creation through the workspace > retains an unknown V1 request for lookup after the result dialog closes 384ms
+ ✓ src/features/commands/core-boundaries.test.tsx > core creation identity and receipt boundaries > refuses to bind a draft to a different principal even before the workspace poll notices the change 261ms
+ ✓ src/features/commands/core-creation.test.tsx > core creation through the workspace > keeps input editable after a pre-allocation V1 validation rejection 256ms
+ ✓ src/features/governance/Governance.test.tsx > governance user journey > configures an explicit successor principal without treating its name as authority 298ms
+ ✓ src/features/commands/core-creation.test.tsx > core creation through the workspace > refuses ordinary creation on an older service without silently sending legacy create 102ms
+ ✓ src/features/governance/Governance.test.tsx > governance user journey > previews and explicitly submits acknowledge_recovery using the current server version 201ms
+ ✓ src/features/commands/core-creation.test.tsx > core creation through the workspace > submits ordinary creation as create_v1 with exactly the five supported fields 215ms
+ ✓ src/features/commands/core-boundaries.test.tsx > core creation identity and receipt boundaries > adopts a delayed creation result only for its original principal (changed=false) 345ms
+ ✓ src/features/governance/Governance.test.tsx > governance user journey > previews and explicitly submits activate_governance using the current server version 177ms
+ ✓ src/features/commands/core-boundaries.test.tsx > core creation identity and receipt boundaries > adopts a delayed creation result only for its original principal (changed=true) 282ms
+ ✓ src/features/governance/Governance.test.tsx > governance user journey > previews and explicitly submits renew_governance using the current server version 198ms
+ ✓ src/features/governance/Governance.test.tsx > governance user journey > previews and explicitly submits accept_governance using the current server version 183ms
+ ✓ src/features/commands/core-boundaries.test.tsx > core creation identity and receipt boundaries > shows a lookup failure beside an unknown receipt while retaining its original ID 241ms
+ ✓ src/features/commands/core-boundaries.test.tsx > core creation identity and receipt boundaries > does not create an AU when the user cancels while the identity preflight is still pending 196ms
+ ✓ src/features/governance/Governance.test.tsx > governance user journey > previews and explicitly submits recover_governance using the current server version 144ms
+ ✓ src/features/governance/Governance.test.tsx > governance user journey > previews and explicitly submits exit_governance using the current server version 155ms
+ ✓ src/features/governance/Governance.test.tsx > governance user journey > nominates another core identity and offers explicit cancellation of an existing nomination 196ms
+ ✓ src/features/governance/Governance.test.tsx > governance user journey > revises only the displayed charter fields while preserving other stored fields 150ms
+ ✓ src/features/governance/Governance.test.tsx > governance user journey > retains a new goal draft and focus across same-principal renewal and polling 220ms
+ ✓ src/features/governance/Governance.test.tsx > controlled responsibility forms > appoints a human member with separate generated member and responsibility IDs 220ms
+ ✓ src/features/governance/Governance.test.tsx > controlled responsibility forms > uses existing record choices for 'update_appointment' and sends its exact responsibility payload 163ms
+ ✓ src/features/governance/Governance.test.tsx > controlled responsibility forms > uses existing record choices for 'create_work' and sends its exact responsibility payload 167ms
+ ✓ src/features/governance/Governance.test.tsx > controlled responsibility forms > uses existing record choices for 'update_work' and sends its exact responsibility payload 170ms
+ ✓ src/features/governance/Governance.test.tsx > controlled responsibility forms > uses existing record choices for 'grant_mandate' and sends its exact responsibility payload 159ms
+ ✓ src/features/governance/Governance.test.tsx > controlled responsibility forms > uses existing record choices for 'revoke_mandate' and sends its exact responsibility payload 146ms
+ ✓ src/features/governance/Governance.test.tsx > controlled responsibility forms > uses existing record choices for 'handoff_responsibility' and sends its exact responsibility payload 154ms
+ ✓ src/features/governance/Governance.test.tsx > controlled responsibility forms > uses existing record choices for 'begin_local_action' and sends its exact responsibility payload 168ms
+ ✓ src/features/governance/Governance.test.tsx > controlled responsibility forms > uses existing record choices for 'submit_local_result' and sends its exact responsibility payload 171ms
+ ✓ src/features/governance/Governance.test.tsx > controlled responsibility forms > uses existing record choices for 'accept_local_result' and sends its exact responsibility payload 157ms
+ ✓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > keeps an editable draft after a command endpoint 401 with code undefined 155ms
+ ✓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > keeps an editable draft after a command endpoint 401 with code not_authenticated 199ms
+ ✓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > retains the original request when identity verification fails with 401/'not_authenticated' after a successful POST 211ms
+ ✓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > retains the original request when identity verification fails with 401/undefined after a successful POST 195ms
+ ✓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > retains the original request when identity verification fails with 409/'incompatible_state' after a successful POST 245ms
+ ✓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > treats an explicit unsupported adoption as a known rejection and keeps an editable draft 156ms
+ ✓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > recognizes a rejected original receipt even when the server version is lower than its requested base 174ms
+ ✓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > preserves rejected input and requires a new preview after a server version rejection 187ms
+ ✓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > keeps an unknown original ID and only queries it without persisting or replaying its content 201ms
+ ✓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > keeps query errors next to the original request and never offers a replay 190ms
+ ✓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > does not create a second request for the same action after closing an unknown result 274ms
+ ✓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > keeps an unknown action local and lets a different work proceed with its own request 385ms
+ ✓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > recovers an original request after reload onto a new service instance with the same principal 245ms
+ ✓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > refreshes evidence-only rejection while retaining the unadopted content and its original request 204ms
+ ✓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > does not send when browser request-identity storage is unavailable 161ms
+ ✓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > stops before POST when the current AU version changed after preview 173ms
+ ✓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > stops a preflight when principal_id changes before the workspace poll 170ms
+ ✓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > stops a preflight when service_instance changes before the workspace poll 157ms
+ ✓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > does not send a command when the user cancels a pending identity preflight 187ms
+ ✓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > rejects an unrelated receipt with a mismatched id 162ms
+ ✓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > rejects an unrelated receipt with a mismatched kind 173ms
+ ✓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > rejects an unrelated receipt with a mismatched organization_id 188ms
+ ✓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > rejects an unrelated receipt with a mismatched actor_principal_id 190ms
+ ✓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > rejects an unrelated receipt with a mismatched base_version 159ms
+ ✓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > does not apply a late POST response after the current principal_id changed 175ms
+ ✓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > does not apply a late POST response after the current service_instance changed 163ms
+ ✓ src/features/governance/Governance.test.tsx > governance command recovery boundaries > lets the original issuer query its own receipt after losing current AU access 224ms
+
+ Test Files  14 passed (14)
+      Tests  141 passed (141)
+   Start at  20:49:25
+   Duration  15.80s (transform 3.04s, setup 5.84s, collect 11.16s, tests 24.13s, environment 19.09s, prepare 3.26s)
+

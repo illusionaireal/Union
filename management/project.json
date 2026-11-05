@@ -6,13 +6,15 @@
         {
             "id": "governance",
             "name": "组织治理与状态 / ai-union",
-            "implemented": "版本化章程、成员/岗位/任职、组织决定、SQLite 持久化",
-            "validation": "V1；真实筹建用过部分机制",
-            "gap": "U-023兼容投影/治理描述和U-034申请机制已受控验证；真实运行职责调整、企业身份集成仍待验",
+            "implemented": "V1稳定核心主体、本地治理、旧规则修章、可信接班/超时退出、有限授权与原Work责任交接；legacy版本化章程/决定等机制保留",
+            "validation": "S01/S05受控工程及实际浏览器已验证；legacy真实筹建只证明原场景，V1真实业务治理未验",
+            "gap": "真实模型工作中的治理修订、撤权和责任交接未验；计划指向S06/U-070，但主账acceptance尚需显式补入。企业身份集成仍未验，不作近期单AU成果前置。",
             "evidence": [
                 "specs/001-org-bootstrap/spec.md",
                 "evidence/014-real-loop/README.md",
-                "evidence/022-au-contract-implementation/README.md"
+                "evidence/022-au-contract-implementation/README.md",
+                "specs/053-union-rewrite/s05-contract.md",
+                "evidence/057-s05-governance/README.md"
             ]
         },
         {
@@ -1871,12 +1873,45 @@
                 "U-066"
             ],
             "acceptance": "直接依据Main Chapter V1 D-04/C-02/X-02(a)、053 S05与ADR-0006，在S01后完整交付受控治理工程：初始根及适用最终决定方/保留事项/失能继任恢复退出、激活条件、旧程序修章、撤权传播、任职交接和历史连续。严格TDD覆盖未绑定/失能缺处置却启用、新文本自授权、旧身份/目标/范围失效、未知规则假生效及迁移失败；权限独立复核。全卡受控工程完成后U-067才可开工；真实工作中的治理修订/交接另取证，不与U-067构成互为前置。legacy_board只是明确兼容profile。",
-            "status": "backlog",
-            "owner": null,
+            "status": "done",
+            "owner": "codex/gpt-6/session-01a1a9fa-d89d-7091-ba52-c31a1df00b23",
             "blocker": null,
-            "started_at": null,
+            "started_at": "2026-11-05",
             "updated_at": "2026-11-05",
-            "completion": null
+            "completion": {
+                "scope": "controlled",
+                "reviewer": "Codex s05_code_review（身份/持久化）, s05_ui_review（界面）, s05_boundary_review（契约）；协调者核对集成证据",
+                "evidence": [
+                    "evidence/057-s05-governance/README.md",
+                    "evidence/057-s05-governance/review-backend.md",
+                    "evidence/057-s05-governance/review-ui.md",
+                    "evidence/057-s05-governance/review-contract.md",
+                    "evidence/057-s05-governance/python-full.txt",
+                    "evidence/057-s05-governance/npm-check-final.txt",
+                    "evidence/057-s05-governance/ui-browser/checks.json",
+                    "evidence/057-s05-governance/candidate-install.json",
+                    "evidence/057-s05-governance/aegis-check.txt",
+                    "docs/NEAR_TERM_DELIVERY.md"
+                ],
+                "note": "完整 G01–G10 受控工程通过：核心参与者独立登记/恢复，本地治理准备与启用、旧规则修章、可信接班/超时退出，Member/Work/Mandate 再委托、行动及接受时撤权检查、保留迟到事实和原 Work 责任交接；原创建回执与初始根保留。严格真实 RED/GREEN 和独立反例均留证，后端及 UI 已知发现全部闭合；真实浏览器、完整 npm/Python、实际安装/升级/恢复及源码摘要核对通过。范围为人类内部记录，未启用 AI Execution、真实模型、资源或自主业务。用户最新路线质询的一页建议已单独提交，真实治理验收承接及旧 WIP/里程碑改造明确保留为未实施建议，不据此关闭真实产品验收。"
+            },
+            "claim": null,
+            "history": [
+                {
+                    "at": "2026-11-05T11:35:04.245Z",
+                    "actor": "codex/gpt-6/session-01a1a9fa-d89d-7091-ba52-c31a1df00b23",
+                    "from": "backlog",
+                    "to": "ready",
+                    "note": "用户明确授权完整 U-069/S05；唯一前置 U-066 已完成。原五项历史在制/阻塞无人实际执行但继续占 WIP，不能退回待办隐藏。为本次一个真实执行显式增加临时容量 5→6，U-069 完成后恢复 5；不更改原卡状态/负责人/阻塞/历史。"
+                },
+                {
+                    "at": "2026-11-05T15:17:29.935Z",
+                    "actor": "codex/gpt-6/session-01a1a9fa-d89d-7091-ba52-c31a1df00b23",
+                    "from": "done",
+                    "to": "done",
+                    "note": "按本片开工时临时增容约定，在完整S05受控验收后收回一个执行槽，WIP上限6→5。原U-007/U-041/U-044 blocked、U-056/U-060 doing的状态/负责人/阻塞/历史不变；旧事项无人执行仍占容量的问题未被此恢复解决，一页近期路线已记录显式暂停/承接模型建议，尚未实施。"
+                }
+            ]
         },
         {
             "id": "U-070",
