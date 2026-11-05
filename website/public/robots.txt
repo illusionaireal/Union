@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://union.zengbo.site/sitemap.xml
