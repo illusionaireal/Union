@@ -2,9 +2,9 @@
   "schemaVersion": "aegis.schema.v0",
   "taskId": "U-069",
   "lastCheckpointRef": "docs/aegis/work/2026-11-05-s05-governance/todo-checkpoint-draft.json",
-  "resumeInstruction": "一页路线已提交5d6fba1，S05实现尚在暂存。保留最初33项预存改动。未来管理建议与真实验收承接未实施，不自动继续U-072。",
+  "resumeInstruction": "先核对实际分支HEAD、主账及057收据。S05为controlled完成，未来真实AI工作/治理验收及管理改造建议未实施，不自动推进后续卡。",
   "knownPartialWork": [
-    "完整G01–G10、独立后端/界面/契约评审、实际browser50及88文字测量、最终安装和原管理工具验证完成；U-069 controlled done，WIP恢复5，路线页单独提交5d6fba1。"
+    "完整受控实现、独立复核、验证、主账record、路线及实现提交推送、在线24 done/version5均已核对。当前记录随后续文档收据提交；最终远端SHA在用户答复披露。"
   ],
   "mustReadBeforeContinuing": [
     "docs/aegis/work/2026-11-05-s05-governance/10-intent.md",
@@ -12,6 +12,6 @@
     "docs/aegis/work/2026-11-05-s05-governance/todo-checkpoint-draft.json"
   ],
   "unsafeToAssume": [
-    "本地done不代表在线或远端已交付；完成前逐项读取真实收据。"
+    "Task clean不等于整个仓库干净；保护原33项预存工作和宿主未提交适配器。测试数不表示产品完成度。"
   ]
 }

@@ -1,0 +1,22 @@
+{
+  "branch": "rewrite/charter-v1",
+  "before_commit_head": "cbda951a1ebb880ae20770791de5f550aff62e85",
+  "staged_task_paths": 10,
+  "preexisting_paths_preserved": 33,
+  "protected_file_hashes_unchanged": 5,
+  "review_source_hashes_rechecked": {
+    "review-backend.md": 13,
+    "review-ui.md": 10
+  },
+  "final_candidate_source_hashes_match_index": 162,
+  "unchanged_other_tasks": 75,
+  "wip_limit": 5,
+  "u069_status": "done",
+  "completion_scope": "controlled",
+  "staged_utf8_files_checked": 10,
+  "new_broken_markdown_links": 0,
+  "live_credential_matches": 0,
+  "whitespace_check_exit": 0,
+  "whitespace_scope": "Maintained source, documentation and JSON; raw test output whitespace is preserved.",
+  "scope": "Ownership, source/evidence binding and document structure; behavioral results remain in their named logs."
+}

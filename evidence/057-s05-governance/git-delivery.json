@@ -1,0 +1,20 @@
+{
+  "branch": "rewrite/charter-v1",
+  "task_start_commit": "d9ff5ad23201ee0813707a00f65a0b0d9012a3ee",
+  "roadmap_commit": "5d6fba1f36d27530d6c12cfd706095c359d21131",
+  "implementation_commit": "cbda951a1ebb880ae20770791de5f550aff62e85",
+  "implementation_message": "feat(governance): deliver S05 local governance and responsibility",
+  "implementation_pushed": true,
+  "implementation_remote_sha_readback": "cbda951a1ebb880ae20770791de5f550aff62e85",
+  "online_card": 24,
+  "online_status": "done",
+  "online_version": 5,
+  "local_completion_scope": "controlled",
+  "task_worktree_created": false,
+  "branch_retained": "User-requested delivery branch; no merge or worktree cleanup requested",
+  "repository_clean": false,
+  "preexisting_entries_preserved": 33,
+  "protected_files_unchanged": 5,
+  "receipt_delivery": "This JSON and the final Kanban/readback records are committed in a following documentation commit; its final remote SHA is reported in the user reply.",
+  "limitations": "S05 human local records only; no real model or autonomous business validation. Near-term roadmap management proposals remain unimplemented."
+}

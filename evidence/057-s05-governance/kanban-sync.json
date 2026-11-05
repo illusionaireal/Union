@@ -19,6 +19,52 @@
       "write_http": 200,
       "readback_http": 200,
       "assignee_matches_current_user": true
+    },
+    {
+      "at": "2026-11-05T15:24:37.953808+00:00",
+      "actor_id": "f926a8ec-c502-41c9-910d-80bbfe88f989",
+      "actor_name": "ZBOOK",
+      "before": {
+        "status": "progress",
+        "version": 3
+      },
+      "after": {
+        "status": "review",
+        "version": 4
+      },
+      "write_http": 200,
+      "readback_http": 200,
+      "assignee_matches_current_user": true,
+      "evidence_matches": true,
+      "implementation_commit": "cbda951a1ebb880ae20770791de5f550aff62e85"
+    },
+    {
+      "at": "2026-11-05T15:24:41.105957+00:00",
+      "actor_id": "f926a8ec-c502-41c9-910d-80bbfe88f989",
+      "actor_name": "ZBOOK",
+      "before": {
+        "status": "review",
+        "version": 4
+      },
+      "after": {
+        "status": "done",
+        "version": 5
+      },
+      "write_http": 200,
+      "readback_http": 200,
+      "assignee_matches_current_user": true,
+      "evidence_matches": true,
+      "implementation_commit": "cbda951a1ebb880ae20770791de5f550aff62e85"
     }
-  ]
+  ],
+  "last_readback": {
+    "id": 24,
+    "title": "S05 / U-069 · 治理准备、有效修订与责任交接",
+    "status": "done",
+    "version": 5,
+    "assignee": "f926a8ec-c502-41c9-910d-80bbfe88f989",
+    "archived": 0,
+    "branch": "rewrite/charter-v1",
+    "evidence": "用户结果：从现有React工作台登记参与者、采用本地治理、分配内部记录工作、提交并采用文字、撤权和交接原Work；系统保留原创建/治理历史和unknown原请求。\n入口：AU准备记录→AU与治理；责任与工作；我的治理请求。内容由人提交，尚未启用Agent自主工作或模型/真实资源。\n验收：普通/越权、旧规则修章、独立接班与超时退出、再委托撤权、迟到内容不采用、原责任交接、重启后原请求查询，均已通过受控实际界面/HTTP/持久化验证。\n状态：U-069完整G01–G10以controlled完成；独立身份/持久化及UI发现已闭合。真实模型业务、真实治理及用户实际验收未完成。\n实现提交：cbda951a1ebb880ae20770791de5f550aff62e85；分支 rewrite/charter-v1；已推送并通过ls-remote核对。\n证据：https://github.com/illusionaireal/Union/blob/cbda951a1ebb880ae20770791de5f550aff62e85/evidence/057-s05-governance/README.md\n实际浏览器50项覆盖21类命令；最终安装包与浏览器资产相同，身份升级/回退可核对。详细测试数与原失败在证据内，不能代替产品真实完成度。\n下一步：U-072/#21真实模型与工具往返，实际负责人待认领；profile/授权额度/工具范围开工时落实。\n一页近期路线：https://github.com/illusionaireal/Union/blob/cbda951a1ebb880ae20770791de5f550aff62e85/docs/NEAR_TERM_DELIVERY.md\n路线里的U-070真实治理验收补项、旧任务暂停模型及里程碑/批量卡片改写尚属建议，未把它们记作已实施。"
+  }
 }

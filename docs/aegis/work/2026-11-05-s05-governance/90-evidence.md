@@ -3,10 +3,10 @@
 
 ## EvidenceBundleDraft: S05
 
-- Artifact key: near-term-route
+- Artifact key: s05-delivery
 - Slice ID: S05
-- Type: documentation-review
-- Source: docs/NEAR_TERM_DELIVERY.md
-- Summary: 用户新增六项路线质询；一页用户交付路线经独立核对并单独提交5d6fba1。明确工程顺序、真实验收承接漏项、未认领负责人及旧WIP/里程碑问题；管理改造是建议，尚未实施。
-- Verifier: s05_boundary_review; coordinator
+- Type: git-and-kanban-readback
+- Source: evidence/057-s05-governance/git-delivery.json
+- Summary: 路线5d6fba1、S05实现cbda951已推送rewrite/charter-v1并ls-remote核对。U-069 controlled done，在线24每次写前查本人/version，review/done各HTTP200并完整读回，最终version5。原75卡与33项预存工作保留。
+- Verifier: codex/gpt-6 coordinator
 - Evidence status: evidence-finalized

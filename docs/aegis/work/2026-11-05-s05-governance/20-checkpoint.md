@@ -2,6 +2,21 @@
 
 ## Current Checkpoint
 
+- Current todo: 已授权的S05业务与一页路线完成；封存交付收据
+- Active slice: S05.5
+- Completed todos:
+- 完整受控实现、独立复核、验证、主账record、路线及实现提交推送、在线24 done/version5均已核对。当前记录随后续文档收据提交；最终远端SHA在用户答复披露。
+- Evidence refs:
+- evidence/057-s05-governance/git-delivery.json
+- evidence/057-s05-governance/kanban-sync.json
+- docs/NEAR_TERM_DELIVERY.md
+- Blocked on: none
+- Next step: 核对本次收据提交的远端SHA后结束本轮；未来U-072须另行认领并落实实际模型/profile、额度与工具范围。
+
+## Recent Checkpoint History
+
+## Checkpoint Update
+
 - Current todo: 提交已验S05增量并推送、在线24进入review/done、补交付收据
 - Active slice: S05.5
 - Completed todos:
@@ -12,9 +27,6 @@
 - evidence/057-s05-governance/candidate-management-final.txt
 - Blocked on: none
 - Next step: 精确暂存源/评审hash/保护文件及秘密检查→实现commit/push→在线读version和本人→review/done→文档收据commit/push及远端SHA
-
-## Recent Checkpoint History
-
 ## Checkpoint Update
 
 - Current todo: 核实浏览器刷新与授权选项竞态，完成最终可读性验收和卡片交付
@@ -65,6 +77,15 @@
 - evidence/057-s05-governance/green-g02.txt
 - Blocked on: none
 - Next step: G03/G04 校验后继续 G05/G06/G07 真实 RED
+
+## DriftCheckDraft
+
+- Scope status: S05 G01–G10受控工程已验证；按用户追加要求提交一页近期路线，不执行未来卡或批量管理改造。
+- Compatibility status: 原创建/回执/身份连续，schema显式采用与旧候选拒绝已验证；最终包与浏览器资产和已评审源码一致。
+- Retirement status: 原creator不再决定当前AU权，原回执归属与legacy兼容保留；无真实数据迁移或双派发。
+- New risk signals:
+- 路线评估发现真实治理验收尚未完整写入U-070主账；作为明确后续补项，不宣称本片完成真实治理或整体产品。
+- Advisory decision: continue
 
 ## DriftCheckDraft
 
