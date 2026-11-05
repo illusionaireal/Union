@@ -1,0 +1,42 @@
+{
+  "verified_at": "2026-11-05T08:01:28.992595+00:00",
+  "boundary": "Dated online evidence snapshot, not a second task ledger. U-066 remains doing; S01b/S01c unfinished.",
+  "card_id": 20,
+  "user_id": "f926a8ec-c502-41c9-910d-80bbfe88f989",
+  "user_name": "ZBOOK",
+  "user_role": "member",
+  "claim": {
+    "before_version": 3,
+    "before_assignee": null,
+    "before_status": "ready",
+    "http_status": 200,
+    "after_version": 4
+  },
+  "text_fidelity_correction": {
+    "before_version": 4,
+    "http_status": 200,
+    "after_version": 5,
+    "note": "Two en-dash range separators were lost in native Unicode command arguments; ASCII-escaped JSON preserves the exact desired text."
+  },
+  "readback_http_status": 200,
+  "version": 5,
+  "status": "progress",
+  "assignee": "f926a8ec-c502-41c9-910d-80bbfe88f989",
+  "branch": "rewrite/charter-v1",
+  "implementation_commit": "1384c0946526a4c76b7639e78419cd34adc8c692",
+  "handoff_commit": "4ba91cfd66f3b26ce23067a6631feea7905eb4ca",
+  "checks": {
+    "card_id": true,
+    "active": true,
+    "partial_status": true,
+    "assignee_is_current_user": true,
+    "version": true,
+    "branch": true,
+    "evidence_exact": true,
+    "active_cards": true
+  },
+  "evidence_sha256": "87fde90c57a3ea5eb8fc63d7ad62921ccf619fd655c4f6ad6858be4ad70a38d3",
+  "evidence": "2026-11-05 补同步：S01a / T01–T04 工程检查点已交付；U-066 / S01 整体仍开发中。\n\n已实现：旧 AU 目录与实际 ID/profile/完整存储的只读校验；交互打开、启动恢复和关闭先预检，错误映射不改另一 AU；原创建回执、幂等、unknown 及 Console/CLI 资源差异保留。\n\n分支：rewrite/charter-v1\n\n实现提交：https://github.com/illusionaireal/Union/commit/1384c0946526a4c76b7639e78419cd34adc8c692\n\n交付收据：https://github.com/illusionaireal/Union/commit/4ba91cfd66f3b26ce23067a6631feea7905eb4ca\n\n验证：严格 RED/GREEN；447 项 Python（5 项平台跳过）、npm 检查含 53 项前端、71 项实际浏览器、26 项安装候选测试通过；独立身份/持久化与验证器复核的 R1/R2 已修复复验。被测系统真实模型调用 0。\n\n证据：https://github.com/illusionaireal/Union/blob/4ba91cfd66f3b26ce23067a6631feea7905eb4ca/evidence/055-s01a-catalog-integrity/README.md\n\n剩余：S01b 稳定 principal、显式升级与 V1 创建；S01c 旧入口隔离及 React/HTTP 用户闭环。T01–T12 全部验收后才可关闭 U-066，本次不标记整卡完成，也不宣称真实运行/发布。\n\n本次凭据到位后补录先前离线工程结果；首次 Git 交付时尚未认领或写入在线 #20。",
+  "credential_persisted": false,
+  "transport_note": "Python client received Cloudflare 1010; the documented native curl client succeeded with the same authorized credential, proxy and normal TLS verification."
+}

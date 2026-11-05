@@ -6,6 +6,6 @@
   "scopeStatus": "S01a T01-T04；U-066 的整体状态保持 doing。",
   "compatStatus": "447 项 Python（5 平台跳过）、53 项前端、最终 71 项浏览器、安装候选 26 项通过；独立 R1/R2 已修复并复验。Git 交付另见 055 收据。",
   "retirementStatus": "Console 与 company 目录解析收口；保留 legacy 创建和执行以履行兼容契约，V1 入口替换与隔离由后续授权的 S01b/S01c 拥有。",
-  "newRiskSignals": ["在线 Kanban 凭据尚未提供；不能声称已更新 #20", "Console 既有混合职责仍待后续逐用例迁移"],
+  "newRiskSignals": ["Console 既有混合职责仍待后续逐用例迁移"],
   "decision": "continue"
 }

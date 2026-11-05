@@ -1,0 +1,21 @@
+
+> union@0.0.0 check:management
+> node scripts/project-management.mjs check && node --test tests/project-management.test.mjs
+
+Management check: 15 modules, 8 milestones, 76 tasks; PASS
+✔ rejects missing owners at start and unfinished dependencies, but permits honest unassigned backlog (10.0108ms)
+✔ completion requires scope, reviewer and existing evidence, and does not promote milestones (4.9458ms)
+✔ rejects duplicate IDs, unknown references and dependency cycles (3.7562ms)
+✔ blocked work needs an unblock action; already-started blocked work counts toward WIP (4.4381ms)
+✔ rejects evidence outside repository, invalid scope and malformed dates (4.7464ms)
+✔ deterministic generated views reject stale output and preserve surrounding narrative (21.2044ms)
+✔ flow summary keeps empty live evidence distinct from completion counts (1.7054ms)
+✔ milestone acceptance and task scope cannot be asserted without their review metadata (4.6016ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 218.3609

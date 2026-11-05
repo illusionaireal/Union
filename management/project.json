@@ -1785,6 +1785,17 @@
                         "evidence/055-s01a-catalog-integrity/candidate-installed-python.log"
                     ],
                     "note": "S01a/T01-T04 工程检查点：只读目录/ID/profile/完整旧存储核对接入交互、列表、启动、关闭及公司发现；保留原创建回执、幂等、unknown 和 Console/CLI 差异。真实 RED 后实现；447 项 Python（5 平台跳过）、53 项前端、最终 71 项浏览器、安装后候选 26 项通过，独立 R1/R2 已修复复验。完整 S01 未完成，S01b/S01c 留待后续授权，completion 保持 null。仅交还本会话租约，保留 doing/owner/started_at，WIP 6/6 与其他五项原样；不调用将已开始工作退回 ready 的 release。在线 #20 缺宿主 UNION_KANBAN_KEY，尚未认领/写入，安全注入请求待办；宿主现有未提交适配器不属于交付。Git 提交/推送随后以 055 收据记录。"
+                },
+                {
+                    "at": "2026-11-05T08:05:51.468Z",
+                    "actor": "codex/gpt-6/session-01a1a9fa-d89d-7091-ba52-c31a1df00b23",
+                    "from": "doing",
+                    "to": "doing",
+                    "scope": "documentation",
+                    "evidence": [
+                        "evidence/055-s01a-catalog-integrity/kanban-sync.json"
+                    ],
+                    "note": "用户后续提供本轮 Kanban 访问，补齐 S01a 在线协作。读取实际 user.id 与 #20 ready/version 3 后，以当前身份 ZBOOK 认领并写入 S01a 分支、已推送提交和验证/剩余范围，HTTP 200/version 4；修正两处传输丢失的范围分隔符后 HTTP 200/version 5，独立 GET 确认 progress、负责人、分支、证据全文一致，活动卡仍为 #19-#30。密钥仅用于本次进程，未写入仓库或持久环境。U-066 保持 doing/completion=null，WIP 6/6 与其他任务不变；S01b/S01c 未开始。交还此次补同步租约，保留 owner/started_at。"
                 }
             ]
         },

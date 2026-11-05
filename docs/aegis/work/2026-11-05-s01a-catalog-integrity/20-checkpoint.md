@@ -22,6 +22,6 @@ S01a/T01–T04 已实现：只读 catalog adapter 核对路径、实际 ID、leg
 
 本轮 actor 为 `codex/gpt-6/session-01a1a9fa-d89d-7091-ba52-c31a1df00b23`。通过现有统一适配器认领和记录；WIP 明确增加至 6/6，原五张卡的状态/负责人/阻塞/历史保留。部分交付后保留 U-066 的 doing、owner、started_at 和 completion=null，仅交还本轮会话租约，不通过 release 将已开始工作隐藏回待办。
 
-在线代理/TLS 已验证，匿名 board 返回 401；Process/User/Machine 缺 `UNION_KANBAN_KEY`，安全注入请求尚未完成。#20 未认领/同步，不能假称已核对最新负责人/version；注入后按 KANBAN.md 重新读取实际 user.id 与版本再写。
+首次 Git 交付时凭据缺失，#20 尚未同步。用户随后提供本轮访问，现已按 KANBAN.md 读取实际 user.id 与 ready/version 3，认领并补入 S01a 证据，HTTP 200 后逐字读回最终 version 5、progress、负责人/分支/证据一致；见 [在线收据](../../../../evidence/055-s01a-catalog-integrity/kanban-sync.json)。密钥没有写入仓库或持久环境，在线卡没有标记 done。
 
-实现已以 `1384c0946526a4c76b7639e78419cd34adc8c692` 提交并推送本分支，实际远端读回同 SHA；本段和 055 Git 收据通过后续文档提交补入，生产/测试代码不变。只有在线更新仍依赖宿主安全提供凭据。后续经授权从 S01b/T05 继续；不得自动执行全部未来切片、关闭 U-066 或升级证据。接手先读最新 HANDOFF、S01 契约及真实 Git/租约状态，保留所有任务预存修改，不重复已确认的 S01a 工作。
+实现已以 `1384c0946526a4c76b7639e78419cd34adc8c692` 提交并推送本分支，收据提交 `4ba91cfd66f3b26ce23067a6631feea7905eb4ca` 也已推送并读回。在线补同步已完成，本次只追加其证据与交接，生产/测试代码不变。后续经授权从 S01b/T05 继续；不得自动执行全部未来切片、关闭 U-066 或升级证据。接手先读最新 HANDOFF、S01 契约及真实 Git/租约状态，保留所有任务预存修改，不重复已确认的 S01a 工作。

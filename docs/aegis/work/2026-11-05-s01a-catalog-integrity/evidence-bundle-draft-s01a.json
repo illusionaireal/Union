@@ -13,6 +13,7 @@
     "evidence/055-s01a-catalog-integrity/python-final.log",
     "evidence/055-s01a-catalog-integrity/workspace-browser-final-pass/checks.json",
     "evidence/055-s01a-catalog-integrity/candidate-installed-python.log",
-    "docs/reviews/2026-11-05-s01a-catalog-integrity.md"
+    "docs/reviews/2026-11-05-s01a-catalog-integrity.md",
+    "evidence/055-s01a-catalog-integrity/kanban-sync.json"
   ]
 }

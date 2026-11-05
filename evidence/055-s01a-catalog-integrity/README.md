@@ -64,9 +64,13 @@
 
 唯一任务源仍是 `management/project.json`。本轮通过宿主现有统一适配器认领 U-066；为用户授权的一个实际执行增加容量，上限从 5 到 6，有明确历史理由。U-007/U-041/U-044 的 blocked 与 U-056/U-060 的 doing、原负责人/阻塞/历史保留。U-066 只记录 S01a 工程证据，保持 doing、completion=null；不能为恢复 5 而隐藏已开始工作。交接仅清除本会话 claim，保留 owner/started_at 与 WIP，未调用会退回 ready 的 release。
 
-在线代理/TLS 已验证，未携带凭据时 `/api/board` 返回 401。Process/User/Machine 均没有 `UNION_KANBAN_KEY`，已请求宿主安全注入；本轮没有认领、覆盖或更新 #20，也没有读取到可信的最新负责人/version。注入后须先读实际 user.id、活动 #20 与 version，再按 [KANBAN.md](../../management/KANBAN.md) 认领/更新；原始邀请、密钥、代理地址不进入仓库。
+首次 Git 交付时，匿名 `/api/board` 返回 401，Process/User/Machine 均无 `UNION_KANBAN_KEY`，因此当时没有认领或更新 #20。用户随后提供本轮访问：按 [KANBAN.md](../../management/KANBAN.md) 读取实际 user.id，确认 #20 为无人认领的 ready/version 3；以当前身份 ZBOOK PATCH 认领为 progress 并补入分支、两个已推送提交及 S01a 验证/剩余范围，返回 HTTP 200/version 4。
 
-项目范围与提交授权属于用户保留的治理决策；未完成的宿主凭据注入属于补救介入。工程子代理只做独立复核，不是产品 AU 成员。没有把开发对话、测试夹具或文档更新换算成组织自主改进。
+后续逐字读回发现 Windows 原生 Unicode 参数传递丢失了两处范围分隔符；使用 ASCII 转义 JSON，仅修正该文本，按最新 version 再次 PATCH 返回 HTTP 200。最终独立 GET 读回 version 5、progress、实际负责人/分支/证据全文一致，活动卡仍只有 #19–#30，见 [带日期的在线收据](kanban-sync.json)。Python HTTP 客户端曾被 Cloudflare 1010 拒绝，接入说明指定的原生 curl 在相同授权、代理和正常 TLS 校验下成功；没有关闭 TLS 校验或保存凭据。密钥只经不回显的临时输入和子进程标准输入传给授权接口，未写入仓库、卡片或持久环境。
+
+补同步仅追加文档、主账历史和证据。宿主管理 render/check [25 项通过](kanban-management.log)，导出暂存候选使用已提交管理工具 [8 项通过](kanban-candidate.log)，Aegis [bundle/check 通过](kanban-aegis.log)。生产与测试代码未变，复用上方最终回归，不将宿主未提交工具纳入交付。
+
+项目范围与提交授权属于用户保留的治理决策；用户补充看板访问属于已完成的补救介入。工程子代理只做独立复核，不是产品 AU 成员。没有把开发对话、测试夹具或文档更新换算成组织自主改进。
 
 只提交本轮源码、测试、证据和管理/交接增量。开工前的根配置、管理适配器、package.json、模型子模块和其他未跟踪资产均不纳入交付。下一轮经授权从 S01b/T05 续接，不关闭 U-066 或自动实施后续切片。
 
@@ -76,4 +80,4 @@
 
 `git push origin HEAD:refs/heads/rewrite/charter-v1` 退出码 0；随后 `git ls-remote origin refs/heads/rewrite/charter-v1` 实际返回同一个 `1384c0946526a4c76b7639e78419cd34adc8c692`。实现提交推送读回时，本轮增量已全部提交；仓库整体仍有预存修改和未跟踪文件，不能称为干净仓库。未创建、切换或删除分支/工作树，保留交接分支供后续 S01b 使用，`dev` 未被改动。
 
-本段及 HANDOFF/Aegis 的提交收据在后续文档提交中补入同一分支，不改变已验证的生产或测试代码。该文档提交的最终远端 tip 另由本轮最终 Git 读回报告确认。在线 #20 仍因缺少宿主密钥未同步，不包含在上述 Git 成功声明中。
+本段及 HANDOFF/Aegis 的提交收据已通过 `4ba91cfd66f3b26ce23067a6631feea7905eb4ca` 补入同一分支，已推送并读回同 SHA，没有改变已验证的生产或测试代码。在该 Git 收据的时间点，在线 #20 尚未同步；凭据随后到位后的补同步结果由上方独立 HTTP 收据确认，不把 Git 推送本身当作在线更新证据。
