@@ -1,6 +1,13 @@
 import type { Charter, CommandKind, ReceiptKind, Session, Snapshot } from '../../api/types';
+export function sameCoreIdentity(expected?: Session, current?: Session): boolean {
+  return !!expected?.principal_id && expected.principal_id === current?.principal_id &&
+    expected.service_instance === current.service_instance &&
+    current.core_protocol === 'core.au.v1';
+}
+
 export const titles: Record<ReceiptKind, string> = {
-  create: '创建 AI 公司',
+  create: '旧版兼容试验',
+  create_v1: '创建 AU',
   start: '启动／继续有限运行',
   pause: '暂停新的派发',
   event: '提交组织事件',
@@ -37,6 +44,7 @@ export const defaultCharter: Charter = {
   reserved_matters: ['goal', 'resources', 'charter', 'funding', 'dissolution'],
   board_can_amend: true,
 };
+export const isCreation = (kind: CommandKind) => kind === 'create' || kind === 'create_v1';
 export function blocked(
   kind: CommandKind,
   connected: boolean,
@@ -45,6 +53,11 @@ export function blocked(
 ): string {
   if (!connected) return '连接断开，先读取最新状态';
   if (session?.role !== 'board') return '观察者可查看，操作需要发起人会话';
+  if (kind === 'create_v1') {
+    if (session.core_protocol !== 'core.au.v1') return '服务版本不兼容，尚不支持 V1 创建；请更新服务，输入会保留';
+    if (!session.principal_id) return '请先设置并登录核心账户，绑定稳定的初始治理主体';
+    return '';
+  }
   if (kind === 'create') return '';
   if (!data) return '请先创建组织';
   if (
@@ -101,6 +114,7 @@ export function readForm(kind: CommandKind, form: HTMLFormElement): Record<strin
   const charter = () => ({ ...JSON.parse(str('charter_rules')), text: str('charter_text') });
   const reason = str('reason');
   switch (kind) {
+    case 'create_v1':
     case 'create':
       return {
         name: str('name'),
@@ -108,7 +122,7 @@ export function readForm(kind: CommandKind, form: HTMLFormElement): Record<strin
         board_name: str('board_name'),
         resources: resources(),
         charter: charter(),
-        ...(str('company_template') === 'novel'
+        ...(kind === 'create' && str('company_template') === 'novel'
           ? {
               company: {
                 initial_budget_minor: Number(str('initial_budget_minor')),

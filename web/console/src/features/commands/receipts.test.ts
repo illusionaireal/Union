@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import type { Receipt } from '../../api/types';
 import { acceptReceipt, loadPending, savePending } from './receipts';
+import { api } from '../../api/client';
+import { vi } from 'vitest';
 const base: Receipt = {
   id: 'request-1',
   kind: 'event',
@@ -12,6 +14,14 @@ const base: Receipt = {
   message: '操作已受理',
 };
 describe('receipt recovery', () => {
+  it('persists V1 request kind and queries its original receipt even with an allocated AU ID', async () => {
+    const pending = [{ id: 'core-request', kind: 'create_v1' as const, organization_id: 'org-allocated' }];
+    savePending(pending);
+    expect(loadPending()).toEqual(pending);
+    const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(JSON.stringify({ receipt: base }), { status: 200 }));
+    await api.receipt('core-request', 'org-allocated', 'create_v1');
+    expect(fetcher.mock.calls[0][0]).toBe('/api/v1/receipts?id=core-request');
+  });
   it('advances accepted to succeeded and never replaces a terminal receipt with a late result', () => {
     const success = { ...base, status: 'succeeded' as const, message: '操作已保存' };
     expect(acceptReceipt(base, success)).toBe(success);

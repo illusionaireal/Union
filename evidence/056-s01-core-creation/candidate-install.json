@@ -1,0 +1,27 @@
+{
+  "candidate_source": "git checkout-index, only task-owned source staged",
+  "baseline": "219168dfd6e0325cc2950f7dc93fcb8daedff2f6",
+  "archive_sha256": "ce1abdf98bcf46eb634df27c8a5e214b89b41b123aba1e40c75a850c0466d273",
+  "file_count": 74,
+  "core_schemas": {
+    "auth": 1,
+    "catalog": 1
+  },
+  "checks": [
+    "Archive contains shipped upgrade tool and new identity/creation owners",
+    "Actual candidate archive installed with all file hashes verified",
+    "Declared auth/catalog schema 1",
+    "Runtime imports resolve to installed candidate outside checkout",
+    "Installed upgrade executes on a real old catalog",
+    "Installed rerun preserves database bytes and principal; already_current is diagnostic only",
+    "Original payload/receipt bytes preserved and old login sessions invalidated"
+  ],
+  "real_model_calls": 0,
+  "modeld_build": "Fresh Bun 1.4.2 candidate build after verifying pinned source and exact recorded upstream patch; cached dependencies; no model service runtime claim",
+  "installed_regression": {
+    "tests": 133,
+    "seconds": 76.117,
+    "exit_code": 0,
+    "skipped": 0
+  }
+}

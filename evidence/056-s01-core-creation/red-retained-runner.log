@@ -1,0 +1,16 @@
+test_retained_runner_handle_rejects_before_lock_activity_or_execution (tests.test_core_isolation.CoreEngineIsolationTests.test_retained_runner_handle_rejects_before_lock_activity_or_execution) ... FAIL
+
+======================================================================
+FAIL: test_retained_runner_handle_rejects_before_lock_activity_or_execution (tests.test_core_isolation.CoreEngineIsolationTests.test_retained_runner_handle_rejects_before_lock_activity_or_execution)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_isolation.py", line 71, in test_retained_runner_handle_rejects_before_lock_activity_or_execution
+    self.assertEqual(files(root), before)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'runner.lock': b'', 'state.sqlite3': b'SQL[173488 chars]x00'} != {'state.sqlite3': b'SQLite format 3\x00\x10[173468 chars]x00'}
+Diff is 260152 characters long. Set self.maxDiff to None to see it.
+
+----------------------------------------------------------------------
+Ran 1 test in 0.106s
+
+FAILED (failures=1)

@@ -1,10 +1,12 @@
-"""Resolve a registered legacy AU before any runtime writes are allowed."""
+"""Validate a catalog locator, then choose the stored AU's supported profile."""
 import json
 import sqlite3
 from contextlib import closing
 from pathlib import Path
 
 from ..engine import Rejected, identifier, require, validate_charter, validate_resources
+from ..errors import CoreError
+from .core_au_store import CoreAUStore
 
 
 INCOMPATIBLE = "组织存储不完整或不兼容；请保留原记录并在宿主核对"
@@ -54,10 +56,43 @@ def _check_legacy_state(cx, organization_id):
             and all(isinstance(value, str) and value for value in authority.values()), INCOMPATIBLE)
 
 
-def legacy_directory(root, entry):
+def check_legacy_runtime(cx, expected_id=None):
+    """Recheck a retained Engine at its actual read/write/authority boundary."""
+    try:
+        row = cx.execute("SELECT data FROM state WHERE id=1").fetchone()
+        require(row is not None, INCOMPATIBLE)
+        state = json.loads(row[0])
+        require(isinstance(state, dict), INCOMPATIBLE)
+        au_id = identifier(state.get("id"))
+        require(expected_id is None or expected_id == au_id, INCOMPATIBLE)
+        if state.get("runtime_profile") == "core_v1":
+            CoreAUStore.read_in(cx, au_id)
+            raise CoreError("unsupported_capability")
+        _check_legacy_state(cx, au_id)
+        return au_id
+    except (json.JSONDecodeError, UnicodeDecodeError) as error:
+        raise Rejected(INCOMPATIBLE) from error
+    except sqlite3.DatabaseError as error:
+        if getattr(error, "sqlite_errorcode", None) in (
+                sqlite3.SQLITE_ERROR, sqlite3.SQLITE_CORRUPT, sqlite3.SQLITE_NOTADB, sqlite3.SQLITE_SCHEMA):
+            raise Rejected(INCOMPATIBLE) from error
+        raise
+
+
+def allocated_directory(root, folder):
+    root = Path(root).resolve()
+    directory = root / folder
+    try:
+        require(directory.is_relative_to(root / "organizations") and directory != root / "organizations"
+                and directory.resolve() == directory, "分配目录含链接或超出服务范围；请保留原请求核对")
+    except (ValueError, RuntimeError) as error:
+        raise Rejected(INCOMPATIBLE) from error
+    return directory
+
+
+def resolve_directory(root, entry, *, creation=None):
     root = Path(root).resolve()
     identifier(entry["id"])
-    require(entry.get("profile", "legacy_v0") == "legacy_v0", INCOMPATIBLE)
     require(isinstance(entry["folder"], str) and bool(entry["folder"]), INCOMPATIBLE)
     try:
         directory = (root / entry["folder"]).resolve()
@@ -72,7 +107,17 @@ def legacy_directory(root, entry):
         with closing(sqlite3.connect(database.as_uri() + "?mode=ro", uri=True, timeout=10)) as cx:
             cx.execute("PRAGMA query_only=ON")
             cx.execute("BEGIN")
-            _check_legacy_state(cx, entry["id"])
+            row = cx.execute("SELECT data FROM state WHERE id=1").fetchone()
+            require(row is not None, INCOMPATIBLE)
+            state = json.loads(row[0])
+            require(isinstance(state, dict), INCOMPATIBLE)
+            profile = state.get("runtime_profile", "legacy_v0")
+            require(profile == entry.get("profile", "legacy_v0"), INCOMPATIBLE)
+            if profile == "core_v1":
+                CoreAUStore.read_in(cx, entry["id"], creation=creation)
+            else:
+                require(profile == "legacy_v0", INCOMPATIBLE)
+                _check_legacy_state(cx, entry["id"])
     except (json.JSONDecodeError, UnicodeDecodeError) as error:
         raise Rejected(INCOMPATIBLE) from error
     except sqlite3.DatabaseError as error:
@@ -81,4 +126,11 @@ def legacy_directory(root, entry):
             raise Rejected(INCOMPATIBLE) from error
         # Busy/I/O failures remain storage failures, not an invented identity verdict.
         raise
+    return directory, profile
+
+
+def legacy_directory(root, entry):
+    directory, profile = resolve_directory(root, entry)
+    if profile != "legacy_v0":
+        raise CoreError("unsupported_capability")
     return directory

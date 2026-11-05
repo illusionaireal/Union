@@ -1,0 +1,114 @@
+test_incompatible_activation_and_rollback_preserve_pointer_and_latest_identity (tests.test_identity_release.IdentityReleaseTests.test_incompatible_activation_and_rollback_preserve_pointer_and_latest_identity) ... ok
+test_incomplete_current_schema_rejects_before_switching_code_pointer (tests.test_identity_release.IdentityReleaseTests.test_incomplete_current_schema_rejects_before_switching_code_pointer) ... ok
+test_run_refuses_a_previously_selected_old_binary_after_schema_upgrade (tests.test_identity_release.IdentityReleaseTests.test_run_refuses_a_previously_selected_old_binary_after_schema_upgrade) ... ok
+test_actual_id_mismatch_does_not_rewrite_the_state_or_catalog (tests.test_catalog_integrity.CatalogIntegrityTests.test_actual_id_mismatch_does_not_rewrite_the_state_or_catalog) ... ok
+test_catalog_list_checks_identity_while_scoped_session_keeps_its_own_au (tests.test_catalog_integrity.CatalogIntegrityTests.test_catalog_list_checks_identity_while_scoped_session_keeps_its_own_au) ... ok
+test_catalog_profile_hint_is_checked_against_the_stored_profile (tests.test_catalog_integrity.CatalogIntegrityTests.test_catalog_profile_hint_is_checked_against_the_stored_profile) ... ok
+test_company_discovery_uses_the_same_profile_and_identity_boundary (tests.test_catalog_integrity.CatalogIntegrityTests.test_company_discovery_uses_the_same_profile_and_identity_boundary) ... ERROR
+test_company_discovery_uses_the_same_profile_and_identity_boundary (tests.test_catalog_integrity.CatalogIntegrityTests.test_company_discovery_uses_the_same_profile_and_identity_boundary) ... ERROR
+test_company_discovery_uses_the_same_profile_and_identity_boundary (tests.test_catalog_integrity.CatalogIntegrityTests.test_company_discovery_uses_the_same_profile_and_identity_boundary) ... ERROR
+test_creation_payloads_and_original_receipts_survive_restart_and_replay (tests.test_catalog_integrity.CatalogIntegrityTests.test_creation_payloads_and_original_receipts_survive_restart_and_replay) ... ok
+test_failed_startup_releases_the_lock_for_reopen_after_host_correction (tests.test_catalog_integrity.CatalogIntegrityTests.test_failed_startup_releases_the_lock_for_reopen_after_host_correction) ... ok
+test_incomplete_current_charter_is_rejected_without_re_adoption (tests.test_catalog_integrity.CatalogIntegrityTests.test_incomplete_current_charter_is_rejected_without_re_adoption) ... ok
+test_incomplete_table_columns_reject_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_incomplete_table_columns_reject_open_recovery_and_close_before_writes) ... ok
+test_interrupted_accepted_creation_preserves_partial_files_and_original_intent (tests.test_catalog_integrity.CatalogIntegrityTests.test_interrupted_accepted_creation_preserves_partial_files_and_original_intent) ... ok
+test_lifecycle_checks_late_bad_mapping_before_writing_an_earlier_valid_au (tests.test_catalog_integrity.CatalogIntegrityTests.test_lifecycle_checks_late_bad_mapping_before_writing_an_earlier_valid_au) ... ok
+test_matching_id_outside_organizations_root_is_rejected_without_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_matching_id_outside_organizations_root_is_rejected_without_writes) ... ok
+test_missing_current_charter_or_legacy_authority_is_rejected_without_repair (tests.test_catalog_integrity.CatalogIntegrityTests.test_missing_current_charter_or_legacy_authority_is_rejected_without_repair) ... ok
+test_missing_directory_or_database_is_rejected_without_creating_it (tests.test_catalog_integrity.CatalogIntegrityTests.test_missing_directory_or_database_is_rejected_without_creating_it) ... ok
+test_partial_database_is_rejected_instead_of_completed_on_open (tests.test_catalog_integrity.CatalogIntegrityTests.test_partial_database_is_rejected_instead_of_completed_on_open) ... ok
+test_state_database_link_cannot_escape_the_validated_directory (tests.test_catalog_integrity.CatalogIntegrityTests.test_state_database_link_cannot_escape_the_validated_directory) ... ok
+test_unknown_creation_allocations_and_receipts_survive_restart_without_replay (tests.test_catalog_integrity.CatalogIntegrityTests.test_unknown_creation_allocations_and_receipts_survive_restart_without_replay) ... ok
+test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy (tests.test_catalog_integrity.CatalogIntegrityTests.test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy) ... ok
+test_valid_mapping_reopens_recovers_and_closes_the_original_aus (tests.test_catalog_integrity.CatalogIntegrityTests.test_valid_mapping_reopens_recovers_and_closes_the_original_aus) ... ok
+test_wrong_au_mapping_rejects_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_wrong_au_mapping_rejects_open_recovery_and_close_before_writes) ... ok
+test_console_resource_limits_and_broader_cli_resources_remain_distinct (tests.test_catalog_http.CatalogHTTPTests.test_console_resource_limits_and_broader_cli_resources_remain_distinct) ... ok
+test_legacy_controller_and_company_creation_keep_their_versions (tests.test_catalog_http.CatalogHTTPTests.test_legacy_controller_and_company_creation_keep_their_versions) ... ok
+test_registration_failure_queries_the_original_http_receipt_without_an_au_id (tests.test_catalog_http.CatalogHTTPTests.test_registration_failure_queries_the_original_http_receipt_without_an_au_id) ... ok
+test_wrong_mapping_returns_409_without_reading_or_mutating_the_other_au (tests.test_catalog_http.CatalogHTTPTests.test_wrong_mapping_returns_409_without_reading_or_mutating_the_other_au) ... ok
+test_au_state_charter_and_root_audit_roll_back_in_one_real_transaction (tests.test_core_creation_failures.CoreCreationFailureTests.test_au_state_charter_and_root_audit_roll_back_in_one_real_transaction) ... ok
+test_authentication_catalog_lock_returns_typed_storage_error (tests.test_core_creation_failures.CoreCreationFailureTests.test_authentication_catalog_lock_returns_typed_storage_error) ... ok
+test_creation_audit_must_still_match_its_original_request (tests.test_core_creation_failures.CoreCreationFailureTests.test_creation_audit_must_still_match_its_original_request) ... ok
+test_creation_rejects_escaped_parent_before_any_outside_file_write (tests.test_core_creation_failures.CoreCreationFailureTests.test_creation_rejects_escaped_parent_before_any_outside_file_write) ... ok
+test_directory_failure_keeps_unknown_without_retrying_allocation (tests.test_core_creation_failures.CoreCreationFailureTests.test_directory_failure_keeps_unknown_without_retrying_allocation) ... ok
+test_intent_storage_failure_returns_503_without_allocating_or_faking_unknown (tests.test_core_creation_failures.CoreCreationFailureTests.test_intent_storage_failure_returns_503_without_allocating_or_faking_unknown) ... ok
+test_interruptions_before_and_after_au_commit_keep_original_id_and_bytes (tests.test_core_creation_failures.CoreCreationFailureTests.test_interruptions_before_and_after_au_commit_keep_original_id_and_bytes) ... ok
+
+======================================================================
+ERROR: test_company_discovery_uses_the_same_profile_and_identity_boundary (tests.test_catalog_integrity.CatalogIntegrityTests.test_company_discovery_uses_the_same_profile_and_identity_boundary)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 490, in test_company_discovery_uses_the_same_profile_and_identity_boundary
+    with engine.transaction() as cx:
+         ~~~~~~~~~~~~~~~~~~^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\contextlib.py", line 141, in __enter__
+    return next(self.gen)
+  File "D:\Project\Union\ai_union\engine.py", line 127, in transaction
+    self._check_runtime(cx)
+    ~~~~~~~~~~~~~~~~~~~^^^^
+  File "D:\Project\Union\ai_union\engine.py", line 69, in _check_runtime
+    return check_legacy_runtime(cx, getattr(self, "_au_id", None))
+  File "D:\Project\Union\ai_union\adapters\au_catalog.py", line 71, in check_legacy_runtime
+    _check_legacy_state(cx, au_id)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "D:\Project\Union\ai_union\adapters\au_catalog.py", line 35, in _check_legacy_state
+    require(state.get("runtime_profile", "legacy_v0") == "legacy_v0", INCOMPATIBLE)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\ai_union\errors.py", line 10, in require
+    raise Rejected(reason)
+ai_union.errors.Rejected: 组织存储不完整或不兼容；请保留原记录并在宿主核对
+
+======================================================================
+ERROR: test_company_discovery_uses_the_same_profile_and_identity_boundary (tests.test_catalog_integrity.CatalogIntegrityTests.test_company_discovery_uses_the_same_profile_and_identity_boundary)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 49, in cleanup
+    instance.close()
+    ~~~~~~~~~~~~~~^^
+  File "D:\Project\Union\ai_union\console.py", line 515, in close
+    engines = self._legacy_engines()
+  File "D:\Project\Union\ai_union\console.py", line 92, in _legacy_engines
+    resolved = [self._resolve_entry(item) for item in self._catalog_entries()]
+                ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\Project\Union\ai_union\console.py", line 86, in _resolve_entry
+    directory, profile = resolve_directory(self.root, entry, creation=intent)
+                         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\ai_union\adapters\au_catalog.py", line 115, in resolve_directory
+    require(profile == entry.get("profile", "legacy_v0"), INCOMPATIBLE)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\ai_union\errors.py", line 10, in require
+    raise Rejected(reason)
+ai_union.errors.Rejected: 组织存储不完整或不兼容；请保留原记录并在宿主核对
+
+======================================================================
+ERROR: test_company_discovery_uses_the_same_profile_and_identity_boundary (tests.test_catalog_integrity.CatalogIntegrityTests.test_company_discovery_uses_the_same_profile_and_identity_boundary)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\shutil.py", line 625, in _rmtree_unsafe
+    os.unlink(fullname)
+    ~~~~~~~~~^^^^^^^^^^
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\Temp\\tmp05ywxaz4\\corp\\console.lock'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\tempfile.py", line 955, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\tempfile.py", line 935, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\shutil.py", line 790, in rmtree
+    return _rmtree_unsafe(path, onexc)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\shutil.py", line 629, in _rmtree_unsafe
+    onexc(os.unlink, fullname, err)
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\tempfile.py", line 910, in onexc
+    _os.unlink(path)
+    ~~~~~~~~~~^^^^^^
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\Temp\\tmp05ywxaz4\\corp\\console.lock'
+
+----------------------------------------------------------------------
+Ran 33 tests in 37.920s
+
+FAILED (errors=3)

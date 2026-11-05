@@ -1,0 +1,36 @@
+
+ RUN  v3.2.7 D:/Project/Union/web/console
+
+ ❯ src/features/commands/core-creation.test.tsx (1 test | 1 failed) 250ms
+   × core creation through the workspace > submits ordinary creation as create_v1 with exactly the five supported fields 249ms
+     → dialog.showModal is not a function
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/commands/core-creation.test.tsx > core creation through the workspace > submits ordinary creation as create_v1 with exactly the five supported fields
+TypeError: dialog.showModal is not a function
+ ❯ src/components/Dialog.tsx:20:12
+     18|     const dialog = ref.current!;
+     19|     const trigger = document.activeElement as HTMLElement | null;
+     20|     dialog.showModal();
+       |            ^
+     21|     return () => {
+     22|       dialog.close();
+ ❯ Object.react_stack_bottom_frame ../../node_modules/react-dom/cjs/react-dom-client.development.js:28656:20
+ ❯ runWithFiberInDEV ../../node_modules/react-dom/cjs/react-dom-client.development.js:1048:13
+ ❯ commitHookEffectListMount ../../node_modules/react-dom/cjs/react-dom-client.development.js:13748:29
+ ❯ commitHookPassiveMountEffects ../../node_modules/react-dom/cjs/react-dom-client.development.js:13835:11
+ ❯ commitPassiveMountOnFiber ../../node_modules/react-dom/cjs/react-dom-client.development.js:16906:13
+ ❯ recursivelyTraversePassiveMountEffects ../../node_modules/react-dom/cjs/react-dom-client.development.js:16851:13
+ ❯ commitPassiveMountOnFiber ../../node_modules/react-dom/cjs/react-dom-client.development.js:17183:11
+ ❯ recursivelyTraversePassiveMountEffects ../../node_modules/react-dom/cjs/react-dom-client.development.js:16851:13
+ ❯ commitPassiveMountOnFiber ../../node_modules/react-dom/cjs/react-dom-client.development.js:16898:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  17:38:48
+   Duration  1.94s (transform 327ms, setup 169ms, collect 573ms, tests 250ms, environment 485ms, prepare 149ms)
+

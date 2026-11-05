@@ -1,0 +1,168 @@
+
+> @union/console@0.1.0 test
+> vitest run src/features/commands/core-boundaries.test.tsx -t user cancels
+
+
+ RUN  v3.2.7 D:/Project/Union/web/console
+
+ ❯ src/features/commands/core-boundaries.test.tsx (9 tests | 1 failed | 8 skipped) 326ms
+   ↓ core creation identity and receipt boundaries > rejects a POST receipt with the wrong id and retains the original V1 request
+   ↓ core creation identity and receipt boundaries > rejects a POST receipt with the wrong kind and retains the original V1 request
+   ↓ core creation identity and receipt boundaries > keeps an unsubmitted creation draft and focus through a same-principal session renewal
+   ↓ core creation identity and receipt boundaries > checks the current principal again before sending a prepared draft
+   ↓ core creation identity and receipt boundaries > refuses to bind a draft to a different principal even before the workspace poll notices the change
+   ↓ core creation identity and receipt boundaries > adopts a delayed creation result only for its original principal (changed=false)
+   ↓ core creation identity and receipt boundaries > adopts a delayed creation result only for its original principal (changed=true)
+   ↓ core creation identity and receipt boundaries > shows a lookup failure beside an unknown receipt while retaining its original ID
+   × core creation identity and receipt boundaries > does not create an AU when the user cancels while the identity preflight is still pending 325ms
+     → expected "command" to not be called at all, but actually been called 1 times
+
+Received: 
+
+  1st command call:
+
+    Array [
+      Object {
+        "base_version": null,
+        "data": Object {
+          "board_name": "初始治理主体",
+          "charter": Object {
+            "allowed_operations": Array [
+              "create_member",
+              "create_position",
+              "update_position",
+              "assign",
+              "set_policy",
+              "create_work",
+              "handoff",
+              "pause_work",
+              "resume_work",
+              "cancel_work",
+              "update_work",
+              "wait",
+              "set_strategy",
+              "record_memory",
+            ],
+            "allowed_tools": Array [
+              "produce_artifact",
+            ],
+            "board_can_amend": true,
+            "reserved_matters": Array [
+              "goal",
+              "resources",
+              "charter",
+              "funding",
+              "dissolution",
+            ],
+            "text": "本地有限组织试验。组织在已配置资源内形成岗位和协作；无对外发布或支付权限。",
+          },
+          "goal": "Retain this private goal",
+          "name": "我的 AU",
+          "resources": Object {
+            "max_calls": 8,
+            "timeout_seconds": 180,
+          },
+        },
+        "id": "a9b27083-984c-4ed2-bb84-41f5cdc34241",
+        "kind": "create_v1",
+        "organization_id": null,
+      },
+      Object {
+        "client": QueryClient {},
+        "meta": undefined,
+        "mutationKey": undefined,
+      },
+    ]
+
+
+Number of calls: 1
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/commands/core-boundaries.test.tsx > core creation identity and receipt boundaries > does not create an AU when the user cancels while the identity preflight is still pending
+AssertionError: expected "command" to not be called at all, but actually been called 1 times
+
+Received: 
+
+  1st command call:
+
+    Array [
+      Object {
+        "base_version": null,
+        "data": Object {
+          "board_name": "初始治理主体",
+          "charter": Object {
+            "allowed_operations": Array [
+              "create_member",
+              "create_position",
+              "update_position",
+              "assign",
+              "set_policy",
+              "create_work",
+              "handoff",
+              "pause_work",
+              "resume_work",
+              "cancel_work",
+              "update_work",
+              "wait",
+              "set_strategy",
+              "record_memory",
+            ],
+            "allowed_tools": Array [
+              "produce_artifact",
+            ],
+            "board_can_amend": true,
+            "reserved_matters": Array [
+              "goal",
+              "resources",
+              "charter",
+              "funding",
+              "dissolution",
+            ],
+            "text": "本地有限组织试验。组织在已配置资源内形成岗位和协作；无对外发布或支付权限。",
+          },
+          "goal": "Retain this private goal",
+          "name": "我的 AU",
+          "resources": Object {
+            "max_calls": 8,
+            "timeout_seconds": 180,
+          },
+        },
+        "id": "a9b27083-984c-4ed2-bb84-41f5cdc34241",
+        "kind": "create_v1",
+        "organization_id": null,
+      },
+      Object {
+        "client": QueryClient {},
+        "meta": undefined,
+        "mutationKey": undefined,
+      },
+    ]
+
+
+Number of calls: 1
+
+ ❯ src/features/commands/core-boundaries.test.tsx:166:24
+    164|     expect(screen.queryByLabelText('AU目标')).not.toBeInTheDocument();
+    165|     await act(async () => finish(session));
+    166|     expect(submit).not.toHaveBeenCalled();
+       |                        ^
+    167|     expect(fieldsLocked).toBe(true);
+    168|     expect(JSON.parse(sessionStorage.getItem('union-pending') || '[]')…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 8 skipped (9)
+   Start at  18:17:10
+   Duration  2.02s (transform 358ms, setup 164ms, collect 610ms, tests 326ms, environment 469ms, prepare 126ms)
+
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path D:\Project\Union\web\console
+npm error workspace @union/console@0.1.0
+npm error location D:\Project\Union\web\console
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c vitest run src/features/commands/core-boundaries.test.tsx -t ^^^"user^^^ cancels^^^"

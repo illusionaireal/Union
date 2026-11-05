@@ -52,7 +52,7 @@ class CatalogHTTPTests(unittest.TestCase):
         self.cookie = self.server.cookie_name + "=" + self.app.new_session("observer", organizations=[au_b])
         status, body, _ = self.request("GET", "/api/session")
         self.assertEqual(status, 200)
-        self.assertEqual(body["organizations"], [{"id": au_b, "name": "private-B"}])
+        self.assertEqual(body["organizations"], [{"id": au_b, "name": "private-B", "profile": "legacy_v0"}])
         self.assertEqual(self.request("GET", "/api/snapshot?organization_id=" + au_b)[0], 200)
         self.cookie = self.server.cookie_name + "=" + self.board
         status, body, _ = self.request("GET", "/api/receipts?id=create-http")
@@ -135,7 +135,7 @@ class CatalogHTTPTests(unittest.TestCase):
         self.assertEqual(completed.returncode, 0, completed.stderr)
         oid = json.loads(completed.stdout)["organization_id"]
         with self.app.catalog() as cx:
-            cx.execute("INSERT INTO organizations VALUES(?,?)", (oid, "organizations/cli-cost"))
+            cx.execute("INSERT INTO organizations(id,folder) VALUES(?,?)", (oid, "organizations/cli-cost"))
         self.assertEqual(self.app.engine(self.board, oid).state()["resources"], limits)
 
 

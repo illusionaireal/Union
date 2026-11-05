@@ -1,6 +1,6 @@
 # S01：稳定核心身份、治理根与创建/重开契约
 
-日期：2026-11-05。工程任务U-066；要求来自PRD F01/F03/F09/F11/P15/F17，Chapter D-01、A-01/A-04、R-01/R-02、X-02(a)，以及ADR-0005/0006。本文件是已选的首片设计，**尚未实现**；不能把下列新增字段/接口当成当前可调用API。
+日期：2026-11-05。工程任务U-066；要求来自PRD F01/F03/F09/F11/P15/F17，Chapter D-01、A-01/A-04、R-01/R-02、X-02(a)，以及ADR-0005/0006。本文件的 S01a–S01c 已实现并通过 T01–T12 的受控验收，见 [056 证据](../../evidence/056-s01-core-creation/README.md)；原 S01a 证据保留在 [055](../../evidence/055-s01a-catalog-integrity/README.md)。以下为冻结契约，实现不代表完整治理或业务自治已经启用。
 
 ## 1. 用户结果与实施顺序
 
@@ -32,7 +32,7 @@
 - 首次设置新账户时生成principal；改密和使用有效恢复码恢复保留该ID。
 - 新会话只在验证账户后签发，并绑定其principal。旧无principal会话在升级时失效，重新登录；不能在读取AU时按同名username补归属。
 - `reset_owner`删除账户后再次认领产生新principal，旧AU根和创建意图仍保留原ID。账户重置不成为AU治理恢复后门，旧根无法验证时保持无权访问。
-- 旧身份库采用显式、版本化的升级命令；候选入口定为`python scripts/upgrade_core_identity.py --root <console-root> --services-stopped`，目前尚不存在，实施时需随S01b交付。它取得console文件锁，确认已停止、创建私有一致备份，再在一个catalog事务中补principal、扩展catalog字段和身份schema标记、清除旧登录会话。将新脚本显式加入`release_package.py`的包清单，不能假设scripts目录会自动收录；安装后的候选包也须可执行该升级。
+- 旧身份库采用显式、版本化的升级命令`python scripts/upgrade_core_identity.py --root <console-root> --services-stopped`，已随S01b交付。它取得console文件锁，要求操作者确认已停止、创建私有一致备份，再在一个catalog事务中补principal、扩展catalog字段和身份schema标记、清除旧登录会话。新脚本显式加入`release_package.py`的包清单；安装后的候选包也已验证可执行该升级。
 - 新建空库直接创建新schema；已有旧库未经升级时，新版本写服务拒绝启动并提示升级步骤，不能在登录/读取时静默迁移。
 - 升级重跑幂等、principal不变；迁移事务失败还原旧库。仅在没有升级后写入时允许用升级前一致备份回退；已有新身份/AU/回执后禁止用旧备份抹去新事实。候选包声明所需catalog/auth schema，代码采用/回滚必须检查兼容，不能让旧二进制写新schema。
 
@@ -96,6 +96,8 @@ name/goal/显示名称和基础字段校验同旧边界；board_name仅显示名
 
 示例中的charter须返回已校验保存的完整五字段；示意UUID不是实际响应值。不得返回凭据、账户恢复码、原始私有日志或宿主路径。`/api/session`组织列表按principal过滤core_v1并提供profile用于路由；旧组织列表仍按旧会话范围。没有新协议支持的服务，界面提示版本不兼容，不自动改发旧create。
 
+会话投影新增 `core_protocol: "core.au.v1"` 与 `principal_id: <当前受信UUID或null>`；无主体的宿主会话仍可使用原兼容入口，不能创建或读取 V1。组织项精确增加 `profile: legacy_v0|core_v1`。前端必须同时核对协议和主体后启用普通 V1 创建；缺协议时保留输入并提示服务版本不兼容。
+
 重开校验请求AU ID、目录账ID、实际state.id、profile/schema和治理根一致，并核对有效principal。目录解析必须位于服务的organizations根下，拒绝越界、错误映射和不完整状态，不自动修目录/补根。旧`Console.engine`同样补ID/目录完整性，不能错开另一个AU。
 
 ### 4.4 错误分类
@@ -142,7 +144,7 @@ Console启动恢复、组织列表、session_info、关闭/维护循环必须统
 
 ## 7. 严格TDD与验收矩阵
 
-TDD Route: strict。以下“新增”是计划验收，当前未运行/未实现；已有正确测试保留，不故意破坏实现制造RED。
+TDD Route: strict。下列验收已按真实 RED → 最小 GREEN → 重构回归执行；具体测试、原始失败与最终结果见 [056 验收映射](../../evidence/056-s01-core-creation/README.md)。已有正确测试保留，没有故意破坏实现制造 RED。
 
 | ID | 必须观察的行为 | 测试落点 |
 | --- | --- | --- |

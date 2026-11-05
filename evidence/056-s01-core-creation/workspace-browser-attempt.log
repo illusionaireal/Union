@@ -1,0 +1,7 @@
+
+> union@0.0.0 test:workspace
+> node scripts/check_workspace.cjs
+
+AssertionError [ERR_ASSERTION]: Empty workspace has a general company onboarding flow
+    at check (D:\Project\Union\scripts\check_workspace.cjs:15:48)
+    at D:\Project\Union\scripts\check_workspace.cjs:73:3

@@ -11,6 +11,10 @@ from .failures import issue, public_failure, runtime_failure
 
 @contextmanager
 def exclusive(engine):
+    # A retained handle may outlive a profile change. Validate before even
+    # creating the runner lock or activity files.
+    with engine.read_transaction():
+        pass
     # A read-only liveness probe briefly acquires/releases the same OS lock.
     # Wait only for lock acquisition, before mutating state or sending requests.
     deadline=time.monotonic()+0.15

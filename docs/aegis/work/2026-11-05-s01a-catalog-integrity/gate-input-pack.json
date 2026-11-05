@@ -9,9 +9,10 @@
     "specs/053-union-rewrite/s01-contract.md"
   ],
   "impactStatement": "docs/aegis/work/2026-11-05-s01a-catalog-integrity/impact-statement-draft.json",
-  "compatPlan": "只接受完整 legacy_v0；保留 Console/CLI 的不同资源范围与 controller/company 版本。没有自动迁移或修复。",
-  "retirementPlan": "Console 与 company 目录解析收口；保留 legacy 创建和执行以履行兼容契约，V1 入口替换与隔离由后续授权的 S01b/S01c 拥有。",
+  "compatPlan": "明确 legacy_v0/core_v1 分流；保留旧 create/CLI/company、原 payload/receipt 字节及资源范围，不在读取时迁移或降级。身份升级仅通过显式受锁入口，发布器检查 schema。",
+  "retirementPlan": "创建纯规则和意图/分配/登记已迁入单一所有者；V1 不经 legacy Engine，旧公开 create/CLI/company 保留实际兼容调用，待调用者迁移与验证后退役。没有双写、双派发或自动 fallback。",
   "evidenceBundle": [
+    "docs/aegis/work/2026-11-05-s01a-catalog-integrity/evidence-bundle-draft-s01.json",
     "docs/aegis/work/2026-11-05-s01a-catalog-integrity/evidence-bundle-draft-s01a.json"
   ]
 }

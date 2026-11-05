@@ -13,8 +13,8 @@ import type { CommandKind, PendingRequest, Receipt, Session, Snapshot } from '..
 import { useWorkspace } from '../../app/workspace';
 import { Dialog } from '../../components/Dialog';
 import { ReceiptView, CommandForm } from './CommandForm';
-import { acceptReceipt, loadPending, savePending } from './receipts';
-import { blocked, titles } from './model';
+import { acceptReceipt, loadPending, matchesRequest, savePending } from './receipts';
+import { blocked, titles, isCreation, sameCoreIdentity } from './model';
 export interface CommandOptions {
   gateway?: import('../../api/client').GatewayChoice;
   connection?: import('../../api/types').ModelConnection;
@@ -33,13 +33,21 @@ interface Commands {
   pending: PendingRequest[];
   receipts: Record<string, Receipt>;
   remember: (item: PendingRequest) => void;
-  record: (receipt: Receipt) => Receipt;
+  forget: (id: string) => void;
+  record: (receipt: Receipt, expected?: PendingRequest) => Receipt;
   lookup: (item: PendingRequest) => Promise<Receipt>;
   inspect: (item: PendingRequest) => void;
 }
 const Context = createContext<Commands | null>(null);
 export function CommandProvider({ children }: { children: ReactNode }) {
   const workspace = useWorkspace();
+  const currentSession = useRef(workspace.session);
+  currentSession.current = workspace.session;
+  const mounted = useRef(true);
+  useEffect(() => {
+    mounted.current = true;
+    return () => { mounted.current = false; };
+  }, []);
   const client = useQueryClient();
   const [pending, setPending] = useState(loadPending);
   const pendingRef = useRef(pending);
@@ -54,15 +62,26 @@ export function CommandProvider({ children }: { children: ReactNode }) {
     pendingRef.current = next;
     setPending(next);
   }, []);
+  const forget = useCallback((id: string) => {
+    const next = pendingRef.current.filter((item) => item.id !== id);
+    pendingRef.current = next;
+    setPending(next);
+    try { savePending(next); } catch { /* The retained identity can still be queried. */ }
+  }, []);
   const record = useCallback(
-    (receipt: Receipt) => {
+    (receipt: Receipt, expected?: PendingRequest) => {
+      if (!mounted.current) throw new Error('会话已结束；请用原身份查询原请求');
+      const original = expected ?? pendingRef.current.find(item => item.id === receipt.id);
+      if (original && !matchesRequest(original, receipt)) throw new Error('回执与原请求不匹配');
+      if (original?.kind === 'create_v1' && !sameCoreIdentity(workspace.session, currentSession.current))
+        throw new Error('核心登录身份或服务已变化；请用原身份查询原请求');
       const previous = known.current[receipt.id];
       const value = acceptReceipt(previous, receipt);
       if (value === previous) return value;
       known.current = { ...known.current, [value.id]: value };
       setReceipts(known.current);
       const wasPending = pendingRef.current.some((p) => p.id === value.id);
-      if (value.status !== 'accepted' && wasPending) {
+      if (['succeeded', 'rejected'].includes(value.status) && wasPending) {
         const next = pendingRef.current.filter((p) => p.id !== value.id);
         pendingRef.current = next;
         setPending(next);
@@ -71,23 +90,18 @@ export function CommandProvider({ children }: { children: ReactNode }) {
         } catch {
           /* Stored original identity remains safe to query after reload. */
         }
-        if (value.kind === 'create' && value.status === 'succeeded' && value.organization_id)
+        if (isCreation(value.kind) && value.status === 'succeeded' && value.organization_id)
           workspace.selectOrg(value.organization_id);
         void client.invalidateQueries({ queryKey: ['workspace'] });
       }
       return value;
     },
-    [client, workspace.selectOrg],
+    [client, workspace.selectOrg, workspace.session],
   );
   const lookup = useCallback(
     async (item: PendingRequest) => {
-      const { receipt } = await api.receipt(item.id, item.organization_id);
-      if (
-        receipt.id !== item.id ||
-        (item.organization_id && receipt.organization_id !== item.organization_id)
-      )
-        throw new Error('回执与原请求不匹配');
-      return record(receipt);
+      const { receipt } = await api.receipt(item.id, item.organization_id, item.kind);
+      return record(receipt, item);
     },
     [record],
   );
@@ -95,6 +109,7 @@ export function CommandProvider({ children }: { children: ReactNode }) {
     queryKey: [
       'pending-receipts',
       workspace.session?.service_instance,
+      workspace.session?.principal_id ?? workspace.session?.session_scope,
       pending.map((p) => p.id).join(','),
     ],
     enabled: workspace.connected && pending.length > 0,
@@ -102,13 +117,9 @@ export function CommandProvider({ children }: { children: ReactNode }) {
       Promise.all(
         pending.map((p) =>
           api
-            .receipt(p.id, p.organization_id)
+            .receipt(p.id, p.organization_id, p.kind)
             .then((result) => {
-              if (
-                result.receipt.id !== p.id ||
-                (p.organization_id && result.receipt.organization_id !== p.organization_id)
-              )
-                return null;
+              if (!matchesRequest(p, result.receipt)) return null;
               return result.receipt;
             })
             .catch(() => null),
@@ -123,7 +134,7 @@ export function CommandProvider({ children }: { children: ReactNode }) {
     });
   }, [queries.data, record]);
   useEffect(() => {
-    workspace.data?.receipts.forEach(record);
+    workspace.data?.receipts.forEach(receipt => record(receipt));
   }, [workspace.data?.receipts, record]);
   const inspect = (item: PendingRequest) => {
     setDraft(null);
@@ -138,14 +149,14 @@ export function CommandProvider({ children }: { children: ReactNode }) {
     setDraft({
       key: crypto.randomUUID(),
       kind,
-      organizationId: kind === 'create' ? null : workspace.orgId,
+      organizationId: isCreation(kind) ? null : workspace.orgId,
       data: workspace.data,
       session: workspace.session,
       options,
     });
   };
   return (
-    <Context.Provider value={{ open, pending, receipts, remember, record, lookup, inspect }}>
+    <Context.Provider value={{ open, pending, receipts, remember, forget, record, lookup, inspect }}>
       {children}
       {draft && (
         <Dialog

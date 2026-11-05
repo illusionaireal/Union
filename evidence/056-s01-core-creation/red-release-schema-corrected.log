@@ -1,0 +1,36 @@
+test_incompatible_activation_and_rollback_preserve_pointer_and_latest_identity (tests.test_identity_release.IdentityReleaseTests.test_incompatible_activation_and_rollback_preserve_pointer_and_latest_identity) ... 
+  test_incompatible_activation_and_rollback_preserve_pointer_and_latest_identity (tests.test_identity_release.IdentityReleaseTests.test_incompatible_activation_and_rollback_preserve_pointer_and_latest_identity) (candidate='old') ... FAIL
+  test_incompatible_activation_and_rollback_preserve_pointer_and_latest_identity (tests.test_identity_release.IdentityReleaseTests.test_incompatible_activation_and_rollback_preserve_pointer_and_latest_identity) (candidate='future') ... FAIL
+test_run_refuses_a_previously_selected_old_binary_after_schema_upgrade (tests.test_identity_release.IdentityReleaseTests.test_run_refuses_a_previously_selected_old_binary_after_schema_upgrade) ... FAIL
+
+======================================================================
+FAIL: test_incompatible_activation_and_rollback_preserve_pointer_and_latest_identity (tests.test_identity_release.IdentityReleaseTests.test_incompatible_activation_and_rollback_preserve_pointer_and_latest_identity) (candidate='old')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_identity_release.py", line 56, in test_incompatible_activation_and_rollback_preserve_pointer_and_latest_identity
+    with self.assertRaises(release.ReleaseError):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ReleaseError not raised
+
+======================================================================
+FAIL: test_incompatible_activation_and_rollback_preserve_pointer_and_latest_identity (tests.test_identity_release.IdentityReleaseTests.test_incompatible_activation_and_rollback_preserve_pointer_and_latest_identity) (candidate='future')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_identity_release.py", line 56, in test_incompatible_activation_and_rollback_preserve_pointer_and_latest_identity
+    with self.assertRaises(release.ReleaseError):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ReleaseError not raised
+
+======================================================================
+FAIL: test_run_refuses_a_previously_selected_old_binary_after_schema_upgrade (tests.test_identity_release.IdentityReleaseTests.test_run_refuses_a_previously_selected_old_binary_after_schema_upgrade)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_identity_release.py", line 67, in test_run_refuses_a_previously_selected_old_binary_after_schema_upgrade
+    with self.assertRaises(release.ReleaseError):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ReleaseError not raised
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.455s
+
+FAILED (failures=3)

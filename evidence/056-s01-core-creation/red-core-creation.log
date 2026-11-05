@@ -1,0 +1,153 @@
+test_core_account_creates_prepared_au_and_reopens_same_identity_after_restart (tests.test_core_creation.CoreCreationTests.test_core_account_creates_prepared_au_and_reopens_same_identity_after_restart) ... FAIL
+test_failed_registration_keeps_allocated_id_and_original_unknown_query (tests.test_core_creation.CoreCreationTests.test_failed_registration_keeps_allocated_id_and_original_unknown_query) ... FAIL
+test_host_ticket_and_platform_admin_do_not_substitute_for_core_principal (tests.test_core_creation.CoreCreationTests.test_host_ticket_and_platform_admin_do_not_substitute_for_core_principal) ... 
+  test_host_ticket_and_platform_admin_do_not_substitute_for_core_principal (tests.test_core_creation.CoreCreationTests.test_host_ticket_and_platform_admin_do_not_substitute_for_core_principal) (token_kind='anonymous') ... ERROR
+  test_host_ticket_and_platform_admin_do_not_substitute_for_core_principal (tests.test_core_creation.CoreCreationTests.test_host_ticket_and_platform_admin_do_not_substitute_for_core_principal) (token_kind='host') ... FAIL
+  test_host_ticket_and_platform_admin_do_not_substitute_for_core_principal (tests.test_core_creation.CoreCreationTests.test_host_ticket_and_platform_admin_do_not_substitute_for_core_principal) (token_kind='host') ... FAIL
+test_invalid_new_requests_do_not_allocate_an_intent_or_directory (tests.test_core_creation.CoreCreationTests.test_invalid_new_requests_do_not_allocate_an_intent_or_directory) ... 
+  test_invalid_new_requests_do_not_allocate_an_intent_or_directory (tests.test_core_creation.CoreCreationTests.test_invalid_new_requests_do_not_allocate_an_intent_or_directory) (changes={'governor_principal_id': 'forged'}) ... FAIL
+  test_invalid_new_requests_do_not_allocate_an_intent_or_directory (tests.test_core_creation.CoreCreationTests.test_invalid_new_requests_do_not_allocate_an_intent_or_directory) (changes={'runtime_profile': 'legacy_v0'}) ... FAIL
+  test_invalid_new_requests_do_not_allocate_an_intent_or_directory (tests.test_core_creation.CoreCreationTests.test_invalid_new_requests_do_not_allocate_an_intent_or_directory) (changes={'active': True}) ... FAIL
+  test_invalid_new_requests_do_not_allocate_an_intent_or_directory (tests.test_core_creation.CoreCreationTests.test_invalid_new_requests_do_not_allocate_an_intent_or_directory) (changes={'company': {}}) ... FAIL
+  test_invalid_new_requests_do_not_allocate_an_intent_or_directory (tests.test_core_creation.CoreCreationTests.test_invalid_new_requests_do_not_allocate_an_intent_or_directory) (changes={'controller_ref': {}}) ... FAIL
+  test_invalid_new_requests_do_not_allocate_an_intent_or_directory (tests.test_core_creation.CoreCreationTests.test_invalid_new_requests_do_not_allocate_an_intent_or_directory) (changes={'name': ' '}) ... FAIL
+  test_invalid_new_requests_do_not_allocate_an_intent_or_directory (tests.test_core_creation.CoreCreationTests.test_invalid_new_requests_do_not_allocate_an_intent_or_directory) (changes={'resources': {'max_calls': True, 'timeout_seconds': 180}}) ... FAIL
+test_same_name_owner_reset_cannot_take_old_au_or_creation_receipt (tests.test_core_creation.CoreCreationTests.test_same_name_owner_reset_cannot_take_old_au_or_creation_receipt) ... FAIL
+test_same_principal_replays_original_payload_without_new_validation (tests.test_core_creation.CoreCreationTests.test_same_principal_replays_original_payload_without_new_validation) ... FAIL
+
+======================================================================
+ERROR: test_host_ticket_and_platform_admin_do_not_substitute_for_core_principal (tests.test_core_creation.CoreCreationTests.test_host_ticket_and_platform_admin_do_not_substitute_for_core_principal) (token_kind='anonymous')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_creation.py", line 109, in test_host_ticket_and_platform_admin_do_not_substitute_for_core_principal
+    self.assertEqual(value["code"], "not_authenticated" if token is None else "not_authorized")
+                     ~~~~~^^^^^^^^
+KeyError: 'code'
+
+======================================================================
+FAIL: test_core_account_creates_prepared_au_and_reopens_same_identity_after_restart (tests.test_core_creation.CoreCreationTests.test_core_account_creates_prepared_au_and_reopens_same_identity_after_restart)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_creation.py", line 78, in test_core_account_creates_prepared_au_and_reopens_same_identity_after_restart
+    receipt = self.create(request)
+  File "D:\Project\Union\tests\test_core_creation.py", line 72, in create
+    self.assertEqual(status, 200, result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 409 != 200 : {'error': '不支持的命令'}
+
+======================================================================
+FAIL: test_failed_registration_keeps_allocated_id_and_original_unknown_query (tests.test_core_creation.CoreCreationTests.test_failed_registration_keeps_allocated_id_and_original_unknown_query)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_creation.py", line 164, in test_failed_registration_keeps_allocated_id_and_original_unknown_query
+    self.assertEqual(status, 200, value)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: 409 != 200 : {'error': '不支持的命令'}
+
+======================================================================
+FAIL: test_host_ticket_and_platform_admin_do_not_substitute_for_core_principal (tests.test_core_creation.CoreCreationTests.test_host_ticket_and_platform_admin_do_not_substitute_for_core_principal) (token_kind='host')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_creation.py", line 108, in test_host_ticket_and_platform_admin_do_not_substitute_for_core_principal
+    self.assertEqual(status, 401 if token is None else 403)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 409 != 403
+
+======================================================================
+FAIL: test_host_ticket_and_platform_admin_do_not_substitute_for_core_principal (tests.test_core_creation.CoreCreationTests.test_host_ticket_and_platform_admin_do_not_substitute_for_core_principal) (token_kind='host')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_creation.py", line 108, in test_host_ticket_and_platform_admin_do_not_substitute_for_core_principal
+    self.assertEqual(status, 401 if token is None else 403)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 409 != 403
+
+======================================================================
+FAIL: test_invalid_new_requests_do_not_allocate_an_intent_or_directory (tests.test_core_creation.CoreCreationTests.test_invalid_new_requests_do_not_allocate_an_intent_or_directory) (changes={'governor_principal_id': 'forged'})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_creation.py", line 119, in test_invalid_new_requests_do_not_allocate_an_intent_or_directory
+    self.assertEqual(status, 400, value)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: 409 != 400 : {'error': '不支持的命令'}
+
+======================================================================
+FAIL: test_invalid_new_requests_do_not_allocate_an_intent_or_directory (tests.test_core_creation.CoreCreationTests.test_invalid_new_requests_do_not_allocate_an_intent_or_directory) (changes={'runtime_profile': 'legacy_v0'})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_creation.py", line 119, in test_invalid_new_requests_do_not_allocate_an_intent_or_directory
+    self.assertEqual(status, 400, value)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: 409 != 400 : {'error': '不支持的命令'}
+
+======================================================================
+FAIL: test_invalid_new_requests_do_not_allocate_an_intent_or_directory (tests.test_core_creation.CoreCreationTests.test_invalid_new_requests_do_not_allocate_an_intent_or_directory) (changes={'active': True})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_creation.py", line 119, in test_invalid_new_requests_do_not_allocate_an_intent_or_directory
+    self.assertEqual(status, 400, value)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: 409 != 400 : {'error': '不支持的命令'}
+
+======================================================================
+FAIL: test_invalid_new_requests_do_not_allocate_an_intent_or_directory (tests.test_core_creation.CoreCreationTests.test_invalid_new_requests_do_not_allocate_an_intent_or_directory) (changes={'company': {}})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_creation.py", line 119, in test_invalid_new_requests_do_not_allocate_an_intent_or_directory
+    self.assertEqual(status, 400, value)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: 409 != 400 : {'error': '不支持的命令'}
+
+======================================================================
+FAIL: test_invalid_new_requests_do_not_allocate_an_intent_or_directory (tests.test_core_creation.CoreCreationTests.test_invalid_new_requests_do_not_allocate_an_intent_or_directory) (changes={'controller_ref': {}})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_creation.py", line 119, in test_invalid_new_requests_do_not_allocate_an_intent_or_directory
+    self.assertEqual(status, 400, value)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: 409 != 400 : {'error': '不支持的命令'}
+
+======================================================================
+FAIL: test_invalid_new_requests_do_not_allocate_an_intent_or_directory (tests.test_core_creation.CoreCreationTests.test_invalid_new_requests_do_not_allocate_an_intent_or_directory) (changes={'name': ' '})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_creation.py", line 119, in test_invalid_new_requests_do_not_allocate_an_intent_or_directory
+    self.assertEqual(status, 400, value)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: 409 != 400 : {'error': '不支持的命令'}
+
+======================================================================
+FAIL: test_invalid_new_requests_do_not_allocate_an_intent_or_directory (tests.test_core_creation.CoreCreationTests.test_invalid_new_requests_do_not_allocate_an_intent_or_directory) (changes={'resources': {'max_calls': True, 'timeout_seconds': 180}})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_creation.py", line 119, in test_invalid_new_requests_do_not_allocate_an_intent_or_directory
+    self.assertEqual(status, 400, value)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: 409 != 400 : {'error': '不支持的命令'}
+
+======================================================================
+FAIL: test_same_name_owner_reset_cannot_take_old_au_or_creation_receipt (tests.test_core_creation.CoreCreationTests.test_same_name_owner_reset_cannot_take_old_au_or_creation_receipt)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_creation.py", line 138, in test_same_name_owner_reset_cannot_take_old_au_or_creation_receipt
+    receipt = self.create()
+  File "D:\Project\Union\tests\test_core_creation.py", line 72, in create
+    self.assertEqual(status, 200, result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 409 != 200 : {'error': '不支持的命令'}
+
+======================================================================
+FAIL: test_same_principal_replays_original_payload_without_new_validation (tests.test_core_creation.CoreCreationTests.test_same_principal_replays_original_payload_without_new_validation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_creation.py", line 127, in test_same_principal_replays_original_payload_without_new_validation
+    receipt = self.create(request)
+  File "D:\Project\Union\tests\test_core_creation.py", line 72, in create
+    self.assertEqual(status, 200, result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 409 != 200 : {'error': '不支持的命令'}
+
+----------------------------------------------------------------------
+Ran 6 tests in 4.327s
+
+FAILED (failures=13, errors=1)

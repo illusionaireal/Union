@@ -1,0 +1,59 @@
+test_authentication_catalog_lock_returns_typed_storage_error (tests.test_core_creation_failures.CoreCreationFailureTests.test_authentication_catalog_lock_returns_typed_storage_error) ... ----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 62287)
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\http\server.py", line 447, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\http\server.py", line 435, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "D:\Project\Union\ai_union\server.py", line 211, in do_GET
+    self.handle_api()
+    ~~~~~~~~~~~~~~~^^
+  File "D:\Project\Union\ai_union\server.py", line 132, in handle_api
+    app.session(token)
+    ~~~~~~~~~~~^^^^^^^
+  File "D:\Project\Union\ai_union\console.py", line 136, in session
+    return self.identity.session(token)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "D:\Project\Union\ai_union\identity.py", line 86, in session
+    with self.app.catalog() as cx:
+         ~~~~~~~~~~~~~~~~^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\contextlib.py", line 141, in __enter__
+    return next(self.gen)
+  File "D:\Project\Union\ai_union\console.py", line 71, in catalog
+    cx.execute("BEGIN IMMEDIATE")
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: database is locked
+----------------------------------------
+FAIL
+
+======================================================================
+FAIL: test_authentication_catalog_lock_returns_typed_storage_error (tests.test_core_creation_failures.CoreCreationFailureTests.test_authentication_catalog_lock_returns_typed_storage_error)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_creation_failures.py", line 85, in test_authentication_catalog_lock_returns_typed_storage_error
+    self.assertEqual((status, value.get('code')), (503, 'storage_unavailable'))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (None, None) != (503, 'storage_unavailable')
+
+First differing element 0:
+None
+503
+
+- (None, None)
++ (503, 'storage_unavailable')
+
+----------------------------------------------------------------------
+Ran 1 test in 14.960s
+
+FAILED (failures=1)

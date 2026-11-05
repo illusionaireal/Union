@@ -4,6 +4,8 @@
 
 [ADR-0004](decisions/0004-rewrite-delivery-contract.md)采用用户指定的交付方法；[ADR-0005](decisions/0005-au-runtime-boundaries.md)采用增量模块化与独立核心边界；[ADR-0006](decisions/0006-charter-policy-adoption.md)采用治理根、受支持规则和分阶段兼容方向。采用设计不等于代码已经迁移。
 
+2026-11-05 的 [S01 实现](../evidence/056-s01-core-creation/README.md)已迁出创建纯规则、应用流程及 catalog/legacy/V1 存储适配器，并由 `identity_schema.py` 统一拥有显式身份升级。稳定 principal 由核心认证签发，V1 state 中的治理根是唯一 AU 权威，catalog 只保存路由提示和原创建意图。新 AU 仅有 `inactive/planned` 准备态；下列其余目标对象与治理执行仍须按切片实现。
+
 ## 1. 产品与部署边界
 
 `ai-union`核心必须能够独立构建、运行、验证并连接模型和工具，包含基础认证、AU权限与审计。AI-Union-Platform通过版本化公开契约提供可选托管、商业账户、集成等增强服务，不直接读写核心私有表或导入内部模块绕过边界。
@@ -66,7 +68,7 @@ S01精确文件/调用者/测试在[首片契约](../specs/053-union-rewrite/s01
 
 入口绑定受信身份和范围，稳定请求ID与内容一致性阻止重复采用。应用层在提交边界重验权限、必要版本、引用与资源；领域结果和待执行意图必须原子或等价可靠关联。Outbox和租约是可选实现手段，不是宪章指定机制。
 
-现有创建跨目录账、AU库、board.key和assets分阶段完成，不是跨文件/跨库事务。S01保留先存分配和原请求、再创建、最后登记的可核对路径；已中断/unknown不盲目重建。创建回执始终按原创建请求查询，不因正文后来出现AU ID而改查AU命令表。
+共享 `application/creation.py` 拥有先存分配和原请求、再创建、最后登记的可核对流程；profile 只选择存储适配器。legacy 保留原 board.key/Engine/assets 顺序；V1 不生成 board.key，state/治理根/charter/创建采用记录在同一个 AU 数据库事务中保存。catalog 与 AU 库仍是独立提交，不是跨文件/跨库事务；中断或 unknown 保留原意图、目录和已写字节，不自动重建。创建回执始终按原请求 kind/ID 查询，不因正文出现 AU ID 而改查 AU 命令表。
 
 外部成功和本地提交成功分开；稳定事件/请求/尝试身份用于查询、去重与恢复，不能声称端到端exactly-once。纯推理的新尝试另行准入和计量；有业务副作用的未知动作先核对。迟到结果记录原身份、版本、费用和证据，在接受点校验，不改写历史为其补权。
 

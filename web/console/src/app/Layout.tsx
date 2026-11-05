@@ -21,6 +21,7 @@ import { useWorkspace } from './workspace';
 import { CommandButton, useCommands } from '../features/commands/CommandProvider';
 import { Card, Empty, sourceName } from '../components/ui';
 import { AccountSettings } from '../pages/Identity';
+import PreparedAU from '../pages/PreparedAU';
 
 const pages = [
   {
@@ -88,11 +89,13 @@ const pages = [
   },
 ];
 export function Layout() {
-  const { session, data, orgId, selectOrg, connected, error, lastSuccess, loading, refresh } =
+  const { session, data, core, orgId, selectOrg, connected, error, lastSuccess, loading, refresh } =
     useWorkspace();
   const { pending, inspect } = useCommands();
   const location = useLocation();
-  const page = pages.find((p) => '/' + p.key === location.pathname) || pages.find((p) => p.key === 'overview')!;
+  const coreMode = !!core || session?.organizations.find((item) => item.id === orgId)?.profile === 'core_v1';
+  const selectedPage = pages.find((p) => '/' + p.key === location.pathname) || pages.find((p) => p.key === 'overview')!;
+  const page = coreMode ? { ...selectedPage, label: 'AU准备记录', title: 'AU准备记录', description: '目标、初始治理主体、章程与资源计划。业务自治尚未启用。' } : selectedPage;
   const search = orgId ? '?organization=' + encodeURIComponent(orgId) : '';
   const openPage = page.key === 'overview' || page.key === 'models' || page.key === 'gateways';
   useEffect(() => {
@@ -107,20 +110,20 @@ export function Layout() {
         <NavLink to={{ pathname: '/overview', search }} className="brand">
           <span className="brand-symbol">u</span>
           <span>
-            UNION<small>YOUR AI COMPANY</small>
+            UNION<small>AI-UNION / AU</small>
           </span>
         </NavLink>
         <label className="workspace-switch">
-          <span className="org-icon">{data?.organization.name.slice(0, 1) || 'U'}</span>
+          <span className="org-icon">{(core?.au.name || data?.organization.name)?.slice(0, 1) || 'U'}</span>
           <span className="workspace-select">
-            <small>当前公司</small>
+            <small>当前 AU</small>
             <select
               id="org-select"
               aria-label="当前组织"
               value={orgId}
               onChange={(e) => selectOrg(e.target.value)}
             >
-              {!session?.organizations.length && <option value="">尚未创建公司</option>}
+              {!session?.organizations.length && <option value="">尚未创建 AU</option>}
               {session?.organizations.map((o) => (
                 <option key={o.id} value={o.id}>
                   {o.name}
@@ -130,7 +133,7 @@ export function Layout() {
           </span>
         </label>
         <nav id="navigation">
-          {pages.filter((p) => p.key !== 'gateways' || session?.platform_admin).map(({ key, label, icon: Icon, group }) => (
+          {pages.filter((p) => (!coreMode || ['overview', 'settings'].includes(p.key)) && (p.key !== 'gateways' || session?.platform_admin)).map(({ key, label, icon: Icon, group }) => (
             <div className="nav-entry" key={key}>
               {group && <div className="nav-caption">{group}</div>}
               <NavLink
@@ -139,7 +142,7 @@ export function Layout() {
                 className={({ isActive }) => 'nav-button' + (isActive ? ' active' : '')}
               >
                 <Icon size={19} strokeWidth={1.7} />
-                <span>{label}</span>
+                <span>{coreMode ? key === 'overview' ? 'AU准备记录' : '治理与资源计划' : label}</span>
                 {key === 'models' && !data?.execution_config.api_connection_id && (
                   <span className="nav-tag">配置</span>
                 )}
@@ -148,14 +151,14 @@ export function Layout() {
           ))}
         </nav>
         <div className="sidebar-bottom">
-          <Link className="sidebar-connect" to={{ pathname: '/models', search }}>
+          {!coreMode && <Link className="sidebar-connect" to={{ pathname: '/models', search }}>
             <Cpu size={20} />
             <div>
               <strong>连接你的模型</strong>
               <small>API 地址 · 密钥 · 模型</small>
             </div>
             <ArrowUpRight size={16} />
-          </Link>
+          </Link>}
           <div className="sidebar-footer">
             <span className="avatar tiny human">人</span>
             <div>
@@ -180,7 +183,7 @@ export function Layout() {
           </div>
           <div className="topbar-actions">
             <span id="source-label" className="source-label">
-              {data ? sourceName(data.source) : '尚未执行'}
+              {core ? '准备态 · 未激活' : data ? sourceName(data.source) : '尚未执行'}
             </span>
             <button
               id="refresh"
@@ -215,9 +218,9 @@ export function Layout() {
           {error && (
             <div id="connection-warning" className="connection-warning" role="status">
               {error}。
-              {data
+              {data || core
                 ? '以下为最后成功快照，数据已过期；输入与原请求标识保留。'
-                : '请从本机启动链接连接工作台。'}
+                : '请检查连接后刷新；输入与原请求标识保留。'}
             </div>
           )}
           {page.key === 'overview' && data && (
@@ -235,9 +238,9 @@ export function Layout() {
                   <MessageSquarePlus size={15} />
                   提交事件
                 </CommandButton>
-                <CommandButton kind="create">
+                <CommandButton kind="create_v1">
                   <Plus size={15} />
-                  新建公司
+                  创建 AU
                 </CommandButton>
                 {data.execution_state === 'unknown' && (
                   <CommandButton kind="reconcile">核对执行</CommandButton>
@@ -254,7 +257,7 @@ export function Layout() {
             .filter((p) => !p.organization_id || p.organization_id === orgId)
             .map((p) => (
               <p className="pending-note" key={p.id}>
-                有一项操作等待回执{' '}
+                有一项操作需要核对回执{' '}
                 <button
                   className="text-button"
                   data-query-receipt={p.id}
@@ -265,7 +268,7 @@ export function Layout() {
               </p>
             ))}
           <div id="view">
-            {data || openPage ? (
+            {core ? <PreparedAU /> : data || openPage ? (
               <Outlet />
             ) : (
               <Card title="先建立你的公司">
@@ -273,8 +276,8 @@ export function Layout() {
                   完成创建后，在这里查看团队、协作和成果。
                 </Empty>
                 <div className="empty-actions">
-                  <CommandButton kind="create" primary>
-                    创建我的 AI 公司
+                  <CommandButton kind="create_v1" primary>
+                    创建 AU
                   </CommandButton>
                   <Link className="button secondary" to={{ pathname: '/overview', search }}>
                     回到总览
@@ -283,6 +286,10 @@ export function Layout() {
               </Card>
             )}
           </div>
+          {(data || core) && <div className="legacy-creation">
+            <p>旧版试验继续使用原有运行时；小说公司保留独立的兼容入口。</p>
+            <CommandButton kind="create">旧版兼容试验（含小说）</CommandButton>
+          </div>}
           <footer className="data-footer">
             <details>
               <summary>
@@ -290,7 +297,7 @@ export function Layout() {
                 数据与运行记录
               </summary>
               <span id="snapshot-meta">
-                {data
+                {core ? `${core.au.id} · 状态 v${core.au.version} · 章程 v${core.au.charter_version} · 准备态` : data
                   ? data.organization.id +
                     ' · 状态 v' +
                     data.organization.version +

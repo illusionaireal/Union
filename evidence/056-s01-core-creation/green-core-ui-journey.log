@@ -1,0 +1,13 @@
+
+ RUN  v3.2.7 D:/Project/Union/web/console
+
+ ✓ src/features/commands/receipts.test.ts (5 tests) 10ms
+ ✓ src/app/workspace.test.tsx (4 tests) 524ms
+ ✓ src/features/commands/core-creation.test.tsx (5 tests) 1077ms
+   ✓ core creation through the workspace > opens the saved prepared AU through V1 and shows bound governance without legacy snapshot calls  444ms
+
+ Test Files  3 passed (3)
+      Tests  14 passed (14)
+   Start at  17:51:36
+   Duration  2.95s (transform 455ms, setup 558ms, collect 881ms, tests 1.61s, environment 1.69s, prepare 434ms)
+

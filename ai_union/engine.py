@@ -15,20 +15,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 
-OPERATIONS = {"create_member", "create_position", "update_position", "assign", "set_policy", "create_work",
-              "handoff", "pause_work", "resume_work", "cancel_work", "update_work",
-              "wait", "set_strategy", "record_memory", "request_support", "submit_chapter", "review_cycle"}
-TOOLS = {"produce_artifact", "workspace_execute"}
+from .errors import Rejected, require
+from .domain.creation import OPERATIONS, TOOLS, text, validate_charter, validate_resources
+
 ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.-]{0,79}$")
-
-
-class Rejected(ValueError):
-    pass
-
-
-def require(ok, reason):
-    if not ok:
-        raise Rejected(reason)
 
 
 def model_name(value):
@@ -60,36 +50,9 @@ def instant(value):
         raise Rejected("无效的带时区时间") from e
 
 
-def text(value, label, limit=100000):
-    require(isinstance(value, str) and bool(value.strip()) and len(value) <= limit, label + "必须是非空且有界的文本")
-    return value
-
-
 def identifier(value):
     require(isinstance(value, str) and bool(ID.fullmatch(value)), "无效对象标识")
     return value
-
-
-def validate_charter(c):
-    require(isinstance(c, dict), "章程必须是对象")
-    fields = {"text", "allowed_operations", "allowed_tools", "reserved_matters", "board_can_amend"}
-    require(set(c) == fields, "章程只支持明确的正文、操作、工具、保留事项和修章字段")
-    text(c["text"], "章程正文")
-    for field, known in (("allowed_operations", OPERATIONS), ("allowed_tools", TOOLS),
-                         ("reserved_matters", {"goal", "resources", "charter", "funding", "dissolution"})):
-        require(isinstance(c[field], list) and all(isinstance(v, str) for v in c[field])
-                and set(c[field]) <= known, "章程含不支持的 " + field)
-    require(type(c["board_can_amend"]) is bool, "修章权限必须显式为布尔值")
-
-
-def validate_resources(r):
-    require(isinstance(r, dict) and set(r) <= {"max_calls", "timeout_seconds", "max_cost", "cost_reserve_per_call"}, "不支持的资源配置；token 仅记录用量")
-    require(type(r.get("max_calls")) is int and 0 < r["max_calls"] <= 10000, "必须提供有限的正整数调用上限")
-    timeout = r.get("timeout_seconds")
-    require(type(timeout) is int and 1 <= timeout <= 3600, "必须提供 1–3600 秒的每次超时")
-    for name in ("max_cost", "cost_reserve_per_call"):
-        if name in r:
-            require(type(r[name]) in (int, float) and math.isfinite(r[name]) and r[name] > 0, "费用配置必须是有限正数")
 
 
 class Engine:
@@ -98,6 +61,12 @@ class Engine:
         self.db = self.root / "state.sqlite3"
         self._local = threading.local()
         require(self.db.is_file(), "组织尚未初始化")
+        with self.read_transaction() as cx:
+            self._au_id = self._check_runtime(cx)
+
+    def _check_runtime(self, cx):
+        from .adapters.au_catalog import check_legacy_runtime
+        return check_legacy_runtime(cx, getattr(self, "_au_id", None))
 
     @classmethod
     def create(cls, root, name, goal, charter, resources, board_name, board_key):
@@ -140,6 +109,7 @@ class Engine:
     def transaction(self):
         existing = getattr(self._local, "connection", None)
         if existing is not None:
+            self._check_runtime(existing)
             savepoint = "nested_" + uuid.uuid4().hex
             existing.execute("SAVEPOINT " + savepoint)
             try:
@@ -154,6 +124,7 @@ class Engine:
         cx.row_factory = sqlite3.Row
         try:
             cx.execute("BEGIN IMMEDIATE")
+            self._check_runtime(cx)
             self._local.connection = cx
             yield cx
             cx.commit()
@@ -170,6 +141,7 @@ class Engine:
             cx.row_factory = sqlite3.Row
             cx.execute("PRAGMA query_only=ON")
             cx.execute("BEGIN")
+            self._check_runtime(cx)
             yield cx
 
     def paused(self, cx=None):
@@ -403,6 +375,7 @@ class Engine:
                                 "conditions": text(o["conditions"], "适用条件"), "uncertainty": text(o["uncertainty"], "不确定性")})
 
     def _board(self, cx, key):
+        self._check_runtime(cx)
         meta = dict(cx.execute("SELECT key,value FROM meta").fetchall())
         require(isinstance(key, str) and hmac.compare_digest(meta["board_hash"], hashlib.sha256((meta["board_salt"] + key).encode()).hexdigest()), "董事会凭据无效")
         return meta["board_name"]
@@ -564,6 +537,7 @@ class Engine:
         with self.read_transaction() as cx:self._check_model_dispatch(cx,self._run(cx,run_id),connection)
 
     def _reserve(self, cx, s, kind, executor, package, work_id=None, allow_paused=False):
+        self._check_runtime(cx)
         require(allow_paused or not self.paused(cx), "派发已暂停；请由受信入口继续")
         budget = self._budget(cx, s)
         require(budget["blocked_reason"] is None, budget["blocked_reason"])

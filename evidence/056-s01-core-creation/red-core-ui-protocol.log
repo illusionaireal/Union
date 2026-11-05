@@ -1,0 +1,31 @@
+
+ RUN  v3.2.7 D:/Project/Union/web/console
+
+ ❯ src/features/commands/core-creation.test.tsx (1 test | 1 failed) 334ms
+   × core creation through the workspace > submits ordinary creation as create_v1 with exactly the five supported fields 333ms
+     → expected 'create' to be 'create_v1' // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/commands/core-creation.test.tsx > core creation through the workspace > submits ordinary creation as create_v1 with exactly the five supported fields
+AssertionError: expected 'create' to be 'create_v1' // Object.is equality
+
+Expected: "create_v1"
+Received: "create"
+
+ ❯ src/features/commands/core-creation.test.tsx:41:26
+     39|     await waitFor(() => expect(submit).toHaveBeenCalledOnce());
+     40|     const request = submit.mock.calls[0][0];
+     41|     expect(request.kind).toBe('create_v1');
+       |                          ^
+     42|     expect(request.organization_id).toBeNull();
+     43|     expect(request.base_version).toBeNull();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  17:39:14
+   Duration  2.01s (transform 333ms, setup 171ms, collect 577ms, tests 334ms, environment 487ms, prepare 135ms)
+

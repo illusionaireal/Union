@@ -7,6 +7,7 @@ import tempfile
 import unittest
 from contextlib import closing, contextmanager
 from pathlib import Path
+from types import SimpleNamespace
 from unittest.mock import patch
 
 from ai_union.console import Console
@@ -49,6 +50,14 @@ class CatalogIntegrityTests(unittest.TestCase):
 
         self.addCleanup(cleanup)
         return app, board, ids, folders, opened
+
+    @staticmethod
+    @contextmanager
+    def raw_fixture(engine):
+        """Only the test harness may deliberately damage/restore these temp stores."""
+        with closing(sqlite3.connect(engine.db)) as cx, cx:
+            cx.row_factory = sqlite3.Row
+            yield cx
 
     @staticmethod
     def contents(engine):
@@ -131,7 +140,7 @@ class CatalogIntegrityTests(unittest.TestCase):
             self.seed_pending(victim, au_b)
             with app.catalog() as cx:
                 cx.execute("DELETE FROM organizations WHERE id=?", (au_a,))
-                cx.execute("INSERT INTO organizations VALUES(?,?)", (au_a, folders[au_b]))
+                cx.execute("INSERT INTO organizations(id,folder) VALUES(?,?)", (au_a, folders[au_b]))
             before = self.contents(victim)
             with self.subTest(boundary=boundary), self.assertRaises(Rejected):
                 if boundary == "startup":
@@ -189,7 +198,7 @@ class CatalogIntegrityTests(unittest.TestCase):
             app.organizations()
         with self.assertRaises(Rejected):
             app.session_info(only_a)
-        self.assertEqual(app.session_info(only_b)["organizations"], [{"id": au_b, "name": "B"}])
+        self.assertEqual(app.session_info(only_b)["organizations"], [{"id": au_b, "name": "B", "profile": "legacy_v0"}])
 
     def test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy(self):
         app, board, (au_a, _), _, _ = self.pair("incompatible")
@@ -210,33 +219,37 @@ class CatalogIntegrityTests(unittest.TestCase):
         }
         try:
             for name, value in cases.items():
-                with engine.transaction() as cx:
+                with self.raw_fixture(engine) as cx:
                     cx.execute("UPDATE state SET data=? WHERE id=1", (value,))
                 before = self.contents(engine)
                 with self.subTest(case=name), self.assertRaises(Rejected):
                     app.engine(board, au_a)
                 self.assertEqual(self.contents(engine), before)
         finally:
-            with engine.transaction() as cx:
+            with self.raw_fixture(engine) as cx:
                 cx.execute("UPDATE state SET data=? WHERE id=1", (original,))
 
     def test_catalog_profile_hint_is_checked_against_the_stored_profile(self):
         app, board, (au_a, _), _, _ = self.pair("profile-hint")
         engine = app.engine(board, au_a)
-        with app.catalog() as cx:
-            cx.execute("ALTER TABLE organizations ADD COLUMN profile TEXT DEFAULT 'legacy_v0'")
-        with engine.transaction() as cx:
+        with self.raw_fixture(engine) as cx:
             state = engine._state(cx)
             cx.execute("UPDATE state SET data=? WHERE id=1", (encoded(state | {"runtime_profile": "legacy_v0"}),))
         self.assertEqual(app.engine(board, au_a).state()["id"], au_a)
         before = self.contents(engine)
         try:
-            for hint in ("core_v1", "future", None):
+            for hint in ("core_v1", "future"):
                 with app.catalog() as cx:
                     cx.execute("UPDATE organizations SET profile=? WHERE id=?", (hint, au_a))
                 with self.subTest(hint=hint), self.assertRaises(Rejected):
                     app.engine(board, au_a)
                 self.assertEqual(self.contents(engine), before)
+            with self.assertRaises(sqlite3.IntegrityError), app.catalog() as cx:
+                cx.execute("UPDATE organizations SET profile=NULL WHERE id=?", (au_a,))
+            entry = next(item for item in app._catalog_entries() if item["id"] == au_a)
+            with self.assertRaises(Rejected):
+                app._catalog_engine(entry | {"profile": None})
+            self.assertEqual(self.contents(engine), before)
         finally:
             with app.catalog() as cx:
                 cx.execute("UPDATE organizations SET profile='legacy_v0' WHERE id=?", (au_a,))
@@ -268,7 +281,9 @@ class CatalogIntegrityTests(unittest.TestCase):
         with closing(sqlite3.connect(directory / "state.sqlite3")) as cx, cx:
             cx.execute("CREATE TABLE state(id INTEGER PRIMARY KEY,data TEXT NOT NULL)")
             cx.execute("INSERT INTO state VALUES(1,?)", (encoded(state),))
-        partial = Engine(directory)
+        partial = SimpleNamespace(root=directory, db=directory / "state.sqlite3")
+        with self.assertRaises(Rejected):
+            Engine(directory)
         before = self.contents(partial)
         with app.catalog() as cx:
             cx.execute("UPDATE organizations SET folder=? WHERE id=?", ("organizations/partial", au_a))
@@ -290,7 +305,7 @@ class CatalogIntegrityTests(unittest.TestCase):
                 if boundary == "startup":
                     app.close()
                 self.seed_pending(victim, au_b)
-                with malformed.transaction() as cx:
+                with self.raw_fixture(malformed) as cx:
                     cx.execute("ALTER TABLE " + table + " RENAME TO saved_table")
                     cx.execute("CREATE TABLE " + table + "(" + columns + ")")
                 before = self.contents(malformed), self.contents(victim)
@@ -311,7 +326,7 @@ class CatalogIntegrityTests(unittest.TestCase):
                         self.assertTrue(rejected, "an existing table name does not prove a complete legacy schema")
                 finally:
                     # Only restore the deliberately malformed temporary database.
-                    with malformed.transaction() as cx:
+                    with self.raw_fixture(malformed) as cx:
                         cx.execute("DROP TABLE " + table)
                         cx.execute("ALTER TABLE saved_table RENAME TO " + table)
 
@@ -323,7 +338,7 @@ class CatalogIntegrityTests(unittest.TestCase):
             board_hash = tuple(cx.execute("SELECT * FROM meta WHERE key='board_hash'").fetchone())
         for table, clause, original in (("charters", "version=1", charter),
                                         ("meta", "key='board_hash'", board_hash)):
-            with engine.transaction() as cx:
+            with self.raw_fixture(engine) as cx:
                 cx.execute("DELETE FROM " + table + " WHERE " + clause)
             before = self.contents(engine)
             try:
@@ -331,13 +346,13 @@ class CatalogIntegrityTests(unittest.TestCase):
                     app.engine(board, au_a)
                 self.assertEqual(self.contents(engine), before)
             finally:
-                with engine.transaction() as cx:
+                with self.raw_fixture(engine) as cx:
                     cx.execute("INSERT INTO " + table + " VALUES(" + ",".join("?" for _ in original) + ")", original)
 
     def test_incomplete_current_charter_is_rejected_without_re_adoption(self):
         app, board, (au_a, _), _, _ = self.pair("charter-shape")
         engine = app.engine(board, au_a)
-        with engine.transaction() as cx:
+        with self.raw_fixture(engine) as cx:
             original = cx.execute("SELECT data FROM charters WHERE version=1").fetchone()[0]
             cx.execute("UPDATE charters SET data='{}' WHERE version=1")
         before = self.contents(engine)
@@ -346,13 +361,13 @@ class CatalogIntegrityTests(unittest.TestCase):
                 app.engine(board, au_a)
             self.assertEqual(self.contents(engine), before)
         finally:
-            with engine.transaction() as cx:
+            with self.raw_fixture(engine) as cx:
                 cx.execute("UPDATE charters SET data=? WHERE version=1", (original,))
 
     def test_actual_id_mismatch_does_not_rewrite_the_state_or_catalog(self):
         app, board, (au_a, au_b), folders, _ = self.pair("stored-id")
         engine = app.engine(board, au_a)
-        with engine.transaction() as cx:
+        with self.raw_fixture(engine) as cx:
             original = cx.execute("SELECT data FROM state WHERE id=1").fetchone()[0]
             cx.execute("UPDATE state SET data=? WHERE id=1", (encoded(json.loads(original) | {"id": au_b}),))
         before = self.contents(engine)
@@ -363,7 +378,7 @@ class CatalogIntegrityTests(unittest.TestCase):
             with app.read_catalog() as cx:
                 self.assertEqual(cx.execute("SELECT folder FROM organizations WHERE id=?", (au_a,)).fetchone()[0], folders[au_a])
         finally:
-            with engine.transaction() as cx:
+            with self.raw_fixture(engine) as cx:
                 cx.execute("UPDATE state SET data=? WHERE id=1", (original,))
 
     def test_creation_payloads_and_original_receipts_survive_restart_and_replay(self):
@@ -375,7 +390,7 @@ class CatalogIntegrityTests(unittest.TestCase):
         reopened = Console(app.root)
         opened.append(reopened)
         board = reopened.new_session("board")
-        with patch("ai_union.console.validate_charter", side_effect=AssertionError("never revalidate an existing intent")):
+        with patch("ai_union.adapters.legacy_au_store.validate_creation", side_effect=AssertionError("never revalidate an existing intent")):
             for label, receipt in zip(("A", "B"), receipts):
                 self.assertEqual(reopened.command(board, self.creation(label)), receipt)
                 self.assertEqual(reopened.receipt(board, None, receipt["id"]), receipt)
@@ -443,7 +458,7 @@ class CatalogIntegrityTests(unittest.TestCase):
         receipt = {key: request[key] for key in ("id", "organization_id", "base_version", "kind")}
         receipt.update(status="accepted", actor="fixture", created_at="2026-11-05T00:00:00+00:00", message="accepted")
         with app.catalog() as cx:
-            cx.execute("INSERT INTO creations VALUES(?,?,?,?)", (request["id"], encoded(request), encoded(receipt), folder))
+            cx.execute("INSERT INTO creations(id,payload,receipt,folder) VALUES(?,?,?,?)", (request["id"], encoded(request), encoded(receipt), folder))
         app.close()
         reopened = Console(app.root)
         opened.append(reopened)
@@ -463,7 +478,7 @@ class CatalogIntegrityTests(unittest.TestCase):
         app, board, (au_a, _), _, _ = self.pair("corp", first_request_id=REQUEST_ID)
         engine = company_engine(app.root)
         self.assertEqual(engine.state()["id"], au_a)
-        with engine.transaction() as cx:
+        with self.raw_fixture(engine) as cx:
             original = cx.execute("SELECT data FROM state WHERE id=1").fetchone()[0]
             cx.execute("UPDATE state SET data=? WHERE id=1", (encoded(json.loads(original) | {"runtime_profile": "future"}),))
         before = self.contents(engine)
@@ -472,7 +487,7 @@ class CatalogIntegrityTests(unittest.TestCase):
                 company_engine(app.root)
             self.assertEqual(self.contents(engine), before)
         finally:
-            with engine.transaction() as cx:
+            with self.raw_fixture(engine) as cx:
                 cx.execute("UPDATE state SET data=? WHERE id=1", (original,))
 
 

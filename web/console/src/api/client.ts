@@ -1,6 +1,8 @@
 import type {
   ArtifactContent,
   CommandRequest,
+  CommandKind,
+  CoreAURead,
   ModelConnection,
   Receipt,
   Session,
@@ -11,6 +13,7 @@ export class ApiError extends Error {
   constructor(
     message: string,
     public status?: number,
+    public code?: string,
   ) {
     super(message);
     this.name = 'ApiError';
@@ -38,7 +41,7 @@ export async function request<T>(path: string, init: RequestInit = {}): Promise<
       signal: controller.signal,
     });
     const value = await response.json();
-    if (!response.ok) throw new ApiError(value.error || '请求未成功', response.status);
+    if (!response.ok) throw new ApiError(value.error || '请求未成功', response.status, value.code);
     return value as T;
   } catch (error) {
     if (timedOut) throw new ApiError('请求超时，请刷新或查询原回执');
@@ -50,6 +53,8 @@ export async function request<T>(path: string, init: RequestInit = {}): Promise<
 }
 const query = (values: Record<string, string>) => new URLSearchParams(values).toString();
 export const api = {
+  coreAU: (id: string, signal?: AbortSignal) =>
+    request<CoreAURead>('/api/v1/aus/' + encodeURIComponent(id), { signal }),
   catalog: () => request<{version:number; models: Array<{provider:string; model:string; context_window?:number; tool_call?:boolean; revision?:string}>}>('/api/model-catalog'),
   exportModels: (organization_id: string) => '/api/model-export?' + query({organization_id}),
   modelCosts: (organization_id: string) => request<{vouchers:Array<{id:string;basis:string;period:string;amount_minor:number;currency:string}>}>('/api/model-costs?'+query({organization_id})),
@@ -83,9 +88,10 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(command),
     }),
-  receipt: (id: string, organization_id: string | null) =>
+  receipt: (id: string, organization_id: string | null, kind?: CommandKind) =>
     request<{ receipt: Receipt }>(
-      '/api/receipts?' + query({ id, ...(organization_id ? { organization_id } : {}) }),
+      (kind === 'create_v1' ? '/api/v1/receipts?' : '/api/receipts?') +
+      query({ id, ...(organization_id && kind !== 'create' && kind !== 'create_v1' ? { organization_id } : {}) }),
     ),
   artifact: (organization_id: string, id: string, signal?: AbortSignal) =>
     request<ArtifactContent>('/api/artifact?' + query({ organization_id, id }), { signal }),

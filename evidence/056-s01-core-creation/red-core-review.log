@@ -1,0 +1,35 @@
+test_creation_rejects_escaped_parent_before_any_outside_file_write (tests.test_core_creation_failures.CoreCreationFailureTests.test_creation_rejects_escaped_parent_before_any_outside_file_write) ... FAIL
+test_creation_audit_must_still_match_its_original_request (tests.test_core_creation_failures.CoreCreationFailureTests.test_creation_audit_must_still_match_its_original_request) ... FAIL
+
+======================================================================
+FAIL: test_creation_rejects_escaped_parent_before_any_outside_file_write (tests.test_core_creation_failures.CoreCreationFailureTests.test_creation_rejects_escaped_parent_before_any_outside_file_write)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_creation_failures.py", line 36, in test_creation_rejects_escaped_parent_before_any_outside_file_write
+    self.assertEqual(value['receipt']['status'], 'rejected')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'succeeded' != 'rejected'
+- succeeded
++ rejected
+
+
+======================================================================
+FAIL: test_creation_audit_must_still_match_its_original_request (tests.test_core_creation_failures.CoreCreationFailureTests.test_creation_audit_must_still_match_its_original_request)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_creation_failures.py", line 56, in test_creation_audit_must_still_match_its_original_request
+    self.assertEqual((status, value.get('code')), (409, 'incompatible_state'))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (200, None) != (409, 'incompatible_state')
+
+First differing element 0:
+200
+409
+
+- (200, None)
++ (409, 'incompatible_state')
+
+----------------------------------------------------------------------
+Ran 2 tests in 1.449s
+
+FAILED (failures=2)

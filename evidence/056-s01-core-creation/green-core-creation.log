@@ -1,0 +1,14 @@
+test_core_account_creates_prepared_au_and_reopens_same_identity_after_restart (tests.test_core_creation.CoreCreationTests.test_core_account_creates_prepared_au_and_reopens_same_identity_after_restart) ... ok
+test_failed_registration_keeps_allocated_id_and_original_unknown_query (tests.test_core_creation.CoreCreationTests.test_failed_registration_keeps_allocated_id_and_original_unknown_query) ... ok
+test_host_ticket_and_platform_admin_do_not_substitute_for_core_principal (tests.test_core_creation.CoreCreationTests.test_host_ticket_and_platform_admin_do_not_substitute_for_core_principal) ... ok
+test_invalid_new_requests_do_not_allocate_an_intent_or_directory (tests.test_core_creation.CoreCreationTests.test_invalid_new_requests_do_not_allocate_an_intent_or_directory) ... ok
+test_same_name_owner_reset_cannot_take_old_au_or_creation_receipt (tests.test_core_creation.CoreCreationTests.test_same_name_owner_reset_cannot_take_old_au_or_creation_receipt) ... ok
+test_same_principal_replays_original_payload_without_new_validation (tests.test_core_creation.CoreCreationTests.test_same_principal_replays_original_payload_without_new_validation) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 6.413s
+
+OK
+已重置 D:\Temp\tmpxm8e22ed\console.sqlite3
+重置前备份: D:\Temp\tmpxm8e22ed\console.sqlite3.bak-1793870472
+重启工作台后，任意第一个访问者都可以重新设置管理员账号。

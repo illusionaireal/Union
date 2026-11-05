@@ -1,8 +1,8 @@
 {
   "schemaVersion": "aegis.schema.v0",
-  "affectedLayers": ["Console lifecycle", "HTTP errors", "company discovery", "read-only persistence adapter"],
-  "owners": ["ai_union/adapters/au_catalog.py", "ai_union/console.py", "ai_union/corp.py"],
-  "invariants": ["AU 状态拥有 ID/profile；catalog 仅定位", "AU 写入前拒绝不兼容映射", "保留原创建意图、回执、幂等与 unknown", "先检查会话范围"],
-  "compatBoundary": "只接受完整 legacy_v0；保留 Console/CLI 的不同资源范围与 controller/company 版本。没有自动迁移或修复。",
-  "nonGoals": ["新 V1 profile 的执行入口隔离", "全局跨库与文件事务", "抵抗恶意宿主并发替换文件"]
+  "affectedLayers": ["core authentication", "explicit catalog upgrade", "creation domain/application/adapters", "HTTP and lifecycle", "legacy execution guard", "React identity/receipts/prepared AU", "installed release compatibility"],
+  "owners": ["ai_union/identity.py", "ai_union/identity_schema.py", "ai_union/domain/creation.py", "ai_union/application/creation.py", "ai_union/adapters/au_catalog.py", "ai_union/adapters/creation_catalog.py", "ai_union/adapters/core_au_store.py", "ai_union/adapters/legacy_au_store.py", "web/console/src/features/commands", "web/console/src/pages/PreparedAU.tsx", "scripts/release_package.py"],
+  "invariants": ["AU state 唯一拥有 ID/profile/治理根；catalog 仅定位和原意图", "受信 principal 不由显示名/平台权限/账号重置代替", "根/章程/创建审计在同一 AU 事务", "原请求、回执、幂等与 unknown 保留", "旧入口在写入/资源/外部动作前拒绝 core_v1", "前端只采用原请求和当前主体/服务的回执"],
+  "compatBoundary": "明确 legacy_v0/core_v1 分流；保留旧 create/CLI/company、原 payload/receipt 字节及资源范围，不在读取时迁移或降级。身份升级仅通过显式受锁入口，发布器检查 schema。",
+  "nonGoals": ["真实数据迁移或部署", "治理激活或自主业务/资源使用", "全局跨库与文件事务", "抵抗恶意宿主并发替换文件"]
 }

@@ -1,0 +1,26 @@
+test_au_state_charter_and_root_audit_roll_back_in_one_real_transaction (tests.test_core_creation_failures.CoreCreationFailureTests.test_au_state_charter_and_root_audit_roll_back_in_one_real_transaction) ... ok
+test_directory_failure_keeps_unknown_without_retrying_allocation (tests.test_core_creation_failures.CoreCreationFailureTests.test_directory_failure_keeps_unknown_without_retrying_allocation) ... ok
+test_intent_storage_failure_returns_503_without_allocating_or_faking_unknown (tests.test_core_creation_failures.CoreCreationFailureTests.test_intent_storage_failure_returns_503_without_allocating_or_faking_unknown) ... ok
+test_interruptions_before_and_after_au_commit_keep_original_id_and_bytes (tests.test_core_creation_failures.CoreCreationFailureTests.test_interruptions_before_and_after_au_commit_keep_original_id_and_bytes) ... ok
+test_engine_rejects_prepared_unknown_and_incomplete_profiles_before_writes (tests.test_core_isolation.CoreEngineIsolationTests.test_engine_rejects_prepared_unknown_and_incomplete_profiles_before_writes) ... ok
+test_existing_runtime_rechecks_profile_before_direct_sql_and_board_authority (tests.test_core_isolation.CoreEngineIsolationTests.test_existing_runtime_rechecks_profile_before_direct_sql_and_board_authority) ... ok
+test_retained_runner_handle_rejects_before_lock_activity_or_execution (tests.test_core_isolation.CoreEngineIsolationTests.test_retained_runner_handle_rejects_before_lock_activity_or_execution) ... FAIL
+test_console_resource_limits_and_broader_cli_resources_remain_distinct (tests.test_catalog_http.CatalogHTTPTests.test_console_resource_limits_and_broader_cli_resources_remain_distinct) ... ok
+test_legacy_controller_and_company_creation_keep_their_versions (tests.test_catalog_http.CatalogHTTPTests.test_legacy_controller_and_company_creation_keep_their_versions) ... ok
+test_registration_failure_queries_the_original_http_receipt_without_an_au_id (tests.test_catalog_http.CatalogHTTPTests.test_registration_failure_queries_the_original_http_receipt_without_an_au_id) ... ok
+test_wrong_mapping_returns_409_without_reading_or_mutating_the_other_au (tests.test_catalog_http.CatalogHTTPTests.test_wrong_mapping_returns_409_without_reading_or_mutating_the_other_au) ... ok
+
+======================================================================
+FAIL: test_retained_runner_handle_rejects_before_lock_activity_or_execution (tests.test_core_isolation.CoreEngineIsolationTests.test_retained_runner_handle_rejects_before_lock_activity_or_execution)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_isolation.py", line 71, in test_retained_runner_handle_rejects_before_lock_activity_or_execution
+    self.assertEqual(files(root), before)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'sta[173505 chars]\x00', 'state.sqlite3-shm': b'\x18\xe2-\x00\x0[131057 chars] b''} != {'sta[173505 chars]\x00'}
+Diff is 467758 characters long. Set self.maxDiff to None to see it.
+
+----------------------------------------------------------------------
+Ran 11 tests in 8.649s
+
+FAILED (failures=1)

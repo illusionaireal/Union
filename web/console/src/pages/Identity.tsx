@@ -47,7 +47,7 @@ export function IdentityForm({mode, onCancel}: {mode: Mode; onCancel?: () => voi
 export function AccountSettings() {
   const {session} = useWorkspace();
   const [mode, setMode] = useState<Mode>();
-  const status = useQuery({queryKey:['identity', session?.service_instance, session?.session_scope], queryFn:api.authStatus, retry:false});
+  const status = useQuery({queryKey:['identity', session?.service_instance, session?.principal_id ?? session?.session_scope], queryFn:api.authStatus, retry:false});
   if (mode) return <IdentityForm mode={mode} onCancel={()=>setMode(undefined)} />;
   return <section className="identity-settings"><h2>账号与登录</h2><p>{status.data?.account ? `当前账号：${status.data.account}` : '当前使用宿主会话。设置账号后，可直接用固定地址登录。'}</p>
     {!status.data?.configured && status.data?.can_setup && <button className="button primary" onClick={()=>setMode('setup')}>设置管理员账号</button>}
@@ -60,7 +60,8 @@ export function IdentityBoundary({children}: {children: ReactNode}) {
   const {session} = useWorkspace();
   const [recover, setRecover] = useState(false);
   const status = useQuery({
-    queryKey:['identity', session?.service_instance, session?.session_scope],
+    // A renewed login for the same core principal must not unmount its draft.
+    queryKey:['identity', session?.service_instance, session?.principal_id ?? session?.session_scope],
     queryFn:api.authStatus,
     retry:false,
     refetchInterval:(query)=>query.state.data?.authenticated ? false : 3000,

@@ -6,6 +6,7 @@ import os
 import re
 import secrets
 import time
+import uuid
 from .engine import encoded, require
 
 SESSION_SECONDS = 8 * 3600
@@ -27,10 +28,6 @@ def validate_password(password):
 class Identity:
     def __init__(self, app):
         self.app = app
-        with app.catalog() as cx:
-            cx.execute('CREATE TABLE IF NOT EXISTS owner_account(username TEXT PRIMARY KEY, salt TEXT NOT NULL, password_hash TEXT NOT NULL, recovery_hash TEXT NOT NULL, platform_admin INTEGER NOT NULL)')
-            cx.execute('CREATE TABLE IF NOT EXISTS login_sessions(digest TEXT PRIMARY KEY, username TEXT NOT NULL, data TEXT NOT NULL, expires REAL NOT NULL, deadline REAL NOT NULL)')
-            cx.execute('CREATE TABLE IF NOT EXISTS login_limit(id INTEGER PRIMARY KEY, failures INTEGER NOT NULL, until REAL NOT NULL)')
         app.db.chmod(0o600)
 
     def configured(self):
@@ -58,7 +55,8 @@ class Identity:
         digest = password_hash(password, salt)
         with self.app.catalog() as cx:
             require(not cx.execute('SELECT 1 FROM owner_account').fetchone(), '管理员已设置，请登录')
-            cx.execute('INSERT INTO owner_account VALUES(?,?,?,?,?)', (username, salt, digest, fingerprint(recovery), int(platform_admin)))
+            cx.execute('INSERT INTO owner_account(username,salt,password_hash,recovery_hash,platform_admin,principal_id) VALUES(?,?,?,?,?,?)',
+                       (username, salt, digest, fingerprint(recovery), int(platform_admin), str(uuid.uuid4())))
             account = cx.execute('SELECT * FROM owner_account WHERE username=?', (username,)).fetchone()
             result = self._issue_in(cx, account, remember) | {'recovery_code': recovery}
         with self.app.mutex:
@@ -78,24 +76,38 @@ class Identity:
         current = time.time()
         username = account['username']
         data = {'role': 'board', 'organizations': None, 'platform_admin': bool(account['platform_admin']), 'actor': 'account:'+username,
-                'view_id': secrets.token_urlsafe(16), 'account': username, 'remember': remember}
+                'view_id': secrets.token_urlsafe(16), 'account': username, 'remember': remember,
+                'principal_id': account['principal_id']}
         cx.execute('DELETE FROM login_sessions WHERE deadline<=?', (current,))
         cx.execute('INSERT INTO login_sessions VALUES(?,?,?,?,?)', (fingerprint(token), username, encoded(data), current+lifetime, current+lifetime))
         return {'token': token, 'max_age': lifetime}
 
     def session(self, token):
+        with self.app.catalog() as cx:
+            return self._session_in(cx, token)
+
+    def principal_in(self, cx, token):
+        from .errors import CoreError, Rejected
+        try:
+            return self._session_in(cx, token)['principal_id']
+        except Rejected as error:
+            raise CoreError('not_authenticated') from error
+
+    def _session_in(self, cx, token):
         require(isinstance(token, str) and 20 <= len(token) <= 128, '请登录工作台')
         current = time.time()
-        with self.app.catalog() as cx:
-            row = cx.execute('SELECT * FROM login_sessions WHERE digest=?', (fingerprint(token),)).fetchone()
-            require(row is not None and min(row['expires'], row['deadline']) > current, '登录已过期，请重新登录')
-            data = json.loads(row['data'])
-            # The server enforces both inactivity and absolute expiry. Cookies
-            # cannot extend the deadline; revocation deletes the hashed record.
-            expiry = min(row['deadline'], current+(REMEMBER_SECONDS if data['remember'] else SESSION_SECONDS))
-            if expiry-row['expires'] > 60:
-                cx.execute('UPDATE login_sessions SET expires=? WHERE digest=?', (expiry, fingerprint(token)))
-            return data | {'expires': expiry}
+        row = cx.execute('SELECT * FROM login_sessions WHERE digest=?', (fingerprint(token),)).fetchone()
+        require(row is not None and min(row['expires'], row['deadline']) > current, '登录已过期，请重新登录')
+        data = json.loads(row['data'])
+        account = cx.execute('SELECT principal_id FROM owner_account WHERE username=?', (row['username'],)).fetchone()
+        require(account is not None and isinstance(data.get('principal_id'), str)
+                and data['principal_id'] == account['principal_id'], '登录主体已失效，请重新登录')
+        # The server enforces both inactivity and absolute expiry. Cookies
+        # cannot extend the deadline; revocation deletes the hashed record.
+        expiry = min(row['deadline'], current+(REMEMBER_SECONDS if data['remember'] else SESSION_SECONDS))
+        if expiry-row['expires'] > 60:
+            cx.execute('UPDATE login_sessions SET expires=? WHERE digest=?', (expiry, fingerprint(token)))
+        return data | {'expires': expiry}
 
     def _check_limit(self):
         with self.app.read_catalog() as cx:

@@ -1,0 +1,229 @@
+{
+  "reviewer": "/root/s01_ui_review",
+  "node": "24.19.0",
+  "scope": "S01 frontend identity, receipts, recovery and representative name layout",
+  "results": {
+    "focused": {
+      "numTotalTests": 21,
+      "numPassedTests": 21,
+      "numFailedTests": 0,
+      "numPendingTests": 0,
+      "startTime": 1793873997235,
+      "success": true,
+      "cases": [
+        {
+          "name": "core creation identity and receipt boundaries rejects a POST receipt with the wrong id and retains the original V1 request",
+          "status": "passed"
+        },
+        {
+          "name": "core creation identity and receipt boundaries rejects a POST receipt with the wrong kind and retains the original V1 request",
+          "status": "passed"
+        },
+        {
+          "name": "core creation identity and receipt boundaries keeps an unsubmitted creation draft and focus through a same-principal session renewal",
+          "status": "passed"
+        },
+        {
+          "name": "core creation identity and receipt boundaries checks the current principal again before sending a prepared draft",
+          "status": "passed"
+        },
+        {
+          "name": "core creation identity and receipt boundaries refuses to bind a draft to a different principal even before the workspace poll notices the change",
+          "status": "passed"
+        },
+        {
+          "name": "core creation identity and receipt boundaries adopts a delayed creation result only for its original principal (changed=false)",
+          "status": "passed"
+        },
+        {
+          "name": "core creation identity and receipt boundaries adopts a delayed creation result only for its original principal (changed=true)",
+          "status": "passed"
+        },
+        {
+          "name": "core creation identity and receipt boundaries shows a lookup failure beside an unknown receipt while retaining its original ID",
+          "status": "passed"
+        },
+        {
+          "name": "core creation identity and receipt boundaries does not create an AU when the user cancels while the identity preflight is still pending",
+          "status": "passed"
+        },
+        {
+          "name": "core creation through the workspace keeps explicit legacy company creation reachable after reopening a prepared AU",
+          "status": "passed"
+        },
+        {
+          "name": "core creation through the workspace explains the prepared boundary at the empty model entry instead of promising immediate configuration",
+          "status": "passed"
+        },
+        {
+          "name": "core creation through the workspace opens the saved prepared AU through V1 and shows bound governance without legacy snapshot calls",
+          "status": "passed"
+        },
+        {
+          "name": "core creation through the workspace retains an unknown V1 request for lookup after the result dialog closes",
+          "status": "passed"
+        },
+        {
+          "name": "core creation through the workspace keeps input editable after a pre-allocation V1 validation rejection",
+          "status": "passed"
+        },
+        {
+          "name": "core creation through the workspace refuses ordinary creation on an older service without silently sending legacy create",
+          "status": "passed"
+        },
+        {
+          "name": "core creation through the workspace submits ordinary creation as create_v1 with exactly the five supported fields",
+          "status": "passed"
+        },
+        {
+          "name": "receipt recovery persists V1 request kind and queries its original receipt even with an allocated AU ID",
+          "status": "passed"
+        },
+        {
+          "name": "receipt recovery advances accepted to succeeded and never replaces a terminal receipt with a late result",
+          "status": "passed"
+        },
+        {
+          "name": "receipt recovery retains unknown and rejected outcomes for explicit handling",
+          "status": "passed"
+        },
+        {
+          "name": "receipt recovery persists original identities without command bodies and tolerates corrupt storage",
+          "status": "passed"
+        },
+        {
+          "name": "receipt recovery recovers API request identities without persisting credentials or command bodies",
+          "status": "passed"
+        }
+      ]
+    },
+    "independent": {
+      "numTotalTests": 9,
+      "numPassedTests": 9,
+      "numFailedTests": 0,
+      "numPendingTests": 0,
+      "startTime": 1793873878457,
+      "success": true,
+      "cases": [
+        {
+          "name": "independent S01 UI boundary review keeps the original V1 pending identity when a POST returns a success for a different kind",
+          "status": "passed"
+        },
+        {
+          "name": "independent S01 UI boundary review keeps an unsubmitted creation draft through a same-principal session refresh",
+          "status": "passed"
+        },
+        {
+          "name": "independent S01 UI boundary review shows a lookup failure from the initial unknown creation receipt without losing its identity",
+          "status": "passed"
+        },
+        {
+          "name": "independent S01 UI boundary review control: a matching successful POST clears only its original pending identity",
+          "status": "passed"
+        },
+        {
+          "name": "independent S01 UI boundary review control: an unchanged session refresh preserves the same input and focus",
+          "status": "passed"
+        },
+        {
+          "name": "independent S01 UI boundary review does not POST after the user closes the form while the new identity preflight is pending",
+          "status": "passed"
+        },
+        {
+          "name": "independent S01 UI boundary review ignores the navigation side effect of a late POST from the previous principal",
+          "status": "passed"
+        },
+        {
+          "name": "independent S01 UI boundary review never renders the previous principal receipt from the shared pending-query cache",
+          "status": "passed"
+        },
+        {
+          "name": "independent S01 UI boundary review blocks a draft created by a different current principal at the command-owner seam",
+          "status": "passed"
+        }
+      ]
+    }
+  },
+  "layout": [
+    {
+      "viewport": 1440,
+      "nameLength": 8,
+      "titleWidth": 1302,
+      "textWidth": 217.265625,
+      "panelRight": 1404,
+      "textRight": 288.265625,
+      "panelOverflow": "hidden",
+      "documentFits": true
+    },
+    {
+      "viewport": 1440,
+      "nameLength": 200,
+      "titleWidth": 1302,
+      "textWidth": 1276.375,
+      "panelRight": 1404,
+      "textRight": 1347.375,
+      "panelOverflow": "hidden",
+      "documentFits": true
+    },
+    {
+      "viewport": 1024,
+      "nameLength": 8,
+      "titleWidth": 910,
+      "textWidth": 217.265625,
+      "panelRight": 1000,
+      "textRight": 276.265625,
+      "panelOverflow": "hidden",
+      "documentFits": true
+    },
+    {
+      "viewport": 1024,
+      "nameLength": 200,
+      "titleWidth": 910,
+      "textWidth": 896.171875,
+      "panelRight": 1000,
+      "textRight": 955.171875,
+      "panelOverflow": "hidden",
+      "documentFits": true
+    },
+    {
+      "viewport": 390,
+      "nameLength": 8,
+      "titleWidth": 306,
+      "textWidth": 193.984375,
+      "panelRight": 374,
+      "textRight": 237.984375,
+      "panelOverflow": "hidden",
+      "documentFits": true
+    },
+    {
+      "viewport": 390,
+      "nameLength": 200,
+      "titleWidth": 306,
+      "textWidth": 290.96875,
+      "panelRight": 374,
+      "textRight": 334.96875,
+      "panelOverflow": "hidden",
+      "documentFits": true
+    },
+    {
+      "viewport": 320,
+      "nameLength": 8,
+      "titleWidth": 236,
+      "textWidth": 193.984375,
+      "panelRight": 304,
+      "textRight": 237.984375,
+      "panelOverflow": "hidden",
+      "documentFits": true
+    },
+    {
+      "viewport": 320,
+      "nameLength": 200,
+      "titleWidth": 236,
+      "textWidth": 218.234375,
+      "panelRight": 304,
+      "textRight": 262.234375,
+      "panelOverflow": "hidden",
+      "documentFits": true
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+test_account_principal_survives_login_password_recovery_and_restart (tests.test_core_identity.CoreIdentityTests.test_account_principal_survives_login_password_recovery_and_restart) ... ok
+test_session_without_current_account_principal_is_not_authenticated (tests.test_core_identity.CoreIdentityTests.test_session_without_current_account_principal_is_not_authenticated) ... FAIL
+test_failed_upgrade_rolls_back_schema_and_original_rows (tests.test_identity_upgrade.IdentityUpgradeTests.test_failed_upgrade_rolls_back_schema_and_original_rows) ... FAIL
+test_old_schema_rejects_start_before_catalog_or_recovery_writes (tests.test_identity_upgrade.IdentityUpgradeTests.test_old_schema_rejects_start_before_catalog_or_recovery_writes) ... FAIL
+test_pristine_upgrade_can_roll_back_but_new_facts_cannot_be_erased (tests.test_identity_upgrade.IdentityUpgradeTests.test_pristine_upgrade_can_roll_back_but_new_facts_cannot_be_erased) ... FAIL
+test_upgrade_is_idempotent_preserves_intent_bytes_and_revokes_old_sessions (tests.test_identity_upgrade.IdentityUpgradeTests.test_upgrade_is_idempotent_preserves_intent_bytes_and_revokes_old_sessions) ... FAIL
+test_upgrade_requires_stopped_services_and_holds_the_actual_console_lock (tests.test_identity_upgrade.IdentityUpgradeTests.test_upgrade_requires_stopped_services_and_holds_the_actual_console_lock) ... ok
+
+======================================================================
+FAIL: test_session_without_current_account_principal_is_not_authenticated (tests.test_core_identity.CoreIdentityTests.test_session_without_current_account_principal_is_not_authenticated)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_identity.py", line 48, in test_session_without_current_account_principal_is_not_authenticated
+    with self.assertRaises(Rejected):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+AssertionError: Rejected not raised
+
+======================================================================
+FAIL: test_failed_upgrade_rolls_back_schema_and_original_rows (tests.test_identity_upgrade.IdentityUpgradeTests.test_failed_upgrade_rolls_back_schema_and_original_rows)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_identity_upgrade.py", line 120, in test_failed_upgrade_rolls_back_schema_and_original_rows
+    self.assertEqual(result.returncode, 1)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 1
+
+======================================================================
+FAIL: test_old_schema_rejects_start_before_catalog_or_recovery_writes (tests.test_identity_upgrade.IdentityUpgradeTests.test_old_schema_rejects_start_before_catalog_or_recovery_writes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_identity_upgrade.py", line 71, in test_old_schema_rejects_start_before_catalog_or_recovery_writes
+    self.assertIsNotNone(rejected, "old catalog must require explicit upgrade before startup writes")
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: unexpectedly None : old catalog must require explicit upgrade before startup writes
+
+======================================================================
+FAIL: test_pristine_upgrade_can_roll_back_but_new_facts_cannot_be_erased (tests.test_identity_upgrade.IdentityUpgradeTests.test_pristine_upgrade_can_roll_back_but_new_facts_cannot_be_erased)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_identity_upgrade.py", line 129, in test_pristine_upgrade_can_roll_back_but_new_facts_cannot_be_erased
+    self.assertEqual(result.returncode, 0, result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : D:\Project\Union\.venv\Scripts\python.exe: can't open file 'D:\\Project\\Union\\scripts\\upgrade_core_identity.py': [Errno 2] No such file or directory
+
+
+======================================================================
+FAIL: test_upgrade_is_idempotent_preserves_intent_bytes_and_revokes_old_sessions (tests.test_identity_upgrade.IdentityUpgradeTests.test_upgrade_is_idempotent_preserves_intent_bytes_and_revokes_old_sessions)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_identity_upgrade.py", line 80, in test_upgrade_is_idempotent_preserves_intent_bytes_and_revokes_old_sessions
+    self.assertEqual(result.returncode, 0, result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : D:\Project\Union\.venv\Scripts\python.exe: can't open file 'D:\\Project\\Union\\scripts\\upgrade_core_identity.py': [Errno 2] No such file or directory
+
+
+----------------------------------------------------------------------
+Ran 7 tests in 2.656s
+
+FAILED (failures=5)

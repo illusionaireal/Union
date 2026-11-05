@@ -83,14 +83,14 @@ export default function Models() {
       </div>}
       {d && board && <p className="form-note">默认备用顺序：{d.execution_config.fallbacks?.join(' → ') || '未设置'}。岗位绑定：{Object.entries(d.execution_config.roles || {}).map(([role,slot])=>`${d.organization.positions[role]?.title || role}：${slot.connection_id}${slot.fallbacks?.length?'（备用：'+slot.fallbacks.join(' → ')+'）':''}`).join('；') || '均继承默认'}。</p>}
       {!d ? (
-        <Card title="先为连接选择一个公司">
-          <Empty title="模型连接随公司保存">
-            创建公司后，即可在此填写 API 地址、API Key
-            和模型名称。通用公司与业务试验都使用这个入口。
+        <Card title="先创建 AU 准备记录">
+          <Empty title="模型连接按 AU 保存">
+            新 AU 当前只保存资源计划，模型配置和调用尚未启用。
+            已有旧版组织可继续使用兼容模型配置。
           </Empty>
           <div className="empty-actions">
-            <CommandButton kind="create" primary>
-              创建公司并继续配置
+            <CommandButton kind="create_v1" primary>
+              创建 AU 准备记录
             </CommandButton>
           </div>
         </Card>

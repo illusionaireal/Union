@@ -1,0 +1,15 @@
+test_account_principal_survives_login_password_recovery_and_restart (tests.test_core_identity.CoreIdentityTests.test_account_principal_survives_login_password_recovery_and_restart) ... FAIL
+
+======================================================================
+FAIL: test_account_principal_survives_login_password_recovery_and_restart (tests.test_core_identity.CoreIdentityTests.test_account_principal_survives_login_password_recovery_and_restart)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_identity.py", line 21, in test_account_principal_survives_login_password_recovery_and_restart
+    self.assertIsInstance(principal, str, "authenticated accounts need a stable core principal")
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: None is not an instance of <class 'str'> : authenticated accounts need a stable core principal
+
+----------------------------------------------------------------------
+Ran 1 test in 0.132s
+
+FAILED (failures=1)

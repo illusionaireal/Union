@@ -14,11 +14,17 @@ from pathlib import Path, PurePosixPath
 import re
 import shutil
 import signal
+import sqlite3
 import stat
 import subprocess
 import sys
 import tempfile
 import zipfile
+
+if __package__ in (None, ""):
+    # Use the schema owner shipped beside this release tool, including when
+    # invoked directly from an installed candidate.
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 
 class ReleaseError(Exception):
@@ -82,7 +88,7 @@ def pack(root, output, release_id):
               'services/modeld/upstream.lock.json', 'services/modeld/init.mjs', 'services/modeld/README.md'}))
     payload = {p: regular(root / p) for p in source_names}
     # Explicit additional sources belong to this release tool, never all untracked files.
-    for p in ('scripts/release_package.py', 'ops/release/README.md', 'ops/release/deployment.example.json'):
+    for p in ('scripts/release_package.py', 'scripts/upgrade_core_identity.py', 'ops/release/README.md', 'ops/release/deployment.example.json'):
         payload[p] = regular(root / p)
         source_names.append(p)
     build_sources = [p for p in tracked if p and (
@@ -116,6 +122,7 @@ def pack(root, output, release_id):
         ['git', 'diff', '--name-only', '-z', 'HEAD', '--', *source_bytes], cwd=root).decode().split('\0')) - {''}
         | (set(source_bytes) - set(tracked)))
     manifest = {'schema_version': 1, 'release_id': release_id, 'git_baseline': baseline,
+                'core_schemas': {'auth': 1, 'catalog': 1},
                 'source_state': 'working_tree' if changed else 'committed', 'changed_sources': changed,
                 'source_hashes': source_hashes, 'upstream': json.loads(payload['services/modeld/upstream.lock.json']),
                 'toolchain': {'python_minimum': '3.11', 'node_build_required': '24.19.0', 'bun': '1.4.2'},
@@ -136,6 +143,9 @@ def pack(root, output, release_id):
 def validate_manifest(manifest):
     require(isinstance(manifest, dict) and manifest.get('schema_version') == 1, 'Unsupported release manifest')
     name(manifest.get('release_id'))
+    schemas = manifest.get('core_schemas', {'auth': 0, 'catalog': 0})
+    require(isinstance(schemas, dict) and set(schemas) == {'auth', 'catalog'}
+            and all(type(value) is int and value >= 0 for value in schemas.values()), 'Invalid core schema declaration')
     files = manifest.get('files')
     require(isinstance(files, dict) and 1 <= len(files) <= 10000, 'Invalid release file list')
     case_names = set()
@@ -255,8 +265,26 @@ def install(archive, config):
     return manifest
 
 
+def check_core_schemas(manifest, config):
+    """Read-only host compatibility at activation/run, including old manifests."""
+    database = config['console_state'] / 'console.sqlite3'
+    if not database.exists():
+        return
+    require(database.is_file() and not linked(database), 'Core catalog must be a regular database')
+    try:
+        from ai_union.identity_schema import versions
+        actual = versions(database)
+        if actual is None:
+            return
+        require(actual == manifest.get('core_schemas', {'auth': 0, 'catalog': 0}),
+                'Candidate auth/catalog schema is incompatible; explicitly upgrade or select compatible code, never erase newer state')
+    except (ValueError, OSError, sqlite3.Error) as error:
+        raise ReleaseError('Core catalog compatibility cannot be verified; retain current code and data') from error
+
+
 def preflight(directory, config):
     manifest = verify_directory(directory)
+    check_core_schemas(manifest, config)
     env = os.environ.copy()
     env['PYTHONDONTWRITEBYTECODE'] = '1'
     env['PYTHONPATH'] = str(directory)
@@ -290,6 +318,7 @@ def activate(release_id, config, *, stopped=False):
     with operation_lock(root):
         target = root / 'releases' / name(release_id)
         manifest = preflight(target, config)
+        check_core_schemas(manifest, config)
         require(manifest['release_id'] == release_id, 'Installed release ID mismatch')
         current = root / 'current.json'
         previous = None
@@ -320,7 +349,8 @@ def selected(config):
 
 def run(component, config):
     directory = selected(config)
-    preflight(directory, config)
+    manifest = preflight(directory, config)
+    check_core_schemas(manifest, config)
     env = os.environ.copy()
     env.update(PYTHONDONTWRITEBYTECODE='1', PYTHONPATH=str(directory), UNION_MODELD_CONFIG=str(config['modeld_config']))
     if component == 'console':

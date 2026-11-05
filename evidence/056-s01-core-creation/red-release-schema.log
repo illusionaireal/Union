@@ -1,0 +1,39 @@
+test_incompatible_activation_and_rollback_preserve_pointer_and_latest_identity (tests.test_identity_release.IdentityReleaseTests.test_incompatible_activation_and_rollback_preserve_pointer_and_latest_identity) ... 
+  test_incompatible_activation_and_rollback_preserve_pointer_and_latest_identity (tests.test_identity_release.IdentityReleaseTests.test_incompatible_activation_and_rollback_preserve_pointer_and_latest_identity) (candidate='old') ... FAIL
+test_incompatible_activation_and_rollback_preserve_pointer_and_latest_identity (tests.test_identity_release.IdentityReleaseTests.test_incompatible_activation_and_rollback_preserve_pointer_and_latest_identity) ... FAIL
+test_run_refuses_a_previously_selected_old_binary_after_schema_upgrade (tests.test_identity_release.IdentityReleaseTests.test_run_refuses_a_previously_selected_old_binary_after_schema_upgrade) ... ERROR
+
+======================================================================
+ERROR: test_run_refuses_a_previously_selected_old_binary_after_schema_upgrade (tests.test_identity_release.IdentityReleaseTests.test_run_refuses_a_previously_selected_old_binary_after_schema_upgrade)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_identity_release.py", line 64, in test_run_refuses_a_previously_selected_old_binary_after_schema_upgrade
+    release.run("console", self.config)
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\scripts\release_package.py", line 325, in run
+    env.update(PYTHONDONTWRITEBYTECODE='1', PYTHONPATH=str(directory), UNION_MODELD_CONFIG=str(config['modeld_config']))
+                                                                                               ~~~~~~^^^^^^^^^^^^^^^^^
+KeyError: 'modeld_config'
+
+======================================================================
+FAIL: test_incompatible_activation_and_rollback_preserve_pointer_and_latest_identity (tests.test_identity_release.IdentityReleaseTests.test_incompatible_activation_and_rollback_preserve_pointer_and_latest_identity) (candidate='old')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_identity_release.py", line 52, in test_incompatible_activation_and_rollback_preserve_pointer_and_latest_identity
+    with self.subTest(candidate=candidate), self.assertRaises(release.ReleaseError):
+                                            ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ReleaseError not raised
+
+======================================================================
+FAIL: test_incompatible_activation_and_rollback_preserve_pointer_and_latest_identity (tests.test_identity_release.IdentityReleaseTests.test_incompatible_activation_and_rollback_preserve_pointer_and_latest_identity)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_identity_release.py", line 54, in test_incompatible_activation_and_rollback_preserve_pointer_and_latest_identity
+    self.assertEqual((self.config["installation_root"] / "current.json").read_bytes(), pointer)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: b'{\n[20 chars]id": "current",\n  "release_id": "old",\n  "sc[17 chars]n}\n' != b'{\n[20 chars]id": null,\n  "release_id": "current",\n  "sch[16 chars]n}\n'
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.391s
+
+FAILED (failures=2, errors=1)

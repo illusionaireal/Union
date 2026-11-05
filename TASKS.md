@@ -13,10 +13,10 @@
 | 待依赖 | [U-003](#u-003)、[U-006](#u-006)、[U-019](#u-019)、[U-062](#u-062)、[U-009](#u-009)、[U-010](#u-010)、[U-011](#u-011)、[U-020](#u-020)、[U-026](#u-026)、[U-028](#u-028)、[U-029](#u-029)、[U-030](#u-030)、[U-038](#u-038)、[U-042](#u-042)、[U-067](#u-067)、[U-068](#u-068)、[U-069](#u-069)、[U-070](#u-070)、[U-071](#u-071)、[U-072](#u-072)、[U-073](#u-073)、[U-074](#u-074)、[U-075](#u-075)、[U-076](#u-076)、[U-014](#u-014)、[U-031](#u-031)、[U-032](#u-032) |
 | 候选 | [U-013](#u-013)、[U-015](#u-015)、[U-036](#u-036)、[U-043](#u-043) |
 | 就绪 | [U-054](#u-054) |
-| 进行中 | [U-056](#u-056)、[U-066](#u-066)、[U-060](#u-060) |
+| 进行中 | [U-056](#u-056)、[U-060](#u-060) |
 | 阻塞 | [U-002](#u-002)、[U-005](#u-005)、[U-007](#u-007)、[U-044](#u-044)、[U-008](#u-008)、[U-039](#u-039)、[U-041](#u-041) |
 | 待验收 | — |
-| 完成 | [U-001](#u-001)、[U-004](#u-004)、[U-016](#u-016)、[U-017](#u-017)、[U-018](#u-018)、[U-021](#u-021)、[U-022](#u-022)、[U-023](#u-023)、[U-033](#u-033)、[U-045](#u-045)、[U-046](#u-046)、[U-047](#u-047)、[U-048](#u-048)、[U-049](#u-049)、[U-050](#u-050)、[U-051](#u-051)、[U-052](#u-052)、[U-053](#u-053)、[U-055](#u-055)、[U-057](#u-057)、[U-061](#u-061)、[U-063](#u-063)、[U-064](#u-064)、[U-065](#u-065)、[U-012](#u-012)、[U-025](#u-025)、[U-027](#u-027)、[U-034](#u-034)、[U-035](#u-035)、[U-037](#u-037)、[U-040](#u-040)、[U-058](#u-058)、[U-059](#u-059)、[U-024](#u-024) |
+| 完成 | [U-001](#u-001)、[U-004](#u-004)、[U-016](#u-016)、[U-017](#u-017)、[U-018](#u-018)、[U-021](#u-021)、[U-022](#u-022)、[U-023](#u-023)、[U-033](#u-033)、[U-045](#u-045)、[U-046](#u-046)、[U-047](#u-047)、[U-048](#u-048)、[U-049](#u-049)、[U-050](#u-050)、[U-051](#u-051)、[U-052](#u-052)、[U-053](#u-053)、[U-055](#u-055)、[U-057](#u-057)、[U-061](#u-061)、[U-063](#u-063)、[U-064](#u-064)、[U-065](#u-065)、[U-066](#u-066)、[U-012](#u-012)、[U-025](#u-025)、[U-027](#u-027)、[U-034](#u-034)、[U-035](#u-035)、[U-037](#u-037)、[U-040](#u-040)、[U-058](#u-058)、[U-059](#u-059)、[U-024](#u-024) |
 
 ## U-001
 
@@ -590,13 +590,19 @@ Main Chapter V1原文、40条与子条款追踪、PRD/架构/ADR、12垂直切�
 
 **按重写契约贯通创建与重开同一AU**
 
-状态：进行中；优先级：P0；里程碑：G1；模块：governance。
+状态：完成；优先级：P0；里程碑：G1；模块：governance。
 
 实际负责人：codex/gpt-6/session-01a1a9fa-d89d-7091-ba52-c31a1df00b23；所需责任：组织用例 / 持久化 / React / 验证。开始：2026-11-05；更新：2026-11-05。
 
 依赖：[U-065](#u-065)。
 
 验收条件：按053 S01及Main V1，用严格TDD顺序完成S01a旧创建/原回执/目录完整性、S01b稳定core principal与显式身份/catalog升级及V1治理根准备态创建、S01c旧入口隔离与React/HTTP重开。三步全部通过才完成；保留legacy原请求/版本/unknown，不迁移旧AU、不借同名账号重置接管；prepared+resources planned无业务/资源副作用。精确DTO/错误/事务/兼容/T01–T12见s01-contract.md，权限和迁移独立复核；不关闭自治/完整F09/真实发布。
+
+验收范围：controlled；验收者：协调者验收；独立工程复核 /root/s01a_identity_review（身份/持久化）与 /root/s01_ui_review（前端/恢复）。
+
+完整 S01a–S01c / T01–T12 受控验收通过：稳定 core principal、显式 auth/catalog 升级、治理根准备态创建/重开、原请求幂等/unknown 和 legacy 入口隔离。严格真实 RED/GREEN，481 项 Python（5 平台跳过）、70 项前端与 npm 完整检查、实际浏览器 S01 30 项/legacy 71 项、实际安装候选 133 项通过；独立后端 47 项、前端 21/9 项与布局复核无剩余阻断。原 S01a 证据保留在 055，完整结果见 056。被测系统真实模型调用 0，未迁移真实 AU/部署，不关闭完整 F09、治理激活、业务自治或发布/持续运行。后续计划 S05/U-069，本轮止于 S01。
+
+证据：[evidence/056-s01-core-creation/README.md](evidence/056-s01-core-creation/README.md)、[docs/reviews/2026-11-05-s01-core-creation.md](docs/reviews/2026-11-05-s01-core-creation.md)、[evidence/056-s01-core-creation/python-full.log](evidence/056-s01-core-creation/python-full.log)、[evidence/056-s01-core-creation/npm-check.log](evidence/056-s01-core-creation/npm-check.log)、[evidence/056-s01-core-creation/browser-core/checks.json](evidence/056-s01-core-creation/browser-core/checks.json)、[evidence/056-s01-core-creation/browser-legacy/checks.json](evidence/056-s01-core-creation/browser-legacy/checks.json)、[evidence/056-s01-core-creation/candidate-install.json](evidence/056-s01-core-creation/candidate-install.json)、[evidence/056-s01-core-creation/candidate-installed-python.log](evidence/056-s01-core-creation/candidate-installed-python.log)
 
 ## U-008
 

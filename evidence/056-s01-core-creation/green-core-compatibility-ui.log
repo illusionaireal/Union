@@ -1,0 +1,15 @@
+
+> @union/console@0.1.0 test
+> vitest run src/features/commands/core-creation.test.tsx
+
+
+ RUN  v3.2.7 D:/Project/Union/web/console
+
+ ✓ src/features/commands/core-creation.test.tsx (7 tests) 1427ms
+   ✓ core creation through the workspace > keeps explicit legacy company creation reachable after reopening a prepared AU  372ms
+
+ Test Files  1 passed (1)
+      Tests  7 passed (7)
+   Start at  18:06:17
+   Duration  3.43s (transform 407ms, setup 183ms, collect 710ms, tests 1.43s, environment 569ms, prepare 150ms)
+

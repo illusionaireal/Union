@@ -2,6 +2,14 @@
 
 > 当前产品依据为[Main Chapter V1](UNION_CHARTER_v1.0.md)、[PRD v1.0](PRD.md)与[053切片](../specs/053-union-rewrite/tasks.md)。本文件保留React工程说明；历史验收和旧界面描述不代表V1能力已经交付。
 
+## 2026-11-05：S01 准备态 AU 创建与重开
+
+普通创建经 `CommandForm` 发送 `create_v1`，要求服务声明 `core.au.v1` 且登录绑定稳定 principal；不兼容时保留输入并解释原因。`PreparedAU` 读取版本化 AU 接口，展示目标、初始治理主体、保存的章程与资源计划，明确自主业务未启用。旧组织和小说试验继续经显式兼容入口创建，不将其能力投射到准备态 AU。
+
+原请求 kind/ID 决定回执查询路径；unknown 不重新提交。POST 回执必须匹配原请求，采用回执时重新核对当前主体与服务实例；迟到响应不能导航另一账号。同主体的会话续期保留草稿和焦点，提交前验证有效主体；身份预检期间取消会阻止 POST。查询失败显示在当前结果区，200 字符合法名称可完整换行。
+
+[056](../evidence/056-s01-core-creation/README.md)记录 70 项前端检查、30 项实际 Chromium S01 检查与 71 项旧工作台检查，以及[独立评审](reviews/2026-11-05-s01-core-creation.md)。浏览器覆盖 1440/1024/390/320、键盘、断网输入保留、服务重启登录和原回执恢复；屏幕阅读器、真实用户研究和实体设备未在本片验收。服务端 profile/身份隔离由相应 Python 行为测试独立保护。
+
 ## 2026-11-02：043身份与模型配置
 
 IdentityBoundary在现有WorkspaceProvider内控制匿名入口（未设置账号时直接显示设置表单，已设置后显示登录页），AccountSettings提供首次认领/改密/退出；成功登录或退出重载页面以清理旧会话缓存。ModelConnectionFields复用原命令体系，新增导入、岗位/备用配置、成本分摊及资料事件。预览前refresh返回最新snapshot，服务端仍检查组织/权限/版本与幂等。`npm run test:model-access`使用私有临时服务、实际重启和回环替身，15项/320px验收。详情见[指南](MODEL_ACCESS.md)、[043](../evidence/043-usable-model-access/README.md)。

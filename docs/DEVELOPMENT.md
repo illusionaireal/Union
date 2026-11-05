@@ -2,9 +2,13 @@
 
 ## 2026-11-05：从 Main Chapter V1 接手
 
-先读[采用记录](CHARTER_ADOPTION.md)、[Chapter V1](UNION_CHARTER_v1.0.md)、[PRD v1.0](PRD.md)、[总体架构](ARCHITECTURE.md)、[053 plan](../specs/053-union-rewrite/plan.md)与根[HANDOFF](../HANDOFF.md)。当前规划已按main V1重建；下一实施单元是U-066/S01a，完整S01还需稳定principal、治理根/准备态及旧入口隔离。主账状态、容量和在线负责人需在开工前重新核对。
+先读[采用记录](CHARTER_ADOPTION.md)、[Chapter V1](UNION_CHARTER_v1.0.md)、[PRD v1.0](PRD.md)、[总体架构](ARCHITECTURE.md)、[053 plan](../specs/053-union-rewrite/plan.md)与根[HANDOFF](../HANDOFF.md)。S01a–S01c 的稳定 principal、准备态创建/重开和旧入口隔离已通过受控验收，见 [056](../evidence/056-s01-core-creation/README.md)。下一计划为 S05/U-069；S02/U-072 和 S03 仍须满足其治理前置。主账状态、容量和在线负责人需在开工前重新核对。
 
 旧DESIGN/PRD/spec仅在核对实现历史或具体兼容时读取，不能覆盖V1。下方日期条目的工具数、状态和“下一步”不作为当前开发依据。使用当前固定工具链和相应测试；保持React、历史数据和有效回归，具体切片遵守严格TDD。
+
+S01 新空库直接初始化 auth/catalog schema 1。已有版本 0 库会拒绝新服务启动；在明确授权的维护窗口停止服务后，使用随包交付的 `python scripts/upgrade_core_identity.py --root <console-root> --services-stopped`。命令取得 console 锁、保存一致备份并在事务中升级；旧登录会话失效，重新登录后绑定稳定 principal。重复升级保持原主体与旧回执字节。升级后有新写入便不能用旧备份回退；代码采用/回滚也检查 schema 兼容。此说明不是对真实数据迁移的执行授权。
+
+Windows 验证固定 Node 24.19.0、`.venv\Scripts\python.exe`（本次 3.13.14），设置 `PYTHONUTF8=1`、`PYTHONIOENCODING=utf-8`。S01 的真实浏览器入口为 `node scripts/check_core_creation.cjs`，`UNION_CORE_EVIDENCE` 指定证据目录；与 `npm run check`、Python 全量、`npm run test:workspace` 及实际安装后的升级测试一起取证。构建安装候选成功不代表 S08 真实发布或持续运行已验收。
 
 ## 2026-11-02：进入正式开发
 

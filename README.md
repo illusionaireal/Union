@@ -6,7 +6,7 @@
 
 核心目标是让用户安装、登录、连接模型工具、设定目标后持续取得真实成果，并能反馈、恢复和维护；核心包含基础认证、AU权限与审计，不依赖私有平台账户/仓库凭据/许可证服务。方向已采用，运行能力和实际开源发布仍以各自证据为准，具体许可证尚未选择。
 
-当前工作是053的V1规划/契约检查点，下一代码切片为[U-066/S01](specs/053-union-rewrite/s01-contract.md)。使用`rewrite/charter-v1`交接，`dev`仍为日常开发主线；main用于本次宪章来源，不以其旧工程覆盖当前React和运行资产。
+当前已实现 [U-066/S01](specs/053-union-rewrite/s01-contract.md) 的受控工程范围：稳定核心身份、准备态 AU 创建与重开、旧目录完整性及旧入口隔离，验证见 [056 证据](evidence/056-s01-core-creation/README.md)。新 AU 尚未启用自主业务或授予资源；下一计划切片为 S05/U-069 的治理准备与激活条件。使用 `rewrite/charter-v1` 交接，`dev` 仍为日常开发主线；main 用于本次宪章来源。
 
 [项目总览](PROJECT.md) · [唯一任务主账与生成看板](TASKS.md) · [管理方法](management/README.md) · [在线Kanban约定](management/KANBAN.md) · [正式开发门槛](docs/FORMAL_DEVELOPMENT.md)。
 
@@ -56,7 +56,7 @@ npm ci --ignore-scripts
 npm start -- --root .union/console --port 8766 --open
 ```
 
-浏览器从本机一次性链接建立发起人会话，默认仅配置 fixture。正式源码在 [web/console](web/console)，Vite 构建由 Python 同源提供；[工程与架构](docs/FRONTEND.md)、[工作台使用说明](docs/CONSOLE.md)包含开发、操作和恢复流程。独立单 HTML 演示已删除，后续只维护正式 React 工程。
+浏览器首次访问设置核心账号并保存恢复码，之后用账号密码登录。普通创建保存准备态 AU，刷新或服务重启后可用同一账号重开；旧组织与小说试验保留明确的兼容入口。已有旧身份库须先按[开发说明](docs/DEVELOPMENT.md)显式升级，启动服务不会自动迁移。正式源码在 [web/console](web/console)，Vite 构建由 Python 同源提供；[工程与架构](docs/FRONTEND.md)、[工作台使用说明](docs/CONSOLE.md)包含相应流程。
 
 **真实模型 API 后端已接入。** 可配置 Chat Completions API 地址、模型、私有密钥、输出上限与超时，绑定组织默认连接，通过普通对话及组织工具执行。无需 Codex CLI；配置本身不调用模型。React 工作台已整合；API 配置、默认绑定与连接测试已接入网页；CLI／HTTP 入口继续可用。运行步骤与当前契约见 [API_MODELS.md](docs/API_MODELS.md)，原实现范围见 [005](specs/005-real-model-api/spec.md)。组织协作验收来自本地 HTTP 替身；独立 OpenRouter 普通对话实测见 [011](evidence/011-openrouter-smoke/README.md)，尚不代表组织能力通过。
 

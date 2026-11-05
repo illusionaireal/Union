@@ -1,0 +1,15 @@
+.au-intro { max-width: 52rem; padding: clamp(1.25rem, 4vw, 3rem); background: var(--surface, #fff); border: 1px solid var(--line, #e4e7ed); border-radius: 16px; }
+.au-intro h2 { font-size: clamp(1.5rem, 3vw, 2.3rem); }
+.au-intro p, .prepared-au p { line-height: 1.75; overflow-wrap: anywhere; }
+.legacy-creation { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--line, #e4e7ed); }
+.prepared-au { display: grid; gap: 1.25rem; min-width: 0; }
+.prepared-au .mission-panel { grid-template-columns: minmax(0, 1fr); }
+.prepared-au .mission-copy { min-width: 0; }
+.prepared-au .mission-copy h2 { overflow-wrap: anywhere; }
+.prepared-au > .button { justify-self: start; }
+.au-text { white-space: pre-wrap; overflow-wrap: anywhere; }
+.au-facts { display: grid; gap: 1rem; }
+.au-facts div { display: grid; grid-template-columns: minmax(8rem, 1fr) minmax(0, 2fr); gap: .75rem; }
+.au-facts dt { color: var(--muted, #647087); }
+.au-facts dd { margin: 0; overflow-wrap: anywhere; }
+@media (max-width: 600px) { .au-facts div { grid-template-columns: 1fr; gap: .25rem; } }

@@ -1,6 +1,5 @@
 """Local host-bound sessions, durable commands and bounded dispatcher jobs."""
 import copy
-import hashlib
 import json
 import secrets
 import sqlite3
@@ -10,7 +9,9 @@ from contextlib import closing, contextmanager, nullcontext
 from pathlib import Path
 
 from .activity import activity
-from .adapters.au_catalog import legacy_directory
+from .adapters.au_catalog import resolve_directory
+from .application.creation import CreationService
+from .errors import CoreError
 from .engine import Engine, Rejected, encoded, identifier, model_name, now, require, text, uid, validate_charter, validate_resources
 from .executor import CodexExecutor, FixtureExecutor
 from .locking import file_lock
@@ -38,19 +39,17 @@ class Console:
         self.enable_api = enable_api
         self.executor_factory = self._executor
         self.closed = False
-        from .gateways import Gateways
-        self.gateways = Gateways(self)
         try:
-            with self.catalog() as cx:
-                cx.execute("CREATE TABLE IF NOT EXISTS organizations(id TEXT PRIMARY KEY, folder TEXT NOT NULL)")
-                cx.execute("CREATE TABLE IF NOT EXISTS creations(id TEXT PRIMARY KEY, payload TEXT NOT NULL, receipt TEXT NOT NULL, folder TEXT NOT NULL)")
-                for row in cx.execute("SELECT id,receipt FROM creations").fetchall():
-                    receipt = json.loads(row["receipt"])
-                    if receipt["status"] == "accepted":
-                        receipt.update(status="unknown", message="创建过程被中断；保留原目录，请在宿主核对。不要重复创建。")
-                        cx.execute("UPDATE creations SET receipt=? WHERE id=?", (encoded(receipt), row["id"]))
+            from .identity_schema import ensure_current
+            ensure_current(self.db)
+            from .gateways import Gateways
+            self.gateways = Gateways(self)
+            from .identity import Identity
+            self.identity = Identity(self)
+            self.creation = CreationService(self)
+            self.creation.catalog.recover()
             # Validate the whole catalog before any AU receives recovery writes.
-            engines = [self._catalog_engine(item) for item in self._catalog_entries()]
+            engines = self._legacy_engines()
             # Stale job receipts are uncertain, never automatically replayed.
             for e in engines:
                 with e.transaction() as cx:
@@ -60,8 +59,6 @@ class Console:
                         if receipt["status"] == "accepted":
                             receipt.update(status="unknown", message="宿主作业中断；检查原执行记录，不能据此推断远程取消。")
                             cx.execute("UPDATE commands SET receipt=? WHERE id=?", (encoded(receipt), row["id"]))
-            from .identity import Identity
-            self.identity = Identity(self)
         except BaseException:
             self._guard.__exit__(None, None, None)
             self.closed = True
@@ -81,11 +78,25 @@ class Console:
     def organizations(self):
         entries = self._catalog_entries()
         for entry in entries:
-            legacy_directory(self.root, entry)
+            self._resolve_entry(entry)
         return entries
 
+    def _resolve_entry(self, entry):
+        intent = self.creation.catalog.intent_for_au(entry["id"])
+        directory, profile = resolve_directory(self.root, entry, creation=intent)
+        if profile == "core_v1" and intent is None:
+            raise CoreError("incompatible_state", "AU 缺少唯一原创建意图；请保留记录核对")
+        return directory, profile
+
+    def _legacy_engines(self):
+        resolved = [self._resolve_entry(item) for item in self._catalog_entries()]
+        return [Engine(directory) for directory, profile in resolved if profile == "legacy_v0"]
+
     def _catalog_engine(self, entry):
-        return Engine(legacy_directory(self.root, entry))
+        directory, profile = self._resolve_entry(entry)
+        if profile != "legacy_v0":
+            raise CoreError("unsupported_capability")
+        return Engine(directory)
 
     @contextmanager
     def read_catalog(self):
@@ -139,15 +150,33 @@ class Console:
         session = self.session(token)
         orgs = []
         for item in self._catalog_entries():
+            creator = self.creation.catalog.creator(item["id"])
+            if creator is not None or item.get("profile") != "legacy_v0":
+                if creator is not None and creator == session.get("principal_id"):
+                    state = self.creation.read(session, item["id"])["au"]
+                    orgs.append({"id": state["id"], "name": state["name"], "profile": "core_v1"})
+                continue
             if session["organizations"] is None or item["id"] in session["organizations"]:
                 e = self.engine(token, item["id"])
                 with e.read_transaction() as cx:
                     state = e._state(cx)
-                    orgs.append({"id": state["id"], "name": state["name"]})
+                    orgs.append({"id": state["id"], "name": state["name"], "profile": "legacy_v0"})
         return {"role": session["role"], "organizations": orgs, "service_instance": self.instance,
+                "core_protocol": "core.au.v1", "principal_id": session.get("principal_id"),
                 "platform_admin": session.get("platform_admin", False),
                 "session_scope": session["view_id"],
                 "executors": (["fixture"] if self.fixture is not None else []) + (["codex"] if self.enable_codex else []) + (["api"] if self.enable_api else [])}
+
+    def core_au(self, token, au_id):
+        return self.creation.read(self.session(token), au_id)
+
+    def core_receipt(self, token, request_id):
+        principal = self.creation.principal(self.session(token))
+        try:
+            identifier(request_id)
+        except Rejected as error:
+            raise CoreError("invalid_request", str(error)) from error
+        return self.creation.catalog.receipt(request_id, principal)
 
     def model_connections(self, token, org_id):
         require(self.session(token)["role"] == "board", "观察者不能读取 API 连接配置")
@@ -187,7 +216,7 @@ class Console:
             require(self.session(token)["role"] == "board", "创建回执需要发起人会话")
             require(self.session(token)["organizations"] is None, "此会话没有创建回执访问权限")
             with self.read_catalog() as cx:
-                row = cx.execute("SELECT receipt FROM creations WHERE id=?", (request_id,)).fetchone()
+                row = cx.execute("SELECT receipt FROM creations WHERE id=? AND profile='legacy_v0'", (request_id,)).fetchone()
         require(row is not None, "未找到此请求；请保留原请求标识核对")
         receipt = json.loads(row[0])
         # Organization receipts were scoped before the query. Creation receipts require
@@ -197,6 +226,8 @@ class Console:
     def command(self, token, request):
         request = copy.deepcopy(request)
         session = self.session(token)
+        if isinstance(request, dict) and request.get("kind") == "create_v1":
+            return self.creation.create_v1(token, session, request)
         require(session["role"] == "board", "观察者不能提交操作")
         require(isinstance(request, dict) and set(request) == {"id", "organization_id", "base_version", "kind", "data"}, "无效命令字段")
         identifier(request["id"])
@@ -288,62 +319,7 @@ class Console:
                 guard.__exit__(None, None, None)
 
     def _create(self, request, receipt):
-        require(request["organization_id"] is None and request["base_version"] is None, "创建不应引用已有组织版本")
-        data = request["data"]
-        folder = "organizations/" + hashlib.sha256(request["id"].encode()).hexdigest()
-        # Persist allocation before filesystem work. A crash becomes unknown, never a second organization.
-        with self.mutex:
-            with self.catalog() as cx:
-                prior = self._existing(cx, request, "creations")
-                if prior:
-                    return prior
-                cx.execute("INSERT INTO creations VALUES(?,?,?,?)", (request["id"], encoded(request), encoded(receipt), folder))
-            try:
-                require(set(data) - {"company", "controller_ref"} == {"name", "goal", "board_name", "charter", "resources"}, "创建字段不完整或含不支持的字段")
-                if "controller_ref" in data:
-                    from .au_contract import validate_descriptor
-                    validate_descriptor(data["controller_ref"])
-                if "company" in data:
-                    from .company import validate_config, create
-                    validate_config(data["company"])
-                    require({"submit_chapter", "review_cycle"} <= set(data["charter"]["allowed_operations"]), "小说公司章程须授权模拟投稿与经营复盘")
-                validate_charter(data["charter"])
-                validate_resources(data["resources"])
-                require(set(data["resources"]) == {"max_calls", "timeout_seconds"}, "工作台仅支持调用次数与超时；金额未知")
-                for field in ("name", "goal", "board_name"):
-                    text(data[field], field, 200 if field != "goal" else 100000)
-                directory = self.root / folder
-                require(not directory.exists(), "分配目录已存在；请核对原创建请求")
-                directory.mkdir(parents=True, mode=0o700)
-                key = secrets.token_urlsafe(48)
-                import os
-                fd = os.open(directory / "board.key", os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
-                with os.fdopen(fd, "w", encoding="utf-8") as f:
-                    f.write(key)
-                engine = Engine.create(directory, data["name"], data["goal"], data["charter"], data["resources"], data["board_name"], key)
-                with engine.transaction() as cx:
-                    self._schema(cx)
-                    state = engine._state(cx)
-                    org_id = state["id"]
-                    if "company" in data:
-                        state["company"] = create(data["company"])
-                        engine._save(cx, state)
-                    if "controller_ref" in data:
-                        from .au_contract import configure_descriptor
-                        configure_descriptor(engine, key, data["controller_ref"], "initial controller description", state["version"])
-                receipt.update(organization_id=org_id, status="succeeded", message="组织已创建并采用章程；尚未启动执行")
-                with self.catalog() as cx:
-                    cx.execute("INSERT INTO organizations VALUES(?,?)", (org_id, folder))
-                    cx.execute("UPDATE creations SET receipt=? WHERE id=?", (encoded(receipt), request["id"]))
-            except (Rejected, KeyError, TypeError) as error:
-                receipt.update(status="rejected", message=str(error) if isinstance(error, Rejected) else "创建字段类型不正确")
-                with self.catalog() as cx:
-                    cx.execute("UPDATE creations SET receipt=? WHERE id=?", (encoded(receipt), request["id"]))
-            except (OSError, sqlite3.Error):
-                receipt.update(status="unknown", message="创建存储过程未确认；保留分配目录与原请求，请在宿主核对")
-                with self.catalog() as cx:
-                    cx.execute("UPDATE creations SET receipt=? WHERE id=?", (encoded(receipt), request["id"]))
-            return receipt
+        return self.creation.create(request, receipt)
 
     def _execute(self, e, request):
         kind, data = request["kind"], request["data"]
@@ -536,7 +512,7 @@ class Console:
     def close(self):
         if not self.closed:
             # Graceful host shutdown stops further dispatch, retaining in-flight results.
-            engines = [self._catalog_engine(item) for item in self._catalog_entries()]
+            engines = self._legacy_engines()
             for engine in engines:
                 engine.set_paused(True)
             self.join_jobs()

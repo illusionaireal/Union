@@ -1,0 +1,2411 @@
+
+> @union/console@0.1.0 test
+> vitest run src/features/commands/core-creation.test.tsx
+
+
+ RUN  v3.2.7 D:/Project/Union/web/console
+
+ ❯ src/features/commands/core-creation.test.tsx (7 tests | 2 failed) 2335ms
+   × core creation through the workspace > keeps explicit legacy company creation reachable after reopening a prepared AU 325ms
+     → Unable to find an accessible element with the role "button" and name "旧版兼容试验（含小说）"
+
+Here are the accessible roles:
+
+  link:
+
+  Name "跳转到正文":
+  [36m<a[39m
+    [33mclass[39m=[32m"skip"[39m
+    [33mhref[39m=[32m"#main"[39m
+  [36m/>[39m
+
+  Name "u UNION AI-UNION / AU":
+  [36m<a[39m
+    [33maria-current[39m=[32m"page"[39m
+    [33mclass[39m=[32m"brand active"[39m
+    [33mdata-discover[39m=[32m"true"[39m
+    [33mhref[39m=[32m"/overview?organization=org-prepared"[39m
+  [36m/>[39m
+
+  Name "AU准备记录":
+  [36m<a[39m
+    [33maria-current[39m=[32m"page"[39m
+    [33mclass[39m=[32m"nav-button active"[39m
+    [33mdata-discover[39m=[32m"true"[39m
+    [33mdata-nav[39m=[32m"overview"[39m
+    [33mhref[39m=[32m"/overview?organization=org-prepared"[39m
+  [36m/>[39m
+
+  Name "治理与资源计划":
+  [36m<a[39m
+    [33mclass[39m=[32m"nav-button"[39m
+    [33mdata-discover[39m=[32m"true"[39m
+    [33mdata-nav[39m=[32m"settings"[39m
+    [33mhref[39m=[32m"/settings?organization=org-prepared"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  complementary:
+
+  Name "工作台导航":
+  [36m<aside[39m
+    [33maria-label[39m=[32m"工作台导航"[39m
+    [33mclass[39m=[32m"sidebar"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  combobox:
+
+  Name "当前组织":
+  [36m<select[39m
+    [33maria-label[39m=[32m"当前组织"[39m
+    [33mid[39m=[32m"org-select"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  option:
+
+  Name "Prepared test AU":
+  [36m<option[39m
+    [33mvalue[39m=[32m"org-prepared"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  navigation:
+
+  Name "":
+  [36m<nav[39m
+    [33mid[39m=[32m"navigation"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  strong:
+
+  Name "":
+  [36m<strong[39m
+    [33mid[39m=[32m"role-label"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<strong[39m
+    [33mid[39m=[32m"breadcrumb-page"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  banner:
+
+  Name "":
+  [36m<header[39m
+    [33mclass[39m=[32m"topbar"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "刷新":
+  [36m<button[39m
+    [33mclass[39m=[32m"button secondary compact"[39m
+    [33mid[39m=[32m"refresh"[39m
+  [36m/>[39m
+
+  Name "修改密码":
+  [36m<button[39m
+    [33mclass[39m=[32m"button secondary"[39m
+  [36m/>[39m
+
+  Name "退出登录":
+  [36m<button[39m
+    [33mclass[39m=[32m"button secondary"[39m
+  [36m/>[39m
+
+  Name "创建另一个 AU":
+  [36m<button[39m
+    [33mclass[39m=[32m"button secondary"[39m
+    [33mdata-command[39m=[32m"create_v1"[39m
+    [33mtitle[39m=[32m"创建 AU"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  main:
+
+  Name "":
+  [36m<main[39m
+    [33mid[39m=[32m"main"[39m
+    [33mtabindex[39m=[32m"-1"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "账号与登录":
+  [36m<h2 />[39m
+
+  Name "AU准备记录":
+  [36m<h1[39m
+    [33mid[39m=[32m"page-title"[39m
+  [36m/>[39m
+
+  Name "Prepared test AU":
+  [36m<h2 />[39m
+
+  Name "业务自治尚未启用":
+  [36m<h2 />[39m
+
+  Name "初始治理主体":
+  [36m<h2 />[39m
+
+  Name "已保存的初始章程":
+  [36m<h2 />[39m
+
+  Name "资源计划":
+  [36m<h2 />[39m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p[39m
+    [33mid[39m=[32m"page-description"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"au-text"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"form-note"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"au-text"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"form-note"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p />[39m
+
+  --------------------------------------------------
+  region:
+
+  Name "AU准备记录":
+  [36m<section[39m
+    [33maria-label[39m=[32m"AU准备记录"[39m
+    [33mclass[39m=[32m"prepared-au"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  term:
+
+  Name "":
+  [36m<dt />[39m
+
+  Name "":
+  [36m<dt />[39m
+
+  Name "":
+  [36m<dt />[39m
+
+  Name "":
+  [36m<dt />[39m
+
+  --------------------------------------------------
+  definition:
+
+  Name "":
+  [36m<dd />[39m
+
+  Name "":
+  [36m<dd />[39m
+
+  Name "":
+  [36m<dd />[39m
+
+  Name "":
+  [36m<dd />[39m
+
+  --------------------------------------------------
+  group:
+
+  Name "":
+  [36m<details />[39m
+
+  Name "":
+  [36m<details />[39m
+
+  --------------------------------------------------
+  contentinfo:
+
+  Name "":
+  [36m<footer[39m
+    [33mclass[39m=[32m"data-footer"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<a[39m
+      [33mclass[39m=[32m"skip"[39m
+      [33mhref[39m=[32m"#main"[39m
+    [36m>[39m
+      [0m跳转到正文[0m
+    [36m</a>[39m
+    [36m<aside[39m
+      [33maria-label[39m=[32m"工作台导航"[39m
+      [33mclass[39m=[32m"sidebar"[39m
+    [36m>[39m
+      [36m<a[39m
+        [33maria-current[39m=[32m"page"[39m
+        [33mclass[39m=[32m"brand active"[39m
+        [33mdata-discover[39m=[32m"true"[39m
+        [33mhref[39m=[32m"/overview?organization=org-prepared"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"brand-symbol"[39m
+        [36m>[39m
+          [0mu[0m
+        [36m</span>[39m
+        [36m<span>[39m
+          [0mUNION[0m
+          [36m<small>[39m
+            [0mAI-UNION / AU[0m
+          [36m</small>[39m
+        [36m</span>[39m
+      [36m</a>[39m
+      [36m<label[39m
+        [33mclass[39m=[32m"workspace-switch"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"org-icon"[39m
+        [36m>[39m
+          [0mP[0m
+        [36m</span>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"workspace-select"[39m
+        [36m>[39m
+          [36m<small>[39m
+            [0m当前 AU[0m
+          [36m</small>[39m
+          [36m<select[39m
+            [33maria-label[39m=[32m"当前组织"[39m
+            [33mid[39m=[32m"org-select"[39m
+          [36m>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"org-prepared"[39m
+            [36m>[39m
+              [0mPrepared test AU[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</span>[39m
+      [36m</label>[39m
+      [36m<nav[39m
+        [33mid[39m=[32m"navigation"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"nav-entry"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"nav-caption"[39m
+          [36m>[39m
+            [0m工作空间[0m
+          [36m</div>[39m
+          [36m<a[39m
+            [33maria-current[39m=[32m"page"[39m
+            [33mclass[39m=[32m"nav-button active"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mdata-nav[39m=[32m"overview"[39m
+            [33mhref[39m=[32m"/overview?organization=org-prepared"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-layout-dashboard"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"19"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.7"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"19"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"9"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"3"[39m
+                [33my[39m=[32m"3"[39m
+              [36m/>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"5"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"14"[39m
+                [33my[39m=[32m"3"[39m
+              [36m/>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"9"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"14"[39m
+                [33my[39m=[32m"12"[39m
+              [36m/>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"5"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"3"[39m
+                [33my[39m=[32m"16"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [36m<span>[39m
+              [0mAU准备记录[0m
+            [36m</span>[39m
+          [36m</a>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"nav-entry"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"nav-button"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mdata-nav[39m=[32m"settings"[39m
+            [33mhref[39m=[32m"/settings?organization=org-prepared"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-settings"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"19"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.7"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"19"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"[39m
+              [36m/>[39m
+              [36m<circle[39m
+                [33mcx[39m=[32m"12"[39m
+                [33mcy[39m=[32m"12"[39m
+                [33mr[39m=[32m"3"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [36m<span>[39m
+              [0m治理与资源计划[0m
+            [36m</span>[39m
+          [36m</a>[39m
+        [36m</div>[39m
+      [36m</nav>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"sidebar-bottom"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"sidebar-footer"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"avatar tiny human"[39m
+          [36m>[39m
+            [0m人[0m
+          [36m</span>[39m
+          [36m<div>[39m
+            [36m<strong[39m
+              [33mid[39m=[32m"role-label"[39m
+            [36m>[39m
+              [0m本机发起人[0m
+            [36m</strong>[39m
+            [36m<small>[39m
+              [0m本地工作空间 · 记录持久保存[0m
+            [36m</small>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</aside>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"workspace"[39m
+    [36m>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"topbar"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"breadcrumb"[39m
+        [36m>[39m
+          [36m<span>[39m
+            [0m工作空间[0m
+          [36m</span>[39m
+          [36m<span>[39m
+            [0m/[0m
+          [36m</span>[39m
+          [36m<strong[39m
+            [33mid[39m=[32m"breadcrumb-page"[39m
+          [36m>[39m
+            [0mAU准备记录[0m
+          [36m</strong>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"topbar-actions"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"source-label"[39m
+            [33mid[39m=[32m"source-label"[39m
+          [36m>[39m
+            [0m准备态 · 未激活[0m
+          [36m</span>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"button secondary compact"[39m
+            [33mid[39m=[32m"refresh"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-refresh-cw"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"15"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"2"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"15"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M21 3v5h-5"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M8 16H3v5"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [0m刷新[0m
+          [36m</button>[39m
+        [36m</div>[39m
+      [36m</header>[39m
+      [36m<main[39m
+        [33mid[39m=[32m"main"[39m
+        [33mtabindex[39m=[32m"-1"[39m
+      [36m>[39m
+        [36m<section[39m
+          [33mclass[39m=[32m"identity-settings"[39m
+        [36m>[39m
+          [36m<h2>[39m
+            [0m账号与登录[0m
+          [36m</h2>[39m
+          [36m<p>[39m
+            [0m当前账号：owner[0m
+          [36m</p>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"button secondary"[39m
+          [36m>[39m
+            [0m修改密码[0m
+          [36m</button>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"button secondary"[39m
+          [36m>[39m
+            [0m退出登录[0m
+          [36m</button>[39m
+        [36m</section>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"page-heading"[39m
+        [36m>[39m
+          [36m<div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"eyebrow"[39m
+            [36m>[39m
+              [0mUNION / [0m
+              [0mOVERVIEW[0m
+            [36m</div>[39m
+            [36m<h1[39m
+              [33mid[39m=[32m"page-title"[39m
+            [36m>[39m
+              [0mAU准备记录[0m
+            [36m</h1>[39m
+            [36m<p[39m
+              [33mid[39m=[32m"page-description"[39m
+            [36m>[39m
+              [0m目标、初始治理主体、章程与资源计划。业务自治尚未启用。[0m
+            [36m</p>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"connection"[39m
+          [36m>[39m
+            [36m<div>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"dot green"[39m
+              [36m/>[39m
+              [36m<span[39m
+                [33mid[39m=[32m"connection-label"[39m
+              [36m>[39m
+                [0m已连接本机服务[0m
+              [36m</span>[39m
+            [36m</div>[39m
+            [36m<small[39m
+              [33mid[39m=[32m"last-updated"[39m
+            [36m>[39m
+              [0m最近更新 18:04:32[0m
+            [36m</small>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mid[39m=[32m"view"[39m
+        [36m>[39m
+          [36m<section[39m
+            [33maria-label[39m=[32m"AU准备记录"[39m
+            [33mclass[39m=[32m"prepared-au"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"mission-panel"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"mission-copy"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"quiet-pill"[39m
+                [36m>[39m
+                  [0m准备态 · 未激活[0m
+                [36m</span>[39m
+                [36m<h2>[39m
+                  [0mPrepared test AU[0m
+                [36m</h2>[39m
+                [36m<p[39m
+                  [33mclass[39m=[32m"au-text"[39m
+                [36m>[39m
+                  [0mKeep the original goal[0m
+                [36m</p>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+            [36m<section[39m
+              [33mclass[39m=[32m"card "[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"card-heading"[39m
+              [36m>[39m
+                [36m<h2>[39m
+                  [0m业务自治尚未启用[0m
+                [36m</h2>[39m
+              [36m</div>[39m
+              [36m<p>[39m
+                [0m当前支持保存和读取准备记录。启用前还需完成可执行治理规则、资源授权与执行能力的验证。[0m
+              [36m</p>[39m
+              [36m<p>[39m
+                [0m此次创建没有调用模型、安排成员工作或作出外部承诺。[0m
+              [36m</p>[39m
+            [36m</section>[39m
+            [36m<section[39m
+              [33mclass[39m=[32m"card "[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"card-heading"[39m
+              [36m>[39m
+                [36m<h2>[39m
+                  [0m初始治理主体[0m
+                [36m</h2>[39m
+              [36m</div>[39m
+              [36m<p>[39m
+                [0m创建者与初始治理主体为同一个核心账户。显示名称仅用于识别，不授予权限。[0m
+              [36m</p>[39m
+              [36m<dl[39m
+                [33mclass[39m=[32m"au-facts"[39m
+              [36m>[39m
+                [36m<div>[39m
+                  [36m<dt>[39m
+                    [0m显示名称[0m
+                  [36m</dt>[39m
+                  [36m<dd>[39m
+                    [0mInitial governor[0m
+                  [36m</dd>[39m
+                [36m</div>[39m
+                [36m<div>[39m
+                  [36m<dt>[39m
+                    [0m创建者及治理主体标识[0m
+                  [36m</dt>[39m
+                  [36m<dd>[39m
+                    [0m327e9c0f-0734-49ef-a2b8-7e4a3b6583bd[0m
+                  [36m</dd>[39m
+                [36m</div>[39m
+              [36m</dl>[39m
+              [36m<p[39m
+                [33mclass[39m=[32m"form-note"[39m
+              [36m>[39m
+                [0m正常改密或恢复保留该身份。宿主重置账号后创建的新账号不能接管此 AU。[0m
+              [36m</p>[39m
+            [36m</section>[39m
+            [36m<section[39m
+              [33mclass[39m=[32m"card "[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"card-heading"[39m
+              [36m>[39m
+                [36m<h2>[39m
+                  [0m已保存的初始章程[0m
+                [36m</h2>[39m
+              [36m</div>[39m
+              [36m<p[39m
+                [33mclass[39m=[32m"au-text"[39m
+              [36m>[39m
+                [0m本地有限组织试验。组织在已配置资源内形成岗位和协作；无对外发布或支付权限。[0m
+              [36m</p>[39m
+              [36m<details>[39m
+                [36m<summary>[39m
+                  [0m查看结构化章程内容[0m
+                [36m</summary>[39m
+                [36m<pre[39m
+                  [33mclass[39m=[32m"detail-data"[39m
+                [36m>[39m
+                  [0m{
+  "allowed_operations": [
+    "create_member",
+    "create_position",
+    "update_position",
+    "assign",
+    "set_policy",
+    "create_work",
+    "handoff",
+    "pause_work",
+    "resume_work",
+    "cancel_work",
+    "update_work",
+    "wait",
+    "set_strategy",
+    "record_memory"
+  ],
+  "allowed_tools": [
+    "produce_artifact"
+  ],
+  "reserved_matters": [
+    "goal",
+    "resources",
+    "charter",
+    "funding",
+    "dissolution"
+  ],
+  "board_can_amend": true
+}[0m
+                [36m</pre>[39m
+              [36m</details>[39m
+              [36m<p[39m
+                [33mclass[39m=[32m"form-note"[39m
+              [36m>[39m
+                [0m章程内容已保存，尚未启用为业务执行规则。[0m
+              [36m</p>[39m
+            [36m</section>[39m
+            [36m<section[39m
+              [33mclass[39m=[32m"card "[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"card-heading"[39m
+              [36m>[39m
+                [36m<h2>[39m
+                  [0m资源计划[0m
+                [36m</h2>[39m
+              [36m</div>[39m
+              [36m<dl[39m
+                [33mclass[39m=[32m"au-facts"[39m
+              [36m>[39m
+                [36m<div>[39m
+                  [36m<dt>[39m
+                    [0m计划调用上限[0m
+                  [36m</dt>[39m
+                  [36m<dd>[39m
+                    [0m8[0m
+                    [0m 次[0m
+                  [36m</dd>[39m
+                [36m</div>[39m
+                [36m<div>[39m
+                  [36m<dt>[39m
+                    [0m计划单次超时[0m
+                  [36m</dt>[39m
+                  [36m<dd>[39m
+                    [0m180[0m
+                    [0m 秒[0m
+                  [36m</dd>[39m
+                [36m</div>[39m
+              [36m</dl>[39m
+              [36m<p>[39m
+                [0m仅为计划；尚未授予、预约或使用资源。[0m
+              [36m</p>[39m
+            [36m</section>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"button secondary"[39m
+              [33mdata-command[39m=[32m"create_v1"[39m
+              [33mtitle[39m=[32m"创建 AU"[39m
+            [36m>[39m
+              [0m创建另一个 AU[0m
+            [36m</button>[39m
+          [36m</section>[39m
+        [36m</div>[39m
+        [36m<footer[39m
+          [33mclass[39m=[32m"data-footer"[39m
+        [36m>[39m
+          [36m<details>[39m
+            [36m<summary>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-shield-check"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"13"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"13"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"m9 12 2 2 4-4"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+              [0m数据与运行记录[0m
+            [36m</summary>[39m
+            [36m<span[39m
+              [33mid[39m=[32m"snapshot-meta"[39m
+            [36m>[39m
+              [0morg-prepared · 状态 v0 · 章程 v1 · 准备态[0m
+            [36m</span>[39m
+          [36m</details>[39m
+          [36m<span>[39m
+            [0m读取和刷新不派发工作[0m
+          [36m</span>[39m
+        [36m</footer>[39m
+      [36m</main>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+   × core creation through the workspace > explains the prepared boundary at the empty model entry instead of promising immediate configuration 1021ms
+     → Unable to find role="button" and name "创建 AU 准备记录"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<a[39m
+      [33mclass[39m=[32m"skip"[39m
+      [33mhref[39m=[32m"#main"[39m
+    [36m>[39m
+      [0m跳转到正文[0m
+    [36m</a>[39m
+    [36m<aside[39m
+      [33maria-label[39m=[32m"工作台导航"[39m
+      [33mclass[39m=[32m"sidebar"[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"brand"[39m
+        [33mdata-discover[39m=[32m"true"[39m
+        [33mhref[39m=[32m"/overview"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"brand-symbol"[39m
+        [36m>[39m
+          [0mu[0m
+        [36m</span>[39m
+        [36m<span>[39m
+          [0mUNION[0m
+          [36m<small>[39m
+            [0mAI-UNION / AU[0m
+          [36m</small>[39m
+        [36m</span>[39m
+      [36m</a>[39m
+      [36m<label[39m
+        [33mclass[39m=[32m"workspace-switch"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"org-icon"[39m
+        [36m>[39m
+          [0mU[0m
+        [36m</span>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"workspace-select"[39m
+        [36m>[39m
+          [36m<small>[39m
+            [0m当前 AU[0m
+          [36m</small>[39m
+          [36m<select[39m
+            [33maria-label[39m=[32m"当前组织"[39m
+            [33mid[39m=[32m"org-select"[39m
+          [36m>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m""[39m
+            [36m>[39m
+              [0m尚未创建 AU[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</span>[39m
+      [36m</label>[39m
+      [36m<nav[39m
+        [33mid[39m=[32m"navigation"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"nav-entry"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"nav-caption"[39m
+          [36m>[39m
+            [0m工作空间[0m
+          [36m</div>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"nav-button"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mdata-nav[39m=[32m"overview"[39m
+            [33mhref[39m=[32m"/overview"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-layout-dashboard"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"19"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.7"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"19"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"9"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"3"[39m
+                [33my[39m=[32m"3"[39m
+              [36m/>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"5"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"14"[39m
+                [33my[39m=[32m"3"[39m
+              [36m/>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"9"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"14"[39m
+                [33my[39m=[32m"12"[39m
+              [36m/>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"5"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"3"[39m
+                [33my[39m=[32m"16"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [36m<span>[39m
+              [0m公司总览[0m
+            [36m</span>[39m
+          [36m</a>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"nav-entry"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"nav-button"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mdata-nav[39m=[32m"members"[39m
+            [33mhref[39m=[32m"/members"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-users"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"19"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.7"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"19"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M16 3.128a4 4 0 0 1 0 7.744"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M22 21v-2a4 4 0 0 0-3-3.87"[39m
+              [36m/>[39m
+              [36m<circle[39m
+                [33mcx[39m=[32m"9"[39m
+                [33mcy[39m=[32m"7"[39m
+                [33mr[39m=[32m"4"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [36m<span>[39m
+              [0m成员与岗位[0m
+            [36m</span>[39m
+          [36m</a>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"nav-entry"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"nav-button"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mdata-nav[39m=[32m"tasks"[39m
+            [33mhref[39m=[32m"/tasks"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-list-checks"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"19"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.7"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"19"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M13 5h8"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33...
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<a[39m
+      [33mclass[39m=[32m"skip"[39m
+      [33mhref[39m=[32m"#main"[39m
+    [36m>[39m
+      [0m跳转到正文[0m
+    [36m</a>[39m
+    [36m<aside[39m
+      [33maria-label[39m=[32m"工作台导航"[39m
+      [33mclass[39m=[32m"sidebar"[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"brand"[39m
+        [33mdata-discover[39m=[32m"true"[39m
+        [33mhref[39m=[32m"/overview"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"brand-symbol"[39m
+        [36m>[39m
+          [0mu[0m
+        [36m</span>[39m
+        [36m<span>[39m
+          [0mUNION[0m
+          [36m<small>[39m
+            [0mAI-UNION / AU[0m
+          [36m</small>[39m
+        [36m</span>[39m
+      [36m</a>[39m
+      [36m<label[39m
+        [33mclass[39m=[32m"workspace-switch"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"org-icon"[39m
+        [36m>[39m
+          [0mU[0m
+        [36m</span>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"workspace-select"[39m
+        [36m>[39m
+          [36m<small>[39m
+            [0m当前 AU[0m
+          [36m</small>[39m
+          [36m<select[39m
+            [33maria-label[39m=[32m"当前组织"[39m
+            [33mid[39m=[32m"org-select"[39m
+          [36m>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m""[39m
+            [36m>[39m
+              [0m尚未创建 AU[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</span>[39m
+      [36m</label>[39m
+      [36m<nav[39m
+        [33mid[39m=[32m"navigation"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"nav-entry"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"nav-caption"[39m
+          [36m>[39m
+            [0m工作空间[0m
+          [36m</div>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"nav-button"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mdata-nav[39m=[32m"overview"[39m
+            [33mhref[39m=[32m"/overview"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-layout-dashboard"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"19"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.7"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"19"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"9"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"3"[39m
+                [33my[39m=[32m"3"[39m
+              [36m/>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"5"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"14"[39m
+                [33my[39m=[32m"3"[39m
+              [36m/>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"9"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"14"[39m
+                [33my[39m=[32m"12"[39m
+              [36m/>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"5"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"3"[39m
+                [33my[39m=[32m"16"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [36m<span>[39m
+              [0m公司总览[0m
+            [36m</span>[39m
+          [36m</a>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"nav-entry"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"nav-button"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mdata-nav[39m=[32m"members"[39m
+            [33mhref[39m=[32m"/members"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-users"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"19"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.7"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"19"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M16 3.128a4 4 0 0 1 0 7.744"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M22 21v-2a4 4 0 0 0-3-3.87"[39m
+              [36m/>[39m
+              [36m<circle[39m
+                [33mcx[39m=[32m"9"[39m
+                [33mcy[39m=[32m"7"[39m
+                [33mr[39m=[32m"4"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [36m<span>[39m
+              [0m成员与岗位[0m
+            [36m</span>[39m
+          [36m</a>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"nav-entry"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"nav-button"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mdata-nav[39m=[32m"tasks"[39m
+            [33mhref[39m=[32m"/tasks"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-list-checks"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"19"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.7"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"19"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M13 5h8"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33...
+   ✓ core creation through the workspace > opens the saved prepared AU through V1 and shows bound governance without legacy snapshot calls  326ms
+   ✓ core creation through the workspace > retains an unknown V1 request for lookup after the result dialog closes 214ms
+   ✓ core creation through the workspace > keeps input editable after a pre-allocation V1 validation rejection 197ms
+   ✓ core creation through the workspace > refuses ordinary creation on an older service without silently sending legacy create 80ms
+   ✓ core creation through the workspace > submits ordinary creation as create_v1 with exactly the five supported fields 171ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/commands/core-creation.test.tsx > core creation through the workspace > keeps explicit legacy company creation reachable after reopening a prepared AU
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "旧版兼容试验（含小说）"
+
+Here are the accessible roles:
+
+  link:
+
+  Name "跳转到正文":
+  <a
+    class="skip"
+    href="#main"
+  />
+
+  Name "u UNION AI-UNION / AU":
+  <a
+    aria-current="page"
+    class="brand active"
+    data-discover="true"
+    href="/overview?organization=org-prepared"
+  />
+
+  Name "AU准备记录":
+  <a
+    aria-current="page"
+    class="nav-button active"
+    data-discover="true"
+    data-nav="overview"
+    href="/overview?organization=org-prepared"
+  />
+
+  Name "治理与资源计划":
+  <a
+    class="nav-button"
+    data-discover="true"
+    data-nav="settings"
+    href="/settings?organization=org-prepared"
+  />
+
+  --------------------------------------------------
+  complementary:
+
+  Name "工作台导航":
+  <aside
+    aria-label="工作台导航"
+    class="sidebar"
+  />
+
+  --------------------------------------------------
+  combobox:
+
+  Name "当前组织":
+  <select
+    aria-label="当前组织"
+    id="org-select"
+  />
+
+  --------------------------------------------------
+  option:
+
+  Name "Prepared test AU":
+  <option
+    value="org-prepared"
+  />
+
+  --------------------------------------------------
+  navigation:
+
+  Name "":
+  <nav
+    id="navigation"
+  />
+
+  --------------------------------------------------
+  strong:
+
+  Name "":
+  <strong
+    id="role-label"
+  />
+
+  Name "":
+  <strong
+    id="breadcrumb-page"
+  />
+
+  --------------------------------------------------
+  banner:
+
+  Name "":
+  <header
+    class="topbar"
+  />
+
+  --------------------------------------------------
+  button:
+
+  Name "刷新":
+  <button
+    class="button secondary compact"
+    id="refresh"
+  />
+
+  Name "修改密码":
+  <button
+    class="button secondary"
+  />
+
+  Name "退出登录":
+  <button
+    class="button secondary"
+  />
+
+  Name "创建另一个 AU":
+  <button
+    class="button secondary"
+    data-command="create_v1"
+    title="创建 AU"
+  />
+
+  --------------------------------------------------
+  main:
+
+  Name "":
+  <main
+    id="main"
+    tabindex="-1"
+  />
+
+  --------------------------------------------------
+  heading:
+
+  Name "账号与登录":
+  <h2 />
+
+  Name "AU准备记录":
+  <h1
+    id="page-title"
+  />
+
+  Name "Prepared test AU":
+  <h2 />
+
+  Name "业务自治尚未启用":
+  <h2 />
+
+  Name "初始治理主体":
+  <h2 />
+
+  Name "已保存的初始章程":
+  <h2 />
+
+  Name "资源计划":
+  <h2 />
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  <p />
+
+  Name "":
+  <p
+    id="page-description"
+  />
+
+  Name "":
+  <p
+    class="au-text"
+  />
+
+  Name "":
+  <p />
+
+  Name "":
+  <p />
+
+  Name "":
+  <p />
+
+  Name "":
+  <p
+    class="form-note"
+  />
+
+  Name "":
+  <p
+    class="au-text"
+  />
+
+  Name "":
+  <p
+    class="form-note"
+  />
+
+  Name "":
+  <p />
+
+  --------------------------------------------------
+  region:
+
+  Name "AU准备记录":
+  <section
+    aria-label="AU准备记录"
+    class="prepared-au"
+  />
+
+  --------------------------------------------------
+  term:
+
+  Name "":
+  <dt />
+
+  Name "":
+  <dt />
+
+  Name "":
+  <dt />
+
+  Name "":
+  <dt />
+
+  --------------------------------------------------
+  definition:
+
+  Name "":
+  <dd />
+
+  Name "":
+  <dd />
+
+  Name "":
+  <dd />
+
+  Name "":
+  <dd />
+
+  --------------------------------------------------
+  group:
+
+  Name "":
+  <details />
+
+  Name "":
+  <details />
+
+  --------------------------------------------------
+  contentinfo:
+
+  Name "":
+  <footer
+    class="data-footer"
+  />
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <a
+      class="skip"
+      href="#main"
+    >
+      跳转到正文
+    </a>
+    <aside
+      aria-label="工作台导航"
+      class="sidebar"
+    >
+      <a
+        aria-current="page"
+        class="brand active"
+        data-discover="true"
+        href="/overview?organization=org-prepared"
+      >
+        <span
+          class="brand-symbol"
+        >
+          u
+        </span>
+        <span>
+          UNION
+          <small>
+            AI-UNION / AU
+          </small>
+        </span>
+      </a>
+      <label
+        class="workspace-switch"
+      >
+        <span
+          class="org-icon"
+        >
+          P
+        </span>
+        <span
+          class="workspace-select"
+        >
+          <small>
+            当前 AU
+          </small>
+          <select
+            aria-label="当前组织"
+            id="org-select"
+          >
+            <option
+              value="org-prepared"
+            >
+              Prepared test AU
+            </option>
+          </select>
+        </span>
+      </label>
+      <nav
+        id="navigation"
+      >
+        <div
+          class="nav-entry"
+        >
+          <div
+            class="nav-caption"
+          >
+            工作空间
+          </div>
+          <a
+            aria-current="page"
+            class="nav-button active"
+            data-discover="true"
+            data-nav="overview"
+            href="/overview?organization=org-prepared"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-layout-dashboard"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="19"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect
+                height="9"
+                rx="1"
+                width="7"
+                x="3"
+                y="3"
+              />
+              <rect
+                height="5"
+                rx="1"
+                width="7"
+                x="14"
+                y="3"
+              />
+              <rect
+                height="9"
+                rx="1"
+                width="7"
+                x="14"
+                y="12"
+              />
+              <rect
+                height="5"
+                rx="1"
+                width="7"
+                x="3"
+                y="16"
+              />
+            </svg>
+            <span>
+              AU准备记录
+            </span>
+          </a>
+        </div>
+        <div
+          class="nav-entry"
+        >
+          <a
+            class="nav-button"
+            data-discover="true"
+            data-nav="settings"
+            href="/settings?organization=org-prepared"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-settings"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="19"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"
+              />
+              <circle
+                cx="12"
+                cy="12"
+                r="3"
+              />
+            </svg>
+            <span>
+              治理与资源计划
+            </span>
+          </a>
+        </div>
+      </nav>
+      <div
+        class="sidebar-bottom"
+      >
+        <div
+          class="sidebar-footer"
+        >
+          <span
+            class="avatar tiny human"
+          >
+            人
+          </span>
+          <div>
+            <strong
+              id="role-label"
+            >
+              本机发起人
+            </strong>
+            <small>
+              本地工作空间 · 记录持久保存
+            </small>
+          </div>
+        </div>
+      </div>
+    </aside>
+    <div
+      class="workspace"
+    >
+      <header
+        class="topbar"
+      >
+        <div
+          class="breadcrumb"
+        >
+          <span>
+            工作空间
+          </span>
+          <span>
+            /
+          </span>
+          <strong
+            id="breadcrumb-page"
+          >
+            AU准备记录
+          </strong>
+        </div>
+        <div
+          class="topbar-actions"
+        >
+          <span
+            class="source-label"
+            id="source-label"
+          >
+            准备态 · 未激活
+          </span>
+          <button
+            class="button secondary compact"
+            id="refresh"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-refresh-cw"
+              fill="none"
+              height="15"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="15"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"
+              />
+              <path
+                d="M21 3v5h-5"
+              />
+              <path
+                d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"
+              />
+              <path
+                d="M8 16H3v5"
+              />
+            </svg>
+            刷新
+          </button>
+        </div>
+      </header>
+      <main
+        id="main"
+        tabindex="-1"
+      >
+        <section
+          class="identity-settings"
+        >
+          <h2>
+            账号与登录
+          </h2>
+          <p>
+            当前账号：owner
+          </p>
+          <button
+            class="button secondary"
+          >
+            修改密码
+          </button>
+          <button
+            class="button secondary"
+          >
+            退出登录
+          </button>
+        </section>
+        <div
+          class="page-heading"
+        >
+          <div>
+            <div
+              class="eyebrow"
+            >
+              UNION / 
+              OVERVIEW
+            </div>
+            <h1
+              id="page-title"
+            >
+              AU准备记录
+            </h1>
+            <p
+              id="page-description"
+            >
+              目标、初始治理主体、章程与资源计划。业务自治尚未启用。
+            </p>
+          </div>
+          <div
+            class="connection"
+          >
+            <div>
+              <span
+                class="dot green"
+              />
+              <span
+                id="connection-label"
+              >
+                已连接本机服务
+              </span>
+            </div>
+            <small
+              id="last-updated"
+            >
+              最近更新 18:04:32
+            </small>
+          </div>
+        </div>
+        <div
+          id="view"
+        >
+          <section
+            aria-label="AU准备记录"
+            class="prepared-au"
+          >
+            <div
+              class="mission-panel"
+            >
+              <div
+                class="mission-copy"
+              >
+                <span
+                  class="quiet-pill"
+                >
+                  准备态 · 未激活
+                </span>
+                <h2>
+                  Prepared test AU
+                </h2>
+                <p
+                  class="au-text"
+                >
+                  Keep the original goal
+                </p>
+              </div>
+            </div>
+            <section
+              class="card "
+            >
+              <div
+                class="card-heading"
+              >
+                <h2>
+                  业务自治尚未启用
+                </h2>
+              </div>
+              <p>
+                当前支持保存和读取准备记录。启用前还需完成可执行治理规则、资源授权与执行能力的验证。
+              </p>
+              <p>
+                此次创建没有调用模型、安排成员工作或作出外部承诺。
+              </p>
+            </section>
+            <section
+              class="card "
+            >
+              <div
+                class="card-heading"
+              >
+                <h2>
+                  初始治理主体
+                </h2>
+              </div>
+              <p>
+                创建者与初始治理主体为同一个核心账户。显示名称仅用于识别，不授予权限。
+              </p>
+              <dl
+                class="au-facts"
+              >
+                <div>
+                  <dt>
+                    显示名称
+                  </dt>
+                  <dd>
+                    Initial governor
+                  </dd>
+                </div>
+                <div>
+                  <dt>
+                    创建者及治理主体标识
+                  </dt>
+                  <dd>
+                    327e9c0f-0734-49ef-a2b8-7e4a3b6583bd
+                  </dd>
+                </div>
+              </dl>
+              <p
+                class="form-note"
+              >
+                正常改密或恢复保留该身份。宿主重置账号后创建的新账号不能接管此 AU。
+              </p>
+            </section>
+            <section
+              class="card "
+            >
+              <div
+                class="card-heading"
+              >
+                <h2>
+                  已保存的初始章程
+                </h2>
+              </div>
+              <p
+                class="au-text"
+              >
+                本地有限组织试验。组织在已配置资源内形成岗位和协作；无对外发布或支付权限。
+              </p>
+              <details>
+                <summary>
+                  查看结构化章程内容
+                </summary>
+                <pre
+                  class="detail-data"
+                >
+                  {
+  "allowed_operations": [
+    "create_member",
+    "create_position",
+    "update_position",
+    "assign",
+    "set_policy",
+    "create_work",
+    "handoff",
+    "pause_work",
+    "resume_work",
+    "cancel_work",
+    "update_work",
+    "wait",
+    "set_strategy",
+    "record_memory"
+  ],
+  "allowed_tools": [
+    "produce_artifact"
+  ],
+  "reserved_matters": [
+    "goal",
+    "resources",
+    "charter",
+    "funding",
+    "dissolution"
+  ],
+  "board_can_amend": true
+}
+                </pre>
+              </details>
+              <p
+                class="form-note"
+              >
+                章程内容已保存，尚未启用为业务执行规则。
+              </p>
+            </section>
+            <section
+              class="card "
+            >
+              <div
+                class="card-heading"
+              >
+                <h2>
+                  资源计划
+                </h2>
+              </div>
+              <dl
+                class="au-facts"
+              >
+                <div>
+                  <dt>
+                    计划调用上限
+                  </dt>
+                  <dd>
+                    8
+                     次
+                  </dd>
+                </div>
+                <div>
+                  <dt>
+                    计划单次超时
+                  </dt>
+                  <dd>
+                    180
+                     秒
+                  </dd>
+                </div>
+              </dl>
+              <p>
+                仅为计划；尚未授予、预约或使用资源。
+              </p>
+            </section>
+            <button
+              class="button secondary"
+              data-command="create_v1"
+              title="创建 AU"
+            >
+              创建另一个 AU
+            </button>
+          </section>
+        </div>
+        <footer
+          class="data-footer"
+        >
+          <details>
+            <summary>
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-shield-check"
+                fill="none"
+                height="13"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="13"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"
+                />
+                <path
+                  d="m9 12 2 2 4-4"
+                />
+              </svg>
+              数据与运行记录
+            </summary>
+            <span
+              id="snapshot-meta"
+            >
+              org-prepared · 状态 v0 · 章程 v1 · 准备态
+            </span>
+          </details>
+          <span>
+            读取和刷新不派发工作
+          </span>
+        </footer>
+      </main>
+    </div>
+  </div>
+</body>
+ ❯ Object.getElementError ../../node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ ../../node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ ../../node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ ../../node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/features/commands/core-creation.test.tsx:56:28
+     54|     mountCore();
+     55|     await screen.findByRole('region', { name: 'AU准备记录' });
+     56|     fireEvent.click(screen.getByRole('button', { name: '旧版兼容试验（含小说）' }…
+       |                            ^
+     57|     fireEvent.change(screen.getByLabelText('创建类型'), { target: { value:…
+     58|     fireEvent.click(screen.getByRole('button', { name: '预览影响' }));
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/features/commands/core-creation.test.tsx > core creation through the workspace > explains the prepared boundary at the empty model entry instead of promising immediate configuration
+TestingLibraryElementError: Unable to find role="button" and name "创建 AU 准备记录"
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <a
+      class="skip"
+      href="#main"
+    >
+      跳转到正文
+    </a>
+    <aside
+      aria-label="工作台导航"
+      class="sidebar"
+    >
+      <a
+        class="brand"
+        data-discover="true"
+        href="/overview"
+      >
+        <span
+          class="brand-symbol"
+        >
+          u
+        </span>
+        <span>
+          UNION
+          <small>
+            AI-UNION / AU
+          </small>
+        </span>
+      </a>
+      <label
+        class="workspace-switch"
+      >
+        <span
+          class="org-icon"
+        >
+          U
+        </span>
+        <span
+          class="workspace-select"
+        >
+          <small>
+            当前 AU
+          </small>
+          <select
+            aria-label="当前组织"
+            id="org-select"
+          >
+            <option
+              value=""
+            >
+              尚未创建 AU
+            </option>
+          </select>
+        </span>
+      </label>
+      <nav
+        id="navigation"
+      >
+        <div
+          class="nav-entry"
+        >
+          <div
+            class="nav-caption"
+          >
+            工作空间
+          </div>
+          <a
+            class="nav-button"
+            data-discover="true"
+            data-nav="overview"
+            href="/overview"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-layout-dashboard"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="19"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect
+                height="9"
+                rx="1"
+                width="7"
+                x="3"
+                y="3"
+              />
+              <rect
+                height="5"
+                rx="1"
+                width="7"
+                x="14"
+                y="3"
+              />
+              <rect
+                height="9"
+                rx="1"
+                width="7"
+                x="14"
+                y="12"
+              />
+              <rect
+                height="5"
+                rx="1"
+                width="7"
+                x="3"
+                y="16"
+              />
+            </svg>
+            <span>
+              公司总览
+            </span>
+          </a>
+        </div>
+        <div
+          class="nav-entry"
+        >
+          <a
+            class="nav-button"
+            data-discover="true"
+            data-nav="members"
+            href="/members"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-users"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="19"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"
+              />
+              <path
+                d="M16 3.128a4 4 0 0 1 0 7.744"
+              />
+              <path
+                d="M22 21v-2a4 4 0 0 0-3-3.87"
+              />
+              <circle
+                cx="9"
+                cy="7"
+                r="4"
+              />
+            </svg>
+            <span>
+              成员与岗位
+            </span>
+          </a>
+        </div>
+        <div
+          class="nav-entry"
+        >
+          <a
+            class="nav-button"
+            data-discover="true"
+            data-nav="tasks"
+            href="/tasks"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-list-checks"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="19"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M13 5h8"
+              />
+              <path
+                [33...
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <a
+      class="skip"
+      href="#main"
+    >
+      跳转到正文
+    </a>
+    <aside
+      aria-label="工作台导航"
+      class="sidebar"
+    >
+      <a
+        class="brand"
+        data-discover="true"
+        href="/overview"
+      >
+        <span
+          class="brand-symbol"
+        >
+          u
+        </span>
+        <span>
+          UNION
+          <small>
+            AI-UNION / AU
+          </small>
+        </span>
+      </a>
+      <label
+        class="workspace-switch"
+      >
+        <span
+          class="org-icon"
+        >
+          U
+        </span>
+        <span
+          class="workspace-select"
+        >
+          <small>
+            当前 AU
+          </small>
+          <select
+            aria-label="当前组织"
+            id="org-select"
+          >
+            <option
+              value=""
+            >
+              尚未创建 AU
+            </option>
+          </select>
+        </span>
+      </label>
+      <nav
+        id="navigation"
+      >
+        <div
+          class="nav-entry"
+        >
+          <div
+            class="nav-caption"
+          >
+            工作空间
+          </div>
+          <a
+            class="nav-button"
+            data-discover="true"
+            data-nav="overview"
+            href="/overview"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-layout-dashboard"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="19"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect
+                height="9"
+                rx="1"
+                width="7"
+                x="3"
+                y="3"
+              />
+              <rect
+                height="5"
+                rx="1"
+                width="7"
+                x="14"
+                y="3"
+              />
+              <rect
+                height="9"
+                rx="1"
+                width="7"
+                x="14"
+                y="12"
+              />
+              <rect
+                height="5"
+                rx="1"
+                width="7"
+                x="3"
+                y="16"
+              />
+            </svg>
+            <span>
+              公司总览
+            </span>
+          </a>
+        </div>
+        <div
+          class="nav-entry"
+        >
+          <a
+            class="nav-button"
+            data-discover="true"
+            data-nav="members"
+            href="/members"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-users"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="19"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"
+              />
+              <path
+                d="M16 3.128a4 4 0 0 1 0 7.744"
+              />
+              <path
+                d="M22 21v-2a4 4 0 0 0-3-3.87"
+              />
+              <circle
+                cx="9"
+                cy="7"
+                r="4"
+              />
+            </svg>
+            <span>
+              成员与岗位
+            </span>
+          </a>
+        </div>
+        <div
+          class="nav-entry"
+        >
+          <a
+            class="nav-button"
+            data-discover="true"
+            data-nav="tasks"
+            href="/tasks"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-list-checks"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="19"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M13 5h8"
+              />
+              <path
+                [33...
+ ❯ waitForWrapper ../../node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/features/commands/core-creation.test.tsx:68:25
+     66|     window.history.replaceState(null, '', '/models');
+     67|     mountCore();
+     68|     expect(await screen.findByRole('button', { name: '创建 AU 准备记录' })).…
+       |                         ^
+     69|     expect(screen.queryByText('创建公司并继续配置')).not.toBeInTheDocument();
+     70|     expect(screen.getByText(/新 AU 当前只保存资源计划，模型配置和调用尚未启用/)).toBeVisible…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 5 passed (7)
+   Start at  18:04:31
+   Duration  4.03s (transform 346ms, setup 166ms, collect 602ms, tests 2.34s, environment 473ms, prepare 121ms)
+
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path D:\Project\Union\web\console
+npm error workspace @union/console@0.1.0
+npm error location D:\Project\Union\web\console
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c vitest run src/features/commands/core-creation.test.tsx

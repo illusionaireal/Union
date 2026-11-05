@@ -1,0 +1,26 @@
+test_incomplete_current_marker_rejects_before_any_service_writes (tests.test_identity_upgrade.IdentityUpgradeTests.test_incomplete_current_marker_rejects_before_any_service_writes) ... 
+  test_incomplete_current_marker_rejects_before_any_service_writes (tests.test_identity_upgrade.IdentityUpgradeTests.test_incomplete_current_marker_rejects_before_any_service_writes) (damage='ALTER TABLE core_schema RENAME COLUMN upgrade_receipt TO lost_receipt') ... FAIL
+  test_incomplete_current_marker_rejects_before_any_service_writes (tests.test_identity_upgrade.IdentityUpgradeTests.test_incomplete_current_marker_rejects_before_any_service_writes) (damage='UPDATE core_schema SET write_revision=-1') ... FAIL
+
+======================================================================
+FAIL: test_incomplete_current_marker_rejects_before_any_service_writes (tests.test_identity_upgrade.IdentityUpgradeTests.test_incomplete_current_marker_rejects_before_any_service_writes) (damage='ALTER TABLE core_schema RENAME COLUMN upgrade_receipt TO lost_receipt')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_identity_upgrade.py", line 169, in test_incomplete_current_marker_rejects_before_any_service_writes
+    self.assertIsNotNone(rejected, "incomplete current marker must reject before startup writes")
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: unexpectedly None : incomplete current marker must reject before startup writes
+
+======================================================================
+FAIL: test_incomplete_current_marker_rejects_before_any_service_writes (tests.test_identity_upgrade.IdentityUpgradeTests.test_incomplete_current_marker_rejects_before_any_service_writes) (damage='UPDATE core_schema SET write_revision=-1')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_identity_upgrade.py", line 169, in test_incomplete_current_marker_rejects_before_any_service_writes
+    self.assertIsNotNone(rejected, "incomplete current marker must reject before startup writes")
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: unexpectedly None : incomplete current marker must reject before startup writes
+
+----------------------------------------------------------------------
+Ran 1 test in 0.309s
+
+FAILED (failures=2)

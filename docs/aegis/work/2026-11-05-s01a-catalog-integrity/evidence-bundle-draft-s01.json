@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "aegis.schema.v0",
+  "artifactKey": "U-066-S01-controlled-engineering",
+  "sliceId": "S01",
+  "evidenceStatus": "evidence-finalized",
+  "type": "controlled-engineering",
+  "source": "evidence/056-s01-core-creation/README.md",
+  "summary": "完整 S01a-S01c、T01-T12 受控工程验收：稳定 principal、显式升级、准备态创建/重开、原请求恢复及 legacy 隔离。481 项 Python（5 平台跳过）、70 项前端、S01 30/legacy 71 项实际浏览器、实际安装候选 133 项通过。独立发现已关闭；Git/在线交付另见同一证据目录收据。",
+  "verifier": "协调者执行全量、浏览器与实际安装；独立身份/持久化及前端复核见 docs/reviews/2026-11-05-s01-core-creation.md。",
+  "evidenceRefs": [
+    "evidence/055-s01a-catalog-integrity/README.md",
+    "evidence/056-s01-core-creation/red-principal.log",
+    "evidence/056-s01-core-creation/red-identity-upgrade-corrected.log",
+    "evidence/056-s01-core-creation/red-core-creation.log",
+    "evidence/056-s01-core-creation/red-core-ui-review-expanded.log",
+    "evidence/056-s01-core-creation/red-core-preflight-cancel.log",
+    "evidence/056-s01-core-creation/python-full.log",
+    "evidence/056-s01-core-creation/npm-check.log",
+    "evidence/056-s01-core-creation/browser-core/checks.json",
+    "evidence/056-s01-core-creation/browser-legacy/checks.json",
+    "evidence/056-s01-core-creation/candidate-install.json",
+    "evidence/056-s01-core-creation/candidate-installed-python.log",
+    "evidence/056-s01-core-creation/independent-ui.json",
+    "docs/reviews/2026-11-05-s01-core-creation.md"
+  ]
+}

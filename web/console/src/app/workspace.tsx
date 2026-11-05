@@ -10,16 +10,18 @@ import {
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useUrlState } from './url-state';
 import { api, errorText } from '../api/client';
-import type { Session, Snapshot } from '../api/types';
+import type { CoreAURead, Session, Snapshot } from '../api/types';
 
 interface ReadResult {
   session: Session;
   snapshot: Snapshot | null;
+  core: CoreAURead | null;
   successAt: string;
 }
 interface Workspace {
   session?: Session;
   data?: Snapshot;
+  core?: CoreAURead;
   orgId: string;
   offset: number;
   connected: boolean;
@@ -56,17 +58,29 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     enabled: ready,
     // Organization/pagination reads keep the login boundary mounted, but must
     // never expose the previous organization's snapshot or enable commands.
-    placeholderData: (previous) => previous ? { ...previous, snapshot: null } : undefined,
+    placeholderData: (previous) => previous ? { ...previous, snapshot: null, core: null } : undefined,
     queryFn: async ({ signal }): Promise<ReadResult> => {
       const session = await api.session(signal);
-      const target = session.organizations.some((o) => o.id === requested)
-        ? requested
-        : session.organizations[0]?.id;
-      const snapshot = target ? await api.snapshot(target, offset, signal) : null;
+      const target = session.organizations.find((o) => o.id === requested) ?? session.organizations[0];
+      let snapshot: Snapshot | null = null;
+      let core: CoreAURead | null = null;
+      if (target?.profile === 'core_v1') {
+        if (session.core_protocol !== 'core.au.v1' || !session.principal_id)
+          throw new Error('服务版本或核心身份不兼容，请重新登录并核对服务版本');
+        core = await api.coreAU(target.id, signal);
+        if (core.protocol !== 'core.au.v1' || core.au.id !== target.id ||
+            core.au.runtime_profile !== 'core_v1' || core.au.schema_version !== 1 ||
+            core.au.governance_root.governor_principal_id !== session.principal_id)
+          throw new Error('AU记录与当前身份不一致，请保留原记录核对');
+      } else if (target) {
+        if (target.profile !== undefined && target.profile !== 'legacy_v0')
+          throw new Error('AU版本不兼容，请保留原记录核对');
+        snapshot = await api.snapshot(target.id, offset, signal);
+      }
       if (
         snapshot &&
         (snapshot.service_instance !== session.service_instance ||
-          snapshot.organization.id !== target)
+          snapshot.organization.id !== target?.id)
       ) {
         throw new Error('服务或组织已切换，请重新读取');
       }
@@ -74,11 +88,11 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       if (
         snapshot &&
         old?.snapshot?.service_instance === snapshot.service_instance &&
-        old.snapshot.organization.id === target &&
+        old.snapshot.organization.id === target?.id &&
         old.snapshot.snapshot_sequence >= snapshot.snapshot_sequence
       )
         return old;
-      return { session, snapshot, successAt: new Date().toLocaleTimeString('zh-CN') };
+      return { session, snapshot, core, successAt: new Date().toLocaleTimeString('zh-CN') };
     },
     retry: false,
     networkMode: 'always',
@@ -137,7 +151,8 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     };
   }, [ready, refresh]);
   const data = read.data?.snapshot ?? undefined;
-  const orgId = data?.organization.id || requested;
+  const core = read.data?.core ?? undefined;
+  const orgId = core?.au.id || data?.organization.id || requested;
   const selectOrg = useCallback(
     (id: string) => {
       update((next) => {
@@ -156,6 +171,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       value={{
         session: read.data?.session,
         data,
+        core,
         orgId,
         offset,
         selectOrg,

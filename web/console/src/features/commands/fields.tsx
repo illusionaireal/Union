@@ -1,84 +1,10 @@
 import { ModelConnectionFields } from './ModelConnectionFields';
-import { useState, type InputHTMLAttributes, type ReactNode } from 'react';
-import type { Charter, CommandKind, Session, Snapshot } from '../../api/types';
-import { defaultCharter, novelCharter } from './model';
+import { useState } from 'react';
+import type { CommandKind, Session, Snapshot } from '../../api/types';
+import { isCreation } from './model';
+import { Area, Field, Reason, Rules, Select } from './form-fields';
+import { CreationFields } from './CreationFields';
 import type { CommandOptions } from './CommandProvider';
-function Field({
-  name,
-  label,
-  value = '',
-  ...props
-}: InputHTMLAttributes<HTMLInputElement> & {
-  name: string;
-  label: string;
-  value?: string | number;
-}) {
-  return (
-    <label className="operation-field">
-      {label}
-      <input name={name} defaultValue={value} required {...props} />
-    </label>
-  );
-}
-function Area({
-  name,
-  label,
-  value = '',
-  rows = 3,
-}: {
-  name: string;
-  label: string;
-  value?: string;
-  rows?: number;
-}) {
-  return (
-    <label className="operation-field">
-      {label}
-      <textarea name={name} defaultValue={value} rows={rows} required maxLength={100000} />
-    </label>
-  );
-}
-function Select({
-  name,
-  label,
-  children,
-  value,
-}: {
-  name: string;
-  label: string;
-  children: ReactNode;
-  value?: string;
-}) {
-  return (
-    <label className="operation-field">
-      {label}
-      <select name={name} defaultValue={value}>
-        {children}
-      </select>
-    </label>
-  );
-}
-function Reason() {
-  return <Area name="reason" label="操作理由与核对依据" />;
-}
-function Rules({ charter }: { charter: Charter }) {
-  const { text, ...rules } = charter;
-  return (
-    <>
-      <Area name="charter_text" label="章程正文" value={text} />
-      <details>
-        <summary>受支持的规则字段</summary>
-        <Area
-          name="charter_rules"
-          label="组织操作、工具、保留事项与修章入口"
-          value={JSON.stringify(rules, null, 2)}
-          rows={8}
-        />
-        <p className="form-note">只接受已实现的规则字段；正文不隐式授予权限。</p>
-      </details>
-    </>
-  );
-}
 export function CommandFields({
   kind,
   data,
@@ -95,7 +21,6 @@ export function CommandFields({
       ? 'api'
       : session.executors[0] || 'fixture',
   );
-  const [template, setTemplate] = useState('generic');
   const [newConnectionId] = useState(() => 'model-' + crypto.randomUUID().slice(0, 8));
   const connection = options?.connection;
   const [eventId] = useState(() => crypto.randomUUID());
@@ -115,99 +40,7 @@ export function CommandFields({
       disabled={hidden}
     />
   );
-  if (kind === 'create')
-    return (
-      <>
-        <label className="operation-field">
-          创建类型
-          <select
-            name="company_template"
-            value={template}
-            onChange={(e) => setTemplate(e.target.value)}
-          >
-            <option value="generic">通用 AI 公司 · 按目标自主协作</option>
-            <option value="novel">小说公司 · 三周期首版</option>
-          </select>
-        </label>
-        <Field
-          key={template + '-name'}
-          name="name"
-          label="公司名称"
-          value={template === 'novel' ? '我的 AI 小说公司' : '我的 AI 公司'}
-          maxLength={200}
-        />
-        <Area
-          key={template + '-goal'}
-          name="goal"
-          label="公司目标"
-          value={
-            template === 'novel'
-              ? '自主组织团队，创作同一本中文网络小说并连续交付三章；向模拟平台投稿，核算成本，依据反馈调整后续创作。'
-              : ''
-          }
-        />
-        {template === 'novel' && (
-          <>
-            <Field
-              name="initial_budget_minor"
-              label="启动模拟预算（分，10000 = ¥100）"
-              type="number"
-              min={1}
-              max={10000000000}
-              value={10000}
-            />
-            <div className="field-grid">
-              <Field
-                name="input_price_minor_per_million"
-                label="输入单价（分 / 百万 token）"
-                type="number"
-                min={0}
-                max={10000000000}
-                value={100}
-              />
-              <Field
-                name="output_price_minor_per_million"
-                label="输出单价（分 / 百万 token）"
-                type="number"
-                min={0}
-                max={10000000000}
-                value={500}
-              />
-            </div>
-            <p className="form-note">
-              单价是可编辑示例，请按供应商填写。预算为经营试验阈值；真实 API
-              账单另计，单次调用可能使估算余额越限。第二章固定低订阅，用于观察后续调整。
-            </p>
-          </>
-        )}
-        <Field
-          name="board_name"
-          label="章程采用人"
-          value="本机发起人（本地测试采用）"
-          maxLength={200}
-        />
-        <Rules key={template} charter={template === 'novel' ? novelCharter : defaultCharter} />
-        <div className="field-grid">
-          <Field
-            name="max_calls"
-            key={template}
-            label="累计调用上限"
-            value={template === 'novel' ? 32 : 8}
-            type="number"
-            min={1}
-            max={10000}
-          />
-          <Field
-            name="timeout_seconds"
-            label="单次超时（秒）"
-            value={180}
-            type="number"
-            min={1}
-            max={3600}
-          />
-        </div>
-      </>
-    );
+  if (isCreation(kind)) return <CreationFields core={kind === "create_v1"} />;
   if (!data) return null;
   switch (kind) {
     case 'start':

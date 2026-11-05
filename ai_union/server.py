@@ -13,6 +13,7 @@ from urllib.parse import parse_qs, urlsplit
 
 from .console import Console
 from .engine import Rejected, encoded, require
+from .errors import CoreError
 from .observation import artifact
 
 REPO = Path(__file__).resolve().parents[1]
@@ -113,6 +114,7 @@ class Handler(BaseHTTPRequestHandler):
             return self.send(403, {"error": str(error)})
         app = self.server.app
         path = urlsplit(self.path)
+        core_request = path.path.startswith('/api/v1/')
         query = parse_qs(path.query)
         if not write and not (path.path == "/api" or path.path.startswith("/api/")):
             return self.static(path.path)
@@ -130,20 +132,30 @@ class Handler(BaseHTTPRequestHandler):
             app.session(token)
         except Rejected as error:
             if write: self.discard_body()
-            return self.send(401, {"error": str(error)})
+            return self.send(401, {"error": str(error)} | ({"code": "not_authenticated"} if core_request or path.path == '/api/commands' else {}))
+        except (OSError, sqlite3.Error):
+            if write: self.discard_body()
+            return self.send(503, {"error": "认证存储暂不可读取；保留请求标识后重试查询"}
+                             | ({"code": "storage_unavailable"} if core_request or path.path == '/api/commands' else {}))
         try:
             if write:
                 if path.path not in ("/api/commands", "/api/gateway-commands", "/api/subscription-commands", "/api/model-account-commands"):
                     return self.send(404, {"error": "接口不存在"})
-                require(app.session(token)["role"] == "board", "观察者不能提交操作")
                 require(self.headers.get("Content-Type", "").split(";")[0] == "application/json", "命令需要 application/json")
                 length = int(self.headers.get("Content-Length", "0"))
                 require(0 < length <= 200000, "请求体大小不允许")
                 request = json.loads(self.rfile.read(length).decode("utf-8"))
+                core_request = path.path == '/api/commands' and isinstance(request, dict) and request.get('kind') == 'create_v1'
+                if not core_request:
+                    require(app.session(token)["role"] == "board", "观察者不能提交操作")
                 receipt = self.server.model_accounts.command(token, request) if path.path == '/api/model-account-commands' else self.server.subscriptions.command(token, request) if path.path == "/api/subscription-commands" else app.gateways.command(token, request) if path.path == "/api/gateway-commands" else app.command(token, request)
                 return self.send(202 if receipt["status"] == "accepted" else 200, {"receipt": receipt})
             if path.path == "/api/session":
                 return self.send(200, app.session_info(token))
+            if path.path.startswith('/api/v1/aus/'):
+                return self.send(200, app.core_au(token, path.path.removeprefix('/api/v1/aus/')))
+            if path.path == '/api/v1/receipts':
+                return self.send(200, {"receipt": app.core_receipt(token, query.get('id', [None])[0])})
             org_id = query.get("organization_id", [None])[0]
             if path.path == '/api/model-service':
                 return self.send(200, self.server.model_accounts.status(token))
@@ -190,12 +202,14 @@ class Handler(BaseHTTPRequestHandler):
                                      {"Content-Disposition": "attachment; filename*=UTF-8''" + quote(result["name"], safe="")})
                 return self.send(200, result)
             return self.send(404, {"error": "接口不存在"})
+        except CoreError as error:
+            return self.send(error.status, {"error": str(error), "code": error.code})
         except Rejected as error:
             return self.send(403 if "会话" in str(error) or "观察者" in str(error) else 409, {"error": str(error)})
         except (ValueError, TypeError, KeyError):
-            return self.send(400, {"error": "请求格式无效"})
+            return self.send(400, {"error": "请求格式无效"} | ({"code": "invalid_request"} if core_request or path.path == '/api/commands' else {}))
         except (OSError, sqlite3.Error):
-            return self.send(503, {"error": "本地记录或资产暂不可读取；保留请求标识后重试查询"})
+            return self.send(503, {"error": "本地记录或资产暂不可读取；保留请求标识后重试查询"} | ({"code": "storage_unavailable"} if core_request else {}))
 
     def do_GET(self):
         self.handle_api()

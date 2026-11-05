@@ -1,5 +1,10 @@
 import type { PendingRequest, Receipt } from '../../api/types';
 export const pendingKey = 'union-pending';
+export function matchesRequest(request: PendingRequest, receipt: Receipt): boolean {
+  return receipt.id === request.id && receipt.kind === request.kind &&
+    (!request.organization_id || receipt.organization_id === request.organization_id);
+}
+
 /** A late POST response/transport error must never downgrade a confirmed receipt. */
 export function acceptReceipt(previous: Receipt | undefined, incoming: Receipt): Receipt {
   return previous && previous.status !== 'accepted' ? previous : incoming;
@@ -15,6 +20,7 @@ export function loadPending(): PendingRequest[] {
         (v.organization_id === null || typeof v.organization_id === 'string') &&
         [
           'create',
+          'create_v1',
           'start',
           'pause',
           'event',

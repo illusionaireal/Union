@@ -7,39 +7,12 @@ import { CompanyPanel } from '../components/Company';
 import { ArtifactRows, WorkRows, MemberRows } from '../components/Records';
 import { DetailLink } from '../features/details/Details';
 import { FailureNotice } from '../components/FailureNotice';
+import { CreateAUIntro } from './PreparedAU';
 
 export default function Overview() {
   const { data: d } = useWorkspace();
   const { search } = useLocation();
-  if (!d)
-    return (
-      <>
-        <section className="welcome-hero">
-          <div>
-            <span className="hero-kicker">一家围绕目标运转的 AI 公司</span>
-            <h2>
-              给出目标，
-              <br />
-              让协作开始。
-            </h2>
-            <p>
-              建立团队的共同目标，连接你的模型，在一个工作空间里持续推进工作、交付成果与下一轮行动。
-            </p>
-            <Link className="button light" to={{ pathname: '/models', search }}>
-              了解模型接入 <ArrowRight size={16} />
-            </Link>
-          </div>
-          <div className="welcome-system" aria-hidden="true">
-            <span>目标</span>
-            <i />
-            <span>团队 · 协作</span>
-            <i />
-            <span>成果 · 下一步</span>
-          </div>
-        </section>
-        <SetupGuide />
-      </>
-    );
+  if (!d) return <CreateAUIntro />;
   const s = d.organization,
     works = Object.values(s.work),
     artifacts = Object.values(s.artifacts);

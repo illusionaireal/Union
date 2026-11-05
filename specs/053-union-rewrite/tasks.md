@@ -43,6 +43,7 @@ F11/P15及N02/N03/N04适用于所有涉及界面、授权、状态和恢复的�
 - RED：错误目录映射、同ID改内容、伪造principal、重建同名账户冒领旧AU、跨AU、写入中断、登记失败后的原回执、prepared状态通过legacy入口启动/写入。有效原请求和已有旧行为保持成功。
 - 验证：`test_console`、`test_mechanisms`、`test_au_contract`、`test_http`、`test_identity_http`及新增有意义principal/治理行为；实际浏览器创建/刷新/登录重开/保留输入/明确准备态。
 - 出口：全S01契约通过，未绑定/未激活不启动业务；不宣称完整F09、真实筹建或V1发布已完成。
+- 实施证据：[056](../../evidence/056-s01-core-creation/README.md)映射完整 T01–T12，原 S01a 保留在 055；任务完成状态与下一认领仍以主账为准。
 
 ## S02：合法模型配置到一次真实受控调用
 

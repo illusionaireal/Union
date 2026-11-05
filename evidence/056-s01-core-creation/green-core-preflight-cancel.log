@@ -1,0 +1,18 @@
+
+> @union/console@0.1.0 test
+> vitest run src/features/commands/core-boundaries.test.tsx src/features/commands/core-creation.test.tsx src/features/commands/receipts.test.ts
+
+
+ RUN  v3.2.7 D:/Project/Union/web/console
+
+ ✓ src/features/commands/receipts.test.ts (5 tests) 9ms
+ ✓ src/features/commands/core-creation.test.tsx (7 tests) 1345ms
+   ✓ core creation through the workspace > keeps explicit legacy company creation reachable after reopening a prepared AU  339ms
+ ✓ src/features/commands/core-boundaries.test.tsx (9 tests) 1820ms
+   ✓ core creation identity and receipt boundaries > rejects a POST receipt with the wrong id and retains the original V1 request  350ms
+
+ Test Files  3 passed (3)
+      Tests  21 passed (21)
+   Start at  18:17:32
+   Duration  3.69s (transform 422ms, setup 535ms, collect 1.37s, tests 3.17s, environment 1.67s, prepare 461ms)
+

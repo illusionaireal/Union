@@ -1,4 +1,20 @@
-# S01a 验证与续接
+# S01 验证与续接（含原 S01a 历史）
+
+## 当前续接：完整 S01 / UNI-020
+
+用户后续授权已经扩大到 S01b/S01c；S01a 下方记录保留历史范围。续接 HEAD 为 `219168d`，U-066 经统一 MCP adapter 重新认领，在线 #20 已按实际负责人/version PATCH 200 并读回 version 6/progress。
+
+已完成：冻结契约与编码前 ADR-0005 细化；稳定 principal、显式身份/catalog 升级、单一创建应用所有者、V1 窄存储、旧入口隔离，以及 React 准备态读取和原请求恢复均已有实现及真实 RED/GREEN。完整 Python 481 项通过（5 平台跳过）、最终 npm 检查含前端 70 项通过。后端独立复验 47 项通过，另验真实 symlink/junction、审计关联、发布 schema 和认证锁，原问题已闭合。
+
+T12 实际 Chromium 30 项通过，覆盖四种宽度、键盘、输入/焦点、服务重启登录、原版本化回执恢复及合法长名称；旧工作台 71 项回归通过。前端独立正式聚焦 21 项、反例/控制样本 9 项和 Chrome 局部布局通过，身份预检取消、跨主体迟到回执、查询错误显示等反例已修复。导出暂存候选、实际打包安装后 133 项通过；安装的升级工具在真实临时旧库中执行，导入路径已核对。完整范围与结果见 [056](../../../../evidence/056-s01-core-creation/README.md)、[独立评审](../../../reviews/2026-11-05-s01-core-creation.md)。
+
+当前工程结论：T01–T12 受控验收通过，置信 B；主账已 record 为 done/controlled，租约释放且 WIP 恢复 5/5。交付仍需在线 review→done、Git 提交推送及远端 SHA 读回，结果集中在本批 056 收据。共享 schema 顺序集成，无真实数据迁移、模型调用或部署。下一计划为 S05/U-069，本轮停止在完整 S01 交付。
+
+当前所有者/复杂度：创建纯规则和流程已从 Engine/Console 实际迁出，新 identity_schema 与三类存储只持有本用例职责。Engine 837→811 行、Console 544→520 行；行数不独立证明所有权改善，调用者和成对回归已核对。legacy 创建/CLI/company 按已冻结外部兼容边界保留，后续调用者迁移后再退役。Engine 其余混合职责继续按切片迁出，不在本次扩建治理框架。判断 aligned、within-budget；恶意宿主、全局跨库/文件原子性、实体设备和真实运行不在证据内。
+
+当前自然语言 checkpoint 沿用原工作记录；本机 helper 的 add-checkpoint 需要该旧记录未创建的可选 todo JSON，故本次直接更新本文件，最终仍运行 bundle/check。没有新增任务状态源。
+
+## 已交付的 S01a 历史记录（以下不作为当前整卡状态）
 
 授权范围与开工快照见 [10-intent](10-intent.md)。本文件是 Aegis 方法记录；实际任务状态只由 `management/project.json` 的 U-066 拥有。
 

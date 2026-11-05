@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { api, errorText } from '../../api/client';
+import { api, ApiError, errorText } from '../../api/client';
 import type { CommandRequest, Receipt } from '../../api/types';
 import { useWorkspace } from '../../app/workspace';
 import { Badge, Json } from '../../components/ui';
 import { FailureNotice } from '../../components/FailureNotice';
 import { CommandFields } from './fields';
-import { blocked, readForm, titles, publicPreview } from './model';
+import { blocked, readForm, titles, publicPreview, isCreation, sameCoreIdentity } from './model';
 import { useCommands, type Draft } from './CommandProvider';
 export function ReceiptView({
   receipt,
@@ -45,20 +45,29 @@ export function CommandForm({ draft, onClose }: { draft: Draft; onClose: () => v
   const commands = useCommands();
   const form = useRef<HTMLFormElement>(null);
   const submitting = useRef(false);
+  const mounted = useRef(true);
+  const [checkingIdentity, setCheckingIdentity] = useState(false);
+  useEffect(() => {
+    mounted.current = true;
+    return () => { mounted.current = false; };
+  }, []);
   const [preview, setPreview] = useState<CommandRequest | null>(null);
   const [request, setRequest] = useState<CommandRequest | null>(null);
   const [error, setError] = useState('');
+  const [lookupError, setLookupError] = useState('');
   const [unknown, setUnknown] = useState(false);
   const receipt = request ? commands.receipts[request.id] : undefined;
   const mutation = useMutation({ mutationFn: api.command, retry: false, networkMode: 'always' });
-  const reason = blocked(draft.kind, workspace.connected, workspace.session, workspace.data);
+  const reason = draft.kind === 'create_v1' && !sameCoreIdentity(draft.session, workspace.session)
+    ? '核心登录身份或服务已变化；请用原身份重新确认创建'
+    : blocked(draft.kind, workspace.connected, workspace.session, workspace.data);
   useEffect(() => {
-    if (receipt?.status === 'rejected') {
+    if (receipt?.status === 'rejected' && draft.kind !== 'create_v1') {
       submitting.current = false;
       setPreview(null);
       setError(receipt.message + '；输入已保留，请刷新后重新预览。');
     }
-  }, [receipt]);
+  }, [receipt, draft.kind]);
   async function makePreview(event: FormEvent) {
     event.preventDefault();
     if (submitting.current) return;
@@ -68,13 +77,13 @@ export function CommandForm({ draft, onClose }: { draft: Draft; onClose: () => v
       if (draft.organizationId && draft.organizationId !== workspace.orgId)
         throw new Error('组织已切换，请关闭后重新选择操作');
       const data = readForm(draft.kind, form.current!);
-      const fresh=draft.kind==='create' ? undefined : await workspace.refresh();
-      if (draft.kind!=='create' && !fresh) throw new Error('暂时无法读取最新状态，输入已保留，请恢复连接后再预览');
+      const fresh=isCreation(draft.kind) ? undefined : await workspace.refresh();
+      if (!isCreation(draft.kind) && !fresh) throw new Error('暂时无法读取最新状态，输入已保留，请恢复连接后再预览');
       setPreview({
         id: crypto.randomUUID(),
         kind: draft.kind,
         organization_id: draft.organizationId,
-        base_version: draft.kind === 'create' ? null : fresh!.organization.version,
+        base_version: isCreation(draft.kind) ? null : fresh!.organization.version,
         data,
       });
       setRequest(null);
@@ -103,6 +112,24 @@ export function CommandForm({ draft, onClose }: { draft: Draft; onClose: () => v
       return;
     }
     const sending = preview;
+    if (draft.kind === 'create_v1') {
+      submitting.current = true;
+      setCheckingIdentity(true);
+      try {
+        // A cookie can change in another tab before the workspace's next poll.
+        const current = await api.session();
+        if (!mounted.current) return;
+        if (!sameCoreIdentity(draft.session, current))
+          throw new Error('核心登录身份或服务已变化');
+      } catch (failure) {
+        submitting.current = false;
+        setPreview(null);
+        setError(errorText(failure) + '；尚未提交，输入已保留，请用原身份重新确认。');
+        return;
+      } finally {
+        if (mounted.current) setCheckingIdentity(false);
+      }
+    }
     try {
       commands.remember({
         id: sending.id,
@@ -110,6 +137,7 @@ export function CommandForm({ draft, onClose }: { draft: Draft; onClose: () => v
         kind: sending.kind,
       });
     } catch {
+      submitting.current = false;
       setError('浏览器无法保留请求标识，尚未提交。请允许会话存储后重试。');
       return;
     }
@@ -118,9 +146,18 @@ export function CommandForm({ draft, onClose }: { draft: Draft; onClose: () => v
     setError('');
     try {
       const result = await mutation.mutateAsync(sending);
-      commands.record(result.receipt);
+      commands.record(result.receipt, sending);
       void workspace.refresh();
     } catch (failure) {
+      if (draft.kind === 'create_v1' && failure instanceof ApiError &&
+          ['invalid_request', 'not_authenticated', 'not_authorized'].includes(failure.code || '')) {
+        submitting.current = false;
+        commands.forget(sending.id);
+        setRequest(null);
+        setPreview(null);
+        setError(errorText(failure) + '；输入已保留，请核对后重新预览。');
+        return;
+      }
       // Receipt queries continue independently and take precedence over transport errors.
       setUnknown(true);
       setError(errorText(failure) + '；请查询原请求，不要重复提交。');
@@ -128,7 +165,7 @@ export function CommandForm({ draft, onClose }: { draft: Draft; onClose: () => v
     }
   }
   const hasResult = !!receipt || unknown;
-  const hideForm = !!receipt && receipt.status !== 'rejected';
+  const hideForm = !!receipt && (receipt.status !== 'rejected' || draft.kind === 'create_v1');
   const previous =
     draft.kind === 'resources'
       ? workspace.data?.organization.resources
@@ -142,7 +179,7 @@ export function CommandForm({ draft, onClose }: { draft: Draft; onClose: () => v
       <form id="operation-form" ref={form} onSubmit={makePreview} hidden={hideForm}>
         <fieldset
           id="operation-fields"
-          disabled={submitting.current && receipt?.status !== 'rejected'}
+          disabled={checkingIdentity || (submitting.current && receipt?.status !== 'rejected')}
           onChange={() => {
             if (!submitting.current) setPreview(null);
           }}
@@ -211,7 +248,7 @@ export function CommandForm({ draft, onClose }: { draft: Draft; onClose: () => v
             type="submit"
             id="preview-operation"
             className="button secondary"
-            disabled={submitting.current}
+            disabled={checkingIdentity || submitting.current}
           >
             预览影响
           </button>
@@ -220,10 +257,10 @@ export function CommandForm({ draft, onClose }: { draft: Draft; onClose: () => v
               type="button"
               id="commit-operation"
               className="button primary"
-              disabled={submitting.current || !!reason}
+              disabled={checkingIdentity || submitting.current || !!reason}
               onClick={() => void submit()}
             >
-              {mutation.isPending ? '正在提交…' : '确认提交'}
+              {checkingIdentity ? '正在核对身份…' : mutation.isPending ? '正在提交…' : '确认提交'}
             </button>
           )}
         </div>
@@ -235,7 +272,8 @@ export function CommandForm({ draft, onClose }: { draft: Draft; onClose: () => v
               receipt={receipt}
               onNavigate={onClose}
               onQuery={() => {
-                void commands.lookup(request).catch((e) => setError(errorText(e)));
+                setLookupError('');
+                void commands.lookup(request).catch((e) => setLookupError(errorText(e)));
               }}
             />
           ) : (
@@ -247,13 +285,17 @@ export function CommandForm({ draft, onClose }: { draft: Draft; onClose: () => v
                 className="button secondary"
                 data-query-receipt={request.id}
                 onClick={() => {
-                  void commands.lookup(request).catch((e) => setError(errorText(e)));
+                  setLookupError('');
+                  void commands.lookup(request).catch((e) => setLookupError(errorText(e)));
                 }}
               >
                 查询原请求回执
               </button>
             </section>
           )}
+          {lookupError && <p className="operation-error" role="alert">
+            {lookupError}；原请求标识已保留，请恢复连接或原身份后再次查询。
+          </p>}
         </div>
       )}
       {receipt?.status === 'succeeded' && (

@@ -1,0 +1,77 @@
+test_engine_rejects_prepared_unknown_and_incomplete_profiles_before_writes (tests.test_core_isolation.CoreEngineIsolationTests.test_engine_rejects_prepared_unknown_and_incomplete_profiles_before_writes) ... 
+  test_engine_rejects_prepared_unknown_and_incomplete_profiles_before_writes (tests.test_core_isolation.CoreEngineIsolationTests.test_engine_rejects_prepared_unknown_and_incomplete_profiles_before_writes) (changes={}) ... FAIL
+  test_engine_rejects_prepared_unknown_and_incomplete_profiles_before_writes (tests.test_core_isolation.CoreEngineIsolationTests.test_engine_rejects_prepared_unknown_and_incomplete_profiles_before_writes) (changes={'runtime_profile': 'future'}) ... FAIL
+  test_engine_rejects_prepared_unknown_and_incomplete_profiles_before_writes (tests.test_core_isolation.CoreEngineIsolationTests.test_engine_rejects_prepared_unknown_and_incomplete_profiles_before_writes) (changes={'schema_version': 2}) ... FAIL
+  test_engine_rejects_prepared_unknown_and_incomplete_profiles_before_writes (tests.test_core_isolation.CoreEngineIsolationTests.test_engine_rejects_prepared_unknown_and_incomplete_profiles_before_writes) (changes={'governance_root': None}) ... FAIL
+test_existing_runtime_rechecks_profile_before_direct_sql_and_board_authority (tests.test_core_isolation.CoreEngineIsolationTests.test_existing_runtime_rechecks_profile_before_direct_sql_and_board_authority) ... 
+  test_existing_runtime_rechecks_profile_before_direct_sql_and_board_authority (tests.test_core_isolation.CoreEngineIsolationTests.test_existing_runtime_rechecks_profile_before_direct_sql_and_board_authority) (action='transaction') ... FAIL
+  test_existing_runtime_rechecks_profile_before_direct_sql_and_board_authority (tests.test_core_isolation.CoreEngineIsolationTests.test_existing_runtime_rechecks_profile_before_direct_sql_and_board_authority) (action='board') ... FAIL
+  test_existing_runtime_rechecks_profile_before_direct_sql_and_board_authority (tests.test_core_isolation.CoreEngineIsolationTests.test_existing_runtime_rechecks_profile_before_direct_sql_and_board_authority) (action='reserve') ... FAIL
+
+======================================================================
+FAIL: test_engine_rejects_prepared_unknown_and_incomplete_profiles_before_writes (tests.test_core_isolation.CoreEngineIsolationTests.test_engine_rejects_prepared_unknown_and_incomplete_profiles_before_writes) (changes={})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_isolation.py", line 32, in test_engine_rejects_prepared_unknown_and_incomplete_profiles_before_writes
+    with self.assertRaises(Rejected):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+AssertionError: Rejected not raised
+
+======================================================================
+FAIL: test_engine_rejects_prepared_unknown_and_incomplete_profiles_before_writes (tests.test_core_isolation.CoreEngineIsolationTests.test_engine_rejects_prepared_unknown_and_incomplete_profiles_before_writes) (changes={'runtime_profile': 'future'})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_isolation.py", line 32, in test_engine_rejects_prepared_unknown_and_incomplete_profiles_before_writes
+    with self.assertRaises(Rejected):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+AssertionError: Rejected not raised
+
+======================================================================
+FAIL: test_engine_rejects_prepared_unknown_and_incomplete_profiles_before_writes (tests.test_core_isolation.CoreEngineIsolationTests.test_engine_rejects_prepared_unknown_and_incomplete_profiles_before_writes) (changes={'schema_version': 2})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_isolation.py", line 32, in test_engine_rejects_prepared_unknown_and_incomplete_profiles_before_writes
+    with self.assertRaises(Rejected):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+AssertionError: Rejected not raised
+
+======================================================================
+FAIL: test_engine_rejects_prepared_unknown_and_incomplete_profiles_before_writes (tests.test_core_isolation.CoreEngineIsolationTests.test_engine_rejects_prepared_unknown_and_incomplete_profiles_before_writes) (changes={'governance_root': None})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_isolation.py", line 32, in test_engine_rejects_prepared_unknown_and_incomplete_profiles_before_writes
+    with self.assertRaises(Rejected):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+AssertionError: Rejected not raised
+
+======================================================================
+FAIL: test_existing_runtime_rechecks_profile_before_direct_sql_and_board_authority (tests.test_core_isolation.CoreEngineIsolationTests.test_existing_runtime_rechecks_profile_before_direct_sql_and_board_authority) (action='transaction')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_isolation.py", line 45, in test_existing_runtime_rechecks_profile_before_direct_sql_and_board_authority
+    with self.assertRaises(Rejected):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+AssertionError: Rejected not raised
+
+======================================================================
+FAIL: test_existing_runtime_rechecks_profile_before_direct_sql_and_board_authority (tests.test_core_isolation.CoreEngineIsolationTests.test_existing_runtime_rechecks_profile_before_direct_sql_and_board_authority) (action='board')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_isolation.py", line 45, in test_existing_runtime_rechecks_profile_before_direct_sql_and_board_authority
+    with self.assertRaises(Rejected):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+AssertionError: Rejected not raised
+
+======================================================================
+FAIL: test_existing_runtime_rechecks_profile_before_direct_sql_and_board_authority (tests.test_core_isolation.CoreEngineIsolationTests.test_existing_runtime_rechecks_profile_before_direct_sql_and_board_authority) (action='reserve')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_isolation.py", line 45, in test_existing_runtime_rechecks_profile_before_direct_sql_and_board_authority
+    with self.assertRaises(Rejected):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+AssertionError: Rejected not raised
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.446s
+
+FAILED (failures=7)

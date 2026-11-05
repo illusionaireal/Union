@@ -1,0 +1,26 @@
+test_receipt_path_conflict_rejects_before_migrating_old_catalog (tests.test_identity_upgrade.IdentityUpgradeTests.test_receipt_path_conflict_rejects_before_migrating_old_catalog) ... FAIL
+test_committed_upgrade_can_recover_receipt_after_projection_write_failure (tests.test_identity_upgrade.IdentityUpgradeTests.test_committed_upgrade_can_recover_receipt_after_projection_write_failure) ... FAIL
+
+======================================================================
+FAIL: test_receipt_path_conflict_rejects_before_migrating_old_catalog (tests.test_identity_upgrade.IdentityUpgradeTests.test_receipt_path_conflict_rejects_before_migrating_old_catalog)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_identity_upgrade.py", line 149, in test_receipt_path_conflict_rejects_before_migrating_old_catalog
+    self.assertEqual(dump(self.db), before)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'BEGI[25 chars]BLE core_schema(id INTEGER PRIMARY KEY CHECK(i[3894 chars]MIT;' != 'BEGI[25 chars]BLE creations(id TEXT PRIMARY KEY, payload TEX[1362 chars]MIT;'
+Diff is 5965 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_committed_upgrade_can_recover_receipt_after_projection_write_failure (tests.test_identity_upgrade.IdentityUpgradeTests.test_committed_upgrade_can_recover_receipt_after_projection_write_failure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_identity_upgrade.py", line 161, in test_committed_upgrade_can_recover_receipt_after_projection_write_failure
+    self.assertIsInstance(receipt.get("backup"), str, "committed upgrade must retain original recovery evidence")
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: None is not an instance of <class 'str'> : committed upgrade must retain original recovery evidence
+
+----------------------------------------------------------------------
+Ran 2 tests in 1.116s
+
+FAILED (failures=2)

@@ -1,0 +1,36 @@
+test_host_ticket_and_platform_admin_do_not_substitute_for_core_principal (tests.test_core_creation.CoreCreationTests.test_host_ticket_and_platform_admin_do_not_substitute_for_core_principal) ... 
+  test_host_ticket_and_platform_admin_do_not_substitute_for_core_principal (tests.test_core_creation.CoreCreationTests.test_host_ticket_and_platform_admin_do_not_substitute_for_core_principal) (token_kind='anonymous') ... FAIL
+  test_host_ticket_and_platform_admin_do_not_substitute_for_core_principal (tests.test_core_creation.CoreCreationTests.test_host_ticket_and_platform_admin_do_not_substitute_for_core_principal) (token_kind='host') ... FAIL
+  test_host_ticket_and_platform_admin_do_not_substitute_for_core_principal (tests.test_core_creation.CoreCreationTests.test_host_ticket_and_platform_admin_do_not_substitute_for_core_principal) (token_kind='host') ... FAIL
+
+======================================================================
+FAIL: test_host_ticket_and_platform_admin_do_not_substitute_for_core_principal (tests.test_core_creation.CoreCreationTests.test_host_ticket_and_platform_admin_do_not_substitute_for_core_principal) (token_kind='anonymous')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_creation.py", line 109, in test_host_ticket_and_platform_admin_do_not_substitute_for_core_principal
+    self.assertEqual(value.get("code"), "not_authenticated" if token is None else "not_authorized")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: None != 'not_authenticated'
+
+======================================================================
+FAIL: test_host_ticket_and_platform_admin_do_not_substitute_for_core_principal (tests.test_core_creation.CoreCreationTests.test_host_ticket_and_platform_admin_do_not_substitute_for_core_principal) (token_kind='host')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_creation.py", line 108, in test_host_ticket_and_platform_admin_do_not_substitute_for_core_principal
+    self.assertEqual(status, 401 if token is None else 403)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 409 != 403
+
+======================================================================
+FAIL: test_host_ticket_and_platform_admin_do_not_substitute_for_core_principal (tests.test_core_creation.CoreCreationTests.test_host_ticket_and_platform_admin_do_not_substitute_for_core_principal) (token_kind='host')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_creation.py", line 108, in test_host_ticket_and_platform_admin_do_not_substitute_for_core_principal
+    self.assertEqual(status, 401 if token is None else 403)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 409 != 403
+
+----------------------------------------------------------------------
+Ran 1 test in 0.728s
+
+FAILED (failures=3)

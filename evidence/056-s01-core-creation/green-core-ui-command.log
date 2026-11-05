@@ -1,0 +1,13 @@
+
+ RUN  v3.2.7 D:/Project/Union/web/console
+
+ ✓ src/features/commands/receipts.test.ts (5 tests) 12ms
+ ✓ src/features/commands/fields.test.tsx (9 tests) 296ms
+ ✓ src/features/commands/core-creation.test.tsx (1 test) 377ms
+   ✓ core creation through the workspace > submits ordinary creation as create_v1 with exactly the five supported fields  376ms
+
+ Test Files  3 passed (3)
+      Tests  15 passed (15)
+   Start at  17:40:34
+   Duration  2.24s (transform 504ms, setup 527ms, collect 938ms, tests 686ms, environment 1.58s, prepare 493ms)
+

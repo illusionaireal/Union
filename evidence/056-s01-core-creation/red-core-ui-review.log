@@ -1,0 +1,1035 @@
+
+> @union/console@0.1.0 test
+> vitest run src/features/commands/core-boundaries.test.tsx
+
+
+ RUN  v3.2.7 D:/Project/Union/web/console
+
+ ❯ src/features/commands/core-boundaries.test.tsx (5 tests | 5 failed) 2009ms
+   × core creation identity and receipt boundaries > rejects a POST receipt with the wrong id and retains the original V1 request 1338ms
+     → Unable to find an element with the text: /回执与原请求不匹配/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<a[39m
+      [33mclass[39m=[32m"skip"[39m
+      [33mhref[39m=[32m"#main"[39m
+    [36m>[39m
+      [0m跳转到正文[0m
+    [36m</a>[39m
+    [36m<aside[39m
+      [33maria-label[39m=[32m"工作台导航"[39m
+      [33mclass[39m=[32m"sidebar"[39m
+    [36m>[39m
+      [36m<a[39m
+        [33maria-current[39m=[32m"page"[39m
+        [33mclass[39m=[32m"brand active"[39m
+        [33mdata-discover[39m=[32m"true"[39m
+        [33mhref[39m=[32m"/overview"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"brand-symbol"[39m
+        [36m>[39m
+          [0mu[0m
+        [36m</span>[39m
+        [36m<span>[39m
+          [0mUNION[0m
+          [36m<small>[39m
+            [0mAI-UNION / AU[0m
+          [36m</small>[39m
+        [36m</span>[39m
+      [36m</a>[39m
+      [36m<label[39m
+        [33mclass[39m=[32m"workspace-switch"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"org-icon"[39m
+        [36m>[39m
+          [0mU[0m
+        [36m</span>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"workspace-select"[39m
+        [36m>[39m
+          [36m<small>[39m
+            [0m当前 AU[0m
+          [36m</small>[39m
+          [36m<select[39m
+            [33maria-label[39m=[32m"当前组织"[39m
+            [33mid[39m=[32m"org-select"[39m
+          [36m>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m""[39m
+            [36m>[39m
+              [0m尚未创建 AU[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</span>[39m
+      [36m</label>[39m
+      [36m<nav[39m
+        [33mid[39m=[32m"navigation"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"nav-entry"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"nav-caption"[39m
+          [36m>[39m
+            [0m工作空间[0m
+          [36m</div>[39m
+          [36m<a[39m
+            [33maria-current[39m=[32m"page"[39m
+            [33mclass[39m=[32m"nav-button active"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mdata-nav[39m=[32m"overview"[39m
+            [33mhref[39m=[32m"/overview"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-layout-dashboard"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"19"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.7"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"19"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"9"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"3"[39m
+                [33my[39m=[32m"3"[39m
+              [36m/>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"5"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"14"[39m
+                [33my[39m=[32m"3"[39m
+              [36m/>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"9"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"14"[39m
+                [33my[39m=[32m"12"[39m
+              [36m/>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"5"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"3"[39m
+                [33my[39m=[32m"16"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [36m<span>[39m
+              [0m公司总览[0m
+            [36m</span>[39m
+          [36m</a>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"nav-entry"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"nav-button"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mdata-nav[39m=[32m"members"[39m
+            [33mhref[39m=[32m"/members"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-users"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"19"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.7"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"19"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M16 3.128a4 4 0 0 1 0 7.744"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M22 21v-2a4 4 0 0 0-3-3.87"[39m
+              [36m/>[39m
+              [36m<circle[39m
+                [33mcx[39m=[32m"9"[39m
+                [33mcy[39m=[32m"7"[39m
+                [33mr[39m=[32m"4"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [36m<span>[39m
+              [0m成员与岗位[0m
+            [36m</span>[39m
+          [36m</a>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"nav-entry"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"nav-button"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mdata-nav[39m=[32m"tasks"[39m
+            [33mhref[39m=[32m"/tasks"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-list-checks"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"19"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.7"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"19"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+           ...
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<a[39m
+      [33mclass[39m=[32m"skip"[39m
+      [33mhref[39m=[32m"#main"[39m
+    [36m>[39m
+      [0m跳转到正文[0m
+    [36m</a>[39m
+    [36m<aside[39m
+      [33maria-label[39m=[32m"工作台导航"[39m
+      [33mclass[39m=[32m"sidebar"[39m
+    [36m>[39m
+      [36m<a[39m
+        [33maria-current[39m=[32m"page"[39m
+        [33mclass[39m=[32m"brand active"[39m
+        [33mdata-discover[39m=[32m"true"[39m
+        [33mhref[39m=[32m"/overview"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"brand-symbol"[39m
+        [36m>[39m
+          [0mu[0m
+        [36m</span>[39m
+        [36m<span>[39m
+          [0mUNION[0m
+          [36m<small>[39m
+            [0mAI-UNION / AU[0m
+          [36m</small>[39m
+        [36m</span>[39m
+      [36m</a>[39m
+      [36m<label[39m
+        [33mclass[39m=[32m"workspace-switch"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"org-icon"[39m
+        [36m>[39m
+          [0mU[0m
+        [36m</span>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"workspace-select"[39m
+        [36m>[39m
+          [36m<small>[39m
+            [0m当前 AU[0m
+          [36m</small>[39m
+          [36m<select[39m
+            [33maria-label[39m=[32m"当前组织"[39m
+            [33mid[39m=[32m"org-select"[39m
+          [36m>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m""[39m
+            [36m>[39m
+              [0m尚未创建 AU[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</span>[39m
+      [36m</label>[39m
+      [36m<nav[39m
+        [33mid[39m=[32m"navigation"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"nav-entry"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"nav-caption"[39m
+          [36m>[39m
+            [0m工作空间[0m
+          [36m</div>[39m
+          [36m<a[39m
+            [33maria-current[39m=[32m"page"[39m
+            [33mclass[39m=[32m"nav-button active"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mdata-nav[39m=[32m"overview"[39m
+            [33mhref[39m=[32m"/overview"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-layout-dashboard"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"19"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.7"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"19"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"9"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"3"[39m
+                [33my[39m=[32m"3"[39m
+              [36m/>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"5"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"14"[39m
+                [33my[39m=[32m"3"[39m
+              [36m/>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"9"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"14"[39m
+                [33my[39m=[32m"12"[39m
+              [36m/>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"5"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"3"[39m
+                [33my[39m=[32m"16"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [36m<span>[39m
+              [0m公司总览[0m
+            [36m</span>[39m
+          [36m</a>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"nav-entry"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"nav-button"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mdata-nav[39m=[32m"members"[39m
+            [33mhref[39m=[32m"/members"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-users"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"19"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.7"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"19"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M16 3.128a4 4 0 0 1 0 7.744"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M22 21v-2a4 4 0 0 0-3-3.87"[39m
+              [36m/>[39m
+              [36m<circle[39m
+                [33mcx[39m=[32m"9"[39m
+                [33mcy[39m=[32m"7"[39m
+                [33mr[39m=[32m"4"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [36m<span>[39m
+              [0m成员与岗位[0m
+            [36m</span>[39m
+          [36m</a>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"nav-entry"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"nav-button"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mdata-nav[39m=[32m"tasks"[39m
+            [33mhref[39m=[32m"/tasks"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-list-checks"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"19"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.7"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"19"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+           ...
+   × core creation identity and receipt boundaries > rejects a POST receipt with the wrong kind and retains the original V1 request 233ms
+     → expected [] to deep equally contain { …(3) }
+   × core creation identity and receipt boundaries > keeps an unsubmitted creation draft and focus through a same-principal session renewal 136ms
+     → Unable to find a label with the text of: AU目标
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"identity-page"[39m
+    [36m>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"status"[39m
+      [36m>[39m
+        [0m正在连接工作台…[0m
+      [36m</p>[39m
+    [36m</main>[39m
+  [36m</div>[39m
+[36m</body>[39m
+   × core creation identity and receipt boundaries > checks the current principal again before sending a prepared draft 93ms
+     → expected "command" to not be called at all, but actually been called 1 times
+
+Received: 
+
+  1st command call:
+
+    Array [
+      Object {
+        "base_version": null,
+        "data": Object {
+          "board_name": "初始治理主体",
+          "charter": Object {
+            "allowed_operations": Array [
+              "create_member",
+              "create_position",
+              "update_position",
+              "assign",
+              "set_policy",
+              "create_work",
+              "handoff",
+              "pause_work",
+              "resume_work",
+              "cancel_work",
+              "update_work",
+              "wait",
+              "set_strategy",
+              "record_memory",
+            ],
+            "allowed_tools": Array [
+              "produce_artifact",
+            ],
+            "board_can_amend": true,
+            "reserved_matters": Array [
+              "goal",
+              "resources",
+              "charter",
+              "funding",
+              "dissolution",
+            ],
+            "text": "本地有限组织试验。组织在已配置资源内形成岗位和协作；无对外发布或支付权限。",
+          },
+          "goal": "Retain this private goal",
+          "name": "我的 AU",
+          "resources": Object {
+            "max_calls": 8,
+            "timeout_seconds": 180,
+          },
+        },
+        "id": "921f71bd-1d3f-4e7d-a04b-12227c967ea0",
+        "kind": "create_v1",
+        "organization_id": null,
+      },
+      Object {
+        "client": QueryClient {},
+        "meta": undefined,
+        "mutationKey": undefined,
+      },
+    ]
+
+
+Number of calls: 1
+
+   × core creation identity and receipt boundaries > shows a lookup failure beside an unknown receipt while retaining its original ID 207ms
+     → expect(element).toBeVisible()
+
+Received element is not visible:
+  <p
+  class="operation-error"
+  hidden=""
+  id="operation-error"
+  role="alert"
+/>
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/commands/core-boundaries.test.tsx > core creation identity and receipt boundaries > rejects a POST receipt with the wrong id and retains the original V1 request
+TestingLibraryElementError: Unable to find an element with the text: /回执与原请求不匹配/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <a
+      class="skip"
+      href="#main"
+    >
+      跳转到正文
+    </a>
+    <aside
+      aria-label="工作台导航"
+      class="sidebar"
+    >
+      <a
+        aria-current="page"
+        class="brand active"
+        data-discover="true"
+        href="/overview"
+      >
+        <span
+          class="brand-symbol"
+        >
+          u
+        </span>
+        <span>
+          UNION
+          <small>
+            AI-UNION / AU
+          </small>
+        </span>
+      </a>
+      <label
+        class="workspace-switch"
+      >
+        <span
+          class="org-icon"
+        >
+          U
+        </span>
+        <span
+          class="workspace-select"
+        >
+          <small>
+            当前 AU
+          </small>
+          <select
+            aria-label="当前组织"
+            id="org-select"
+          >
+            <option
+              value=""
+            >
+              尚未创建 AU
+            </option>
+          </select>
+        </span>
+      </label>
+      <nav
+        id="navigation"
+      >
+        <div
+          class="nav-entry"
+        >
+          <div
+            class="nav-caption"
+          >
+            工作空间
+          </div>
+          <a
+            aria-current="page"
+            class="nav-button active"
+            data-discover="true"
+            data-nav="overview"
+            href="/overview"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-layout-dashboard"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="19"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect
+                height="9"
+                rx="1"
+                width="7"
+                x="3"
+                y="3"
+              />
+              <rect
+                height="5"
+                rx="1"
+                width="7"
+                x="14"
+                y="3"
+              />
+              <rect
+                height="9"
+                rx="1"
+                width="7"
+                x="14"
+                y="12"
+              />
+              <rect
+                height="5"
+                rx="1"
+                width="7"
+                x="3"
+                y="16"
+              />
+            </svg>
+            <span>
+              公司总览
+            </span>
+          </a>
+        </div>
+        <div
+          class="nav-entry"
+        >
+          <a
+            class="nav-button"
+            data-discover="true"
+            data-nav="members"
+            href="/members"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-users"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="19"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"
+              />
+              <path
+                d="M16 3.128a4 4 0 0 1 0 7.744"
+              />
+              <path
+                d="M22 21v-2a4 4 0 0 0-3-3.87"
+              />
+              <circle
+                cx="9"
+                cy="7"
+                r="4"
+              />
+            </svg>
+            <span>
+              成员与岗位
+            </span>
+          </a>
+        </div>
+        <div
+          class="nav-entry"
+        >
+          <a
+            class="nav-button"
+            data-discover="true"
+            data-nav="tasks"
+            href="/tasks"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-list-checks"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="19"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+           ...
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <a
+      class="skip"
+      href="#main"
+    >
+      跳转到正文
+    </a>
+    <aside
+      aria-label="工作台导航"
+      class="sidebar"
+    >
+      <a
+        aria-current="page"
+        class="brand active"
+        data-discover="true"
+        href="/overview"
+      >
+        <span
+          class="brand-symbol"
+        >
+          u
+        </span>
+        <span>
+          UNION
+          <small>
+            AI-UNION / AU
+          </small>
+        </span>
+      </a>
+      <label
+        class="workspace-switch"
+      >
+        <span
+          class="org-icon"
+        >
+          U
+        </span>
+        <span
+          class="workspace-select"
+        >
+          <small>
+            当前 AU
+          </small>
+          <select
+            aria-label="当前组织"
+            id="org-select"
+          >
+            <option
+              value=""
+            >
+              尚未创建 AU
+            </option>
+          </select>
+        </span>
+      </label>
+      <nav
+        id="navigation"
+      >
+        <div
+          class="nav-entry"
+        >
+          <div
+            class="nav-caption"
+          >
+            工作空间
+          </div>
+          <a
+            aria-current="page"
+            class="nav-button active"
+            data-discover="true"
+            data-nav="overview"
+            href="/overview"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-layout-dashboard"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="19"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect
+                height="9"
+                rx="1"
+                width="7"
+                x="3"
+                y="3"
+              />
+              <rect
+                height="5"
+                rx="1"
+                width="7"
+                x="14"
+                y="3"
+              />
+              <rect
+                height="9"
+                rx="1"
+                width="7"
+                x="14"
+                y="12"
+              />
+              <rect
+                height="5"
+                rx="1"
+                width="7"
+                x="3"
+                y="16"
+              />
+            </svg>
+            <span>
+              公司总览
+            </span>
+          </a>
+        </div>
+        <div
+          class="nav-entry"
+        >
+          <a
+            class="nav-button"
+            data-discover="true"
+            data-nav="members"
+            href="/members"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-users"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="19"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"
+              />
+              <path
+                d="M16 3.128a4 4 0 0 1 0 7.744"
+              />
+              <path
+                d="M22 21v-2a4 4 0 0 0-3-3.87"
+              />
+              <circle
+                cx="9"
+                cy="7"
+                r="4"
+              />
+            </svg>
+            <span>
+              成员与岗位
+            </span>
+          </a>
+        </div>
+        <div
+          class="nav-entry"
+        >
+          <a
+            class="nav-button"
+            data-discover="true"
+            data-nav="tasks"
+            href="/tasks"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-list-checks"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="19"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+           ...
+ ❯ waitForWrapper ../../node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/features/commands/core-boundaries.test.tsx:56:25
+     54|     });
+     55|     expect(screen.queryByText('Unrelated success')).not.toBeInTheDocum…
+     56|     expect(await screen.findByText(/回执与原请求不匹配/)).toBeVisible();
+       |                         ^
+     57|   });
+     58| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  src/features/commands/core-boundaries.test.tsx > core creation identity and receipt boundaries > rejects a POST receipt with the wrong kind and retains the original V1 request
+AssertionError: expected [] to deep equally contain { …(3) }
+
+- Expected: 
+{
+  "id": "df0f023f-8c61-4efc-83e0-d7161417965b",
+  "kind": "create_v1",
+  "organization_id": null,
+}
+
++ Received: 
+[]
+
+ ❯ src/features/commands/core-boundaries.test.tsx:52:73
+     50|     await act(async () => fireEvent.click(button));
+     51|     await waitFor(() => expect(submit).toHaveBeenCalledOnce());
+     52|     expect(JSON.parse(sessionStorage.getItem('union-pending') || '[]')…
+       |                                                                         ^
+     53|       id: submit.mock.calls[0][0].id, organization_id: null, kind: 'cr…
+     54|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  src/features/commands/core-boundaries.test.tsx > core creation identity and receipt boundaries > keeps an unsubmitted creation draft and focus through a same-principal session renewal
+TestingLibraryElementError: Unable to find a label with the text of: AU目标
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main
+      class="identity-page"
+    >
+      <p
+        role="status"
+      >
+        正在连接工作台…
+      </p>
+    </main>
+  </div>
+</body>
+ ❯ Object.getElementError ../../node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ getAllByLabelText ../../node_modules/@testing-library/dom/dist/queries/label-text.js:111:38
+ ❯ ../../node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ ../../node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/features/commands/core-boundaries.test.tsx:69:19
+     67|     await act(async () => fireEvent.click(screen.getByRole('button', {…
+     68|     await waitFor(() => expect(api.session).toHaveBeenCalledTimes(2));
+     69|     expect(screen.getByLabelText('AU目标')).toHaveValue('Retain this pri…
+       |                   ^
+     70|     expect(screen.getByLabelText('AU目标')).toHaveFocus();
+     71|     await act(async () => resolveStatuses.forEach(resolve => resolve(a…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  src/features/commands/core-boundaries.test.tsx > core creation identity and receipt boundaries > checks the current principal again before sending a prepared draft
+AssertionError: expected "command" to not be called at all, but actually been called 1 times
+
+Received: 
+
+  1st command call:
+
+    Array [
+      Object {
+        "base_version": null,
+        "data": Object {
+          "board_name": "初始治理主体",
+          "charter": Object {
+            "allowed_operations": Array [
+              "create_member",
+              "create_position",
+              "update_position",
+              "assign",
+              "set_policy",
+              "create_work",
+              "handoff",
+              "pause_work",
+              "resume_work",
+              "cancel_work",
+              "update_work",
+              "wait",
+              "set_strategy",
+              "record_memory",
+            ],
+            "allowed_tools": Array [
+              "produce_artifact",
+            ],
+            "board_can_amend": true,
+            "reserved_matters": Array [
+              "goal",
+              "resources",
+              "charter",
+              "funding",
+              "dissolution",
+            ],
+            "text": "本地有限组织试验。组织在已配置资源内形成岗位和协作；无对外发布或支付权限。",
+          },
+          "goal": "Retain this private goal",
+          "name": "我的 AU",
+          "resources": Object {
+            "max_calls": 8,
+            "timeout_seconds": 180,
+          },
+        },
+        "id": "921f71bd-1d3f-4e7d-a04b-12227c967ea0",
+        "kind": "create_v1",
+        "organization_id": null,
+      },
+      Object {
+        "client": QueryClient {},
+        "meta": undefined,
+        "mutationKey": undefined,
+      },
+    ]
+
+
+Number of calls: 1
+
+ ❯ src/features/commands/core-boundaries.test.tsx:92:24
+     90|     await waitFor(() => expect(screen.getByTestId('principal')).toHave…
+     91|     await act(async () => fireEvent.click(screen.getByRole('button', {…
+     92|     expect(submit).not.toHaveBeenCalled();
+       |                        ^
+     93|   });
+     94| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  src/features/commands/core-boundaries.test.tsx > core creation identity and receipt boundaries > shows a lookup failure beside an unknown receipt while retaining its original ID
+Error: expect(element).toBeVisible()
+
+Received element is not visible:
+  <p
+  class="operation-error"
+  hidden=""
+  id="operation-error"
+  role="alert"
+/>
+ ❯ src/features/commands/core-boundaries.test.tsx:105:49
+    103|     await screen.findByText('创建记录待核对');
+    104|     fireEvent.click(screen.getByRole('button', { name: '查询此请求回执' }));
+    105|     expect(await screen.findByText(/回执存储暂不可读/)).toBeVisible();
+       |                                                 ^
+    106|     expect(JSON.parse(sessionStorage.getItem('union-pending') || '[]')…
+    107|       id: submit.mock.calls[0][0].id, organization_id: null, kind: 'cr…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  5 failed (5)
+   Start at  18:10:43
+   Duration  3.77s (transform 355ms, setup 170ms, collect 606ms, tests 2.01s, environment 505ms, prepare 147ms)
+
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path D:\Project\Union\web\console
+npm error workspace @union/console@0.1.0
+npm error location D:\Project\Union\web\console
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c vitest run src/features/commands/core-boundaries.test.tsx

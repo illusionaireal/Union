@@ -41,6 +41,6 @@
 
 ## 状态与基线同步
 
-[总体架构](../ARCHITECTURE.md)、[首片契约](../../specs/053-union-rewrite/s01-contract.md)和[切片](../../specs/053-union-rewrite/tasks.md)同步本决定。S01只关闭自己明确列出的基础/兼容验收，不关闭完整F09；S05及S10保留其实施和真实出口。代码尚未按本ADR改变。
+[总体架构](../ARCHITECTURE.md)、[首片契约](../../specs/053-union-rewrite/s01-contract.md)和[切片](../../specs/053-union-rewrite/tasks.md)同步本决定。S01 已实现服务器绑定的稳定 principal、不可变初始治理根、版本化准备态读取和旧入口隔离，见 [056](../../evidence/056-s01-core-creation/README.md)及[独立复核](../reviews/2026-11-05-s01-core-creation.md)。本片只关闭明确列出的基础/兼容验收，不关闭完整 F09；章程内容保存不等于执行规则已激活，S05 及 S10 保留其实施和真实出口。
 
 该选择有长期身份/迁移和权限影响，因此保留ADR及成对测试义务；实施采用需独立权限复核。模型、资金、宿主、部署或运行AU的修改均不由文档采用自动授权。

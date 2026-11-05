@@ -32,7 +32,7 @@ export function SetupGuide() {
               查看公司设置 <ArrowRight size={14} />
             </Link>
           ) : (
-            <CommandButton kind="create" primary>
+            <CommandButton kind="create_v1" primary>
               创建我的 AI 公司
             </CommandButton>
           )}

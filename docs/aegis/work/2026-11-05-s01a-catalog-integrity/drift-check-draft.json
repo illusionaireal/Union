@@ -1,11 +1,11 @@
 {
   "schemaVersion": "aegis.schema.v0",
-  "taskId": "U-066/S01a",
+  "taskId": "U-066/S01",
   "taskIntentRef": "docs/aegis/work/2026-11-05-s01a-catalog-integrity/task-intent-draft.json",
   "baselineRefs": ["docs/UNION_CHARTER_v1.0.md", "docs/PRD.md", "docs/ARCHITECTURE.md", "docs/decisions/0005-au-runtime-boundaries.md", "docs/decisions/0006-charter-policy-adoption.md", "specs/053-union-rewrite/s01-contract.md"],
-  "scopeStatus": "S01a T01-T04；U-066 的整体状态保持 doing。",
-  "compatStatus": "447 项 Python（5 平台跳过）、53 项前端、最终 71 项浏览器、安装候选 26 项通过；独立 R1/R2 已修复并复验。Git 交付另见 055 收据。",
-  "retirementStatus": "Console 与 company 目录解析收口；保留 legacy 创建和执行以履行兼容契约，V1 入口替换与隔离由后续授权的 S01b/S01c 拥有。",
-  "newRiskSignals": ["Console 既有混合职责仍待后续逐用例迁移"],
+  "scopeStatus": "用户已授权完整 UNI-020。S01a-S01c、T01-T12 受控验收通过；主账及 Git/在线交付以 056 收据为准，不扩至治理激活或真实自治。",
+  "compatStatus": "481 项 Python（5 平台跳过）、70 项前端、S01 30 项与 legacy 71 项实际浏览器、实际安装候选 133 项通过；独立后端 47 项和前端 21/9 项及布局反例已修复复验。",
+  "retirementStatus": "创建纯规则和意图/分配/登记已迁入单一所有者；V1 不经 legacy Engine，旧公开 create/CLI/company 保留实际兼容调用，待调用者迁移与验证后退役。没有双写、双派发或自动 fallback。",
+  "newRiskSignals": ["Engine/Console 其余混合职责按后续切片逐用例迁出", "不证明抵抗恶意宿主或跨库/文件全局原子性", "真实模型、部署、持续运行与完整治理未验"],
   "decision": "continue"
 }
