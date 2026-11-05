@@ -1,7 +1,7 @@
 {
     "schema_version": 1,
     "updated_at": "2026-11-05",
-    "wip_limit": 6,
+    "wip_limit": 5,
     "modules": [
         {
             "id": "governance",
@@ -1693,17 +1693,20 @@
             "role": "产品评审 / 架构负责人 / 首片设计",
             "dependencies": [],
             "acceptance": "按用户指定的Main Chapter V1重建053 S00：固定原文/采用依据，覆盖40条及X子条款，纠正旧PRD/AGENTS冲突，重建PRD、架构/ADR、垂直切片；归档移出旧18张在线建议卡，建立12张V1卡且仅依赖新切片。固定S01三步整体的legacy完整性、稳定principal、治理根准备态及旧入口隔离/回执/迁移/TDD。独立评审、文档/管理/npm/Python检查及提交推送有证据；本卡范围为documentation，不实现运行时或升级真实能力。",
-            "status": "review",
+            "status": "done",
             "owner": "codex/rewrite-s00-20261105（外部工程代理）",
             "blocker": null,
             "started_at": "2026-11-05",
             "updated_at": "2026-11-05",
-            "completion": null,
-            "claim": {
-                "actor": "codex/rewrite-s00-20261105（外部工程代理）",
-                "at": "2026-11-05T01:34:01.969Z",
-                "lease_until": "2026-11-05T04:34:01.969Z"
+            "completion": {
+                "scope": "documentation",
+                "reviewer": "codex/review_charter_requirements + codex/review_s01_final（独立只读工程复核）",
+                "evidence": [
+                    "evidence/054-charter-v1-rebuild/README.md"
+                ],
+                "note": "Main Chapter V1原文、40条与子条款追踪、PRD/架构/ADR、12垂直切片及S01精确契约已交付；旧18在线卡归档退出，12新卡仅依赖V1切片。独立复核无新增阻断，文档/候选管理检查、npm53前端与Python424项/5跳过通过。主体da09cd5be0701d131e0934a0d5a3a1202081679c已推送rewrite/charter-v1且远端读回一致；本卡仅documentation完成，不证明V1运行能力或真实模型/发布/持续运行。"
             },
+            "claim": null,
             "history": [
                 {
                     "at": "2026-11-05T01:34:01.634Z",
@@ -1732,6 +1735,13 @@
                     "from": "doing",
                     "to": "doing",
                     "note": "移除S00继承自旧规划U-064的依赖；V1的12个切片只使用新任务间依赖，真实证据按本片规范记录，旧任务只供历史与复用核查。在线18张旧卡已归档，新建#19–#30。"
+                },
+                {
+                    "at": "2026-11-05T03:01:07.887Z",
+                    "actor": "codex/rewrite-s00-20261105（外部工程代理）",
+                    "from": "done",
+                    "to": "done",
+                    "note": "主体da09cd5已提交推送并核对远端；S00文档收口，WIP上限从6恢复5，原5项在制/阻塞保留。U-066合同就绪，正式认领时仍须处理容量，不能隐藏旧占用。"
                 }
             ]
         },
@@ -1746,12 +1756,13 @@
                 "U-065"
             ],
             "acceptance": "按053 S01及Main V1，用严格TDD顺序完成S01a旧创建/原回执/目录完整性、S01b稳定core principal与显式身份/catalog升级及V1治理根准备态创建、S01c旧入口隔离与React/HTTP重开。三步全部通过才完成；保留legacy原请求/版本/unknown，不迁移旧AU、不借同名账号重置接管；prepared+resources planned无业务/资源副作用。精确DTO/错误/事务/兼容/T01–T12见s01-contract.md，权限和迁移独立复核；不关闭自治/完整F09/真实发布。",
-            "status": "backlog",
+            "status": "ready",
             "owner": null,
             "blocker": null,
             "started_at": null,
             "updated_at": "2026-11-05",
-            "completion": null
+            "completion": null,
+            "claim": null
         },
         {
             "id": "U-067",

@@ -77,7 +77,15 @@
     ],
     "record": "evidence/054-charter-v1-rebuild/review.md"
   },
-  "git_delivery": "pending",
+  "git_delivery": {
+    "branch": "rewrite/charter-v1",
+    "content_commit": "da09cd5be0701d131e0934a0d5a3a1202081679c",
+    "content_push_exit_code": 0,
+    "content_remote_readback": "da09cd5be0701d131e0934a0d5a3a1202081679c",
+    "content_commit_files": 34,
+    "task_preexisting_edits_excluded": true,
+    "receipt": "subsequent commit on the same branch; final tip verified after push"
+  },
   "kanban": {
     "old_ids_archived": [
       1,
@@ -118,7 +126,29 @@
     "all_new_dependencies_match_ledger": true,
     "old_requirement_dependencies": [],
     "credential_committed": false,
-    "physical_delete": false
+    "physical_delete": false,
+    "final_readback": {
+      "recorded_at_utc": "2026-11-05T03:04:33.518767+00:00",
+      "active": 12,
+      "archived": 18,
+      "s00": {
+        "id": 19,
+        "status": "done",
+        "version": 4
+      },
+      "s01": {
+        "id": 20,
+        "status": "ready",
+        "version": 3
+      },
+      "other_new_cards": "backlog",
+      "dependencies_and_acceptance_match_ledger": true
+    },
+    "default_page_excludes_archived": {
+      "source_checked": true,
+      "page_sha256": "775d39c7059eeb2a354c2b3d586c1b07d91c11841c9ca553025f9738469da5e1",
+      "browser_interaction_test": false
+    }
   },
   "candidate_scope_audit": {
     "ok": true,
@@ -130,5 +160,42 @@
     "preexisting_tracked_files_preserved": true,
     "diff_check": "pass for edited files; verbatim imported charter verified by bytes",
     "source_markdown_hard_breaks": 13
+  },
+  "handoff_snapshot": {
+    "s00_status": "done",
+    "completion_scope": "documentation",
+    "s01_status": "ready",
+    "wip_limit": 5,
+    "started_wip": 5,
+    "historical_task_states_unchanged": true,
+    "real_model_calls_this_task": 0,
+    "v1_runtime_implementation": false
+  },
+  "handoff_verification": {
+    "management": {
+      "ok": true,
+      "tasks": 76,
+      "validator": "staged repository script, equal to task-start HEAD",
+      "validator_source": "1c5656521f646b6be5d726b4408e1f59b85757ed:scripts/project-management.mjs",
+      "generated_views_match": true
+    },
+    "documentation_and_board_check": {
+      "ok": true,
+      "normative_clauses": 40,
+      "slices": 12,
+      "archived_old_cards": 18,
+      "active_v1_cards": 12
+    },
+    "receipt_scope_audit": {
+      "ok": true,
+      "staged_files": 7,
+      "only_task_owned": true,
+      "all_ledger_evidence_in_index": true,
+      "exact_credential_scan": "pass",
+      "source_charter_blob": "a50223cd1af552ff4fe039d328659b3957cbd94c",
+      "preexisting_tracked_files_preserved": true,
+      "diff_check": "pass for edited files; verbatim imported charter verified by bytes",
+      "source_markdown_hard_breaks": 13
+    }
   }
 }
