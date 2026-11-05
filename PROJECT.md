@@ -1,31 +1,17 @@
 # 项目总览：目标、成熟度与路线
 
-**开发阶段：正式开发（用户于2026-11-02确认）。** 后续采用[工程、真实集成、用户验收、发布与持续运行分层门槛](docs/FORMAL_DEVELOPMENT.md)。这不是生产就绪声明；下方成熟度和历史验收不因阶段变更提升。2026-11-04新增[重写规划检查点](specs/053-union-rewrite/plan.md)，先以S00/U-065完成需求、ADR处置和首片契约；U-054继续承担安装升级回滚的独立验收，不被规划完成替代。实际优先级、在制与阻塞以本页生成视图及TASKS为准。
+**当前需求基线：[Main Chapter V1](docs/UNION_CHARTER_v1.0.md)。** 采用依据与固定版本见[CHARTER_ADOPTION](docs/CHARTER_ADOPTION.md)；重写按[PRD v1.0](docs/PRD.md)、[总体架构/ADR](docs/ARCHITECTURE.md)、[053切片](specs/053-union-rewrite/tasks.md)及严格TDD推进。当前状态、负责人和验收只由下方主账生成视图说明；本次文档重建不升级历史成熟度。
 
-管理更新：2026-11-01。本轮在 `dev@e0d04c7` 加检查点元数据探测修复上只读复查原公司，仍筹建/暂停，成员/工作/成果/模型调用均0；见[040诊断](evidence/040-checkpoint-metadata/company-status.json)。既有公司能力审计基线为 `9bf6d54`（2026-10-27）；当前工程验收见下表。观察不再打开任何原检查点库，仅lstat；存在或异常为未知，明确缺失为无，本实现不产生true。移除了观察连接引发sidecars的路径，不承诺外部文件不变或跨库原子；真实运营/托管未验。本地复查不代表远端生产检查。
+## 1. 产品与目标
 
-**当前结论：已有组织运行时和本地工作台的工程原型，部分真实模型协作通过；目标公司 ai-union-corp 尚未成立团队、交付或持续运营。下一目标是让这家公司完成真实产品交付，并验证其主动发现、改善组织问题的能力。**
-
-本页是当前状态与工作顺序的统一入口。[工作看板](TASKS.md) · [管理手册](management/README.md) · [自主改进验收](management/SELF_IMPROVEMENT.md) · [开发路线与下一批次](docs/DEVELOPMENT_ROADMAP.md)。详细验收在 `specs/`，执行证据在 `evidence/`，日期流水在 [STATUS](docs/ai-union/STATUS.md) 和 [HANDOFF](HANDOFF.md)。历史记录不自动等于当前能力。
-
-## 1. 要完成什么
-
-| 对象 | 目标与边界 | 当前阶段 |
+| 对象 | 产品定义 | 证据边界 |
 | --- | --- | --- |
-| ai-union | 围绕共同目标自主组织、行动和调整成员、岗位、流程、能力，对成果负责；组织运行时支撑其执行与治理 | 工程原型；真实协作部分验证 |
-| ai-union-platform | 提供创建、托管、观察、接入等公共服务，不预设组织的业务与经营方式 | 本地创建/观察/操作已有；公共托管服务尚未就绪 |
-| ai-union-corp | 第一个负责建设和运营上述两个产品的组织；其研发能力由业务目标决定，不是所有组织的共同前提 | 已保存目标和阶段章程，仍在筹建且暂停 |
+| AI-UNION / AU | 持续身份、目标、治理、资源与自主闭环的组织；单Agent及组合均合法 | 原试验组织的团队/规划成果只证明其历史场景 |
+| ai-union | 开源、独立可用核心；自带基础认证/AU权限/审计 | 现有Python/React/模型/发布工程是复用资产，不宣称已符合全部V1 |
+| AI-Union-Platform | 通过版本化核心公开契约提供可选服务的私有商业平台 | 商业账户、托管和付款不自动产生AU治理权 |
+| ai-union-corp | 建设和运营上述产品的具体公司 | 仍按原公司真实筹建、工作区、交付、反馈和持续运行证据验收 |
 
-定义以[用户确认原文](docs/ai-union/DESIGN.md#2026-10-20已确认的作用和边界)为准。小说公司是保留的独立业务基准，不是当前公司的启动前置条件。创建组织记录不等于公司开始运营，也不代表法律实体设立。
-
-### 当前目标完成情况
-
-- 工程底座：已具备本地运行、治理、任务、执行器、观察与有限运行机制，有回归证据。
-- 真实组织能力：另一试验组织曾自主形成 2 人团队、完成 3 份规划文本并产生后续工作；后续任务与事件处理没有完整通过，不能称为稳定自治。见 [014](evidence/014-real-loop/README.md)。
-- 目标公司：2026-11-01 02:40（UTC+8）本地原公司数据只读复查仍为 `bootstrap/paused`，成员/工作/成果/模型调用均为 0，未绑定真实模型或开发工作区。
-- 持久运营和外部服务：未有该公司真实主机部署、持续交付、恢复演练或外部用户验收证据。
-
-**暂不报告“整体完成百分比”。** 目标范围仍在分阶段明确，模块体量也不同；测试数、代码量和勾选任务数不能换算成产品完成度。当前可以准确报告“工程原型已具备，真实交付闭环尚未通过”。
+正式开发门槛见[FORMAL_DEVELOPMENT](docs/FORMAL_DEVELOPMENT.md)。不报告按测试、代码或任务勾选数换算的产品完成率。旧两成员团队和小说公司是特定基准，不能成为所有AU的资格门槛；历史任务和真实阻塞继续保留。
 
 ## 2. 如何读成熟度
 
@@ -53,7 +39,7 @@
 | 开发工具 / 当前公司业务能力 | 可选 Docker 工作区、宿主/章程/岗位授权、持久命令回执及核对 | V1：SDK 与容器替身；独立权限复核通过默认关闭接入 | 真实容器与模型编程；网络、提交、部署仍需各自明确接口与授权 | [evidence/016-member-workspace/README.md](evidence/016-member-workspace/README.md) |
 | 记忆与上下文 / ai-union | 组织记录、成果、交接信息、任务检查点及虚拟文件 | V1，真实运行暴露上下文问题 | 长任务上下文管理、知识检索与经验复用闭环；不能等同成熟学习系统 | [docs/ORGANIZATION_HARNESS.md](docs/ORGANIZATION_HARNESS.md)、[evidence/014-real-loop/README.md](evidence/014-real-loop/README.md) |
 | 协作、唤醒与恢复 / ai-union | 工作依赖、交接、有限 watch、暂停、未知结果核对 | V2：真实空闲零调用、同一作业事件唤醒通过 | 诊断和生命周期已实现；模型有效事件处理、真实后续交付及持续运行待资源复验 | [evidence/014-real-loop/README.md](evidence/014-real-loop/README.md)、[evidence/020-organization-diagnostics/README.md](evidence/020-organization-diagnostics/README.md) |
-| 工作台与观察 / platform | React 八页导航、本地多组织、模型配置、事件/工作/成果/回执、只读成员运行状态/会话/工作区摘要 | V1：checkpoint观察仅lstat、不打开原库；定向50/全量260与独立94项通过，独立长结论因额度中断 | 检查点存在性当前无true生产来源；跨来源非原子、热配置、真实续拍/崩溃/供应商迟到、真实恢复、浏览器与整体复核未过；公共账户/多租户未实现 | [evidence/007-workspace-redesign/README.md](evidence/007-workspace-redesign/README.md)、[evidence/016-member-workspace/README.md](evidence/016-member-workspace/README.md)、[evidence/029-member-runtime-observation/README.md](evidence/029-member-runtime-observation/README.md)、[evidence/030-runtime-recent-run/README.md](evidence/030-runtime-recent-run/README.md)、[evidence/031-member-work-state/README.md](evidence/031-member-work-state/README.md)、[evidence/032-runtime-workspace/README.md](evidence/032-runtime-workspace/README.md)、[evidence/033-checkpoint-observation/README.md](evidence/033-checkpoint-observation/README.md)、[evidence/034-unregistered-runtime/README.md](evidence/034-unregistered-runtime/README.md)、[evidence/035-dispatch-observation/README.md](evidence/035-dispatch-observation/README.md)、[evidence/036-runtime-http-observation/README.md](evidence/036-runtime-http-observation/README.md)、[evidence/037-session-revisions/README.md](evidence/037-session-revisions/README.md)、[evidence/038-activity-boundaries/README.md](evidence/038-activity-boundaries/README.md)、[evidence/039-wal-observation/README.md](evidence/039-wal-observation/README.md)、[evidence/040-checkpoint-metadata/README.md](evidence/040-checkpoint-metadata/README.md) |
+| 工作台与观察 / 核心及可选平台 | React 八页导航、本地多组织、模型配置、事件/工作/成果/回执、只读成员运行状态/会话/工作区摘要 | V1：checkpoint观察仅lstat、不打开原库；定向50/全量260与独立94项通过，独立长结论因额度中断 | 检查点存在性当前无true生产来源；跨来源非原子、热配置、真实续拍/崩溃/供应商迟到、真实恢复、浏览器与整体复核未过；公共账户/多租户未实现 | [evidence/007-workspace-redesign/README.md](evidence/007-workspace-redesign/README.md)、[evidence/016-member-workspace/README.md](evidence/016-member-workspace/README.md)、[evidence/029-member-runtime-observation/README.md](evidence/029-member-runtime-observation/README.md)、[evidence/030-runtime-recent-run/README.md](evidence/030-runtime-recent-run/README.md)、[evidence/031-member-work-state/README.md](evidence/031-member-work-state/README.md)、[evidence/032-runtime-workspace/README.md](evidence/032-runtime-workspace/README.md)、[evidence/033-checkpoint-observation/README.md](evidence/033-checkpoint-observation/README.md)、[evidence/034-unregistered-runtime/README.md](evidence/034-unregistered-runtime/README.md)、[evidence/035-dispatch-observation/README.md](evidence/035-dispatch-observation/README.md)、[evidence/036-runtime-http-observation/README.md](evidence/036-runtime-http-observation/README.md)、[evidence/037-session-revisions/README.md](evidence/037-session-revisions/README.md)、[evidence/038-activity-boundaries/README.md](evidence/038-activity-boundaries/README.md)、[evidence/039-wal-observation/README.md](evidence/039-wal-observation/README.md)、[evidence/040-checkpoint-metadata/README.md](evidence/040-checkpoint-metadata/README.md) |
 | 托管与运维 / platform | 有限 service/watch 入口、systemd 模板、就绪检查 | V1：工程入口；真实托管 V0 | U-041观察已受控实现但浏览器/独立复核未过；U-042单机受限托管未实现；U-008目标服务器安装、访问及U-009真实重启/备份恢复仍待资源和依赖，告警与资源到限停机待验 | [evidence/015-corp-startup/README.md](evidence/015-corp-startup/README.md)、[specs/028-member-runtime-management/plan.md](specs/028-member-runtime-management/plan.md) |
 | 预算与经营记录 / 运行时及业务 | 调用额度、用量与未知费用记录、小说 mock 账本 | V1；真实运行曾按调用上限停止 | 真实成本核对与可执行预算控制；无真实支付/收入能力 | [evidence/014-real-loop/README.md](evidence/014-real-loop/README.md)、[evidence/006-novel-company/README.md](evidence/006-novel-company/README.md) |
 | 质量与评估 / 工程支撑 | 机制回归、模拟与真实标记、E1/E2 检查及证据留存 | V1；真实完整业务验收未通过 | 首个真实任务及指标口径已定义，U-006/U-019/U-020真实采集和效果待验 | [specs/014-real-loop/spec.md](specs/014-real-loop/spec.md)、[evidence/016-member-workspace/README.md](evidence/016-member-workspace/README.md) |
@@ -89,7 +75,7 @@
 任务唯一主账为 `management/project.json`，保留 U 编号；以下视图由 `npm run management:render` 生成。实际负责人和所需责任角色分开，未认领不虚构为公司成员。
 
 <!-- management:tasks:start -->
-数据日期：2026-11-04；在制 5/5，就绪 2，阻塞 7，完成 33。这是工作项统计，不是产品完成率。
+数据日期：2026-11-05；在制 6/6，就绪 1，阻塞 7，完成 33。这是工作项统计，不是产品完成率。
 
 | 任务 | 内容 | 优先级 / 阶段 | 状态 | 实际负责人 | 依赖 |
 | --- | --- | --- | --- | --- | --- |
@@ -126,7 +112,7 @@
 | [U-062](TASKS.md#u-062) | 实现正式模型服务与完整接入能力 | P0 / G0 | 待依赖 | 待认领 | U-061, U-060 |
 | [U-063](TASKS.md#u-063) | 修复 PR #12 的跨平台与浏览器检查 | P0 / G0 | 完成 | Codex（外部工程代理） | — |
 | [U-064](TASKS.md#u-064) | 形成UNION重写规划与可交接检查点 | P0 / G0 | 完成 | codex/rewrite-planning-20261104（外部工程代理） | — |
-| [U-065](TASKS.md#u-065) | 评审重写需求架构并固定首片契约 | P0 / G0 | 就绪 | 待认领 | U-064 |
+| [U-065](TASKS.md#u-065) | 按Main Chapter V1重建需求架构与首片契约 | P0 / G0 | 待验收 | codex/rewrite-s00-20261105（外部工程代理） | — |
 | [U-066](TASKS.md#u-066) | 按重写契约贯通创建与重开同一AU | P0 / G1 | 待依赖 | 待认领 | U-065 |
 | [U-008](TASKS.md#u-008) | 部署持久服务 | P1 / G3 | 阻塞 | 待认领 | — |
 | [U-009](TASKS.md#u-009) | 演练恢复与资源控制 | P1 / G3 | 待依赖 | 待认领 | U-006, U-008 |
@@ -151,10 +137,16 @@
 | [U-058](TASKS.md#u-058) | 订阅授权结果在刷新后保持可见 | P1 / G0 | 完成 | Codex（外部工程代理） | — |
 | [U-059](TASKS.md#u-059) | 展示 Go 订阅的工作区、额度与可用模型 | P1 / G0 | 完成 | Codex（外部工程代理） | — |
 | [U-060](TASKS.md#u-060) | 把 OpenCode Go 订阅接成 AU 可用模型连接 | P1 / G0 | 进行中 | Codex（外部工程代理） | — |
-| [U-067](TASKS.md#u-067) | 按垂直切片重组筹建与依赖工作执行 | P1 / G1 | 待依赖 | 待认领 | U-066 |
+| [U-067](TASKS.md#u-067) | 按垂直切片重组筹建与依赖工作执行 | P1 / G1 | 待依赖 | 待认领 | U-066, U-069, U-072 |
 | [U-068](TASKS.md#u-068) | 贯通正式成果反馈与后续交付契约 | P1 / G2 | 待依赖 | 待认领 | U-067 |
-| [U-069](TASKS.md#u-069) | 按有效章程重组治理调整与任职交接 | P1 / G2 | 待依赖 | 待认领 | U-066, U-067 |
+| [U-069](TASKS.md#u-069) | 按有效章程重组治理调整与任职交接 | P1 / G2 | 待依赖 | 待认领 | U-066 |
 | [U-070](TASKS.md#u-070) | 贯通等待重启与未知执行核对 | P1 / G3 | 待依赖 | 待认领 | U-068, U-069 |
+| [U-071](TASKS.md#u-071) | 通过核心公开契约接入可选平台和管理工具 | P1 / G0 | 待依赖 | 待认领 | U-066, U-067 |
+| [U-072](TASKS.md#u-072) | V1核心中配置模型并完成受控工具往返 | P1 / G0 | 待依赖 | 待认领 | U-066, U-069 |
+| [U-073](TASKS.md#u-073) | V1组织试用改进并依据效果保留或撤回 | P1 / G0 | 待依赖 | 待认领 | U-068 |
+| [U-074](TASKS.md#u-074) | 独立安装V1核心并验证维护与持续工作 | P1 / G0 | 待依赖 | 待认领 | U-068, U-070, U-071, U-072, U-073 |
+| [U-075](TASKS.md#u-075) | 按V1契约逐profile验证原生接入能力 | P1 / G0 | 待依赖 | 待认领 | U-072 |
+| [U-076](TASKS.md#u-076) | 按V1契约交付AU承诺与递归组合 | P1 / G0 | 待依赖 | 待认领 | U-068, U-069, U-070, U-071 |
 | [U-013](TASKS.md#u-013) | 评估成员执行器选型 | P2 / G0 | 候选 | 待认领 | — |
 | [U-014](TASKS.md#u-014) | 定义外部试点 | P2 / G4 | 待依赖 | 待认领 | U-009, U-010, U-011, U-019 |
 | [U-015](TASKS.md#u-015) | 按需求接入业务系统 | P2 / G5 | 候选 | 待认领 | U-014 |

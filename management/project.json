@@ -1,7 +1,7 @@
 {
     "schema_version": 1,
-    "updated_at": "2026-11-04",
-    "wip_limit": 5,
+    "updated_at": "2026-11-05",
+    "wip_limit": 6,
     "modules": [
         {
             "id": "governance",
@@ -84,7 +84,7 @@
         },
         {
             "id": "console",
-            "name": "工作台与观察 / platform",
+            "name": "工作台与观察 / 核心及可选平台",
             "implemented": "React 八页导航、本地多组织、模型配置、事件/工作/成果/回执、只读成员运行状态/会话/工作区摘要",
             "validation": "V1：checkpoint观察仅lstat、不打开原库；定向50/全量260与独立94项通过，独立长结论因额度中断",
             "gap": "检查点存在性当前无true生产来源；跨来源非原子、热配置、真实续拍/崩溃/供应商迟到、真实恢复、浏览器与整体复核未过；公共账户/多租户未实现",
@@ -1686,22 +1686,54 @@
         },
         {
             "id": "U-065",
-            "title": "评审重写需求架构并固定首片契约",
+            "title": "按Main Chapter V1重建需求架构与首片契约",
             "priority": "P0",
             "milestone": "G0",
             "module": "management",
             "role": "产品评审 / 架构负责人 / 首片设计",
-            "dependencies": [
-                "U-064"
-            ],
-            "acceptance": "完成053 S00：核对PRD Q-01–Q-03和来源，处置ADR-0005/0006；固定S01创建/重开AU的输入输出、身份/版本、错误、事务、旧客户端兼容及行为测试。产品语义新取舍由产品负责人决定；仅工程细节在已确认要求内选择并记录。范围为设计，不实现运行时。",
-            "status": "ready",
-            "owner": null,
+            "dependencies": [],
+            "acceptance": "按用户指定的Main Chapter V1重建053 S00：固定原文/采用依据，覆盖40条及X子条款，纠正旧PRD/AGENTS冲突，重建PRD、架构/ADR、垂直切片；归档移出旧18张在线建议卡，建立12张V1卡且仅依赖新切片。固定S01三步整体的legacy完整性、稳定principal、治理根准备态及旧入口隔离/回执/迁移/TDD。独立评审、文档/管理/npm/Python检查及提交推送有证据；本卡范围为documentation，不实现运行时或升级真实能力。",
+            "status": "review",
+            "owner": "codex/rewrite-s00-20261105（外部工程代理）",
             "blocker": null,
-            "started_at": null,
-            "updated_at": "2026-11-04",
+            "started_at": "2026-11-05",
+            "updated_at": "2026-11-05",
             "completion": null,
-            "claim": null
+            "claim": {
+                "actor": "codex/rewrite-s00-20261105（外部工程代理）",
+                "at": "2026-11-05T01:34:01.969Z",
+                "lease_until": "2026-11-05T04:34:01.969Z"
+            },
+            "history": [
+                {
+                    "at": "2026-11-05T01:34:01.634Z",
+                    "actor": "codex/rewrite-s00-20261105（外部工程代理）",
+                    "from": "ready",
+                    "to": "ready",
+                    "note": "用户2026-11-05要求继续S00并使用指定托管Kanban规划；按管理手册临时增加一个本地文档/契约槽，上限5改6，S00结束恢复5，原5项状态不变。Kanban认证待个人密钥，先推进不依赖远端的本地来源/契约工作。"
+                },
+                {
+                    "at": "2026-11-05T02:21:52.210Z",
+                    "actor": "codex/rewrite-s00-20261105（外部工程代理）",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "用户明确指定main Chapter V1（b2a30f3）重新构建；修正前轮漏查来源，旧规划退出当前基线。授权继续完成同一U-065文档/契约和Kanban/Git交接，不开始V1运行代码。"
+                },
+                {
+                    "at": "2026-11-05T02:31:43.027Z",
+                    "actor": "codex/rewrite-s00-20261105（外部工程代理）",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "用户要求删除Kanban中依据旧工程提出的需求。退役18张初始化建议卡，按Main V1垂直结果重建活动卡；新增U-072–U-076承接V1独立验收边界，旧模型/公司/主机卡与历史证据保留但不作为新需求或规范排序依据。"
+                },
+                {
+                    "at": "2026-11-05T02:42:20.731Z",
+                    "actor": "codex/rewrite-s00-20261105（外部工程代理）",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "移除S00继承自旧规划U-064的依赖；V1的12个切片只使用新任务间依赖，真实证据按本片规范记录，旧任务只供历史与复用核查。在线18张旧卡已归档，新建#19–#30。"
+                }
+            ]
         },
         {
             "id": "U-066",
@@ -1713,12 +1745,12 @@
             "dependencies": [
                 "U-065"
             ],
-            "acceptance": "按053 S01及PRD F01/F03/F09/F11/P15/F17，用严格TDD贯通固定入口到AU创建/回执/重启读取；保留有效身份和唯一写入者，覆盖重复ID改内容、越权、章程不支持、事务中断和旧客户端恢复。适用ADR先采用，局部AGENTS随实际所有者同步；受控浏览器与持久化回归分别记录，不据此关闭真实筹建或U-054发布。",
+            "acceptance": "按053 S01及Main V1，用严格TDD顺序完成S01a旧创建/原回执/目录完整性、S01b稳定core principal与显式身份/catalog升级及V1治理根准备态创建、S01c旧入口隔离与React/HTTP重开。三步全部通过才完成；保留legacy原请求/版本/unknown，不迁移旧AU、不借同名账号重置接管；prepared+resources planned无业务/资源副作用。精确DTO/错误/事务/兼容/T01–T12见s01-contract.md，权限和迁移独立复核；不关闭自治/完整F09/真实发布。",
             "status": "backlog",
             "owner": null,
             "blocker": null,
             "started_at": null,
-            "updated_at": "2026-11-04",
+            "updated_at": "2026-11-05",
             "completion": null
         },
         {
@@ -1729,14 +1761,16 @@
             "module": "formation",
             "role": "组织运行时 / Harness / 工作台 / 验证",
             "dependencies": [
-                "U-066"
+                "U-066",
+                "U-069",
+                "U-072"
             ],
-            "acceptance": "按053 S03及F02/F03/F04/F10/F18，在S02有效模型调用契约可用后，以严格TDD贯通筹建草案、事务成立、有效任职、依赖成果和实际工具；复用既有Harness，不硬编码行业岗位。覆盖无效提议、失效身份、跨AU引用、中断续接和工具未授权；受控工程与U-003/U-005及G1真实出口分别取证。",
+            "acceptance": "直接依据Main Chapter V1 P-02/P-04/P-05/P-08/D-01/D-02/R-07/R-08和053 S03，在S01、S02调用契约及U-069完整受控治理工程完成后，以严格TDD贯通单Agent合法路径和按目标形成的团队/依赖工作；Execution绑定责任Member、Work、Mandate与Agent Definition版本。复用Harness，不强制第二成员、行业岗位或固定层级；覆盖无效草案/跨AU/失效授权/工具与并发冲突。本片单Agent真实成果及需要协作时的真实依赖分别取证；旧公司/两成员基准不作为所有AU的准入门槛。",
             "status": "backlog",
             "owner": null,
             "blocker": null,
             "started_at": null,
-            "updated_at": "2026-11-04",
+            "updated_at": "2026-11-05",
             "completion": null
         },
         {
@@ -1749,12 +1783,12 @@
             "dependencies": [
                 "U-067"
             ],
-            "acceptance": "按053 S04及F05/F06/F10/P15，以严格TDD贯通成果登记/读取/下载、反馈来源、正式决定、后续工作和改变；覆盖摘要失配、无来源反馈、重复事件、决定失败和迟到回执。复用020真实任务；受控链路不关闭U-006/U-007或G2的真实成果/反馈要求。",
+            "acceptance": "直接依据Main Chapter V1 D-03/K-01/R-02和053 S04，以严格TDD贯通成果登记/读取/下载、反馈来源、正式采用、后续任务与实际改变；重大知识纠正可追踪处理依赖结论和未完成工作。覆盖缺失或篡改成果、只自述完成、无来源反馈、重复事件、采用失败后误消费和迟到回执；复用既有成果/任务机制但不继承旧公司排期。受控工程与本片真实成果、质量反馈和第二次交付分别取证。",
             "status": "backlog",
             "owner": null,
             "blocker": null,
             "started_at": null,
-            "updated_at": "2026-11-04",
+            "updated_at": "2026-11-05",
             "completion": null
         },
         {
@@ -1765,15 +1799,14 @@
             "module": "governance",
             "role": "治理与身份 / 持久化 / 独立权限复核",
             "dependencies": [
-                "U-066",
-                "U-067"
+                "U-066"
             ],
-            "acceptance": "按053 S05及F03/F07/F09/F20，在ADR-0006采用后，用严格TDD验证按旧程序修章、规则支持和冲突、有效同AU交接、旧任职迟到拒绝及历史连续；变更数据先定义兼容/迁移/回退。保持legacy_board真实授权，权限和持久化实现独立复核；U-011及真实治理评估另验。",
+            "acceptance": "直接依据Main Chapter V1 D-04/C-02/X-02(a)、053 S05与ADR-0006，在S01后完整交付受控治理工程：初始根及适用最终决定方/保留事项/失能继任恢复退出、激活条件、旧程序修章、撤权传播、任职交接和历史连续。严格TDD覆盖未绑定/失能缺处置却启用、新文本自授权、旧身份/目标/范围失效、未知规则假生效及迁移失败；权限独立复核。全卡受控工程完成后U-067才可开工；真实工作中的治理修订/交接另取证，不与U-067构成互为前置。legacy_board只是明确兼容profile。",
             "status": "backlog",
             "owner": null,
             "blocker": null,
             "started_at": null,
-            "updated_at": "2026-11-04",
+            "updated_at": "2026-11-05",
             "completion": null
         },
         {
@@ -1787,12 +1820,129 @@
                 "U-068",
                 "U-069"
             ],
-            "acceptance": "按053 S06及F06/F08/F11/F12/F20，在共享事件/身份/接受契约固定后，用严格TDD覆盖持久等待、暂停、意图提交后崩溃、跨库超时、重复迟到事件、撤权及unknown核对。保持原请求查询、新推理尝试另计量、未知外部动作不重派；受控工程不关闭U-008/U-009/U-041/U-042及G3真实主机和持续运行。",
+            "acceptance": "直接依据Main Chapter V1 R-01–R-08和053 S06，严格TDD贯通局部等待/恢复、独立监督、持久意图与新输入路径；覆盖一项unknown不阻断独立工作、有效执行所有权、并发共享环境/交付冲突、资源变化影响在途、重复迟到事件/分层重试。外部未知先查询，新推理另计量；主动观察有目的/预算/退避，路由监督评审按用途入账。受控机制与本片指定窗口内的真实恢复/持续责任分别取证，旧主机或公司任务不构成规范前置。",
             "status": "backlog",
             "owner": null,
             "blocker": null,
             "started_at": null,
-            "updated_at": "2026-11-04",
+            "updated_at": "2026-11-05",
+            "completion": null
+        },
+        {
+            "id": "U-071",
+            "title": "通过核心公开契约接入可选平台和管理工具",
+            "priority": "P1",
+            "milestone": "G0",
+            "module": "console",
+            "status": "backlog",
+            "owner": null,
+            "role": "核心接口 / 平台接入 / 权限与契约复核",
+            "acceptance": "按053 S11与Main V1 P-07/A-04，独立客户端经版本化公开契约完成创建/查询/受控操作；核心自带基础认证/AU权限/审计，不依赖私有商业平台账户/仓库凭据/许可证服务。逐用例重绑平台/管理调用者并退出内部表/私有模块旁路；协议/状态/Agent配置版本区分。合法/越权/版本/重复/审计黑盒及React回归通过；modeld选用时仍校验AU grant/revision，实际独立发布和真实模型成果在S08另验。",
+            "dependencies": [
+                "U-066",
+                "U-067"
+            ],
+            "blocker": null,
+            "started_at": null,
+            "updated_at": "2026-11-05",
+            "completion": null
+        },
+        {
+            "id": "U-072",
+            "title": "V1核心中配置模型并完成受控工具往返",
+            "priority": "P1",
+            "milestone": "G0",
+            "module": "models",
+            "status": "backlog",
+            "owner": null,
+            "role": "V1垂直切片实施 / 独立验收",
+            "acceptance": "直接依据Main Chapter V1 P-07/A-03/K-03/K-04及PRD S02：独立核心用户保存、测试、采用合法模型/工具，在有效V1身份/治理/资源条件下完成推理和工具结果返回，记录每次尝试及用途/费用。严格TDD覆盖失效授权、连接版本、跨AU、重复/迟到、原生能力不支持和双重工具执行。已有048/API/Harness只是复用输入，Go或私有平台不是需求前置；选用modeld保留AU grant/revision。工程与本片真实profile验收分别取证。",
+            "dependencies": [
+                "U-066",
+                "U-069"
+            ],
+            "blocker": null,
+            "started_at": null,
+            "updated_at": "2026-11-05",
+            "completion": null
+        },
+        {
+            "id": "U-073",
+            "title": "V1组织试用改进并依据效果保留或撤回",
+            "priority": "P1",
+            "milestone": "G0",
+            "module": "evaluation",
+            "status": "backlog",
+            "owner": null,
+            "role": "V1垂直切片实施 / 独立验收",
+            "acceptance": "直接依据Main Chapter V1 P-06/P-08/S-01/S-02/S-04及PRD S07：真实工作效果触发问题与改变，低影响授权内试用留版本/检查/撤回，高影响按治理权限；试用许可和效果证明分开，实施/评估职责可区分不强制不同Agent，需要独立判断而条件不足保留候选。禁止改自己评分/评级/删失败；保留窗口/停止/总目标成本和五类人工介入。受控机制与真实自主效果分别验收，旧公司/管理工具卡不构成本片需求前置。",
+            "dependencies": [
+                "U-068"
+            ],
+            "blocker": null,
+            "started_at": null,
+            "updated_at": "2026-11-05",
+            "completion": null
+        },
+        {
+            "id": "U-074",
+            "title": "独立安装V1核心并验证维护与持续工作",
+            "priority": "P1",
+            "milestone": "G0",
+            "module": "hosting",
+            "status": "backlog",
+            "owner": null,
+            "role": "V1垂直切片实施 / 独立验收",
+            "acceptance": "直接依据Main Chapter V1 P-07/S-03及PRD S08：无私有商业平台账户/仓库凭据/许可证服务的干净环境构建安装，核心认证/AU权限/审计及合法模型工具工作连续可用；指定构建/窗口内验证反馈后行动、局部故障、重启、额度、外部升级、兼容拒绝、备份恢复和不双派发。复用052只作实现参考，不继承旧机器/业务特例作为前置；实际环境/许可/发布授权分别明确，受控包检查不替代真实独立使用或持续证据。",
+            "dependencies": [
+                "U-068",
+                "U-070",
+                "U-071",
+                "U-072",
+                "U-073"
+            ],
+            "blocker": null,
+            "started_at": null,
+            "updated_at": "2026-11-05",
+            "completion": null
+        },
+        {
+            "id": "U-075",
+            "title": "按V1契约逐profile验证原生接入能力",
+            "priority": "P1",
+            "milestone": "G0",
+            "module": "models",
+            "status": "backlog",
+            "owner": null,
+            "role": "V1垂直切片实施 / 独立验收",
+            "acceptance": "直接依据Main Chapter V1 A-03/R-06/K-02–K-04及PRD S09，逐profile完成合法配置/认证、原生内容/流式、工具往返、长作业新输入与恢复、凭据单一所有者、正确用途/尝试计量；不支持明确报告，不以一个API/Go成功外推。以能力声明决定profile范围，031/048仅为复用与差距证据，不将旧供应商开发顺序当V1规范。每个profile工程与真实结果分别可追溯。",
+            "dependencies": [
+                "U-072"
+            ],
+            "blocker": null,
+            "started_at": null,
+            "updated_at": "2026-11-05",
+            "completion": null
+        },
+        {
+            "id": "U-076",
+            "title": "按V1契约交付AU承诺与递归组合",
+            "priority": "P1",
+            "milestone": "G0",
+            "module": "composition",
+            "status": "backlog",
+            "owner": null,
+            "role": "V1垂直切片实施 / 独立验收",
+            "acceptance": "直接依据Main Chapter V1 C-01–C-05/D-05及PRD S10：双AU接受/履行/验收承诺并处理争议失联，再逐步交付递归派生、责任交接与重组退出；叶子/组合同一公开契约，治理/授权、协作、部署关系分开，授权投影包含撤权生效/用量/unknown/partial而不泄内部资料。验证离线边界、资源嵌套去重、再委托撤权、退出责任/资料/访问去向；旧025/U028–31只作历史实现参考，不继承旧公司的持续运行卡为规范前置。每段启用和真实出口单独声明。",
+            "dependencies": [
+                "U-068",
+                "U-069",
+                "U-070",
+                "U-071"
+            ],
+            "blocker": null,
+            "started_at": null,
+            "updated_at": "2026-11-05",
             "completion": null
         }
     ]

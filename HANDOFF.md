@@ -1,5 +1,19 @@
 # 当前工程交接
 
+## 2026-11-05：Main Chapter V1重建与Kanban换版（054）
+
+本次接续用户指定的“Main中的Chapter V1”，原文固定于main提交`b2a30f3af4ad69a679c4860468d744dd285a0098`。此前漏查V1、沿用旧DESIGN的来源错误已纠正；当前PRD、架构/ADR、术语和AGENTS以V1为准。旧规划只供Git追溯；下方历史条目的来源、状态和“下一步”不再指导当前开发。
+
+从[采用记录](docs/CHARTER_ADOPTION.md)→[Chapter V1](docs/UNION_CHARTER_v1.0.md)→[PRD v1.0](docs/PRD.md)→[架构与ADR](docs/ARCHITECTURE.md)→[053 plan/tasks](specs/053-union-rewrite/plan.md)→[S01精确契约](specs/053-union-rewrite/s01-contract.md)接手。40条规范及子条款已有[追踪](specs/053-union-rewrite/charter-traceability.md)，ADR-0005/0006采用的是有界设计，运行时代码尚未实现这些V1变化。
+
+按用户要求，在线旧#1–#18已归档退出活动看板，新#19–#30对应12个V1切片，正式[映射](management/KANBAN.md)与主账共用U-065–U-076。新卡只依赖本批切片；旧公司、供应商、主机任务不作为新需求前置，历史完成/阻塞也不据此升级。凭据和代理配置只留宿主。
+
+本轮交付边界为S00/U-065文档与契约检查点。原始回归、独立复核、管理检查、在线读回与Git发布收据统一在[054证据](evidence/054-charter-v1-rebuild/README.md)。起点`1c56565`，交付分支`rewrite/charter-v1`；`dev`仍是开发主线。查看主账和最新证据确认实际收口、容量与远端结果，不从本文推定发布成功。
+
+下一项为U-066/S01：依次完成S01a目录/身份完整性及原回执、S01b稳定核心principal/显式升级与治理根准备态创建、S01c旧入口隔离及React/HTTP端到端。三步全部通过才关闭U-066；先对错误目录映射等真实缺口观察RED。新旧回执端点分开，重放先查原意图，全部catalog消费者先核对目录/ID/profile；详细身份、兼容、事务和T01–T12见首片契约。治理与资源未就绪时后端禁止业务启用。
+
+开工前重新核对分支/HEAD、主账认领、容量、在线负责人/version和已有修改。本轮未修改运行时代码；工作区其他人的看板适配器、脚本、模型子模块和未跟踪资产保留，不能混入下一提交。当前仓库若无统一认领CLI，先使用`npm run management:status`核对，不把宿主在制工具当成本检查点已交付。
+
 ## 2026-11-04：重写规划检查点（053）
 
 用户要求纠正原则未贯彻与工程缺少统一规划的问题，先建立可拆解PRD、总体设计及编码前ADR，再按垂直切片同步AGENTS、严格TDD。本轮交付范围是供下一人接手的文档检查点及提交推送；没有开始重写运行时代码。分支为`rewrite/charter-v1`，基于`ddd76e0`；`dev`仍是开发主线。本次Git发布、验证和剩余限制见[053证据](evidence/053-rewrite-checkpoint/README.md)。

@@ -1,8 +1,10 @@
 # 从新环境接手开发
 
-## 2026-11-04：重写从需求和首片契约接手
+## 2026-11-05：从 Main Chapter V1 接手
 
-用户本轮明确要求先补齐PRD、总体设计与编码前ADR，按垂直切片同步AGENTS，再严格TDD。先读[053接手计划](../specs/053-union-rewrite/plan.md)、[PRD v0.7](PRD.md)、[总体架构](ARCHITECTURE.md)和根[HANDOFF](../HANDOFF.md)的本次条目，认领S00/U-065完成提案处置及S01精确契约。该检查点在`rewrite/charter-v1`，不自动合并dev或开始全量重写。原正式开发、真实模型与发布门槛继续有效；下面历史条目的“下一步”和测试数不代替当前主账。
+先读[采用记录](CHARTER_ADOPTION.md)、[Chapter V1](UNION_CHARTER_v1.0.md)、[PRD v1.0](PRD.md)、[总体架构](ARCHITECTURE.md)、[053 plan](../specs/053-union-rewrite/plan.md)与根[HANDOFF](../HANDOFF.md)。当前规划已按main V1重建；下一实施单元是U-066/S01a，完整S01还需稳定principal、治理根/准备态及旧入口隔离。主账状态、容量和在线负责人需在开工前重新核对。
+
+旧DESIGN/PRD/spec仅在核对实现历史或具体兼容时读取，不能覆盖V1。下方日期条目的工具数、状态和“下一步”不作为当前开发依据。使用当前固定工具链和相应测试；保持React、历史数据和有效回归，具体切片遵守严格TDD。
 
 ## 2026-11-02：进入正式开发
 

@@ -1,30 +1,16 @@
 # UNION / ai-union
 
-## 2026-11-04：重写规划交接
+当前重写以 **[Main Chapter V1](docs/UNION_CHARTER_v1.0.md)** 为唯一项目宪章基线，来源与采用决定见[记录](docs/CHARTER_ADOPTION.md)。从[HANDOFF](HANDOFF.md)进入[PRD v1.0](docs/PRD.md)、[总体架构/ADR](docs/ARCHITECTURE.md)和[垂直切片](specs/053-union-rewrite/tasks.md)。旧规划退出当前阅读路径，Git历史保留追溯。
 
-重写按「原则/章节 → 可拆解PRD → 总体设计与编码前ADR → 垂直切片与AGENTS → 严格TDD」推进。[PRD v0.7](docs/PRD.md)、[总体架构提案](docs/ARCHITECTURE.md)和[053切片](specs/053-union-rewrite/tasks.md)已整理为评审材料；下一人从[交接入口](HANDOFF.md)及S00/U-065开始。具体技术方案仍待采用，真实验收与[正式发布门槛](docs/FORMAL_DEVELOPMENT.md)保持独立。检查点分支为 `rewrite/charter-v1`，`dev`仍是日常主线；下方日期条目保留历史范围。
+**UNION 是围绕 AI 自主组织的核心产品、平台和契约。** AI-UNION/AU是组织概念及实例；`ai-union`是开源、独立可用的技术核心；AI-Union-Platform是通过核心公开契约提供可选服务的私有商业平台。单Agent、多成员和组合AU按目标形成，不固定业务、行业岗位或组织规模。
 
-## 2026-11-03：正式模型接入设计
+核心目标是让用户安装、登录、连接模型工具、设定目标后持续取得真实成果，并能反馈、恢复和维护；核心包含基础认证、AU权限与审计，不依赖私有平台账户/仓库凭据/许可证服务。方向已采用，运行能力和实际开源发布仍以各自证据为准，具体许可证尚未选择。
 
-[完整方案](docs/MODEL_ACCESS_ARCHITECTURE.md)已对照最新dev及OpenCode/Hermes源码：保留Python组织循环，新增复用OpenCode模型与认证内核的独立服务，先打通Go订阅到AU真实执行，再完成原生流式、长任务、凭据池与恢复。当前为设计交付，实施见[048计划](specs/048-production-model-access/plan.md)及U-062。
+当前工作是053的V1规划/契约检查点，下一代码切片为[U-066/S01](specs/053-union-rewrite/s01-contract.md)。使用`rewrite/charter-v1`交接，`dev`仍为日常开发主线；main用于本次宪章来源，不以其旧工程覆盖当前React和运行资产。
 
-**UNION——一家开箱即用的 AI 公司。**
+[项目总览](PROJECT.md) · [唯一任务主账与生成看板](TASKS.md) · [管理方法](management/README.md) · [在线Kanban约定](management/KANBAN.md) · [正式开发门槛](docs/FORMAL_DEVELOPMENT.md)。
 
-你给目标和预算，它自行组织团队、开展业务、交付成果，并向你汇报经营情况。开发主分支为 **`dev`**。
-
-**项目管理入口：[项目总览与路线](PROJECT.md) · [任务看板](TASKS.md) · [维护方法](management/README.md) · [后续开发计划](docs/DEVELOPMENT_ROADMAP.md)。** 当前已进入正式开发阶段；已有工程底座，正式发布与真实经营仍待验收。见[阶段与交付标准](docs/FORMAL_DEVELOPMENT.md)；下方日期条目为迭代记录。
-
-## ai-union 与 ai-union-platform 的作用和边界
-
-以下定义经用户于 2026-10-20 确认，描述产品方向；具体能力的实现与验收状态见[项目总览](PROJECT.md)。
-
-**ai-union** 是以 AI 为核心、围绕共同目标自主组织和持续行动的协作集体，能够自行调整成员、岗位、流程与能力，并对成果负责。
-
-**ai-union-platform** 为这些组织提供创建、托管、观察、接入等公共服务，提供运行条件，不预设组织的业务、结构和经营方式。
-
-**边界是：平台提供服务，组织依据章程、授权与资源自主决定如何发展和完成目标；平台自身也可以由一个 ai-union 建设和运营。**
-
-本文及历史文档中的“UNION 平台”指 ai-union-platform。完整产品依据见[定义与项目边界](docs/ai-union/DESIGN.md#2026-10-20已确认的作用和边界)。
+以下日期条目描述各自历史实现和验证，不代替V1需求或当前任务状态。
 
 ## 当前实现与运行入口
 
