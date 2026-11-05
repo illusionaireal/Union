@@ -2,7 +2,7 @@
 
 ## 2026-11-05：完整 S01 核心身份、准备态创建与重开（056）
 
-S01a–S01c / T01–T12 的受控工程已完成：稳定 principal、显式 auth/catalog 升级、服务器绑定的准备态治理根、原创建意图/unknown 恢复、旧入口隔离及 React/HTTP 重开同一 AU。主账 U-066 以 controlled 记录，临时 WIP 6→5 已恢复，原五项在制状态与阻塞保留。当前任务事实仍以主账为准；在线和 Git 交付读回随 [056 证据](../../evidence/056-s01-core-creation/README.md)留存。
+S01a–S01c / T01–T12 的受控工程已完成：稳定 principal、显式 auth/catalog 升级、服务器绑定的准备态治理根、原创建意图/unknown 恢复、旧入口隔离及 React/HTTP 重开同一 AU。主账 U-066 以 controlled 记录，临时 WIP 6→5 已恢复，原五项在制状态与阻塞保留。实现 `2dfce0c` 已推送并核对远端 SHA，在线 #20 经 HTTP 200 更新与读回为 done/version 8；收据随 [056 证据](../../evidence/056-s01-core-creation/README.md)留存。当前任务事实仍以主账为准。
 
 Python 481 项（5 平台跳过）、npm 完整检查及前端 70 项、实际 S01/legacy 浏览器 30/71 项、实际安装候选 133 项通过；独立身份/持久化与前端反例已修复复验。见[独立报告](../reviews/2026-11-05-s01-core-creation.md)和根[交接](../../HANDOFF.md)。真实模型调用 0，无真实 AU 迁移或部署；不升级组织成熟度、完整治理或自治完成状态。下一计划 S05/U-069，业务/资源启用及 S02/S03 保留后续出口。
 

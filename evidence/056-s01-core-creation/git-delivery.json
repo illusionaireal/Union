@@ -1,0 +1,17 @@
+{
+  "branch": "rewrite/charter-v1",
+  "remote": "origin",
+  "baseline": "219168dfd6e0325cc2950f7dc93fcb8daedff2f6",
+  "implementation_commit": "2dfce0cbfff18f296eada04db858459f526bdd1d",
+  "implementation_message": "feat(core): complete S01 stable identity and prepared AU creation",
+  "push_exit_code": 0,
+  "remote_readback": "2dfce0cbfff18f296eada04db858459f526bdd1d",
+  "remote_readback_matches": true,
+  "commit_scope": "mixed",
+  "implementation_index_empty_after_commit": true,
+  "repository_clean": false,
+  "preexisting_changes_preserved": true,
+  "worktree_created": false,
+  "branch_and_worktree_retained": "User-requested handoff branch in the original shared checkout; unrelated worktree retained",
+  "receipt_scope": "This receipt records the implementation push. Delivery and Kanban acknowledgments are committed afterward; their final HEAD is verified separately."
+}

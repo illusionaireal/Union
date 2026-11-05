@@ -78,3 +78,11 @@
 Git 只提交本轮增量；根配置、管理脚本、子模块及历史未跟踪修改继续保留。主账通过现有统一适配器记录，该宿主预存工具自身不属于本次交付。在线卡只更新 #20，写前读取真实负责人/version，完成后保留脱敏读回收据。
 
 提交前[范围核对](delivery-checks.json)确认：46 个源码/测试文件与已验证候选一致，安装目录 74 个载荷摘要正确，其中 35 个打包源码摘要与暂存源相符；Chapter V1 原字节不变，新增相对文档链接有效。预存 AGENTS 适配器说明未暂存，其他配置/工具原字节保留；仅 U-066 的任务记录改变。密钥精确匹配扫描为 0。
+
+## Git 与在线交付
+
+实现提交 **`2dfce0cbfff18f296eada04db858459f526bdd1d`** 已推送 `rewrite/charter-v1`，`git ls-remote` 读回相同 SHA，见 [Git 收据](git-delivery.json)。主账 U-066 已以 controlled 完成；临时执行槽释放，WIP 恢复 5/5，原五项在制及其阻塞保留。
+
+在线 #20 每次写前核对实际 user.id、负责人及 version，从 progress/version 6 更新至 review/version 7，再到 **done/version 8**。两次 PATCH 和读回均 HTTP 200，分支、负责人和证据全文一致，见[在线收据](kanban-sync.json)。Git 实现已交付后再生成本收据；后续单独提交仅补账与交接，不改变已验证源码。密钥仅在进程内用于鉴权，没有写入 Git、卡片或持久环境。
+
+补入交付收据后再次验证主账/视图（25 项）、导出候选的原管理工具（8 项）及 Aegis 结构均通过，分别见 `management-delivery-check.log`、`candidate-management-delivery-check.log`、`aegis-delivery-check.log`。收据提交没有业务代码或测试变更。

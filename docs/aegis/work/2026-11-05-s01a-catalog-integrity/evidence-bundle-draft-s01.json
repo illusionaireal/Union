@@ -21,6 +21,8 @@
     "evidence/056-s01-core-creation/candidate-install.json",
     "evidence/056-s01-core-creation/candidate-installed-python.log",
     "evidence/056-s01-core-creation/independent-ui.json",
-    "docs/reviews/2026-11-05-s01-core-creation.md"
+    "docs/reviews/2026-11-05-s01-core-creation.md",
+    "evidence/056-s01-core-creation/git-delivery.json",
+    "evidence/056-s01-core-creation/kanban-sync.json"
   ]
 }

@@ -1,0 +1,43 @@
+{
+  "task": "U-066",
+  "online_card": 20,
+  "branch": "rewrite/charter-v1",
+  "credential_persisted": false,
+  "updates": [
+    {
+      "at": "2026-11-05T10:53:22.569195+00:00",
+      "actor_id": "f926a8ec-c502-41c9-910d-80bbfe88f989",
+      "actor_name": "ZBOOK",
+      "before": {
+        "status": "progress",
+        "version": 6
+      },
+      "after": {
+        "status": "review",
+        "version": 7
+      },
+      "write_http": 200,
+      "readback_http": 200,
+      "assignee_matches_current_user": true,
+      "evidence_matches": true
+    },
+    {
+      "at": "2026-11-05T10:53:36.450635+00:00",
+      "actor_id": "f926a8ec-c502-41c9-910d-80bbfe88f989",
+      "actor_name": "ZBOOK",
+      "before": {
+        "status": "review",
+        "version": 7
+      },
+      "after": {
+        "status": "done",
+        "version": 8
+      },
+      "write_http": 200,
+      "readback_http": 200,
+      "assignee_matches_current_user": true,
+      "evidence_matches": true
+    }
+  ],
+  "evidence": "2026-11-05：完整 S01a–S01c / T01–T12 受控验收通过，U-066 已在唯一主账以 controlled 完成。\n\n实现：稳定 core principal、显式 auth/catalog 升级、服务器绑定治理根的准备态创建与重开；单一原请求/分配/登记流程，保留 legacy 创建回执、幂等与 unknown。旧 Engine/CLI/runner/workspace/model 入口不能写入 prepared V1。同名账号重置不取得旧 AU 权限。React 普通登录、创建、回执、刷新/服务重启重开及原请求恢复已验证。\n\n分支：rewrite/charter-v1\n实现提交：https://github.com/illusionaireal/Union/commit/2dfce0cbfff18f296eada04db858459f526bdd1d\n该提交已推送，git ls-remote 读回相同 SHA。\n\n验证：严格真实 RED/GREEN；Python 481 项通过（5 平台跳过），npm run check 含前端 70 项通过；实际 Chromium S01 30 项、legacy 71 项通过；由暂存源导出的实际候选包安装后 133 项测试通过，安装后的升级工具实际验证原旧库字节与幂等。候选原管理工具 8 项通过，不依赖宿主未提交适配器。\n\n独立复核：后端身份/持久化 47 项、前端正式聚焦 21 项及独立反例/控制 9 项，实际 Chrome 四种宽度检查通过。目录越界、创建审计关联、schema/认证锁、跨身份回执、预检取消和合法长名称等原发现均修复并复验，已审范围无阻断项。\n\n证据：https://github.com/illusionaireal/Union/blob/2dfce0cbfff18f296eada04db858459f526bdd1d/evidence/056-s01-core-creation/README.md\n独立报告：https://github.com/illusionaireal/Union/blob/2dfce0cbfff18f296eada04db858459f526bdd1d/docs/reviews/2026-11-05-s01-core-creation.md\n原 S01a 历史证据保留在 evidence/055-s01a-catalog-integrity/。\n\n边界：prepared/inactive 与 resources planned；章程内容和治理根保存不等于执行规则、资源授予或业务自治已启用。被测系统真实模型调用 0，未迁移真实 AU、部署或宣称完整 F09/发布/持续运行。主账 WIP 已恢复 5/5，原五项在制状态/负责人/阻塞/历史保留。\n\n下一计划是 S05/U-069 的治理准备、激活条件、有效修订和交接；之后再满足 S02/U-072 与 S03 前置。本卡完整范围已验收，后续切片不在本轮执行。\n"
+}
