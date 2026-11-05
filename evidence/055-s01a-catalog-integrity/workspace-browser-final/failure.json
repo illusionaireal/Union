@@ -1,0 +1,15 @@
+{
+  "error": "locator.waitFor: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#operation-result') to be visible\u001b[22m\n\n    at commit (D:\\Project\\Union\\scripts\\check_workspace.cjs:28:43)\n    at async D:\\Project\\Union\\scripts\\check_workspace.cjs:82:3",
+  "checks": [
+    "Empty workspace has a general company onboarding flow",
+    "Eight page navigation exposes the model API directly",
+    "Model entry works before any organization exists",
+    "General company does not require a novel template",
+    "Command returns an accepted, completed, or explicitly expected failed receipt",
+    "Generic company starts with zero calls and no business specialization",
+    "Existing generic company gets the new homepage and model onboarding",
+    "API editor exposes the connection fields without an output-schema selector",
+    "Secret stays out of the preview"
+  ],
+  "errors": []
+}

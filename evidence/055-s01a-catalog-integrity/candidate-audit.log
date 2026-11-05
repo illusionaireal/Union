@@ -1,0 +1,12 @@
+Staged paths belong to S01a: 144
+Five pre-existing tracked edits preserved byte-for-byte and excluded from index.
+Candidate uses committed root instructions/package/management tools.
+75 other cards and all modules/milestones unchanged; U-066 partial and lease handed back.
+Added/changed Markdown link targets exist in exported candidate: 51
+Earlier whole-file link probe encountered an unchanged historical STATUS link; this check is scoped to task additions.
+Raw log bytes preserved in index: 32; no database/key files or long credential-shaped literals.
+ai_union/console.py SHA256=c7d3007731f3291bba70e56aaf7a001d49f11bf2cb54f6bbacdc3093bab93683
+ai_union/corp.py SHA256=4c43b4c6d8bfeb107251996fd308a29ebf528864fd71cd198921579c6544fba2
+ai_union/adapters/au_catalog.py SHA256=005dfc4dd9871b9d8f9b06cfbbca7c09a494fd34bb4aff18ceb403d197cd832b
+scripts/check_workspace.cjs SHA256=f651d247e07a13c9871ad623dbf07d0af404d29f740a92fd5a65523410c381e3
+PASS: candidate ownership, preservation, task boundary, links, raw evidence and bounded privacy checks.

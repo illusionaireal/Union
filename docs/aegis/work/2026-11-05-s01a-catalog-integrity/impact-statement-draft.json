@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "aegis.schema.v0",
+  "affectedLayers": ["Console lifecycle", "HTTP errors", "company discovery", "read-only persistence adapter"],
+  "owners": ["ai_union/adapters/au_catalog.py", "ai_union/console.py", "ai_union/corp.py"],
+  "invariants": ["AU 状态拥有 ID/profile；catalog 仅定位", "AU 写入前拒绝不兼容映射", "保留原创建意图、回执、幂等与 unknown", "先检查会话范围"],
+  "compatBoundary": "只接受完整 legacy_v0；保留 Console/CLI 的不同资源范围与 controller/company 版本。没有自动迁移或修复。",
+  "nonGoals": ["新 V1 profile 的执行入口隔离", "全局跨库与文件事务", "抵抗恶意宿主并发替换文件"]
+}

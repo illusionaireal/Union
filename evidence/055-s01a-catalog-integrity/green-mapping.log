@@ -1,0 +1,6 @@
+test_wrong_au_mapping_rejects_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_wrong_au_mapping_rejects_open_recovery_and_close_before_writes) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 1.292s
+
+OK

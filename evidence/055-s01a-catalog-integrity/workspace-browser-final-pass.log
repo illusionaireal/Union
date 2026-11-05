@@ -1,0 +1,5 @@
+
+> union@0.0.0 test:workspace
+> node scripts/check_workspace.cjs
+
+{"passed":71,"real_model_calls":0,"evidence":"D:\\Project\\Union\\evidence\\055-s01a-catalog-integrity\\workspace-browser-final-pass"}

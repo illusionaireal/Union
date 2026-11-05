@@ -1,0 +1,8 @@
+test_creation_is_durable_and_does_not_overwrite (tests.test_console.ConsoleTests.test_creation_is_durable_and_does_not_overwrite) ... ok
+test_creation_storage_failure_is_unknown_and_not_replayed (tests.test_console.ConsoleTests.test_creation_storage_failure_is_unknown_and_not_replayed) ... ok
+test_creation_registration_failure_keeps_unknown_receipt_queryable (tests.test_console.ConsoleTests.test_creation_registration_failure_keeps_unknown_receipt_queryable) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.959s
+
+OK

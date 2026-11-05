@@ -16,6 +16,25 @@ const check = (name, value = true) => { assert.ok(value, name); checks.push(name
 const connected = p => p.getByText('已连接本机服务', { exact: true }).waitFor();
 const snapshot = p => p.evaluate(async () => (await fetch('/api/snapshot?organization_id=' + document.querySelector('#org-select').value)).json());
 const connections = p => p.evaluate(async () => (await fetch('/api/model-connections?organization_id=' + document.querySelector('#org-select').value)).json());
+async function waitForData(predicate, argument, timeout = 30000) {
+  const deadline = Date.now() + timeout;
+  const expired = () => new Error('Workspace data condition did not become true within '+timeout+'ms');
+  // waitForFunction treats an async predicate's Promise as truthy in the
+  // pinned Playwright version. Await the fetched data before checking it.
+  while (Date.now() < deadline) {
+    let timer;
+    try {
+      const ready = await Promise.race([
+        page.evaluate(predicate, argument),
+        new Promise((_, reject) => { timer = setTimeout(() => reject(expired()), Math.max(0, deadline - Date.now())); }),
+      ]);
+      if (Date.now() >= deadline) throw expired();
+      if (ready) return;
+    } finally { clearTimeout(timer); }
+    await new Promise(resolve => setTimeout(resolve, Math.min(100, Math.max(0, deadline - Date.now()))));
+  }
+  throw expired();
+}
 async function navigate(name) {
   await page.locator('[data-nav="'+name+'"]').click();
   await page.waitForURL(url => url.pathname === '/'+name);
@@ -23,7 +42,9 @@ async function navigate(name) {
 }
 async function close() { if (await page.locator('#operation-dialog').isVisible()) await page.locator('#close-operation').click(); }
 async function commit(expectedFailure = null) {
-  await page.locator('#preview-operation').click();
+  // A displayed preview is already current; starting another refresh can race
+  // its still-visible submit button before the new preview has been prepared.
+  if (!await page.locator('#operation-preview').isVisible()) await page.locator('#preview-operation').click();
   await page.locator('#commit-operation').click();
   await page.locator('#operation-result').waitFor();
   const accepted = /已完成|已受理/.test(await page.locator('#operation-result').innerText());
@@ -68,7 +89,8 @@ async function commit(expectedFailure = null) {
   await page.screenshot({path:path.join(output,'generic-overview-desktop.png'),fullPage:true});
   await navigate('models');
   await page.locator('[data-command="api_connection"]').first().click();
-  check('API editor uses ordinary chat and tools without an output-schema selector',await page.locator('[name="response_format"]').count()===0 && (await page.locator('#operation-form').innerText()).includes('无需选择 JSON 输出模式'));
+  check('API editor exposes the connection fields without an output-schema selector',await page.locator('[name="response_format"]').count()===0 && await page.locator('[name="base_url"]').isVisible() && await page.locator('[name="api_model"]').isVisible());
+  await page.locator('#operation-form summary').filter({hasText:'高级设置'}).click();
   const first=await page.locator('[name="connection_id"]').inputValue();
   await page.locator('[name="connection_name"]').fill('主模型 · 本机接口替身');
   await page.locator('[name="base_url"]').fill(ready.provider_url);
@@ -81,23 +103,26 @@ async function commit(expectedFailure = null) {
   await commit();
   await page.locator('[data-connection="'+first+'"]').waitFor();
   let records=(await connections(page)).connections;
-  check('Adding API saves, binds, and performs no model request',records[0].has_api_key && (await snapshot(page)).execution_config.api_connection_id===first && (await snapshot(page)).runs.length===0);
+  check('Adding API saves ordinary chat and tools, binds, and performs no model request',records[0].has_api_key && records[0].config.response_format==='agent' && (await snapshot(page)).execution_config.api_connection_id===first && (await snapshot(page)).runs.length===0);
   await page.locator('[data-connection="'+first+'"] [data-command="api_connection"]').click();
   check('Editing prefills the selected connection but never its key',await page.locator('[name="base_url"]').inputValue()===ready.provider_url && await page.locator('[name="api_model"]').inputValue()==='test-model-one' && await page.locator('[name="api_key"]').inputValue()==='');
   await page.locator('[name="api_model"]').fill('test-model-edited');
+  await page.locator('#operation-form summary').filter({hasText:'高级设置'}).click();
   await page.locator('[name="max_output_tokens"]').fill('2048');
   await commit();
   check('Editing keeps the existing key and saves the changed model', (await connections(page)).connections[0].has_api_key && (await connections(page)).connections[0].config.model==='test-model-edited');
   await page.locator('.model-intro [data-command="api_connection"]').click();
+  await page.locator('#operation-form summary').filter({hasText:'高级设置'}).click();
   const second=await page.locator('[name="connection_id"]').inputValue();
-  check('New connection does not overwrite the default connection',first!==second && await page.locator('[name="base_url"]').inputValue()==='');
+  check('New connection preserves the current default unless selected explicitly',first!==second && await page.locator('[name="base_url"]').inputValue()==='' && !await page.locator('[name="bind_default"]').isChecked());
   await page.locator('[name="connection_name"]').fill('备用模型 · 本机接口替身');
   await page.locator('[name="base_url"]').fill(ready.provider_url);
   await page.locator('[name="api_model"]').fill('test-model-two');
   await page.locator('[name="api_key"]').fill(secret);
+  await page.locator('[name="bind_default"]').check();
   await commit();
   await page.locator('[data-connection="'+second+'"]').waitFor();
-  check('Two independent connections remain in the service',(await connections(page)).connections.length===2);
+  check('Two independent connections remain and the explicitly selected one is default',(await connections(page)).connections.length===2 && (await snapshot(page)).execution_config.api_connection_id===second);
   await page.locator('[data-connection="'+first+'"] [data-command="api_binding"]').click();
   check('Default switch targets the selected connection',await page.locator('[name="connection_id"]').inputValue()===first);
   await page.locator('[name="reason"]').fill('验证默认连接切换');
@@ -106,7 +131,7 @@ async function commit(expectedFailure = null) {
   await page.locator('[data-connection="'+first+'"] [data-command="api_test"]').click();
   await page.locator('[name="allow_unknown_cost"]').check();
   await commit();
-  await page.waitForFunction(async()=>{const s=await(await fetch('/api/snapshot?organization_id='+document.querySelector('#org-select').value)).json();return s.receipts.some(r=>r.kind==='api_test'&&r.status==='succeeded');});
+  await waitForData(async()=>{const s=await(await fetch('/api/snapshot?organization_id='+document.querySelector('#org-select').value)).json();return s.receipts.some(r=>r.kind==='api_test'&&r.status==='succeeded');});
   check('Tool connection test consumes exactly two loopback model calls',(await snapshot(page)).runs.length===2 && (await snapshot(page)).source==='fixture');
   await navigate('overview');
   check('Connection probing does not mark company collaboration as started',await page.getByRole('region',{name:'公司启动准备'}).isVisible() && await page.getByText('2 / 3 已准备',{exact:true}).isVisible());
@@ -165,7 +190,7 @@ async function commit(expectedFailure = null) {
   await page.locator('[data-connection="'+first+'"] [data-command="api_test"]').click();
   await page.locator('[name="allow_unknown_cost"]').check();
   await commit();
-  await page.waitForFunction(async()=>{const s=await(await fetch('/api/snapshot?organization_id='+document.querySelector('#org-select').value)).json();return s.runs.length===5 && s.runs.at(-1).status==='delivered';});
+  await waitForData(async()=>{const s=await(await fetch('/api/snapshot?organization_id='+document.querySelector('#org-select').value)).json();return s.runs.length===5 && s.runs.at(-1).status==='delivered';});
   check('Explicitly fixing and retesting the connection succeeds without replaying the failed call',!(await snapshot(page)).runs.at(-1).failure);
   const observerContext=await browser.newContext();
   const observer=await observerContext.newPage();
@@ -192,7 +217,7 @@ async function commit(expectedFailure = null) {
     await page.locator('[name="max_steps"]').fill(String(steps));
     await page.locator('[name="allow_unknown_cost"]').check();
     const requestId = await commit();
-    await page.waitForFunction(async id=>{const org=document.querySelector('#org-select').value;const r=await(await fetch('/api/receipts?organization_id='+org+'&id='+id)).json();return r.receipt && r.receipt.status!=='accepted';},requestId);
+    await waitForData(async id=>{const org=document.querySelector('#org-select').value;const r=await(await fetch('/api/receipts?organization_id='+org+'&id='+id)).json();return r.receipt && r.receipt.status!=='accepted';},requestId);
     await page.locator('#refresh').click();
   }
   await advance(1);
@@ -210,7 +235,7 @@ async function commit(expectedFailure = null) {
   await advance(1);
   check('Continue atomically activates the saved team',(await snapshot(page)).organization.phase==='active' && Object.keys((await snapshot(page)).organization.members).length===2);
   await advance(4);
-  await page.waitForFunction(async()=>{const s=await(await fetch('/api/snapshot?organization_id='+document.querySelector('#org-select').value)).json();return Object.keys(s.organization.artifacts).length===2 && Object.values(s.organization.work).every(w=>w.status==='delivered');});
+  await waitForData(async()=>{const s=await(await fetch('/api/snapshot?organization_id='+document.querySelector('#org-select').value)).json();return Object.keys(s.organization.artifacts).length===2 && Object.values(s.organization.work).every(w=>w.status==='delivered');});
   const delivered=await snapshot(page);
   check('SDK file loop and cross-member work deliver two actual artifacts',Object.keys(delivered.organization.artifacts).length===2 && Object.values(delivered.organization.work).every(w=>w.status==='delivered'));
   check('Six SDK requests have six usage receipts without hidden calls',delivered.runs.length===6 && delivered.runs.every(r=>r.usage.output_tokens===10) && delivered.runs.filter(r=>r.status==='continued').length===3);

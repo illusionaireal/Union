@@ -1,7 +1,7 @@
 {
     "schema_version": 1,
     "updated_at": "2026-11-05",
-    "wip_limit": 5,
+    "wip_limit": 6,
     "modules": [
         {
             "id": "governance",
@@ -1756,13 +1756,37 @@
                 "U-065"
             ],
             "acceptance": "按053 S01及Main V1，用严格TDD顺序完成S01a旧创建/原回执/目录完整性、S01b稳定core principal与显式身份/catalog升级及V1治理根准备态创建、S01c旧入口隔离与React/HTTP重开。三步全部通过才完成；保留legacy原请求/版本/unknown，不迁移旧AU、不借同名账号重置接管；prepared+resources planned无业务/资源副作用。精确DTO/错误/事务/兼容/T01–T12见s01-contract.md，权限和迁移独立复核；不关闭自治/完整F09/真实发布。",
-            "status": "ready",
-            "owner": null,
+            "status": "doing",
+            "owner": "codex/gpt-6/session-01a1a9fa-d89d-7091-ba52-c31a1df00b23",
             "blocker": null,
-            "started_at": null,
+            "started_at": "2026-11-05",
             "updated_at": "2026-11-05",
             "completion": null,
-            "claim": null
+            "claim": null,
+            "history": [
+                {
+                    "at": "2026-11-05T04:39:43.105Z",
+                    "actor": "codex/gpt-6/session-01a1a9fa-d89d-7091-ba52-c31a1df00b23",
+                    "from": "ready",
+                    "to": "doing",
+                    "note": "用户明确授权本轮仅实施S01a并提交推送。五张历史在制卡U-007/U-041/U-044/U-056/U-060无人执行但仍计入WIP；保留其状态、负责人、阻塞和历史。为一个实际执行中的S01a增加一个槽，上限5调整为6；U-066整体未完成前继续计入在制，不能仅因S01a完成就恢复5或关闭整卡。在线密钥待宿主安全注入，已请求；先认领本地并推进不依赖在线写入的工作。使用当前宿主统一适配器，其既有未提交代码不纳入本轮交付。"
+                },
+                {
+                    "at": "2026-11-05T07:27:07.576Z",
+                    "actor": "codex/gpt-6/session-01a1a9fa-d89d-7091-ba52-c31a1df00b23",
+                    "from": "doing",
+                    "to": "doing",
+                    "scope": "controlled",
+                    "evidence": [
+                        "evidence/055-s01a-catalog-integrity/README.md",
+                        "docs/reviews/2026-11-05-s01a-catalog-integrity.md",
+                        "evidence/055-s01a-catalog-integrity/python-final.log",
+                        "evidence/055-s01a-catalog-integrity/workspace-browser-final-pass/checks.json",
+                        "evidence/055-s01a-catalog-integrity/candidate-installed-python.log"
+                    ],
+                    "note": "S01a/T01-T04 工程检查点：只读目录/ID/profile/完整旧存储核对接入交互、列表、启动、关闭及公司发现；保留原创建回执、幂等、unknown 和 Console/CLI 差异。真实 RED 后实现；447 项 Python（5 平台跳过）、53 项前端、最终 71 项浏览器、安装后候选 26 项通过，独立 R1/R2 已修复复验。完整 S01 未完成，S01b/S01c 留待后续授权，completion 保持 null。仅交还本会话租约，保留 doing/owner/started_at，WIP 6/6 与其他五项原样；不调用将已开始工作退回 ready 的 release。在线 #20 缺宿主 UNION_KANBAN_KEY，尚未认领/写入，安全注入请求待办；宿主现有未提交适配器不属于交付。Git 提交/推送随后以 055 收据记录。"
+                }
+            ]
         },
         {
             "id": "U-067",

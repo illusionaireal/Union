@@ -1,0 +1,23 @@
+{
+  "error": "AssertionError [ERR_ASSERTION]: Default switch targets the selected connection\n    at check (D:\\Project\\Union\\scripts\\check_workspace.cjs:15:48)\n    at D:\\Project\\Union\\scripts\\check_workspace.cjs:107:3",
+  "checks": [
+    "Empty workspace has a general company onboarding flow",
+    "Eight page navigation exposes the model API directly",
+    "Model entry works before any organization exists",
+    "General company does not require a novel template",
+    "Command returns an accepted, completed, or explicitly expected failed receipt",
+    "Generic company starts with zero calls and no business specialization",
+    "Existing generic company gets the new homepage and model onboarding",
+    "API editor exposes the connection fields without an output-schema selector",
+    "Secret stays out of the preview",
+    "Command returns an accepted, completed, or explicitly expected failed receipt",
+    "Adding API saves ordinary chat and tools, binds, and performs no model request",
+    "Editing prefills the selected connection but never its key",
+    "Command returns an accepted, completed, or explicitly expected failed receipt",
+    "Editing keeps the existing key and saves the changed model",
+    "New connection does not overwrite the default connection",
+    "Command returns an accepted, completed, or explicitly expected failed receipt",
+    "Two independent connections remain in the service"
+  ],
+  "errors": []
+}

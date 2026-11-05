@@ -1,0 +1,217 @@
+test_actual_id_mismatch_does_not_rewrite_the_state_or_catalog (tests.test_catalog_integrity.CatalogIntegrityTests.test_actual_id_mismatch_does_not_rewrite_the_state_or_catalog) ... ok
+test_company_discovery_uses_the_same_profile_and_identity_boundary (tests.test_catalog_integrity.CatalogIntegrityTests.test_company_discovery_uses_the_same_profile_and_identity_boundary) ... FAIL
+test_creation_payloads_and_original_receipts_survive_restart_and_replay (tests.test_catalog_integrity.CatalogIntegrityTests.test_creation_payloads_and_original_receipts_survive_restart_and_replay) ... ok
+test_lifecycle_checks_late_bad_mapping_before_writing_an_earlier_valid_au (tests.test_catalog_integrity.CatalogIntegrityTests.test_lifecycle_checks_late_bad_mapping_before_writing_an_earlier_valid_au) ... ok
+test_matching_id_outside_organizations_root_is_rejected_without_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_matching_id_outside_organizations_root_is_rejected_without_writes) ... 
+  test_matching_id_outside_organizations_root_is_rejected_without_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_matching_id_outside_organizations_root_is_rejected_without_writes) (folder='organizations/../outside') ... FAIL
+  test_matching_id_outside_organizations_root_is_rejected_without_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_matching_id_outside_organizations_root_is_rejected_without_writes) (folder='D:\\Temp\\tmpzvkgdwsd\\escape\\outside') ... FAIL
+  test_matching_id_outside_organizations_root_is_rejected_without_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_matching_id_outside_organizations_root_is_rejected_without_writes) (folder='../escape/outside') ... FAIL
+test_missing_directory_or_database_is_rejected_without_creating_it (tests.test_catalog_integrity.CatalogIntegrityTests.test_missing_directory_or_database_is_rejected_without_creating_it) ... 
+  test_missing_directory_or_database_is_rejected_without_creating_it (tests.test_catalog_integrity.CatalogIntegrityTests.test_missing_directory_or_database_is_rejected_without_creating_it) (folder='organizations/absent') ... ERROR
+  test_missing_directory_or_database_is_rejected_without_creating_it (tests.test_catalog_integrity.CatalogIntegrityTests.test_missing_directory_or_database_is_rejected_without_creating_it) (folder='organizations/empty') ... ERROR
+test_partial_database_is_rejected_instead_of_completed_on_open (tests.test_catalog_integrity.CatalogIntegrityTests.test_partial_database_is_rejected_instead_of_completed_on_open) ... FAIL
+test_unknown_creation_allocations_and_receipts_survive_restart_without_replay (tests.test_catalog_integrity.CatalogIntegrityTests.test_unknown_creation_allocations_and_receipts_survive_restart_without_replay) ... ok
+test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy (tests.test_catalog_integrity.CatalogIntegrityTests.test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy) ... 
+  test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy (tests.test_catalog_integrity.CatalogIntegrityTests.test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy) (case='unknown-profile') ... FAIL
+  test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy (tests.test_catalog_integrity.CatalogIntegrityTests.test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy) (case='v1-is-not-legacy') ... FAIL
+  test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy (tests.test_catalog_integrity.CatalogIntegrityTests.test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy) (case='null-profile') ... FAIL
+  test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy (tests.test_catalog_integrity.CatalogIntegrityTests.test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy) (case='unknown-schema') ... FAIL
+  test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy (tests.test_catalog_integrity.CatalogIntegrityTests.test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy) (case='missing-id') ... ERROR
+  test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy (tests.test_catalog_integrity.CatalogIntegrityTests.test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy) (case='missing-work') ... FAIL
+  test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy (tests.test_catalog_integrity.CatalogIntegrityTests.test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy) (case='invalid-json') ... ERROR
+  test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy (tests.test_catalog_integrity.CatalogIntegrityTests.test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy) (case='invalid-state-type') ... ERROR
+test_valid_mapping_reopens_recovers_and_closes_the_original_aus (tests.test_catalog_integrity.CatalogIntegrityTests.test_valid_mapping_reopens_recovers_and_closes_the_original_aus) ... ok
+test_wrong_au_mapping_rejects_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_wrong_au_mapping_rejects_open_recovery_and_close_before_writes) ... ok
+
+======================================================================
+ERROR: test_missing_directory_or_database_is_rejected_without_creating_it (tests.test_catalog_integrity.CatalogIntegrityTests.test_missing_directory_or_database_is_rejected_without_creating_it) (folder='organizations/absent')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 165, in test_missing_directory_or_database_is_rejected_without_creating_it
+    app.engine(board, au_a)
+    ~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\Project\Union\ai_union\console.py", line 130, in engine
+    return self._catalog_engine(dict(row))
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "D:\Project\Union\ai_union\console.py", line 82, in _catalog_engine
+    return Engine(legacy_directory(self.root, entry))
+                  ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\ai_union\adapters\au_catalog.py", line 12, in legacy_directory
+    with closing(sqlite3.connect(database.as_uri() + "?mode=ro", uri=True)) as cx:
+                 ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: unable to open database file
+
+======================================================================
+ERROR: test_missing_directory_or_database_is_rejected_without_creating_it (tests.test_catalog_integrity.CatalogIntegrityTests.test_missing_directory_or_database_is_rejected_without_creating_it) (folder='organizations/empty')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 165, in test_missing_directory_or_database_is_rejected_without_creating_it
+    app.engine(board, au_a)
+    ~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\Project\Union\ai_union\console.py", line 130, in engine
+    return self._catalog_engine(dict(row))
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "D:\Project\Union\ai_union\console.py", line 82, in _catalog_engine
+    return Engine(legacy_directory(self.root, entry))
+                  ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\ai_union\adapters\au_catalog.py", line 12, in legacy_directory
+    with closing(sqlite3.connect(database.as_uri() + "?mode=ro", uri=True)) as cx:
+                 ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: unable to open database file
+
+======================================================================
+ERROR: test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy (tests.test_catalog_integrity.CatalogIntegrityTests.test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy) (case='missing-id')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 191, in test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy
+    app.engine(board, au_a)
+    ~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\Project\Union\ai_union\console.py", line 130, in engine
+    return self._catalog_engine(dict(row))
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "D:\Project\Union\ai_union\console.py", line 82, in _catalog_engine
+    return Engine(legacy_directory(self.root, entry))
+                  ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\ai_union\adapters\au_catalog.py", line 16, in legacy_directory
+    require(state["id"] == entry["id"], "组织标识与登记目录不一致；请保留原记录并在宿主核对")
+            ~~~~~^^^^^^
+KeyError: 'id'
+
+======================================================================
+ERROR: test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy (tests.test_catalog_integrity.CatalogIntegrityTests.test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy) (case='invalid-json')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 191, in test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy
+    app.engine(board, au_a)
+    ~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\Project\Union\ai_union\console.py", line 130, in engine
+    return self._catalog_engine(dict(row))
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "D:\Project\Union\ai_union\console.py", line 82, in _catalog_engine
+    return Engine(legacy_directory(self.root, entry))
+                  ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\ai_union\adapters\au_catalog.py", line 15, in legacy_directory
+    state = json.loads(cx.execute("SELECT data FROM state WHERE id=1").fetchone()[0])
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\json\__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\json\decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\json\decoder.py", line 361, in raw_decode
+    obj, end = self.scan_once(s, idx)
+               ~~~~~~~~~~~~~~^^^^^^^^
+json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+
+======================================================================
+ERROR: test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy (tests.test_catalog_integrity.CatalogIntegrityTests.test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy) (case='invalid-state-type')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 191, in test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy
+    app.engine(board, au_a)
+    ~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\Project\Union\ai_union\console.py", line 130, in engine
+    return self._catalog_engine(dict(row))
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "D:\Project\Union\ai_union\console.py", line 82, in _catalog_engine
+    return Engine(legacy_directory(self.root, entry))
+                  ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\ai_union\adapters\au_catalog.py", line 16, in legacy_directory
+    require(state["id"] == entry["id"], "组织标识与登记目录不一致；请保留原记录并在宿主核对")
+            ~~~~~^^^^^^
+TypeError: list indices must be integers or slices, not str
+
+======================================================================
+FAIL: test_company_discovery_uses_the_same_profile_and_identity_boundary (tests.test_catalog_integrity.CatalogIntegrityTests.test_company_discovery_uses_the_same_profile_and_identity_boundary)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 306, in test_company_discovery_uses_the_same_profile_and_identity_boundary
+    with self.assertRaises(Rejected):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+AssertionError: Rejected not raised
+
+======================================================================
+FAIL: test_matching_id_outside_organizations_root_is_rejected_without_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_matching_id_outside_organizations_root_is_rejected_without_writes) (folder='organizations/../outside')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 153, in test_matching_id_outside_organizations_root_is_rejected_without_writes
+    with self.subTest(folder=folder), self.assertRaises(Rejected):
+                                      ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+AssertionError: Rejected not raised
+
+======================================================================
+FAIL: test_matching_id_outside_organizations_root_is_rejected_without_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_matching_id_outside_organizations_root_is_rejected_without_writes) (folder='D:\\Temp\\tmpzvkgdwsd\\escape\\outside')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 153, in test_matching_id_outside_organizations_root_is_rejected_without_writes
+    with self.subTest(folder=folder), self.assertRaises(Rejected):
+                                      ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+AssertionError: Rejected not raised
+
+======================================================================
+FAIL: test_matching_id_outside_organizations_root_is_rejected_without_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_matching_id_outside_organizations_root_is_rejected_without_writes) (folder='../escape/outside')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 153, in test_matching_id_outside_organizations_root_is_rejected_without_writes
+    with self.subTest(folder=folder), self.assertRaises(Rejected):
+                                      ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+AssertionError: Rejected not raised
+
+======================================================================
+FAIL: test_partial_database_is_rejected_instead_of_completed_on_open (tests.test_catalog_integrity.CatalogIntegrityTests.test_partial_database_is_rejected_instead_of_completed_on_open)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 209, in test_partial_database_is_rejected_instead_of_completed_on_open
+    with self.assertRaises(Rejected):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+AssertionError: Rejected not raised
+
+======================================================================
+FAIL: test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy (tests.test_catalog_integrity.CatalogIntegrityTests.test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy) (case='unknown-profile')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 190, in test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy
+    with self.subTest(case=name), self.assertRaises(Rejected):
+                                  ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+AssertionError: Rejected not raised
+
+======================================================================
+FAIL: test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy (tests.test_catalog_integrity.CatalogIntegrityTests.test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy) (case='v1-is-not-legacy')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 190, in test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy
+    with self.subTest(case=name), self.assertRaises(Rejected):
+                                  ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+AssertionError: Rejected not raised
+
+======================================================================
+FAIL: test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy (tests.test_catalog_integrity.CatalogIntegrityTests.test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy) (case='null-profile')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 190, in test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy
+    with self.subTest(case=name), self.assertRaises(Rejected):
+                                  ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+AssertionError: Rejected not raised
+
+======================================================================
+FAIL: test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy (tests.test_catalog_integrity.CatalogIntegrityTests.test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy) (case='unknown-schema')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 190, in test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy
+    with self.subTest(case=name), self.assertRaises(Rejected):
+                                  ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+AssertionError: Rejected not raised
+
+======================================================================
+FAIL: test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy (tests.test_catalog_integrity.CatalogIntegrityTests.test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy) (case='missing-work')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 190, in test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy
+    with self.subTest(case=name), self.assertRaises(Rejected):
+                                  ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+AssertionError: Rejected not raised
+
+----------------------------------------------------------------------
+Ran 11 tests in 6.864s
+
+FAILED (failures=10, errors=5)

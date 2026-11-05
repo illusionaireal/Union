@@ -1,0 +1,118 @@
+
+> union@0.0.0 check
+> npm run check:management && npm run check:plan && npm test && npm run check:console
+
+
+> union@0.0.0 check:management
+> node scripts/project-management.mjs check && node --test tests/project-management.test.mjs tests/union-board.test.mjs
+
+Management check: 15 modules, 8 milestones, 76 tasks; PASS
+✔ rejects missing owners at start and unfinished dependencies, but permits honest unassigned backlog (7.9038ms)
+✔ completion requires scope, reviewer and existing evidence, and does not promote milestones (5.7055ms)
+✔ rejects duplicate IDs, unknown references and dependency cycles (3.6936ms)
+✔ blocked work needs an unblock action; already-started blocked work counts toward WIP (4.828ms)
+✔ rejects evidence outside repository, invalid scope and malformed dates (4.0735ms)
+✔ deterministic generated views reject stale output and preserve surrounding narrative (22.0614ms)
+✔ flow summary keeps empty live evidence distinct from completion counts (2.8322ms)
+✔ milestone acceptance and task scope cannot be asserted without their review metadata (4.7288ms)
+✔ claim writes a lease and enters doing, and blocks a second harness until the lease expires (10.5306ms)
+✔ claim refuses cards that are not ready and refuses to exceed the WIP limit (3.8826ms)
+✔ claim requires a real actor and refuses unknown cards (3.2058ms)
+✔ release only gives back an unstarted claim and clears the lease (6.9561ms)
+✔ done needs scope, reviewer, note and real evidence; completion clears the lease (5.7692ms)
+✔ a non-holder cannot move a card, and force cannot smuggle a foreign lease silently (5.0043ms)
+✔ blocked needs a reason and an unblock action, and started work cannot hide back in ready (5.2829ms)
+✔ board view exposes columns, the ready queue and lease state (19.7428ms)
+✔ serializeLedger keeps the ledger byte format (4 spaces, CRLF, trailing newline) (4.1028ms)
+✔ the ledger lock refuses a second writer, then recovers after the holder finishes (140.6155ms)
+✔ mutateLedger writes the ledger and rebuilds both generated views in one locked step (11.0039ms)
+✔ a rejected mutation leaves the ledger untouched (5.8191ms)
+✔ a doing card with no live lease can be claimed, but a live lease still blocks it (2.9732ms)
+✔ a view failure cannot leave a half-written ledger behind (7.2518ms)
+✔ a forced transition must record why and keeps the reason in the task history (3.8173ms)
+✔ a failed view write keeps the ledger unchanged, so the state stays recoverable (7.1981ms)
+✔ the MCP server passes note through, so a forced record can explain itself (140.1745ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 25
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 531.3832
+
+> union@0.0.0 check:plan
+> node scripts/check-plan.mjs
+
+{"baseline":"UNION-B1","tasks":82,"dependencies":181,"cycles":0,"missingDependencies":0,"baselineFiles":5,"githubTasks":8}
+
+> union@0.0.0 test
+> node --test tests/*.test.ts
+
+✔ retry uses the same reservation; changed request is rejected (153.5823ms)
+✔ unauthorized model actions and tenant/currency changes leave budget untouched (84.3446ms)
+✔ only positive safe integer amounts and bounded keys are accepted (86.2915ms)
+✔ eight competing processes cannot exceed a 100-minor-unit hard budget (459.5374ms)
+✔ process crash after external success recovers by lookup without repeating the effect (282.8325ms)
+✔ crash before external call retains reservation when lookup is inconclusive (254.9475ms)
+✔ definitive failure releases reservation exactly once (134.3215ms)
+✔ settling below maximum releases the difference and invalid receipt rolls back (156.7292ms)
+✔ same key across test tenants remains independent (198.8375ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1991.2859
+
+> union@0.0.0 check:console
+> npm run typecheck --workspace @union/console && npm run test --workspace @union/console && npm run build:console
+
+
+> @union/console@0.1.0 typecheck
+> tsc --noEmit
+
+
+> @union/console@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 D:/Project/Union/web/console
+
+ ✓ src/features/commands/receipts.test.ts (4 tests) 9ms
+ ✓ src/api/client.test.ts (3 tests) 21ms
+ ✓ src/app/url-state.test.tsx (1 test) 233ms
+ ✓ src/features/commands/fields.test.tsx (9 tests) 757ms
+ ✓ src/pages/ModelServiceConnections.test.tsx (2 tests) 416ms
+   ✓ binds adoption to selected account, model and AU; lost reply blocks a second write  365ms
+ ✓ src/pages/Identity.test.tsx (8 tests) 795ms
+ ✓ src/pages/RuntimeObservation.test.tsx (11 tests) 578ms
+ ✓ src/pages/Gateways.test.tsx (3 tests) 564ms
+ ✓ src/app/workspace.test.tsx (4 tests) 864ms
+   ✓ workspace organization transitions > keeps the session and draft mounted while withholding old organization data and writes  346ms
+ ✓ src/pages/SubscriptionConnections.test.tsx (8 tests) 829ms
+
+ Test Files  10 passed (10)
+      Tests  53 passed (53)
+   Start at  12:58:06
+   Duration  10.36s (transform 2.59s, setup 23.31s, collect 6.69s, tests 5.07s, environment 51.24s, prepare 4.27s)
+
+
+> union@0.0.0 build:console
+> npm run build --workspace @union/console
+
+
+> @union/console@0.1.0 build
+> tsc --noEmit && vite build
+
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 2012 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.74 kB │ gzip:   0.51 kB
+dist/assets/index-CaMEXWpI.css   44.75 kB │ gzip:  10.07 kB
+dist/assets/index-CPfnp9-U.js   433.25 kB │ gzip: 135.54 kB
+✓ built in 5.62s

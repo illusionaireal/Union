@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "aegis.schema.v0",
+  "baselineRefs": [
+    "docs/UNION_CHARTER_v1.0.md",
+    "docs/PRD.md",
+    "docs/ARCHITECTURE.md",
+    "docs/decisions/0005-au-runtime-boundaries.md",
+    "docs/decisions/0006-charter-policy-adoption.md",
+    "specs/053-union-rewrite/s01-contract.md"
+  ],
+  "impactStatement": "docs/aegis/work/2026-11-05-s01a-catalog-integrity/impact-statement-draft.json",
+  "compatPlan": "只接受完整 legacy_v0；保留 Console/CLI 的不同资源范围与 controller/company 版本。没有自动迁移或修复。",
+  "retirementPlan": "Console 与 company 目录解析收口；保留 legacy 创建和执行以履行兼容契约，V1 入口替换与隔离由后续授权的 S01b/S01c 拥有。",
+  "evidenceBundle": [
+    "docs/aegis/work/2026-11-05-s01a-catalog-integrity/evidence-bundle-draft-s01a.json"
+  ]
+}

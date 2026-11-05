@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "aegis.schema.v0",
+  "artifactKey": "U-066-S01a-controlled-engineering",
+  "sliceId": "S01a",
+  "evidenceStatus": "evidence-finalized",
+  "type": "controlled-engineering",
+  "source": "evidence/055-s01a-catalog-integrity/README.md",
+  "summary": "T01-T04 的真实 RED/GREEN、447 项 Python（5 平台跳过）、53 项前端、71 项实际浏览器、安装候选 26 项通过。独立 R1/R2 均修复复验；不是完整 S01/V1 创建或真实运行验收。Git 与在线协作边界见同一证据的交付收据。",
+  "verifier": "协调者执行测试；独立身份/持久化及验证器复核见 docs/reviews/2026-11-05-s01a-catalog-integrity.md。",
+  "evidenceRefs": [
+    "evidence/055-s01a-catalog-integrity/red-mapping.log",
+    "evidence/055-s01a-catalog-integrity/red-review-columns.log",
+    "evidence/055-s01a-catalog-integrity/python-final.log",
+    "evidence/055-s01a-catalog-integrity/workspace-browser-final-pass/checks.json",
+    "evidence/055-s01a-catalog-integrity/candidate-installed-python.log",
+    "docs/reviews/2026-11-05-s01a-catalog-integrity.md"
+  ]
+}

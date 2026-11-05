@@ -16,6 +16,7 @@ from contextlib import closing
 from pathlib import Path
 
 from .console import Console
+from .adapters.au_catalog import legacy_directory
 from .engine import Engine, Rejected, encoded, require
 from .evaluation import execution_receipt
 from .model_api import resolve_connection
@@ -44,17 +45,14 @@ def company_engine(root):
     db = root / "console.sqlite3"
     require(db.is_file(), "公司尚未准备；先执行 prepare")
     with closing(sqlite3.connect(db.as_uri() + "?mode=ro", uri=True)) as cx:
+        cx.row_factory = sqlite3.Row
         row = cx.execute("SELECT receipt,folder FROM creations WHERE id=?", (REQUEST_ID,)).fetchone()
         require(row is not None, "未找到公司的原创建请求；不猜测其他组织")
         receipt = json.loads(row[0])
         require(receipt["status"] == "succeeded", "原创建请求未成功；保留原目录和回执核对，不重复创建")
-        directory = (root / row[1]).resolve()
-        require(directory.is_relative_to(root / "organizations"), "公司目录超出服务范围")
-        registered = cx.execute("SELECT folder FROM organizations WHERE id=?", (receipt["organization_id"],)).fetchone()
-        require(registered is not None and registered[0] == row[1], "创建回执与组织目录不一致；请在宿主核对")
-    engine = Engine(directory)
-    require(engine.state()["id"] == receipt["organization_id"], "公司标识与登记记录不一致")
-    return engine
+        registered = cx.execute("SELECT * FROM organizations WHERE id=?", (receipt["organization_id"],)).fetchone()
+        require(registered is not None and registered["folder"] == row[1], "创建回执与组织目录不一致；请在宿主核对")
+    return Engine(legacy_directory(root, dict(registered)))
 
 
 def inspect_company(root):

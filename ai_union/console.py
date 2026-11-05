@@ -10,6 +10,7 @@ from contextlib import closing, contextmanager, nullcontext
 from pathlib import Path
 
 from .activity import activity
+from .adapters.au_catalog import legacy_directory
 from .engine import Engine, Rejected, encoded, identifier, model_name, now, require, text, uid, validate_charter, validate_resources
 from .executor import CodexExecutor, FixtureExecutor
 from .locking import file_lock
@@ -39,26 +40,32 @@ class Console:
         self.closed = False
         from .gateways import Gateways
         self.gateways = Gateways(self)
-        with self.catalog() as cx:
-            cx.execute("CREATE TABLE IF NOT EXISTS organizations(id TEXT PRIMARY KEY, folder TEXT NOT NULL)")
-            cx.execute("CREATE TABLE IF NOT EXISTS creations(id TEXT PRIMARY KEY, payload TEXT NOT NULL, receipt TEXT NOT NULL, folder TEXT NOT NULL)")
-            for row in cx.execute("SELECT id,receipt FROM creations").fetchall():
-                receipt = json.loads(row["receipt"])
-                if receipt["status"] == "accepted":
-                    receipt.update(status="unknown", message="创建过程被中断；保留原目录，请在宿主核对。不要重复创建。")
-                    cx.execute("UPDATE creations SET receipt=? WHERE id=?", (encoded(receipt), row["id"]))
-        # Stale job receipts are preserved as uncertain, never automatically replayed.
-        for item in self.organizations():
-            e = Engine(self.root / item["folder"])
-            with e.transaction() as cx:
-                self._schema(cx)
-                for row in cx.execute("SELECT id,receipt FROM commands").fetchall():
+        try:
+            with self.catalog() as cx:
+                cx.execute("CREATE TABLE IF NOT EXISTS organizations(id TEXT PRIMARY KEY, folder TEXT NOT NULL)")
+                cx.execute("CREATE TABLE IF NOT EXISTS creations(id TEXT PRIMARY KEY, payload TEXT NOT NULL, receipt TEXT NOT NULL, folder TEXT NOT NULL)")
+                for row in cx.execute("SELECT id,receipt FROM creations").fetchall():
                     receipt = json.loads(row["receipt"])
                     if receipt["status"] == "accepted":
-                        receipt.update(status="unknown", message="宿主作业中断；检查原执行记录，不能据此推断远程取消。")
-                        cx.execute("UPDATE commands SET receipt=? WHERE id=?", (encoded(receipt), row["id"]))
-        from .identity import Identity
-        self.identity = Identity(self)
+                        receipt.update(status="unknown", message="创建过程被中断；保留原目录，请在宿主核对。不要重复创建。")
+                        cx.execute("UPDATE creations SET receipt=? WHERE id=?", (encoded(receipt), row["id"]))
+            # Validate the whole catalog before any AU receives recovery writes.
+            engines = [self._catalog_engine(item) for item in self._catalog_entries()]
+            # Stale job receipts are uncertain, never automatically replayed.
+            for e in engines:
+                with e.transaction() as cx:
+                    self._schema(cx)
+                    for row in cx.execute("SELECT id,receipt FROM commands").fetchall():
+                        receipt = json.loads(row["receipt"])
+                        if receipt["status"] == "accepted":
+                            receipt.update(status="unknown", message="宿主作业中断；检查原执行记录，不能据此推断远程取消。")
+                            cx.execute("UPDATE commands SET receipt=? WHERE id=?", (encoded(receipt), row["id"]))
+            from .identity import Identity
+            self.identity = Identity(self)
+        except BaseException:
+            self._guard.__exit__(None, None, None)
+            self.closed = True
+            raise
 
     @contextmanager
     def catalog(self):
@@ -67,9 +74,18 @@ class Console:
             cx.execute("BEGIN IMMEDIATE")
             yield cx
 
-    def organizations(self):
+    def _catalog_entries(self):
         with self.read_catalog() as cx:
             return [dict(row) for row in cx.execute("SELECT * FROM organizations ORDER BY rowid")]
+
+    def organizations(self):
+        entries = self._catalog_entries()
+        for entry in entries:
+            legacy_directory(self.root, entry)
+        return entries
+
+    def _catalog_engine(self, entry):
+        return Engine(legacy_directory(self.root, entry))
 
     @contextmanager
     def read_catalog(self):
@@ -115,14 +131,14 @@ class Console:
         identifier(organization_id)
         require(session["organizations"] is None or organization_id in session["organizations"], "会话无权访问此组织")
         with self.read_catalog() as cx:
-            row = cx.execute("SELECT folder FROM organizations WHERE id=?", (organization_id,)).fetchone()
+            row = cx.execute("SELECT * FROM organizations WHERE id=?", (organization_id,)).fetchone()
         require(row is not None, "组织不存在或不在此服务范围内")
-        return Engine(self.root / row["folder"])
+        return self._catalog_engine(dict(row))
 
     def session_info(self, token):
         session = self.session(token)
         orgs = []
-        for item in self.organizations():
+        for item in self._catalog_entries():
             if session["organizations"] is None or item["id"] in session["organizations"]:
                 e = self.engine(token, item["id"])
                 with e.read_transaction() as cx:
@@ -520,8 +536,9 @@ class Console:
     def close(self):
         if not self.closed:
             # Graceful host shutdown stops further dispatch, retaining in-flight results.
-            for item in self.organizations():
-                Engine(self.root / item["folder"]).set_paused(True)
+            engines = [self._catalog_engine(item) for item in self._catalog_entries()]
+            for engine in engines:
+                engine.set_paused(True)
             self.join_jobs()
             self._guard.__exit__(None, None, None)
             self.closed = True

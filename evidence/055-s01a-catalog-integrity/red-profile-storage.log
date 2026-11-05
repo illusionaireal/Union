@@ -1,0 +1,67 @@
+test_catalog_profile_hint_is_checked_against_the_stored_profile (tests.test_catalog_integrity.CatalogIntegrityTests.test_catalog_profile_hint_is_checked_against_the_stored_profile) ... 
+  test_catalog_profile_hint_is_checked_against_the_stored_profile (tests.test_catalog_integrity.CatalogIntegrityTests.test_catalog_profile_hint_is_checked_against_the_stored_profile) (hint='core_v1') ... FAIL
+  test_catalog_profile_hint_is_checked_against_the_stored_profile (tests.test_catalog_integrity.CatalogIntegrityTests.test_catalog_profile_hint_is_checked_against_the_stored_profile) (hint='future') ... FAIL
+  test_catalog_profile_hint_is_checked_against_the_stored_profile (tests.test_catalog_integrity.CatalogIntegrityTests.test_catalog_profile_hint_is_checked_against_the_stored_profile) (hint=None) ... FAIL
+test_state_database_link_cannot_escape_the_validated_directory (tests.test_catalog_integrity.CatalogIntegrityTests.test_state_database_link_cannot_escape_the_validated_directory) ... FAIL
+test_incomplete_current_charter_is_rejected_without_re_adoption (tests.test_catalog_integrity.CatalogIntegrityTests.test_incomplete_current_charter_is_rejected_without_re_adoption) ... FAIL
+test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy (tests.test_catalog_integrity.CatalogIntegrityTests.test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy) ... 
+  test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy (tests.test_catalog_integrity.CatalogIntegrityTests.test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy) (case='missing-resource-limits') ... FAIL
+
+======================================================================
+FAIL: test_catalog_profile_hint_is_checked_against_the_stored_profile (tests.test_catalog_integrity.CatalogIntegrityTests.test_catalog_profile_hint_is_checked_against_the_stored_profile) (hint='core_v1')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 224, in test_catalog_profile_hint_is_checked_against_the_stored_profile
+    with self.subTest(hint=hint), self.assertRaises(Rejected):
+                                  ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+AssertionError: Rejected not raised
+
+======================================================================
+FAIL: test_catalog_profile_hint_is_checked_against_the_stored_profile (tests.test_catalog_integrity.CatalogIntegrityTests.test_catalog_profile_hint_is_checked_against_the_stored_profile) (hint='future')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 224, in test_catalog_profile_hint_is_checked_against_the_stored_profile
+    with self.subTest(hint=hint), self.assertRaises(Rejected):
+                                  ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+AssertionError: Rejected not raised
+
+======================================================================
+FAIL: test_catalog_profile_hint_is_checked_against_the_stored_profile (tests.test_catalog_integrity.CatalogIntegrityTests.test_catalog_profile_hint_is_checked_against_the_stored_profile) (hint=None)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 224, in test_catalog_profile_hint_is_checked_against_the_stored_profile
+    with self.subTest(hint=hint), self.assertRaises(Rejected):
+                                  ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+AssertionError: Rejected not raised
+
+======================================================================
+FAIL: test_state_database_link_cannot_escape_the_validated_directory (tests.test_catalog_integrity.CatalogIntegrityTests.test_state_database_link_cannot_escape_the_validated_directory)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 242, in test_state_database_link_cannot_escape_the_validated_directory
+    with self.assertRaises(Rejected):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+AssertionError: Rejected not raised
+
+======================================================================
+FAIL: test_incomplete_current_charter_is_rejected_without_re_adoption (tests.test_catalog_integrity.CatalogIntegrityTests.test_incomplete_current_charter_is_rejected_without_re_adoption)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 293, in test_incomplete_current_charter_is_rejected_without_re_adoption
+    with self.assertRaises(Rejected):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+AssertionError: Rejected not raised
+
+======================================================================
+FAIL: test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy (tests.test_catalog_integrity.CatalogIntegrityTests.test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy) (case='missing-resource-limits')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 203, in test_unknown_profiles_schema_and_incomplete_state_do_not_fall_back_to_legacy
+    with self.subTest(case=name), self.assertRaises(Rejected):
+                                  ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+AssertionError: Rejected not raised
+
+----------------------------------------------------------------------
+Ran 4 tests in 1.878s
+
+FAILED (failures=6)

@@ -1,0 +1,192 @@
+test_incomplete_table_columns_reject_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_incomplete_table_columns_reject_open_recovery_and_close_before_writes) ... 
+  test_incomplete_table_columns_reject_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_incomplete_table_columns_reject_open_recovery_and_close_before_writes) (table='events', boundary='open', guarantee='rejected') ... FAIL
+  test_incomplete_table_columns_reject_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_incomplete_table_columns_reject_open_recovery_and_close_before_writes) (table='events', boundary='startup', guarantee='no writes') ... FAIL
+  test_incomplete_table_columns_reject_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_incomplete_table_columns_reject_open_recovery_and_close_before_writes) (table='events', boundary='startup', guarantee='rejected') ... FAIL
+  test_incomplete_table_columns_reject_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_incomplete_table_columns_reject_open_recovery_and_close_before_writes) (table='events', boundary='close', guarantee='no writes') ... FAIL
+  test_incomplete_table_columns_reject_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_incomplete_table_columns_reject_open_recovery_and_close_before_writes) (table='events', boundary='close', guarantee='rejected') ... FAIL
+  test_incomplete_table_columns_reject_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_incomplete_table_columns_reject_open_recovery_and_close_before_writes) (table='runs', boundary='open', guarantee='rejected') ... FAIL
+  test_incomplete_table_columns_reject_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_incomplete_table_columns_reject_open_recovery_and_close_before_writes) (table='runs', boundary='startup', guarantee='no writes') ... FAIL
+  test_incomplete_table_columns_reject_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_incomplete_table_columns_reject_open_recovery_and_close_before_writes) (table='runs', boundary='startup', guarantee='rejected') ... FAIL
+  test_incomplete_table_columns_reject_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_incomplete_table_columns_reject_open_recovery_and_close_before_writes) (table='runs', boundary='close', guarantee='no writes') ... FAIL
+  test_incomplete_table_columns_reject_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_incomplete_table_columns_reject_open_recovery_and_close_before_writes) (table='runs', boundary='close', guarantee='rejected') ... FAIL
+  test_incomplete_table_columns_reject_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_incomplete_table_columns_reject_open_recovery_and_close_before_writes) (table='commands', boundary='open', guarantee='rejected') ... FAIL
+  test_incomplete_table_columns_reject_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_incomplete_table_columns_reject_open_recovery_and_close_before_writes) (table='commands', boundary='startup', guarantee='no writes') ... FAIL
+  test_incomplete_table_columns_reject_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_incomplete_table_columns_reject_open_recovery_and_close_before_writes) (table='commands', boundary='startup', guarantee='rejected') ... FAIL
+  test_incomplete_table_columns_reject_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_incomplete_table_columns_reject_open_recovery_and_close_before_writes) (table='commands', boundary='close', guarantee='no writes') ... FAIL
+  test_incomplete_table_columns_reject_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_incomplete_table_columns_reject_open_recovery_and_close_before_writes) (table='commands', boundary='close', guarantee='rejected') ... FAIL
+
+======================================================================
+FAIL: test_incomplete_table_columns_reject_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_incomplete_table_columns_reject_open_recovery_and_close_before_writes) (table='events', boundary='open', guarantee='rejected')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 311, in test_incomplete_table_columns_reject_open_recovery_and_close_before_writes
+    self.assertTrue(rejected, "an existing table name does not prove a complete legacy schema")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : an existing table name does not prove a complete legacy schema
+
+======================================================================
+FAIL: test_incomplete_table_columns_reject_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_incomplete_table_columns_reject_open_recovery_and_close_before_writes) (table='events', boundary='startup', guarantee='no writes')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 309, in test_incomplete_table_columns_reject_open_recovery_and_close_before_writes
+    self.assertEqual((self.contents(malformed), self.contents(victim)), before)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: ((('B[3526 chars]e": "宿主作业中断；检查原执行记录，不能据此推断远程取消。", "organizatio[1785 chars]d'})) != ((('B[3526 chars]e": "original B receipt", "organization_id": "[1778 chars]0'}))
+
+First differing element 1:
+(('BE[971 chars]e": "宿主作业中断；检查原执行记录，不能据此推断远程取消。", "organizatio[1784 chars]8d'})
+(('BE[971 chars]e": "original B receipt", "organization_id": "[1777 chars]60'})
+
+Diff is 6306 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_incomplete_table_columns_reject_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_incomplete_table_columns_reject_open_recovery_and_close_before_writes) (table='events', boundary='startup', guarantee='rejected')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 311, in test_incomplete_table_columns_reject_open_recovery_and_close_before_writes
+    self.assertTrue(rejected, "an existing table name does not prove a complete legacy schema")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : an existing table name does not prove a complete legacy schema
+
+======================================================================
+FAIL: test_incomplete_table_columns_reject_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_incomplete_table_columns_reject_open_recovery_and_close_before_writes) (table='events', boundary='close', guarantee='no writes')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 309, in test_incomplete_table_columns_reject_open_recovery_and_close_before_writes
+    self.assertEqual((self.contents(malformed), self.contents(victim)), before)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: ((('B[1291 chars];', 'INSERT INTO "meta" VALUES(\'dispatch_paus[4012 chars]0'})) != ((('B[1291 chars];', 'CREATE TABLE runs (id TEXT PRIMARY KEY, k[3953 chars]7'}))
+
+First differing element 0:
+(('BE[1290 chars];', 'INSERT INTO "meta" VALUES(\'dispatch_paus[1206 chars]5c'})
+(('BE[1290 chars];', 'CREATE TABLE runs (id TEXT PRIMARY KEY, k[1146 chars]d8'})
+
+Diff is 6308 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_incomplete_table_columns_reject_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_incomplete_table_columns_reject_open_recovery_and_close_before_writes) (table='events', boundary='close', guarantee='rejected')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 311, in test_incomplete_table_columns_reject_open_recovery_and_close_before_writes
+    self.assertTrue(rejected, "an existing table name does not prove a complete legacy schema")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : an existing table name does not prove a complete legacy schema
+
+======================================================================
+FAIL: test_incomplete_table_columns_reject_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_incomplete_table_columns_reject_open_recovery_and_close_before_writes) (table='runs', boundary='open', guarantee='rejected')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 311, in test_incomplete_table_columns_reject_open_recovery_and_close_before_writes
+    self.assertTrue(rejected, "an existing table name does not prove a complete legacy schema")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : an existing table name does not prove a complete legacy schema
+
+======================================================================
+FAIL: test_incomplete_table_columns_reject_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_incomplete_table_columns_reject_open_recovery_and_close_before_writes) (table='runs', boundary='startup', guarantee='no writes')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 309, in test_incomplete_table_columns_reject_open_recovery_and_close_before_writes
+    self.assertEqual((self.contents(malformed), self.contents(victim)), before)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: ((('B[3542 chars]e": "宿主作业中断；检查原执行记录，不能据此推断远程取消。", "organizatio[1785 chars]c'})) != ((('B[3542 chars]e": "original B receipt", "organization_id": "[1778 chars]b'}))
+
+First differing element 1:
+(('BE[971 chars]e": "宿主作业中断；检查原执行记录，不能据此推断远程取消。", "organizatio[1784 chars]7c'})
+(('BE[971 chars]e": "original B receipt", "organization_id": "[1777 chars]7b'})
+
+Diff is 6322 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_incomplete_table_columns_reject_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_incomplete_table_columns_reject_open_recovery_and_close_before_writes) (table='runs', boundary='startup', guarantee='rejected')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 311, in test_incomplete_table_columns_reject_open_recovery_and_close_before_writes
+    self.assertTrue(rejected, "an existing table name does not prove a complete legacy schema")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : an existing table name does not prove a complete legacy schema
+
+======================================================================
+FAIL: test_incomplete_table_columns_reject_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_incomplete_table_columns_reject_open_recovery_and_close_before_writes) (table='runs', boundary='close', guarantee='no writes')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 309, in test_incomplete_table_columns_reject_open_recovery_and_close_before_writes
+    self.assertEqual((self.contents(malformed), self.contents(victim)), before)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: ((('B[1563 chars];', 'INSERT INTO "meta" VALUES(\'dispatch_paus[3756 chars]7'})) != ((('B[1563 chars];', 'CREATE TABLE runs(id TEXT PRIMARY KEY, ki[3697 chars]b'}))
+
+First differing element 0:
+(('BE[1562 chars];', 'INSERT INTO "meta" VALUES(\'dispatch_paus[950 chars]1e'})
+(('BE[1562 chars];', 'CREATE TABLE runs(id TEXT PRIMARY KEY, ki[890 chars]6b'})
+
+Diff is 6324 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_incomplete_table_columns_reject_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_incomplete_table_columns_reject_open_recovery_and_close_before_writes) (table='runs', boundary='close', guarantee='rejected')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 311, in test_incomplete_table_columns_reject_open_recovery_and_close_before_writes
+    self.assertTrue(rejected, "an existing table name does not prove a complete legacy schema")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : an existing table name does not prove a complete legacy schema
+
+======================================================================
+FAIL: test_incomplete_table_columns_reject_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_incomplete_table_columns_reject_open_recovery_and_close_before_writes) (table='commands', boundary='open', guarantee='rejected')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 311, in test_incomplete_table_columns_reject_open_recovery_and_close_before_writes
+    self.assertTrue(rejected, "an existing table name does not prove a complete legacy schema")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : an existing table name does not prove a complete legacy schema
+
+======================================================================
+FAIL: test_incomplete_table_columns_reject_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_incomplete_table_columns_reject_open_recovery_and_close_before_writes) (table='commands', boundary='startup', guarantee='no writes')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 309, in test_incomplete_table_columns_reject_open_recovery_and_close_before_writes
+    self.assertEqual((self.contents(malformed), self.contents(victim)), before)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: ((('B[3545 chars]e": "宿主作业中断；检查原执行记录，不能据此推断远程取消。", "organizatio[1785 chars]7'})) != ((('B[3545 chars]e": "original B receipt", "organization_id": "[1778 chars]d'}))
+
+First differing element 1:
+(('BE[971 chars]e": "宿主作业中断；检查原执行记录，不能据此推断远程取消。", "organizatio[1784 chars]67'})
+(('BE[971 chars]e": "original B receipt", "organization_id": "[1777 chars]9d'})
+
+Diff is 6317 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_incomplete_table_columns_reject_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_incomplete_table_columns_reject_open_recovery_and_close_before_writes) (table='commands', boundary='startup', guarantee='rejected')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 311, in test_incomplete_table_columns_reject_open_recovery_and_close_before_writes
+    self.assertTrue(rejected, "an existing table name does not prove a complete legacy schema")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : an existing table name does not prove a complete legacy schema
+
+======================================================================
+FAIL: test_incomplete_table_columns_reject_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_incomplete_table_columns_reject_open_recovery_and_close_before_writes) (table='commands', boundary='close', guarantee='no writes')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 309, in test_incomplete_table_columns_reject_open_recovery_and_close_before_writes
+    self.assertEqual((self.contents(malformed), self.contents(victim)), before)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: ((('B[1540 chars];', 'INSERT INTO "meta" VALUES(\'dispatch_paus[3782 chars]e'})) != ((('B[1540 chars];', 'CREATE TABLE runs (id TEXT PRIMARY KEY, k[3723 chars]b'}))
+
+First differing element 0:
+(('BE[1539 chars];', 'INSERT INTO "meta" VALUES(\'dispatch_paus[976 chars]48'})
+(('BE[1539 chars];', 'CREATE TABLE runs (id TEXT PRIMARY KEY, k[916 chars]83'})
+
+Diff is 6319 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_incomplete_table_columns_reject_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_incomplete_table_columns_reject_open_recovery_and_close_before_writes) (table='commands', boundary='close', guarantee='rejected')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 311, in test_incomplete_table_columns_reject_open_recovery_and_close_before_writes
+    self.assertTrue(rejected, "an existing table name does not prove a complete legacy schema")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : an existing table name does not prove a complete legacy schema
+
+----------------------------------------------------------------------
+Ran 1 test in 6.528s
+
+FAILED (failures=15)

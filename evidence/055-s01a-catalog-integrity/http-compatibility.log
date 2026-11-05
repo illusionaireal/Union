@@ -1,0 +1,9 @@
+test_console_resource_limits_and_broader_cli_resources_remain_distinct (tests.test_catalog_http.CatalogHTTPTests.test_console_resource_limits_and_broader_cli_resources_remain_distinct) ... ok
+test_legacy_controller_and_company_creation_keep_their_versions (tests.test_catalog_http.CatalogHTTPTests.test_legacy_controller_and_company_creation_keep_their_versions) ... ok
+test_registration_failure_queries_the_original_http_receipt_without_an_au_id (tests.test_catalog_http.CatalogHTTPTests.test_registration_failure_queries_the_original_http_receipt_without_an_au_id) ... ok
+test_wrong_mapping_returns_409_without_reading_or_mutating_the_other_au (tests.test_catalog_http.CatalogHTTPTests.test_wrong_mapping_returns_409_without_reading_or_mutating_the_other_au) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 3.474s
+
+OK

@@ -1,0 +1,5 @@
+{"name":"async_false","outcome":"timeout","elapsed_ms":300}
+{"name":"late_true","outcome":"timeout","elapsed_ms":309}
+{"name":"never_resolves","outcome":"timeout","elapsed_ms":312}
+{"name":"eventual_true","outcome":"accepted","elapsed_ms":111}
+PASS: false, delayed success, unresolved promise, and eventual success

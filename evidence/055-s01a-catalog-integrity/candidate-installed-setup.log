@@ -1,0 +1,28 @@
+Installed import and candidate bytes verified: ai_union/console.py SHA256=c7d3007731f3291bba70e56aaf7a001d49f11bf2cb54f6bbacdc3093bab93683
+Installed import and candidate bytes verified: ai_union/corp.py SHA256=4c43b4c6d8bfeb107251996fd308a29ebf528864fd71cd198921579c6544fba2
+Installed import and candidate bytes verified: ai_union/adapters/au_catalog.py SHA256=005dfc4dd9871b9d8f9b06cfbbca7c09a494fd34bb4aff18ceb403d197cd832b
+Wheel includes resolver and excludes pre-existing untracked runtime files.
+Traceback (most recent call last):
+  File "<stdin>", line 26, in <module>
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\unittest\loader.py", line 207, in loadTestsFromNames
+    suites = [self.loadTestsFromName(name, module) for name in names]
+              ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\unittest\loader.py", line 137, in loadTestsFromName
+    module = __import__(module_name)
+  File "D:\Temp\union-s01a-candidate-k28ks_6i\installed-check\tests\test_catalog_http.py", line 11, in <module>
+    from tests import test_catalog_integrity, test_company, test_http
+  File "D:\Temp\union-s01a-candidate-k28ks_6i\installed-check\tests\test_http.py", line 12, in <module>
+    from tests.test_console import FIXTURE
+  File "D:\Temp\union-s01a-candidate-k28ks_6i\installed-check\tests\test_console.py", line 21, in <module>
+    FIXTURE = json.loads((Path(__file__).resolve().parents[1] / "examples/fixture.json").read_text(encoding="utf-8"))
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\pathlib\_local.py", line 546, in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\pathlib\_abc.py", line 632, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\pathlib\_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'D:\\Temp\\union-s01a-candidate-k28ks_6i\\installed-check\\examples\\fixture.json'

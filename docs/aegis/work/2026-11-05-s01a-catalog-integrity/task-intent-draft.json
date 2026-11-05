@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "aegis.schema.v0",
+  "requestedOutcome": "完成 S01a 旧目录与身份完整性检查点，独立复核、验证、提交并推送 rewrite/charter-v1。",
+  "scope": "U-066/S01 的 T01-T04；实际状态只由 management/project.json 拥有。完整意图与开工快照见 10-intent.md。",
+  "changeKinds": ["catalog-integrity", "legacy-compatibility", "verification", "handoff"],
+  "riskHints": ["identity", "persistence", "creation-receipts", "unknown-recovery"],
+  "nonGoals": ["S01b 稳定 principal 和 V1 创建", "S01c 入口隔离与用户闭环", "关闭 U-066", "真实数据迁移或部署"]
+}

@@ -1,0 +1,36 @@
+test_catalog_list_checks_identity_while_scoped_session_keeps_its_own_au (tests.test_catalog_integrity.CatalogIntegrityTests.test_catalog_list_checks_identity_while_scoped_session_keeps_its_own_au) ... FAIL
+test_missing_current_charter_or_legacy_authority_is_rejected_without_repair (tests.test_catalog_integrity.CatalogIntegrityTests.test_missing_current_charter_or_legacy_authority_is_rejected_without_repair) ... 
+  test_missing_current_charter_or_legacy_authority_is_rejected_without_repair (tests.test_catalog_integrity.CatalogIntegrityTests.test_missing_current_charter_or_legacy_authority_is_rejected_without_repair) (table='charters') ... FAIL
+  test_missing_current_charter_or_legacy_authority_is_rejected_without_repair (tests.test_catalog_integrity.CatalogIntegrityTests.test_missing_current_charter_or_legacy_authority_is_rejected_without_repair) (table='meta') ... FAIL
+
+======================================================================
+FAIL: test_catalog_list_checks_identity_while_scoped_session_keeps_its_own_au (tests.test_catalog_integrity.CatalogIntegrityTests.test_catalog_list_checks_identity_while_scoped_session_keeps_its_own_au)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 175, in test_catalog_list_checks_identity_while_scoped_session_keeps_its_own_au
+    with self.assertRaises(Rejected):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+AssertionError: Rejected not raised
+
+======================================================================
+FAIL: test_missing_current_charter_or_legacy_authority_is_rejected_without_repair (tests.test_catalog_integrity.CatalogIntegrityTests.test_missing_current_charter_or_legacy_authority_is_rejected_without_repair) (table='charters')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 237, in test_missing_current_charter_or_legacy_authority_is_rejected_without_repair
+    with self.subTest(table=table), self.assertRaises(Rejected):
+                                    ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+AssertionError: Rejected not raised
+
+======================================================================
+FAIL: test_missing_current_charter_or_legacy_authority_is_rejected_without_repair (tests.test_catalog_integrity.CatalogIntegrityTests.test_missing_current_charter_or_legacy_authority_is_rejected_without_repair) (table='meta')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 237, in test_missing_current_charter_or_legacy_authority_is_rejected_without_repair
+    with self.subTest(table=table), self.assertRaises(Rejected):
+                                    ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+AssertionError: Rejected not raised
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.800s
+
+FAILED (failures=3)

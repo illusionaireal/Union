@@ -1,0 +1,10 @@
+
+> union@0.0.0 test:workspace
+> node scripts/check_workspace.cjs
+
+locator.waitFor: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator('#operation-result') to be visible
+
+    at commit (D:\Project\Union\scripts\check_workspace.cjs:28:43)
+    at async D:\Project\Union\scripts\check_workspace.cjs:82:3

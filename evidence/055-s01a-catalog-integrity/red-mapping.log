@@ -1,0 +1,68 @@
+test_wrong_au_mapping_rejects_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_wrong_au_mapping_rejects_open_recovery_and_close_before_writes) ... 
+  test_wrong_au_mapping_rejects_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_wrong_au_mapping_rejects_open_recovery_and_close_before_writes) (boundary='open', guarantee='mapping rejected') ... FAIL
+  test_wrong_au_mapping_rejects_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_wrong_au_mapping_rejects_open_recovery_and_close_before_writes) (boundary='startup', guarantee='B remains unchanged') ... FAIL
+  test_wrong_au_mapping_rejects_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_wrong_au_mapping_rejects_open_recovery_and_close_before_writes) (boundary='startup', guarantee='mapping rejected') ... FAIL
+  test_wrong_au_mapping_rejects_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_wrong_au_mapping_rejects_open_recovery_and_close_before_writes) (boundary='close', guarantee='B remains unchanged') ... FAIL
+  test_wrong_au_mapping_rejects_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_wrong_au_mapping_rejects_open_recovery_and_close_before_writes) (boundary='close', guarantee='mapping rejected') ... FAIL
+
+======================================================================
+FAIL: test_wrong_au_mapping_rejects_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_wrong_au_mapping_rejects_open_recovery_and_close_before_writes) (boundary='open', guarantee='mapping rejected')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 92, in test_wrong_au_mapping_rejects_open_recovery_and_close_before_writes
+    self.assertTrue(rejected, "AU A must never open or write AU B through its catalog mapping")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : AU A must never open or write AU B through its catalog mapping
+
+======================================================================
+FAIL: test_wrong_au_mapping_rejects_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_wrong_au_mapping_rejects_open_recovery_and_close_before_writes) (boundary='startup', guarantee='B remains unchanged')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 90, in test_wrong_au_mapping_rejects_open_recovery_and_close_before_writes
+    self.assertEqual(self.contents(victim), before)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (('BE[971 chars]e": "宿主作业中断；检查原执行记录，不能据此推断远程取消。", "organizatio[1876 chars]1d'}) != (('BE[971 chars]e": "original B receipt", "organization_id": "[1869 chars]1d'})
+
+First differing element 0:
+('BEG[970 chars]e": "宿主作业中断；检查原执行记录，不能据此推断远程取消。", "organizatio[1615 chars]IT;')
+('BEG[970 chars]e": "original B receipt", "organization_id": "[1608 chars]IT;')
+
+Diff is 3498 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_wrong_au_mapping_rejects_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_wrong_au_mapping_rejects_open_recovery_and_close_before_writes) (boundary='startup', guarantee='mapping rejected')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 92, in test_wrong_au_mapping_rejects_open_recovery_and_close_before_writes
+    self.assertTrue(rejected, "AU A must never open or write AU B through its catalog mapping")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : AU A must never open or write AU B through its catalog mapping
+
+======================================================================
+FAIL: test_wrong_au_mapping_rejects_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_wrong_au_mapping_rejects_open_recovery_and_close_before_writes) (boundary='close', guarantee='B remains unchanged')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 90, in test_wrong_au_mapping_rejects_open_recovery_and_close_before_writes
+    self.assertEqual(self.contents(victim), before)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (('BE[1917 chars]\',\'true\');', 'CREATE TABLE runs (id TEXT PR[922 chars]1d'}) != (('BE[1917 chars]\',\'false\');', 'CREATE TABLE runs (id TEXT P[923 chars]1d'})
+
+First differing element 0:
+('BEG[1916 chars]\',\'true\');', 'CREATE TABLE runs (id TEXT PR[661 chars]IT;')
+('BEG[1916 chars]\',\'false\');', 'CREATE TABLE runs (id TEXT P[662 chars]IT;')
+
+Diff is 3420 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_wrong_au_mapping_rejects_open_recovery_and_close_before_writes (tests.test_catalog_integrity.CatalogIntegrityTests.test_wrong_au_mapping_rejects_open_recovery_and_close_before_writes) (boundary='close', guarantee='mapping rejected')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_catalog_integrity.py", line 92, in test_wrong_au_mapping_rejects_open_recovery_and_close_before_writes
+    self.assertTrue(rejected, "AU A must never open or write AU B through its catalog mapping")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : AU A must never open or write AU B through its catalog mapping
+
+----------------------------------------------------------------------
+Ran 1 test in 1.286s
+
+FAILED (failures=5)

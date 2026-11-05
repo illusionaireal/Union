@@ -1,0 +1,7 @@
+
+> union@0.0.0 test:workspace
+> node scripts/check_workspace.cjs
+
+AssertionError [ERR_ASSERTION]: API editor uses ordinary chat and tools without an output-schema selector
+    at check (D:\Project\Union\scripts\check_workspace.cjs:15:48)
+    at D:\Project\Union\scripts\check_workspace.cjs:71:3

@@ -1,0 +1,162 @@
+Building wheel...
+running egg_info
+creating ai_union.egg-info
+writing ai_union.egg-info\PKG-INFO
+writing dependency_links to ai_union.egg-info\dependency_links.txt
+writing entry points to ai_union.egg-info\entry_points.txt
+writing requirements to ai_union.egg-info\requires.txt
+writing top-level names to ai_union.egg-info\top_level.txt
+writing manifest file 'ai_union.egg-info\SOURCES.txt'
+reading manifest file 'ai_union.egg-info\SOURCES.txt'
+writing manifest file 'ai_union.egg-info\SOURCES.txt'
+running bdist_wheel
+running build
+running build_py
+creating build\lib\ai_union
+copying ai_union\activity.py -> build\lib\ai_union
+copying ai_union\agent_protocol.py -> build\lib\ai_union
+copying ai_union\au_contract.py -> build\lib\ai_union
+copying ai_union\bootstrap.py -> build\lib\ai_union
+copying ai_union\catalog.py -> build\lib\ai_union
+copying ai_union\cli.py -> build\lib\ai_union
+copying ai_union\company.py -> build\lib\ai_union
+copying ai_union\console.py -> build\lib\ai_union
+copying ai_union\corp.py -> build\lib\ai_union
+copying ai_union\diagnostics.py -> build\lib\ai_union
+copying ai_union\engine.py -> build\lib\ai_union
+copying ai_union\evaluation.py -> build\lib\ai_union
+copying ai_union\executor.py -> build\lib\ai_union
+copying ai_union\failures.py -> build\lib\ai_union
+copying ai_union\gateways.py -> build\lib\ai_union
+copying ai_union\harness.py -> build\lib\ai_union
+copying ai_union\identity.py -> build\lib\ai_union
+copying ai_union\lifecycle.py -> build\lib\ai_union
+copying ai_union\locking.py -> build\lib\ai_union
+copying ai_union\model_accounts.py -> build\lib\ai_union
+copying ai_union\model_api.py -> build\lib\ai_union
+copying ai_union\model_billing.py -> build\lib\ai_union
+copying ai_union\model_context.py -> build\lib\ai_union
+copying ai_union\model_media.py -> build\lib\ai_union
+copying ai_union\model_portability.py -> build\lib\ai_union
+copying ai_union\model_protocols.py -> build\lib\ai_union
+copying ai_union\model_service.py -> build\lib\ai_union
+copying ai_union\novel_demo.py -> build\lib\ai_union
+copying ai_union\observation.py -> build\lib\ai_union
+copying ai_union\protocol.py -> build\lib\ai_union
+copying ai_union\runner.py -> build\lib\ai_union
+copying ai_union\runtime_view.py -> build\lib\ai_union
+copying ai_union\server.py -> build\lib\ai_union
+copying ai_union\service.py -> build\lib\ai_union
+copying ai_union\subscriptions.py -> build\lib\ai_union
+copying ai_union\support_requests.py -> build\lib\ai_union
+copying ai_union\workspace.py -> build\lib\ai_union
+copying ai_union\__init__.py -> build\lib\ai_union
+copying ai_union\__main__.py -> build\lib\ai_union
+creating build\lib\ai_union\adapters
+copying ai_union\adapters\au_catalog.py -> build\lib\ai_union\adapters
+running egg_info
+writing ai_union.egg-info\PKG-INFO
+writing dependency_links to ai_union.egg-info\dependency_links.txt
+writing entry points to ai_union.egg-info\entry_points.txt
+writing requirements to ai_union.egg-info\requires.txt
+writing top-level names to ai_union.egg-info\top_level.txt
+reading manifest file 'ai_union.egg-info\SOURCES.txt'
+writing manifest file 'ai_union.egg-info\SOURCES.txt'
+installing to build\bdist.win-amd64\wheel
+running install
+running install_lib
+creating build\bdist.win-amd64\wheel
+creating build\bdist.win-amd64\wheel\ai_union
+copying build\lib\ai_union\activity.py -> build\bdist.win-amd64\wheel\.\ai_union
+creating build\bdist.win-amd64\wheel\ai_union\adapters
+copying build\lib\ai_union\adapters\au_catalog.py -> build\bdist.win-amd64\wheel\.\ai_union\adapters
+copying build\lib\ai_union\agent_protocol.py -> build\bdist.win-amd64\wheel\.\ai_union
+copying build\lib\ai_union\au_contract.py -> build\bdist.win-amd64\wheel\.\ai_union
+copying build\lib\ai_union\bootstrap.py -> build\bdist.win-amd64\wheel\.\ai_union
+copying build\lib\ai_union\catalog.py -> build\bdist.win-amd64\wheel\.\ai_union
+copying build\lib\ai_union\cli.py -> build\bdist.win-amd64\wheel\.\ai_union
+copying build\lib\ai_union\company.py -> build\bdist.win-amd64\wheel\.\ai_union
+copying build\lib\ai_union\console.py -> build\bdist.win-amd64\wheel\.\ai_union
+copying build\lib\ai_union\corp.py -> build\bdist.win-amd64\wheel\.\ai_union
+copying build\lib\ai_union\diagnostics.py -> build\bdist.win-amd64\wheel\.\ai_union
+copying build\lib\ai_union\engine.py -> build\bdist.win-amd64\wheel\.\ai_union
+copying build\lib\ai_union\evaluation.py -> build\bdist.win-amd64\wheel\.\ai_union
+copying build\lib\ai_union\executor.py -> build\bdist.win-amd64\wheel\.\ai_union
+copying build\lib\ai_union\failures.py -> build\bdist.win-amd64\wheel\.\ai_union
+copying build\lib\ai_union\gateways.py -> build\bdist.win-amd64\wheel\.\ai_union
+copying build\lib\ai_union\harness.py -> build\bdist.win-amd64\wheel\.\ai_union
+copying build\lib\ai_union\identity.py -> build\bdist.win-amd64\wheel\.\ai_union
+copying build\lib\ai_union\lifecycle.py -> build\bdist.win-amd64\wheel\.\ai_union
+copying build\lib\ai_union\locking.py -> build\bdist.win-amd64\wheel\.\ai_union
+copying build\lib\ai_union\model_accounts.py -> build\bdist.win-amd64\wheel\.\ai_union
+copying build\lib\ai_union\model_api.py -> build\bdist.win-amd64\wheel\.\ai_union
+copying build\lib\ai_union\model_billing.py -> build\bdist.win-amd64\wheel\.\ai_union
+copying build\lib\ai_union\model_context.py -> build\bdist.win-amd64\wheel\.\ai_union
+copying build\lib\ai_union\model_media.py -> build\bdist.win-amd64\wheel\.\ai_union
+copying build\lib\ai_union\model_portability.py -> build\bdist.win-amd64\wheel\.\ai_union
+copying build\lib\ai_union\model_protocols.py -> build\bdist.win-amd64\wheel\.\ai_union
+copying build\lib\ai_union\model_service.py -> build\bdist.win-amd64\wheel\.\ai_union
+copying build\lib\ai_union\novel_demo.py -> build\bdist.win-amd64\wheel\.\ai_union
+copying build\lib\ai_union\observation.py -> build\bdist.win-amd64\wheel\.\ai_union
+copying build\lib\ai_union\protocol.py -> build\bdist.win-amd64\wheel\.\ai_union
+copying build\lib\ai_union\runner.py -> build\bdist.win-amd64\wheel\.\ai_union
+copying build\lib\ai_union\runtime_view.py -> build\bdist.win-amd64\wheel\.\ai_union
+copying build\lib\ai_union\server.py -> build\bdist.win-amd64\wheel\.\ai_union
+copying build\lib\ai_union\service.py -> build\bdist.win-amd64\wheel\.\ai_union
+copying build\lib\ai_union\subscriptions.py -> build\bdist.win-amd64\wheel\.\ai_union
+copying build\lib\ai_union\support_requests.py -> build\bdist.win-amd64\wheel\.\ai_union
+copying build\lib\ai_union\workspace.py -> build\bdist.win-amd64\wheel\.\ai_union
+copying build\lib\ai_union\__init__.py -> build\bdist.win-amd64\wheel\.\ai_union
+copying build\lib\ai_union\__main__.py -> build\bdist.win-amd64\wheel\.\ai_union
+running install_egg_info
+Copying ai_union.egg-info to build\bdist.win-amd64\wheel\.\ai_union-0.1.0-py3.13.egg-info
+running install_scripts
+creating build\bdist.win-amd64\wheel\ai_union-0.1.0.dist-info\WHEEL
+creating 'D:\\Temp\\union-s01a-candidate-k28ks_6i\\wheel\\.tmp-h36_47c3\\ai_union-0.1.0-py3-none-any.whl' and adding 'build\\bdist.win-amd64\\wheel' to it
+adding 'ai_union/__init__.py'
+adding 'ai_union/__main__.py'
+adding 'ai_union/activity.py'
+adding 'ai_union/agent_protocol.py'
+adding 'ai_union/au_contract.py'
+adding 'ai_union/bootstrap.py'
+adding 'ai_union/catalog.py'
+adding 'ai_union/cli.py'
+adding 'ai_union/company.py'
+adding 'ai_union/console.py'
+adding 'ai_union/corp.py'
+adding 'ai_union/diagnostics.py'
+adding 'ai_union/engine.py'
+adding 'ai_union/evaluation.py'
+adding 'ai_union/executor.py'
+adding 'ai_union/failures.py'
+adding 'ai_union/gateways.py'
+adding 'ai_union/harness.py'
+adding 'ai_union/identity.py'
+adding 'ai_union/lifecycle.py'
+adding 'ai_union/locking.py'
+adding 'ai_union/model_accounts.py'
+adding 'ai_union/model_api.py'
+adding 'ai_union/model_billing.py'
+adding 'ai_union/model_context.py'
+adding 'ai_union/model_media.py'
+adding 'ai_union/model_portability.py'
+adding 'ai_union/model_protocols.py'
+adding 'ai_union/model_service.py'
+adding 'ai_union/novel_demo.py'
+adding 'ai_union/observation.py'
+adding 'ai_union/protocol.py'
+adding 'ai_union/runner.py'
+adding 'ai_union/runtime_view.py'
+adding 'ai_union/server.py'
+adding 'ai_union/service.py'
+adding 'ai_union/subscriptions.py'
+adding 'ai_union/support_requests.py'
+adding 'ai_union/workspace.py'
+adding 'ai_union/adapters/au_catalog.py'
+adding 'ai_union-0.1.0.dist-info/METADATA'
+adding 'ai_union-0.1.0.dist-info/WHEEL'
+adding 'ai_union-0.1.0.dist-info/entry_points.txt'
+adding 'ai_union-0.1.0.dist-info/top_level.txt'
+adding 'ai_union-0.1.0.dist-info/RECORD'
+removing build\bdist.win-amd64\wheel
+Successfully built wheel\ai_union-0.1.0-py3-none-any.whl

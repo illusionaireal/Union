@@ -1,0 +1,13 @@
+{
+  "error": "AssertionError [ERR_ASSERTION]: API editor uses ordinary chat and tools without an output-schema selector\n    at check (D:\\Project\\Union\\scripts\\check_workspace.cjs:15:48)\n    at D:\\Project\\Union\\scripts\\check_workspace.cjs:71:3",
+  "checks": [
+    "Empty workspace has a general company onboarding flow",
+    "Eight page navigation exposes the model API directly",
+    "Model entry works before any organization exists",
+    "General company does not require a novel template",
+    "Command returns an accepted, completed, or explicitly expected failed receipt",
+    "Generic company starts with zero calls and no business specialization",
+    "Existing generic company gets the new homepage and model onboarding"
+  ],
+  "errors": []
+}
