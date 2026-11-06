@@ -1,0 +1,9 @@
+2026-11-07 goose/auto-tick/DESKTOP-SA4MRG7：U-075 第一段完成（S09.1，范围 controlled）。
+
+范围：模型页新增「各接入方式的能力范围」，逐 profile 列出文字回答 / 工具往返 / 用量记录 / 边生成边显示 / 长任务期间新输入 / 取消与中断后查询六项能力，逐项标注「真实已验证 / 仅受控验证 / 不支持」并附该条声明的证据与说明，一份成功不外推。工程侧新增 ai_union/domain/model_profiles.py 作为 profile 唯一所有者（支持的 profile、认证方式、私有字段、逐项能力），保存连接命令、状态校验、工作定义校验与 modeld API 连接分支改读同一注册表，删除重复字面量。
+
+验证：先观察 RED（后端 ImportError；前端 2 项失败），再最小实现转 GREEN；受影响 38 项 Python 测试与前端 src/features/models 52 项通过；npm run check 全绿（Management check PASS，前端 18 文件 193 项，typecheck 与生产构建成功）。完整 python discover 585 项中 1 项 error 为本机符号链接权限限制（tests/test_workspace.py WinError 1314，测试准备阶段），如实记录、未伪造通过。
+
+提交：7d32388e7dd3bf2162dfa98dccf64d64b882dcac（rewrite/charter-v1，已推送，git ls-remote 读回一致）。证据：evidence/060-u075-model-profiles/README.md。
+
+未完成（本卡仍为 doing，不进入 review）：没有接入任何新的真实模型供应商，也未为某个 profile 重跑真实推理；流式输出与长任务执行期间新输入未实现（页面按「不支持」显示）；取消与中断后查询仅受控验证；未部署、无真实资金、无生产数据迁移。下一步：选一种新的接入方式完成认证与真实原生内容/工具往返证据，并做一次真实中断恢复，再逐 profile 分别取证。
