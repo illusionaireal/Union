@@ -3,9 +3,9 @@
   "artifactKey": "S02-finish",
   "type": "engineering-and-real-profile",
   "source": "evidence/058-s02-model-tools/README.md",
-  "summary": "控制范围工程/独立复核/浏览器/安装通过；1次真实请求被拒绝认证且重启不重放，M10成功往返未完成。HTTP200同步#21 blocked/version7。",
-  "verifier": "codex/gpt-6 coordinator with independent Python, protocol, confidentiality and UI reviews",
+  "summary": "既有工程/66项浏览器/安装证据保持；新指定兼容API两次真实推理和实际资料工具、校验码、默认采用及重启通过，14项真实页面检查与独立只读复核无阻断。原Codex失败和未知费用保留，总请求3。",
+  "verifier": "codex/gpt-6 coordinator; s02_real_acceptance_review and earlier independent engineering reviews",
   "sliceId": "S02-finish",
-  "evidenceStatus": "blocked",
+  "evidenceStatus": "evidence-finalized",
   "updatedAt": "2026-11-06"
 }

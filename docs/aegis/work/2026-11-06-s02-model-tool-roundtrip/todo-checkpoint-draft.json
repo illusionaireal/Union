@@ -1,22 +1,24 @@
 {
   "schemaVersion": "aegis.schema.v0",
   "taskId": "U-072",
-  "currentTodo": "S02工程已验证；保存交付检查点并等待所选Codex连接修复，整卡仍未完成",
+  "currentTodo": "S02限定真实验收已完成，主账real与在线done一致；本记录随最终证据交付，提交与远端SHA以Git实际读回为准",
   "completedTodos": [
-    "严格TDD修复凭据原始分片、线程启动恢复、事件去重和用量；全部独立复核通过",
-    "前端192、Python579含5平台跳过、modeld88、实际浏览器66及安装86文件/190源码哈希验证通过",
-    "真实仅派发1次后被拒绝认证，直连与宿主代理只读检查均HTTP401；未派发第二次，无工具或采用回答",
-    "实际安装重启保留原AU/Work/attempt/事件及未知用量，无新增推理；不兼容schema声明拒绝",
-    "统一适配器将#21更新blocked，HTTP200读回version7；主账镜像及其他任务/原owner保持"
+    "工程实现41ae2da已推送；76份源码哈希保持，原192前端/579Python含5平台跳过/88modeld/66浏览器与隔离安装证据有效",
+    "新指定兼容API两次真实推理和一次实际资料工具通过；输出62/56在512上限内、费用未知，原失败与占用保持，总请求3",
+    "安装重启、同principal正常密码登录、默认连接和答案保持；新增14项真实结果Chromium检查0额外推理",
+    "独立实际SQLite/身份/资料/工具/用量复核无阻断；#21已由review进入done，HTTP200读回version14，主账scope=real",
+    "管理8项、工作记录结构、原33份证据及72份预存文件哈希核对通过"
   ],
   "activeSlice": "S02-finish",
   "evidenceRefs": [
     "evidence/058-s02-model-tools/README.md",
-    "evidence/058-s02-model-tools/finish/verification.json",
-    "evidence/058-s02-model-tools/finish/installed-recovery.json",
-    "evidence/058-s02-model-tools/finish/kanban-progress.json"
+    "evidence/058-s02-model-tools/finish/real-local-provider.json",
+    "evidence/058-s02-model-tools/finish/real-browser/checks.json",
+    "evidence/058-s02-model-tools/finish/local-provider-review.md",
+    "evidence/058-s02-model-tools/finish/kanban-real-acceptance.json",
+    "evidence/058-s02-model-tools/finish/real-acceptance-summary.json"
   ],
-  "blockedOn": "所选Codex凭据认证失败，缺有效连接及新的两次推理授权；已向用户询问，未获回复不继续消耗",
-  "nextStep": "完成当前检查点差异/保密/结构核对及精确Git交付；得到有效连接与授权后再验完整真实出口",
+  "blockedOn": null,
+  "nextStep": "本片无剩余实施或模型验收工作；核对Git实际交付状态后等待用户选择后续任务，不自动开下一卡",
   "updatedAt": "2026-11-06"
 }

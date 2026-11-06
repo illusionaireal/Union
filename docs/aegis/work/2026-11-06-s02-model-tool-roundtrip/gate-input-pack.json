@@ -7,10 +7,10 @@
   ],
   "impactStatement": "docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/impact-statement-draft.json",
   "compatPlan": "保留AU schema1/2与legacy，schema3显式采用；modeld schema0/1显式协议持久化与受支持发布拒绝边界。只交付本次S02归属文件，保留无关既有修改",
-  "retirementPlan": "原Engine/Harness/Chat/Go有实际调用者和回归，保留至对应V1用例迁出；无双派发、无新循环、无读取迁移",
+  "retirementPlan": "无产品行为修改；旧Engine/Harness/Chat/Go/Responses按原调用者和迁出条件保留，无双派发、读取迁移或新SDK循环",
   "evidenceBundle": [
     "docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/evidence-bundle-draft-S02-design-readback.json",
-    "docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/evidence-bundle-draft-V1-card-clarity.json",
-    "docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/evidence-bundle-draft-S02-finish.json"
+    "docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/evidence-bundle-draft-S02-finish.json",
+    "docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/evidence-bundle-draft-V1-card-clarity.json"
   ]
 }

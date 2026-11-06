@@ -1,0 +1,33 @@
+{
+  "verified_at_utc": "2026-11-06T08:54:06.443Z",
+  "implementation_commit": "41ae2daa022fe42835a3ab767a529d2f7cdcabe1",
+  "au_id": "org-27cfb87f6c434ade9ac8f2fbaaee7abb",
+  "check_id": "c8b74c4e-c490-47b4-8600-31e666dbd31b",
+  "checks": [
+    "Browser authenticates the same ordinary core principal",
+    "Real successful check is visible in the installed React page",
+    "The displayed answer equals the stored real model result",
+    "The page shows the user-selected model",
+    "The page preserves unknown cost",
+    "No credential appears in the rendered page",
+    "Responsibility records reference the real verification Work",
+    "Page body remains within the 1440px viewport",
+    "Page body remains within the 390px viewport",
+    "Reload preserves the real answer",
+    "Reload retains the explicitly adopted default",
+    "Browser viewing and refresh send no model command",
+    "Browser has no page errors",
+    "The original three requests remain unchanged"
+  ],
+  "check_count": 14,
+  "widths": [
+    1440,
+    390
+  ],
+  "additional_inference_requests": 0,
+  "total_original_and_new_requests": 3,
+  "model_commands": 0,
+  "page_errors": [],
+  "screenshot_redaction": "The configured private endpoint is masked; assertions used the unmodified page",
+  "scope": "Read-only actual Chromium view of the completed real check on the installed candidate"
+}

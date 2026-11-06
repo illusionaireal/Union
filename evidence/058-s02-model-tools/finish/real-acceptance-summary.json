@@ -1,0 +1,83 @@
+{
+  "task": "U-072/S02/#21",
+  "scope": "real",
+  "implementation_commit": "41ae2daa022fe42835a3ab767a529d2f7cdcabe1",
+  "requested_profile": "user-selected OpenAI-compatible local gateway",
+  "requested_model": "group/deepseek-v4.1-flash-free",
+  "real_roundtrip": {
+    "new_inference_requests": 2,
+    "tool_executions": 1,
+    "max_output_tokens_per_attempt": 512,
+    "input_tokens": [
+      403,
+      310
+    ],
+    "output_tokens": [
+      62,
+      56
+    ],
+    "cost": "unknown",
+    "actual_model": "unknown",
+    "restart_without_replay": true,
+    "previous_failure_and_reservation_retained": true,
+    "total_original_and_new_requests": 3
+  },
+  "browser": {
+    "real_result_checks": 14,
+    "widths": [
+      1440,
+      390
+    ],
+    "additional_inference_requests": 0
+  },
+  "independent_review": "no blocking finding; direct read-only SQLite checks",
+  "existing_engineering_evidence": {
+    "source_hashes_unchanged": 76,
+    "original_evidence_hashes_unchanged": 33,
+    "frontend_tests": 192,
+    "python_total": 579,
+    "python_passed": 574,
+    "python_platform_skips": 5,
+    "modeld_tests": 88,
+    "controlled_browser_checks": 66,
+    "installed_payload_files": 86,
+    "source_hashes_in_install": 190,
+    "broad_tests_repeated_this_continuation": false
+  },
+  "current_structural_checks": {
+    "management_render": "passed",
+    "management_tests": 8,
+    "aegis_workspace": "passed"
+  },
+  "preexisting_unrelated_files_unchanged": 72,
+  "evidence_sha256": {
+    "real-local-provider.json": "215eba37707f8ca09d40c449df396467130586cd340638034fecc8dcacd64e66",
+    "local-provider-readcheck.json": "0b89a588ca5b0c02acbf6d98a99688b4b007f371aac0a85f89ba5ffd09491c79",
+    "local-provider-review.md": "0d1d5eff0836f653448ef8b427ebb29d3e9f1ae23f2e095e47acc9bd106c0aad",
+    "real-browser/checks.json": "7de250d3dc8e28d23e996898b54adc3d13fa28ac481c98624ac43707426f0525",
+    "real-browser/real-result-1440.png": "0ad431aca1b891fb5e70854a6bfd7c7395bef32b85b8f4247068432d83ba6048",
+    "real-browser/real-result-390.png": "0f482619c8e567cfb1b2e141dbc5b1faf642fd1ce4a853863b76e1457a99372a",
+    "kanban-real-acceptance.json": "8f62f43258c9b1f392fba261718fe22a1fc4544ec803e920a56845a90d7c9ad6"
+  },
+  "non_claims": [
+    "original Codex credential recovered",
+    "original temporary account login recovered",
+    "upstream model weights independently identified",
+    "zero price inferred from model alias",
+    "general autonomous work",
+    "other profile acceptance",
+    "deployment or sustained operation"
+  ],
+  "git_text_normalization": {
+    "local-provider-readcheck.json": {
+      "reviewed_bytes_sha256": "71bd5a0de22a77a346520d766b1aededbcd5e0d53472c509adc543bdd1e32226",
+      "committed_lf_sha256": "0b89a588ca5b0c02acbf6d98a99688b4b007f371aac0a85f89ba5ffd09491c79",
+      "change": "CRLF to LF only; parsed JSON equality verified"
+    },
+    "real-local-provider.json": {
+      "reviewed_bytes_sha256": "9a3215c60cb2a112c0a1527c53e75eeecc3a390de27a6ffdf11f35c7693c6e8e",
+      "committed_lf_sha256": "215eba37707f8ca09d40c449df396467130586cd340638034fecc8dcacd64e66",
+      "change": "CRLF to LF only; parsed JSON equality verified"
+    }
+  }
+}

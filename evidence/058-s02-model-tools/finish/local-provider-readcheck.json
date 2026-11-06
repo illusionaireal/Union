@@ -1,0 +1,7 @@
+{
+  "http_status": 200,
+  "model_list_count": 47,
+  "requested_model": "group/deepseek-v4.1-flash-free",
+  "requested_model_listed": true,
+  "inference_requests": 0
+}

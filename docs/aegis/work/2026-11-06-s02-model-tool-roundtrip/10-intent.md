@@ -2,7 +2,7 @@
 
 ## TaskIntentDraft
 
-- Requested outcome: 完整交付 U-072/S02/#21，验证后提交推送；用户最新要求继续完成21，并选择当前 Codex 连接进行真实验收
+- Requested outcome: 完整交付 U-072/S02/#21，验证后提交推送；用户在原 Codex 认证失败后明确提供新的本机兼容连接进行剩余真实验收
 - Goal: 完整交付 U-072/S02/#21，验证后提交推送
 - Success evidence:
 - 卡片检查点：12 张线上卡 HTTP 200 读回；完整技术原文移到现有开发附录；64 项其他任务和全部非文字管理字段保持；独立表达复核与结构检查通过
@@ -11,7 +11,7 @@
 - Stop condition: 整卡含真实出口通过才done；账号/资源未落实不擅自调用、不关闭卡片
 - Non-goals:
 - S03任意目标/S04反馈、其他profiles、生产迁移或部署
-- Scope: 完整 S02 配置、有限资源授权、持久模型工具往返、显式所选 Responses 及真实验证；原12卡文案检查点已交付，不实施未来卡
+- Scope: 完整 S02 配置、有限资源授权、持久模型工具往返及用户新指定兼容 API 的真实验证；保留 Responses/Chat/Go 工程兼容和原失败，原12卡文案检查点已交付，不实施未来卡
 - Change kinds:
 - feature
 - Risk hints:
@@ -78,3 +78,9 @@ These records are Method Pack drafts / hints, not authoritative runtime decision
 ## 2026-11-06 恢复完整 #21 实施
 
 用户要求“继续完成21”，并明确选择调用当前 Codex 作为真实模型来源。当前 HEAD/upstream 为 d5802f8；现场快照 .union/s02-finish/task-start.json。本轮恢复原 S02 工程和真实出口，卡片文字修改已完成。TDD Route 继续 strict，依据原用户/项目明确指令。最小修复边界是现有模型凭据校验、后台线程所有权、单次请求事实与用量投影、受控错误分类及 React 模型流程；只改文档无法修复这些行为，因此选择代码修复。共享事务/契约/主账/Git 仍由协调者拥有，modeld 保密修复可独立实施和复核。新增错误与用量字段先写入 s02-contract 续接节；实际 Codex 协议如需变更，在相关实现前补充冻结。
+
+## 2026-11-06 用户提供新的本机模型连接
+
+工程检查点 `41ae2daa022fe42835a3ab767a529d2f7cdcabe1` 已提交推送，线上 #21 version 8 已发布该 SHA。用户针对待补真实连接与新两次推理范围的说明提供了新的本机兼容 API 及指定模型；仅私有配置持有端点和 Key。只读模型目录 HTTP 200 并列出指定模型，推理尚未开始。沿父 S02 契约、原安装候选及已通过工程证据接续真实出口；不改代码行为、不重复广泛测试、不重放旧未知请求。
+
+原私有 driver 遗失其临时登录凭据，不能冒用原 principal。使用正常注册/创建的新命名验收 AU，并在其目标和总证据中明确关联原失败 AU；原数据库记录和费用占用逐项保持。新两次推理、每次最多 512 输出 tokens、未知费用不填零。此次只验接入，既不执行未来切片也不部署。开始快照为 `.union/s02-finish/local-provider-task-start.private.json`；72 份预存文件保留，主账/在线/Git 仍由协调者顺序更新。

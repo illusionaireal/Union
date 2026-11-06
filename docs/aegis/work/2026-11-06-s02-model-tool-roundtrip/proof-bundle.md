@@ -6,8 +6,8 @@ This proof bundle is an advisory Aegis Method Pack record. It does not determine
 
 ## Task Intent
 
-- Requested outcome: 完整交付 U-072/S02/#21，验证后提交推送；用户最新要求继续完成21，并选择当前Codex连接进行真实验收
-- Scope: 完整S02配置、有限资源授权、持久模型工具往返、显式所选Responses及真实验证；原12卡文案检查点已交付，不实施未来卡
+- Requested outcome: 完整交付 U-072/S02/#21，验证后提交推送；用户在原Codex认证失败后明确提供新的本机兼容连接进行剩余真实验收
+- Scope: 完整S02配置、有限资源授权、持久模型工具往返及用户新指定兼容API的真实验证；保留Responses/Chat/Go工程兼容与原失败，原12卡文案检查点已交付，不实施未来卡
 
 ## Impact
 
@@ -18,17 +18,18 @@ This proof bundle is an advisory Aegis Method Pack record. It does not determine
 ## Terminal Evidence Refs
 
 - docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/evidence-bundle-draft-S02-design-readback.json
-- docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/evidence-bundle-draft-V1-card-clarity.json
 - docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/evidence-bundle-draft-S02-finish.json
+- docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/evidence-bundle-draft-V1-card-clarity.json
 
 ## Formal Evidence
 
 - docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/evidence-bundle-draft-S02-design-readback.json
+- docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/evidence-bundle-draft-S02-finish.json
 - docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/evidence-bundle-draft-V1-card-clarity.json
 
 ## Terminal Non-Passed Evidence
 
-- docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/evidence-bundle-draft-S02-finish.json
+- none
 
 ## Legacy Unclassified Evidence
 
@@ -40,7 +41,7 @@ This proof bundle is an advisory Aegis Method Pack record. It does not determine
 
 ## Drift Check
 
-- Scope status: 完整S02仍为目标；工程检查点通过，真实profile未完成，不以部分工作关闭整卡
-- Compatibility status: AU1/2/3、modeld0/1显式采用及受支持发布拒绝已验；原真实失败身份/请求/用量在安装重启后保持
-- Retirement status: 原Engine/Harness/Chat/Go有实际调用者和回归，保留至对应V1用例迁出；无双派发、无新循环、无读取迁移
-- Advisory decision: blocked
+- Scope status: 原S02目标不变，用户新指定资源已通过有界真实出口，未降低M01-M10或扩展未来卡
+- Compatibility status: 产品源码76份哈希保持；AU1/2/3与modeld0/1原兼容证据有效，原失败AU状态哈希/身份/Work/请求/预约不变，新普通核心账号正常创建隔离验收AU并显式关联旧失败
+- Retirement status: 无产品行为修改；旧Engine/Harness/Chat/Go/Responses按原调用者和迁出条件保留，无双派发、读取迁移或新SDK循环
+- Advisory decision: continue

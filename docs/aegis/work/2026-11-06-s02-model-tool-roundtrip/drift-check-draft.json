@@ -7,11 +7,11 @@
     "docs/decisions/0005-au-runtime-boundaries.md",
     "docs/decisions/0006-charter-policy-adoption.md"
   ],
-  "scopeStatus": "完整S02仍为目标；工程检查点通过，真实profile未完成，不以部分工作关闭整卡",
-  "compatStatus": "AU1/2/3、modeld0/1显式采用及受支持发布拒绝已验；原真实失败身份/请求/用量在安装重启后保持",
-  "retirementStatus": "原Engine/Harness/Chat/Go有实际调用者和回归，保留至对应V1用例迁出；无双派发、无新循环、无读取迁移",
+  "scopeStatus": "原S02目标不变，用户新指定资源已通过有界真实出口，未降低M01-M10或扩展未来卡",
+  "compatStatus": "产品源码76份哈希保持；AU1/2/3与modeld0/1原兼容证据有效，原失败AU状态哈希/身份/Work/请求/预约不变，新普通核心账号正常创建隔离验收AU并显式关联旧失败",
+  "retirementStatus": "无产品行为修改；旧Engine/Harness/Chat/Go/Responses按原调用者和迁出条件保留，无双派发、读取迁移或新SDK循环",
   "newRiskSignals": [
-    "所选Codex配置认证失败；待用户修复连接及新增两次推理范围"
+    "原Codex连接及旧临时账号登录仍未恢复；金额和网关后实际模型身份未知，均不由新profile成功覆盖"
   ],
-  "decision": "blocked"
+  "decision": "continue"
 }

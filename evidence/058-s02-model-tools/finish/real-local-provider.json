@@ -1,0 +1,92 @@
+{
+  "verified_at_utc": "2026-11-06T08:47:56Z",
+  "implementation_commit": "41ae2daa022fe42835a3ab767a529d2f7cdcabe1",
+  "profile": "user-selected local OpenAI-compatible gateway",
+  "wire_api": "chat_completions",
+  "requested_model": "group/deepseek-v4.1-flash-free",
+  "actual_model": null,
+  "ordinary_core_principal": true,
+  "principal_id": "da4fe5f8-6674-4d15-853a-0d355182a1bd",
+  "au_id": "org-27cfb87f6c434ade9ac8f2fbaaee7abb",
+  "work_id": "model-work-aeb6e9ef004e54418d346fb8dc726765",
+  "check_id": "c8b74c4e-c490-47b4-8600-31e666dbd31b",
+  "agent_definition": {
+    "id": "core.model_check",
+    "instructions": "先调用 read_document 读取指定资料。收到工具结果后，给出简短资料概要并原样附上 challenge 校验码；不要调用其他工具。",
+    "scope": "two_inferences_one_read_only_tool",
+    "tools": [
+      "read_document"
+    ],
+    "version": 1
+  },
+  "max_calls": 2,
+  "max_output_tokens_per_attempt": 512,
+  "new_modeld_requests": 2,
+  "accepted_model_results": 2,
+  "tool_executions": 1,
+  "attempts": [
+    {
+      "id": "model-c35b10d86c925c57ac5657380a21f097",
+      "purpose": "connection_check",
+      "stage": 0,
+      "state": "completed",
+      "usage": {
+        "account_ref": "api-14b95edb-ba42-4174-8147-83a733fea641",
+        "basis": "result",
+        "billing_revision": null,
+        "cache_write_tokens": null,
+        "cached_input_tokens": 0,
+        "cost": null,
+        "cost_basis": "unknown",
+        "cost_minor": null,
+        "cost_status": "unknown",
+        "currency": null,
+        "input_tokens": 403,
+        "observed_through_seq": 77,
+        "output_tokens": 62,
+        "reasoning_tokens": 0,
+        "resolved_model": "group/deepseek-v4.1-flash-free",
+        "source": "modeld"
+      }
+    },
+    {
+      "id": "model-65a87ed35140534a93354aa65ac3015c",
+      "purpose": "connection_check",
+      "stage": 1,
+      "state": "completed",
+      "usage": {
+        "account_ref": "api-14b95edb-ba42-4174-8147-83a733fea641",
+        "basis": "result",
+        "billing_revision": null,
+        "cache_write_tokens": null,
+        "cached_input_tokens": 0,
+        "cost": null,
+        "cost_basis": "unknown",
+        "cost_minor": null,
+        "cost_status": "unknown",
+        "currency": null,
+        "input_tokens": 310,
+        "observed_through_seq": 180,
+        "output_tokens": 56,
+        "reasoning_tokens": 0,
+        "resolved_model": "group/deepseek-v4.1-flash-free",
+        "source": "modeld"
+      }
+    }
+  ],
+  "output": "资料概要：这是一份接入验收资料，说明交付项目包含三个模块——连接设置、资料读取、用量记录；验收短语为“蓝色纸船”。\n\nchallenge 校验码：ad4beb3eb6572f49b5b4f24f",
+  "challenge_obtained_only_through_document_tool": true,
+  "same_principal_after_password_login": true,
+  "no_replay_after_restart": true,
+  "default_preserved_after_restart": true,
+  "previous_au_id": "org-39ba258522e6482c977fb52e28765e99",
+  "previous_check_id": "640475fe-c048-445a-be1d-aa417bae068e",
+  "previous_failed_requests": 1,
+  "previous_facts_unchanged": true,
+  "total_original_and_new_modeld_requests": 3,
+  "previous_cost_and_usage": "unknown; reservation retained",
+  "validation_identity_note": "Earlier private driver did not retain its temporary account login or recovery secret. A separately named validation AU was created through normal core registration and creation. The original AU, identity, Work, failed request, usage and reservation remain unchanged; no identity override or database migration.",
+  "installed_manifest_sha256": "78d2f211bd3bbc632fc5f9c771f0aae3a2bc873f026eb796e047e2c3ffc90973",
+  "candidate_payload_sha256": "aa2c858e2f4399311d15aa774ddaa934c5d1ce1d9a10cf34acb0b8bb4d323102",
+  "scope": "installed core HTTP -> modeld -> authorized gateway -> actual read_document -> gateway; no general autonomous work or deployment"
+}

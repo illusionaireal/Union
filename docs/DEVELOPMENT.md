@@ -14,7 +14,7 @@ Windows 验证固定 Node 24.19.0、`.venv\Scripts\python.exe`（本次 3.13.14�
 
 ## 2026-11-06：S02 模型检查与显式协议
 
-S02 的实现、独立复核、实际浏览器和安装结果见 [058](../evidence/058-s02-model-tools/README.md)，精确行为见 [s02-contract](../specs/053-union-rewrite/s02-contract.md)。所选 Codex 真实连接认证失败，成功往返仍未验收。已有真实请求只查询原 ID，不重跑验收 driver；真实配置仅保存在宿主私有目录。
+S02 的实现、独立复核、实际浏览器和安装结果见 [058](../evidence/058-s02-model-tools/README.md)，精确行为见 [s02-contract](../specs/053-union-rewrite/s02-contract.md)。原 Codex 真实连接认证失败保留；用户后来新指定的兼容 API 已完成两次推理、一次资料读取及安装包重启，真实结果页面另有 14 项 Chromium 检查。已有真实请求只查询原 ID，不重跑验收 driver；真实配置、登录恢复信息及派发标记仅保存在宿主私有目录。
 
 模型相关 Python 回归为 `tests/test_core_model*.py`；全量仍用固定 `.venv\Scripts\python.exe -m unittest discover -v` 和 `npm run check`。Bun 1.4.2 请对 `services/modeld/test/*.test.ts` 的八个实际文件传递显式路径，避免把 vendor 测试也选入。实际浏览器脚本为 `scripts/s02-models-browser.cjs`，设置固定 `UNION_BUN`、`UNION_PYTHON` 和私有 `UNION_S02_UI_EVIDENCE`；它只使用回环供应商，不能替代真实连接。
 

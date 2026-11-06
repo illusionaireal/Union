@@ -1,0 +1,20 @@
+{
+  "task": "U-072",
+  "online_id": 21,
+  "status": "done",
+  "version": 14,
+  "branch": "rewrite/charter-v1",
+  "implementation_commit": "41ae2daa022fe42835a3ab767a529d2f7cdcabe1",
+  "scope": "real",
+  "http": {
+    "read": 200,
+    "patch": 200,
+    "readback": 200
+  },
+  "local_mirror": "verified",
+  "assignee_unchanged": true,
+  "other_tasks_unchanged": true,
+  "wip_limit": 6,
+  "wip_remaining": 5,
+  "wip_basis": "project-management boardView.counts.wip: started blocked work remains counted"
+}
