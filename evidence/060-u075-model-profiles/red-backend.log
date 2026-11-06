@@ -1,0 +1,19 @@
+test_core_model_profiles (unittest.loader._FailedTest.test_core_model_profiles) ... ERROR
+
+======================================================================
+ERROR: test_core_model_profiles (unittest.loader._FailedTest.test_core_model_profiles)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_core_model_profiles
+Traceback (most recent call last):
+  File "C:\Users\Benedict\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 137, in loadTestsFromName
+    module = __import__(module_name)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SynologyDrive\project\Union\tests\test_core_model_profiles.py", line 9, in <module>
+    from ai_union.domain import model_profiles
+ImportError: cannot import name 'model_profiles' from 'ai_union.domain' (unknown location)
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (errors=1)

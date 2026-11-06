@@ -1,0 +1,115 @@
+
+> union@0.0.0 check
+> npm run check:management && npm run check:plan && npm test && npm run check:console
+
+
+> union@0.0.0 check:management
+> node scripts/project-management.mjs check && node --test tests/project-management.test.mjs
+
+Management check: 15 modules, 8 milestones, 76 tasks; PASS
+✔ rejects missing owners at start and unfinished dependencies, but permits honest unassigned backlog (5.1738ms)
+✔ completion requires scope, reviewer and existing evidence, and does not promote milestones (2.4216ms)
+✔ rejects duplicate IDs, unknown references and dependency cycles (2.0522ms)
+✔ blocked work needs an unblock action; already-started blocked work counts toward WIP (2.092ms)
+✔ rejects evidence outside repository, invalid scope and malformed dates (1.7813ms)
+✔ deterministic generated views reject stale output and preserve surrounding narrative (20.8419ms)
+✔ flow summary keeps empty live evidence distinct from completion counts (1.4097ms)
+✔ milestone acceptance and task scope cannot be asserted without their review metadata (2.1198ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 128.9711
+
+> union@0.0.0 check:plan
+> node scripts/check-plan.mjs
+
+{"baseline":"UNION-B1","tasks":82,"dependencies":181,"cycles":0,"missingDependencies":0,"baselineFiles":5,"githubTasks":8}
+
+> union@0.0.0 test
+> node --test tests/*.test.ts
+
+✔ retry uses the same reservation; changed request is rejected (105.5492ms)
+✔ unauthorized model actions and tenant/currency changes leave budget untouched (59.7122ms)
+✔ only positive safe integer amounts and bounded keys are accepted (60.7903ms)
+✔ eight competing processes cannot exceed a 100-minor-unit hard budget (251.3449ms)
+✔ process crash after external success recovers by lookup without repeating the effect (194.9161ms)
+✔ crash before external call retains reservation when lookup is inconclusive (186.5091ms)
+✔ definitive failure releases reservation exactly once (88.5337ms)
+✔ settling below maximum releases the difference and invalid receipt rolls back (88.7224ms)
+✔ same key across test tenants remains independent (136.7193ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1305.4393
+
+> union@0.0.0 check:console
+> npm run typecheck --workspace @union/console && npm run test --workspace @union/console && npm run build:console
+
+
+> @union/console@0.1.0 typecheck
+> tsc --noEmit
+
+
+> @union/console@0.1.0 test
+> vitest run
+
+
+[1m[46m RUN [49m[22m [36mv3.2.7 [39m[90mD:/SynologyDrive/project/Union/web/console[39m
+
+ [32m✓[39m src/api/client.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+ [32m✓[39m src/features/commands/receipts.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+ [32m✓[39m src/app/url-state.test.tsx [2m([22m[2m1 test[22m[2m)[22m[32m 85[2mms[22m[39m
+ [32m✓[39m src/pages/ModelServiceConnections.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 161[2mms[22m[39m
+ [32m✓[39m src/features/commands/fields.test.tsx [2m([22m[2m9 tests[22m[2m)[22m[32m 283[2mms[22m[39m
+ [32m✓[39m src/pages/Gateways.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 205[2mms[22m[39m
+ [32m✓[39m src/app/workspace.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[33m 373[2mms[22m[39m
+ [32m✓[39m src/pages/RuntimeObservation.test.tsx [2m([22m[2m11 tests[22m[2m)[22m[32m 170[2mms[22m[39m
+ [32m✓[39m src/app/governance-workspace.test.tsx [2m([22m[2m11 tests[22m[2m)[22m[33m 471[2mms[22m[39m
+ [32m✓[39m src/pages/SubscriptionConnections.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[33m 381[2mms[22m[39m
+ [32m✓[39m src/pages/Identity.test.tsx [2m([22m[2m14 tests[22m[2m)[22m[33m 821[2mms[22m[39m
+ [32m✓[39m src/features/commands/core-creation.test.tsx [2m([22m[2m7 tests[22m[2m)[22m[33m 1199[2mms[22m[39m
+   [33m[2m✓[22m[39m core creation through the workspace[2m > [22mkeeps explicit legacy company creation reachable after reopening a prepared AU [33m 316[2mms[22m[39m
+ [32m✓[39m src/features/commands/core-boundaries.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[33m 1545[2mms[22m[39m
+ [32m✓[39m src/features/models/ModelsIdentity.test.tsx [2m([22m[2m11 tests[22m[2m)[22m[33m 1778[2mms[22m[39m
+ [32m✓[39m src/features/models/ModelsRecovery.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[33m 2040[2mms[22m[39m
+   [33m[2m✓[22m[39m model original-request recovery[2m > [22mnever replays a lost save and only queries the original receipt [33m 448[2mms[22m[39m
+ [32m✓[39m src/features/models/ModelsDiagnostics.test.tsx [2m([22m[2m17 tests[22m[2m)[22m[33m 2446[2mms[22m[39m
+ [32m✓[39m src/features/models/Models.test.tsx [2m([22m[2m14 tests[22m[2m)[22m[33m 2491[2mms[22m[39m
+   [33m[2m✓[22m[39m core model access user journey[2m > [22mgrants bounded resources, reads a selected document twice and adopts independently [33m 636[2mms[22m[39m
+ [32m✓[39m src/features/governance/Governance.test.tsx [2m([22m[2m53 tests[22m[2m)[22m[33m 6782[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m18 passed[39m[22m[90m (18)[39m
+[2m      Tests [22m [1m[32m193 passed[39m[22m[90m (193)[39m
+[2m   Start at [22m 07:28:28
+[2m   Duration [22m 9.83s[2m (transform 1.89s, setup 5.30s, collect 12.77s, tests 21.25s, environment 16.97s, prepare 2.85s)[22m
+
+
+> union@0.0.0 build:console
+> npm run build --workspace @union/console
+
+
+> @union/console@0.1.0 build
+> tsc --noEmit && vite build
+
+[36mvite v7.3.7 [32mbuilding client environment for production...[36m[39m
+transforming...
+[32m✓[39m 2044 modules transformed.
+rendering chunks...
+computing gzip size...
+[2mdist/[22m[32mindex.html                 [39m[1m[2m  0.74 kB[22m[1m[22m[2m │ gzip:   0.51 kB[22m
+[2mdist/[22m[35massets/index-DyiaVZUg.css  [39m[1m[2m 49.96 kB[22m[1m[22m[2m │ gzip:  11.02 kB[22m
+[2mdist/[22m[36massets/index-By1pfmZN.js   [39m[1m[33m523.35 kB[39m[22m[2m │ gzip: 161.55 kB[22m
+[33m
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.[39m
+[32m✓ built in 22.33s[39m

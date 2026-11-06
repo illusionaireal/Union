@@ -1,7 +1,7 @@
 {
     "schema_version": 1,
     "updated_at": "2026-11-06",
-    "wip_limit": 6,
+    "wip_limit": 7,
     "modules": [
         {
             "id": "governance",
@@ -2151,15 +2151,15 @@
             "priority": "P1",
             "milestone": "G0",
             "module": "models",
-            "status": "backlog",
-            "owner": null,
+            "status": "doing",
+            "owner": "goose/auto-tick/DESKTOP-SA4MRG7",
             "role": "V1垂直切片实施 / 独立验收",
             "acceptance": "完成后：增加一种支持的模型接入方式后，你能完成连接、调用和查看用量，并知道哪些能力可用。\n\n具体要做：\n\n1. 每次选择一种要支持的接入方式，完成它要求的登录或密钥配置；不混用其他账号的凭据。\n2. 逐项试用页面上承诺支持的能力，例如文字回答、调用工具、边生成边显示；该服务特有的返回内容也要能保留和继续使用。\n3. 验证长任务的新输入、取消、中断后查询或继续，保存每次调用和用量。\n4. 在页面写清支持范围和不支持的功能；一个服务成功，不能代表其他服务也成功。\n\n怎么演示：为一种新增接入方式完成认证，运行读资料并回答的任务，再做一次中断恢复；核对结果、用量和界面上的能力说明。\n\n2026-11-06 核对：未开始，在首个模型接通后逐种实现和验收；不是一次性承诺所有模型服务都能用。\n\n开发与完整验收依据：[代码、接口和技术约束](specs/053-union-rewrite/tasks.md#u-075-development)。",
             "dependencies": [
                 "U-072"
             ],
             "blocker": null,
-            "started_at": null,
+            "started_at": "2026-11-06",
             "updated_at": "2026-11-06",
             "completion": null,
             "history": [
@@ -2170,7 +2170,12 @@
                     "to": "backlog",
                     "note": "按用户“每张卡看不懂、内容太抽象”的反馈，改为具体功能、操作和完成演示。原技术验收完整保留在 specs/053-union-rewrite/tasks.md#u-075-development；范围、状态、owner、依赖、claim和既有验收记录不变，不执行未来卡。"
                 }
-            ]
+            ],
+            "claim": {
+                "actor": "goose/auto-tick/DESKTOP-SA4MRG7",
+                "at": "2026-11-06T21:57:01.415Z",
+                "lease_until": "2026-11-07T00:57:01.415Z"
+            }
         },
         {
             "id": "U-076",

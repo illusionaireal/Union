@@ -35,6 +35,24 @@ describe('core model access user journey', () => {
     expect(state.commands).toHaveLength(0);
   });
 
+  it('states each profile capability scope without generalizing one profile', async () => {
+    mount();
+    expect(
+      await screen.findByRole('heading', { name: '各接入方式的能力范围' }),
+    ).toBeVisible();
+    expect(screen.getByText('OpenAI 兼容 API（自填密钥）')).toBeVisible();
+    expect(screen.getByText('modeld 授权（本机模型服务）')).toBeVisible();
+    expect(screen.getAllByText('真实已验证')).toHaveLength(3);
+    expect(screen.getByText(/页面不承诺边生成边显示/)).toBeVisible();
+    expect(screen.getAllByText('不支持').length).toBeGreaterThanOrEqual(2);
+    expect(screen.getAllByText('仅受控验证').length).toBeGreaterThanOrEqual(2);
+    // 每条已验证声明各自带证据路径，不是把整页笼统标注一次。
+    // 3 条真实验证 + 1 条受控验证各自带同一条证据路径；不支持的项不带证据。
+    expect(
+      screen.getAllByText(/evidence\/058-s02-model-tools\/README\.md/),
+    ).toHaveLength(4);
+  });
+
   it('saves without inference or adoption, clears the key and keeps only request identities', async () => {
     mount();
     await fillConnection();
@@ -99,7 +117,8 @@ describe('core model access user journey', () => {
     expect(screen.getByText('132 / 31')).toBeVisible();
     expect(screen.getAllByText('未知').length).toBeGreaterThan(0);
     fireEvent.click(screen.getByText('责任、授权与逐次依据'));
-    expect(screen.getByText(/core.model_check/)).toBeVisible();
+    // 逐次依据要显示绑定到这次检查的执行定义；不能用宽泛匹配，避免与能力范围里的证据路径混淆。
+    expect(screen.getByText(/执行定义：core\.model_check · v1/)).toBeVisible();
     expect(sessionStorage.getItem('union-model-requests')).not.toContain('持续责任');
     await open('设为默认');
     await confirm();

@@ -9,7 +9,7 @@ from urllib.parse import urlencode
 
 from ..adapters.core_au_store import CoreAUStore, encoded
 from ..adapters.model_access_store import ModelAccessStore
-from ..domain import governance, model_access as rules, model_checks
+from ..domain import governance, model_access as rules, model_checks, model_profiles
 from ..engine import identifier, now
 from ..errors import CoreError, Rejected, require
 from ..model_service import ServiceError
@@ -51,7 +51,8 @@ class ModelAccessService:
             "access": {"principal_id": principal, "service_instance": self.app.instance, "can_configure": can_configure},
             "governance_status": value.get("governance_status", "prepared"),
             "document_read_allowed": "read_document" in state["charter"]["allowed_tools"],
-            "capabilities": {"profiles": ["openai_compatible", "modeld_grant"], "tools": ["read_document"], "autonomous_business": False},
+            "capabilities": {"profiles": list(model_profiles.PROFILES), "tools": ["read_document"],
+                             "profile_scope": model_profiles.scope(), "autonomous_business": False},
             "connections": [copy.deepcopy(v) | {"is_default": k == models["default_connection_id"]} for k, v in models["connections"].items()],
             "operations": [{k: v[k] for k in ("id", "status", "message")} | {"diagnostic": copy.deepcopy(v.get("diagnostic"))}
                            for v in models["operations"].values()],
@@ -71,7 +72,7 @@ class ModelAccessService:
             identifier(request["id"]); identifier(request["organization_id"])
             require(type(request["base_version"]) is int and request["base_version"] >= 0, "须提供当前 AU 版本")
             require(isinstance(request["data"], dict) and isinstance(request["kind"], str), "命令格式无效")
-            if request["kind"] == "save_connection" and request["data"].get("profile") == "openai_compatible":
+            if request["kind"] == "save_connection" and model_profiles.requires_api_key(request["data"].get("profile")):
                 secret = request["data"].pop("api_key", None)
                 require(isinstance(secret, str) and 1 <= len(secret) <= 4096 and all(33 <= ord(c) <= 126 for c in secret), "须提供合法 API Key")
                 require("api_key_sha256" not in request["data"], "不接受客户端凭据摘要")
@@ -257,7 +258,7 @@ class ModelAccessService:
         principal, config = operation["principal_id"], operation["config"]
         try:
             client = self.backend()
-            if config["profile"] == "openai_compatible":
+            if model_profiles.requires_api_key(config["profile"]):
                 if reconcile:
                     registered = client.call("GET", "/v1/api-connections/" + operation_id + "?" + urlencode({"au_id": au_id, "principal_id": principal}), admin=True)
                 else:

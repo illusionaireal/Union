@@ -1,0 +1,27 @@
+﻿命令：set PYTHONUTF8=1; .venv\Scripts\python.exe -m unittest discover
+（完整输出保留在本地，这里只摘录结果与环境限制）
+
+...........................................................................................................................................s.s....Es......
+======================================================================
+ERROR: test_host_binding_rejects_board_failure_and_private_directory_overlap (tests.test_workspace.WorkspaceTests.test_host_binding_rejects_board_failure_and_private_directory_overlap)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SynologyDrive\project\Union\tests\test_workspace.py", line 142, in test_host_binding_rejects_board_failure_and_private_directory_overlap
+    (self.directory / "linked").symlink_to(self.e.root, target_is_directory=True)
+  File "C:\Users\Benedict\AppData\Local\Programs\Python\Python312\Lib\pathlib.py", line 1386, in symlink_to
+    os.symlink(target, self, target_is_directory)
+OSError: [WinError 1314] 客户端没有所需的特权。: 'C:\\Users\\Benedict\\AppData\\Local\\Temp\\tmpxtli05qb\\org' -> 'C:\\Users\\Benedict\\AppData\\Local\\Temp\\tmpxtli05qb\\checkout\\linked'
+
+----------------------------------------------------------------------
+Ran 585 tests in 353.572s
+
+FAILED (errors=1, skipped=9)
+已重置 C:\Users\Benedict\AppData\Local\Temp\tmpipoi7si5\console.sqlite3
+重置前备份: C:\Users\Benedict\AppData\Local\Temp\tmpipoi7si5\console.sqlite3.bak-1794007813
+重启工作台后，任意第一个访问者都可以重新设置管理员账号。
+数据库: C:\Users\Benedict\AppData\Local\Temp\tmp944831yq\console.sqlite3
+将删除: {'owner_account': 1, 'login_sessions': 1, 'login_limit': 0, 'account_login_limit': 0}
+加 --yes 才会执行；执行前请先停止工作台服务。
+已重置 C:\Users\Benedict\AppData\Local\Temp\tmpr0i4kzwb\console.sqlite3
+重置前备份: C:\Users\Benedict\AppData\Local\Temp\tmpr0i4kzwb\console.sqlite3.bak-1794008063
+重启工作台后，任意第一个访问者都可以重新设置管理员账号。

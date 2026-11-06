@@ -2,7 +2,7 @@
 import copy
 from urllib.parse import urlsplit
 
-from . import governance
+from . import governance, model_profiles
 from .creation import text
 from ..errors import CoreError, require
 
@@ -21,13 +21,13 @@ def validate_input(kind, data):
         return model_checks.validate_input(kind, data)
     if kind == "save_connection":
         profile = data.get("profile")
-        require(profile in ("openai_compatible", "modeld_grant"), "此版本不支持所选模型 profile")
-        private = {"base_url", "api_key_sha256"} if profile == "openai_compatible" else {"grant_ref", "grant_revision"}
+        require(model_profiles.supports(profile), "此版本不支持所选模型 profile")
+        private = model_profiles.private_fields(profile)
         governance.exact(data, CONNECTION_FIELDS | private)
         text(data["name"], "连接名称", 100)
         text(data["model"], "模型标识", 256)
         require(type(data["max_output_tokens"]) is int and 1 <= data["max_output_tokens"] <= 32768, "输出上限须为 1–32768")
-        if profile == "openai_compatible":
+        if model_profiles.requires_api_key(profile):
             parsed = urlsplit(data["base_url"])
             require(parsed.hostname and not parsed.username and not parsed.password and not parsed.query and not parsed.fragment,
                     "模型地址不支持用户信息、查询或片段")
@@ -123,7 +123,7 @@ def validate_state(state):
             require(isinstance(value, dict) and value.get("id") == key, "模型记录身份不一致")
     for value in models["connections"].values():
         require(type(value["revision"]) is int and value["revision"] >= 1 and type(value["enabled"]) is bool, "模型连接版本无效")
-        require(value["profile"] in ("openai_compatible", "modeld_grant"), "模型 profile 不支持")
+        require(model_profiles.supports(value["profile"]), "模型 profile 不支持")
     require(models["default_connection_id"] is None or models["default_connection_id"] in models["connections"], "默认连接不属于此 AU")
     from .model_checks import validate_state as validate_checks
     validate_checks(state)

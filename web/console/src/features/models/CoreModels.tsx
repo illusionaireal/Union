@@ -9,6 +9,7 @@ import { sameScope, type GovernanceScope } from '../governance/model';
 import { useModels } from './useModels';
 import { ModelCommandForm } from './ModelCommandForm';
 import { ModelRecovery } from './ModelReceiptView';
+import { ProfileScope } from './ProfileScope';
 import {
   CheckRecords,
   ConnectionRecords,
@@ -125,6 +126,7 @@ function ModelWorkspace({ scope }: { scope: GovernanceScope }) {
               </Link>
             </div>
           )}
+          <ProfileScope read={read} />
           <Card
             title="有限调用授权"
             action={

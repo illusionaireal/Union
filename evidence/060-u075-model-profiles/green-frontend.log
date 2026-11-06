@@ -1,0 +1,15 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.7 [39m[90mD:/SynologyDrive/project/Union/web/console[39m
+
+ [32m✓[39m src/features/models/ModelsIdentity.test.tsx [2m([22m[2m11 tests[22m[2m)[22m[33m 1615[2mms[22m[39m
+ [32m✓[39m src/features/models/ModelsRecovery.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[33m 1878[2mms[22m[39m
+   [33m[2m✓[22m[39m model original-request recovery[2m > [22mnever replays a lost save and only queries the original receipt [33m 412[2mms[22m[39m
+ [32m✓[39m src/features/models/ModelsDiagnostics.test.tsx [2m([22m[2m17 tests[22m[2m)[22m[33m 2268[2mms[22m[39m
+ [32m✓[39m src/features/models/Models.test.tsx [2m([22m[2m14 tests[22m[2m)[22m[33m 2300[2mms[22m[39m
+   [33m[2m✓[22m[39m core model access user journey[2m > [22mgrants bounded resources, reads a selected document twice and adopts independently [33m 565[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m4 passed[39m[22m[90m (4)[39m
+[2m      Tests [22m [1m[32m52 passed[39m[22m[90m (52)[39m
+[2m   Start at [22m 07:26:43
+[2m   Duration [22m 4.56s[2m (transform 538ms, setup 661ms, collect 4.86s, tests 8.06s, environment 1.77s, prepare 390ms)[22m
+

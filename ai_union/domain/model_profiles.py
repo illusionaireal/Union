@@ -1,0 +1,70 @@
+"""Single owner of the supported connection profiles and their declared capability scope.
+
+一个 profile 的真实结果不能外推到另一个 profile。每条能力声明分别给出状态和证据路径；
+不支持的项必须写明，不能在页面上隐去。
+"""
+
+STATUSES = ("verified_real", "controlled", "unsupported")
+
+CAPABILITIES = ("text_answer", "tool_roundtrip", "usage_reporting",
+                "streaming", "long_job_new_input", "cancel_and_query")
+
+REAL_EVIDENCE = "evidence/058-s02-model-tools/README.md"
+CHECK_EVIDENCE = "tests/test_core_model_checks.py"
+RECOVERY_EVIDENCE = "tests/test_core_model_recovery.py"
+
+
+def _claim(status, note, evidence=None):
+    claim = {"status": status, "note": note}
+    if status != "unsupported":
+        claim["evidence"] = evidence
+    return claim
+
+
+PROFILES = {
+    "openai_compatible": {
+        "title": "OpenAI 兼容 API（自填密钥）",
+        "auth": "api_key",
+        "private_fields": ("base_url", "api_key_sha256"),
+        "capabilities": {
+            "text_answer": _claim("verified_real", "U-072 已用所选连接完成两次真实推理，回答已保存。", REAL_EVIDENCE),
+            "tool_roundtrip": _claim("verified_real", "真实读取所选文本，经 read_document 回执继续回答。", REAL_EVIDENCE),
+            "usage_reporting": _claim("verified_real", "真实响应记录输入/输出 token；供应商未返回金额时保留未知。", REAL_EVIDENCE),
+            "streaming": _claim("unsupported", "连接检查要求完整应答，页面不承诺边生成边显示。"),
+            "long_job_new_input": _claim("unsupported", "长任务执行期间追加输入尚未实现；刷新后用原请求查询。"),
+            "cancel_and_query": _claim("controlled", "取消意图、原请求查询和 unknown 保留已受控验证，未做真实中断恢复。", REAL_EVIDENCE),
+        },
+    },
+    "modeld_grant": {
+        "title": "modeld 授权（本机模型服务）",
+        "auth": "grant",
+        "private_fields": ("grant_ref", "grant_revision"),
+        "capabilities": {
+            "text_answer": _claim("controlled", "以显式模型替身验证文本回答；未用真实账号验收此 profile。", CHECK_EVIDENCE),
+            "tool_roundtrip": _claim("controlled", "两阶段工具往返、回执配对和迟到结果隔离已受控验证。", CHECK_EVIDENCE),
+            "usage_reporting": _claim("controlled", "事件与结果用量合并、金额未知保留已受控验证。", CHECK_EVIDENCE),
+            "streaming": _claim("unsupported", "连接检查要求完整应答，此 profile 未验证流式输出。"),
+            "long_job_new_input": _claim("unsupported", "此 profile 未验证长任务执行期间接收新输入。"),
+            "cancel_and_query": _claim("controlled", "取消、原请求查询与 unknown 保留已受控验证。", RECOVERY_EVIDENCE),
+        },
+    },
+}
+
+
+def supports(profile):
+    """Registry 是命令校验的唯一 profile 清单，不在规则里另存第二份。"""
+    return profile in PROFILES
+
+
+def private_fields(profile):
+    return set(PROFILES[profile]["private_fields"])
+
+
+def requires_api_key(profile):
+    return PROFILES.get(profile, {}).get("auth") == "api_key"
+
+
+def scope():
+    return {name: {"title": profile["title"], "auth": profile["auth"],
+                   "capabilities": {key: dict(value) for key, value in profile["capabilities"].items()}}
+            for name, profile in PROFILES.items()}

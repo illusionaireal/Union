@@ -1,0 +1,968 @@
+
+> @union/console@0.1.0 test
+> vitest run --run src/features/models/Models.test.tsx
+
+
+[1m[46m RUN [49m[22m [36mv3.2.7 [39m[90mD:/SynologyDrive/project/Union/web/console[39m
+
+ [31m❯[39m src/features/models/Models.test.tsx [2m([22m[2m14 tests[22m[2m | [22m[31m2 failed[39m[2m)[22m[33m 2730[2mms[22m[39m
+   [32m✓[39m core model access user journey[2m > [22mopens the core models route and navigation for a normal core governor[32m 196[2mms[22m[39m
+[31m   [31m×[31m core model access user journey[2m > [22mstates each profile capability scope without generalizing one profile[39m[32m 101[2mms[22m[39m
+[31m     → Found multiple elements with the text: /evidence\/058-s02-model-tools\/README.md/
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+[36m<small>[31m
+  [0m（[0m
+  [0mevidence/058-s02-model-tools/README.md[0m
+  [0m）[0m
+[36m</small>[31m
+
+Ignored nodes: comments, script, style
+[36m<small>[31m
+  [0m（[0m
+  [0mevidence/058-s02-model-tools/README.md[0m
+  [0m）[0m
+[36m</small>[31m
+
+Ignored nodes: comments, script, style
+[36m<small>[31m
+  [0m（[0m
+  [0mevidence/058-s02-model-tools/README.md[0m
+  [0m）[0m
+[36m</small>[31m
+
+Ignored nodes: comments, script, style
+[36m<small>[31m
+  [0m（[0m
+  [0mevidence/058-s02-model-tools/README.md[0m
+  [0m）[0m
+[36m</small>[31m
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<a[31m
+      [33mclass[31m=[32m"skip"[31m
+      [33mhref[31m=[32m"#main"[31m
+    [36m>[31m
+      [0m跳转到正文[0m
+    [36m</a>[31m
+    [36m<aside[31m
+      [33maria-label[31m=[32m"工作台导航"[31m
+      [33mclass[31m=[32m"sidebar"[31m
+    [36m>[31m
+      [36m<a[31m
+        [33mclass[31m=[32m"brand"[31m
+        [33mdata-discover[31m=[32m"true"[31m
+        [33mhref[31m=[32m"/overview?organization=core-au"[31m
+      [36m>[31m
+        [36m<span[31m
+          [33mclass[31m=[32m"brand-symbol"[31m
+        [36m>[31m
+          [0mu[0m
+        [36m</span>[31m
+        [36m<span>[31m
+          [0mUNION[0m
+          [36m<small>[31m
+            [0mAI-UNION / AU[0m
+          [36m</small>[31m
+        [36m</span>[31m
+      [36m</a>[31m
+      [36m<label[31m
+        [33mclass[31m=[32m"workspace-switch"[31m
+      [36m>[31m
+        [36m<span[31m
+          [33mclass[31m=[32m"org-icon"[31m
+        [36m>[31m
+          [0m内[0m
+        [36m</span>[31m
+        [36m<span[31m
+          [33mclass[31m=[32m"workspace-select"[31m
+        [36m>[31m
+          [36m<small>[31m
+            [0m当前 AU[0m
+          [36m</small>[31m
+          [36m<select[31m
+            [33maria-label[31m=[32m"当前组织"[31m
+            [33mid[31m=[32m"org-select"[31m
+          [36m>[31m
+            [36m<option[31m
+              [33mvalue[31m=[32m"core-au"[31m
+            [36m>[31m
+              [0m内部记录 AU[0m
+            [36m</option>[31m
+          [36m</select>[31m
+        [36m</span>[31m
+      [36m</label>[31m
+      [36m<nav[31m
+        [33mid[31m=[32m"navigation"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"nav-entry"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"nav-caption"[31m
+          [36m>[31m
+            [0m工作空间[0m
+          [36m</div>[31m
+          [36m<a[31m
+            [33mclass[31m=[32m"nav-button"[31m
+            [33mdata-discover[31m=[32m"true"[31m
+            [33mdata-nav[31m=[32m"overview"[31m
+            [33mhref[31m=[32m"/overview?organization=core-au"[31m
+          [36m>[31m
+            [36m<svg[31m
+              [33maria-hidden[31m=[32m"true"[31m
+              [33mclass[31m=[32m"lucide lucide-layout-dashboard"[31m
+              [33mfill[31m=[32m"none"[31m
+              [33mheight[31m=[32m"19"[31m
+              [33mstroke[31m=[32m"currentColor"[31m
+              [33mstroke-linecap[31m=[32m"round"[31m
+              [33mstroke-linejoin[31m=[32m"round"[31m
+              [33mstroke-width[31m=[32m"1.7"[31m
+              [33mviewBox[31m=[32m"0 0 24 24"[31m
+              [33mwidth[31m=[32m"19"[31m
+              [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+            [36m>[31m
+              [36m<rect[31m
+                [33mheight[31m=[32m"9"[31m
+                [33mrx[31m=[32m"1"[31m
+                [33mwidth[31m=[32m"7"[31m
+                [33mx[31m=[32m"3"[31m
+                [33my[31m=[32m"3"[31m
+              [36m/>[31m
+              [36m<rect[31m
+                [33mheight[31m=[32m"5"[31m
+                [33mrx[31m=[32m"1"[31m
+                [33mwidth[31m=[32m"7"[31m
+                [33mx[31m=[32m"14"[31m
+                [33my[31m=[32m"3"[31m
+              [36m/>[31m
+              [36m<rect[31m
+                [33mheight[31m=[32m"9"[31m
+                [33mrx[31m=[32m"1"[31m
+                [33mwidth[31m=[32m"7"[31m
+                [33mx[31m=[32m"14"[31m
+                [33my[31m=[32m"12"[31m
+              [36m/>[31m
+              [36m<rect[31m
+                [33mheight[31m=[32m"5"[31m
+                [33mrx[31m=[32m"1"[31m
+                [33mwidth[31m=[32m"7"[31m
+                [33mx[31m=[32m"3"[31m
+                [33my[31m=[32m"16"[31m
+              [36m/>[31m
+            [36m</svg>[31m
+            [36m<span>[31m
+              [0mAU与治理[0m
+            [36m</span>[31m
+          [36m</a>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"nav-entry"[31m
+        [36m>[31m
+          [36m<a[31m
+            [33mclass[31m=[32m"nav-button"[31m
+            [33mdata-discover[31m=[32m"true"[31m
+            [33mdata-nav[31m=[32m"tasks"[31m
+            [33mhref[31m=[32m"/tasks?organization=core-au"[31m
+          [36m>[31m
+            [36m<svg[31m
+              [33maria-hidden[31m=[32m"true"[31m
+              [33mclass[31m=[32m"lucide lucide-list-checks"[31m
+              [33mfill[31m=[32m"none"[31m
+              [33mheight[31m=[32m"19"[31m
+              [33mstroke[31m=[32m"currentColor"[31m
+              [33mstroke-linecap[31m=[32m"round"[31m
+              [33mstroke-linejoin[31m=[32m"round"[31m
+              [33mstroke-width[31m=[32m"1.7"[31m
+              [33mviewBox[31m=[32m"0 0 24 24"[31m
+              [33mwidth[31m=[32m"19"[31m
+              [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+            [36m>[31m
+              [36m<path[31m
+                [33md[31m=[32m"M13 5h8"[31m
+              [36m/>[31m
+              [36m<path[31m
+                [33md[31m=[32m"M13 12h8"[31m
+              [36m/>[31m
+              [36m<path[31m
+                [33md[31m=[32m"M13 19h8"[31m
+              [36m/>[31m
+              [36m<path[31m
+                [33md[31m=[32m"m3 17 2 2 4-4"[31m
+              [36m/>[31m
+              [36m<path[31m
+                [33md[31m=[32m"m3 7 2 2 4-4"[31m
+              [36m/>[31m
+            [36m</svg>[31m
+            [36m<span>[31m
+              [0m责任与工作[0m
+            [36m</span>[31m
+          [36m</a>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"nav-entry"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"nav-caption"[31m
+          [36m>[31m
+            [0m运行管理[0m
+          [36m</div>[31m
+          [36m<a[31m
+            [33maria-current[31m=[32m"page"[31m
+            [33mclass[31m=[32m"nav-button active"[31m
+            [33mdata-discover[31m=[32m"true"[31m
+            [33mdata-nav[31m=[32m"models"[31m
+            [33mhref[31m=[32m"/models?organization=core-au"[31m
+          [36m>[31m
+            [36m<svg[31m
+              [33maria-hidden[31m=[32m"true"[31m
+              [33mclass[31m=[32m"lucide lucide-cpu"[31m
+              [33mfill[31m=[32m"none"[31m
+              [33mheight[31m=[32m"19"[31m
+              [33mstroke[31m=[32m"currentColor"[31m
+              [33mstroke-linecap[31m=[32m"round"[31m
+              [33mstroke-linejoin[31m=[32m"round"[31m
+              [33mstroke-width[31m=[32m"1.7"[31m
+              [33mviewBox[31m=[32m"0 0 24 24"[31m
+              [33mwidth[31m=[...[39m
+   [32m✓[39m core model access user journey[2m > [22msaves without inference or adoption, clears the key and keeps only request identities[32m 202[2mms[22m[39m
+[31m   [31m×[31m core model access user journey[2m > [22mgrants bounded resources, reads a selected document twice and adopts independently[39m[33m 1155[2mms[22m[39m
+[31m     → Found multiple elements with the text: /core.model_check/
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+[36m<small>[31m
+  [0m（[0m
+  [0mtests/test_core_model_checks.py[0m
+  [0m）[0m
+[36m</small>[31m
+
+Ignored nodes: comments, script, style
+[36m<small>[31m
+  [0m（[0m
+  [0mtests/test_core_model_checks.py[0m
+  [0m）[0m
+[36m</small>[31m
+
+Ignored nodes: comments, script, style
+[36m<small>[31m
+  [0m（[0m
+  [0mtests/test_core_model_checks.py[0m
+  [0m）[0m
+[36m</small>[31m
+
+Ignored nodes: comments, script, style
+[36m<p>[31m
+  [0m执行定义：[0m
+  [0mcore.model_check[0m
+  [0m · v[0m
+  [0m1[0m
+  [0m；资源授权 v[0m
+  [0m1[0m
+[36m</p>[31m
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<a[31m
+      [33mclass[31m=[32m"skip"[31m
+      [33mhref[31m=[32m"#main"[31m
+    [36m>[31m
+      [0m跳转到正文[0m
+    [36m</a>[31m
+    [36m<aside[31m
+      [33maria-label[31m=[32m"工作台导航"[31m
+      [33mclass[31m=[32m"sidebar"[31m
+    [36m>[31m
+      [36m<a[31m
+        [33mclass[31m=[32m"brand"[31m
+        [33mdata-discover[31m=[32m"true"[31m
+        [33mhref[31m=[32m"/overview?organization=core-au"[31m
+      [36m>[31m
+        [36m<span[31m
+          [33mclass[31m=[32m"brand-symbol"[31m
+        [36m>[31m
+          [0mu[0m
+        [36m</span>[31m
+        [36m<span>[31m
+          [0mUNION[0m
+          [36m<small>[31m
+            [0mAI-UNION / AU[0m
+          [36m</small>[31m
+        [36m</span>[31m
+      [36m</a>[31m
+      [36m<label[31m
+        [33mclass[31m=[32m"workspace-switch"[31m
+      [36m>[31m
+        [36m<span[31m
+          [33mclass[31m=[32m"org-icon"[31m
+        [36m>[31m
+          [0m内[0m
+        [36m</span>[31m
+        [36m<span[31m
+          [33mclass[31m=[32m"workspace-select"[31m
+        [36m>[31m
+          [36m<small>[31m
+            [0m当前 AU[0m
+          [36m</small>[31m
+          [36m<select[31m
+            [33maria-label[31m=[32m"当前组织"[31m
+            [33mid[31m=[32m"org-select"[31m
+          [36m>[31m
+            [36m<option[31m
+              [33mvalue[31m=[32m"core-au"[31m
+            [36m>[31m
+              [0m内部记录 AU[0m
+            [36m</option>[31m
+          [36m</select>[31m
+        [36m</span>[31m
+      [36m</label>[31m
+      [36m<nav[31m
+        [33mid[31m=[32m"navigation"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"nav-entry"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"nav-caption"[31m
+          [36m>[31m
+            [0m工作空间[0m
+          [36m</div>[31m
+          [36m<a[31m
+            [33mclass[31m=[32m"nav-button"[31m
+            [33mdata-discover[31m=[32m"true"[31m
+            [33mdata-nav[31m=[32m"overview"[31m
+            [33mhref[31m=[32m"/overview?organization=core-au"[31m
+          [36m>[31m
+            [36m<svg[31m
+              [33maria-hidden[31m=[32m"true"[31m
+              [33mclass[31m=[32m"lucide lucide-layout-dashboard"[31m
+              [33mfill[31m=[32m"none"[31m
+              [33mheight[31m=[32m"19"[31m
+              [33mstroke[31m=[32m"currentColor"[31m
+              [33mstroke-linecap[31m=[32m"round"[31m
+              [33mstroke-linejoin[31m=[32m"round"[31m
+              [33mstroke-width[31m=[32m"1.7"[31m
+              [33mviewBox[31m=[32m"0 0 24 24"[31m
+              [33mwidth[31m=[32m"19"[31m
+              [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+            [36m>[31m
+              [36m<rect[31m
+                [33mheight[31m=[32m"9"[31m
+                [33mrx[31m=[32m"1"[31m
+                [33mwidth[31m=[32m"7"[31m
+                [33mx[31m=[32m"3"[31m
+                [33my[31m=[32m"3"[31m
+              [36m/>[31m
+              [36m<rect[31m
+                [33mheight[31m=[32m"5"[31m
+                [33mrx[31m=[32m"1"[31m
+                [33mwidth[31m=[32m"7"[31m
+                [33mx[31m=[32m"14"[31m
+                [33my[31m=[32m"3"[31m
+              [36m/>[31m
+              [36m<rect[31m
+                [33mheight[31m=[32m"9"[31m
+                [33mrx[31m=[32m"1"[31m
+                [33mwidth[31m=[32m"7"[31m
+                [33mx[31m=[32m"14"[31m
+                [33my[31m=[32m"12"[31m
+              [36m/>[31m
+              [36m<rect[31m
+                [33mheight[31m=[32m"5"[31m
+                [33mrx[31m=[32m"1"[31m
+                [33mwidth[31m=[32m"7"[31m
+                [33mx[31m=[32m"3"[31m
+                [33my[31m=[32m"16"[31m
+              [36m/>[31m
+            [36m</svg>[31m
+            [36m<span>[31m
+              [0mAU与治理[0m
+            [36m</span>[31m
+          [36m</a>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"nav-entry"[31m
+        [36m>[31m
+          [36m<a[31m
+            [33mclass[31m=[32m"nav-button"[31m
+            [33mdata-discover[31m=[32m"true"[31m
+            [33mdata-nav[31m=[32m"tasks"[31m
+            [33mhref[31m=[32m"/tasks?organization=core-au"[31m
+          [36m>[31m
+            [36m<svg[31m
+              [33maria-hidden[31m=[32m"true"[31m
+              [33mclass[31m=[32m"lucide lucide-list-checks"[31m
+              [33mfill[31m=[32m"none"[31m
+              [33mheight[31m=[32m"19"[31m
+              [33mstroke[31m=[32m"currentColor"[31m
+              [33mstroke-linecap[31m=[32m"round"[31m
+              [33mstroke-linejoin[31m=[32m"round"[31m
+              [33mstroke-width[31m=[32m"1.7"[31m
+              [33mviewBox[31m=[32m"0 0 24 24"[31m
+              [33mwidth[31m=[32m"19"[31m
+              [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+            [36m>[31m
+              [36m<path[31m
+                [33md[31m=[32m"M13 5h8"[31m
+              [36m/>[31m
+              [36m<path[31m
+                [33md[31m=[32m"M13 12h8"[31m
+              [36m/>[31m
+              [36m<path[31m
+                [33md[31m=[32m"M13 19h8"[31m
+              [36m/>[31m
+              [36m<path[31m
+                [33md[31m=[32m"m3 17 2 2 4-4"[31m
+              [36m/>[31m
+              [36m<path[31m
+                [33md[31m=[32m"m3 7 2 2 4-4"[31m
+              [36m/>[31m
+            [36m</svg>[31m
+            [36m<span>[31m
+              [0m责任与工作[0m
+            [36m</span>[31m
+          [36m</a>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"nav-entry"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"nav-caption"[31m
+          [36m>[31m
+            [0m运行管理[0m
+          [36m</div>[31m
+          [36m<a[31m
+            [33maria-current[31m=[32m"page"[31m
+            [33mclass[31m=[32m"nav-button active"[31m
+            [33mdata-discover[31m=[32m"true"[31m
+            [33mdata-nav[31m=[32m"models"[31m
+            [33mhref[31m=[32m"/models?organization=core-au"[31m
+          [36m>[31m
+            [36m<svg[31m
+              [33maria-hidden[31m=[32m"true"[31m
+              [33mclass[31m=[32m"lucide lucide-cpu"[31m
+              [33mfill[31m=[32m"none"[31m
+              [33mheight[31m=[32m"19"[31m
+              [33mstroke[31m=[32m"currentColor"[31m
+              [33mstroke-linecap[31m=[32m"round"[31m
+              [33mstroke-linejoin[31m=[32m"round"[31m
+              [33mstroke-width[31m=[32m"1.7"[31m
+              [33mviewBox[31m=[32m"0 0 24 24"[31m
+              [33mwidth[31m=[...[39m
+   [32m✓[39m core model access user journey[2m > [22mcan adopt an enabled untested connection without purchasing a check[32m 162[2mms[22m[39m
+   [32m✓[39m core model access user journey[2m > [22mrequires a fresh API key when editing an endpoint and does not reuse an old check[32m 94[2mms[22m[39m
+   [32m✓[39m core model access user journey[2m > [22muses only an explicitly supplied modeld grant, without listing host accounts[32m 141[2mms[22m[39m
+   [32m✓[39m core model access user journey[2m > [22mrejects a credential containing 空白 before preview or POST[32m 119[2mms[22m[39m
+   [32m✓[39m core model access user journey[2m > [22mrejects a credential containing 非 ASCII 字符 before preview or POST[32m 96[2mms[22m[39m
+   [32m✓[39m core model access user journey[2m > [22mrejects a credential containing 超过 4096 字符 before preview or POST[32m 95[2mms[22m[39m
+   [32m✓[39m core model access user journey[2m > [22mkeeps normal inputs after a persisted domain rejection and allows a new preview[32m 162[2mms[22m[39m
+   [32m✓[39m core model access user journey[2m > [22moffers the governance next step when the charter lacks the read-only tool[32m 73[2mms[22m[39m
+   [32m✓[39m core model access user journey[2m > [22mreads persisted schema 3 records without legacy fallback[32m 48[2mms[22m[39m
+   [32m✓[39m core model access user journey[2m > [22mlets the V1 governor explicitly enable read_document while preserving other tools[32m 86[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 2 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m src/features/models/Models.test.tsx[2m > [22mcore model access user journey[2m > [22mstates each profile capability scope without generalizing one profile
+[31m[1mTestingLibraryElementError[22m[39m: Found multiple elements with the text: /evidence\/058-s02-model-tools\/README.md/
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+[36m<small>[39m
+  [0m（[0m
+  [0mevidence/058-s02-model-tools/README.md[0m
+  [0m）[0m
+[36m</small>[39m
+
+Ignored nodes: comments, script, style
+[36m<small>[39m
+  [0m（[0m
+  [0mevidence/058-s02-model-tools/README.md[0m
+  [0m）[0m
+[36m</small>[39m
+
+Ignored nodes: comments, script, style
+[36m<small>[39m
+  [0m（[0m
+  [0mevidence/058-s02-model-tools/README.md[0m
+  [0m）[0m
+[36m</small>[39m
+
+Ignored nodes: comments, script, style
+[36m<small>[39m
+  [0m（[0m
+  [0mevidence/058-s02-model-tools/README.md[0m
+  [0m）[0m
+[36m</small>[39m
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<a[39m
+      [33mclass[39m=[32m"skip"[39m
+      [33mhref[39m=[32m"#main"[39m
+    [36m>[39m
+      [0m跳转到正文[0m
+    [36m</a>[39m
+    [36m<aside[39m
+      [33maria-label[39m=[32m"工作台导航"[39m
+      [33mclass[39m=[32m"sidebar"[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"brand"[39m
+        [33mdata-discover[39m=[32m"true"[39m
+        [33mhref[39m=[32m"/overview?organization=core-au"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"brand-symbol"[39m
+        [36m>[39m
+          [0mu[0m
+        [36m</span>[39m
+        [36m<span>[39m
+          [0mUNION[0m
+          [36m<small>[39m
+            [0mAI-UNION / AU[0m
+          [36m</small>[39m
+        [36m</span>[39m
+      [36m</a>[39m
+      [36m<label[39m
+        [33mclass[39m=[32m"workspace-switch"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"org-icon"[39m
+        [36m>[39m
+          [0m内[0m
+        [36m</span>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"workspace-select"[39m
+        [36m>[39m
+          [36m<small>[39m
+            [0m当前 AU[0m
+          [36m</small>[39m
+          [36m<select[39m
+            [33maria-label[39m=[32m"当前组织"[39m
+            [33mid[39m=[32m"org-select"[39m
+          [36m>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"core-au"[39m
+            [36m>[39m
+              [0m内部记录 AU[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</span>[39m
+      [36m</label>[39m
+      [36m<nav[39m
+        [33mid[39m=[32m"navigation"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"nav-entry"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"nav-caption"[39m
+          [36m>[39m
+            [0m工作空间[0m
+          [36m</div>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"nav-button"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mdata-nav[39m=[32m"overview"[39m
+            [33mhref[39m=[32m"/overview?organization=core-au"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-layout-dashboard"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"19"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.7"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"19"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"9"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"3"[39m
+                [33my[39m=[32m"3"[39m
+              [36m/>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"5"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"14"[39m
+                [33my[39m=[32m"3"[39m
+              [36m/>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"9"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"14"[39m
+                [33my[39m=[32m"12"[39m
+              [36m/>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"5"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"3"[39m
+                [33my[39m=[32m"16"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [36m<span>[39m
+              [0mAU与治理[0m
+            [36m</span>[39m
+          [36m</a>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"nav-entry"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"nav-button"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mdata-nav[39m=[32m"tasks"[39m
+            [33mhref[39m=[32m"/tasks?organization=core-au"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-list-checks"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"19"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.7"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"19"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M13 5h8"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M13 12h8"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M13 19h8"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"m3 17 2 2 4-4"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"m3 7 2 2 4-4"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [36m<span>[39m
+              [0m责任与工作[0m
+            [36m</span>[39m
+          [36m</a>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"nav-entry"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"nav-caption"[39m
+          [36m>[39m
+            [0m运行管理[0m
+          [36m</div>[39m
+          [36m<a[39m
+            [33maria-current[39m=[32m"page"[39m
+            [33mclass[39m=[32m"nav-button active"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mdata-nav[39m=[32m"models"[39m
+            [33mhref[39m=[32m"/models?organization=core-au"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-cpu"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"19"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.7"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[...
+[90m [2m❯[22m Object.getElementError ../../node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2m❯[22m getElementError ../../node_modules/@testing-library/dom/dist/query-helpers.js:[2m20:35[22m[39m
+[90m [2m❯[22m getMultipleElementsFoundError ../../node_modules/@testing-library/dom/dist/query-helpers.js:[2m23:10[22m[39m
+[90m [2m❯[22m ../../node_modules/@testing-library/dom/dist/query-helpers.js:[2m55:13[22m[39m
+[90m [2m❯[22m ../../node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
+[36m [2m❯[22m src/features/models/Models.test.tsx:[2m49:19[22m[39m
+    [90m 47| [39m    expect(screen.getAllByText('不支持').length).toBeGreaterThanOrEqual(2…
+    [90m 48| [39m    expect(screen.getAllByText('仅受控验证').length).toBeGreaterThanOrEqual…
+    [90m 49| [39m    expect(screen.getByText(/evidence\/058-s02-model-tools\/README.md/…
+    [90m   | [39m                  [31m^[39m
+    [90m 50| [39m  })[33m;[39m
+    [90m 51| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/features/models/Models.test.tsx[2m > [22mcore model access user journey[2m > [22mgrants bounded resources, reads a selected document twice and adopts independently
+[31m[1mTestingLibraryElementError[22m[39m: Found multiple elements with the text: /core.model_check/
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+[36m<small>[39m
+  [0m（[0m
+  [0mtests/test_core_model_checks.py[0m
+  [0m）[0m
+[36m</small>[39m
+
+Ignored nodes: comments, script, style
+[36m<small>[39m
+  [0m（[0m
+  [0mtests/test_core_model_checks.py[0m
+  [0m）[0m
+[36m</small>[39m
+
+Ignored nodes: comments, script, style
+[36m<small>[39m
+  [0m（[0m
+  [0mtests/test_core_model_checks.py[0m
+  [0m）[0m
+[36m</small>[39m
+
+Ignored nodes: comments, script, style
+[36m<p>[39m
+  [0m执行定义：[0m
+  [0mcore.model_check[0m
+  [0m · v[0m
+  [0m1[0m
+  [0m；资源授权 v[0m
+  [0m1[0m
+[36m</p>[39m
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<a[39m
+      [33mclass[39m=[32m"skip"[39m
+      [33mhref[39m=[32m"#main"[39m
+    [36m>[39m
+      [0m跳转到正文[0m
+    [36m</a>[39m
+    [36m<aside[39m
+      [33maria-label[39m=[32m"工作台导航"[39m
+      [33mclass[39m=[32m"sidebar"[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"brand"[39m
+        [33mdata-discover[39m=[32m"true"[39m
+        [33mhref[39m=[32m"/overview?organization=core-au"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"brand-symbol"[39m
+        [36m>[39m
+          [0mu[0m
+        [36m</span>[39m
+        [36m<span>[39m
+          [0mUNION[0m
+          [36m<small>[39m
+            [0mAI-UNION / AU[0m
+          [36m</small>[39m
+        [36m</span>[39m
+      [36m</a>[39m
+      [36m<label[39m
+        [33mclass[39m=[32m"workspace-switch"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"org-icon"[39m
+        [36m>[39m
+          [0m内[0m
+        [36m</span>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"workspace-select"[39m
+        [36m>[39m
+          [36m<small>[39m
+            [0m当前 AU[0m
+          [36m</small>[39m
+          [36m<select[39m
+            [33maria-label[39m=[32m"当前组织"[39m
+            [33mid[39m=[32m"org-select"[39m
+          [36m>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"core-au"[39m
+            [36m>[39m
+              [0m内部记录 AU[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</span>[39m
+      [36m</label>[39m
+      [36m<nav[39m
+        [33mid[39m=[32m"navigation"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"nav-entry"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"nav-caption"[39m
+          [36m>[39m
+            [0m工作空间[0m
+          [36m</div>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"nav-button"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mdata-nav[39m=[32m"overview"[39m
+            [33mhref[39m=[32m"/overview?organization=core-au"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-layout-dashboard"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"19"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.7"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"19"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"9"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"3"[39m
+                [33my[39m=[32m"3"[39m
+              [36m/>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"5"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"14"[39m
+                [33my[39m=[32m"3"[39m
+              [36m/>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"9"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"14"[39m
+                [33my[39m=[32m"12"[39m
+              [36m/>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"5"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"3"[39m
+                [33my[39m=[32m"16"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [36m<span>[39m
+              [0mAU与治理[0m
+            [36m</span>[39m
+          [36m</a>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"nav-entry"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"nav-button"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mdata-nav[39m=[32m"tasks"[39m
+            [33mhref[39m=[32m"/tasks?organization=core-au"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-list-checks"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"19"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.7"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"19"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M13 5h8"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M13 12h8"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M13 19h8"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"m3 17 2 2 4-4"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"m3 7 2 2 4-4"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [36m<span>[39m
+              [0m责任与工作[0m
+            [36m</span>[39m
+          [36m</a>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"nav-entry"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"nav-caption"[39m
+          [36m>[39m
+            [0m运行管理[0m
+          [36m</div>[39m
+          [36m<a[39m
+            [33maria-current[39m=[32m"page"[39m
+            [33mclass[39m=[32m"nav-button active"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mdata-nav[39m=[32m"models"[39m
+            [33mhref[39m=[32m"/models?organization=core-au"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-cpu"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"19"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.7"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[...
+[90m [2m❯[22m Object.getElementError ../../node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2m❯[22m getElementError ../../node_modules/@testing-library/dom/dist/query-helpers.js:[2m20:35[22m[39m
+[90m [2m❯[22m getMultipleElementsFoundError ../../node_modules/@testing-library/dom/dist/query-helpers.js:[2m23:10[22m[39m
+[90m [2m❯[22m ../../node_modules/@testing-library/dom/dist/query-helpers.js:[2m55:13[22m[39m
+[90m [2m❯[22m ../../node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
+[36m [2m❯[22m src/features/models/Models.test.tsx:[2m116:19[22m[39m
+    [90m114| [39m    [34mexpect[39m(screen[33m.[39m[34mgetAllByText[39m([32m'未知'[39m)[33m.[39mlength)[33m.[39m[34mtoBeGreaterThan[39m([34m0[39m)[33m;[39m
+    [90m115| [39m    fireEvent[33m.[39m[34mclick[39m(screen[33m.[39m[34mgetByText[39m([32m'责任、授权与逐次依据'[39m))[33m;[39m
+    [90m116| [39m    [34mexpect[39m(screen[33m.[39m[34mgetByText[39m([36m/core.model_check/[39m))[33m.[39m[34mtoBeVisible[39m()[33m;[39m
+    [90m   | [39m                  [31m^[39m
+    [90m117| [39m    expect(sessionStorage.getItem('union-model-requests')).not.toConta…
+    [90m118| [39m    [35mawait[39m [34mopen[39m([32m'设为默认'[39m)[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m2 failed[39m[22m[2m | [22m[1m[32m12 passed[39m[22m[90m (14)[39m
+[2m   Start at [22m 06:01:18
+[2m   Duration [22m 31.06s[2m (transform 1.02s, setup 4.37s, collect 2.51s, tests 2.73s, environment 20.47s, prepare 553ms)[22m
+
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path D:\SynologyDrive\project\Union\web\console
+npm error workspace @union/console@0.1.0
+npm error location D:\SynologyDrive\project\Union\web\console
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c vitest run --run src/features/models/Models.test.tsx

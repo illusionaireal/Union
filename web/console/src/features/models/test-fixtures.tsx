@@ -128,6 +128,76 @@ export function fixture() {
     capabilities: {
       profiles: ['openai_compatible', 'modeld_grant'],
       tools: ['read_document'],
+      profile_scope: {
+        openai_compatible: {
+          title: 'OpenAI 兼容 API（自填密钥）',
+          auth: 'api_key',
+          capabilities: {
+            text_answer: {
+              status: 'verified_real',
+              note: 'U-072 已用所选连接完成两次真实推理，回答已保存。',
+              evidence: 'evidence/058-s02-model-tools/README.md',
+            },
+            tool_roundtrip: {
+              status: 'verified_real',
+              note: '真实读取所选文本，经 read_document 回执继续回答。',
+              evidence: 'evidence/058-s02-model-tools/README.md',
+            },
+            usage_reporting: {
+              status: 'verified_real',
+              note: '真实响应记录输入/输出 token；供应商未返回金额时保留未知。',
+              evidence: 'evidence/058-s02-model-tools/README.md',
+            },
+            streaming: {
+              status: 'unsupported',
+              note: '连接检查要求完整应答，页面不承诺边生成边显示。',
+            },
+            long_job_new_input: {
+              status: 'unsupported',
+              note: '长任务执行期间追加输入尚未实现；刷新后用原请求查询。',
+            },
+            cancel_and_query: {
+              status: 'controlled',
+              note: '取消意图、原请求查询和 unknown 保留已受控验证，未做真实中断恢复。',
+              evidence: 'evidence/058-s02-model-tools/README.md',
+            },
+          },
+        },
+        modeld_grant: {
+          title: 'modeld 授权（本机模型服务）',
+          auth: 'grant',
+          capabilities: {
+            text_answer: {
+              status: 'controlled',
+              note: '以显式模型替身验证文本回答；未用真实账号验收此 profile。',
+              evidence: 'tests/test_core_model_checks.py',
+            },
+            tool_roundtrip: {
+              status: 'controlled',
+              note: '两阶段工具往返、回执配对和迟到结果隔离已受控验证。',
+              evidence: 'tests/test_core_model_checks.py',
+            },
+            usage_reporting: {
+              status: 'controlled',
+              note: '事件与结果用量合并、金额未知保留已受控验证。',
+              evidence: 'tests/test_core_model_checks.py',
+            },
+            streaming: {
+              status: 'unsupported',
+              note: '连接检查要求完整应答，此 profile 未验证流式输出。',
+            },
+            long_job_new_input: {
+              status: 'unsupported',
+              note: '此 profile 未验证长任务执行期间接收新输入。',
+            },
+            cancel_and_query: {
+              status: 'controlled',
+              note: '取消、原请求查询与 unknown 保留已受控验证。',
+              evidence: 'tests/test_core_model_recovery.py',
+            },
+          },
+        },
+      },
       autonomous_business: false,
     },
     connections: [],

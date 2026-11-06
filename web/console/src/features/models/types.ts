@@ -12,6 +12,24 @@ export const modelKinds = [
 ] as const;
 export type ModelKind = (typeof modelKinds)[number];
 export type ModelProfile = 'openai_compatible' | 'modeld_grant';
+export type CapabilityStatus = 'verified_real' | 'controlled' | 'unsupported';
+export type ProfileCapability =
+  | 'text_answer'
+  | 'tool_roundtrip'
+  | 'usage_reporting'
+  | 'streaming'
+  | 'long_job_new_input'
+  | 'cancel_and_query';
+export interface CapabilityClaim {
+  status: CapabilityStatus;
+  note: string;
+  evidence?: string;
+}
+export interface ProfileScope {
+  title: string;
+  auth: 'api_key' | 'grant';
+  capabilities: Record<ProfileCapability, CapabilityClaim>;
+}
 export interface CoreConnection {
   id: string;
   revision: number;
@@ -95,7 +113,12 @@ export interface ModelRead {
   access: { principal_id: string; service_instance: string; can_configure: boolean };
   governance_status: string;
   document_read_allowed: boolean;
-  capabilities: { profiles: ModelProfile[]; tools: string[]; autonomous_business: false };
+  capabilities: {
+    profiles: ModelProfile[];
+    tools: string[];
+    profile_scope: Record<ModelProfile, ProfileScope>;
+    autonomous_business: false;
+  };
   connections: CoreConnection[];
   operations: ModelOperation[];
   checks: ModelCheck[];

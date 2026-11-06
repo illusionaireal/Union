@@ -5,7 +5,7 @@ store remains the single writer of AU facts.
 """
 import time
 
-from . import governance
+from . import governance, model_profiles
 from .creation import text
 from ..errors import CoreError, require
 
@@ -135,7 +135,7 @@ def validate_state(state):
             require(isinstance(value, dict) and value.get("id") == key, "工作记录身份不一致")
     for definition in records_value["definitions"].values():
         require(type(definition.get("version")) is int and definition["version"] >= 1
-                and definition.get("profile") in ("openai_compatible", "modeld_grant")
+                and model_profiles.supports(definition.get("profile"))
                 and isinstance(definition.get("tools"), list), "Agent Definition 无效")
     for member in records_value["members"].values():
         require(member.get("kind") == "ai" and member.get("definition_id") in records_value["definitions"],
