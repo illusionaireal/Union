@@ -99,9 +99,19 @@ try {
     '--params', "card_id=$card",
     '--params', "actor=$actor"
   )
-  $gooseOutput = & $GoosePath @gooseArgs 2>&1
-  $gooseExit = $LASTEXITCODE
-  Add-Content -LiteralPath $log -Value ($gooseOutput -join "`n") -Encoding UTF8
+  $outFile = Join-Path $logDir "goose-$stamp.out.log"
+  $errFile = Join-Path $logDir "goose-$stamp.err.log"
+  Write-Log "invoking goose ($GoosePath) -> $outFile"
+  $proc = Start-Process -FilePath $GoosePath -ArgumentList $gooseArgs -WorkingDirectory $root `
+    -RedirectStandardOutput $outFile -RedirectStandardError $errFile -PassThru -Wait -WindowStyle Hidden
+  $gooseExit = $proc.ExitCode
+  $gooseOutput = @()
+  if (Test-Path -LiteralPath $outFile) { $gooseOutput += Get-Content -LiteralPath $outFile -Encoding UTF8 }
+  if (Test-Path -LiteralPath $errFile) {
+    $errTail = Get-Content -LiteralPath $errFile -Encoding UTF8 -Tail 20
+    if ($errTail) { Add-Content -LiteralPath $log -Value ("stderr tail:" + "`n" + ($errTail -join "`n")) -Encoding UTF8 }
+  }
+  if ($gooseOutput) { Add-Content -LiteralPath $log -Value ($gooseOutput -join "`n") -Encoding UTF8 }
   $resultLine = ($gooseOutput | Where-Object { $_ -match 'TICK_RESULT:' } | Select-Object -Last 1)
   Write-Log "goose exit=$gooseExit result=$resultLine"
 
