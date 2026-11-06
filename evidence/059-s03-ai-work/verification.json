@@ -1,0 +1,14 @@
+{
+  "task": "U-067",
+  "step": "S03.1 start_work",
+  "date": "2026-11-07",
+  "branch": "rewrite/charter-v1",
+  "red": ["evidence/059-s03-ai-work/red-s03.1.txt"],
+  "green": ["evidence/059-s03-ai-work/green-s03.1.txt"],
+  "regression": {"command": "python -m unittest tests.test_core_work tests.test_core_creation tests.test_governance tests.test_governance_persistence tests.test_core_models tests.test_core_model_boundaries tests.test_au_contract tests.test_console -v", "ran": 85, "result": "OK"},
+  "python_full": {"ran": 582, "skipped": 9, "errors": 1, "error_cause": "host cannot create symlinks (WinError 1314) in tests/test_workspace.py; reproduced alone, unrelated to this change", "log": "evidence/059-s03-ai-work/python-full.txt"},
+  "management": {"command": "npm run check:management", "result": "PASS", "tasks": 76},
+  "real_model_calls": 0,
+  "completed_scope": "none",
+  "next": ["S03.2 authorized read-only material tools", "S03.3 artifact save/read/download", "S03.4 isolation and React workbench form"]
+}

@@ -1,0 +1,8 @@
+test_start_work_binds_ai_member_definition_binding_work_and_mandate_in_one_command (tests.test_core_work.CoreWorkTests.test_start_work_binds_ai_member_definition_binding_work_and_mandate_in_one_command) ... ok
+test_start_work_refuses_unadopted_model_unbounded_calls_paths_and_duplicate_ids (tests.test_core_work.CoreWorkTests.test_start_work_refuses_unadopted_model_unbounded_calls_paths_and_duplicate_ids) ... ok
+test_start_work_requires_effective_governance_and_the_current_governor (tests.test_core_work.CoreWorkTests.test_start_work_requires_effective_governance_and_the_current_governor) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 3.652s
+
+OK

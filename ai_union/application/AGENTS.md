@@ -23,3 +23,10 @@
   It cannot enumerate host accounts or invoke Engine for V1. API secrets go
   only to modeld; persisted commands contain a private digest, never the key.
   Verify tests/test_core_models.py and the S02 contract, preserving S01/S05.
+
+- `work.py` starts S03 V1 work inside the same GovernanceStore transaction and
+  returns the original receipt for a repeated request. It revalidates the
+  logged-in principal, locates the actual AU, requires the active governor and
+  a live adopted default connection, then registers Member/Definition/binding/
+  Work/Mandate. No model call, harness step, filesystem read or second writer;
+  verify tests/test_core_work.py with S01/S02/S05 regressions.

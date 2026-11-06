@@ -27,3 +27,10 @@
 - Charter `read_document` is V1-only. Ordinary legacy validation stays strict.
   Current versions and authority are checked for every model/tool/acceptance
   boundary, while historical usage remains factual after revocation.
+
+- S03 `work.py` owns V1 work responsibility rules: one goal, one AI Member,
+  one Agent Definition version, one binding and one root Mandate created
+  together under the active current governor. It rejects host paths, tools
+  outside the effective charter, unknown connections and call caps beyond the
+  AU plan. No execution, storage or dispatch; step S03.2+ extends the same
+  owner.

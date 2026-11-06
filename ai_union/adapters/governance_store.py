@@ -7,6 +7,7 @@ import sqlite3
 from .core_au_store import encoded
 from ..domain import governance as rules
 from ..domain import responsibility
+from ..domain import work as work_rules
 from ..errors import CoreError, require
 
 EVENT_FIELDS = ("version", "command_id", "principal_id", "kind", "reason", "created_at", "prior_policy_version", "command_hash", "previous_hash", "hash", "snapshot")
@@ -43,6 +44,7 @@ def read_in(cx, state, origin):
     charter = json.loads(charter_row[0])
     rules.validate_state(state, origin, charter)
     responsibility.validate_state(state)
+    work_rules.validate_state(state)
     if state["schema_version"] == 3:
         from .model_access_store import ModelAccessStore
         ModelAccessStore.validate(cx, state)
@@ -121,6 +123,7 @@ class GovernanceStore:
         if changed:
             rules.validate_state(state, origin_in(cx)[0], charter)
             responsibility.validate_state(state)
+            work_rules.validate_state(state)
             require(json.loads(encoded(state)) == state, "状态序列化不能改变对象身份或事实")
         command = {"id": request["id"], "principal_id": receipt["actor_principal_id"], "payload": encoded(request), "receipt": encoded(receipt)}
         command["hash"] = digest(command)

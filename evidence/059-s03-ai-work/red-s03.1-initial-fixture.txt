@@ -1,0 +1,40 @@
+test_start_work_binds_ai_member_definition_binding_work_and_mandate_in_one_command (tests.test_core_work.CoreWorkTests.test_start_work_binds_ai_member_definition_binding_work_and_mandate_in_one_command) ... FAIL
+test_start_work_refuses_unadopted_model_unbounded_calls_paths_and_duplicate_ids (tests.test_core_work.CoreWorkTests.test_start_work_refuses_unadopted_model_unbounded_calls_paths_and_duplicate_ids) ... ERROR
+test_start_work_requires_effective_governance_and_the_current_governor (tests.test_core_work.CoreWorkTests.test_start_work_requires_effective_governance_and_the_current_governor) ... ERROR
+
+======================================================================
+ERROR: test_start_work_refuses_unadopted_model_unbounded_calls_paths_and_duplicate_ids (tests.test_core_work.CoreWorkTests.test_start_work_refuses_unadopted_model_unbounded_calls_paths_and_duplicate_ids)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 122, in test_start_work_refuses_unadopted_model_unbounded_calls_paths_and_duplicate_ids
+    self.assertEqual(unknown[1]["receipt"]["status"], "rejected", unknown[1])
+                     ~~~~~~~~~~^^^^^^^^^^^
+KeyError: 'receipt'
+
+======================================================================
+ERROR: test_start_work_requires_effective_governance_and_the_current_governor (tests.test_core_work.CoreWorkTests.test_start_work_requires_effective_governance_and_the_current_governor)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 106, in test_start_work_requires_effective_governance_and_the_current_governor
+    status, value, _ = self.work(token=token)
+                       ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 35, in work
+    return self.work_command(au_id or self.au_id, "start_work", data or work_data(), **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 28, in work_command
+    version = self.request("/api/v1/aus/" + au_id, token=token)[1]["au"]["version"]
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'au'
+
+======================================================================
+FAIL: test_start_work_binds_ai_member_definition_binding_work_and_mandate_in_one_command (tests.test_core_work.CoreWorkTests.test_start_work_binds_ai_member_definition_binding_work_and_mandate_in_one_command)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 60, in test_start_work_binds_ai_member_definition_binding_work_and_mandate_in_one_command
+    self.assertEqual(status, 200, value)
+AssertionError: 404 != 200 : {'error': '接口不存在'}
+
+----------------------------------------------------------------------
+Ran 3 tests in 5.926s
+
+FAILED (failures=1, errors=2)

@@ -1,0 +1,33 @@
+test_start_work_binds_ai_member_definition_binding_work_and_mandate_in_one_command (tests.test_core_work.CoreWorkTests.test_start_work_binds_ai_member_definition_binding_work_and_mandate_in_one_command) ... FAIL
+test_start_work_refuses_unadopted_model_unbounded_calls_paths_and_duplicate_ids (tests.test_core_work.CoreWorkTests.test_start_work_refuses_unadopted_model_unbounded_calls_paths_and_duplicate_ids) ... ERROR
+test_start_work_requires_effective_governance_and_the_current_governor (tests.test_core_work.CoreWorkTests.test_start_work_requires_effective_governance_and_the_current_governor) ... FAIL
+
+======================================================================
+ERROR: test_start_work_refuses_unadopted_model_unbounded_calls_paths_and_duplicate_ids (tests.test_core_work.CoreWorkTests.test_start_work_refuses_unadopted_model_unbounded_calls_paths_and_duplicate_ids)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 122, in test_start_work_refuses_unadopted_model_unbounded_calls_paths_and_duplicate_ids
+    self.assertEqual(unknown[1]["receipt"]["status"], "rejected", unknown[1])
+                     ~~~~~~~~~~^^^^^^^^^^^
+KeyError: 'receipt'
+
+======================================================================
+FAIL: test_start_work_binds_ai_member_definition_binding_work_and_mandate_in_one_command (tests.test_core_work.CoreWorkTests.test_start_work_binds_ai_member_definition_binding_work_and_mandate_in_one_command)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 60, in test_start_work_binds_ai_member_definition_binding_work_and_mandate_in_one_command
+    self.assertEqual(status, 200, value)
+AssertionError: 404 != 200 : {'error': '接口不存在'}
+
+======================================================================
+FAIL: test_start_work_requires_effective_governance_and_the_current_governor (tests.test_core_work.CoreWorkTests.test_start_work_requires_effective_governance_and_the_current_governor)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 107, in test_start_work_requires_effective_governance_and_the_current_governor
+    self.assertEqual(status, 403, value)
+AssertionError: 404 != 403 : {'error': '接口不存在'}
+
+----------------------------------------------------------------------
+Ran 3 tests in 2.691s
+
+FAILED (failures=2, errors=1)

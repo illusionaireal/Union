@@ -51,6 +51,8 @@ class Console:
             self.governance = GovernanceService(self)
             from .application.model_access import ModelAccessService
             self.models = ModelAccessService(self)
+            from .application.work import WorkService
+            self.work = WorkService(self)
             self.creation.catalog.recover()
             # Validate the whole catalog before any AU receives recovery writes.
             engines = self._legacy_engines()

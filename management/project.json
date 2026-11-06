@@ -1851,10 +1851,10 @@
                 "U-072"
             ],
             "acceptance": "完成后：你给组织一项任务，AI 能实际执行，并把第一份可阅读、可下载的结果交给你。\n\n具体要做：\n\n1. 在工作台输入目标、允许使用的资料和调用限额，建立有人负责的工作。\n2. 让一名 AI 使用获准的模型和工具执行；需要分工时，再把工作和上一步成果交给其他成员。\n3. 接入授权目录的列文件、读文件功能；不能读取范围外资料。\n4. 保存成果正文、来源和执行记录，在工作页、成果页展示；某项失败不能无故挡住独立工作。\n\n怎么演示：输入“阅读我授权的资料目录，写一份带文件引用的项目概览”，看到 AI 读取文件，最后打开或下载概览；刷新后成果仍在。\n\n2026-11-06 核对：未开始。前面的模型连接、创建和治理能力需要先完成。一名 AI 可以独立完成任务，不强制建立多人团队。\n\n开发与完整验收依据：[代码、接口和技术约束](specs/053-union-rewrite/tasks.md#u-067-development)。",
-            "status": "backlog",
-            "owner": null,
+            "status": "doing",
+            "owner": "goose/auto-tick/DESKTOP-SA4MRG7",
             "blocker": null,
-            "started_at": null,
+            "started_at": "2026-11-06",
             "updated_at": "2026-11-06",
             "completion": null,
             "history": [
@@ -1865,7 +1865,12 @@
                     "to": "backlog",
                     "note": "按用户“每张卡看不懂、内容太抽象”的反馈，改为具体功能、操作和完成演示。原技术验收完整保留在 specs/053-union-rewrite/tasks.md#u-067-development；范围、状态、owner、依赖、claim和既有验收记录不变，不执行未来卡。"
                 }
-            ]
+            ],
+            "claim": {
+                "actor": "goose/auto-tick/DESKTOP-SA4MRG7",
+                "at": "2026-11-06T20:28:47.978Z",
+                "lease_until": "2026-11-06T23:28:47.978Z"
+            }
         },
         {
             "id": "U-068",

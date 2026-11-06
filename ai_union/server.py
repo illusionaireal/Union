@@ -139,19 +139,21 @@ class Handler(BaseHTTPRequestHandler):
                              | ({"code": "storage_unavailable"} if core_request or path.path == '/api/commands' else {}))
         try:
             if write:
-                if path.path not in ("/api/commands", "/api/v1/governance/commands", "/api/v1/models/commands", "/api/gateway-commands", "/api/subscription-commands", "/api/model-account-commands"):
+                if path.path not in ("/api/commands", "/api/v1/governance/commands", "/api/v1/models/commands", "/api/v1/work/commands", "/api/gateway-commands", "/api/subscription-commands", "/api/model-account-commands"):
                     return self.send(404, {"error": "接口不存在"})
                 require(self.headers.get("Content-Type", "").split(";")[0] == "application/json", "命令需要 application/json")
                 length = int(self.headers.get("Content-Length", "0"))
                 require(0 < length <= 200000, "请求体大小不允许")
                 request = json.loads(self.rfile.read(length).decode("utf-8"))
-                core_request = path.path in ('/api/v1/governance/commands', '/api/v1/models/commands') or (path.path == '/api/commands' and isinstance(request, dict) and request.get('kind') == 'create_v1')
+                core_request = path.path in ('/api/v1/governance/commands', '/api/v1/models/commands', '/api/v1/work/commands') or (path.path == '/api/commands' and isinstance(request, dict) and request.get('kind') == 'create_v1')
                 if not core_request:
                     require(app.session(token)["role"] == "board", "观察者不能提交操作")
-                receipt = app.models.command(token, request) if path.path == '/api/v1/models/commands' else app.governance.command(token, request) if path.path == '/api/v1/governance/commands' else self.server.model_accounts.command(token, request) if path.path == '/api/model-account-commands' else self.server.subscriptions.command(token, request) if path.path == "/api/subscription-commands" else app.gateways.command(token, request) if path.path == "/api/gateway-commands" else app.command(token, request)
+                receipt = app.work.command(token, request) if path.path == '/api/v1/work/commands' else app.models.command(token, request) if path.path == '/api/v1/models/commands' else app.governance.command(token, request) if path.path == '/api/v1/governance/commands' else self.server.model_accounts.command(token, request) if path.path == '/api/model-account-commands' else self.server.subscriptions.command(token, request) if path.path == "/api/subscription-commands" else app.gateways.command(token, request) if path.path == "/api/gateway-commands" else app.command(token, request)
                 return self.send(202 if receipt["status"] == "accepted" else 200, {"receipt": receipt})
             if path.path == "/api/session":
                 return self.send(200, app.session_info(token))
+            if path.path == '/api/v1/work':
+                return self.send(200, app.work.read(token, query.get('organization_id', [None])[0]))
             if path.path == '/api/v1/models':
                 return self.send(200, app.models.read(token, query.get('organization_id', [None])[0]))
             if path.path == '/api/v1/models/receipts':
