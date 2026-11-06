@@ -154,7 +154,7 @@ Compatibility/Stop：schema 1/2 与 legacy 回归；schema 3 显式采用且候�
 
 用户最新要求是先把“部署进程、目标到首份交付的代码链、每模块具体改变”说清，再展开当前开发卡。本段是 §10 的设计补充，保留完整 S02 目标；未来 S03/S04/S06 仅细化设计，不因文档变更获准开工。
 
-唯一技术说明在 [ARCHITECTURE](../../docs/ARCHITECTURE.md)：[部署与存储](../../docs/ARCHITECTURE.md#runtime-deployment)、[首份交付时序](../../docs/ARCHITECTURE.md#first-delivery)、[接口/事务/恢复](../../docs/ARCHITECTURE.md#execution-contracts)、[模块改造](../../docs/ARCHITECTURE.md#module-changes)。代码核查和证据边界在 [058](../../evidence/058-s02-model-tools/design-readback.md)。当前 U-072 的完整四块样板直接写入主账 acceptance，由 [TASKS](../../TASKS.md#u-072)生成，不另建卡片账本。
+唯一技术说明在 [ARCHITECTURE](../../docs/ARCHITECTURE.md)：[部署与存储](../../docs/ARCHITECTURE.md#runtime-deployment)、[首份交付时序](../../docs/ARCHITECTURE.md#first-delivery)、[接口/事务/恢复](../../docs/ARCHITECTURE.md#execution-contracts)、[模块改造](../../docs/ARCHITECTURE.md#module-changes)。代码核查和证据边界在 [058](../../evidence/058-s02-model-tools/design-readback.md)。用户反馈卡片过于抽象后，12 张卡的主账正文改为具体功能、操作和演示，由 [TASKS](../../TASKS.md#u-072)生成；U-072 原四块开发细目和其他卡的完整技术验收保留在 [tasks 开发附录](tasks.md#开发细节与完整验收依据)，不另建状态账本。
 
 已确认 S02 使用 ModelServiceClient 和持久两阶段协议，没有接入旧 Engine/runner/HarnessExecutor。它读取用户提交的单份文本；宿主目录工具是 S03 拟议资料适配器。下一次 S02 行为修改先在现有契约细化结构化诊断和事件用量字段，再按严格 TDD 修复特殊字符/跨分片凭据过滤、线程启动失败恢复、中断用量展示和具体错误。安全反例仍 RED、浏览器可读性仍失败；最终安装与真实 profile 未验证，不能写成只等真实账号。
 

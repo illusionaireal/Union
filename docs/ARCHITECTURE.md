@@ -2,7 +2,7 @@
 
 日期：2026-11-06。需求：[Chapter V1](UNION_CHARTER_v1.0.md)、[采用记录](CHARTER_ADOPTION.md)、[PRD v1.0](PRD.md)。本文区分已选工程方向与尚未实现的目标架构。运行事实仍以源码和相应证据为准。
 
-开发入口：[进程与存储](#runtime-deployment) → [目标到首份交付的时序](#first-delivery) → [接口与恢复](#execution-contracts) → [模块改造表](#module-changes)；当前卡的完整样板在 [U-072](../TASKS.md#u-072)。本次核查基准为 `c31bf0e` 及原会话留下的 S02 工作树，来源和未通过项见 [058 设计核查](../evidence/058-s02-model-tools/design-readback.md)。**“工作树已有”不表示已提交或已验收；“拟新增”不是当前可调用接口。** 后续 S03/S04/S06 的设计说明不授权执行这些卡。
+开发入口：[进程与存储](#runtime-deployment) → [目标到首份交付的时序](#first-delivery) → [接口与恢复](#execution-contracts) → [模块改造表](#module-changes)。用户先看 [U-072 的具体操作和演示](../TASKS.md#u-072)，准确代码、接口与完整验收见 [开发附录](../specs/053-union-rewrite/tasks.md#u-072-development)。本次核查基准为 `c31bf0e` 及原会话留下的 S02 工作树，来源和未通过项见 [058 设计核查](../evidence/058-s02-model-tools/design-readback.md)。**“工作树已有”不表示已提交或已验收；“拟新增”不是当前可调用接口。** 后续 S03/S04/S06 的设计说明不授权执行这些卡。
 
 [ADR-0004](decisions/0004-rewrite-delivery-contract.md)采用用户指定的交付方法；[ADR-0005](decisions/0005-au-runtime-boundaries.md)采用增量模块化与独立核心边界；[ADR-0006](decisions/0006-charter-policy-adoption.md)采用治理根、受支持规则和分阶段兼容方向。采用设计不等于代码已经迁移。
 
@@ -267,4 +267,4 @@ AU 的模型次数/费用只有一份资源账。`tick` 的父预约限制本次
 | `pages/{Overview,Tasks,Artifacts,Activity,Resources}`、`features/details`；拟 V1 work/artifact API | 复用布局、筛选、纯文本和下载；新增 V1 只读投影及摘要校验，先在 U-067 展示首份成果。S04 新增反馈表单、事件采用、两版对比与显式依赖纠正 | U-067 首份可读成果；U-068 反馈后第二版，拒绝仅有反馈记录却无后续执行 |
 | `services/modeld/src/{server,journal,kernel,api-accounts}.ts` | S02 修凭据泄露、错误分类和中断用量事实；保留单次推理/凭据所有权。S06 有界队列和独立槽位，S09增 profile；不托管组织工具/业务循环 | U-072 实际 API 往返；U-070 A受阻时B继续；U-075逐 profile 真验 |
 
-下一次 S02 代码工作不再是“继续复用模型模块”：先按 [U-072 样板](../TASKS.md#u-072)修凭据过滤、中断用量、线程启动恢复和结构化错误，再走剩余浏览器/安装/真实 profile 验收。之后才按 U-067 的冻结契约接通上面的目标链。文档完善不能关闭这些运行缺口。
+下一次 S02 代码工作先按 [U-072 开发清单](../specs/053-union-rewrite/tasks.md#u-072-development)修凭据过滤、中断用量、线程启动恢复和结构化错误，再走剩余浏览器/安装/真实 profile 验收。之后才按 U-067 的冻结契约接通上面的目标链。文档完善不能关闭这些运行缺口。

@@ -1,14 +1,15 @@
 {
   "schemaVersion": "aegis.schema.v0",
   "baselineRefs": [
-    "docs/UNION_CHARTER_v1.0.md",
-    "docs/decisions/0005-au-runtime-boundaries.md",
+    "management/project.json",
+    "specs/053-union-rewrite/tasks.md",
     "specs/053-union-rewrite/s02-contract.md"
   ],
   "impactStatement": "docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/impact-statement-draft.json",
-  "compatPlan": "保留schema1/2及legacy；schema3显式采用；本设计提交仅含已授权S02文档/记录，运行代码和无关dirty保留",
-  "retirementPlan": "只描述按用例迁出/重绑后退役；本轮不删除或切换旧执行实现",
+  "compatPlan": "保留 schema 1/2 与 legacy；schema 3 显式采用；当前提交仅含 12 卡文案、完整技术验收附录和对应记录，运行代码与无关修改保留",
+  "retirementPlan": "技术原文移至同一 tasks.md 的开发附录；没有删除实现、迁移数据或建立第二份任务账本",
   "evidenceBundle": [
-    "docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/evidence-bundle-draft-S02-design-readback.json"
+    "docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/evidence-bundle-draft-S02-design-readback.json",
+    "docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/evidence-bundle-draft-V1-card-clarity.json"
   ]
 }

@@ -1,7 +1,7 @@
 {
   "schemaVersion": "aegis.schema.v0",
   "affectedLayers": [
-    "当前设计与卡片文档；运行代码保持原S02工作树",
+    "当前只改 12 张 V1 卡及其开发引用；原 S02 运行代码保持",
     "后续拟议Runtime/Harness/modeld接缝，当前不实施"
   ],
   "owners": [
@@ -12,7 +12,7 @@
     "原ID/责任/unknown与预算保留；无双派发、无读取迁移",
     "原S02变更继续保留；不提交其他任务的既有修改"
   ],
-  "compatBoundary": "保留schema1/2及legacy；schema3显式采用；本设计提交仅含已授权S02文档/记录，运行代码和无关dirty保留",
+  "compatBoundary": "保留 schema 1/2 与 legacy；schema 3 显式采用；当前提交仅含 12 卡文案、完整技术验收附录和对应记录，运行代码与无关修改保留",
   "nonGoals": [
     "S03任意目标/S04反馈、其他profiles、生产迁移或部署"
   ]

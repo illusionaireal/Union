@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "aegis.schema.v0",
+  "artifactKey": "V1-card-clarity",
+  "type": "documentation",
+  "source": "evidence/058-s02-model-tools/card-clarity.json",
+  "summary": "12 卡文案及线上 HTTP 200 读回完成；完整技术验收、管理状态和 64 项其他任务保持；管理 8 项通过，独立表达复核无遗留。仅证明文案和看板一致，不关闭 S02。",
+  "verifier": "codex/gpt-6 coordinator; s02_feature_audit advisory review",
+  "sliceId": "V1-card-clarity",
+  "evidenceStatus": "evidence-finalized",
+  "updatedAt": "2026-11-06"
+}

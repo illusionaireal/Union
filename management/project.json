@@ -1688,18 +1688,18 @@
         },
         {
             "id": "U-065",
-            "title": "按Main Chapter V1重建需求架构与首片契约",
+            "title": "写清第一版要做的功能和开发顺序",
             "priority": "P0",
             "milestone": "G0",
             "module": "management",
             "role": "产品评审 / 架构负责人 / 首片设计",
             "dependencies": [],
-            "acceptance": "按用户指定的Main Chapter V1重建053 S00：固定原文/采用依据，覆盖40条及X子条款，纠正旧PRD/AGENTS冲突，重建PRD、架构/ADR、垂直切片；归档移出旧18张在线建议卡，建立12张V1卡且仅依赖新切片。固定S01三步整体的legacy完整性、稳定principal、治理根准备态及旧入口隔离/回执/迁移/TDD。独立评审、文档/管理/npm/Python检查及提交推送有证据；本卡范围为documentation，不实现运行时或升级真实能力。",
+            "acceptance": "完成后：开发者能看明白要做哪些功能、先做哪一个、做到什么程度才算完成。\n\n具体要做：\n\n1. 按用户指定的第一版章程，整理产品功能和必须遵守的规则。\n2. 写清前端、后台、模型服务各做什么，以及一次任务怎样从输入走到交付。\n3. 把开发顺序和第一张实施卡写完整，撤下不适用的旧建议卡。\n\n怎么演示：打开需求、架构和任务清单，能找到同一项功能的做法、前后依赖和验收操作。\n\n2026-11-06 核对：已完成文档交付。这张卡交付的是开发说明，本身不增加可操作的产品功能。\n\n开发与完整验收依据：[代码、接口和技术约束](specs/053-union-rewrite/tasks.md#u-065-development)。",
             "status": "done",
             "owner": "codex/rewrite-s00-20261105（外部工程代理）",
             "blocker": null,
             "started_at": "2026-11-05",
-            "updated_at": "2026-11-05",
+            "updated_at": "2026-11-06",
             "completion": {
                 "scope": "documentation",
                 "reviewer": "codex/review_charter_requirements + codex/review_s01_final（独立只读工程复核）",
@@ -1744,12 +1744,19 @@
                     "from": "done",
                     "to": "done",
                     "note": "主体da09cd5已提交推送并核对远端；S00文档收口，WIP上限从6恢复5，原5项在制/阻塞保留。U-066合同就绪，正式认领时仍须处理容量，不能隐藏旧占用。"
+                },
+                {
+                    "at": "2026-11-06T03:11:19.748Z",
+                    "actor": "codex/gpt-6/card-clarity-2026-11-06",
+                    "from": "done",
+                    "to": "done",
+                    "note": "按用户“每张卡看不懂、内容太抽象”的反馈，改为具体功能、操作和完成演示。原技术验收完整保留在 specs/053-union-rewrite/tasks.md#u-065-development；范围、状态、owner、依赖、claim和既有验收记录不变，不执行未来卡。"
                 }
             ]
         },
         {
             "id": "U-066",
-            "title": "按重写契约贯通创建与重开同一AU",
+            "title": "登录后创建组织，刷新或重启仍能打开",
             "priority": "P0",
             "milestone": "G1",
             "module": "governance",
@@ -1757,12 +1764,12 @@
             "dependencies": [
                 "U-065"
             ],
-            "acceptance": "按053 S01及Main V1，用严格TDD顺序完成S01a旧创建/原回执/目录完整性、S01b稳定core principal与显式身份/catalog升级及V1治理根准备态创建、S01c旧入口隔离与React/HTTP重开。三步全部通过才完成；保留legacy原请求/版本/unknown，不迁移旧AU、不借同名账号重置接管；prepared+resources planned无业务/资源副作用。精确DTO/错误/事务/兼容/T01–T12见s01-contract.md，权限和迁移独立复核；不关闭自治/完整F09/真实发布。",
+            "acceptance": "完成后：你能拥有一个保存下来的组织，之后继续使用它。\n\n具体要做：\n\n1. 登录后填写组织名称、目标、初始管理人、规则和资源计划，创建组织。\n2. 刷新页面、退出再登录，或重启服务后，仍能打开原来的组织。\n3. 保护账号归属：另一个同名账号不能拿走你的组织；旧组织记录保留。\n\n怎么演示：创建“项目资料助手”，记下名称和目标；重启服务再登录，打开它，确认内容和组织编号没变。\n\n2026-11-06 核对：已通过受控测试。创建后先保存准备信息；AI 自动做事由后面的卡片接通。\n\n开发与完整验收依据：[代码、接口和技术约束](specs/053-union-rewrite/tasks.md#u-066-development)。",
             "status": "done",
             "owner": "codex/gpt-6/session-01a1a9fa-d89d-7091-ba52-c31a1df00b23",
             "blocker": null,
             "started_at": "2026-11-05",
-            "updated_at": "2026-11-05",
+            "updated_at": "2026-11-06",
             "completion": {
                 "scope": "controlled",
                 "reviewer": "协调者验收；独立工程复核 /root/s01a_identity_review（身份/持久化）与 /root/s01_ui_review（前端/恢复）",
@@ -1821,12 +1828,19 @@
                     "from": "done",
                     "to": "done",
                     "note": "完整 S01/U-066 受控验收完成并释放本次租约，实际执行占用结束；撤销为 S01 显式增加的一个槽，WIP 上限 6→5。原 U-007/U-041/U-044 blocked、U-056/U-060 doing 及其负责人/阻塞/历史全部保留，未把已开工任务隐藏回待办。"
+                },
+                {
+                    "at": "2026-11-06T03:11:19.749Z",
+                    "actor": "codex/gpt-6/card-clarity-2026-11-06",
+                    "from": "done",
+                    "to": "done",
+                    "note": "按用户“每张卡看不懂、内容太抽象”的反馈，改为具体功能、操作和完成演示。原技术验收完整保留在 specs/053-union-rewrite/tasks.md#u-066-development；范围、状态、owner、依赖、claim和既有验收记录不变，不执行未来卡。"
                 }
             ]
         },
         {
             "id": "U-067",
-            "title": "按垂直切片重组筹建与依赖工作执行",
+            "title": "输入一个目标，让 AI 交出第一份成果",
             "priority": "P1",
             "milestone": "G1",
             "module": "formation",
@@ -1836,17 +1850,26 @@
                 "U-069",
                 "U-072"
             ],
-            "acceptance": "直接依据Main Chapter V1 P-02/P-04/P-05/P-08/D-01/D-02/R-07/R-08和053 S03，在S01、S02调用契约及U-069完整受控治理工程完成后，以严格TDD贯通单Agent合法路径和按目标形成的团队/依赖工作；Execution绑定责任Member、Work、Mandate与Agent Definition版本。复用Harness，不强制第二成员、行业岗位或固定层级；覆盖无效草案/跨AU/失效授权/工具与并发冲突。本片单Agent真实成果及需要协作时的真实依赖分别取证；旧公司/两成员基准不作为所有AU的准入门槛。",
+            "acceptance": "完成后：你给组织一项任务，AI 能实际执行，并把第一份可阅读、可下载的结果交给你。\n\n具体要做：\n\n1. 在工作台输入目标、允许使用的资料和调用限额，建立有人负责的工作。\n2. 让一名 AI 使用获准的模型和工具执行；需要分工时，再把工作和上一步成果交给其他成员。\n3. 接入授权目录的列文件、读文件功能；不能读取范围外资料。\n4. 保存成果正文、来源和执行记录，在工作页、成果页展示；某项失败不能无故挡住独立工作。\n\n怎么演示：输入“阅读我授权的资料目录，写一份带文件引用的项目概览”，看到 AI 读取文件，最后打开或下载概览；刷新后成果仍在。\n\n2026-11-06 核对：未开始。前面的模型连接、创建和治理能力需要先完成。一名 AI 可以独立完成任务，不强制建立多人团队。\n\n开发与完整验收依据：[代码、接口和技术约束](specs/053-union-rewrite/tasks.md#u-067-development)。",
             "status": "backlog",
             "owner": null,
             "blocker": null,
             "started_at": null,
-            "updated_at": "2026-11-05",
-            "completion": null
+            "updated_at": "2026-11-06",
+            "completion": null,
+            "history": [
+                {
+                    "at": "2026-11-06T03:11:19.749Z",
+                    "actor": "codex/gpt-6/card-clarity-2026-11-06",
+                    "from": "backlog",
+                    "to": "backlog",
+                    "note": "按用户“每张卡看不懂、内容太抽象”的反馈，改为具体功能、操作和完成演示。原技术验收完整保留在 specs/053-union-rewrite/tasks.md#u-067-development；范围、状态、owner、依赖、claim和既有验收记录不变，不执行未来卡。"
+                }
+            ]
         },
         {
             "id": "U-068",
-            "title": "贯通正式成果反馈与后续交付契约",
+            "title": "给第一版提意见，让 AI 交付修改后的第二版",
             "priority": "P1",
             "milestone": "G2",
             "module": "coordination",
@@ -1854,17 +1877,26 @@
             "dependencies": [
                 "U-067"
             ],
-            "acceptance": "直接依据Main Chapter V1 D-03/K-01/R-02和053 S04，以严格TDD贯通成果登记/读取/下载、反馈来源、正式采用、后续任务与实际改变；重大知识纠正可追踪处理依赖结论和未完成工作。覆盖缺失或篡改成果、只自述完成、无来源反馈、重复事件、采用失败后误消费和迟到回执；复用既有成果/任务机制但不继承旧公司排期。受控工程与本片真实成果、质量反馈和第二次交付分别取证。",
+            "acceptance": "完成后：你能针对已有成果提修改意见，并拿到实际改过的新版本。\n\n具体要做：\n\n1. 在成果页对某一版提交意见，保存原文、来源和对应版本。\n2. 记录意见是否采用及原因；采用后建立后续工作，让 AI 实际修改。\n3. 展示第二版和变化依据，保留第一版、反馈和两次执行记录。\n4. 资料或结论被纠正时，处理受影响的工作，不让已知错误继续被使用。\n\n怎么演示：对项目概览第一版提出“增加风险清单，并为每个风险注明来源”。随后打开第二版，确认确实新增了这些内容。\n\n2026-11-06 核对：未开始，接在第一份成果之后。只有一条“已收到反馈”的记录不能算完成。\n\n开发与完整验收依据：[代码、接口和技术约束](specs/053-union-rewrite/tasks.md#u-068-development)。",
             "status": "backlog",
             "owner": null,
             "blocker": null,
             "started_at": null,
-            "updated_at": "2026-11-05",
-            "completion": null
+            "updated_at": "2026-11-06",
+            "completion": null,
+            "history": [
+                {
+                    "at": "2026-11-06T03:11:19.749Z",
+                    "actor": "codex/gpt-6/card-clarity-2026-11-06",
+                    "from": "backlog",
+                    "to": "backlog",
+                    "note": "按用户“每张卡看不懂、内容太抽象”的反馈，改为具体功能、操作和完成演示。原技术验收完整保留在 specs/053-union-rewrite/tasks.md#u-068-development；范围、状态、owner、依赖、claim和既有验收记录不变，不执行未来卡。"
+                }
+            ]
         },
         {
             "id": "U-069",
-            "title": "按有效章程重组治理调整与任职交接",
+            "title": "设置负责人、修改规则、撤销权限和交接工作",
             "priority": "P1",
             "milestone": "G2",
             "module": "governance",
@@ -1872,12 +1904,12 @@
             "dependencies": [
                 "U-066"
             ],
-            "acceptance": "直接依据Main Chapter V1 D-04/C-02/X-02(a)、053 S05与ADR-0006，在S01后完整交付受控治理工程：初始根及适用最终决定方/保留事项/失能继任恢复退出、激活条件、旧程序修章、撤权传播、任职交接和历史连续。严格TDD覆盖未绑定/失能缺处置却启用、新文本自授权、旧身份/目标/范围失效、未知规则假生效及迁移失败；权限独立复核。全卡受控工程完成后U-067才可开工；真实工作中的治理修订/交接另取证，不与U-067构成互为前置。legacy_board只是明确兼容profile。",
+            "acceptance": "完成后：你能决定谁可以管理组织、谁能做哪些工作，以及负责人离开后由谁接手。\n\n具体要做：\n\n1. 设置最终负责人、需要单独批准的事项，以及负责人失联时的接班或停止办法。\n2. 按当前规则批准修改，批准后让后续操作使用新规则。\n3. 给成员分配工作和权限，也能撤回权限；撤回后不能继续用旧权限操作。\n4. 把未完成工作交给下一位负责人，保留之前的内容、决定和处理记录。\n\n怎么演示：把一项文字记录工作交给甲，再转给乙。甲不能用旧权限改变这项工作，乙能接着做，原记录仍能查看。\n\n2026-11-06 核对：本地治理和人提交文字的流程已通过受控测试。AI 正在工作时的真实撤权、交接，仍需在恢复卡中验证。\n\n开发与完整验收依据：[代码、接口和技术约束](specs/053-union-rewrite/tasks.md#u-069-development)。",
             "status": "done",
             "owner": "codex/gpt-6/session-01a1a9fa-d89d-7091-ba52-c31a1df00b23",
             "blocker": null,
             "started_at": "2026-11-05",
-            "updated_at": "2026-11-05",
+            "updated_at": "2026-11-06",
             "completion": {
                 "scope": "controlled",
                 "reviewer": "Codex s05_code_review（身份/持久化）, s05_ui_review（界面）, s05_boundary_review（契约）；协调者核对集成证据",
@@ -1910,12 +1942,19 @@
                     "from": "done",
                     "to": "done",
                     "note": "按本片开工时临时增容约定，在完整S05受控验收后收回一个执行槽，WIP上限6→5。原U-007/U-041/U-044 blocked、U-056/U-060 doing的状态/负责人/阻塞/历史不变；旧事项无人执行仍占容量的问题未被此恢复解决，一页近期路线已记录显式暂停/承接模型建议，尚未实施。"
+                },
+                {
+                    "at": "2026-11-06T03:11:19.749Z",
+                    "actor": "codex/gpt-6/card-clarity-2026-11-06",
+                    "from": "done",
+                    "to": "done",
+                    "note": "按用户“每张卡看不懂、内容太抽象”的反馈，改为具体功能、操作和完成演示。原技术验收完整保留在 specs/053-union-rewrite/tasks.md#u-069-development；范围、状态、owner、依赖、claim和既有验收记录不变，不执行未来卡。"
                 }
             ]
         },
         {
             "id": "U-070",
-            "title": "贯通等待重启与未知执行核对",
+            "title": "任务卡住或重启后，找回进度并继续处理",
             "priority": "P1",
             "milestone": "G3",
             "module": "coordination",
@@ -1924,43 +1963,61 @@
                 "U-068",
                 "U-069"
             ],
-            "acceptance": "直接依据Main Chapter V1 R-01–R-08和053 S06，严格TDD贯通局部等待/恢复、独立监督、持久意图与新输入路径；覆盖一项unknown不阻断独立工作、有效执行所有权、并发共享环境/交付冲突、资源变化影响在途、重复迟到事件/分层重试。外部未知先查询，新推理另计量；主动观察有目的/预算/退避，路由监督评审按用途入账。受控机制与本片指定窗口内的真实恢复/持续责任分别取证，旧主机或公司任务不构成规范前置。",
+            "acceptance": "完成后：某项工作出问题时，其他独立工作还能继续；重启后能找回未完成工作。\n\n具体要做：\n\n1. 隔开互不依赖的工作；一项模型请求卡住时，不把所有工作和管理入口一起卡死。\n2. 重启后找回原任务、执行记录和用量；先核对原请求，结果仍不明确时标为待核对，说明由谁跟进；确认后再继续，避免重复提交和扣费。\n3. 在等待期间接收新要求；按明确的目的、时间或新消息唤醒工作，记录谁负责处理。\n4. 从执行之外监督任务，并验证真实工作中的撤权和交接：旧执行停用原权限，新负责人接续原工作。\n\n怎么演示：同时启动两项独立工作，让其中一项的模型不返回，另一项仍能完成；重启后找回未完成项，确认结果后继续；无法确认的明确显示待核对及负责人。\n\n2026-11-06 核对：未开始。现有实现仍有整组工作被阻塞的限制，需要实际故障和约定时间窗口的运行验证。\n\n开发与完整验收依据：[代码、接口和技术约束](specs/053-union-rewrite/tasks.md#u-070-development)。",
             "status": "backlog",
             "owner": null,
             "blocker": null,
             "started_at": null,
-            "updated_at": "2026-11-05",
-            "completion": null
+            "updated_at": "2026-11-06",
+            "completion": null,
+            "history": [
+                {
+                    "at": "2026-11-06T03:11:19.749Z",
+                    "actor": "codex/gpt-6/card-clarity-2026-11-06",
+                    "from": "backlog",
+                    "to": "backlog",
+                    "note": "按用户“每张卡看不懂、内容太抽象”的反馈，改为具体功能、操作和完成演示。原技术验收完整保留在 specs/053-union-rewrite/tasks.md#u-070-development；范围、状态、owner、依赖、claim和既有验收记录不变，不执行未来卡。"
+                }
+            ]
         },
         {
             "id": "U-071",
-            "title": "通过核心公开契约接入可选平台和管理工具",
+            "title": "让外部管理工具通过接口操作组织",
             "priority": "P1",
             "milestone": "G0",
             "module": "console",
             "status": "backlog",
             "owner": null,
             "role": "核心接口 / 平台接入 / 权限与契约复核",
-            "acceptance": "按053 S11与Main V1 P-07/A-04，独立客户端经版本化公开契约完成创建/查询/受控操作；核心自带基础认证/AU权限/审计，不依赖私有商业平台账户/仓库凭据/许可证服务。逐用例重绑平台/管理调用者并退出内部表/私有模块旁路；协议/状态/Agent配置版本区分。合法/越权/版本/重复/审计黑盒及React回归通过；modeld选用时仍校验AU grant/revision，实际独立发布和真实模型成果在S08另验。",
+            "acceptance": "完成后：其他客户端或可选平台可以按权限创建组织、查询进度和提交命令，使用与核心工作台一致的规则。\n\n具体要做：\n\n1. 提供外部可调用的创建、查询和操作接口，并写清请求和返回内容。\n2. 让外部工具使用核心账号和组织权限；同样检查版本、重复请求并留下操作记录。\n3. 把已有平台调用改到这些接口，停止直接修改核心数据库或绕过内部权限。\n4. 保留核心独立使用能力，不要求普通用户先注册私有商业平台。\n\n怎么演示：用一个独立客户端创建组织、查询进度、发送一条有权执行的命令；再换成无权账号，确认同一操作被拒绝且有记录。\n\n2026-11-06 核对：未开始。它接通外部工具；安装后的独立使用由安装维护卡继续验收。\n\n开发与完整验收依据：[代码、接口和技术约束](specs/053-union-rewrite/tasks.md#u-071-development)。",
             "dependencies": [
                 "U-066",
                 "U-067"
             ],
             "blocker": null,
             "started_at": null,
-            "updated_at": "2026-11-05",
-            "completion": null
+            "updated_at": "2026-11-06",
+            "completion": null,
+            "history": [
+                {
+                    "at": "2026-11-06T03:11:19.749Z",
+                    "actor": "codex/gpt-6/card-clarity-2026-11-06",
+                    "from": "backlog",
+                    "to": "backlog",
+                    "note": "按用户“每张卡看不懂、内容太抽象”的反馈，改为具体功能、操作和完成演示。原技术验收完整保留在 specs/053-union-rewrite/tasks.md#u-071-development；范围、状态、owner、依赖、claim和既有验收记录不变，不执行未来卡。"
+                }
+            ]
         },
         {
             "id": "U-072",
-            "title": "在核心工作台保存模型、验证资料工具往返并采用默认连接",
+            "title": "填好模型连接，让 AI 读取一份资料并回答",
             "priority": "P1",
             "milestone": "G0",
             "module": "models",
             "status": "doing",
             "owner": "codex/gpt-6/s02-2026-11-06",
             "role": "V1垂直切片实施 / 独立验收",
-            "acceptance": "依据 Main Chapter V1、PRD F04/F12/F16/F18 和 [S02 契约](specs/053-union-rewrite/s02-contract.md)。依赖 U-066/U-069；在线 #21。原整卡目标及 M01–M10 保留，本次把开发内容展开为可实现、可演示的样板。状态以主账为准；本卡尚未完成。\n\n### 1. 功能行为\n\n| 功能 | 用户操作与系统响应 | 当前实现 / 剩余工作 |\n| --- | --- | --- |\n| 保存模型连接 | 核心账号进入 `/models?organization=<AU>`，输入名称、API 地址、Key、model、输出上限，预览后提交；保存成功后刷新仍在，推理次数为 0 | 工作树已接通异步保存和原回执；特殊字符 Key 的保密反例尚未修复 |\n| 采用连接和启停 | 独立点击“设为默认”；采用不强制测试、不增加模型调用。停用/编辑后 revision 改变，旧验证不继续标为当前有效 | 工作树已有；默认绑定保存在本 AU。任意业务执行使用默认属于 U-067，不能据此声称已接通 |\n| 授予有限调用 | 有效治理者在模型页授予有限次数并接受费用可能未知；不超过创建资源计划。没有足够的两次额度时拒绝整次验证 | 工作树已有资源 grant、预约和逐次计量；modeld 的 AU grant/revision 仍单独校验 |\n| 授权和选择资料 | 在 AU 设置按有效程序允许 `read_document`，模型页选择一份文本或粘贴正文；后端只允许读取本次保存的资料 | 当前为 txt/md/csv/json 的单份提交文本，含摘要与校验码；不是宿主目录授权。用户示例中的目录登记、列目录和越界防护拟在 U-067 首份工作接入，明确未实现 |\n| 验证真实工具往返 | 点击“验证工具往返”，建立本 AU 的责任 Member/绑定、Work、Mandate、固定 Definition v1；模型提出读资料，核心实际读取，再把原工具回执交回模型 | 工作树已有两次推理编排及完整工具配对；输出含实际工具校验码才通过。指定真实 profile 尚未验收；不算任意目标或正式业务成果 |\n| 看到具体失败 | 有效连接成功；错误 Key、不存在的模型、网络失败分别显示脱敏分类、失败阶段和允许的下一步 | 目前多处归为通用 failed/unknown，缺分类 DTO、后端映射和页面展示；未知结果必须保留“核对原请求”，不能引导重发 |\n| 查看结果、恢复原执行 | 页面展示输出、资料来源、两条 attempt、原始用量的安全摘要、费用来源/未知原因；刷新不丢失，核对原 ID，停止不声称远端已取消 | 正常结果已有；中断事件用量尚未完整进入核心投影，线程启动失败后原 check 的同进程恢复有缺陷；完整浏览器和安装出口待补 |\n\n### 2. 代码变更\n\n以下“已有”均指 `c31bf0e` 上的未提交 S02 工作树，不是已交付代码。HEAD 已有的身份、S01/S05、HTTP client、legacy Harness 和 modeld 单次推理继续复用。新代码的输入输出以第 3 节为准。\n\n| 具体落点 | 已有可复用 / 已写代码 | 准备修改或新增 |\n| --- | --- | --- |\n| `web/console/src/pages/Models.tsx:Models`；`features/models/CoreModels.tsx:{CoreModels,ModelWorkspace}` | 既有路由；工作树按核心身份/AU 分流，保留原 legacy 模型入口 | 保持身份、AU、服务实例切换清理；完成真实浏览器切换/撤权反例 |\n| `features/models/{ModelFields,ModelCommandForm,ModelPreview,useModels,requests,api,types}` | 新表单、预览、命令、4 秒只读轮询、原请求核对；Key 不入缓存 | 新增诊断与用量来源 DTO/状态；恢复动作按结果确定性显示，POST 不自动重试 |\n| `features/models/ModelRecords.tsx:{ConnectionRecords,OperationRecords,CheckRecords}`；`models.css` / `workspace.css` | 连接默认/版本、异步操作、执行结果及逐次用量 | 展示错误类别和已观测用量/缺失原因；修复 1440px 状态文字可读性，再覆盖四宽度、键盘与焦点 |\n| `ai_union/server.py:Handler.handle_api`；`console.py:Console.__init__` | 模型 GET、commands、receipts 窄接口与 ModelAccessService 装配，复用正常核心登录 | 只接新增 DTO/状态，业务规则不堆入 Console；V1 不调用 legacy start |\n| `application/model_access.py:ModelAccessService.{command,save_connection,check_grant,spawn,read}` | 脱敏意图先落 AU、后台注册、当前授权、原保存核对 | 修 JSON 转义 Key 检查；`spawn` 启动抛错时清理未运行登记，保留持久意图，显式核对可恢复且正常同 key 不双启动；保存错误分类 |\n| `domain/model_access.py:{validate_input,apply,occupied_calls}`；`domain/model_checks.py:{prepare,authority}` | 连接/资源 revision、明确两次额度、责任绑定、行动和结果接受处重验 | 保留纯规则所有者；诊断/用量新增字段先细化契约和状态验证，不放宽 legacy 或准备态权限 |\n| `application/model_checks.py:ModelCheckRunner.{run,reserve,collect,observe,accept}`、`usage_from` | 两阶段、独立 attempt ID、先记模型事实/用量后重验采用资格 | 从原请求事件读取已观测用量，按 sequence/最终值去重并标明是否完整；保留 unknown 预约；映射脱敏错误、恢复原阶段 |\n| `adapters/model_access_store.py:{reserve,observe,tool_result,tool_message,validate}`；`governance_store.py:{transaction,save}` | 前者写同 AU 的私有请求/资料/工具回执；后者唯一写 state/Charter/审计/命令回执 | 持久化安全的用量来源和诊断证据，完整性检查随字段更新；不新增第二账本、不读取时迁移 |\n| `model_service.py:ModelServiceClient.call`；`tool_roundtrip.py:{complete_tool_call,complete_reply}` | 回环 HTTP 客户端和有界消息校验；旧 `harness.test_tool_connection` 复用后者 | Client 保留允许的下游错误码和阶段，不透传原始供应商正文；S02 继续不构造 `ModelServiceTransport`/Engine |\n| `services/modeld/src/api-accounts.ts:validateAPIRegistration`；`journal.ts:Journal.{registerAPI,apiConnection,event}` | API 账号/grant 同库事务、原注册/请求和事件 | 公共字段按实际字符串检查 Key，覆盖引号/反斜杠；保存诊断/用量事实与公共安全投影分开 |\n| `services/modeld/src/kernel.ts:Kernel.{inferAPI,inferStream}`；`server.ts:startService` 内 `pump` | 固定 SDK 单次流；组织工具留在核心；当前全服务串行 | 修输入、输出、工具参数和跨流分片 Key 泄露；分片未证明安全前不发布，完整性与用量不能丢；新增认证/模型/网络错误分类。并发槽位属于 U-070 |\n| `tests/test_core_model*.py`、modeld `test/{api-connections,api-kernel,late-results}`、models 组件测试、`scripts/s02-models-browser.cjs`、发布检查 | 已有 Python/组件/HTTP 回环/schema 测试与部分浏览器脚本 | 先将已复现缺口变成有意义 RED，再最小修复；扩充现有浏览器脚本尾段/切换场景，实际安装最终候选并从安装目录运行；原正常对照和历史证据保留 |\n\n编码前补入现有 S02 契约的具体字段：拟新增 `diagnostic={code,stage,recovery}`（`authentication_failed/model_not_found/network_unavailable/result_unconfirmed` 等白名单）；`recovery` 区分修正配置、核对原请求和检查授权。拟新增 `usage.observation={kind,sequence,complete,missing_reason}`，保留现有 `usage.source` 语义；有最终量采用最终量，只有事件累计量时不与最终量相加，缺失为 null。这些是待实现设计，不是当前 API 能力。\n\n### 3. 完整流程与接口输入输出\n\n运行进程与业务接缝见 [架构部署图](docs/ARCHITECTURE.md#runtime-deployment)和[接口表](docs/ARCHITECTURE.md#execution-contracts)。S02 不调用 `runner.step` 或 `HarnessExecutor.execute`。\n\n| 边界 | 输入 | 输出 / 状态 |\n| --- | --- | --- |\n| 模型页读取 | `GET /api/v1/models?organization_id=<AU>`，会话 Cookie | `core.models.v1`、version、access、connections、resources、operations、checks；无 Key/宿主路径/native 私密正文 |\n| 模型页命令 | `POST /api/v1/models/commands`：`{id,organization_id,base_version,kind,data}` | HTTP 200 `{receipt}`；`receipt.status='succeeded'` 只表示命令采用，异步操作另查 operation/check。格式/无权/同 ID 改内容/存储异常分别为 400/403/409/503 |\n| 保存连接 data | 新建：`{connection_id,expected_revision:0,name,profile:'openai_compatible',base_url,api_key,model,max_output_tokens}`；编辑传当前 connection revision；`profile:'modeld_grant'` 移除 base_url/api_key，改用 grant_ref/grant_revision | AU 先存脱敏意图；API profile 向 modeld `POST /v1/api-connections` 注册同操作/主体/AU，预授 profile 查询既有 grant；核对原 grant/revision 后采用。注册响应丢失只 GET 原注册 |\n| 有限授权 / 默认 | `grant_model_resources:{max_calls,allow_unknown_cost,reason}`；`set_connection:{connection_id,expected_revision,enabled,make_default}` | 同 AU 事务更新资源 grant 或实际默认；不发推理；旧版本领域拒绝保留回执 |\n| 开始验证 data | `start_model_check:{connection_id,expected_revision,binding_id,document_name,document_text}`；binding_id=null 表示治理者本人承担 | 同 AU 事务保存 Work/Member/绑定/Mandate/固定 Definition、check、两次额度预约和私有资料，返回 check_id |\n| 单次模型请求 | worker `POST /v1/requests`：id、au_id、run_id、connection/grant 与 revision、model_id、messages/tools/generation/deadlines | 当前 wire 要求 `id=run_id=attempt_id`，两轮各有不同 ID；GET 原 request 收集 state/action_authorized/result/error，原 events 单独取证 |\n| 实际资料工具 | `read_document({document_id:check_id})`，唯一完整 tool_call | `ModelAccessStore.tool_result` 返回 document_id/name/content/sha256/challenge 并保存原工具回执；拒绝其他资料 ID、路径、多工具或半个 JSON |\n| 第二次调用 / 展示 | 原 native 助手消息 + 对应 tool_call_id 的持久工具回执 | `complete_reply` 确认实际校验码，保存 output、两条 attempt/用量、该 revision 的 last_check；刷新 GET 显示同一结果 |\n| 原请求恢复 | `GET /api/v1/models/receipts?organization_id=<AU>&id=<原命令ID>`；reconcile_connection / reconcile_model_check；cancel_model_check | 核对原注册/attempt，当前授权仍有效才推进未派发阶段；已派发未知不换 ID 重放。本地停止后保留已发生费用/预约 |\n\n页面顺序：正常登录→选择 AU（必要时先完成 S05 治理）→保存连接→单独授予有限调用/资料工具→选择文本并预览→提交验证→第一轮模型提出读取→核心验证当前授权并读取持久资料→第二轮携原工具回执继续→模型页显示原输出/费用→独立采用默认→刷新重开。首次请求不含资料正文或 challenge；因此通过必须确实经过工具结果回传。\n\nAU SQLite 内的 state、意图、资料和回执在同一事务提交；modeld 的账号/grant 在其另一数据库事务提交，不存在跨库全局事务。外部 I/O 前先存意图；unknown 保留原请求查询，不能用新 AU、新连接或新 Work 掩盖历史。撤权后的迟到事实可计费取证，不能继续工具/采用输出。\n\n### 4. 完成演示与验收\n\n| 操作入口与演示 | 必须看到的实际结果 | 覆盖 / 当前差距 |\n| --- | --- | --- |\n| 普通核心账号在模型页保存连接，刷新并重启再登录 | 同 AU/connection ID 和配置仍在；无 Key 回显/缓存/公共日志；保存推理次数为 0 | M01–M03；工作树受控证据已有，凭据四个反例未闭合 |\n| 本地可控供应商分别返回成功、401、模型不存在、连接失败 | 四种可理解结果、脱敏阶段与恢复动作；无法确认受理的失败只能核对原请求 | M02/M08/M09；结构化错误待写，不能用通用 unknown 充当通过 |\n| 不授权工具、仅给 1 次额度、跨 AU/失效 grant；再使用有效工具权限和至少 2 次额度 | 反例都在有副作用前拒绝；正常对照可进入完整往返；不超资源计划 | M04/M06；沿现有 Python/HTTP/浏览器补足证明 |\n| 选择含已知内容的文本，点击验证 | 首轮只见资料 ID，模型要求工具后实际读出正文，第二轮回答含校验码；展示两个不同 attempt 及用途/用量 | M05/M07；真实 HTTP→modeld→固定 SDK→回环供应商已测，指定真实供应商/profile 另验 |\n| 点击默认、编辑/停用、刷新 | 默认独立生效不增加调用；变更版本使旧验证失效；历史记录保留 | M01/M02/M09；浏览器后半程待完成 |\n| 丢 POST 回执、两端重启、取消/撤权，以及线程 start 抛错后显式核对 | 原 ID 可追踪，不二次 POST/重复工具；当前权限阻止继续但用量保留；线程启动失败可在同进程恢复 | M03/M06/M08；线程恢复和中断事件用量缺陷待修 |\n| 320/390/1024/1440 浏览器及键盘；切账号/AU/服务实例 | 无溢出、状态可读、输入/焦点可恢复；旧 AU 结果不串入新页 | M09；现有脚本在 1440 状态文字处失败，其余宽度及尾段不能记通过 |\n| 构建最终候选，在独立临时安装目录启动并完成上述闭环、重启/兼容检查 | 安装后的真实模块可用，schema 3 可重开；不兼容旧候选在采用/回退前拒绝，原 ID/责任/unknown 保留 | M10；已有 14 项 schema/包规则测试不等于实际安装验收 |\n| 使用用户指定的真实 profile、资料、调用次数与费用授权进行一次往返 | 实际供应商完成两次推理和一次工具接力；记录真实 attempt、结果、已知费用/未知原因，无额外推理 | M05/M10 的 real 出口；资源参数未落实，不执行或擅自找凭据 |\n| 固定工具链检查、独立身份/持久化/费用复核和交付 | npm check、Python discover、modeld/浏览器/安装各自通过；检查最终提交及远端 SHA | 不能用受控测试、文档或子任务通过关闭整卡 |\n\n当前证据和剩余缺口见 [058 核查](evidence/058-s02-model-tools/design-readback.md)。安全反例、结构化诊断、中断用量、启动恢复、完整浏览器、最终安装和指定真实 profile 均需闭合；U-072/#21 继续进行中，全部 M01–M10 和 real 出口通过才完成。S03/S04/S06 的设计仅承接后续，不改变卡片依赖或授权。",
+            "acceptance": "完成后：你填入自己的模型连接，选择一份文本，看到 AI 读完它后给出回答和用量记录。\n\n具体要做：\n\n1. 在“模型”页填地址、密钥和模型名称并保存；保存本身不调用模型。\n2. 单独允许有限次数的调用和读取本次文本，然后选择文件或粘贴内容。\n3. 点击验证：模型提出读取请求，系统实际读取资料，再把内容交回模型继续回答。\n4. 展示回答、用量、费用是否已知及具体错误；也能单独把这条连接设为默认。\n\n怎么演示：上传一份写着“项目有三个模块”的文本并验证，看到模型根据读到的内容回答；刷新后还能查看结果。填错密钥、模型名称或地址时，要能看懂失败原因。\n\n2026-11-06 核对：正在开发。密钥保护、错误提示、失败后续接、用量显示、完整浏览器和安装检查、真实模型验证尚未收尾。本卡只读这次提交的文本；授权读取整个目录属于下一张工作卡。\n\n开发与完整验收依据：[代码、接口和技术约束](specs/053-union-rewrite/tasks.md#u-072-development)。",
             "dependencies": [
                 "U-066",
                 "U-069"
@@ -1983,6 +2040,13 @@
                     "from": "doing",
                     "to": "doing",
                     "note": "接续用户指定会话；按最新要求展开功能、准确代码落点、完整流程/DTO及完成演示。部署/执行链见 docs/ARCHITECTURE.md，核查见 evidence/058-s02-model-tools/design-readback.md。本次仅设计/卡片检查点，凭据/恢复/诊断/用量和浏览器/安装/真实profile缺口保留；整卡目标、M01-M10、owner、依赖、租约和WIP不变，不认领后续卡。"
+                },
+                {
+                    "at": "2026-11-06T03:11:19.749Z",
+                    "actor": "codex/gpt-6/card-clarity-2026-11-06",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "按用户“每张卡看不懂、内容太抽象”的反馈，改为具体功能、操作和完成演示。原技术验收完整保留在 specs/053-union-rewrite/tasks.md#u-072-development；范围、状态、owner、依赖、claim和既有验收记录不变，不执行未来卡。"
                 }
             ],
             "claim": {
@@ -1993,32 +2057,41 @@
         },
         {
             "id": "U-073",
-            "title": "V1组织试用改进并依据效果保留或撤回",
+            "title": "让 AI 试用新的做法，比较效果再决定是否保留",
             "priority": "P1",
             "milestone": "G0",
             "module": "evaluation",
             "status": "backlog",
             "owner": null,
             "role": "V1垂直切片实施 / 独立验收",
-            "acceptance": "直接依据Main Chapter V1 P-06/P-08/S-01/S-02/S-04及PRD S07：真实工作效果触发问题与改变，低影响授权内试用留版本/检查/撤回，高影响按治理权限；试用许可和效果证明分开，实施/评估职责可区分不强制不同Agent，需要独立判断而条件不足保留候选。禁止改自己评分/评级/删失败；保留窗口/停止/总目标成本和五类人工介入。受控机制与真实自主效果分别验收，旧公司/管理工具卡不构成本片需求前置。",
+            "acceptance": "完成后：组织能从实际工作发现问题，试一种改法，并根据质量、耗时和花费决定继续使用还是撤回。\n\n具体要做：\n\n1. 从真实任务结果发现具体问题，提出要改变哪一步和预期改善。\n2. 在已有权限内试用低影响改法；影响较大的改变按组织规则批准，保留旧版本和撤回办法。\n3. 比较改前、改后的结果，记录总成本、失败以及人帮了多少忙；不能自己删掉失败或修改评分依据。\n4. 效果符合要求才保留；需要独立判断却没有条件时，先保留为候选。\n\n怎么演示：组织发现报告经常漏引用，试用“交付前核对来源”的步骤；比较试用前后的漏引次数和成本，再作出保留或撤回决定。\n\n2026-11-06 核对：未开始，需要先有真实成果和反馈。只写改进建议、复盘或修改计划不能算效果已改善。\n\n开发与完整验收依据：[代码、接口和技术约束](specs/053-union-rewrite/tasks.md#u-073-development)。",
             "dependencies": [
                 "U-068"
             ],
             "blocker": null,
             "started_at": null,
-            "updated_at": "2026-11-05",
-            "completion": null
+            "updated_at": "2026-11-06",
+            "completion": null,
+            "history": [
+                {
+                    "at": "2026-11-06T03:11:19.749Z",
+                    "actor": "codex/gpt-6/card-clarity-2026-11-06",
+                    "from": "backlog",
+                    "to": "backlog",
+                    "note": "按用户“每张卡看不懂、内容太抽象”的反馈，改为具体功能、操作和完成演示。原技术验收完整保留在 specs/053-union-rewrite/tasks.md#u-073-development；范围、状态、owner、依赖、claim和既有验收记录不变，不执行未来卡。"
+                }
+            ]
         },
         {
             "id": "U-074",
-            "title": "独立安装V1核心并验证维护与持续工作",
+            "title": "安装后能持续做事，也能备份、升级和恢复",
             "priority": "P1",
             "milestone": "G0",
             "module": "hosting",
             "status": "backlog",
             "owner": null,
             "role": "V1垂直切片实施 / 独立验收",
-            "acceptance": "直接依据Main Chapter V1 P-07/S-03及PRD S08：无私有商业平台账户/仓库凭据/许可证服务的干净环境构建安装，核心认证/AU权限/审计及合法模型工具工作连续可用；指定构建/窗口内验证反馈后行动、局部故障、重启、额度、外部升级、兼容拒绝、备份恢复和不双派发。复用052只作实现参考，不继承旧机器/业务特例作为前置；实际环境/许可/发布授权分别明确，受控包检查不替代真实独立使用或持续证据。",
+            "acceptance": "完成后：你按说明在支持的环境里安装软件后，能正常登录、让组织做事，并自己维护数据和版本。\n\n具体要做：\n\n1. 在新环境实际安装和启动核心，不依赖私有商业平台账号或私有仓库。\n2. 配置获准使用的模型和工具，完成工作、反馈、新一版交付，并在约定时间内持续运行。\n3. 提供可操作的备份、恢复、升级和回退流程；不兼容的版本提前拒绝。\n4. 验证重启、故障和升级后，原组织、成果、用量和未完成工作仍然存在，不重复执行。\n\n怎么演示：在一套新的支持环境中安装，完成两版成果；备份后恢复，再升级、重启，确认原组织和成果仍可使用，未完成工作还能接续。\n\n2026-11-06 核对：未开始。这张卡验的是安装后的实际使用和持续运行；打包成功本身不算完成。\n\n开发与完整验收依据：[代码、接口和技术约束](specs/053-union-rewrite/tasks.md#u-074-development)。",
             "dependencies": [
                 "U-068",
                 "U-070",
@@ -2028,37 +2101,55 @@
             ],
             "blocker": null,
             "started_at": null,
-            "updated_at": "2026-11-05",
-            "completion": null
+            "updated_at": "2026-11-06",
+            "completion": null,
+            "history": [
+                {
+                    "at": "2026-11-06T03:11:19.749Z",
+                    "actor": "codex/gpt-6/card-clarity-2026-11-06",
+                    "from": "backlog",
+                    "to": "backlog",
+                    "note": "按用户“每张卡看不懂、内容太抽象”的反馈，改为具体功能、操作和完成演示。原技术验收完整保留在 specs/053-union-rewrite/tasks.md#u-074-development；范围、状态、owner、依赖、claim和既有验收记录不变，不执行未来卡。"
+                }
+            ]
         },
         {
             "id": "U-075",
-            "title": "按V1契约逐profile验证原生接入能力",
+            "title": "接入其他模型服务，逐个验证是否真的能用",
             "priority": "P1",
             "milestone": "G0",
             "module": "models",
             "status": "backlog",
             "owner": null,
             "role": "V1垂直切片实施 / 独立验收",
-            "acceptance": "直接依据Main Chapter V1 A-03/R-06/K-02–K-04及PRD S09，逐profile完成合法配置/认证、原生内容/流式、工具往返、长作业新输入与恢复、凭据单一所有者、正确用途/尝试计量；不支持明确报告，不以一个API/Go成功外推。以能力声明决定profile范围，031/048仅为复用与差距证据，不将旧供应商开发顺序当V1规范。每个profile工程与真实结果分别可追溯。",
+            "acceptance": "完成后：增加一种支持的模型接入方式后，你能完成连接、调用和查看用量，并知道哪些能力可用。\n\n具体要做：\n\n1. 每次选择一种要支持的接入方式，完成它要求的登录或密钥配置；不混用其他账号的凭据。\n2. 逐项试用页面上承诺支持的能力，例如文字回答、调用工具、边生成边显示；该服务特有的返回内容也要能保留和继续使用。\n3. 验证长任务的新输入、取消、中断后查询或继续，保存每次调用和用量。\n4. 在页面写清支持范围和不支持的功能；一个服务成功，不能代表其他服务也成功。\n\n怎么演示：为一种新增接入方式完成认证，运行读资料并回答的任务，再做一次中断恢复；核对结果、用量和界面上的能力说明。\n\n2026-11-06 核对：未开始，在首个模型接通后逐种实现和验收；不是一次性承诺所有模型服务都能用。\n\n开发与完整验收依据：[代码、接口和技术约束](specs/053-union-rewrite/tasks.md#u-075-development)。",
             "dependencies": [
                 "U-072"
             ],
             "blocker": null,
             "started_at": null,
-            "updated_at": "2026-11-05",
-            "completion": null
+            "updated_at": "2026-11-06",
+            "completion": null,
+            "history": [
+                {
+                    "at": "2026-11-06T03:11:19.749Z",
+                    "actor": "codex/gpt-6/card-clarity-2026-11-06",
+                    "from": "backlog",
+                    "to": "backlog",
+                    "note": "按用户“每张卡看不懂、内容太抽象”的反馈，改为具体功能、操作和完成演示。原技术验收完整保留在 specs/053-union-rewrite/tasks.md#u-075-development；范围、状态、owner、依赖、claim和既有验收记录不变，不执行未来卡。"
+                }
+            ]
         },
         {
             "id": "U-076",
-            "title": "按V1契约交付AU承诺与递归组合",
+            "title": "让组织合作交付，并能交接、合并或拆分",
             "priority": "P1",
             "milestone": "G0",
             "module": "composition",
             "status": "backlog",
             "owner": null,
             "role": "V1垂直切片实施 / 独立验收",
-            "acceptance": "直接依据Main Chapter V1 C-01–C-05/D-05及PRD S10：双AU接受/履行/验收承诺并处理争议失联，再逐步交付递归派生、责任交接与重组退出；叶子/组合同一公开契约，治理/授权、协作、部署关系分开，授权投影包含撤权生效/用量/unknown/partial而不泄内部资料。验证离线边界、资源嵌套去重、再委托撤权、退出责任/资料/访问去向；旧025/U028–31只作历史实现参考，不继承旧公司的持续运行卡为规范前置。每段启用和真实出口单独声明。",
+            "acceptance": "完成后：一个组织能向另一个组织提出工作，双方确认后交付、验收；关系改变时，责任和资料仍有去向。\n\n具体要做：\n\n1. 明确双方要交什么、何时交、使用哪些资源；对方接受后才开始履行。\n2. 交付并验收成果，处理拒收、争议、失联和撤销权限；发送消息不等于对方已经接受。\n3. 支持组织继续委托或组合协作，对外仍能查询承诺、进度和用量，不重复计算同一份资源。\n4. 分阶段实现交接、合并、拆分和退出，保留原责任、资产、未完成工作及资料访问安排。\n\n怎么演示：组织甲请组织乙整理资料；乙接受后交付，甲验收。再演示乙失联或退出时的接手办法；后续合并、拆分各做一次，核对原责任、资料和未完工作的去向。\n\n2026-11-06 核对：未开始。先验证两个组织合作，再逐段验证组合和重组；合作不会自动让一方获得另一方的管理权。\n\n开发与完整验收依据：[代码、接口和技术约束](specs/053-union-rewrite/tasks.md#u-076-development)。",
             "dependencies": [
                 "U-068",
                 "U-069",
@@ -2067,8 +2158,17 @@
             ],
             "blocker": null,
             "started_at": null,
-            "updated_at": "2026-11-05",
-            "completion": null
+            "updated_at": "2026-11-06",
+            "completion": null,
+            "history": [
+                {
+                    "at": "2026-11-06T03:11:19.749Z",
+                    "actor": "codex/gpt-6/card-clarity-2026-11-06",
+                    "from": "backlog",
+                    "to": "backlog",
+                    "note": "按用户“每张卡看不懂、内容太抽象”的反馈，改为具体功能、操作和完成演示。原技术验收完整保留在 specs/053-union-rewrite/tasks.md#u-076-development；范围、状态、owner、依赖、claim和既有验收记录不变，不执行未来卡。"
+                }
+            ]
         }
     ]
 }

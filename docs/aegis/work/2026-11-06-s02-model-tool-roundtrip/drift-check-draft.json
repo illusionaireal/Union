@@ -3,15 +3,15 @@
   "taskId": "U-072",
   "taskIntentRef": "docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/task-intent-draft.json",
   "baselineRefs": [
-    "docs/UNION_CHARTER_v1.0.md",
-    "docs/decisions/0005-au-runtime-boundaries.md",
+    "management/project.json",
+    "specs/053-union-rewrite/tasks.md",
     "specs/053-union-rewrite/s02-contract.md"
   ],
-  "scopeStatus": "最新要求先技术设计与样板；保留完整S02，未来卡仅拟议",
-  "compatStatus": "实际HEAD c31bf0e；源码未改，原owner/依赖/历史/租约与6/6 WIP保留；旧Engine只legacy",
-  "retirementStatus": "只描述按用例迁出/重绑后退役；本轮不删除或切换旧执行实现",
+  "scopeStatus": "最新用户反馈覆盖 12 张卡片可读性；只改文案，父任务仍为完整 S02，未来卡未实施",
+  "compatStatus": "基点 4c49d5dc82955b157be622bbe6cc6109147224c2，rewrite/charter-v1；原状态、负责人、依赖、历史、验收及 6/6 WIP 保持；134 份预存文件哈希不变，2 份任务外变化保留",
+  "retirementStatus": "技术原文移至同一 tasks.md 的开发附录；没有删除实现、迁移数据或建立第二份任务账本",
   "newRiskSignals": [
-    "当前凭据4反例RED；线程start恢复缺陷；中断原用量投影和诊断缺口；浏览器可读性失败；尚未最终安装/真实profile"
+    "S02 原工程和真实出口尚未闭合；scripts/union-board-mcp.mjs 与 tests/union-board.test.mjs 出现任务外变化，不纳入本次提交"
   ],
   "decision": "continue"
 }

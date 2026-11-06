@@ -1,0 +1,275 @@
+{
+  "checked_at": "2026-11-06T03:21:58.650494+00:00",
+  "base_commit": "4c49d5dc82955b157be622bbe6cc6109147224c2",
+  "branch": "rewrite/charter-v1",
+  "scope": "只改写 12 张现有 V1 卡的标题和说明，保留具体功能、演示与真实进度；不改变运行行为或任务完成判断。",
+  "cards": 12,
+  "other_local_tasks_unchanged": 64,
+  "original_requirements_preserved": [
+    {
+      "task": "U-065",
+      "source_sha256": "96d9d57598ae778a9f454f3fde1c0f1b7d23976f984653bd67795a2e1dd4b762",
+      "appendix_anchor": "u-065-development"
+    },
+    {
+      "task": "U-066",
+      "source_sha256": "304652947f65822647db8e609235d20c157972ea5218804fcc05a0cd09b68c82",
+      "appendix_anchor": "u-066-development"
+    },
+    {
+      "task": "U-067",
+      "source_sha256": "161958745cb7bcf4d3f62ba64858e559b017cb676840839c81a13146e7a4eb27",
+      "appendix_anchor": "u-067-development"
+    },
+    {
+      "task": "U-068",
+      "source_sha256": "5e854b4fe1f38601a6cee69271129a396a5bb06c2a3352173d59de1d0c2794c8",
+      "appendix_anchor": "u-068-development"
+    },
+    {
+      "task": "U-069",
+      "source_sha256": "8bbc8cfa9ca840bc5bdcb47e7821c9471de6c98a5c847814bdc3f21933d834f1",
+      "appendix_anchor": "u-069-development"
+    },
+    {
+      "task": "U-070",
+      "source_sha256": "0096027c2ccadac32586cb6cf98d59d6e582fed575f9e60a24d4d08fecf03927",
+      "appendix_anchor": "u-070-development"
+    },
+    {
+      "task": "U-071",
+      "source_sha256": "e03856a80ea134b2c6305cccf81ba115716a75c96d47ccb26184cc61a6ba7f2a",
+      "appendix_anchor": "u-071-development"
+    },
+    {
+      "task": "U-072",
+      "source_sha256": "517a009cf9ed81db768631d368e881fb9ea6b301cadbdcde9343df4754d0ad74",
+      "appendix_anchor": "u-072-development"
+    },
+    {
+      "task": "U-073",
+      "source_sha256": "f19593e88179e2758d287527bef671340b74fbd55142447081ccd939f7c55bae",
+      "appendix_anchor": "u-073-development"
+    },
+    {
+      "task": "U-074",
+      "source_sha256": "8b1cdf71da0d6c5473d66bdf4cde390b09b4b97f9dad35fdf1a693e080d338f1",
+      "appendix_anchor": "u-074-development"
+    },
+    {
+      "task": "U-075",
+      "source_sha256": "9477b5e64831a1f3bd85fb73ee38749f921b3381636fbfaa9cb139e1c3dd74f1",
+      "appendix_anchor": "u-075-development"
+    },
+    {
+      "task": "U-076",
+      "source_sha256": "b4664a372cc626f9909f4609822e8fbced186d8a2fc8e211884b40cf4ae471d3",
+      "appendix_anchor": "u-076-development"
+    }
+  ],
+  "requirement_text_transform": "技术原文完整移入现有 tasks.md 附录，只调整搬迁后的相对链接。",
+  "states_owners_dependencies_claims_completions_prior_history_preserved": true,
+  "modules_milestones_and_wip_preserved": true,
+  "wip_limit": 6,
+  "generated_task_descriptions_match_ledger": true,
+  "appendix_links_checked": 4,
+  "charter_sha256": "01b2c7f0b40be6e761376cd719e2c7b61c0d782df6f53ca9b9e4ad0ad50e6174",
+  "management_check": {
+    "command": "npm run check:management",
+    "exit_code": 0,
+    "tests_passed": 8,
+    "tests_failed": 0,
+    "scope": "主账结构与生成视图，非产品运行验收"
+  },
+  "online": {
+    "verified_at": "2026-11-06T03:15:46.231785+00:00",
+    "updated_cards": [
+      {
+        "task": "U-065",
+        "online_card": 19,
+        "read_before_http": 200,
+        "write_http": 200,
+        "read_after_http": 200,
+        "before_version": 4,
+        "after_version": 5,
+        "state": "done",
+        "content_matches": true,
+        "non_text_fields_preserved": true,
+        "description_sha256": "84a3438dfd1342faf245922843d805cf4fe9fe0f83df21123800c6d63f71ebae"
+      },
+      {
+        "task": "U-066",
+        "online_card": 20,
+        "read_before_http": 200,
+        "write_http": 200,
+        "read_after_http": 200,
+        "before_version": 8,
+        "after_version": 9,
+        "state": "done",
+        "content_matches": true,
+        "non_text_fields_preserved": true,
+        "description_sha256": "4be2698ee42c2399a254011cb4b89100eb5fd762d4038b1226c1793a5b2090c0"
+      },
+      {
+        "task": "U-069",
+        "online_card": 24,
+        "read_before_http": 200,
+        "write_http": 200,
+        "read_after_http": 200,
+        "before_version": 5,
+        "after_version": 6,
+        "state": "done",
+        "content_matches": true,
+        "non_text_fields_preserved": true,
+        "description_sha256": "97c4bca191f3e686c1d4a587ff6f1544d7dad99ceecc033e582f1da3acb10b80"
+      },
+      {
+        "task": "U-072",
+        "online_card": 21,
+        "read_before_http": 200,
+        "write_http": 200,
+        "read_after_http": 200,
+        "before_version": 4,
+        "after_version": 5,
+        "state": "progress",
+        "content_matches": true,
+        "non_text_fields_preserved": true,
+        "description_sha256": "b1f81adf52553a2337f386b049f6266d4b2c0ccd2694cfccc58a5c285a643458"
+      },
+      {
+        "task": "U-067",
+        "online_card": 22,
+        "read_before_http": 200,
+        "write_http": 200,
+        "read_after_http": 200,
+        "before_version": 2,
+        "after_version": 3,
+        "state": "backlog",
+        "content_matches": true,
+        "non_text_fields_preserved": true,
+        "description_sha256": "09a18262e0337f1aea674444eb558d652dfee455ea01f5430ce226c5246479b5"
+      },
+      {
+        "task": "U-068",
+        "online_card": 23,
+        "read_before_http": 200,
+        "write_http": 200,
+        "read_after_http": 200,
+        "before_version": 2,
+        "after_version": 3,
+        "state": "backlog",
+        "content_matches": true,
+        "non_text_fields_preserved": true,
+        "description_sha256": "980e0f0fd5650fae93eba5940e96d1eb8564c873293b45bffb138b93188b54a7"
+      },
+      {
+        "task": "U-070",
+        "online_card": 25,
+        "read_before_http": 200,
+        "write_http": 200,
+        "read_after_http": 200,
+        "before_version": 2,
+        "after_version": 3,
+        "state": "backlog",
+        "content_matches": true,
+        "non_text_fields_preserved": true,
+        "description_sha256": "a52190b455cbfc0a064c085262e3899fd352eeb3311bd36d97f4e2b142f03a65"
+      },
+      {
+        "task": "U-073",
+        "online_card": 26,
+        "read_before_http": 200,
+        "write_http": 200,
+        "read_after_http": 200,
+        "before_version": 2,
+        "after_version": 3,
+        "state": "backlog",
+        "content_matches": true,
+        "non_text_fields_preserved": true,
+        "description_sha256": "6b08390b92b0c418af8ab25f3e44c3463f79971e601482e89161fdecea0b67b8"
+      },
+      {
+        "task": "U-074",
+        "online_card": 27,
+        "read_before_http": 200,
+        "write_http": 200,
+        "read_after_http": 200,
+        "before_version": 2,
+        "after_version": 3,
+        "state": "backlog",
+        "content_matches": true,
+        "non_text_fields_preserved": true,
+        "description_sha256": "65c41b20cd8902fd6f987a13f59d8e5bb29c3dc133fd37465b81e2a381cd379c"
+      },
+      {
+        "task": "U-075",
+        "online_card": 28,
+        "read_before_http": 200,
+        "write_http": 200,
+        "read_after_http": 200,
+        "before_version": 2,
+        "after_version": 3,
+        "state": "backlog",
+        "content_matches": true,
+        "non_text_fields_preserved": true,
+        "description_sha256": "8aaa195d16cb3217dd3f37463e9738e03730ca896998a8c6d4ed49c5e36b608c"
+      },
+      {
+        "task": "U-076",
+        "online_card": 29,
+        "read_before_http": 200,
+        "write_http": 200,
+        "read_after_http": 200,
+        "before_version": 2,
+        "after_version": 3,
+        "state": "backlog",
+        "content_matches": true,
+        "non_text_fields_preserved": true,
+        "description_sha256": "eec22aa55b8c94e7fc2a93ccb74b64dd45f4659e164abd8d2f003a8653d36196"
+      },
+      {
+        "task": "U-071",
+        "online_card": 30,
+        "read_before_http": 200,
+        "write_http": 200,
+        "read_after_http": 200,
+        "before_version": 2,
+        "after_version": 3,
+        "state": "backlog",
+        "content_matches": true,
+        "non_text_fields_preserved": true,
+        "description_sha256": "b1c92cba56bcd3e9ad258a56776adadd5b9e98268ecd21f5b0cd0d919ff988ad"
+      }
+    ],
+    "other_cards_unchanged": true
+  },
+  "review": {
+    "reviewer": "/root/s02_feature_audit",
+    "scope": "12 张卡的操作、结果与原要求一致性；三处修订和 U-072 搬迁链接限定复读",
+    "unresolved_findings": 0,
+    "draft_sha256": "35f02f809fe2ebda4cee6c1728958672142f418772548e3d1762e42b6ae13525",
+    "report_sha256": "7f5722a98812e976143c16575dfca94732f866b0ad8545bf61d8f862f7afb32f"
+  },
+  "preexisting_work": {
+    "snapshot_file_count": 136,
+    "unchanged_file_count": 134,
+    "observed_non_task_drift": [
+      {
+        "path": "scripts/union-board-mcp.mjs",
+        "before_sha256": "0fd88940547f8d9c8036cc1d337fb134ed6040b8ec90d376f74713b7ef689248",
+        "observed_sha256": "7d2e28cf7d40214bf9e5636f50204071fd7dfc0e15fea05939e99a9464935197"
+      },
+      {
+        "path": "tests/union-board.test.mjs",
+        "before_sha256": "e48a1a4ccccb46a99da000728d093d89715fc3426453e3ce4b98f037505bf5f8",
+        "observed_sha256": "09da693df82570cba0b9e691c009622992bec93d62e4bebf63f41ff896ec8128"
+      }
+    ],
+    "disposition": "两份原有未跟踪文件出现本任务之外的变化，来源未确认；保留现场，不恢复、不纳入本次提交。其余原有文件哈希不变。"
+  },
+  "uncovered": [
+    "S02 凭据保护、启动恢复、结构化诊断、中断用量、完整浏览器和实际安装仍未收尾",
+    "真实模型与费用授权范围尚未落实，U-072 保持 doing；未来卡不因文字改写获得实施授权",
+    "完整 npm/Python 运行证据沿用上一设计检查点，本次新证据仅覆盖文档与看板一致性"
+  ]
+}
