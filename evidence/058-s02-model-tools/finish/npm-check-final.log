@@ -1,0 +1,182 @@
+
+> union@0.0.0 check
+> npm run check:management && npm run check:plan && npm test && npm run check:console
+
+
+> union@0.0.0 check:management
+> node scripts/project-management.mjs check && node --test tests/project-management.test.mjs
+
+Management check: 15 modules, 8 milestones, 76 tasks; PASS
+✔ rejects missing owners at start and unfinished dependencies, but permits honest unassigned backlog (6.413ms)
+✔ completion requires scope, reviewer and existing evidence, and does not promote milestones (2.5219ms)
+✔ rejects duplicate IDs, unknown references and dependency cycles (2.4507ms)
+✔ blocked work needs an unblock action; already-started blocked work counts toward WIP (3.1313ms)
+✔ rejects evidence outside repository, invalid scope and malformed dates (2.1216ms)
+✔ deterministic generated views reject stale output and preserve surrounding narrative (23.7039ms)
+✔ flow summary keeps empty live evidence distinct from completion counts (1.9018ms)
+✔ milestone acceptance and task scope cannot be asserted without their review metadata (3.3412ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 161.6406
+
+> union@0.0.0 check:plan
+> node scripts/check-plan.mjs
+
+{"baseline":"UNION-B1","tasks":82,"dependencies":181,"cycles":0,"missingDependencies":0,"baselineFiles":5,"githubTasks":8}
+
+> union@0.0.0 test
+> node --test tests/*.test.ts
+
+✔ retry uses the same reservation; changed request is rejected (140.3059ms)
+✔ unauthorized model actions and tenant/currency changes leave budget untouched (93.3503ms)
+✔ only positive safe integer amounts and bounded keys are accepted (96.6692ms)
+✔ eight competing processes cannot exceed a 100-minor-unit hard budget (442.4155ms)
+✔ process crash after external success recovers by lookup without repeating the effect (380.5909ms)
+✔ crash before external call retains reservation when lookup is inconclusive (308.476ms)
+✔ definitive failure releases reservation exactly once (143.8825ms)
+✔ settling below maximum releases the difference and invalid receipt rolls back (118.4118ms)
+✔ same key across test tenants remains independent (276.6004ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2246.5295
+
+> union@0.0.0 check:console
+> npm run typecheck --workspace @union/console && npm run test --workspace @union/console && npm run build:console
+
+
+> @union/console@0.1.0 typecheck
+> tsc --noEmit
+
+
+> @union/console@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 web/console
+
+ ✓ src/features/commands/fields.test.tsx (9 tests) 701ms
+ ✓ src/app/governance-workspace.test.tsx (11 tests) 847ms
+   ✓ current governance access projection > does not resurrect a cached AU after observing a changed principal_id  394ms
+ ✓ src/pages/SubscriptionConnections.test.tsx (8 tests) 743ms
+ ✓ src/pages/Identity.test.tsx (14 tests) 1243ms
+ ✓ src/pages/ModelServiceConnections.test.tsx (2 tests) 483ms
+   ✓ binds adoption to selected account, model and AU; lost reply blocks a second write  428ms
+ ✓ src/app/workspace.test.tsx (4 tests) 972ms
+   ✓ workspace organization transitions > keeps the session and draft mounted while withholding old organization data and writes  386ms
+   ✓ workspace organization transitions > rechecks identity when session_scope changes  331ms
+ ✓ src/pages/Gateways.test.tsx (3 tests) 744ms
+   ✓ gateway platform boundary and operations > separates unavailable health from unknown deployment, hides unsupported controls and opens isolated links  302ms
+ ✓ src/pages/RuntimeObservation.test.tsx (11 tests) 831ms
+ ✓ src/features/commands/core-creation.test.tsx (7 tests) 4376ms
+   ✓ core creation through the workspace > keeps explicit legacy company creation reachable after reopening a prepared AU  1260ms
+   ✓ core creation through the workspace > explains the prepared boundary at the empty model entry instead of promising immediate configuration  453ms
+   ✓ core creation through the workspace > opens the saved prepared AU through V1 and shows bound governance without legacy snapshot calls  764ms
+   ✓ core creation through the workspace > retains an unknown V1 request for lookup after the result dialog closes  637ms
+   ✓ core creation through the workspace > keeps input editable after a pre-allocation V1 validation rejection  619ms
+   ✓ core creation through the workspace > submits ordinary creation as create_v1 with exactly the five supported fields  419ms
+ ✓ src/api/client.test.ts (3 tests) 22ms
+ ✓ src/features/commands/receipts.test.ts (5 tests) 20ms
+ ✓ src/app/url-state.test.tsx (1 test) 229ms
+ ✓ src/features/commands/core-boundaries.test.tsx (10 tests) 5748ms
+   ✓ lets a core participant prepare its own AU while withholding legacy operations and showing its stable identity  1123ms
+   ✓ core creation identity and receipt boundaries > rejects a POST receipt with the wrong id and retains the original V1 request  800ms
+   ✓ core creation identity and receipt boundaries > rejects a POST receipt with the wrong kind and retains the original V1 request  643ms
+   ✓ core creation identity and receipt boundaries > keeps an unsubmitted creation draft and focus through a same-principal session renewal  457ms
+   ✓ core creation identity and receipt boundaries > refuses to bind a draft to a different principal even before the workspace poll notices the change  490ms
+   ✓ core creation identity and receipt boundaries > adopts a delayed creation result only for its original principal (changed=false)  676ms
+   ✓ core creation identity and receipt boundaries > adopts a delayed creation result only for its original principal (changed=true)  527ms
+   ✓ core creation identity and receipt boundaries > shows a lookup failure beside an unknown receipt while retaining its original ID  492ms
+   ✓ core creation identity and receipt boundaries > does not create an AU when the user cancels while the identity preflight is still pending  366ms
+ ✓ src/features/models/ModelsIdentity.test.tsx (11 tests) 6008ms
+   ✓ model identity, scope and input lifetime > keeps draft fields and keyboard focus through refresh and same-principal renewal  1209ms
+   ✓ model identity, scope and input lifetime > retains draft while offline and never queues a command for reconnection  851ms
+   ✓ model identity, scope and input lifetime > clears a draft after permissions change and does not reopen it when access returns  565ms
+   ✓ model identity, scope and input lifetime > erases credentials immediately when preflight learns that read access was denied  498ms
+   ✓ model identity, scope and input lifetime > rejects a response for a different AU, then can recover on an explicit matching refresh  340ms
+   ✓ model identity, scope and input lifetime > ignores an earlier successful read arriving after a newer permission denial  652ms
+   ✓ model identity, scope and input lifetime > rejects a changed cookie identity before any command is posted  526ms
+   ✓ model identity, scope and input lifetime > does not expose a late command result to a different principal  501ms
+   ✓ model identity, scope and input lifetime > clears draft and previous results on a new service instance  336ms
+   ✓ model identity, scope and input lifetime > clears form on AU switch and never displays an old AU response as the new one  388ms
+ ✓ src/features/models/ModelsRecovery.test.tsx (10 tests) 6887ms
+   ✓ model original-request recovery > never replays a lost save and only queries the original receipt  1912ms
+   ✓ model original-request recovery > treats a concrete validation error as rejected input instead of unknown  805ms
+   ✓ model original-request recovery > keeps an unmatched response unknown without displaying another AU receipt  684ms
+   ✓ model original-request recovery > retains own receipt lookup after AU read access is denied and clears former output  449ms
+   ✓ model original-request recovery > recovers after a service restart using the original issuer and ID  372ms
+   ✓ model original-request recovery > reconciles a saved unknown operation explicitly without resubmitting credentials  614ms
+   ✓ model original-request recovery > keeps other connections usable when one verification is unknown  771ms
+   ✓ model original-request recovery > allows the current governor to request local stop while governance is unavailable  532ms
+   ✓ model original-request recovery > lets an unavailable current governor disable a connection while enable and default stay unavailable  427ms
+   ✓ model original-request recovery > does not submit if the dialog is cancelled while checking current identity  321ms
+ ✓ src/features/models/Models.test.tsx (13 tests) 7571ms
+   ✓ core model access user journey > opens the core models route and navigation for a normal core governor  1130ms
+   ✓ core model access user journey > saves without inference or adoption, clears the key and keeps only request identities  1123ms
+   ✓ core model access user journey > grants bounded resources, reads a selected document twice and adopts independently  2222ms
+   ✓ core model access user journey > can adopt an enabled untested connection without purchasing a check  604ms
+   ✓ core model access user journey > requires a fresh API key when editing an endpoint and does not reuse an old check  364ms
+   ✓ core model access user journey > uses only an explicitly supplied modeld grant, without listing host accounts  470ms
+   ✓ core model access user journey > keeps normal inputs after a persisted domain rejection and allows a new preview  377ms
+ ✓ src/features/models/ModelsDiagnostics.test.tsx (17 tests) 7849ms
+   ✓ model check eligibility after version changes or local stop > keeps an unstopped unknown check on the same revision blocking another check  1336ms
+   ✓ model check eligibility after version changes or local stop > rechecks an unfinished current-version check that appears before preview  610ms
+   ✓ model check eligibility after version changes or local stop > allows an explicit new bounded check after an updated connection version  1078ms
+   ✓ model check eligibility after version changes or local stop > allows an explicit new bounded check after a requested local stop  1052ms
+   ✓ model check eligibility after version changes or local stop > still requires remaining calls after the previous version or check stops blocking  314ms
+   ✓ model diagnostics and observed usage > keeps worker_start_failed on explicit original-check reconciliation  692ms
+   ✓ model diagnostics and observed usage > keeps original_request_missing on explicit original-check reconciliation  515ms
+   ✓ model diagnostics and observed usage > keeps provider_result_unconfirmed on explicit original-check reconciliation  427ms
+ ✓ src/features/governance/Governance.test.tsx (53 tests) 14783ms
+   ✓ governance user journey > keeps account-level AU creation available from a governed overview page without governing commands  998ms
+   ✓ governance user journey > keeps account-level AU creation available from a governed tasks page without governing commands  502ms
+   ✓ governance user journey > keeps account-level AU creation available from a governed settings page without governing commands  374ms
+   ✓ governance user journey > separates the original root from current authority and renders only server-provided actions  344ms
+   ✓ governance user journey > previews and adopts a single-principal exit procedure without activating business  565ms
+   ✓ governance user journey > configures an explicit successor principal without treating its name as authority  632ms
+   ✓ governance user journey > previews and explicitly submits acknowledge_recovery using the current server version  387ms
+   ✓ governance user journey > previews and explicitly submits activate_governance using the current server version  386ms
+   ✓ governance user journey > previews and explicitly submits renew_governance using the current server version  334ms
+   ✓ governance user journey > previews and explicitly submits recover_governance using the current server version  340ms
+   ✓ governance user journey > previews and explicitly submits exit_governance using the current server version  321ms
+   ✓ governance user journey > nominates another core identity and offers explicit cancellation of an existing nomination  315ms
+   ✓ controlled responsibility forms > appoints a human member with separate generated member and responsibility IDs  300ms
+   ✓ governance command recovery boundaries > retains the original request when identity verification fails with 401/undefined after a successful POST  307ms
+   ✓ governance command recovery boundaries > keeps an unknown action local and lets a different work proceed with its own request  443ms
+
+ Test Files  18 passed (18)
+      Tests  192 passed (192)
+   Start at  15:37:13
+   Duration  19.27s (transform 2.48s, setup 7.81s, collect 15.62s, tests 60.06s, environment 26.04s, prepare 4.20s)
+
+
+> union@0.0.0 build:console
+> npm run build --workspace @union/console
+
+
+> @union/console@0.1.0 build
+> tsc --noEmit && vite build
+
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 2043 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.74 kB │ gzip:   0.51 kB
+dist/assets/index-DyiaVZUg.css   49.96 kB │ gzip:  11.02 kB
+dist/assets/index-bIO58o2E.js   522.03 kB │ gzip: 161.04 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 3.71s

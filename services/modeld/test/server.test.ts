@@ -56,7 +56,8 @@ test('cancel and grant revocation fence late tool results without claiming remot
   await call('POST','/v1/grants/grant-a/revoke',{revision:1},'admin');
   finish();
   const row = await terminal(call);
-  expect(row.state).toBe('interrupted'); expect(row.result).toBeNull();
+  expect(row.state).toBe('interrupted'); expect(row.action_authorized).toBe(false);
+  expect(row.result).toEqual({ message: { role: 'assistant', tool_calls: [{ id: 'late' }] } });
   expect(s.journal.events(input.id,input.au_id,0).some(e=>e.type==='text_delta')).toBe(true);
   expect((await call('POST','/v1/requests',{...input,id:'run-b',run_id:'run-b'})).status).toBe(403);
 });

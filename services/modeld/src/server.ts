@@ -2,12 +2,14 @@ import { Database } from 'bun:sqlite';
 import { mkdirSync, chmodSync } from 'node:fs';
 import { join } from 'node:path';
 import { Journal, Rejected, requireValue, equalSecret, identifier, type InferenceInput } from './journal';
+import { uuid, validateAPIRegistration, type APIAccount } from './api-accounts';
 
 export interface InferenceKernel {
   accounts(): Promise<unknown[]>;
   models(account: string): Promise<unknown[]>;
   connect(): Promise<{ attempt: any; complete: () => Promise<unknown> }>;
   infer(account: string, input: InferenceInput, signal: AbortSignal, event: (type: string, value: unknown) => void): Promise<unknown>;
+  inferAPI?(account: APIAccount, input: InferenceInput, signal: AbortSignal, event: (type: string, value: unknown) => void): Promise<unknown>;
   close(): Promise<void>;
 }
 
@@ -53,16 +55,22 @@ export async function startService(options: {
     const timer = input.deadlines.task_ms === null ? null : setTimeout(() => controller.abort(), input.deadlines.task_ms);
     track((async () => {
       try {
-        const result = await kernel.infer(grant.account_ref, input, controller.signal, (type, value) => {
-          journal.authorize(input);
-          journal.event(row.id, type, value);
-        });
-        journal.authorize(input);
-        if (controller.signal.aborted) throw new Error('interrupted');
-        journal.finish(row.id, 'completed', result);
-      } catch {
+        const account = journal.apiAccount(grant.account_ref);
+        const event = (type: string, value: unknown) => journal.event(row.id, type, value);
+        let result: unknown;
+        if (account) {
+          requireValue(account.au_id === input.au_id && account.grant_ref === input.grant_ref &&
+            account.grant_revision === input.grant_revision && account.model_id === input.model_id, 'api_account_scope_mismatch', 403);
+          requireValue(kernel.inferAPI, 'api_profile_unavailable', 503);
+          result = await kernel.inferAPI(account, input, controller.signal, event);
+        } else result = await kernel.infer(grant.account_ref, input, controller.signal, event);
+        let authorized = !controller.signal.aborted;
+        try { journal.authorize(input); } catch { authorized = false; }
+        journal.finish(row.id, authorized ? 'completed' : 'interrupted', result,
+          authorized ? null : 'result_observed_after_interruption');
+      } catch (error) {
         // Once dispatch starts, errors must not imply a free/cancelled remote request.
-        journal.finish(row.id, 'interrupted', null, 'provider_result_unconfirmed');
+        journal.finish(row.id, 'interrupted', null, error instanceof Rejected ? error.code : 'provider_result_unconfirmed');
       } finally {
         if (timer) clearTimeout(timer);
         active.delete(row.id); queueMicrotask(pump);
@@ -72,10 +80,11 @@ export async function startService(options: {
   const json = (value: unknown, status = 200) => Response.json(value, { status,
     headers: { 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' } });
   const publicRequest = (row: ReturnType<Journal['get']>) => {
-    if (row.state === 'completed') journal.authorize(JSON.parse(row.payload));
-    return { id: row.id, au_id: row.au_id,
+    let actionAuthorized = !row.cancel_requested && !['failed','interrupted'].includes(row.state);
+    try { journal.authorize(JSON.parse(row.payload)); } catch { actionAuthorized = false; }
+    return { id: row.id, au_id: row.au_id, request_digest: row.digest, action_authorized: actionAuthorized,
     state: row.state, created_at: row.created_at, cancel_requested: !!row.cancel_requested,
-    result: row.state === 'completed' && row.result ? JSON.parse(row.result) : null, error: row.error };
+    result: row.result ? JSON.parse(row.result) : null, error: row.error };
   };
   const server = Bun.serve({ hostname: '127.0.0.1', port: options.port ?? 4098,
     maxRequestBodySize: 8 * 1024 * 1024, idleTimeout: 30,
@@ -88,12 +97,24 @@ export async function startService(options: {
         requireValue(admin || worker, 'unauthorized', 401);
         requireValue(!stopping, 'service_stopping', 503);
         if (method === 'GET' && path === '/v1/runtime') return json({ protocol_version: 1,
-          upstream: options.upstream, inference: 'single_native_stream', queue: 'persistent_serial', real_model_calls: 'not_inferred' });
-        const adminPath = /^\/v1\/(accounts|auth|grants)(\/|$)/.test(path);
+          upstream: options.upstream, inference: 'single_native_stream', queue: 'persistent_serial', real_model_calls: 'not_inferred',
+          profiles: ['modeld_grant', ...(kernel.inferAPI ? ['openai_compatible'] : [])] });
+        const adminPath = /^\/v1\/(accounts|auth|grants|api-connections)(\/|$)/.test(path);
         requireValue(adminPath ? admin : worker, 'role_forbidden', 403);
+        if (method === 'POST' && path === '/v1/api-connections')
+          return json(journal.registerAPI(validateAPIRegistration(await request.json())), 201);
+        const registration = path.match(/^\/v1\/api-connections\/([^/]+)$/);
+        if (method === 'GET' && registration) {
+          const au = url.searchParams.get('au_id'), principal = url.searchParams.get('principal_id');
+          identifier(registration[1]); identifier(au); uuid(principal);
+          return json(journal.apiConnection(registration[1], au, principal));
+        }
         if (method === 'GET' && path === '/v1/accounts') return json({ accounts: await kernel.accounts() });
         const models = path.match(/^\/v1\/accounts\/([^/]+)\/models$/);
-        if (method === 'GET' && models) { identifier(models[1]); return json({ models: await kernel.models(models[1]) }); }
+        if (method === 'GET' && models) {
+          identifier(models[1]); requireValue(!journal.isAPIAccount(models[1]), 'api_account_not_host_account', 403);
+          return json({ models: await kernel.models(models[1]) });
+        }
         const auth = path.match(/^\/v1\/auth\/([^/]+)$/);
         if (auth) {
           identifier(auth[1]);
@@ -117,6 +138,8 @@ export async function startService(options: {
         if (method === 'POST' && path === '/v1/grants') {
           const input = await request.json() as any;
           requireValue(input && Object.keys(input).sort().join() === 'account_ref,au_id,id,model_ids', 'invalid_grant');
+          identifier(input.account_ref);
+          requireValue(!journal.isAPIAccount(input.account_ref), 'api_account_not_host_account', 403);
           requireValue((await kernel.accounts() as any[]).some(a => a.id === input.account_ref), 'account_unavailable', 403);
           const models = await kernel.models(input.account_ref) as any[];
           requireValue(Array.isArray(input.model_ids) && input.model_ids.every((id: string) => models.some(m => m.id === id)), 'model_unavailable', 403);

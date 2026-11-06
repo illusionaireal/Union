@@ -1,0 +1,13 @@
+{
+  "returncode": 0,
+  "elapsed_s": 6.689,
+  "command": [
+    "<BUN>",
+    "test",
+    "--timeout",
+    "30000",
+    "services\\modeld\\test\\secret-boundaries.test.ts",
+    "services\\modeld\\test\\api-kernel.test.ts"
+  ],
+  "log": ".union\\s02-finish\\modeld-raw-delta-rereview-tests.log"
+}

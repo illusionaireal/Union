@@ -20,8 +20,15 @@ import { PageStats } from '../components/SetupGuide';
 import { CommandButton } from '../features/commands/CommandProvider';
 import { DetailLink } from '../features/details/Details';
 import { FailureNotice } from '../components/FailureNotice';
+import CoreModels from '../features/models/CoreModels';
 
 export default function Models() {
+  const { core, data, session, orgId } = useWorkspace();
+  const coreMode = !!core || session?.organizations.find((item) => item.id === orgId)?.profile === 'core_v1' || (!data && session?.role === 'core');
+  return coreMode ? <CoreModels /> : <LegacyModels />;
+}
+
+function LegacyModels() {
   const { data: d, session, orgId, connected } = useWorkspace();
   const { search } = useLocation();
   const board = session?.role === 'board',

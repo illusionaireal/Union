@@ -3,15 +3,15 @@
   "taskId": "U-072",
   "taskIntentRef": "docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/task-intent-draft.json",
   "baselineRefs": [
-    "management/project.json",
-    "specs/053-union-rewrite/tasks.md",
-    "specs/053-union-rewrite/s02-contract.md"
+    "specs/053-union-rewrite/s02-contract.md",
+    "docs/decisions/0005-au-runtime-boundaries.md",
+    "docs/decisions/0006-charter-policy-adoption.md"
   ],
-  "scopeStatus": "最新用户反馈覆盖 12 张卡片可读性；只改文案，父任务仍为完整 S02，未来卡未实施",
-  "compatStatus": "基点 4c49d5dc82955b157be622bbe6cc6109147224c2，rewrite/charter-v1；原状态、负责人、依赖、历史、验收及 6/6 WIP 保持；134 份预存文件哈希不变，2 份任务外变化保留",
-  "retirementStatus": "技术原文移至同一 tasks.md 的开发附录；没有删除实现、迁移数据或建立第二份任务账本",
+  "scopeStatus": "完整S02仍为目标；工程检查点通过，真实profile未完成，不以部分工作关闭整卡",
+  "compatStatus": "AU1/2/3、modeld0/1显式采用及受支持发布拒绝已验；原真实失败身份/请求/用量在安装重启后保持",
+  "retirementStatus": "原Engine/Harness/Chat/Go有实际调用者和回归，保留至对应V1用例迁出；无双派发、无新循环、无读取迁移",
   "newRiskSignals": [
-    "S02 原工程和真实出口尚未闭合；scripts/union-board-mcp.mjs 与 tests/union-board.test.mjs 出现任务外变化，不纳入本次提交"
+    "所选Codex配置认证失败；待用户修复连接及新增两次推理范围"
   ],
-  "decision": "continue"
+  "decision": "blocked"
 }

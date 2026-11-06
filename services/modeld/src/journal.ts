@@ -1,7 +1,8 @@
 import { Database } from 'bun:sqlite';
-import { createHash, timingSafeEqual } from 'node:crypto';
+import { createHash, randomUUID, timingSafeEqual } from 'node:crypto';
 import { chmodSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
+import type { APIAccount, APIConnectionReceipt, APIRegistration } from './api-accounts';
 
 export type RequestState = 'queued' | 'connecting' | 'streaming' | 'completed' | 'failed' | 'interrupted';
 export class Rejected extends Error {
@@ -46,10 +47,19 @@ export class Journal {
     mkdirSync(directory, { recursive: true, mode: 0o700 });
     const path = join(directory, 'modeld.sqlite3');
     this.db = new Database(path, { create: true, strict: true });
+    try {
+      requireValue([0, 1].includes(this.schemaVersion()), 'unsupported_modeld_schema', 409);
+      if (this.schemaVersion() === 1) requireValue(
+        (this.db.query('PRAGMA table_info(api_connections)').all() as { name: string }[]).some(x => x.name === 'options'),
+        'incomplete_modeld_schema', 409);
+    } catch (error) { this.db.close(); throw error; }
     chmodSync(path, 0o600);
     this.db.exec(`PRAGMA journal_mode=WAL; PRAGMA synchronous=FULL; PRAGMA foreign_keys=ON;
       CREATE TABLE IF NOT EXISTS grants(id TEXT PRIMARY KEY, au_id TEXT NOT NULL, account_ref TEXT NOT NULL,
         model_ids TEXT NOT NULL, revision INTEGER NOT NULL, revoked_at TEXT);
+      CREATE TABLE IF NOT EXISTS api_connections(id TEXT PRIMARY KEY, au_id TEXT NOT NULL, principal_id TEXT NOT NULL,
+        name TEXT NOT NULL, base_url TEXT NOT NULL, api_key TEXT NOT NULL, model_id TEXT NOT NULL, digest TEXT NOT NULL,
+        account_ref TEXT NOT NULL UNIQUE, grant_ref TEXT NOT NULL UNIQUE REFERENCES grants(id), grant_revision INTEGER NOT NULL);
       CREATE TABLE IF NOT EXISTS requests(id TEXT PRIMARY KEY, au_id TEXT NOT NULL, grant_ref TEXT NOT NULL,
         grant_revision INTEGER NOT NULL, digest TEXT NOT NULL, payload TEXT NOT NULL, state TEXT NOT NULL,
         cancel_requested INTEGER NOT NULL DEFAULT 0, result TEXT, error TEXT, created_at TEXT NOT NULL);
@@ -64,6 +74,59 @@ export class Journal {
     })();
   }
   close() { this.db.close(); }
+  private schemaVersion() { return (this.db.query('PRAGMA user_version').get() as { user_version: number }).user_version; }
+  private apiOptions(id: string): Pick<APIRegistration, 'wire_api' | 'reasoning_effort'> {
+    if (this.schemaVersion() === 0) return {};
+    const row = this.db.query('SELECT options FROM api_connections WHERE id=?').get(id) as { options: string | null };
+    if (!row.options) return {};
+    const value = JSON.parse(row.options);
+    requireValue(value && Object.keys(value).every(k => ['wire_api', 'reasoning_effort'].includes(k)) &&
+      ['chat_completions','responses'].includes(value.wire_api) &&
+      (!Object.hasOwn(value, 'reasoning_effort') || value.wire_api === 'responses' &&
+        ['none','minimal','low','medium','high','xhigh','max'].includes(value.reasoning_effort)), 'invalid_api_account_options', 409);
+    return value;
+  }
+  registerAPI(input: APIRegistration): APIConnectionReceipt {
+    return this.db.transaction(() => {
+      const prior = this.db.query('SELECT digest FROM api_connections WHERE id=?').get(input.id) as { digest: string } | null;
+      if (prior) {
+        requireValue(prior.digest === digest(input), 'api_connection_id_conflict', 409);
+        return this.apiConnection(input.id, input.au_id, input.principal_id);
+      }
+      const options = input.wire_api === undefined ? null : { wire_api: input.wire_api,
+        ...(input.reasoning_effort === undefined ? {} : { reasoning_effort: input.reasoning_effort }) };
+      if (options && this.schemaVersion() === 0) {
+        // Only explicit successful registration changes persistence. The ALTER,
+        // version marker, account and grant all roll back together on failure.
+        this.db.exec('ALTER TABLE api_connections ADD COLUMN options TEXT; PRAGMA user_version=1');
+      }
+      const reference = randomUUID();
+      const grant = this.createGrant({ id: 'api-grant-' + reference, au_id: input.au_id,
+        account_ref: 'api-' + reference, model_ids: [input.model_id] });
+      this.db.query(`INSERT INTO api_connections(id,au_id,principal_id,name,base_url,api_key,model_id,digest,
+        account_ref,grant_ref,grant_revision) VALUES(?,?,?,?,?,?,?,?,?,?,?)`).run(
+        input.id, input.au_id, input.principal_id, input.name, input.base_url, input.api_key, input.model_id,
+        digest(input), grant.account_ref, grant.id, grant.revision);
+      if (options) this.db.query('UPDATE api_connections SET options=? WHERE id=?').run(JSON.stringify(options), input.id);
+      return this.apiConnection(input.id, input.au_id, input.principal_id);
+    })();
+  }
+  apiConnection(id: string, au: string, principal: string): APIConnectionReceipt {
+    const row = this.db.query(`SELECT id,au_id,principal_id,name,model_id,grant_ref,grant_revision
+      FROM api_connections WHERE id=?`).get(id) as Omit<APIConnectionReceipt, 'profile'> | null;
+    requireValue(row, 'api_connection_not_found', 404);
+    requireValue(row.au_id === au && row.principal_id === principal, 'api_connection_scope_mismatch', 403);
+    const options = this.apiOptions(id);
+    return { ...row, profile: options.wire_api === 'responses' ? 'openai_responses' : 'openai_compatible', ...options };
+  }
+  isAPIAccount(account: string): boolean {
+    return !!this.db.query('SELECT 1 FROM api_connections WHERE account_ref=?').get(account);
+  }
+  apiAccount(account: string): APIAccount | null {
+    const row = this.db.query(`SELECT id,au_id,principal_id,name,base_url,api_key,model_id,account_ref,grant_ref,grant_revision
+      FROM api_connections WHERE account_ref=?`).get(account) as APIAccount | null;
+    return row ? { ...row, ...this.apiOptions(row.id) } : null;
+  }
   grant(id: string): Grant {
     const row = this.db.query('SELECT * FROM grants WHERE id=?').get(id) as any;
     requireValue(row, 'grant_not_found', 404);
@@ -169,16 +232,27 @@ export class Journal {
   event(id: string, type: string, payload: unknown) {
     this.db.transaction(() => {
       const row = this.db.query('SELECT state,cancel_requested FROM requests WHERE id=?').get(id) as any;
-      requireValue(row && ['connecting','streaming'].includes(row.state) && !row.cancel_requested, 'attempt_no_longer_current', 409);
-      this.db.query("UPDATE requests SET state='streaming' WHERE id=?").run(id);
+      // An already-dispatched response is evidence even after local cancellation.
+      // Retaining it neither reopens the request nor authorizes a tool/action.
+      requireValue(row && ['connecting','streaming','interrupted'].includes(row.state), 'attempt_no_longer_current', 409);
+      if (row.state !== 'interrupted') this.db.query("UPDATE requests SET state='streaming' WHERE id=?").run(id);
       this.append(id, type, payload);
     })();
   }
   finish(id: string, state: 'completed' | 'failed' | 'interrupted', result: unknown, error: string | null = null) {
     this.db.transaction(() => {
-      const row = this.db.query('SELECT state,cancel_requested FROM requests WHERE id=?').get(id) as any;
+      const row = this.db.query('SELECT state,cancel_requested,result FROM requests WHERE id=?').get(id) as any;
       requireValue(row, 'request_not_found', 404);
-      if (['completed','failed','interrupted'].includes(row.state)) return;
+      if (['completed','failed','interrupted'].includes(row.state)) {
+        if (result !== null && row.state === 'interrupted') {
+          if (row.result !== null) requireValue(canonical(JSON.parse(row.result)) === canonical(result), 'result_conflict', 409);
+          else {
+            this.db.query('UPDATE requests SET result=? WHERE id=?').run(JSON.stringify(result), id);
+            this.append(id, 'late_result_observed', { action_authorized: false });
+          }
+        }
+        return;
+      }
       if (row.cancel_requested && state === 'completed') { state = 'interrupted'; error = 'cancel_requested_remote_result_unconfirmed'; }
       this.db.query('UPDATE requests SET state=?,result=?,error=? WHERE id=?')
         .run(state, result === null ? null : JSON.stringify(result), error, id);

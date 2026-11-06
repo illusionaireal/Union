@@ -73,12 +73,12 @@ Python 与 modeld 读取同一宿主 `UNION_MODELD_CONFIG`，后者默认监听 
 | 所有者 | 目标责任与依赖 | 现有落点与切换规则 |
 | --- | --- | --- |
 | 核心身份/授权/审计 | 区分账户、治理主体、成员、平台客户；绑定有效身份；授权记录有可信来源 | `identity.py`/`identity_schema.py` 签发稳定 owner/core 主体并拥有显式 auth 0/1→2 升级；普通 core 身份不授 AU、legacy 或平台权限 |
-| AU领域 | 目标、Charter、任职/Mandate、承诺、资源账、成果采用及合法状态转换；不依赖具体Runtime/Harness/SQLite | `domain/creation.py`、`governance.py`、`responsibility.py` 拥有已迁出的 V1 规则；`engine.py` 继续拥有其余 legacy 用例 |
-| 应用/组织Runtime | 命令、事件归属、Agent绑定、工作调度、可靠意图、恢复和执行所有权 | `application/creation.py`/`governance.py` 编排新用例，Console/HTTP 装配；旧 `runner.py`/`agent_protocol.py` 不取得 V1 派发权 |
+| AU领域 | 目标、Charter、任职/Mandate、承诺、资源账、成果采用及合法状态转换；不依赖具体Runtime/Harness/SQLite | `domain/creation.py`、`governance.py`、`responsibility.py`、`model_access.py`、`model_checks.py` 拥有已迁出的 V1 规则；`engine.py` 继续拥有其余 legacy 用例 |
+| 应用/组织Runtime | 命令、事件归属、Agent绑定、工作调度、可靠意图、恢复和执行所有权 | `application/creation.py`/`governance.py` 编排创建与治理，`model_access.py`/`model_checks.py` 编排有界模型检查，Console/HTTP 装配；旧 `runner.py`/`agent_protocol.py` 不取得 V1 派发权 |
 | Agent定义/绑定与Harness | 定义版本、责任身份/Work/Mandate绑定、推理工具循环、上下文和原生接续 | 已有 `HarnessExecutor` 仍依赖 Engine；S03 按下方接缝提取 SDK 驱动并注入 V1 的模型/工具/检查点能力，不能直接复用其旧授权与事务 |
 | 模型接入 | 原始请求/事件/用量、认证及单一刷新所有者，按能力返回模型结果 | `ModelServiceClient` 是已有回环 HTTP 客户端；`ModelServiceTransport` 构造 Engine，仅供 legacy。S02 工作树直接用 Client，modeld 不执行业务工具或改 AU 状态 |
 | 工具/环境适配 | 输入输出、权限、副作用、去重、取消/恢复/成果能力 | `workspace.py`等；真实绑定与章程/任职/资源相交，报告不支持，未知结果不重放 |
-| 持久化/资产适配 | 实现事务、序列化、文件与读取契约，不复制领域规则 | `adapters/core_au_store.py`/`governance_store.py` 分别拥有原创建与治理存储；一个 AU 事务关联状态、历史、命令和回执；旧 SQLite/assets 按原用例保留 |
+| 持久化/资产适配 | 实现事务、序列化、文件与读取契约，不复制领域规则 | `adapters/core_au_store.py`/`governance_store.py` 拥有创建与治理事实，`model_access_store.py` 在同一 AU 事务保存私有模型意图、原事件、资料与工具回执；旧 SQLite/assets 按原用例保留 |
 | 观察投影 | 按权限提供成果、进度、能力、unknown/partial及必要汇总 | `observation.py`、React；不能取代权威状态，读取不隐式迁移、不启动执行 |
 | 运维与独立监督 | 诊断、隔离恢复、受限监督、外部升级/备份恢复 | 复用052和既有生命周期工程；被监督执行不能静默改删自身监督记录 |
 | 平台商业层 | 客户、套餐、商业账单和可选服务 | 与AU资源账分开，S11逐调用者重绑到公开契约；不凭商业身份取得治理权 |
@@ -197,9 +197,9 @@ Runtime 管“谁负责、是否可以做、做哪项、事实如何采用”；
 | 已有边界 | 实际输入与输出 |
 | --- | --- |
 | React → 核心 | `POST /api/v1/models/commands`：`{id,organization_id,base_version,kind,data}`；返回 `{receipt}`，含 `operation_id` 或 `check_id`。受理回执不等于异步保存/推理成功；用 `GET /api/v1/models` 读取结果，用 `/receipts` 查询原命令 |
-| 核心 → modeld 注册 | admin：`POST /v1/api-connections`，`{id,au_id,principal_id,name,base_url,api_key,model_id}`；返回同原操作/主体/模型的 `grant_ref,grant_revision`。unknown 只 GET 原注册；凭据不进入 AU 命令正文 |
+| 核心 → modeld 注册 | admin：`POST /v1/api-connections`，`{id,au_id,principal_id,name,base_url,api_key,model_id}`，可显式附 `wire_api` 和仅 Responses 支持的 `reasoning_effort`；返回同原操作/主体/模型的 `grant_ref,grant_revision`。未指定协议保持 Chat；unknown 只 GET 原注册；凭据不进入 AU 命令正文 |
 | 核心 → 单次推理 | worker：`POST /v1/requests`，`{id,au_id,run_id,connection_id,connection_revision,grant_ref,grant_revision,model_id,messages,tools,generation,deadlines}`。当前 S02 `id=run_id=attempt_id`；Work/Member/用途关系由核心私有记录拥有，不臆造 modeld 已有这些字段 |
-| modeld → 核心 | `GET /v1/requests/{id}?au_id=...`：`{id,au_id,request_digest,state,action_authorized,result,error,...}`；`result` 含 `message/usage`。`/events?after=<seq>` 提供原事件；当前 S02 主要取最终 result，中断前事件用量汇总仍有缺口 |
+| modeld → 核心 | `GET /v1/requests/{id}?au_id=...`：`{id,au_id,request_digest,state,action_authorized,result,error,...}`；`result` 含 `message/usage`。`/events?after=<seq>` 提供原事件，核心按原 attempt/seq 去重并及时保存有效前缀，冲突拒绝；最终有效用量优先，金额/币种成对采用，不与累计流相加。取消、撤权、中断仍保留原事实 |
 | 核心 → 当前工具 | `read_document({document_id:check_id})`；返回 `{document_id,name,content,sha256,challenge}`。资料、参数和 tool_call_id 精确配对；不是一个接受任意路径的文件读取接口 |
 
 ### 9.2 S03 的具体改造方向（拟新增，实施前冻结）
@@ -267,4 +267,4 @@ AU 的模型次数/费用只有一份资源账。`tick` 的父预约限制本次
 | `pages/{Overview,Tasks,Artifacts,Activity,Resources}`、`features/details`；拟 V1 work/artifact API | 复用布局、筛选、纯文本和下载；新增 V1 只读投影及摘要校验，先在 U-067 展示首份成果。S04 新增反馈表单、事件采用、两版对比与显式依赖纠正 | U-067 首份可读成果；U-068 反馈后第二版，拒绝仅有反馈记录却无后续执行 |
 | `services/modeld/src/{server,journal,kernel,api-accounts}.ts` | S02 修凭据泄露、错误分类和中断用量事实；保留单次推理/凭据所有权。S06 有界队列和独立槽位，S09增 profile；不托管组织工具/业务循环 | U-072 实际 API 往返；U-070 A受阻时B继续；U-075逐 profile 真验 |
 
-下一次 S02 代码工作先按 [U-072 开发清单](../specs/053-union-rewrite/tasks.md#u-072-development)修凭据过滤、中断用量、线程启动恢复和结构化错误，再走剩余浏览器/安装/真实 profile 验收。之后才按 U-067 的冻结契约接通上面的目标链。文档完善不能关闭这些运行缺口。
+2026-11-06：S02 的凭据过滤、中断用量、线程恢复、结构化错误以及浏览器/安装检查已按 [058 工程证据](../evidence/058-s02-model-tools/README.md)验证。所选 Codex 真实请求被拒绝认证，原请求保持待核对；成功真实往返仍是 U-072 的剩余出口。显式 Responses 设置由原 Journal 同事务持久化，modeld schema 支持 0/1，AU schema 支持 1/2/3，不兼容旧候选在采用/运行前拒绝。U-067 的目标链仍须按其独立契约另行授权实施。

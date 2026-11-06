@@ -55,7 +55,7 @@ export interface PreparedAURead {
 }
 export interface GovernedAURead extends GovernanceReadFields {
   protocol: 'core.au.v1';
-  au: CoreAUBase & GovernanceAUFields;
+  au: CoreAUBase & Omit<GovernanceAUFields, 'schema_version'> & { schema_version: 2 | 3 };
 }
 export type CoreAURead = PreparedAURead | GovernedAURead;
 export interface ModelConnection {

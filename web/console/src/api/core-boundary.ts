@@ -1,7 +1,7 @@
 import type { CoreAURead, GovernedAURead, Session } from './types';
 
 export function isGovernedAU(read: CoreAURead): read is GovernedAURead {
-  return read.au.schema_version === 2 && 'access' in read;
+  return (read.au.schema_version === 2 || read.au.schema_version === 3) && 'access' in read;
 }
 
 /** Match a server-authorized projection; this does not grant any AU authority. */

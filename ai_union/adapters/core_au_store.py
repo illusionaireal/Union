@@ -40,7 +40,7 @@ class CoreAUStore:
             require(row is not None, INCOMPATIBLE)
             state = json.loads(row[0])
             require(isinstance(state, dict) and state.get("id") == au_id, INCOMPATIBLE)
-            governed = state if type(state.get("schema_version")) is int and state["schema_version"] == 2 else None
+            governed = state if type(state.get("schema_version")) is int and state["schema_version"] in (2, 3) else None
             if governed is not None:
                 from .governance_store import origin_in
                 state, _ = origin_in(cx)

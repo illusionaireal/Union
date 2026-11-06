@@ -81,3 +81,33 @@ TDD Route: Mode off / Decision strict / Authority explicit user/project request�
 | M10 交付 | 固定工具链相关/npm/Python/modeld、实际安装 schema 3 兼容；指定授权 profile 真实往返，独立身份/持久化/费用复核 |
 
 U-072/#21 仅在全部出口及指定真实 profile 通过后以 real 记录。账号/资源未落实时卡片仍未完成；受控测试不能替代真实验收。S03/S04/S06/S08/S09 分别承接任意目标、反馈、持续恢复、发布使用与其他 profile。
+
+## 2026-11-06 续接：错误、原事件用量与启动恢复
+
+本节在修复前固定原 M02/M08/M09 的字段与行为，不新增通用调度器或后台自动重试。
+
+- `operations[]`、`checks[]` 和 `attempts[]` 可附 `diagnostic: {code, next_step} | null`；原 `message` 是固定或受控领域说明。旧 schema 3 记录缺少该字段时按 null 读取，不作读时迁移。前端显示说明和下一步，不能从错误文本推断远端是否执行。
+- 安全分类至少区分 `worker_start_failed`、`model_service_unavailable`、`model_service_authentication_failed`、`provider_authentication_failed`、`model_not_found`、`provider_rate_limited`、`provider_unavailable`、`provider_request_rejected`、`provider_result_unconfirmed`、`authorization_changed`、`invalid_model_result`、`original_request_missing`。modeld 只返回固定错误代码；核心不公开供应商错误正文、HTTP 头、密钥、地址或宿主路径。未知类别降为“结果待核对”，不猜成密钥错误或零费用。
+- modeld 的原事件保持 `{request_id, seq, type, payload, created_at}`；Kernel 将所支持协议的已观测用量投影为 `type=usage`，payload 与最终 `result.usage` 使用同一组归一字段。真实 SDK 事件仍称 `native_event`，不把合成投影冒充原生事件。核心按原 attempt 查询、校验并保存递增 seq；相同 seq 不重复采用，内容冲突拒绝。已收集的原事件保存在现有私有 attempt 结果中，正常页只投影归一用量，不暴露原生内容。
+- 单次 attempt 内使用最近有效累计用量；最终 `result.usage` 的已知字段优先，不能把流中累计值与最终值相加。字段缺失仍为 null；仅明确币种和整数 minor unit 能形成已知费用，SDK 的无币种浮点 cost 不能推断为金额。用量附 `basis: result | events | unknown` 和 `observed_through_seq`，取消、撤权、中断和重启均保留已经观察到的事实。
+- 轮询期间已取得的事实应在继续等待前保存。后续事件查询失败或本地停止时，显示原执行待核对及已知用量；不重新 POST。原结果完整且当前授权有效，才可执行资料工具或采用回应。
+- 后台线程创建或启动失败，释放进程内运行登记及未启动线程引用，并把原作业记录为待核对、给出下一步；已经保存的命令回执和原 Work/attempt 标识保留。之后显式核对可继续尚未派发的原验证，重复点击不产生并行派发。正常线程结束仍由原 finally 清理。
+
+用户在本次续接中选择当前 Codex 作为真实验证来源。先核对其已授权连接及协议，再通过同一 S02 模型/工具链取证；独立开发子代理的回复不替代产品验收。若当前连接需要额外协议适配，先冻结最小接口及原生配对要求后实现，不扩大到其他供应商或自主业务。
+
+## 2026-11-06 Codex 所选 Responses 连接：编码前冻结
+
+用户已选择使用本机当前 Codex 连接。只读取该选中配置及对应 API Key，将其通过 modeld 私有管理入口登记为此验收 AU 的固定资源；不扫描其他认证库，不记录真实端点或密钥。当前选择为 `gpt-6-astra`、`wire_api=responses`、`reasoning_effort=max`。真实验收按已提出的两次推理、每次最多 512 输出 tokens 执行；不自动重试，供应商没有报告的金额保持 unknown，不声称有硬金额封顶。
+
+- modeld 的 API registration 可显式增加 `wire_api: chat_completions | responses`；仅 Responses 可增加 `reasoning_effort: none | minimal | low | medium | high | xhigh | max`。旧请求不含新字段，仍严格表示原 Chat Completions 行为；不得按地址、模型名或失败结果切换协议。协议和设置进入原 registration 摘要，同 ID 修改任何设置返回 409。
+- 原 API 账号、grant 和摘要仍由 Journal 同一事务拥有。旧记录/回执的字节语义及字段保持；新显式设置保存在该行的 nullable `options` JSON，原记录不重写。首次成功的显式协议登记才在同一事务增加列并将 modeld SQLite `user_version` 从 0 升至 1；拒绝、读取、启动和失败事务不升级。版本 1 不降回 0。代码可读 0/1，未知版本启动拒绝，先检查再恢复请求。
+- 受支持发布器的 manifest 声明 `modeld_schemas=[0,1]`。未声明的旧候选仅支持 0；安装采用、启动和回退前只读检查 modeld 私有库版本。已有版本 1 时拒绝旧候选并保留代码指针、身份、grant、未决请求和费用，不自动迁移或降级。直接绕过受支持发布器运行任意旧代码不属于此保证。此次只在隔离验收目录使用新登记，不迁移真实业务数据。
+- modeld 对 Responses 登记回执明确返回 `profile=openai_responses` 及显式设置；旧 Chat 回执形状保持。核心沿现有 `modeld_grant` 保存精确 grant/model/revision，页面无需新增通用协议配置表单；直接填写 API 的既有 profile 继续表示 Chat Completions。
+- Kernel 通过固定 SDK 的 `openai.configure(...).responses(model_id)`、显式 `providerOptions.reasoningEffort` 进入原 `inferStream`，保留原生 reasoning/encrypted/tool item 与工具回执配对。一个 attempt 只派发一个 HTTP 流，无第二套 Agent loop、协议 fallback 或自动重试。原 account/AU/model/upstream 绑定不改变。
+- 原生用量与安全错误沿本节前的共同归一合同。供应商明确的 401/403、404、429 和 5xx 分别投影为固定诊断代码；派发后失败仍不推断远端零费用。`requested_model` 与未证实的 `actual_model` 分开。
+
+验证同时包含旧 Chat/Go 正常对照、协议/设置冲突、版本 0/1 重开与回退阻断、真实 SDK Responses 回环两阶段和不重试、保密/原生/用量/授权反例，以及最终安装后的用户指定真实连接。合同冻结不代表这些出口已经通过。
+
+## 2026-11-06 工程取证与剩余出口
+
+实现、严格 TDD、独立复核、实际浏览器及隔离安装结果见 [058](../../evidence/058-s02-model-tools/README.md)。所选 Codex 连接只派发一次请求即被拒绝认证；无可采用回答、无资料工具执行，原未知用量和请求在重启后保持。直连与宿主代理的只读认证检查均为 HTTP 401。M10 成功真实往返尚未通过，本段不改变 M01–M10 或降低整卡验收条件；修复连接及新增有界调用授权后继续，不重放原 unknown attempt。

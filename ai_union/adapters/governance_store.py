@@ -43,6 +43,9 @@ def read_in(cx, state, origin):
     charter = json.loads(charter_row[0])
     rules.validate_state(state, origin, charter)
     responsibility.validate_state(state)
+    if state["schema_version"] == 3:
+        from .model_access_store import ModelAccessStore
+        ModelAccessStore.validate(cx, state)
     records = commands_in(cx, state["id"])
     charters = {row[0]: json.loads(row[1]) for row in cx.execute("SELECT version,data FROM charters")}
     _, previous = origin_in(cx)

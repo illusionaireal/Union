@@ -1,18 +1,22 @@
 {
   "schemaVersion": "aegis.schema.v0",
   "taskId": "U-072",
-  "currentTodo": "12 卡具体说明已更新并读回，完成本次文案提交；原 S02 继续保持未完成",
+  "currentTodo": "S02工程已验证；保存交付检查点并等待所选Codex连接修复，整卡仍未完成",
   "completedTodos": [
-    "12 卡改为结果、动作、演示及进度；原技术验收完整保留在现有 tasks 开发附录",
-    "线上 12 卡均 HTTP 200 写入和读回；状态、负责人、依赖及 64 项其他任务不变",
-    "管理检查 8/8、原文与链接及哈希检查通过；三处表达反馈已解决"
+    "严格TDD修复凭据原始分片、线程启动恢复、事件去重和用量；全部独立复核通过",
+    "前端192、Python579含5平台跳过、modeld88、实际浏览器66及安装86文件/190源码哈希验证通过",
+    "真实仅派发1次后被拒绝认证，直连与宿主代理只读检查均HTTP401；未派发第二次，无工具或采用回答",
+    "实际安装重启保留原AU/Work/attempt/事件及未知用量，无新增推理；不兼容schema声明拒绝",
+    "统一适配器将#21更新blocked，HTTP200读回version7；主账镜像及其他任务/原owner保持"
   ],
-  "activeSlice": "V1-card-clarity",
+  "activeSlice": "S02-finish",
   "evidenceRefs": [
-    "evidence/058-s02-model-tools/card-clarity.json",
-    "evidence/058-s02-model-tools/design-readback.md"
+    "evidence/058-s02-model-tools/README.md",
+    "evidence/058-s02-model-tools/finish/verification.json",
+    "evidence/058-s02-model-tools/finish/installed-recovery.json",
+    "evidence/058-s02-model-tools/finish/kanban-progress.json"
   ],
-  "blockedOn": "S02 仍有凭据、启动恢复、诊断和中断用量、完整浏览器与安装缺口；真实模型账号及资源范围尚未落实",
-  "nextStep": "核对本次文案提交与远端 SHA；继续原 S02 时读 U-072 开发附录，按严格 TDD 修复原有失败并补真实出口",
+  "blockedOn": "所选Codex凭据认证失败，缺有效连接及新的两次推理授权；已向用户询问，未获回复不继续消耗",
+  "nextStep": "完成当前检查点差异/保密/结构核对及精确Git交付；得到有效连接与授权后再验完整真实出口",
   "updatedAt": "2026-11-06"
 }

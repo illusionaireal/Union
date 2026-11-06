@@ -1,5 +1,7 @@
 # UNION / ai-union
 
+**2026-11-06：S02 模型接入工程检查点。** 核心模型页已支持保存连接、有限授权、只读资料工具往返、逐次用量及独立默认采用；前端、Python、modeld、66 项实际浏览器和隔离安装验证通过。用户选定 Codex 连接的真实请求被拒绝认证，成功往返仍待验收，#21 未完成。见 [058 证据与接续条件](evidence/058-s02-model-tools/README.md)。
+
 当前重写以 **[Main Chapter V1](docs/UNION_CHARTER_v1.0.md)** 为唯一项目宪章基线，来源与采用决定见[记录](docs/CHARTER_ADOPTION.md)。从[HANDOFF](HANDOFF.md)进入[PRD v1.0](docs/PRD.md)、[总体架构/ADR](docs/ARCHITECTURE.md)和[垂直切片](specs/053-union-rewrite/tasks.md)。旧规划退出当前阅读路径，Git历史保留追溯。
 
 **UNION 是围绕 AI 自主组织的核心产品、平台和契约。** AI-UNION/AU是组织概念及实例；`ai-union`是开源、独立可用的技术核心；AI-Union-Platform是通过核心公开契约提供可选服务的私有商业平台。单Agent、多成员和组合AU按目标形成，不固定业务、行业岗位或组织规模。

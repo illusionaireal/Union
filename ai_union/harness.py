@@ -13,6 +13,7 @@ from .executor import ExecutionFailure
 from .failures import issue
 from .model_api import APIExecutor, ROLE_BY_KIND, reject_saved_secrets
 from .model_service import make_transport
+from .tool_roundtrip import complete_reply, complete_tool_call
 
 
 def test_tool_connection(engine, executor):
@@ -33,11 +34,10 @@ def test_tool_connection(engine, executor):
         try:
             message, usage = executor.chat(package, messages, offered if stage == 0 else [])
             if stage == 0:
-                calls = message.get("tool_calls", [])
-                require(len(calls) == 1 and calls[0]["function"]["name"] == "connection_echo" and json.loads(calls[0]["function"]["arguments"]) == {}, "模型没有正确调用连接测试工具")
-                messages += [message, {"role": "tool", "tool_call_id": calls[0]["id"], "content": "连接校验码：" + challenge}]
+                call = complete_tool_call(message, "connection_echo", {})
+                messages += [message, {"role": "tool", "tool_call_id": call["id"], "content": "连接校验码：" + challenge}]
             else:
-                require(not message.get("tool_calls") and challenge in message.get("content", ""), "模型没有读取工具结果并继续回应")
+                complete_reply(message, challenge)
             engine.finish_connection_test(package["run_id"], {"ok": True, "stage": "tool_invoked" if stage == 0 else "tool_roundtrip"}, usage)
         except (ExecutionFailure, Rejected, OSError, ValueError) as error:
             failure = getattr(error, "failure", None) or issue("api_unexpected_tool")

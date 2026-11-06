@@ -27,7 +27,7 @@ class GovernanceService:
         state = value["au"]
         if not rules.reader_role(state, principal):
             raise CoreError("not_authorized")
-        if state["schema_version"] == 2:
+        if state["schema_version"] in (2, 3):
             clock = time.time()
             status = rules.effective_status(state, clock)
             gaps = []
@@ -117,6 +117,11 @@ class GovernanceService:
                 receipt["version"] = state["version"]
                 if schema == 1 and changed:
                     self.store.initialize(cx)
+                if changed and state["schema_version"] == 2 and "read_document" in charter["allowed_tools"]:
+                    from ..domain.model_access import initialize
+                    from ..adapters.model_access_store import ModelAccessStore
+                    initialize(state)
+                    ModelAccessStore.initialize(cx)
                 self.store.save(cx, state, charter, request, receipt, prior_policy, changed=changed)
                 return receipt
 

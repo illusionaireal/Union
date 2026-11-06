@@ -1,0 +1,24 @@
+[
+  {
+    "route": "direct",
+    "http": 401,
+    "json": true,
+    "model_count": 0,
+    "chosen_model_listed": false,
+    "auth_error_code": null,
+    "cloudflare_page": false,
+    "key_in_body": false,
+    "inference_requests": 0
+  },
+  {
+    "route": "configured_host_proxy",
+    "http": 401,
+    "json": true,
+    "model_count": 0,
+    "chosen_model_listed": false,
+    "auth_error_code": null,
+    "cloudflare_page": false,
+    "key_in_body": false,
+    "inference_requests": 0
+  }
+]

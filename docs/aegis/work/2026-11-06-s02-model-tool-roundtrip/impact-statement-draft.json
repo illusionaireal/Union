@@ -1,8 +1,8 @@
 {
   "schemaVersion": "aegis.schema.v0",
   "affectedLayers": [
-    "当前只改 12 张 V1 卡及其开发引用；原 S02 运行代码保持",
-    "后续拟议Runtime/Harness/modeld接缝，当前不实施"
+    "V1模型领域/应用/私有存储、共享有界协议、modeld单次流、React页面和发布兼容",
+    "只同步当前S02已实现边界；未来通用Runtime/Harness接缝不实施"
   ],
   "owners": [
     "codex/gpt-6/s02-2026-11-06 独占共享事务/主账/在线/Git"
@@ -12,7 +12,7 @@
     "原ID/责任/unknown与预算保留；无双派发、无读取迁移",
     "原S02变更继续保留；不提交其他任务的既有修改"
   ],
-  "compatBoundary": "保留 schema 1/2 与 legacy；schema 3 显式采用；当前提交仅含 12 卡文案、完整技术验收附录和对应记录，运行代码与无关修改保留",
+  "compatBoundary": "保留AU schema1/2与legacy，schema3显式采用；modeld schema0/1显式协议持久化与受支持发布拒绝边界。只交付本次S02归属文件，保留无关既有修改",
   "nonGoals": [
     "S03任意目标/S04反馈、其他profiles、生产迁移或部署"
   ]

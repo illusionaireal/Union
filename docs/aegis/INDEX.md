@@ -41,3 +41,5 @@ Entries are workspace records, not authoritative runtime decisions.
 | 2026-11-06 | artifact | docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/evidence-bundle-draft-S02-design-readback.json | 2026-11-06-s02-model-tool-roundtrip evidence S02-design-readback |
 | 2026-11-06 | artifact | docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/gate-input-pack.json | 2026-11-06-s02-model-tool-roundtrip gate input pack |
 | 2026-11-06 | work | docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/proof-bundle.md | 2026-11-06-s02-model-tool-roundtrip proof bundle |
+| 2026-11-06 | artifact | docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/evidence-bundle-draft-V1-card-clarity.json | 2026-11-06-s02-model-tool-roundtrip evidence V1-card-clarity |
+| 2026-11-06 | artifact | docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/evidence-bundle-draft-S02-finish.json | 2026-11-06-s02-model-tool-roundtrip evidence S02-finish |

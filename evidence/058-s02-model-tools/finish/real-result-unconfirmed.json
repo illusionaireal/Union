@@ -1,0 +1,39 @@
+{
+  "id": "640475fe-c048-445a-be1d-aa417bae068e",
+  "status": "unknown",
+  "message": "模型供应商拒绝了 API 密钥或账号认证",
+  "diagnostic": {
+    "code": "provider_authentication_failed",
+    "next_step": "检查供应商密钥及账号权限，修改连接后重新验证。"
+  },
+  "attempts": [
+    {
+      "diagnostic": {
+        "code": "provider_authentication_failed",
+        "next_step": "检查供应商密钥及账号权限，修改连接后重新验证。"
+      },
+      "id": "model-50a635fcb4aa501d8f76d61915be7a6c",
+      "purpose": "connection_check",
+      "stage": 0,
+      "state": "interrupted",
+      "usage": {
+        "account_ref": null,
+        "basis": "unknown",
+        "billing_revision": null,
+        "cache_write_tokens": null,
+        "cached_input_tokens": null,
+        "cost": null,
+        "cost_basis": "unknown",
+        "cost_minor": null,
+        "cost_status": "unknown",
+        "currency": null,
+        "input_tokens": null,
+        "observed_through_seq": 3,
+        "output_tokens": null,
+        "reasoning_tokens": null,
+        "resolved_model": null,
+        "source": "modeld"
+      }
+    }
+  ]
+}

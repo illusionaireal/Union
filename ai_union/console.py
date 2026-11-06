@@ -49,6 +49,8 @@ class Console:
             self.creation = CreationService(self)
             from .application.governance import GovernanceService
             self.governance = GovernanceService(self)
+            from .application.model_access import ModelAccessService
+            self.models = ModelAccessService(self)
             self.creation.catalog.recover()
             # Validate the whole catalog before any AU receives recovery writes.
             engines = self._legacy_engines()
@@ -61,6 +63,7 @@ class Console:
                         if receipt["status"] == "accepted":
                             receipt.update(status="unknown", message="宿主作业中断；检查原执行记录，不能据此推断远程取消。")
                             cx.execute("UPDATE commands SET receipt=? WHERE id=?", (encoded(receipt), row["id"]))
+            self.models.recover()
         except BaseException:
             self._guard.__exit__(None, None, None)
             self.closed = True
@@ -518,6 +521,7 @@ class Console:
 
     def close(self):
         if not self.closed:
+            self.models.stopping = True
             # Graceful host shutdown stops further dispatch, retaining in-flight results.
             engines = self._legacy_engines()
             for engine in engines:

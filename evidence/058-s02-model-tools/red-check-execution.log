@@ -1,0 +1,139 @@
+test_concurrent_checks_cannot_spend_the_same_two_call_reservation (tests.test_core_model_checks.CoreModelCheckTests.test_concurrent_checks_cannot_spend_the_same_two_call_reservation) ... FAIL
+test_explicit_governance_tool_and_two_call_resource_authorization_are_required (tests.test_core_model_checks.CoreModelCheckTests.test_explicit_governance_tool_and_two_call_resource_authorization_are_required) ... FAIL
+test_lost_post_receipt_queries_original_attempts_without_dispatch_replay (tests.test_core_model_checks.CoreModelCheckTests.test_lost_post_receipt_queries_original_attempts_without_dispatch_replay) ... FAIL
+test_real_document_read_returns_to_second_inference_with_complete_responsibility (tests.test_core_model_checks.CoreModelCheckTests.test_real_document_read_returns_to_second_inference_with_complete_responsibility) ... FAIL
+test_remote_grant_revocation_retains_nonzero_usage_without_second_call (tests.test_core_model_checks.CoreModelCheckTests.test_remote_grant_revocation_retains_nonzero_usage_without_second_call) ... FAIL
+test_restart_reconciles_second_attempt_and_reuses_the_original_tool_receipt (tests.test_core_model_checks.CoreModelCheckTests.test_restart_reconciles_second_attempt_and_reuses_the_original_tool_receipt) ... FAIL
+test_revocation_after_inference_preserves_usage_but_never_executes_tool (tests.test_core_model_checks.CoreModelCheckTests.test_revocation_after_inference_preserves_usage_but_never_executes_tool) ... FAIL
+test_revoked_original_result_is_accounted_but_never_returned_for_tool_execution (tests.test_model_service.ModelServiceTests.test_revoked_original_result_is_accounted_but_never_returned_for_tool_execution) ... FAIL
+
+======================================================================
+FAIL: test_concurrent_checks_cannot_spend_the_same_two_call_reservation (tests.test_core_model_checks.CoreModelCheckTests.test_concurrent_checks_cannot_spend_the_same_two_call_reservation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_model_checks.py", line 118, in test_concurrent_checks_cannot_spend_the_same_two_call_reservation
+    self.prepare_check(calls=2)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Project\Union\tests\test_core_model_checks.py", line 16, in prepare_check
+    self.allow_documents()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\Project\Union\tests\model_access_support.py", line 138, in allow_documents
+    self.success("amend_charter", {"charter": charter, "reason": "Authorize the selected read-only test material"})
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\tests\governance_support.py", line 54, in success
+    self.assertEqual(status, 200, result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 400 != 200 : {'code': 'invalid_request', 'error': '章程含不支持的 allowed_tools'}
+
+======================================================================
+FAIL: test_explicit_governance_tool_and_two_call_resource_authorization_are_required (tests.test_core_model_checks.CoreModelCheckTests.test_explicit_governance_tool_and_two_call_resource_authorization_are_required)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_model_checks.py", line 56, in test_explicit_governance_tool_and_two_call_resource_authorization_are_required
+    self.assertEqual(status, 200, value)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: 400 != 200 : {'code': 'invalid_request', 'error': '不支持的核心模型命令'}
+
+======================================================================
+FAIL: test_lost_post_receipt_queries_original_attempts_without_dispatch_replay (tests.test_core_model_checks.CoreModelCheckTests.test_lost_post_receipt_queries_original_attempts_without_dispatch_replay)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_model_checks.py", line 89, in test_lost_post_receipt_queries_original_attempts_without_dispatch_replay
+    self.prepare_check()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "D:\Project\Union\tests\test_core_model_checks.py", line 16, in prepare_check
+    self.allow_documents()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\Project\Union\tests\model_access_support.py", line 138, in allow_documents
+    self.success("amend_charter", {"charter": charter, "reason": "Authorize the selected read-only test material"})
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\tests\governance_support.py", line 54, in success
+    self.assertEqual(status, 200, result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 400 != 200 : {'code': 'invalid_request', 'error': '章程含不支持的 allowed_tools'}
+
+======================================================================
+FAIL: test_real_document_read_returns_to_second_inference_with_complete_responsibility (tests.test_core_model_checks.CoreModelCheckTests.test_real_document_read_returns_to_second_inference_with_complete_responsibility)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_model_checks.py", line 20, in test_real_document_read_returns_to_second_inference_with_complete_responsibility
+    self.prepare_check()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "D:\Project\Union\tests\test_core_model_checks.py", line 16, in prepare_check
+    self.allow_documents()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\Project\Union\tests\model_access_support.py", line 138, in allow_documents
+    self.success("amend_charter", {"charter": charter, "reason": "Authorize the selected read-only test material"})
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\tests\governance_support.py", line 54, in success
+    self.assertEqual(status, 200, result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 400 != 200 : {'code': 'invalid_request', 'error': '章程含不支持的 allowed_tools'}
+
+======================================================================
+FAIL: test_remote_grant_revocation_retains_nonzero_usage_without_second_call (tests.test_core_model_checks.CoreModelCheckTests.test_remote_grant_revocation_retains_nonzero_usage_without_second_call)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_model_checks.py", line 80, in test_remote_grant_revocation_retains_nonzero_usage_without_second_call
+    self.prepare_check()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "D:\Project\Union\tests\test_core_model_checks.py", line 16, in prepare_check
+    self.allow_documents()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\Project\Union\tests\model_access_support.py", line 138, in allow_documents
+    self.success("amend_charter", {"charter": charter, "reason": "Authorize the selected read-only test material"})
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\tests\governance_support.py", line 54, in success
+    self.assertEqual(status, 200, result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 400 != 200 : {'code': 'invalid_request', 'error': '章程含不支持的 allowed_tools'}
+
+======================================================================
+FAIL: test_restart_reconciles_second_attempt_and_reuses_the_original_tool_receipt (tests.test_core_model_checks.CoreModelCheckTests.test_restart_reconciles_second_attempt_and_reuses_the_original_tool_receipt)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_model_checks.py", line 97, in test_restart_reconciles_second_attempt_and_reuses_the_original_tool_receipt
+    self.prepare_check()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "D:\Project\Union\tests\test_core_model_checks.py", line 16, in prepare_check
+    self.allow_documents()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\Project\Union\tests\model_access_support.py", line 138, in allow_documents
+    self.success("amend_charter", {"charter": charter, "reason": "Authorize the selected read-only test material"})
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\tests\governance_support.py", line 54, in success
+    self.assertEqual(status, 200, result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 400 != 200 : {'code': 'invalid_request', 'error': '章程含不支持的 allowed_tools'}
+
+======================================================================
+FAIL: test_revocation_after_inference_preserves_usage_but_never_executes_tool (tests.test_core_model_checks.CoreModelCheckTests.test_revocation_after_inference_preserves_usage_but_never_executes_tool)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_model_checks.py", line 65, in test_revocation_after_inference_preserves_usage_but_never_executes_tool
+    self.prepare_check()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "D:\Project\Union\tests\test_core_model_checks.py", line 16, in prepare_check
+    self.allow_documents()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\Project\Union\tests\model_access_support.py", line 138, in allow_documents
+    self.success("amend_charter", {"charter": charter, "reason": "Authorize the selected read-only test material"})
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\tests\governance_support.py", line 54, in success
+    self.assertEqual(status, 200, result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 400 != 200 : {'code': 'invalid_request', 'error': '章程含不支持的 allowed_tools'}
+
+======================================================================
+FAIL: test_revoked_original_result_is_accounted_but_never_returned_for_tool_execution (tests.test_model_service.ModelServiceTests.test_revoked_original_result_is_accounted_but_never_returned_for_tool_execution)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_model_service.py", line 81, in test_revoked_original_result_is_accounted_but_never_returned_for_tool_execution
+    with self.assertRaises(ExecutionFailure) as failure:
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+AssertionError: ExecutionFailure not raised
+
+----------------------------------------------------------------------
+Ran 8 tests in 7.755s
+
+FAILED (failures=8)

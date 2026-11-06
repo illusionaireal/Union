@@ -90,6 +90,7 @@ def authority(state, charter, principal, work_id, mandate_id, clock, principals)
     require(work is not None and work["status"] == "open", "工作不存在、已停止或需要先核对交接")
     binding(state, work["responsible_binding_id"], principals)
     mandates = chain(state, mandate_id, work_id, principals)
+    require("record_memory" in mandates[-1]["actions"], "此授权未允许内部记录行动")
     appointment, member = binding(state, mandates[-1]["binding_id"], principals)
     require(member["principal_id"] == principal, "当前主体不是此授权的责任成员")
     return {"work_id": work_id, "work_version": work["version"], "binding_id": appointment["id"],
@@ -105,7 +106,7 @@ def check_attempt(state, charter, attempt, clock, principals):
 
 def apply(state, charter, kind, data, principal, clock, principals):
     """Mutate a transaction-local copy; only late evidence returns a refusal."""
-    require(state["schema_version"] == 2, "须先采用可执行的本地治理程序")
+    require(state["schema_version"] in (2, 3), "须先采用可执行的本地治理程序")
     if kind == "submit_local_result":
         attempt = state["attempts"].get(data["attempt_id"])
         if attempt is None or attempt["principal_id"] != principal:

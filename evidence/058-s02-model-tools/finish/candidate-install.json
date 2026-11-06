@@ -1,0 +1,29 @@
+{
+  "candidate": "s02-model-tools",
+  "baseline": "d5802f8672df88db447e7e0bb86c2f1a5265ad18",
+  "source": "isolated alternate index: committed baseline plus explicitly owned S02 files",
+  "archive_sha256": "071b4b8a3e0bac017c09004e8f4da05160e7f40317f171a3a0e951f22659c2be",
+  "core_schemas": {
+    "auth": 2,
+    "catalog": 1
+  },
+  "core_au_schemas": [
+    1,
+    2,
+    3
+  ],
+  "modeld_schemas": [
+    0,
+    1
+  ],
+  "verified_payload_files": 86,
+  "verified_source_hashes": 190,
+  "real_model_calls": 0,
+  "checks": [
+    "export owned sources",
+    "fresh Vite build",
+    "fresh Bun bundle",
+    "package/install hash verification",
+    "installed release tool activation with real pinned dependency/import/config preflight"
+  ]
+}

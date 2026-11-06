@@ -1,15 +1,16 @@
 {
   "schemaVersion": "aegis.schema.v0",
   "baselineRefs": [
-    "management/project.json",
-    "specs/053-union-rewrite/tasks.md",
-    "specs/053-union-rewrite/s02-contract.md"
+    "specs/053-union-rewrite/s02-contract.md",
+    "docs/decisions/0005-au-runtime-boundaries.md",
+    "docs/decisions/0006-charter-policy-adoption.md"
   ],
   "impactStatement": "docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/impact-statement-draft.json",
-  "compatPlan": "保留 schema 1/2 与 legacy；schema 3 显式采用；当前提交仅含 12 卡文案、完整技术验收附录和对应记录，运行代码与无关修改保留",
-  "retirementPlan": "技术原文移至同一 tasks.md 的开发附录；没有删除实现、迁移数据或建立第二份任务账本",
+  "compatPlan": "保留AU schema1/2与legacy，schema3显式采用；modeld schema0/1显式协议持久化与受支持发布拒绝边界。只交付本次S02归属文件，保留无关既有修改",
+  "retirementPlan": "原Engine/Harness/Chat/Go有实际调用者和回归，保留至对应V1用例迁出；无双派发、无新循环、无读取迁移",
   "evidenceBundle": [
     "docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/evidence-bundle-draft-S02-design-readback.json",
-    "docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/evidence-bundle-draft-V1-card-clarity.json"
+    "docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/evidence-bundle-draft-V1-card-clarity.json",
+    "docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/evidence-bundle-draft-S02-finish.json"
   ]
 }

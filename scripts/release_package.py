@@ -123,7 +123,8 @@ def pack(root, output, release_id):
         | (set(source_bytes) - set(tracked)))
     manifest = {'schema_version': 1, 'release_id': release_id, 'git_baseline': baseline,
                 'core_schemas': {'auth': 2, 'catalog': 1},
-                'core_au_schemas': [1, 2],
+                'core_au_schemas': [1, 2, 3],
+                'modeld_schemas': [0, 1],
                 'source_state': 'working_tree' if changed else 'committed', 'changed_sources': changed,
                 'source_hashes': source_hashes, 'upstream': json.loads(payload['services/modeld/upstream.lock.json']),
                 'toolchain': {'python_minimum': '3.11', 'node_build_required': '24.19.0', 'bun': '1.4.2'},
@@ -150,6 +151,10 @@ def validate_manifest(manifest):
     au_schemas = manifest.get('core_au_schemas', [])
     require(isinstance(au_schemas, list) and all(type(value) is int and value >= 1 for value in au_schemas)
             and len(set(au_schemas)) == len(au_schemas), 'Invalid core AU schema declaration')
+    modeld_schemas = manifest.get('modeld_schemas', [0])
+    require(isinstance(modeld_schemas, list) and modeld_schemas
+            and all(type(value) is int and value >= 0 for value in modeld_schemas)
+            and len(set(modeld_schemas)) == len(modeld_schemas), 'Invalid modeld schema declaration')
     files = manifest.get('files')
     require(isinstance(files, dict) and 1 <= len(files) <= 10000, 'Invalid release file list')
     case_names = set()
@@ -271,6 +276,7 @@ def install(archive, config):
 
 def check_core_schemas(manifest, config):
     """Read-only host compatibility at activation/run, including old manifests."""
+    check_modeld_schemas(manifest, config)
     database = config['console_state'] / 'console.sqlite3'
     if not database.exists():
         return
@@ -286,6 +292,30 @@ def check_core_schemas(manifest, config):
             check_au_schemas(database, manifest, config['console_state'])
     except (ValueError, OSError, sqlite3.Error) as error:
         raise ReleaseError('Core catalog compatibility cannot be verified; retain current code and data') from error
+
+
+def check_modeld_schemas(manifest, config):
+    """The private single-call service owns its schema; never migrate on selection."""
+    config_path = config.get('modeld_config')
+    if config_path is None or not Path(config_path).exists():
+        return  # No configured modeld state; runtime preflight still validates config.
+    try:
+        config_path = Path(config_path)
+        private = json.loads(regular(config_path))
+        state = private.get('state_directory')
+        require(isinstance(state, str) and state, 'Invalid modeld state directory')
+        database = (config_path.parent / state).resolve() / 'modeld.sqlite3'
+        if not database.exists():
+            return
+        require(database.is_file() and not linked(database)
+                and not any(linked(parent) for parent in database.parents), 'Invalid modeld database')
+        with closing(sqlite3.connect(database.as_uri() + '?mode=ro', uri=True)) as cx:
+            cx.execute('PRAGMA query_only=ON')
+            version = cx.execute('PRAGMA user_version').fetchone()[0]
+        require(version in manifest.get('modeld_schemas', [0]),
+                'Candidate modeld schema is incompatible; retain compatible code and original accounts/requests')
+    except (ValueError, OSError, sqlite3.Error) as error:
+        raise ReleaseError('Private modeld compatibility cannot be verified; retain current code and data') from error
 
 
 def check_au_schemas(database, manifest, root):

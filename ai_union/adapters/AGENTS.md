@@ -26,6 +26,10 @@
   Catalog registration remains a separate transaction; unknown never rebuilds.
 - Keep transactions explicit and handles closed. Do not claim an atomic
   transaction spanning catalog, AU databases and filesystem paths.
+- S02 schema 3 is adopted only by an explicit model command. GovernanceStore
+  remains the AU state/audit writer; `model_access_store.py` owns private
+  request bodies, selected documents and tool receipts in that same AU
+  transaction. No model credentials, implicit upgrades or duplicate facts.
 - Preserve original creation payloads/receipts and unknown recovery. Required
   tests include catalog integrity, Console, HTTP, AU contract and mechanisms;
   run the full fixed-toolchain checks before delivery.

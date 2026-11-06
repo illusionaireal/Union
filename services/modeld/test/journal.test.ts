@@ -56,8 +56,10 @@ test('cancel is an intent; a late completion cannot become executable', () => {
   const { j, input } = setup();
   j.submit(input); j.begin(input.id,input.au_id);
   j.cancel(input.id,input.au_id);
-  expect(() => j.event(input.id,'tool_call_complete',{ name: 'pay' })).toThrow('attempt_no_longer_current');
+  j.event(input.id,'tool_call_complete',{ name: 'pay' });
   j.finish(input.id,'completed',{ text: 'late' });
   expect(j.get(input.id,input.au_id).state).toBe('interrupted');
+  expect(JSON.parse(j.get(input.id,input.au_id).result!)).toEqual({ text: 'late' });
+  expect(j.events(input.id,input.au_id,0).some(e => e.type === 'tool_call_complete')).toBe(true);
   expect(j.events(input.id,input.au_id,0).find(e => e.type === 'cancel_requested')?.payload.remote_cancellation_confirmed).toBe(false);
 });

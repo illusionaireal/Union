@@ -1,0 +1,10 @@
+bun test v1.4.2 (744846f84)
+
+services\modeld\test\kernel.test.ts:
+(pass) pinned native kernel preserves account scope, refresh, tools and single-attempt HTTP boundaries [2588.75ms]
+(pass) device authorization completes and persists the selected account exactly once [1350.69ms]
+
+ 2 pass
+ 0 fail
+ 7 expect() calls
+Ran 2 tests across 1 file. [4.04s]

@@ -1,0 +1,108 @@
+.core-models {
+  min-width: 0;
+}
+.core-models .model-intro {
+  margin: 0;
+}
+.core-models .model-intro > div {
+  min-width: 0;
+  flex: 1;
+}
+.core-models .model-intro .button {
+  flex-shrink: 0;
+}
+.core-models .security-note {
+  display: block;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #365943;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.core-models .model-next-step,
+.core-models .model-usage-basis {
+  margin: 0.5rem 0 0;
+  overflow-wrap: anywhere;
+}
+.model-refresh {
+  display: flex;
+  justify-content: flex-end;
+}
+.core-models .card-heading {
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.model-address,
+.model-receipt,
+.model-checks,
+.model-form {
+  overflow-wrap: anywhere;
+}
+.model-checks table {
+  min-width: 540px;
+  width: 100%;
+  border-collapse: collapse;
+}
+.model-checks caption {
+  text-align: left;
+  font-weight: 600;
+  padding: 0.75rem 0;
+}
+.model-checks th,
+.model-checks td {
+  text-align: left;
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--line, #e4e7ed);
+}
+.model-checks .table-scroll {
+  overflow-x: auto;
+  max-width: 100%;
+}
+.model-form fieldset {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  min-width: 0;
+}
+.model-form .operation-field,
+.model-form input,
+.model-form textarea,
+.model-form select {
+  min-width: 0;
+  max-width: 100%;
+}
+.model-form .operation-footer {
+  flex-wrap: wrap;
+}
+.model-form .preview-panel {
+  overflow-wrap: anywhere;
+}
+.model-form input[type='file'] {
+  padding: 0.5rem;
+}
+.model-recovery {
+  margin-bottom: 0;
+}
+.model-receipt details,
+.model-checks details {
+  margin: 0.75rem 0;
+}
+.model-checks summary,
+.model-form summary {
+  cursor: pointer;
+}
+@media (max-width: 600px) {
+  .core-models .model-intro {
+    display: flex;
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .core-models .card-heading .button,
+  .core-models .button,
+  .model-form .button {
+    white-space: normal;
+  }
+  .model-refresh .button {
+    width: 100%;
+  }
+}

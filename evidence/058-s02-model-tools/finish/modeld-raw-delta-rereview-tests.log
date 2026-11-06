@@ -1,0 +1,59 @@
+bun test v1.4.2 (744846f84)
+
+test\secret-boundaries.test.ts:
+(pass) credential protection preserves ordinary output, original events and usage [0.08ms]
+(pass) credential protection preserves quoted-ordinary output, original events and usage [0.01ms]
+(pass) credential protection preserves safe-prefix output, original events and usage
+(pass) credential protection preserves safe-shadow-reasoning-text output, original events and usage
+(pass) plain-input is rejected before provider dispatch without exposing the credential [0.05ms]
+(pass) quoted-input is rejected before provider dispatch without exposing the credential
+(pass) quoted-native-input is rejected before provider dispatch without exposing the credential
+(pass) quoted-tool-input is rejected before provider dispatch without exposing the credential
+(pass) quoted-schema-input is rejected before provider dispatch without exposing the credential
+(pass) plain-output never reaches results or recombined public/native/raw events [0.03ms]
+(pass) quoted-output never reaches results or recombined public/native/raw events
+(pass) fragmented-text never reaches results or recombined public/native/raw events
+(pass) fragmented-quoted-text never reaches results or recombined public/native/raw events
+(pass) fragmented-reasoning never reaches results or recombined public/native/raw events
+(pass) fragmented-quoted-reasoning never reaches results or recombined public/native/raw events
+(pass) fragmented-tool never reaches results or recombined public/native/raw events
+(pass) fragmented-quoted-tool never reaches results or recombined public/native/raw events
+(pass) fragmented-unicode-tool never reaches results or recombined public/native/raw events
+(pass) quoted-raw-metadata never reaches results or recombined public/native/raw events
+(pass) shadow-reasoning-text never reaches results or recombined public/native/raw events
+(pass) shadow-reasoning-summary never reaches results or recombined public/native/raw events
+(pass) shadow-choice-refusal never reaches results or recombined public/native/raw events
+(pass) shadow-choice-reasoning-text-detail never reaches results or recombined public/native/raw events
+(pass) shadow-choice-reasoning-summary-detail never reaches results or recombined public/native/raw events
+(pass) shadow-choice-custom-tool-input never reaches results or recombined public/native/raw events
+(pass) known usage is published while credential fragments remain private, and survives cancellation [0.03ms]
+(pass) cancel-safe-partial content streams before cancellation and survives reopen [0.04ms]
+(pass) cancel-safe-prefix-id content streams before cancellation and survives reopen
+(pass) Chat refusal holds a raw credential prefix before any normalized event [2.85ms]
+(pass) Chat reasoning_text holds a raw credential prefix before any normalized event [0.74ms]
+(pass) Chat reasoning.text detail holds a raw credential prefix before any normalized event [0.89ms]
+(pass) Chat reasoning.summary detail holds a raw credential prefix before any normalized event [0.58ms]
+(pass) Chat summary detail holds a raw credential prefix before any normalized event [0.28ms]
+(pass) Chat custom tool input holds a raw credential prefix before any normalized event [0.27ms]
+(pass) Responses refusal delta holds a raw credential prefix before any normalized event [0.30ms]
+(pass) Responses reasoning delta holds a raw credential prefix before any normalized event [0.19ms]
+(pass) reasoning detail continuation keeps its identity when later fragments add metadata [0.24ms]
+(pass) reasoning details with a different id are not combined [0.19ms]
+(pass) reasoning details with a different index are not combined [0.22ms]
+(pass) reasoning details with a different format are not combined [0.10ms]
+(pass) reasoning details with a different signature are not combined [0.20ms]
+(pass) reasoning details with a different type are not combined [0.23ms]
+(pass) a different detail identity closes the previous raw prefix without delaying later safe content [0.27ms]
+(pass) an opaque detail closes the previous raw prefix without delaying later safe content [0.18ms]
+(pass) detail runs closed within one raw frame do not leave an obsolete pending prefix [0.19ms]
+(pass) function name stays atomic and cannot hold safe streaming content pending [0.23ms]
+(pass) encrypted detail stays atomic and cannot hold safe streaming content pending [0.11ms]
+(pass) encrypted data stays atomic and cannot hold safe streaming content pending [0.16ms]
+
+test\api-kernel.test.ts:
+(pass) independent API profile uses the pinned single-stream kernel over actual loopback HTTP [2266.93ms]
+
+ 49 pass
+ 0 fail
+ 94 expect() calls
+Ran 49 tests across 2 files. [6.59s]

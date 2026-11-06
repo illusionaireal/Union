@@ -1,0 +1,38 @@
+
+ RUN  v3.2.7 web/console
+
+ ✓ src/features/models/ModelsIdentity.test.tsx (11 tests) 3494ms
+   ✓ model identity, scope and input lifetime > keeps draft fields and keyboard focus through refresh and same-principal renewal  615ms
+   ✓ model identity, scope and input lifetime > retains draft while offline and never queues a command for reconnection  388ms
+   ✓ model identity, scope and input lifetime > ignores an earlier successful read arriving after a newer permission denial  361ms
+   ✓ model identity, scope and input lifetime > rejects a changed cookie identity before any command is posted  364ms
+   ✓ model identity, scope and input lifetime > does not expose a late command result to a different principal  373ms
+ ✓ src/features/models/ModelsRecovery.test.tsx (10 tests) 4035ms
+   ✓ model original-request recovery > never replays a lost save and only queries the original receipt  923ms
+   ✓ model original-request recovery > treats a concrete validation error as rejected input instead of unknown  406ms
+   ✓ model original-request recovery > keeps an unmatched response unknown without displaying another AU receipt  358ms
+   ✓ model original-request recovery > reconciles a saved unknown operation explicitly without resubmitting credentials  389ms
+   ✓ model original-request recovery > keeps other connections usable when one verification is unknown  504ms
+   ✓ model original-request recovery > allows the current governor to request local stop while governance is unavailable  373ms
+   ✓ model original-request recovery > lets an unavailable current governor disable a connection while enable and default stay unavailable  403ms
+   ✓ model original-request recovery > does not submit if the dialog is cancelled while checking current identity  319ms
+ ✓ src/features/models/Models.test.tsx (13 tests) 4751ms
+   ✓ core model access user journey > opens the core models route and navigation for a normal core governor  483ms
+   ✓ core model access user journey > saves without inference or adoption, clears the key and keeps only request identities  535ms
+   ✓ core model access user journey > grants bounded resources, reads a selected document twice and adopts independently  1219ms
+   ✓ core model access user journey > can adopt an enabled untested connection without purchasing a check  416ms
+   ✓ core model access user journey > uses only an explicitly supplied modeld grant, without listing host accounts  335ms
+   ✓ core model access user journey > keeps normal inputs after a persisted domain rejection and allows a new preview  356ms
+ ✓ src/features/models/ModelsDiagnostics.test.tsx (17 tests) 5032ms
+   ✓ model check eligibility after version changes or local stop > keeps an unstopped unknown check on the same revision blocking another check  519ms
+   ✓ model check eligibility after version changes or local stop > rechecks an unfinished current-version check that appears before preview  396ms
+   ✓ model check eligibility after version changes or local stop > allows an explicit new bounded check after an updated connection version  606ms
+   ✓ model check eligibility after version changes or local stop > allows an explicit new bounded check after a requested local stop  515ms
+   ✓ model diagnostics and observed usage > keeps worker_start_failed on explicit original-check reconciliation  430ms
+   ✓ model diagnostics and observed usage > keeps original_request_missing on explicit original-check reconciliation  411ms
+   ✓ model diagnostics and observed usage > keeps provider_result_unconfirmed on explicit original-check reconciliation  414ms
+
+ Test Files  4 passed (4)
+      Tests  51 passed (51)
+   Start at  15:32:47
+   Duration  7.69s (transform 784ms, setup 1.04s, collect 4.45s, tests 17.31s, environment 2.87s, prepare 812ms)

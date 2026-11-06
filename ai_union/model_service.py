@@ -17,6 +17,7 @@ from urllib.parse import urlencode, urlsplit
 from .engine import Engine, Rejected, encoded, identifier, now, require
 from .executor import ExecutionFailure
 from .failures import issue
+from .model_diagnostics import safe_code
 
 
 def validate_service_config(config):
@@ -86,7 +87,12 @@ class ModelServiceClient:
                 raise ServiceError('model_service_response_too_large')
             if response.status >= 300:
                 # Never forward upstream diagnostics/headers which may contain authentication material.
-                raise ServiceError('model_service_rejected', response.status)
+                try:
+                    rejected = json.loads(data)
+                    code = safe_code(rejected.get('error') if isinstance(rejected, dict) else None, 'model_service_rejected')
+                except (json.JSONDecodeError, UnicodeDecodeError):
+                    code = 'model_service_rejected'
+                raise ServiceError(code, response.status)
             return json.loads(data)
         except (OSError, http.client.HTTPException, json.JSONDecodeError):
             raise ServiceError('model_service_unavailable') from None
@@ -199,6 +205,16 @@ class ModelServiceTransport:
                     break
                 time.sleep(0.2)
             usage.update(elapsed_ms=round((time.monotonic() - started) * 1000))
+            result = remote.get('result')
+            if isinstance(result, dict):
+                if self.secret_guard:
+                    self.secret_guard(result)
+                usage.update(result.get('usage', {}))
+                from .model_billing import calculate
+                usage.update(calculate(self.config.get('billing'), usage))
+            if remote.get('action_authorized') is False:
+                raise ExecutionFailure('原模型结果仅供核对；当前授权已失效，不能执行工具或采用', unknown=False,
+                                       failure=issue('api_request_rejected'))
             if remote['state'] != 'completed':
                 raise ExecutionFailure('模型请求未完成；请查看原请求状态', unknown=remote['state'] == 'interrupted',
                                        failure=issue('api_provider_error'))
@@ -219,9 +235,6 @@ class ModelServiceTransport:
                 require(type(arguments) is dict, '工具参数必须是完整对象')
                 if self.secret_guard:
                     self.secret_guard(arguments)
-            usage.update(result.get('usage', {}))
-            from .model_billing import calculate
-            usage.update(calculate(self.config.get('billing'), usage))
             return message, usage
         except (ServiceError, Rejected, KeyError, TypeError, ValueError) as error:
             try:

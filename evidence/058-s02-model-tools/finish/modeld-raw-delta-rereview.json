@@ -1,0 +1,123 @@
+{
+  "before": {
+    "services/modeld/src/credential-content.ts": "d30084fc470dce8a1c899f042f6f785321a82d2c406bedde427dc89e2717111d",
+    "services/modeld/test/secret-boundaries.test.ts": "3ea8f10eb42b8e02e63514e5789c9a2e40318710c5a4383f76ab2fcab6d03596",
+    "services/modeld/test/fixtures/secret-boundaries-probe.ts": "d278307d0ba462f1c6577be3ded4238c38fad6f94986f38bee4d05ad2f542fb5",
+    "services/modeld/src/api-accounts.ts": "8d7242f693616b21c0073fafb3d13096e2cb61dc93c2b56c1315663b28f314d2",
+    "services/modeld/src/kernel.ts": "cac040511eed9ec6cd025f569d59ca0014d9aa9e80abf9c3f4b271dd7d1f5aa4",
+    "services/modeld/src/usage.ts": "0c84b7549421fca520565eee5b516892acb202ba6765f0733073b1bdc6bfc587"
+  },
+  "cases": {
+    "scalar_control": {
+      "returncode": 0,
+      "elapsed_s": 2.256,
+      "stderr": "",
+      "observed": {
+        "external_provider_calls": 0,
+        "fragmented-reasoning": {
+          "state": "interrupted",
+          "error": "credential_in_model_content",
+          "provider_posts": 1,
+          "input_leaks": false,
+          "output_leaks": false,
+          "result_absent": true,
+          "expected_output": false,
+          "native_events_preserved": false,
+          "usage_preserved": false
+        }
+      }
+    },
+    "masked_raw_delta": {
+      "returncode": 0,
+      "elapsed_s": 1.617,
+      "stderr": "",
+      "observed": {
+        "external_provider_calls": 0,
+        "fragmented-reasoning": {
+          "state": "interrupted",
+          "error": "credential_in_model_content",
+          "provider_posts": 1,
+          "input_leaks": false,
+          "output_leaks": false,
+          "result_absent": true,
+          "expected_output": false,
+          "native_events_preserved": false,
+          "usage_preserved": false
+        }
+      }
+    },
+    "different_detail_closes": {
+      "returncode": 0,
+      "elapsed_s": 2.129,
+      "stderr": "",
+      "observed": {
+        "external_provider_calls": 0,
+        "cancel-safe-partial": {
+          "closure_sent_before_cancel": true,
+          "safe_before_close": false,
+          "pre_close_polls": 7,
+          "state": "interrupted",
+          "error": "provider_result_unconfirmed",
+          "provider_posts": 1,
+          "input_leaks": false,
+          "output_leaks": false,
+          "result_absent": true,
+          "expected_output": false,
+          "native_events_preserved": false,
+          "usage_preserved": true,
+          "usage_before_cancel": true,
+          "unverified_content_private": false,
+          "partial_before_cancel": true,
+          "partial_after_cancel": true,
+          "reopen_preserves_events": true
+        }
+      }
+    },
+    "opaque_detail_closes": {
+      "returncode": 0,
+      "elapsed_s": 2.234,
+      "stderr": "",
+      "observed": {
+        "external_provider_calls": 0,
+        "cancel-safe-partial": {
+          "closure_sent_before_cancel": true,
+          "safe_before_close": false,
+          "pre_close_polls": 10,
+          "state": "interrupted",
+          "error": "provider_result_unconfirmed",
+          "provider_posts": 1,
+          "input_leaks": false,
+          "output_leaks": false,
+          "result_absent": true,
+          "expected_output": false,
+          "native_events_preserved": false,
+          "usage_preserved": true,
+          "usage_before_cancel": true,
+          "unverified_content_private": false,
+          "partial_before_cancel": true,
+          "partial_after_cancel": true,
+          "reopen_preserves_events": true
+        }
+      }
+    },
+    "same_frame_secret_before_close": {
+      "returncode": 0,
+      "elapsed_s": 0.085,
+      "stderr": "",
+      "observed": {
+        "detected": true,
+        "external_provider_calls": 0
+      }
+    }
+  },
+  "failures": [],
+  "after": {
+    "services/modeld/src/credential-content.ts": "d30084fc470dce8a1c899f042f6f785321a82d2c406bedde427dc89e2717111d",
+    "services/modeld/test/secret-boundaries.test.ts": "3ea8f10eb42b8e02e63514e5789c9a2e40318710c5a4383f76ab2fcab6d03596",
+    "services/modeld/test/fixtures/secret-boundaries-probe.ts": "d278307d0ba462f1c6577be3ded4238c38fad6f94986f38bee4d05ad2f542fb5",
+    "services/modeld/src/api-accounts.ts": "8d7242f693616b21c0073fafb3d13096e2cb61dc93c2b56c1315663b28f314d2",
+    "services/modeld/src/kernel.ts": "cac040511eed9ec6cd025f569d59ca0014d9aa9e80abf9c3f4b271dd7d1f5aa4",
+    "services/modeld/src/usage.ts": "0c84b7549421fca520565eee5b516892acb202ba6765f0733073b1bdc6bfc587"
+  },
+  "source_stable": true
+}

@@ -1,0 +1,14 @@
+test_explicit_protocol_adoption_blocks_old_code_selection_and_run (tests.test_modeld_release_schema.ModeldReleaseSchemaTests.test_explicit_protocol_adoption_blocks_old_code_selection_and_run) ... ok
+test_malformed_private_schema_declarations_are_rejected (tests.test_modeld_release_schema.ModeldReleaseSchemaTests.test_malformed_private_schema_declarations_are_rejected) ... ok
+test_unknown_or_corrupt_private_database_cannot_be_selected (tests.test_modeld_release_schema.ModeldReleaseSchemaTests.test_unknown_or_corrupt_private_database_cannot_be_selected) ... ok
+test_built_candidate_declares_its_actual_model_schema (tests.test_core_model_release.CoreModelReleaseTests.test_built_candidate_declares_its_actual_model_schema) ... warning: in the working copy of 'ai_union/console.py', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'scripts/release_package.py', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'web/console/src/app/Layout.tsx', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'web/console/src/pages/Models.tsx', CRLF will be replaced by LF the next time Git touches it
+ok
+test_prior_candidate_stops_at_schema_three_without_erasing_latest_state (tests.test_core_model_release.CoreModelReleaseTests.test_prior_candidate_stops_at_schema_three_without_erasing_latest_state) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 3.365s
+
+OK

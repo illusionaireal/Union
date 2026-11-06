@@ -151,6 +151,10 @@ export function readGovernanceForm(
             ),
             ...(values.get('record_memory') === 'on' ? ['record_memory'] : []),
           ],
+          allowed_tools: [
+            ...draft.read.au.charter.allowed_tools.filter((tool) => tool !== 'read_document'),
+            ...(values.get('read_document') === 'on' ? ['read_document'] : []),
+          ],
         },
       };
     case 'appoint':

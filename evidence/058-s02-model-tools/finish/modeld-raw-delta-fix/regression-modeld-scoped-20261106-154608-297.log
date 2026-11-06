@@ -1,0 +1,110 @@
+bun test v1.4.2 (744846f84)
+
+services\modeld\test\api-connections.test.ts:
+(pass) saving an API connection is atomic, durable, idempotent and independent from Go or inference [83.06ms]
+(pass) API registration accepts stable command identifiers including the full request identifier limit [74.28ms]
+(pass) registration accepts the core org AU identifier while preserving existing UUID AU compatibility [72.62ms]
+(pass) same registration ID cannot replace any secret, endpoint, identity, model or name [71.01ms]
+(pass) registration recovery requires the exact original AU and principal, with admin/worker role separation [68.01ms]
+(pass) API account is never listed or re-granted through the legacy Go account endpoints [74.50ms]
+(pass) registration replay after revocation retains the original save receipt without restoring the grant [69.82ms]
+(pass) an interrupted registration transaction leaves neither an account nor a grant [69.71ms]
+(pass) API account and fixed grant reach only the selected private inference path [77.55ms]
+(pass) registration rejects unsupported or ambiguous endpoint, header, profile, identity and key input without saving [61.41ms]
+(pass) registration never persists or returns a ordinary credential embedded in name [56.66ms]
+(pass) registration never persists or returns a ordinary credential embedded in model_id [67.45ms]
+(pass) registration never persists or returns a ordinary credential embedded in base_url [59.32ms]
+(pass) registration never persists or returns a quote credential embedded in name [70.93ms]
+(pass) registration never persists or returns a quote credential embedded in model_id [66.49ms]
+(pass) registration never persists or returns a quote credential embedded in base_url [64.51ms]
+(pass) registration never persists or returns a backslash credential embedded in name [66.99ms]
+(pass) registration never persists or returns a backslash credential embedded in model_id [69.47ms]
+(pass) registration never persists or returns a backslash credential embedded in base_url [68.43ms]
+(pass) registration never persists or returns a quote-and-backslash credential embedded in name [66.42ms]
+(pass) registration never persists or returns a quote-and-backslash credential embedded in model_id [62.32ms]
+(pass) registration never persists or returns a quote-and-backslash credential embedded in base_url [58.09ms]
+
+services\modeld\test\api-kernel.test.ts:
+(pass) independent API profile uses the pinned single-stream kernel over actual loopback HTTP [1873.42ms]
+
+services\modeld\test\journal.test.ts:
+(pass) request replay returns the original state and never requeues a sent attempt [64.69ms]
+(pass) grants bind model and AU and cannot be re-created to erase revocation [76.89ms]
+(pass) restart preserves partial events and fences an interrupted result without replay [101.86ms]
+(pass) cancel is an intent; a late completion cannot become executable [83.49ms]
+
+services\modeld\test\kernel.test.ts:
+(pass) pinned native kernel preserves account scope, refresh, tools and single-attempt HTTP boundaries [2553.13ms]
+(pass) device authorization completes and persists the selected account exactly once [1322.77ms]
+
+services\modeld\test\late-results.test.ts:
+(pass) revocation after completion preserves original AU evidence and digest but removes action authorization [83.83ms]
+(pass) revoke preserves dispatched late usage and result without making tools actionable [88.33ms]
+(pass) cancel preserves dispatched late usage and result without making tools actionable [83.75ms]
+(pass) a result observed after an interrupted terminal state is retained once without reopening execution [72.65ms]
+
+services\modeld\test\responses.test.ts:
+(pass) explicit Responses registration preserves old receipts and binds protocol/settings durably [94.52ms]
+(pass) failed protocol registration rolls back schema, account and grant together [65.83ms]
+(pass) unsupported protocol or settings are rejected without changing the private schema [61.10ms]
+(pass) unknown private schemas are rejected before interrupted request recovery writes [66.59ms]
+(pass) Responses runs the pinned HTTP stream with original native tools, usage and safe errors [1502.21ms]
+
+services\modeld\test\secret-boundaries.test.ts:
+(pass) credential protection preserves ordinary output, original events and usage [0.08ms]
+(pass) credential protection preserves quoted-ordinary output, original events and usage
+(pass) credential protection preserves safe-prefix output, original events and usage
+(pass) credential protection preserves safe-shadow-reasoning-text output, original events and usage
+(pass) plain-input is rejected before provider dispatch without exposing the credential [0.02ms]
+(pass) quoted-input is rejected before provider dispatch without exposing the credential
+(pass) quoted-native-input is rejected before provider dispatch without exposing the credential
+(pass) quoted-tool-input is rejected before provider dispatch without exposing the credential [0.01ms]
+(pass) quoted-schema-input is rejected before provider dispatch without exposing the credential
+(pass) plain-output never reaches results or recombined public/native/raw events [0.02ms]
+(pass) quoted-output never reaches results or recombined public/native/raw events
+(pass) fragmented-text never reaches results or recombined public/native/raw events
+(pass) fragmented-quoted-text never reaches results or recombined public/native/raw events
+(pass) fragmented-reasoning never reaches results or recombined public/native/raw events
+(pass) fragmented-quoted-reasoning never reaches results or recombined public/native/raw events
+(pass) fragmented-tool never reaches results or recombined public/native/raw events
+(pass) fragmented-quoted-tool never reaches results or recombined public/native/raw events
+(pass) fragmented-unicode-tool never reaches results or recombined public/native/raw events
+(pass) quoted-raw-metadata never reaches results or recombined public/native/raw events
+(pass) shadow-reasoning-text never reaches results or recombined public/native/raw events
+(pass) shadow-reasoning-summary never reaches results or recombined public/native/raw events
+(pass) shadow-choice-refusal never reaches results or recombined public/native/raw events
+(pass) shadow-choice-reasoning-text-detail never reaches results or recombined public/native/raw events
+(pass) shadow-choice-reasoning-summary-detail never reaches results or recombined public/native/raw events
+(pass) shadow-choice-custom-tool-input never reaches results or recombined public/native/raw events
+(pass) known usage is published while credential fragments remain private, and survives cancellation [0.03ms]
+(pass) cancel-safe-partial content streams before cancellation and survives reopen [0.04ms]
+(pass) cancel-safe-prefix-id content streams before cancellation and survives reopen
+(pass) Chat refusal holds a raw credential prefix before any normalized event [1.18ms]
+(pass) Chat reasoning_text holds a raw credential prefix before any normalized event [0.16ms]
+(pass) Chat reasoning.text detail holds a raw credential prefix before any normalized event [0.48ms]
+(pass) Chat reasoning.summary detail holds a raw credential prefix before any normalized event [0.20ms]
+(pass) Chat summary detail holds a raw credential prefix before any normalized event [0.18ms]
+(pass) Chat custom tool input holds a raw credential prefix before any normalized event [0.21ms]
+(pass) Responses refusal delta holds a raw credential prefix before any normalized event [0.19ms]
+(pass) Responses reasoning delta holds a raw credential prefix before any normalized event [0.16ms]
+(pass) reasoning detail continuation keeps its identity when later fragments add metadata [0.28ms]
+(pass) reasoning details with a different id are not combined [0.21ms]
+(pass) reasoning details with a different index are not combined [0.19ms]
+(pass) reasoning details with a different format are not combined [0.16ms]
+(pass) reasoning details with a different signature are not combined [0.17ms]
+(pass) reasoning details with a different type are not combined [0.19ms]
+(pass) a different detail identity closes the previous raw prefix without delaying later safe content [0.27ms]
+(pass) an opaque detail closes the previous raw prefix without delaying later safe content [0.19ms]
+(pass) detail runs closed within one raw frame do not leave an obsolete pending prefix [0.18ms]
+(pass) function name stays atomic and cannot hold safe streaming content pending [0.22ms]
+(pass) encrypted detail stays atomic and cannot hold safe streaming content pending [0.12ms]
+(pass) encrypted data stays atomic and cannot hold safe streaming content pending [0.13ms]
+
+services\modeld\test\server.test.ts:
+(pass) one accepted POST is durable, repeat lookup never starts a second inference; roles and AU are isolated [118.66ms]
+(pass) cancel and grant revocation fence late tool results without claiming remote cancellation [104.26ms]
+
+ 88 pass
+ 0 fail
+ 465 expect() calls
+Ran 88 tests across 8 files. [12.84s]

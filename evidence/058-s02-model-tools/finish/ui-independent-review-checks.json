@@ -1,0 +1,51 @@
+{
+  "before": {
+    "model.ts": "22ab4e67c7c4228c85048e45e121de497b51f0e3ac0a91567d2b983b3cabf1b3",
+    "ModelCommandForm.tsx": "aa4d06785454cb0ef6198992d6670d7362cd8c3c5c0998363d6eac27a6a5a0eb",
+    "ModelRecords.tsx": "16a1a910f3fe8862a23ac30a38e7b03456b558e2d49157d1644f7e28deb80e6e",
+    "models.css": "009a5512910fdb1dcd7386ee6cea1684d5d0f1a7acf412d6b010c4d065a4f9ed",
+    "test-fixtures.tsx": "6633f91c54676b447400ca0a8ee1c360f3eb8d231119473b779b528c0f1f8376",
+    "types.ts": "09c12dcb5cbee22e72d52fa4aadda4b24783a2de71fa5b48f94ced3d16e4aed1",
+    "ModelsDiagnostics.test.tsx": "f69e3d9d1cffedc17070a3084607682fbee07cdd0d526a6084f62fb791a1e954"
+  },
+  "checks": [
+    {
+      "name": "components",
+      "command": [
+        ".union\\tools\\node.exe",
+        "node_modules\\vitest\\vitest.mjs",
+        "run",
+        "src/features/models/Models.test.tsx",
+        "src/features/models/ModelsIdentity.test.tsx",
+        "src/features/models/ModelsRecovery.test.tsx",
+        "src/features/models/ModelsDiagnostics.test.tsx"
+      ],
+      "returncode": 0,
+      "elapsed_s": 8.487,
+      "log": ".union\\s02-finish\\ui-independent-review-components.log",
+      "output_tail": "eeps normal inputs after a persisted domain rejection and allows a new preview  356ms\n ✓ src/features/models/ModelsDiagnostics.test.tsx (17 tests) 5032ms\n   ✓ model check eligibility after version changes or local stop > keeps an unstopped unknown check on the same revision blocking another check  519ms\n   ✓ model check eligibility after version changes or local stop > rechecks an unfinished current-version check that appears before preview  396ms\n   ✓ model check eligibility after version changes or local stop > allows an explicit new bounded check after an updated connection version  606ms\n   ✓ model check eligibility after version changes or local stop > allows an explicit new bounded check after a requested local stop  515ms\n   ✓ model diagnostics and observed usage > keeps worker_start_failed on explicit original-check reconciliation  430ms\n   ✓ model diagnostics and observed usage > keeps original_request_missing on explicit original-check reconciliation  411ms\n   ✓ model diagnostics and observed usage > keeps provider_result_unconfirmed on explicit original-check reconciliation  414ms\n\n Test Files  4 passed (4)\n      Tests  51 passed (51)\n   Start at  15:32:47\n   Duration  7.69s (transform 784ms, setup 1.04s, collect 4.45s, tests 17.31s, environment 2.87s, prepare 812ms)\n\n"
+    },
+    {
+      "name": "types",
+      "command": [
+        ".union\\tools\\node.exe",
+        "node_modules\\typescript\\bin\\tsc",
+        "--noEmit"
+      ],
+      "returncode": 0,
+      "elapsed_s": 5.617,
+      "log": ".union\\s02-finish\\ui-independent-review-types.log",
+      "output_tail": ""
+    }
+  ],
+  "after": {
+    "model.ts": "22ab4e67c7c4228c85048e45e121de497b51f0e3ac0a91567d2b983b3cabf1b3",
+    "ModelCommandForm.tsx": "aa4d06785454cb0ef6198992d6670d7362cd8c3c5c0998363d6eac27a6a5a0eb",
+    "ModelRecords.tsx": "16a1a910f3fe8862a23ac30a38e7b03456b558e2d49157d1644f7e28deb80e6e",
+    "models.css": "009a5512910fdb1dcd7386ee6cea1684d5d0f1a7acf412d6b010c4d065a4f9ed",
+    "test-fixtures.tsx": "6633f91c54676b447400ca0a8ee1c360f3eb8d231119473b779b528c0f1f8376",
+    "types.ts": "09c12dcb5cbee22e72d52fa4aadda4b24783a2de71fa5b48f94ced3d16e4aed1",
+    "ModelsDiagnostics.test.tsx": "f69e3d9d1cffedc17070a3084607682fbee07cdd0d526a6084f62fb791a1e954"
+  },
+  "source_stable": true
+}

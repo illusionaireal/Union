@@ -2,11 +2,13 @@
   "schemaVersion": "aegis.schema.v0",
   "taskId": "U-072",
   "lastCheckpointRef": "docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/todo-checkpoint-draft.json",
-  "resumeInstruction": "先读最新用户反馈、主账 U-072、原 tasks 开发附录和 card-clarity 证据，再核对分支、HEAD、未提交 S02 代码及外部看板脚本变化；未来卡只改了说明",
+  "resumeInstruction": "保留原real-dispatch.private.json及失败记录，禁止重放旧driver；读058证据与所选连接回复，核对分支/HEAD/账本后接续S02，不开未来卡",
   "knownPartialWork": [
-    "12 卡改为结果、动作、演示及进度；原技术验收完整保留在现有 tasks 开发附录",
-    "线上 12 卡均 HTTP 200 写入和读回；状态、负责人、依赖及 64 项其他任务不变",
-    "管理检查 8/8、原文与链接及哈希检查通过；三处表达反馈已解决"
+    "严格TDD修复凭据原始分片、线程启动恢复、事件去重和用量；全部独立复核通过",
+    "前端192、Python579含5平台跳过、modeld88、实际浏览器66及安装86文件/190源码哈希验证通过",
+    "真实仅派发1次后被拒绝认证，直连与宿主代理只读检查均HTTP401；未派发第二次，无工具或采用回答",
+    "实际安装重启保留原AU/Work/attempt/事件及未知用量，无新增推理；不兼容schema声明拒绝",
+    "统一适配器将#21更新blocked，HTTP200读回version7；主账镜像及其他任务/原owner保持"
   ],
   "mustReadBeforeContinuing": [
     "docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/10-intent.md",
@@ -14,6 +16,6 @@
     "docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/todo-checkpoint-draft.json"
   ],
   "unsafeToAssume": [
-    "文案完成不代表 S02 或未来卡完成；两份原有未跟踪看板文件发生本任务之外的变化，不能假定全部预存文件哈希不变"
+    "工程检查和失败后的恢复通过不能证明成功真实profile；#21 blocked持续占用WIP"
   ]
 }

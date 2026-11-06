@@ -72,6 +72,17 @@ class ModelServiceTests(unittest.TestCase):
         self.assertTrue(failure.exception.unknown)
         self.assertEqual(self.service.posts,1)
 
+    def test_revoked_original_result_is_accounted_but_never_returned_for_tool_execution(self):
+        package = self.engine.begin_connection_test(self.transport.metadata)
+        original = self.service.request
+        def revoked(rid, au):
+            return original(rid, au) | {'action_authorized': False}
+        with patch.object(self.service, 'request', side_effect=revoked):
+            with self.assertRaises(ExecutionFailure) as failure:
+                self.transport.chat(package, [{'role': 'user', 'content': 'test'}], [])
+        self.assertEqual(failure.exception.usage['input_tokens'], 10)
+        self.assertEqual(self.service.posts, 1)
+
     def test_conflicting_request_is_unknown_and_never_adopts_a_different_payload(self):
         package = self.engine.begin_connection_test(self.transport.metadata)
         with patch.object(self.service,'call',side_effect=ServiceError('conflict',409)), patch.object(self.service,'request') as lookup:

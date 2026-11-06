@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "aegis.schema.v0",
+  "artifactKey": "S02-finish",
+  "type": "engineering-and-real-profile",
+  "source": "evidence/058-s02-model-tools/README.md",
+  "summary": "控制范围工程/独立复核/浏览器/安装通过；1次真实请求被拒绝认证且重启不重放，M10成功往返未完成。HTTP200同步#21 blocked/version7。",
+  "verifier": "codex/gpt-6 coordinator with independent Python, protocol, confidentiality and UI reviews",
+  "sliceId": "S02-finish",
+  "evidenceStatus": "blocked",
+  "updatedAt": "2026-11-06"
+}

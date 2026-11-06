@@ -22,7 +22,10 @@ import { LLMResponse } from '../vendor/opencode/packages/ai/src/schema/events';
 import { ToolDefinition } from '../vendor/opencode/packages/ai/src/schema/messages';
 import { requestExecutor } from '../vendor/opencode/packages/core/src/effect/app-node-platform';
 import snapshotText from '../vendor/opencode/packages/core/src/models-dev/snapshot.txt' with { type: 'text' };
-import { requireValue, type InferenceInput } from './journal';
+import { canonical, Rejected, requireValue, type InferenceInput } from './journal';
+import type { APIAccount } from './api-accounts';
+import { CredentialContent } from './credential-content';
+import { usageEvent, usageResult } from './usage';
 
 export const UPSTREAM = '805a42ffaa56b29a88baef87c7567f1ab9a40a8f';
 const integrationID = Integration.ID.make('opencode');
@@ -36,6 +39,11 @@ const packages: Record<string, () => Promise<any>> = {
   '@opencode/ai/providers/anthropic': () => import('../vendor/opencode/packages/ai/src/providers/anthropic'),
   '@opencode/ai/providers/google': () => import('../vendor/opencode/packages/ai/src/providers/google'),
 };
+
+function toolInput(value: unknown): unknown {
+  requireValue(typeof value === 'string', 'unsupported_tool_call_arguments');
+  try { return JSON.parse(value); } catch { throw new Rejected(400, 'unsupported_tool_call_arguments'); }
+}
 
 function editorAdapter(editor: Provider.Editor): any {
   return { list: editor.list, add: editor.add,
@@ -185,30 +193,96 @@ export class Kernel {
         return packages[specifier]();
       }, catch: cause => new Provider.LoadError({ package: specifier, cause }) }) }));
     const secret = context.credential.type === 'oauth' ? context.credential.access : context.credential.key;
-    const guard = (value: unknown) => requireValue(!secret || !JSON.stringify(value).includes(secret), 'credential_in_model_content', 403);
+    return this.inferStream({ accountID, model, resolvedModel: selected.modelID ?? selected.id, secret,
+      unauthorized: () => fetchConfig(this.http, context.credential).pipe(Effect.catch(error => {
+        event('account_status', { state: connectionStatus(error) ? 'needs_auth' : 'unavailable' });
+        return Effect.void;
+      }), Effect.asVoid) }, input, signal, event);
+  }
+  async inferAPI(account: APIAccount, input: InferenceInput, signal: AbortSignal, event: (type: string, value: unknown) => void) {
+    requireValue(account.au_id === input.au_id && account.model_id === input.model_id &&
+      account.grant_ref === input.grant_ref && account.grant_revision === input.grant_revision, 'api_account_scope_mismatch', 403);
+    requireValue(account.wire_api === undefined || ['chat_completions','responses'].includes(account.wire_api), 'unsupported_wire_api');
+    const responses = account.wire_api === 'responses';
+    const provider = await packages[responses ? '@opencode/ai/providers/openai' : '@opencode/ai/providers/openai-compatible']();
+    const configured = provider.configure({ baseURL: account.base_url, apiKey: account.api_key,
+      ...(responses && account.reasoning_effort ? { providerOptions: { reasoningEffort: account.reasoning_effort } } : {}) });
+    const model = responses ? configured.responses(account.model_id) : configured.model(account.model_id);
+    return this.inferStream({ accountID: account.account_ref, model, resolvedModel: account.model_id,
+      secret: account.api_key }, input, signal, event);
+  }
+  private async inferStream(selection: { accountID: string; model: any; resolvedModel: string; secret: string;
+    unauthorized?: () => any }, input: InferenceInput, signal: AbortSignal, event: (type: string, value: unknown) => void) {
+    const { accountID, model, secret } = selection;
+    const content = new CredentialContent(secret);
+    const guard = (value: unknown) => requireValue(!content.contains(value), 'credential_in_model_content', 403);
     guard(input);
     const toolNames = new Map<string,string>();
     const messages = input.messages.map((raw: any) => {
+      requireValue(raw && typeof raw === 'object' && ['system','user','assistant','tool'].includes(raw.role) &&
+        Object.keys(raw).every(k => ['role','content','tool_calls','tool_call_id','name','_native'].includes(k)), 'unsupported_message_fields');
+      requireValue(!raw._native || raw.role === 'assistant', 'unsupported_native_role');
+      requireValue(raw.tool_calls === undefined || raw.role === 'assistant' && Array.isArray(raw.tool_calls), 'unsupported_tool_call');
+      for (const call of raw.tool_calls ?? []) requireValue(call && call.type === 'function' &&
+        Object.keys(call).every(k => ['id','type','function'].includes(k)) && typeof call.id === 'string' && call.id.length > 0 &&
+        call.function && Object.keys(call.function).every(k => ['name','arguments'].includes(k)) &&
+        typeof call.function.name === 'string' && call.function.name.length > 0 && typeof call.function.arguments === 'string',
+        'unsupported_tool_call');
       if (raw.role === 'assistant' && raw._native) {
         requireValue(raw._native.au_id === input.au_id && raw._native.account_ref === accountID && raw._native.model_id === input.model_id && raw._native.upstream === UPSTREAM,
           'native_context_scope_mismatch', 409);
-        for (const call of raw.tool_calls ?? []) toolNames.set(call.id, call.function.name);
+        requireValue(raw._native.message?.role === 'assistant' && Array.isArray(raw._native.message.content), 'unsupported_native_content');
+        for (const part of raw._native.message.content) {
+          requireValue(part && ['text','reasoning','tool-call'].includes(part.type), 'unsupported_native_content');
+          requireValue(!part.providerExecuted, 'hosted_tools_forbidden', 403);
+        }
+        const nativeCalls = raw._native.message.content.filter((part: any) => part.type === 'tool-call');
+        const calls = raw.tool_calls ?? [];
+        requireValue(Array.isArray(calls) && calls.length === nativeCalls.length && calls.every((call: any, index: number) =>
+          call && call.id === nativeCalls[index].id && call.function?.name === nativeCalls[index].name &&
+          canonical(toolInput(call.function.arguments)) === canonical(nativeCalls[index].input)), 'native_tool_calls_mismatch', 409);
+        for (const call of nativeCalls) toolNames.set(call.id, call.name);
         return raw._native.message;
       }
-      if (raw.role === 'tool') return { role: 'tool', content: [{ type: 'tool-result', id: raw.tool_call_id,
-        name: toolNames.get(raw.tool_call_id) ?? raw.name, result: { type: 'text', value: raw.content } }] };
+      if (raw.role === 'tool') {
+        requireValue(typeof raw.content === 'string' && typeof raw.tool_call_id === 'string', 'unsupported_tool_result');
+        const name = toolNames.get(raw.tool_call_id);
+        requireValue(name && (raw.name === undefined || raw.name === name), 'tool_result_pair_mismatch', 409);
+        toolNames.delete(raw.tool_call_id);
+        return { role: 'tool', content: [{ type: 'tool-result', id: raw.tool_call_id,
+          name, result: { type: 'text', value: raw.content } }] };
+      }
       requireValue(raw.content == null || typeof raw.content === 'string' || Array.isArray(raw.content) && raw.content.every((p: any) => p.type === 'text' && typeof p.text === 'string'),
         'unsupported_message_content');
-      const content: any[] = typeof raw.content === 'string' ? [{ type: 'text', text: raw.content }] : raw.content ?? [];
+      const content: any[] = typeof raw.content === 'string' ? [{ type: 'text', text: raw.content }] : [...raw.content ?? []];
       for (const call of raw.tool_calls ?? []) {
+        requireValue(raw.role === 'assistant' && call && typeof call.id === 'string' &&
+          typeof call.function?.name === 'string', 'unsupported_tool_call');
         toolNames.set(call.id,call.function.name);
-        content.push({ type: 'tool-call', id: call.id, name: call.function.name, input: JSON.parse(call.function.arguments) });
+        content.push({ type: 'tool-call', id: call.id, name: call.function.name, input: toolInput(call.function.arguments) });
       }
       return { role: raw.role, content };
     });
-    const tools = input.tools.map((raw: any) => ToolDefinition.make({ name: raw.function.name,
-      description: raw.function.description ?? '', inputSchema: raw.function.parameters }));
+    const tools = input.tools.map((raw: any) => {
+      requireValue(raw && raw.type === 'function' && raw.function && Object.keys(raw).every(k => ['type','function'].includes(k)) &&
+        Object.keys(raw.function).every(k => ['name','description','parameters'].includes(k)) &&
+        typeof raw.function.name === 'string' && raw.function.name.length > 0 &&
+        (raw.function.description === undefined || typeof raw.function.description === 'string') &&
+        raw.function.parameters && typeof raw.function.parameters === 'object' && !Array.isArray(raw.function.parameters), 'unsupported_tool_definition');
+      return ToolDefinition.make({ name: raw.function.name,
+        description: raw.function.description ?? '', inputSchema: raw.function.parameters });
+    });
+    guard({ messages, tools });
     const events: any[] = [];
+    const pending: any[] = [];
+    let credentialRejected = false, lastUsage = '', responseFailure: string | undefined;
+    const publish = () => {
+      for (const item of pending.splice(0)) {
+        event('native_event', item);
+        if (item.type === 'text-delta') event('text_delta', { text: item.text });
+        if (item.type === 'tool-call') event('tool_call_complete', { id: item.id, name: item.name });
+      }
+    };
     const firstEvent = new AbortController();
     const firstTimer = setTimeout(() => firstEvent.abort(), input.deadlines.first_event_ms);
     const streamSignal = AbortSignal.any([signal, firstEvent.signal]);
@@ -217,31 +291,47 @@ export class Kernel {
       http: { timeout: false, headerTimeout: input.deadlines.first_event_ms,
         chunkTimeout: input.deadlines.idle_ms, headers: { 'x-opencode-session': input.au_id + ':' + input.run_id } } }, { signal: streamSignal,
         http: (request, next) => next(request).pipe(Effect.tap(response => {
+          if (response.status < 200 || response.status >= 300) responseFailure =
+            [401, 403].includes(response.status) ? 'provider_authentication_failed' :
+            response.status === 404 ? 'model_not_found' : response.status === 429 ? 'provider_rate_limited' :
+            response.status >= 500 ? 'provider_unavailable' : 'provider_request_rejected';
           if (response.status !== 401 && response.status !== 403) return Effect.void;
-          return fetchConfig(this.http, context.credential).pipe(Effect.catch(error => {
-            event('account_status', { state: connectionStatus(error) ? 'needs_auth' : 'unavailable' });
-            return Effect.void;
-          }), Effect.asVoid);
+          return selection.unauthorized?.() ?? Effect.void;
         })) })) {
       if (item.type !== 'step-start') clearTimeout(firstTimer);
-      guard(item); events.push(item);
-      event('native_event', item);
-      if (item.type === 'text-delta') event('text_delta', { text: item.text });
-      if (item.type === 'tool-call') {
-        requireValue(!item.providerExecuted, 'hosted_tools_forbidden', 403);
-        event('tool_call_complete', { id: item.id, name: item.name });
+      const observedUsage = usageEvent(selection, item);
+      if (observedUsage && !content.contains(observedUsage) && canonical(observedUsage) !== lastUsage) {
+        event('usage', observedUsage); lastUsage = canonical(observedUsage);
       }
-    } } finally { clearTimeout(firstTimer); }
+      if (content.observe(item)) {
+        credentialRejected = true;
+        throw new Rejected(403, 'credential_in_model_content');
+      }
+      if (item.type === 'tool-call') requireValue(!item.providerExecuted, 'hosted_tools_forbidden', 403);
+      events.push(item); pending.push(item);
+      if (!content.pending) publish();
+    } } catch (error) {
+      // The stream ended without completing a credential. Preserve safe partial
+      // evidence on cancellation/errors; a rejected credential stays private.
+      if (!credentialRejected) publish();
+      if (responseFailure && !(error instanceof Rejected)) throw new Rejected(502, responseFailure);
+      throw error;
+    } finally { clearTimeout(firstTimer); }
     const response = LLMResponse.fromEvents(events);
-    requireValue(response && ['stop','tool-calls'].includes(response.finishReason.normalized), 'incomplete_model_result');
+    guard({ response, text: response?.text, reasoning: response?.reasoning });
+    // End-of-stream closes possible prefixes. Safe partial facts still belong
+    // to the original request even if the final result is incomplete.
+    publish();
+    requireValue(response && ['stop','tool-calls'].includes(response.finishReason.normalized) &&
+      !events.some(item => item.type === 'tool-input-error') &&
+      (response.finishReason.normalized !== 'tool-calls' || response.toolCalls.length > 0), 'incomplete_model_result');
+    requireValue(response.message.content.every(part => ['text','reasoning','tool-call'].includes(part.type)), 'unsupported_model_content');
     const calls = response.toolCalls.map(call => ({ id: call.id, type: 'function',
       function: { name: call.name, arguments: JSON.stringify(call.input) } }));
-    const usage = response.usage;
-    return { message: { role: 'assistant', content: response.text, ...(calls.length ? { tool_calls: calls } : {}),
+    const result = { message: { role: 'assistant', content: response.text, ...(calls.length ? { tool_calls: calls } : {}),
       _native: { upstream: UPSTREAM, au_id: input.au_id, account_ref: accountID, model_id: input.model_id, message: response.message } },
-      usage: { account_ref: accountID, resolved_model: selected.modelID ?? selected.id, actual_model: null,
-        input_tokens: usage?.inputTokens ?? null, output_tokens: usage?.outputTokens ?? null,
-        cached_input_tokens: usage?.cacheReadInputTokens ?? null, cache_write_tokens: usage?.cacheWriteInputTokens ?? null,
-        reasoning_tokens: usage?.reasoningTokens ?? null, modeld_usage: usage ?? null } };
+      usage: usageResult(selection, response.usage) };
+    guard(result); publish();
+    return result;
   }
 }

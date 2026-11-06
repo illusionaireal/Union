@@ -1,0 +1,101 @@
+test_adoption_and_disable_do_not_call_model_or_reuse_old_verification (tests.test_core_models.CoreModelConfigurationTests.test_adoption_and_disable_do_not_call_model_or_reuse_old_verification) ... FAIL
+test_api_secret_never_enters_au_and_original_save_is_idempotent (tests.test_core_models.CoreModelConfigurationTests.test_api_secret_never_enters_au_and_original_save_is_idempotent) ... FAIL
+test_core_governor_saves_without_inference_and_reopens_same_connection (tests.test_core_models.CoreModelConfigurationTests.test_core_governor_saves_without_inference_and_reopens_same_connection) ... FAIL
+test_lost_save_is_reconciled_by_original_registration_without_another_post (tests.test_core_models.CoreModelConfigurationTests.test_lost_save_is_reconciled_by_original_registration_without_another_post) ... FAIL
+test_model_configuration_failure_rolls_back_schema_and_original_governance (tests.test_core_models.CoreModelConfigurationTests.test_model_configuration_failure_rolls_back_schema_and_original_governance) ... FAIL
+test_ordinary_core_participant_can_configure_own_au_without_platform_role (tests.test_core_models.CoreModelConfigurationTests.test_ordinary_core_participant_can_configure_own_au_without_platform_role) ... FAIL
+test_outsider_cross_au_grant_and_stale_version_cannot_save (tests.test_core_models.CoreModelConfigurationTests.test_outsider_cross_au_grant_and_stale_version_cannot_save) ... FAIL
+
+======================================================================
+FAIL: test_adoption_and_disable_do_not_call_model_or_reuse_old_verification (tests.test_core_models.CoreModelConfigurationTests.test_adoption_and_disable_do_not_call_model_or_reuse_old_verification)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_models.py", line 83, in test_adoption_and_disable_do_not_call_model_or_reuse_old_verification
+    self.saved()
+    ~~~~~~~~~~^^
+  File "D:\Project\Union\tests\model_access_support.py", line 119, in saved
+    receipt, request = self.model_success("save_connection", data, request_id=request_id)
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\tests\model_access_support.py", line 108, in model_success
+    self.assertEqual(status, 200, value)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: 404 != 200 : {'error': '接口不存在'}
+
+======================================================================
+FAIL: test_api_secret_never_enters_au_and_original_save_is_idempotent (tests.test_core_models.CoreModelConfigurationTests.test_api_secret_never_enters_au_and_original_save_is_idempotent)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_models.py", line 62, in test_api_secret_never_enters_au_and_original_save_is_idempotent
+    receipt, request = self.saved(profile="openai_compatible")
+                       ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\tests\model_access_support.py", line 119, in saved
+    receipt, request = self.model_success("save_connection", data, request_id=request_id)
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\tests\model_access_support.py", line 108, in model_success
+    self.assertEqual(status, 200, value)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: 404 != 200 : {'error': '接口不存在'}
+
+======================================================================
+FAIL: test_core_governor_saves_without_inference_and_reopens_same_connection (tests.test_core_models.CoreModelConfigurationTests.test_core_governor_saves_without_inference_and_reopens_same_connection)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_models.py", line 15, in test_core_governor_saves_without_inference_and_reopens_same_connection
+    before = self.models()
+  File "D:\Project\Union\tests\model_access_support.py", line 95, in models
+    self.assertEqual(status, 200, value)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: 404 != 200 : {'error': '接口不存在'}
+
+======================================================================
+FAIL: test_lost_save_is_reconciled_by_original_registration_without_another_post (tests.test_core_models.CoreModelConfigurationTests.test_lost_save_is_reconciled_by_original_registration_without_another_post)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_models.py", line 73, in test_lost_save_is_reconciled_by_original_registration_without_another_post
+    receipt, request = self.saved(profile="openai_compatible")
+                       ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\tests\model_access_support.py", line 119, in saved
+    receipt, request = self.model_success("save_connection", data, request_id=request_id)
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\tests\model_access_support.py", line 108, in model_success
+    self.assertEqual(status, 200, value)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: 404 != 200 : {'error': '接口不存在'}
+
+======================================================================
+FAIL: test_model_configuration_failure_rolls_back_schema_and_original_governance (tests.test_core_models.CoreModelConfigurationTests.test_model_configuration_failure_rolls_back_schema_and_original_governance)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_models.py", line 98, in test_model_configuration_failure_rolls_back_schema_and_original_governance
+    self.assertEqual(status, 503)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 404 != 503
+
+======================================================================
+FAIL: test_ordinary_core_participant_can_configure_own_au_without_platform_role (tests.test_core_models.CoreModelConfigurationTests.test_ordinary_core_participant_can_configure_own_au_without_platform_role)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_models.py", line 40, in test_ordinary_core_participant_can_configure_own_au_without_platform_role
+    self.saved()
+    ~~~~~~~~~~^^
+  File "D:\Project\Union\tests\model_access_support.py", line 119, in saved
+    receipt, request = self.model_success("save_connection", data, request_id=request_id)
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Project\Union\tests\model_access_support.py", line 108, in model_success
+    self.assertEqual(status, 200, value)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: 404 != 200 : {'error': '接口不存在'}
+
+======================================================================
+FAIL: test_outsider_cross_au_grant_and_stale_version_cannot_save (tests.test_core_models.CoreModelConfigurationTests.test_outsider_cross_au_grant_and_stale_version_cannot_save)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Project\Union\tests\test_core_models.py", line 49, in test_outsider_cross_au_grant_and_stale_version_cannot_save
+    self.assertEqual(status, 403)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 404 != 403
+
+----------------------------------------------------------------------
+Ran 7 tests in 6.993s
+
+FAILED (failures=7)

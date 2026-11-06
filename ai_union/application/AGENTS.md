@@ -16,3 +16,10 @@
   request lookup precedes current rule validation; do not replay unknown writes.
 - No model/host dispatch, read migration, autonomous business or legacy Engine
   writes in this owner. Verify tests/test_governance*.py with S01 regressions.
+
+- `model_access.py` owns S02 authenticated configuration, durable intent and
+  explicit original-request reconciliation through the same GovernanceStore.
+  Network calls follow committed intent and occur outside account/AU locks.
+  It cannot enumerate host accounts or invoke Engine for V1. API secrets go
+  only to modeld; persisted commands contain a private digest, never the key.
+  Verify tests/test_core_models.py and the S02 contract, preserving S01/S05.

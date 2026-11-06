@@ -1,0 +1,55 @@
+{
+  "before": {
+    "services/modeld/src/api-accounts.ts": "8d7242f693616b21c0073fafb3d13096e2cb61dc93c2b56c1315663b28f314d2",
+    "services/modeld/src/kernel.ts": "cac040511eed9ec6cd025f569d59ca0014d9aa9e80abf9c3f4b271dd7d1f5aa4",
+    "services/modeld/src/credential-content.ts": "a0d9752ab8edea444d9f817025407784d63388bc45aa4d4d954befe7cfbe4122",
+    "services/modeld/src/usage.ts": "0c84b7549421fca520565eee5b516892acb202ba6765f0733073b1bdc6bfc587"
+  },
+  "cases": {
+    "scalar_control": {
+      "returncode": 0,
+      "elapsed_s": 1.361,
+      "observed": {
+        "external_provider_calls": 0,
+        "fragmented-reasoning": {
+          "state": "interrupted",
+          "error": "credential_in_model_content",
+          "provider_posts": 1,
+          "input_leaks": false,
+          "output_leaks": false,
+          "result_absent": true,
+          "expected_output": false,
+          "native_events_preserved": false,
+          "usage_preserved": false
+        }
+      },
+      "stderr": ""
+    },
+    "masked_raw_delta": {
+      "returncode": 0,
+      "elapsed_s": 1.33,
+      "observed": {
+        "external_provider_calls": 0,
+        "fragmented-reasoning": {
+          "state": "completed",
+          "error": null,
+          "provider_posts": 1,
+          "input_leaks": false,
+          "output_leaks": true,
+          "result_absent": false,
+          "expected_output": false,
+          "native_events_preserved": false,
+          "usage_preserved": true
+        }
+      },
+      "stderr": ""
+    }
+  },
+  "after": {
+    "services/modeld/src/api-accounts.ts": "8d7242f693616b21c0073fafb3d13096e2cb61dc93c2b56c1315663b28f314d2",
+    "services/modeld/src/kernel.ts": "cac040511eed9ec6cd025f569d59ca0014d9aa9e80abf9c3f4b271dd7d1f5aa4",
+    "services/modeld/src/credential-content.ts": "a0d9752ab8edea444d9f817025407784d63388bc45aa4d4d954befe7cfbe4122",
+    "services/modeld/src/usage.ts": "0c84b7549421fca520565eee5b516892acb202ba6765f0733073b1bdc6bfc587"
+  },
+  "source_stable": true
+}

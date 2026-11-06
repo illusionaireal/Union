@@ -20,3 +20,13 @@
 - Summary: 12 卡文案及线上 HTTP 200 读回完成；完整技术验收、管理状态和 64 项其他任务保持；管理 8 项通过，独立表达复核无遗留。仅证明文案和看板一致，不关闭 S02。
 - Verifier: codex/gpt-6 coordinator; s02_feature_audit advisory review
 - Evidence status: evidence-finalized
+
+## EvidenceBundleDraft: S02-finish
+
+- Artifact key: S02-finish
+- Slice ID: S02-finish
+- Type: engineering-and-real-profile
+- Source: evidence/058-s02-model-tools/README.md
+- Summary: 控制范围工程/独立复核/浏览器/安装通过；1次真实请求被拒绝认证且重启不重放，M10成功往返未完成。HTTP200同步#21 blocked/version7。
+- Verifier: codex/gpt-6 coordinator with independent Python, protocol, confidentiality and UI reviews
+- Evidence status: blocked

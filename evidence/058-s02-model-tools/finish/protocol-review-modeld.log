@@ -1,0 +1,56 @@
+bun test v1.4.2 (744846f84)
+
+services\modeld\test\api-connections.test.ts:
+(pass) saving an API connection is atomic, durable, idempotent and independent from Go or inference [94.95ms]
+(pass) API registration accepts stable command identifiers including the full request identifier limit [76.72ms]
+(pass) registration accepts the core org AU identifier while preserving existing UUID AU compatibility [68.04ms]
+(pass) same registration ID cannot replace any secret, endpoint, identity, model or name [71.03ms]
+(pass) registration recovery requires the exact original AU and principal, with admin/worker role separation [80.11ms]
+(pass) API account is never listed or re-granted through the legacy Go account endpoints [72.92ms]
+(pass) registration replay after revocation retains the original save receipt without restoring the grant [116.68ms]
+(pass) an interrupted registration transaction leaves neither an account nor a grant [152.44ms]
+(pass) API account and fixed grant reach only the selected private inference path [120.25ms]
+(pass) registration rejects unsupported or ambiguous endpoint, header, profile, identity and key input without saving [75.23ms]
+(pass) registration never persists or returns a ordinary credential embedded in name [90.56ms]
+(pass) registration never persists or returns a ordinary credential embedded in model_id [73.24ms]
+(pass) registration never persists or returns a ordinary credential embedded in base_url [70.99ms]
+(pass) registration never persists or returns a quote credential embedded in name [75.51ms]
+(pass) registration never persists or returns a quote credential embedded in model_id [84.71ms]
+(pass) registration never persists or returns a quote credential embedded in base_url [70.45ms]
+(pass) registration never persists or returns a backslash credential embedded in name [71.02ms]
+(pass) registration never persists or returns a backslash credential embedded in model_id [77.73ms]
+(pass) registration never persists or returns a backslash credential embedded in base_url [68.94ms]
+(pass) registration never persists or returns a quote-and-backslash credential embedded in name [84.40ms]
+(pass) registration never persists or returns a quote-and-backslash credential embedded in model_id [69.65ms]
+(pass) registration never persists or returns a quote-and-backslash credential embedded in base_url [60.74ms]
+
+services\modeld\test\api-kernel.test.ts:
+(pass) independent API profile uses the pinned single-stream kernel over actual loopback HTTP [1966.45ms]
+
+services\modeld\test\journal.test.ts:
+(pass) request replay returns the original state and never requeues a sent attempt [73.16ms]
+(pass) grants bind model and AU and cannot be re-created to erase revocation [122.26ms]
+(pass) restart preserves partial events and fences an interrupted result without replay [104.70ms]
+(pass) cancel is an intent; a late completion cannot become executable [84.29ms]
+
+services\modeld\test\late-results.test.ts:
+(pass) revocation after completion preserves original AU evidence and digest but removes action authorization [80.91ms]
+(pass) revoke preserves dispatched late usage and result without making tools actionable [86.52ms]
+(pass) cancel preserves dispatched late usage and result without making tools actionable [85.49ms]
+(pass) a result observed after an interrupted terminal state is retained once without reopening execution [72.31ms]
+
+services\modeld\test\responses.test.ts:
+(pass) explicit Responses registration preserves old receipts and binds protocol/settings durably [91.27ms]
+(pass) failed protocol registration rolls back schema, account and grant together [63.60ms]
+(pass) unsupported protocol or settings are rejected without changing the private schema [58.20ms]
+(pass) unknown private schemas are rejected before interrupted request recovery writes [64.91ms]
+(pass) Responses runs the pinned HTTP stream with original native tools, usage and safe errors [1548.84ms]
+
+services\modeld\test\server.test.ts:
+(pass) one accepted POST is durable, repeat lookup never starts a second inference; roles and AU are isolated [105.38ms]
+(pass) cancel and grant revocation fence late tool results without claiming remote cancellation [94.77ms]
+
+ 38 pass
+ 0 fail
+ 371 expect() calls
+Ran 38 tests across 6 files. [6.68s]

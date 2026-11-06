@@ -100,7 +100,9 @@ export function Layout() {
   const governed = core && isGovernedAU(core) ? core : undefined;
   const selectedPage = pages.find((p) => '/' + p.key === location.pathname) || pages.find((p) => p.key === 'overview')!;
   const governanceLabel = selectedPage.key === 'tasks' ? '责任与工作' : selectedPage.key === 'settings' ? '章程与记录' : 'AU与治理';
-  const page = governed ? { ...selectedPage, label: governanceLabel, title: governanceLabel, description: '按当前身份与有效规则处理治理、责任和内部记录。' }
+  const coreModelsPage = coreMode && selectedPage.key === 'models';
+  const page = coreModelsPage ? { ...selectedPage, description: '为当前 AU 保存模型连接、授予有限调用并核对工具往返。' }
+    : governed ? { ...selectedPage, label: governanceLabel, title: governanceLabel, description: '按当前身份与有效规则处理治理、责任和内部记录。' }
     : coreMode ? { ...selectedPage, label: 'AU准备记录', title: 'AU准备记录', description: '目标、初始治理主体、章程与资源计划。业务自治尚未启用。' } : selectedPage;
   const search = orgId ? '?organization=' + encodeURIComponent(orgId) : '';
   const openPage = page.key === 'overview' || page.key === 'models' || page.key === 'gateways';
@@ -139,7 +141,7 @@ export function Layout() {
           </span>
         </label>
         <nav id="navigation">
-          {pages.filter((p) => (!coreMode || (governed ? ['overview', 'tasks', 'settings'] : ['overview', 'settings']).includes(p.key)) && (p.key !== 'gateways' || session?.platform_admin)).map(({ key, label, icon: Icon, group }) => (
+          {pages.filter((p) => (!coreMode || (governed ? ['overview', 'tasks', 'models', 'settings'] : ['overview', 'models', 'settings']).includes(p.key)) && (p.key !== 'gateways' || session?.platform_admin)).map(({ key, label, icon: Icon, group }) => (
             <div className="nav-entry" key={key}>
               {group && <div className="nav-caption">{group}</div>}
               <NavLink
@@ -148,7 +150,7 @@ export function Layout() {
                 className={({ isActive }) => 'nav-button' + (isActive ? ' active' : '')}
               >
                 <Icon size={19} strokeWidth={1.7} />
-                <span>{governed ? key === 'overview' ? 'AU与治理' : key === 'tasks' ? '责任与工作' : '章程与记录' : coreMode ? key === 'overview' ? 'AU准备记录' : '治理与资源计划' : label}</span>
+                <span>{key === 'models' ? label : governed ? key === 'overview' ? 'AU与治理' : key === 'tasks' ? '责任与工作' : '章程与记录' : coreMode ? key === 'overview' ? 'AU准备记录' : '治理与资源计划' : label}</span>
                 {key === 'models' && !data?.execution_config.api_connection_id && (
                   <span className="nav-tag">配置</span>
                 )}
@@ -189,7 +191,7 @@ export function Layout() {
           </div>
           <div className="topbar-actions">
             <span id="source-label" className="source-label">
-              {governed ? '受控内部记录' : core ? '准备态 · 未激活' : data ? sourceName(data.source) : '尚未执行'}
+              {coreModelsPage ? '模型接入记录' : governed ? '受控内部记录' : core ? '准备态 · 未激活' : data ? sourceName(data.source) : '尚未执行'}
             </span>
             <button
               id="refresh"
@@ -275,7 +277,7 @@ export function Layout() {
             ))}
           <GovernanceRecovery />
           <div id="view">
-            {governed ? <GovernanceWorkspace read={governed} /> : core ? <PreparedAU /> : data || openPage ? (
+            {coreModelsPage ? <Outlet /> : governed ? <GovernanceWorkspace read={governed} /> : core ? <PreparedAU /> : data || openPage ? (
               <Outlet />
             ) : (
               <Card title="先建立你的公司">

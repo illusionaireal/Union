@@ -19,3 +19,11 @@
   late facts and checked result acceptance. No filesystem artifacts, models,
   automatic scheduling or alternate AU writers. Recheck every ancestor at
   action and adoption; preserve original obligations when stopping/handover.
+
+- S02 `model_access.py` and `model_checks.py` own configuration/resource and
+  bounded verification rules. The explicit grant is separate from the original
+  resource plan; every check links a real human Member/Work/Mandate to a
+  separately versioned Agent Definition. No legacy Engine or host calls.
+- Charter `read_document` is V1-only. Ordinary legacy validation stays strict.
+  Current versions and authority are checked for every model/tool/acceptance
+  boundary, while historical usage remains factual after revocation.

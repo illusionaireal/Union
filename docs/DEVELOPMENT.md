@@ -12,6 +12,14 @@ AU 新建仍用 schema 1；成功的显式治理采用才升至 schema 2。初�
 
 Windows 验证固定 Node 24.19.0、`.venv\Scripts\python.exe`（本次 3.13.14），设置 `PYTHONUTF8=1`、`PYTHONIOENCODING=utf-8`。S01 真实浏览器入口为 `node scripts/check_core_creation.cjs`，S05 为 `node scripts/s05-governance-browser.cjs`；与 `npm run check`、Python 全量、`npm run test:workspace` 及实际安装后的升级测试一起取证。各脚本只使用独立临时测试主机。构建安装候选成功不代表 S08 真实发布或持续运行已验收。
 
+## 2026-11-06：S02 模型检查与显式协议
+
+S02 的实现、独立复核、实际浏览器和安装结果见 [058](../evidence/058-s02-model-tools/README.md)，精确行为见 [s02-contract](../specs/053-union-rewrite/s02-contract.md)。所选 Codex 真实连接认证失败，成功往返仍未验收。已有真实请求只查询原 ID，不重跑验收 driver；真实配置仅保存在宿主私有目录。
+
+模型相关 Python 回归为 `tests/test_core_model*.py`；全量仍用固定 `.venv\Scripts\python.exe -m unittest discover -v` 和 `npm run check`。Bun 1.4.2 请对 `services/modeld/test/*.test.ts` 的八个实际文件传递显式路径，避免把 vendor 测试也选入。实际浏览器脚本为 `scripts/s02-models-browser.cjs`，设置固定 `UNION_BUN`、`UNION_PYTHON` 和私有 `UNION_S02_UI_EVIDENCE`；它只使用回环供应商，不能替代真实连接。
+
+成功显式模型配置/授权或采用 `read_document` 规则才使 AU 进入 schema 3；已知旧 schema 不读时升级。modeld 仅在成功显式协议注册的同一事务采用 schema 1，新代码支持 0/1。受支持发布器声明 AU `[1,2,3]`、modeld `[0,1]`，先核版本再采用/启动；旧候选不兼容时保留数据和原请求。安装包内执行 Python 维护/验收脚本应使用 `-B`，避免在不可变交付目录生成额外缓存文件。
+
 ## 2026-11-02：进入正式开发
 
 用户确认从MVP进入正式开发。后续按[正式开发与交付标准](FORMAL_DEVELOPMENT.md)推进：工程子项、真实集成、用户闭环、发布与持续运行分别验收。043的受控证据保留，未通过的真实账号/模型/部署/经营不升级。下一工程切片为候选版安装升级回滚包，任务状态见主账与TASKS。

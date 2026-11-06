@@ -49,7 +49,7 @@ F11/P15及N02/N03/N04适用于所有涉及界面、授权、状态和恢复的�
 
 精确请求、权限、存储、恢复与 M01–M10 验收以 [S02 契约](s02-contract.md)为准，执行顺序见 [plan §10](plan.md#10-2026-11-06完整-s02-模型与只读资料往返)。含指定真实 profile 出口，不能只以 controlled 关闭本卡。
 
-用户先看 [U-072 操作说明](../../TASKS.md#u-072)。开发者的准确函数/组件、接口输入输出、完整流程与技术验收在本文件的 [U-072 开发附录](#u-072-development)，当前任务状态仍由唯一主账生成。[架构](../../docs/ARCHITECTURE.md#execution-contracts)明确当前有限验证与后续通用执行链，[058 核查](../../evidence/058-s02-model-tools/design-readback.md)记录尚未闭合的凭据、诊断、用量、启动恢复和浏览器/安装/真实出口。
+用户先看 [U-072 操作说明](../../TASKS.md#u-072)。开发者的准确函数/组件、接口输入输出、完整流程与技术验收在本文件的 [U-072 开发附录](#u-072-development)，当前任务状态仍由唯一主账生成。[架构](../../docs/ARCHITECTURE.md#execution-contracts)明确当前有限验证与后续通用执行链。[058 工程验收](../../evidence/058-s02-model-tools/README.md)记录凭据、诊断、用量、启动恢复、浏览器及安装结果；所选 Codex 连接认证失败，成功真实往返仍未完成。此前 [设计核查](../../evidence/058-s02-model-tools/design-readback.md)保留其历史缺口。
 
 - 用户结果：独立核心可配置合法模型/工具，保存/测试/采用和实际调用状态清楚；可选平台增强不成为必经前置。
 - 复用：048、U-060/U-062，`model_api.py`、`model_service.py`、`subscriptions.py`、`harness.py`、`services/modeld/`和React模型页。modeld grant/revision仍是其授权边界。

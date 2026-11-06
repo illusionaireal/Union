@@ -1,0 +1,627 @@
+{
+  "changed_sources": [
+    "ai_union/adapters/core_au_store.py",
+    "ai_union/adapters/governance_store.py",
+    "ai_union/adapters/model_access_store.py",
+    "ai_union/application/governance.py",
+    "ai_union/application/model_access.py",
+    "ai_union/application/model_checks.py",
+    "ai_union/console.py",
+    "ai_union/domain/creation.py",
+    "ai_union/domain/governance.py",
+    "ai_union/domain/model_access.py",
+    "ai_union/domain/model_checks.py",
+    "ai_union/domain/responsibility.py",
+    "ai_union/harness.py",
+    "ai_union/model_diagnostics.py",
+    "ai_union/model_service.py",
+    "ai_union/server.py",
+    "ai_union/tool_roundtrip.py",
+    "scripts/release_package.py",
+    "services/modeld/README.md",
+    "services/modeld/src/api-accounts.ts",
+    "services/modeld/src/credential-content.ts",
+    "services/modeld/src/journal.ts",
+    "services/modeld/src/kernel.ts",
+    "services/modeld/src/server.ts",
+    "services/modeld/src/usage.ts",
+    "web/console/src/api/core-boundary.ts",
+    "web/console/src/api/types.ts",
+    "web/console/src/app/Layout.tsx",
+    "web/console/src/features/governance/GovernanceFields.tsx",
+    "web/console/src/features/governance/model.ts",
+    "web/console/src/features/models/AGENTS.md",
+    "web/console/src/features/models/CoreModels.tsx",
+    "web/console/src/features/models/ModelCommandForm.tsx",
+    "web/console/src/features/models/ModelFields.tsx",
+    "web/console/src/features/models/ModelPreview.tsx",
+    "web/console/src/features/models/ModelReceiptView.tsx",
+    "web/console/src/features/models/ModelRecords.tsx",
+    "web/console/src/features/models/Models.test.tsx",
+    "web/console/src/features/models/ModelsDiagnostics.test.tsx",
+    "web/console/src/features/models/ModelsIdentity.test.tsx",
+    "web/console/src/features/models/ModelsRecovery.test.tsx",
+    "web/console/src/features/models/api.ts",
+    "web/console/src/features/models/model.ts",
+    "web/console/src/features/models/models.css",
+    "web/console/src/features/models/requests.ts",
+    "web/console/src/features/models/test-fixtures.tsx",
+    "web/console/src/features/models/types.ts",
+    "web/console/src/features/models/useModels.ts",
+    "web/console/src/pages/Models.tsx"
+  ],
+  "core_au_schemas": [
+    1,
+    2,
+    3
+  ],
+  "core_schemas": {
+    "auth": 2,
+    "catalog": 1
+  },
+  "files": {
+    "ai_union/__init__.py": {
+      "sha256": "4b0ebb3b5839115f3310e7391888843b5c7840bd9505bba6485c35c5d4b6f34e",
+      "size": 70
+    },
+    "ai_union/__main__.py": {
+      "sha256": "f4848641458b561a4c63e46c3df07eb6b514d3196061071c2ffd0a9e1a3afeaf",
+      "size": 257
+    },
+    "ai_union/activity.py": {
+      "sha256": "a30fb252e90f0d428cea8a156067620d718b7b6552434bec9492c7c2fd0aa87d",
+      "size": 1546
+    },
+    "ai_union/adapters/au_catalog.py": {
+      "sha256": "e83df6ed1c9e0a5b84f916661625349ab8c87f65a24575d24c92b91a917d5380",
+      "size": 6880
+    },
+    "ai_union/adapters/core_au_store.py": {
+      "sha256": "632e7c9ccf946ca68df71e97465915f6ca31537e52ea22d60cfa922dffddfe94",
+      "size": 5917
+    },
+    "ai_union/adapters/creation_catalog.py": {
+      "sha256": "13f28e48f5cdaca1629178e3d558183c922d1f359a3923ae47b2c84e2bf4d072",
+      "size": 4431
+    },
+    "ai_union/adapters/governance_store.py": {
+      "sha256": "a4512bb9adae8b9f01e88e5c95049cad5375dc0e9ce799a0c2df7eacdff1e743",
+      "size": 9586
+    },
+    "ai_union/adapters/legacy_au_store.py": {
+      "sha256": "857e64fef2940c99bc36f3996d8088a252878b30a556a3c7c1308893853e3cc2",
+      "size": 1980
+    },
+    "ai_union/adapters/model_access_store.py": {
+      "sha256": "7a2153e866bbbea3daa2182ebecd75332870729a7f949a528e2cb14d71ffb446",
+      "size": 5844
+    },
+    "ai_union/agent_protocol.py": {
+      "sha256": "31e92016d734f846ddfd7f4ba217a6d9b85f3273b5c5388f9620b6576663ee52",
+      "size": 15947
+    },
+    "ai_union/application/creation.py": {
+      "sha256": "4ecc3f7c1bc7c6e45b89f1271b68e28e1353cda56863423c1a426973d8e72273",
+      "size": 4403
+    },
+    "ai_union/application/governance.py": {
+      "sha256": "61367c42bb2055562f96b828f5fed6a1ecc378716198651e72254ac635a05e84",
+      "size": 8096
+    },
+    "ai_union/application/model_access.py": {
+      "sha256": "3bb6c4e951e170be3ed70c105ac3d7b0d3fdd98a2ec63731ae4dd52222a2d6d6",
+      "size": 18843
+    },
+    "ai_union/application/model_checks.py": {
+      "sha256": "875d15e62b86caaa2af779e8774e2a4e4005ed0df6c02a334e25e8eb12c7c05e",
+      "size": 14718
+    },
+    "ai_union/au_contract.py": {
+      "sha256": "deef82a621f02113512f6a7d152d096d424642e06508095e2aa8fec5107ff742",
+      "size": 3264
+    },
+    "ai_union/bootstrap.py": {
+      "sha256": "8bb01e8bc7af2cd76f5e480ba1df8345b5dc8831ce78ce56bfdd5f73833748e4",
+      "size": 5289
+    },
+    "ai_union/catalog.py": {
+      "sha256": "f8dd330aaf2f2db77bf0514ba784562c4dd88ec7468f9b6444b85a44d71b674e",
+      "size": 7062
+    },
+    "ai_union/cli.py": {
+      "sha256": "a9ca98b19d78b9b27a62c3f7928877c8a5a232917b51fab70cfd33705348f7c7",
+      "size": 12811
+    },
+    "ai_union/company.py": {
+      "sha256": "96f9b56ee10242c94e89985c2b0de6737b8bae6d0a4f23b754283d24d6d125e9",
+      "size": 12574
+    },
+    "ai_union/console.py": {
+      "sha256": "f9988c7aa16da72f7b17412d2b6afb1166fa6230bba13dfb7d321f251103bda8",
+      "size": 31261
+    },
+    "ai_union/corp.py": {
+      "sha256": "4c43b4c6d8bfeb107251996fd308a29ebf528864fd71cd198921579c6544fba2",
+      "size": 9237
+    },
+    "ai_union/diagnostics.py": {
+      "sha256": "9104b13fc34e7d72af2face7e9a7d8fbd680427c79ef2f3e999ecda7562e238b",
+      "size": 2973
+    },
+    "ai_union/domain/creation.py": {
+      "sha256": "997c8ccf5846c884bb16f90178211c21b22e24828824b6d882cc3958c0ab6e6a",
+      "size": 3457
+    },
+    "ai_union/domain/governance.py": {
+      "sha256": "96ae0bd3483d9e0327b35ef93ac3e4442775ae4d4abae8aea9574dfdb4f65c02",
+      "size": 12798
+    },
+    "ai_union/domain/model_access.py": {
+      "sha256": "b1000752b240520d804de0fcc94ea78a2f05a60ba5bc0c26b6c3fe88d45cc6fd",
+      "size": 7296
+    },
+    "ai_union/domain/model_checks.py": {
+      "sha256": "57c8bb810f26c13c74a7a0b082e3a30a666b88a196d6798b86714de0930affc7",
+      "size": 7555
+    },
+    "ai_union/domain/responsibility.py": {
+      "sha256": "44121b2b23ffd7d8fd744791bb1abe41a3ca213502e6d3a84349729a5c9af95a",
+      "size": 15090
+    },
+    "ai_union/engine.py": {
+      "sha256": "2edee43c7d23867025587c605e3d71e1ef55ef0e95a7adf5e2e926dba18a7528",
+      "size": 48774
+    },
+    "ai_union/errors.py": {
+      "sha256": "03ad071360ff5fd1d44634ea13eee49066866a9bb4ee6c70e77f38b812976b28",
+      "size": 875
+    },
+    "ai_union/evaluation.py": {
+      "sha256": "9d730852896fbe591dec1b102b352b3466e0de70a27429483e65d28553f7bc47",
+      "size": 4656
+    },
+    "ai_union/executor.py": {
+      "sha256": "064179b08405afa23217c67ffd7929c2427bf7a526e349ce2fc6784228bcf52d",
+      "size": 9350
+    },
+    "ai_union/failures.py": {
+      "sha256": "4a46cf324e33f5943f1c5b3576c997c7697c7177efbac70599acc965a6804659",
+      "size": 5823
+    },
+    "ai_union/gateways.py": {
+      "sha256": "1617ff67eb5a7ce1974ab2808887e2e78714712c676c379ef029b439a88eeb93",
+      "size": 12462
+    },
+    "ai_union/harness.py": {
+      "sha256": "c6e37206703936ea86506f0930ec2b36a0aac6ae86dce5ea8901911d560a34df",
+      "size": 24530
+    },
+    "ai_union/identity.py": {
+      "sha256": "aabaf2d035815a46f0fd09de5f08801764c9959109294c1f8edf25ec914c412b",
+      "size": 12642
+    },
+    "ai_union/identity_schema.py": {
+      "sha256": "95d67de1ddeea9d4378304fb0ff7cd891af40fa36ddfad7811bc7aa8a82d152a",
+      "size": 13555
+    },
+    "ai_union/lifecycle.py": {
+      "sha256": "5f9e665c4fbfd7fc947a18e35faed41e1fe398fdd5ca55916ca938aa9e1cb7ee",
+      "size": 2871
+    },
+    "ai_union/locking.py": {
+      "sha256": "72e61882212bf263f632e232486d4f2f700736c9661f822e51d1e9f38ec7787e",
+      "size": 1062
+    },
+    "ai_union/model_accounts.py": {
+      "sha256": "f4e8a7bd2ce106cdc4909bd29bb9ac36b2fcb47956037131d550b54830b5ccf6",
+      "size": 11283
+    },
+    "ai_union/model_api.py": {
+      "sha256": "bfd638eddcc30704d023cb6fa516274dd998df3f546de966dabb4a13d0c5d3ff",
+      "size": 48371
+    },
+    "ai_union/model_billing.py": {
+      "sha256": "be52409799d8c78a765580bd91df8ff6fc05cf5666eb787fe45df6fc2a4b98e8",
+      "size": 5800
+    },
+    "ai_union/model_context.py": {
+      "sha256": "4e6c5ca8747acdb482b56d08946671b01392b19e25131d43ee9bf0cec44127e4",
+      "size": 3268
+    },
+    "ai_union/model_diagnostics.py": {
+      "sha256": "8f5f1b648fb4af7bf6473668ede63642101804886e0306ff9c5b319f21c07e15",
+      "size": 3393
+    },
+    "ai_union/model_media.py": {
+      "sha256": "8d960b30e134481062ab0207a2f76d52438804c6d5b686a9090fde65d0b21ee0",
+      "size": 3296
+    },
+    "ai_union/model_portability.py": {
+      "sha256": "e3d61d0867e34e97a3c23c06cb8db4fbafdac6c55e9ad6197bf635350f7e3af4",
+      "size": 2967
+    },
+    "ai_union/model_protocols.py": {
+      "sha256": "b349966fa7458dbf64d9e2c4cb3d4eac2556da36ccbccc1d951c421a8f117d09",
+      "size": 9767
+    },
+    "ai_union/model_service.py": {
+      "sha256": "bd37bf907ee66df94d2b955f6e0be2e30bb92f6668825e4cd66c4611e0081885",
+      "size": 15134
+    },
+    "ai_union/novel_demo.py": {
+      "sha256": "9798b283f809af64fe85680a6d3aa724cc6fec1e73c346e0e14c5c443c189aae",
+      "size": 5661
+    },
+    "ai_union/observation.py": {
+      "sha256": "6f9bdfdb3c502d5873926970f61d72569d11e0633c35c2eb1576c1759840d57b",
+      "size": 8977
+    },
+    "ai_union/protocol.py": {
+      "sha256": "1c8dfa630142678dd4f34966535c023773ad686e5f9cf442b942cb519d42305a",
+      "size": 5375
+    },
+    "ai_union/runner.py": {
+      "sha256": "9b14e68c5913dd5aa494626d6bf003f541eb10bac4f9b5df560e30af3081e41b",
+      "size": 8718
+    },
+    "ai_union/runtime_view.py": {
+      "sha256": "46e3662cffdf5ba39d41518049dc0efa2876d4b7af98cb44ee246f0f5e652bc7",
+      "size": 9333
+    },
+    "ai_union/server.py": {
+      "sha256": "007f34bb3366f6a561b82556a81d3fb3c8e50dcd27958e023ffb8c38f4165a4f",
+      "size": 19048
+    },
+    "ai_union/service.py": {
+      "sha256": "1c8ee7d49094ac58eaf73de1af7c0ff4e032fd7a85a630ce27958b9d7ff2a193",
+      "size": 2382
+    },
+    "ai_union/subscriptions.py": {
+      "sha256": "4b3aac3e7c0831f543370ff0b6c8a47d8adb4d18effff4c1eb7265624060c30b",
+      "size": 27340
+    },
+    "ai_union/support_requests.py": {
+      "sha256": "99c57a411931c94e265a22c6454626115d9f989e81d40ab25f531ef856e0d00d",
+      "size": 2757
+    },
+    "ai_union/tool_roundtrip.py": {
+      "sha256": "bb46f7f32198729f8f22bfae66bcac17654882feba73a17627bbf03589be7155",
+      "size": 1148
+    },
+    "ai_union/workspace.py": {
+      "sha256": "c1a42682a8d3678ac4edafc836d06e988790c4f3a35da8e6437dce2b60e4dab0",
+      "size": 17107
+    },
+    "data/MODEL_CATALOG.md": {
+      "sha256": "906a02c6df1244f3489c10fbac08f7eb2d9d4cd236317a2a2174277f25f9fcb0",
+      "size": 620
+    },
+    "data/model-catalog.json": {
+      "sha256": "ffec3618e058fa417503d5742f9e23a296d9482e9a1621b37faa6836d3e4593f",
+      "size": 2387838
+    },
+    "data/models-dev-LICENSE.txt": {
+      "sha256": "dc2dc41c9fea2fd3c41c21c6f484844cab367800b88ff24781f980ad3a9d160a",
+      "size": 1067
+    },
+    "examples/ai-union-corp.json": {
+      "sha256": "df3523872a4a365452267239116d8b56ece9ee5ea5479e17693f2e01281f4b0e",
+      "size": 1844
+    },
+    "examples/charter.local.json": {
+      "sha256": "0a4df41ab4a778e8fbc0489faf36bce64e8003642a76840a70c2b0a201051205",
+      "size": 818
+    },
+    "examples/fixture.json": {
+      "sha256": "836228230fabc1031975f51ead580f99f5a10d2c378c71a685476bdca53650ec",
+      "size": 3115
+    },
+    "examples/model-api.json": {
+      "sha256": "baebb746b8164aa06589e0f065ff1e0b873a870862dcbe844eaef21233ca5d37",
+      "size": 252
+    },
+    "examples/novel-demo/chapter-1.txt": {
+      "sha256": "e7e93db133a5c3f7f93a7fc73c0b40208f8af0a7252f1fb7c3a7bbfbf18c558f",
+      "size": 2732
+    },
+    "examples/novel-demo/chapter-2.txt": {
+      "sha256": "79dfcc51b95e2f710bfef50ddab7d0f536165be87164dd9c7aed890a1e605517",
+      "size": 2684
+    },
+    "examples/novel-demo/chapter-3.txt": {
+      "sha256": "d4774d225806d9d920829f820f483fa339028816810f85839f3a70337473e51f",
+      "size": 2861
+    },
+    "examples/resources.local.json": {
+      "sha256": "76192001aa6a414ecb82cffbf562f07f8c60ca31c1dd0c9e1ee05a21ea54c3ae",
+      "size": 47
+    },
+    "ops/release/README.md": {
+      "sha256": "9b6509240d46430bc2aa506a874f26ad91f8217ad6038a73473fafbe583841d5",
+      "size": 7026
+    },
+    "ops/release/deployment.example.json": {
+      "sha256": "c9ffa76efd5ab2ddfb7d4359bdb46367f5038d4ef3577fc7853ad5681fb31af5",
+      "size": 277
+    },
+    "pyproject.toml": {
+      "sha256": "4f1e5720eb505ce1a82274529ad02d03d0996762ebeeb6ae21dd285b530ec51d",
+      "size": 430
+    },
+    "requirements-harness.lock": {
+      "sha256": "352450b8e746d1179c7823229dc2437434255a9cbb8f9388a86b8eba94e47145",
+      "size": 1124
+    },
+    "scripts/release_package.py": {
+      "sha256": "8d47d74827cd042922eaff9bb412ae72f71d96a92c200a32f3776685a5a4c7fd",
+      "size": 26088
+    },
+    "scripts/reset_owner.py": {
+      "sha256": "3f9733564f2dae722210f3998b3bec3310deb5cd0ebe2e515f67525145493fb7",
+      "size": 3886
+    },
+    "scripts/upgrade_core_identity.py": {
+      "sha256": "15cda8298502af69ed01232d74bcc6b7f36d34119f01f2b3d7c9242932c64afb",
+      "size": 1198
+    },
+    "services/modeld/README.md": {
+      "sha256": "a53188ae5be63eb7379c6c6555089ba560e1a3cb8ef6a4b448bc8153e4528829",
+      "size": 9303
+    },
+    "services/modeld/dist/LICENSE.opencode": {
+      "sha256": "b5c625d157735f04e1b2b7ceccee849130b554bdb23cd58db55a38a257efbbdd",
+      "size": 1086
+    },
+    "services/modeld/dist/THIRD_PARTY_NOTICES.json": {
+      "sha256": "890dbebb49dbd166e8ab75b7868471c9f14ffb8a540009f2346e41f8e2f3054c",
+      "size": 1708223
+    },
+    "services/modeld/dist/main.js": {
+      "sha256": "aa2c858e2f4399311d15aa774ddaa934c5d1ce1d9a10cf34acb0b8bb4d323102",
+      "size": 15703991
+    },
+    "services/modeld/dist/upstream.lock.json": {
+      "sha256": "e00feaece9d94d823230204cf3d73f2bb9a9025d9078b456d7df32cc2a7d633f",
+      "size": 637
+    },
+    "services/modeld/init.mjs": {
+      "sha256": "c0ec29361619c14ece989796e86592dec3360a2de0e33c200bd12e450678f2a4",
+      "size": 894
+    },
+    "services/modeld/upstream.lock.json": {
+      "sha256": "e00feaece9d94d823230204cf3d73f2bb9a9025d9078b456d7df32cc2a7d633f",
+      "size": 637
+    },
+    "web/console/dist/assets/index-DyiaVZUg.css": {
+      "sha256": "e1584cb41abd403e1faca05e350304af375339b33dd7eed1d7bf7bf003cc378c",
+      "size": 49961
+    },
+    "web/console/dist/assets/index-bIO58o2E.js": {
+      "sha256": "36b928847650c4a2b6f86d15d0ae01944405702f3a6201b92db6d58bdf0aedfd",
+      "size": 522032
+    },
+    "web/console/dist/index.html": {
+      "sha256": "57f7e6e0b8601d31626f80f5f6092298ff2e04ca278a82015d1142d6dad77421",
+      "size": 741
+    }
+  },
+  "git_baseline": "d5802f8672df88db447e7e0bb86c2f1a5265ad18",
+  "modeld_schemas": [
+    0,
+    1
+  ],
+  "release_id": "s02-model-tools",
+  "schema_version": 1,
+  "source_hashes": {
+    "ai_union/__init__.py": "4b0ebb3b5839115f3310e7391888843b5c7840bd9505bba6485c35c5d4b6f34e",
+    "ai_union/__main__.py": "f4848641458b561a4c63e46c3df07eb6b514d3196061071c2ffd0a9e1a3afeaf",
+    "ai_union/activity.py": "a30fb252e90f0d428cea8a156067620d718b7b6552434bec9492c7c2fd0aa87d",
+    "ai_union/adapters/au_catalog.py": "e83df6ed1c9e0a5b84f916661625349ab8c87f65a24575d24c92b91a917d5380",
+    "ai_union/adapters/core_au_store.py": "632e7c9ccf946ca68df71e97465915f6ca31537e52ea22d60cfa922dffddfe94",
+    "ai_union/adapters/creation_catalog.py": "13f28e48f5cdaca1629178e3d558183c922d1f359a3923ae47b2c84e2bf4d072",
+    "ai_union/adapters/governance_store.py": "a4512bb9adae8b9f01e88e5c95049cad5375dc0e9ce799a0c2df7eacdff1e743",
+    "ai_union/adapters/legacy_au_store.py": "857e64fef2940c99bc36f3996d8088a252878b30a556a3c7c1308893853e3cc2",
+    "ai_union/adapters/model_access_store.py": "7a2153e866bbbea3daa2182ebecd75332870729a7f949a528e2cb14d71ffb446",
+    "ai_union/agent_protocol.py": "31e92016d734f846ddfd7f4ba217a6d9b85f3273b5c5388f9620b6576663ee52",
+    "ai_union/application/creation.py": "4ecc3f7c1bc7c6e45b89f1271b68e28e1353cda56863423c1a426973d8e72273",
+    "ai_union/application/governance.py": "61367c42bb2055562f96b828f5fed6a1ecc378716198651e72254ac635a05e84",
+    "ai_union/application/model_access.py": "3bb6c4e951e170be3ed70c105ac3d7b0d3fdd98a2ec63731ae4dd52222a2d6d6",
+    "ai_union/application/model_checks.py": "875d15e62b86caaa2af779e8774e2a4e4005ed0df6c02a334e25e8eb12c7c05e",
+    "ai_union/au_contract.py": "deef82a621f02113512f6a7d152d096d424642e06508095e2aa8fec5107ff742",
+    "ai_union/bootstrap.py": "8bb01e8bc7af2cd76f5e480ba1df8345b5dc8831ce78ce56bfdd5f73833748e4",
+    "ai_union/catalog.py": "f8dd330aaf2f2db77bf0514ba784562c4dd88ec7468f9b6444b85a44d71b674e",
+    "ai_union/cli.py": "a9ca98b19d78b9b27a62c3f7928877c8a5a232917b51fab70cfd33705348f7c7",
+    "ai_union/company.py": "96f9b56ee10242c94e89985c2b0de6737b8bae6d0a4f23b754283d24d6d125e9",
+    "ai_union/console.py": "f9988c7aa16da72f7b17412d2b6afb1166fa6230bba13dfb7d321f251103bda8",
+    "ai_union/corp.py": "4c43b4c6d8bfeb107251996fd308a29ebf528864fd71cd198921579c6544fba2",
+    "ai_union/diagnostics.py": "9104b13fc34e7d72af2face7e9a7d8fbd680427c79ef2f3e999ecda7562e238b",
+    "ai_union/domain/creation.py": "997c8ccf5846c884bb16f90178211c21b22e24828824b6d882cc3958c0ab6e6a",
+    "ai_union/domain/governance.py": "96ae0bd3483d9e0327b35ef93ac3e4442775ae4d4abae8aea9574dfdb4f65c02",
+    "ai_union/domain/model_access.py": "b1000752b240520d804de0fcc94ea78a2f05a60ba5bc0c26b6c3fe88d45cc6fd",
+    "ai_union/domain/model_checks.py": "57c8bb810f26c13c74a7a0b082e3a30a666b88a196d6798b86714de0930affc7",
+    "ai_union/domain/responsibility.py": "44121b2b23ffd7d8fd744791bb1abe41a3ca213502e6d3a84349729a5c9af95a",
+    "ai_union/engine.py": "2edee43c7d23867025587c605e3d71e1ef55ef0e95a7adf5e2e926dba18a7528",
+    "ai_union/errors.py": "03ad071360ff5fd1d44634ea13eee49066866a9bb4ee6c70e77f38b812976b28",
+    "ai_union/evaluation.py": "9d730852896fbe591dec1b102b352b3466e0de70a27429483e65d28553f7bc47",
+    "ai_union/executor.py": "064179b08405afa23217c67ffd7929c2427bf7a526e349ce2fc6784228bcf52d",
+    "ai_union/failures.py": "4a46cf324e33f5943f1c5b3576c997c7697c7177efbac70599acc965a6804659",
+    "ai_union/gateways.py": "1617ff67eb5a7ce1974ab2808887e2e78714712c676c379ef029b439a88eeb93",
+    "ai_union/harness.py": "c6e37206703936ea86506f0930ec2b36a0aac6ae86dce5ea8901911d560a34df",
+    "ai_union/identity.py": "aabaf2d035815a46f0fd09de5f08801764c9959109294c1f8edf25ec914c412b",
+    "ai_union/identity_schema.py": "95d67de1ddeea9d4378304fb0ff7cd891af40fa36ddfad7811bc7aa8a82d152a",
+    "ai_union/lifecycle.py": "5f9e665c4fbfd7fc947a18e35faed41e1fe398fdd5ca55916ca938aa9e1cb7ee",
+    "ai_union/locking.py": "72e61882212bf263f632e232486d4f2f700736c9661f822e51d1e9f38ec7787e",
+    "ai_union/model_accounts.py": "f4e8a7bd2ce106cdc4909bd29bb9ac36b2fcb47956037131d550b54830b5ccf6",
+    "ai_union/model_api.py": "bfd638eddcc30704d023cb6fa516274dd998df3f546de966dabb4a13d0c5d3ff",
+    "ai_union/model_billing.py": "be52409799d8c78a765580bd91df8ff6fc05cf5666eb787fe45df6fc2a4b98e8",
+    "ai_union/model_context.py": "4e6c5ca8747acdb482b56d08946671b01392b19e25131d43ee9bf0cec44127e4",
+    "ai_union/model_diagnostics.py": "8f5f1b648fb4af7bf6473668ede63642101804886e0306ff9c5b319f21c07e15",
+    "ai_union/model_media.py": "8d960b30e134481062ab0207a2f76d52438804c6d5b686a9090fde65d0b21ee0",
+    "ai_union/model_portability.py": "e3d61d0867e34e97a3c23c06cb8db4fbafdac6c55e9ad6197bf635350f7e3af4",
+    "ai_union/model_protocols.py": "b349966fa7458dbf64d9e2c4cb3d4eac2556da36ccbccc1d951c421a8f117d09",
+    "ai_union/model_service.py": "bd37bf907ee66df94d2b955f6e0be2e30bb92f6668825e4cd66c4611e0081885",
+    "ai_union/novel_demo.py": "9798b283f809af64fe85680a6d3aa724cc6fec1e73c346e0e14c5c443c189aae",
+    "ai_union/observation.py": "6f9bdfdb3c502d5873926970f61d72569d11e0633c35c2eb1576c1759840d57b",
+    "ai_union/protocol.py": "1c8dfa630142678dd4f34966535c023773ad686e5f9cf442b942cb519d42305a",
+    "ai_union/runner.py": "9b14e68c5913dd5aa494626d6bf003f541eb10bac4f9b5df560e30af3081e41b",
+    "ai_union/runtime_view.py": "46e3662cffdf5ba39d41518049dc0efa2876d4b7af98cb44ee246f0f5e652bc7",
+    "ai_union/server.py": "007f34bb3366f6a561b82556a81d3fb3c8e50dcd27958e023ffb8c38f4165a4f",
+    "ai_union/service.py": "1c8ee7d49094ac58eaf73de1af7c0ff4e032fd7a85a630ce27958b9d7ff2a193",
+    "ai_union/subscriptions.py": "4b3aac3e7c0831f543370ff0b6c8a47d8adb4d18effff4c1eb7265624060c30b",
+    "ai_union/support_requests.py": "99c57a411931c94e265a22c6454626115d9f989e81d40ab25f531ef856e0d00d",
+    "ai_union/tool_roundtrip.py": "bb46f7f32198729f8f22bfae66bcac17654882feba73a17627bbf03589be7155",
+    "ai_union/workspace.py": "c1a42682a8d3678ac4edafc836d06e988790c4f3a35da8e6437dce2b60e4dab0",
+    "data/MODEL_CATALOG.md": "906a02c6df1244f3489c10fbac08f7eb2d9d4cd236317a2a2174277f25f9fcb0",
+    "data/model-catalog.json": "ffec3618e058fa417503d5742f9e23a296d9482e9a1621b37faa6836d3e4593f",
+    "data/models-dev-LICENSE.txt": "dc2dc41c9fea2fd3c41c21c6f484844cab367800b88ff24781f980ad3a9d160a",
+    "examples/ai-union-corp.json": "df3523872a4a365452267239116d8b56ece9ee5ea5479e17693f2e01281f4b0e",
+    "examples/charter.local.json": "0a4df41ab4a778e8fbc0489faf36bce64e8003642a76840a70c2b0a201051205",
+    "examples/fixture.json": "836228230fabc1031975f51ead580f99f5a10d2c378c71a685476bdca53650ec",
+    "examples/model-api.json": "baebb746b8164aa06589e0f065ff1e0b873a870862dcbe844eaef21233ca5d37",
+    "examples/novel-demo/chapter-1.txt": "e7e93db133a5c3f7f93a7fc73c0b40208f8af0a7252f1fb7c3a7bbfbf18c558f",
+    "examples/novel-demo/chapter-2.txt": "79dfcc51b95e2f710bfef50ddab7d0f536165be87164dd9c7aed890a1e605517",
+    "examples/novel-demo/chapter-3.txt": "d4774d225806d9d920829f820f483fa339028816810f85839f3a70337473e51f",
+    "examples/resources.local.json": "76192001aa6a414ecb82cffbf562f07f8c60ca31c1dd0c9e1ee05a21ea54c3ae",
+    "ops/release/README.md": "9b6509240d46430bc2aa506a874f26ad91f8217ad6038a73473fafbe583841d5",
+    "ops/release/deployment.example.json": "c9ffa76efd5ab2ddfb7d4359bdb46367f5038d4ef3577fc7853ad5681fb31af5",
+    "package-lock.json": "d9abd1026a9c1eb02d97b3b4a22ac124d90adcaada062ff9d2a85631f4c82c9f",
+    "package.json": "0955580ac093b0c295c48f298e05e2c9f86d5b0a022bfca4532ab337530b640e",
+    "pyproject.toml": "4f1e5720eb505ce1a82274529ad02d03d0996762ebeeb6ae21dd285b530ec51d",
+    "requirements-harness.lock": "352450b8e746d1179c7823229dc2437434255a9cbb8f9388a86b8eba94e47145",
+    "scripts/release_package.py": "8d47d74827cd042922eaff9bb412ae72f71d96a92c200a32f3776685a5a4c7fd",
+    "scripts/reset_owner.py": "3f9733564f2dae722210f3998b3bec3310deb5cd0ebe2e515f67525145493fb7",
+    "scripts/upgrade_core_identity.py": "15cda8298502af69ed01232d74bcc6b7f36d34119f01f2b3d7c9242932c64afb",
+    "services/modeld/README.md": "a53188ae5be63eb7379c6c6555089ba560e1a3cb8ef6a4b448bc8153e4528829",
+    "services/modeld/build.ts": "d631e25c0f5d45815e98d98689ce6b8f344b0ed72e273fe8417e6a87c88ef35e",
+    "services/modeld/init.mjs": "c0ec29361619c14ece989796e86592dec3360a2de0e33c200bd12e450678f2a4",
+    "services/modeld/patches/0001-export-go-kernel-functions.patch": "7ac252011e58f5c1e1004bbea34877330a39dedb9e7a682e506e62419671f1b8",
+    "services/modeld/prepare.mjs": "6c2f0be70ec702b63834d2f16fe1501584e152a16aa68f0f0a7253fa22f07f63",
+    "services/modeld/src/api-accounts.ts": "8d7242f693616b21c0073fafb3d13096e2cb61dc93c2b56c1315663b28f314d2",
+    "services/modeld/src/credential-content.ts": "d30084fc470dce8a1c899f042f6f785321a82d2c406bedde427dc89e2717111d",
+    "services/modeld/src/journal.ts": "5c72b1ba488801c9f0cb540839912dc7ee2a06aa3055b21de583ef67c1eb5a67",
+    "services/modeld/src/kernel.ts": "cac040511eed9ec6cd025f569d59ca0014d9aa9e80abf9c3f4b271dd7d1f5aa4",
+    "services/modeld/src/main.ts": "305da93973bbebfc0e7227a9e6514d0f64c8f4cbc9a9c5750f12e867f6dc15d2",
+    "services/modeld/src/server.ts": "4e07ecdd759a9f3756d388fcb3352261b02c5b74d2392619e1f78c70240e256b",
+    "services/modeld/src/usage.ts": "0c84b7549421fca520565eee5b516892acb202ba6765f0733073b1bdc6bfc587",
+    "services/modeld/upstream.lock.json": "e00feaece9d94d823230204cf3d73f2bb9a9025d9078b456d7df32cc2a7d633f",
+    "web/console/index.html": "6feff1468acf733699e5d397b7313021fca9ef83bd3d858b1374c4f6de2fd7b7",
+    "web/console/package.json": "2d963f9c447f289fb9ea04ad4c5f99b328611ff839c395f202fa99e11161ae3c",
+    "web/console/public/favicon.svg": "8efb4b89cc97cbb0d86f66190b99f239ec24355e0079f22238ffaabf874e15ff",
+    "web/console/src/api/client.test.ts": "ae7629bf85e43680052309a3955641aa68a5904200252da8db4c884ca992d5fb",
+    "web/console/src/api/client.ts": "454afa314f381bc8bf0d43aeccd770b9fd4d291cb647c5b1db56b6e7a7b6bac3",
+    "web/console/src/api/core-boundary.ts": "9dbd041f41cc4f9ef6fd56322e5152a5f65ff8af2c92a53c1dfbdf2593fdf044",
+    "web/console/src/api/types.ts": "b360094a4129055812459a1da7f77c374aabe04594e9e714283a79622748b9a8",
+    "web/console/src/app/App.tsx": "3286f5f48c784214dddd5b441aabcfec681ef61a05cd50e3ee09e1aa27a65aca",
+    "web/console/src/app/Layout.tsx": "3ee8746e961a611a5ef73c998af4481149336445c6fc50d17136b8af2c320fbe",
+    "web/console/src/app/governance-workspace.test.tsx": "3dc592be9cad70dc2731360f4215b3e5d5360a744bfe3c20b34be11629e01c67",
+    "web/console/src/app/url-state.test.tsx": "7f1086efea9cd8222f2a5f2696a52c49daf5c3e89b269de3c4a2ec59fb75e93d",
+    "web/console/src/app/url-state.ts": "c602b1689114316234acbcfa068b65b46ca36ea2ad20365756f4922aa73426b6",
+    "web/console/src/app/workspace.test.tsx": "5dd7053cb5fb00cdd01f67dafbe649ca44f5eda4fd5bdfe5bfda605ba0a84385",
+    "web/console/src/app/workspace.tsx": "2d39309f863c15a9e31c34c7498d9166f15e489ad4725355b2a71ce582a58409",
+    "web/console/src/components/Company.tsx": "3623572e3ec4e1bd6c8ced8b565e80b1acb51542018402ce8c7d5c8e36a4f4eb",
+    "web/console/src/components/Dialog.tsx": "eed0cdc392ff28ed864354b88ec803717a192ea5e676304f21f8d312bfb02ac9",
+    "web/console/src/components/FailureNotice.tsx": "7f657f7936347f78ae7a96e1f64ccebf2c150726904169504bfb2da44bf4208a",
+    "web/console/src/components/Records.tsx": "abde9c15e63c74835567de44e0148dee3177024b25adf52082f55f6ae3e0ad09",
+    "web/console/src/components/SetupGuide.tsx": "d7dcab08d5391d6cda72391b64062b7391d1891374738decb8f315f9cfe5ef87",
+    "web/console/src/components/dialog.css": "4f4d8a6db47eec26bd8e10e2baf7d4294a67edcdec55e516b6c9ae0904e4de43",
+    "web/console/src/components/ui.tsx": "248dfaeb64f92ad70c818b70fae3f8700a4c71b4313f2e74f89b7415b90ffda0",
+    "web/console/src/documentation/Document.tsx": "ab05b3d4903fc4d8c1c8de53fba3b23512c2380fcaf931196c4f1c6c26d4ec7a",
+    "web/console/src/documentation/document.css": "919b012215bcdefc6495481c02c47f2e236d84cce6da3c41226d5f3583d47f70",
+    "web/console/src/documentation/document.js": "ab72232ed6682bccd6d1c38350cae63874bdb536648295d1d51be4e374dad15a",
+    "web/console/src/features/commands/CommandForm.tsx": "dddf81ed0fbb82983a5d1e1642256ad05244702e16ca9524b3d08713c136ebb4",
+    "web/console/src/features/commands/CommandProvider.tsx": "ae167ebaca651b35eb8fa625f973f0fd09038cab36ddf12557ff3e489bd6c612",
+    "web/console/src/features/commands/CreationFields.tsx": "44cd66190c2e15805a582ac622f44622d947e0425c0b88c4279bb12ec79382fd",
+    "web/console/src/features/commands/ModelConnectionFields.tsx": "1cf4f5fa7f0beb29c956794044be1a25874ac4ad740c020316ecae8c5fbf184a",
+    "web/console/src/features/commands/core-boundaries.test.tsx": "acdae52332d0c29e1d45cb1974e00d921b4d73f29ed482b05a07dc7757f63c70",
+    "web/console/src/features/commands/core-creation.test.tsx": "0764145052c4a1308fa8dee1f70534908c3a9048b076e8a0be7e515649ae2580",
+    "web/console/src/features/commands/fields.test.tsx": "c36b7c560c601962131c099aa124a29ca0ea452522a648269a55e85bb5ce90ea",
+    "web/console/src/features/commands/fields.tsx": "284d492d887bad2a56ec166f7a49c367ab8cd4dfae2fbf13628e03770c6e100a",
+    "web/console/src/features/commands/form-fields.tsx": "4bbfb160a209deb013fe8cf0e3fe1e178b91510663079eb2fe5928de9bb8473a",
+    "web/console/src/features/commands/model.ts": "d8f7f225d21ad9810c42d3bf31091c9b6b36a5214401b4fd95fc9d91fd0f1fff",
+    "web/console/src/features/commands/receipts.test.ts": "df52ce5082aab2b0dd30398d2e6e8a654c731283a7181fd6c7a322da8f4eb238",
+    "web/console/src/features/commands/receipts.ts": "a73c8498cbd47dc1e36682b128cd15c4c2f52563431a2a3119edff4b53b4ec01",
+    "web/console/src/features/details/Details.tsx": "749fbb367561f8c16bc5f6384dfef14da6bd0daeed8f2b6b350df9a7ad132413",
+    "web/console/src/features/governance/AGENTS.md": "78efe2fb0401a3064941322ca3e6dd9710fc0acc3f0e865da9584b26747dd277",
+    "web/console/src/features/governance/Governance.test.tsx": "07174094a445254f37a482380dcc601942d66bf2f0edc5dcd758b79fe41ec944",
+    "web/console/src/features/governance/GovernanceFields.tsx": "b6904e8bd05445e0cd978eebd180325d7b490119cdd4bfae264021587221db6c",
+    "web/console/src/features/governance/GovernanceForm.tsx": "dc2e06c758d1627df5d3530d22e1079903202ac5d8962043504fb7fa5366bd0c",
+    "web/console/src/features/governance/GovernancePreview.tsx": "1bbdf67fa53562503abfdde4c045d456755c1da407144d276536d113ba6d4352",
+    "web/console/src/features/governance/GovernanceProvider.tsx": "185ef9d4c4f7d21d423754f786c2c6fa3f8d0709b6f93c18ea5c80d26030a5df",
+    "web/console/src/features/governance/GovernanceReceiptView.tsx": "e7e6104b326b7229a13d17cd7c935821627ec1e57bcfd20308ef199618a13a70",
+    "web/console/src/features/governance/GovernanceWorkspace.tsx": "1695201a7c6c8a5938d58186302d296220ee6e8bbe829532a749aa61799f50f4",
+    "web/console/src/features/governance/ResponsibilityFields.tsx": "e3df72600058671dc40dd7f52960c9c89d99eb580a118d3519b9bb3752b8e4cc",
+    "web/console/src/features/governance/ResponsibilityWorkspace.tsx": "92c15850671b5d9e339cf18022e9572b096bf2b767fdb1ee87325ca3c0c2fbe9",
+    "web/console/src/features/governance/api.ts": "52063b5070b9102239676d5f035cc40f9abb54d2ddb1ccedf125cf0b45f27eda",
+    "web/console/src/features/governance/fields.tsx": "1d0db25be6115342015764b9e82c4e7e73b7a81af7c9f903fa86ec516d005b9d",
+    "web/console/src/features/governance/governance.css": "c867d58b26d0f1c83e2347a3a7c027926a2d53396856a8892316ad39406b42c7",
+    "web/console/src/features/governance/model.ts": "9da118416b8e6a9e74fbca30f07e4f08392fdc274ab9493cafa1f6445d6de4d6",
+    "web/console/src/features/governance/receipts.ts": "a70e842bc75daea074940ef6d48ddcbb4df14fdce1abaa273889f57d54aeefd7",
+    "web/console/src/features/governance/test-fixtures.ts": "88aa74dbc89a05127079a905e8bb51c6df3f1626a07d1a7fc7d2b8a1812c6a35",
+    "web/console/src/features/governance/types.ts": "e2dabe41f114854f29a4067e8dbda62a5f999ac3c6e0cff34001ffbadf06d75c",
+    "web/console/src/features/models/AGENTS.md": "49831323824396516ef463c6bc343e09e8df990e4a796d62abaa79c3cdd6bad0",
+    "web/console/src/features/models/CoreModels.tsx": "2e54de1d4b23a89bbafde2dd9af52203ab95f833aef84356c352d065e1087c4f",
+    "web/console/src/features/models/ModelCommandForm.tsx": "aa4d06785454cb0ef6198992d6670d7362cd8c3c5c0998363d6eac27a6a5a0eb",
+    "web/console/src/features/models/ModelFields.tsx": "7139d260c99d0172d8da5606dd2dc5361205dedad1a9343132a92da457d33dfd",
+    "web/console/src/features/models/ModelPreview.tsx": "f9b7fc00e0a2a84abafb20dafd4a798618804ec1423a292420372d760b9cdf1b",
+    "web/console/src/features/models/ModelReceiptView.tsx": "86c9053fd9005e027c9ed98278d998e45388b649fde6be813b14a44151cddf08",
+    "web/console/src/features/models/ModelRecords.tsx": "16a1a910f3fe8862a23ac30a38e7b03456b558e2d49157d1644f7e28deb80e6e",
+    "web/console/src/features/models/Models.test.tsx": "d596eec9590a151996a36f24b73b8308f320d13c7ebb67cb1545749ba17b2aa1",
+    "web/console/src/features/models/ModelsDiagnostics.test.tsx": "f69e3d9d1cffedc17070a3084607682fbee07cdd0d526a6084f62fb791a1e954",
+    "web/console/src/features/models/ModelsIdentity.test.tsx": "84f96afa737b1b4724f5e0db5095ab70fc53f0df274c502b5e242286fcb1916a",
+    "web/console/src/features/models/ModelsRecovery.test.tsx": "bb27b39a17bed6f37304d663c2709754852dd2281db79abc26d0cd3745610a5e",
+    "web/console/src/features/models/api.ts": "9c6626981eaebc1e97ed09fff887149e8ba1b65ea776ad22121c6769b7beacfb",
+    "web/console/src/features/models/model.ts": "22ab4e67c7c4228c85048e45e121de497b51f0e3ac0a91567d2b983b3cabf1b3",
+    "web/console/src/features/models/models.css": "009a5512910fdb1dcd7386ee6cea1684d5d0f1a7acf412d6b010c4d065a4f9ed",
+    "web/console/src/features/models/requests.ts": "1b23e10d75a911e35343fd143b647e7526f6e1071ffb0c9fd26fdd45ab9fe1ea",
+    "web/console/src/features/models/test-fixtures.tsx": "6633f91c54676b447400ca0a8ee1c360f3eb8d231119473b779b528c0f1f8376",
+    "web/console/src/features/models/types.ts": "09c12dcb5cbee22e72d52fa4aadda4b24783a2de71fa5b48f94ced3d16e4aed1",
+    "web/console/src/features/models/useModels.ts": "5a2e416ff6d5b243046f14a232cebdb5b0f9531b0191127e5e275acdae4d2501",
+    "web/console/src/main.tsx": "64c2dc13711c0bcdfcacb59a777266b227d93bb3af005ada09b3eae426c07e6e",
+    "web/console/src/pages/Activity.tsx": "fd386a22ff5f7915ee29ba29711db44fa890afe951b2f00061ef13f226b70a59",
+    "web/console/src/pages/Artifacts.tsx": "1c38ed932ad56eb74e60428605190d1bcece5a7768e86a33fb1c7b644637bc04",
+    "web/console/src/pages/Gateways.test.tsx": "f6b5c671b1c06e43fd522ce54aa59ddcb552f51c7e244d43415c738652b41bb3",
+    "web/console/src/pages/Gateways.tsx": "4e7e3910a13f3cccc3e06df1a6f16c528981ddd6fd678d2cb1e5569cdaecb055",
+    "web/console/src/pages/Identity.css": "08a7f4f2f2af219301c75e0c75c8c17c38bf70a4426a3862091d3b2861b571b8",
+    "web/console/src/pages/Identity.test.tsx": "ceb0e5b289ab4c969609a2aa9618d713f21b1fe410340da5a0ad83d7b87348d3",
+    "web/console/src/pages/Identity.tsx": "071219a7fa0211ef33422d792694c2d79a31d10a59276cbc21407a82d34d54d9",
+    "web/console/src/pages/Members.tsx": "929359fa9011d692c8b3189a7277990fdc61c90891357a30cb0e735d878a804c",
+    "web/console/src/pages/ModelRunStream.tsx": "a3c28b4a218c8d2c604821389c491838263841126607f7a3f5acdfa7ce539755",
+    "web/console/src/pages/ModelServiceConnections.test.tsx": "ffaa2f528821c2cc75538583791414ec47eba168606f26615a58aab87a5e84cf",
+    "web/console/src/pages/ModelServiceConnections.tsx": "736680e994fc6b1141d0956f44486cf10b1b1aedc477a4e29553ea6d46522d6d",
+    "web/console/src/pages/Models.tsx": "f04feeae6cc84418d89812688da3d52ccedafa5582edf745197ab907dc466367",
+    "web/console/src/pages/Overview.tsx": "e2d2901b4a455e4f63d8edff0292bf18a85ff59d1f58411991d7ba0cafb36d52",
+    "web/console/src/pages/PreparedAU.css": "539b6e90ab8e6bbf23a8c1e105abefdb8d5b689ba0e61ff80d88615f80e5c9f7",
+    "web/console/src/pages/PreparedAU.tsx": "de53084cfac3e5da7f0158d17cbcfbc1cce7deb9742b74ea5a0e0943244e43be",
+    "web/console/src/pages/Resources.tsx": "e75e6b17fb980396b8f12c35caae12541405112f0e3b8805acbd4af02d47ba77",
+    "web/console/src/pages/RuntimeObservation.test.tsx": "6cf5da4df83fbe923c4c566ea9cd1c1022e0c8e3b77ba25cf0b6b27fc9d4b2cc",
+    "web/console/src/pages/Settings.tsx": "1b34ea19b2dd5c543e0f9b39eb44c0b414ff63e85dad5422c13b2bb81e89cafc",
+    "web/console/src/pages/SubscriptionConnections.css": "1a6da87f93bc560c30448a0ff5592981be8bd05cc98340442b18ba64e58a706e",
+    "web/console/src/pages/SubscriptionConnections.test.tsx": "68dbf91ca770cdf9a85689238c2cbecb5f09c3ad433a083553fda925f3a7c547",
+    "web/console/src/pages/SubscriptionConnections.tsx": "a9567005452b6d4e728993c4bef2aa923d76fb0d2ebf512a8a76ca4d22921f74",
+    "web/console/src/pages/Tasks.tsx": "55e1704678deaaa7ccb71948df2283e8887166318410a34c6d914ba75430dd56",
+    "web/console/src/styles.css": "1cfc5c6e0442c9993b0fdc16dbb79a3c7a94bda48ec40dc84593ab132a572e2e",
+    "web/console/src/test-setup.ts": "3431e137e7e733f1324140e7920dcb16e3f4d391fbd54a9ba156e5767d9e0fdc",
+    "web/console/src/workspace.css": "9a870af32702a147f264e0e5797067df812aa716727e05b7fbeb213f12251849",
+    "web/console/vite.config.ts": "82f24f668f4381692e7ee5a1d288c455374522a0a45024ce7a532a392a1296fc"
+  },
+  "source_state": "working_tree",
+  "toolchain": {
+    "bun": "1.4.2",
+    "node_build_required": "24.19.0",
+    "python_minimum": "3.11"
+  },
+  "upstream": {
+    "commit": "805a42ffaa56b29a88baef87c7567f1ab9a40a8f",
+    "declared_upstream_bun": "1.4.4",
+    "files": {
+      "patches/0001-export-go-kernel-functions.patch": "7ac252011e58f5c1e1004bbea34877330a39dedb9e7a682e506e62419671f1b8",
+      "vendor/opencode/LICENSE": "625f0f619133f89bbbb2abe37369613dfa1885eba1e50d02170deb62bb42cb6b",
+      "vendor/opencode/bun.lock": "fbc0a126180543a95c9b3cadcc27c7b76abfcfad8d6759a376c1571610c66f7c"
+    },
+    "hash_encoding": "sha256-utf8-lf",
+    "patch": "patches/0001-export-go-kernel-functions.patch",
+    "repository": "https://github.com/anomalyco/opencode.git",
+    "tested_bun": "1.4.2",
+    "version": "2.2.5"
+  }
+}

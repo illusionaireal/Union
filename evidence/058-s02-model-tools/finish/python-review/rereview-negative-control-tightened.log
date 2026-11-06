@@ -1,0 +1,43 @@
+{"implementation": "previous_reviewed_spawn_in_memory", "request_delay_seconds": 0, "tests_run": 1, "test_passed": false}
+test_late_start_failure_does_not_overwrite_successful_explicit_recovery (tests.test_core_model_observations.CoreModelObservationTests.test_late_start_failure_does_not_overwrite_successful_explicit_recovery) ... FAIL
+
+======================================================================
+FAIL: test_late_start_failure_does_not_overwrite_successful_explicit_recovery (tests.test_core_model_observations.CoreModelObservationTests.test_late_start_failure_does_not_overwrite_successful_explicit_recovery)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "tests\test_core_model_observations.py", line 219, in test_late_start_failure_does_not_overwrite_successful_explicit_recovery
+    self.assertEqual(final["status"], "succeeded",
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                     "A stale start-failed observer must not overwrite the completed original check")
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'unknown' != 'succeeded'
+- unknown
++ succeeded
+ : A stale start-failed observer must not overwrite the completed original check
+
+----------------------------------------------------------------------
+Ran 1 test in 1.899s
+
+FAILED (failures=1)
+
+{"implementation": "previous_reviewed_spawn_in_memory", "request_delay_seconds": 0.4, "tests_run": 1, "test_passed": false}
+test_late_start_failure_does_not_overwrite_successful_explicit_recovery (tests.test_core_model_observations.CoreModelObservationTests.test_late_start_failure_does_not_overwrite_successful_explicit_recovery) ... FAIL
+
+======================================================================
+FAIL: test_late_start_failure_does_not_overwrite_successful_explicit_recovery (tests.test_core_model_observations.CoreModelObservationTests.test_late_start_failure_does_not_overwrite_successful_explicit_recovery)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "tests\test_core_model_observations.py", line 219, in test_late_start_failure_does_not_overwrite_successful_explicit_recovery
+    self.assertEqual(final["status"], "succeeded",
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                     "A stale start-failed observer must not overwrite the completed original check")
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'unknown' != 'succeeded'
+- unknown
++ succeeded
+ : A stale start-failed observer must not overwrite the completed original check
+
+----------------------------------------------------------------------
+Ran 1 test in 2.757s
+
+FAILED (failures=1)

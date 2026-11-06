@@ -1,0 +1,38 @@
+{
+  "verified_at": "2026-11-06T15:48:59.1190457+08:00",
+  "base_head": "d5802f8672df88db447e7e0bb86c2f1a5265ad18",
+  "files": [
+    {
+      "path": "services/modeld/src/credential-content.ts",
+      "before_sha256": "a0d9752ab8edea444d9f817025407784d63388bc45aa4d4d954befe7cfbe4122",
+      "sha256": "d30084fc470dce8a1c899f042f6f785321a82d2c406bedde427dc89e2717111d"
+    },
+    {
+      "path": "services/modeld/test/secret-boundaries.test.ts",
+      "before_sha256": "dd2a5d0c75c3f399ed3278e1d911b4071d42b89ca314c9b02e3ab300d3151f1e",
+      "sha256": "3ea8f10eb42b8e02e63514e5789c9a2e40318710c5a4383f76ab2fcab6d03596"
+    },
+    {
+      "path": "services/modeld/test/fixtures/secret-boundaries-probe.ts",
+      "before_sha256": "5500bbd0d5aa67f303529417673fcf8b26f82c8b30df5defabd99c149279a5f0",
+      "sha256": "d278307d0ba462f1c6577be3ded4238c38fad6f94986f38bee4d05ad2f542fb5"
+    }
+  ],
+  "protected_files": [
+    {
+      "path": "services/modeld/src/api-accounts.ts",
+      "sha256": "8d7242f693616b21c0073fafb3d13096e2cb61dc93c2b56c1315663b28f314d2",
+      "unchanged_from_review": true
+    },
+    {
+      "path": "services/modeld/src/kernel.ts",
+      "sha256": "cac040511eed9ec6cd025f569d59ca0014d9aa9e80abf9c3f4b271dd7d1f5aa4",
+      "unchanged_from_review": true
+    },
+    {
+      "path": "services/modeld/src/usage.ts",
+      "sha256": "0c84b7549421fca520565eee5b516892acb202ba6765f0733073b1bdc6bfc587",
+      "unchanged_from_review": true
+    }
+  ]
+}

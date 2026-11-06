@@ -1,0 +1,20 @@
+{
+  "task": "U-072",
+  "online_id": 21,
+  "current_user_id": "1d3a49fd-b15d-4810-9ab6-c2e807e835c4",
+  "assignee_unchanged": "f926a8ec-c502-41c9-910d-80bbfe88f989",
+  "branch": "rewrite/charter-v1",
+  "status": "blocked",
+  "progress_version_before": 6,
+  "version_after": 7,
+  "http": {
+    "read": 200,
+    "patch": 200,
+    "readback": 200
+  },
+  "local_mirror": "verified",
+  "other_online_tasks_unchanged": true,
+  "other_local_tasks_unchanged": true,
+  "evidence": "evidence/058-s02-model-tools/README.md",
+  "real_acceptance": "blocked by selected credential rejection"
+}

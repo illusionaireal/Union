@@ -2,7 +2,7 @@
 
 ## TaskIntentDraft
 
-- Requested outcome: 完整交付 U-072/S02/#21，验证后提交推送；最新用户反馈先改写全部 12 张 V1 卡，使操作、产物和演示可直接理解
+- Requested outcome: 完整交付 U-072/S02/#21，验证后提交推送；用户最新要求继续完成21，并选择当前 Codex 连接进行真实验收
 - Goal: 完整交付 U-072/S02/#21，验证后提交推送
 - Success evidence:
 - 卡片检查点：12 张线上卡 HTTP 200 读回；完整技术原文移到现有开发附录；64 项其他任务和全部非文字管理字段保持；独立表达复核与结构检查通过
@@ -11,7 +11,7 @@
 - Stop condition: 整卡含真实出口通过才done；账号/资源未落实不擅自调用、不关闭卡片
 - Non-goals:
 - S03任意目标/S04反馈、其他profiles、生产迁移或部署
-- Scope: 父任务仍为 S02 配置、有限资源授权、持久模型工具往返和真实验证；当前检查点只改 12 卡文案及引用，保留技术要求与任务状态，不实施未来卡
+- Scope: 完整 S02 配置、有限资源授权、持久模型工具往返、显式所选 Responses 及真实验证；原12卡文案检查点已交付，不实施未来卡
 - Change kinds:
 - feature
 - Risk hints:
@@ -48,10 +48,10 @@
 
 ## ImpactStatementDraft
 
-- Compatibility boundary: 保留 schema 1/2 与 legacy；schema 3 显式采用；当前提交仅含 12 卡文案、完整技术验收附录和对应记录，运行代码与无关修改保留
+- Compatibility boundary: 保留 AU schema 1/2 与 legacy，schema 3 显式采用；modeld schema 0/1 的显式协议持久化与受支持发布拒绝边界。只交付本次 S02 归属文件，保留无关既有修改
 - Affected layers:
-- 当前只改 12 张 V1 卡及其开发引用；原 S02 运行代码保持
-- 后续拟议Runtime/Harness/modeld接缝，当前不实施
+- V1 模型领域/应用/私有存储、共享有界协议、modeld 单次流、React 页面和发布兼容
+- 只同步当前 S02 已实现边界；未来通用 Runtime/Harness 接缝不实施
 - Owners:
 - codex/gpt-6/s02-2026-11-06 独占共享事务/主账/在线/Git
 - Invariants:
@@ -74,3 +74,7 @@ These records are Method Pack drafts / hints, not authoritative runtime decision
 用户指出“每一个卡片要干啥看不懂，内容太抽象”。本次将 12 张现有 V1 卡改为完成后可做的事情、具体操作、演示和当前进度；详细技术验收保留在原 tasks.md 的开发附录。上次设计检查点已提交推送至 4c49d5d；本次从该 HEAD 接续原记录，没有替换父任务。证据为 evidence/058-s02-model-tools/card-clarity.json。
 
 开始时有 136 份既有修改文件；134 份哈希保持，另两份未跟踪看板脚本出现本任务外变化，来源未确认并保留现场。不能声称所有预存文件完全不变；此次仅提交文案和对应记录，S02 原有缺陷与真实验收仍未完成。
+
+## 2026-11-06 恢复完整 #21 实施
+
+用户要求“继续完成21”，并明确选择调用当前 Codex 作为真实模型来源。当前 HEAD/upstream 为 d5802f8；现场快照 .union/s02-finish/task-start.json。本轮恢复原 S02 工程和真实出口，卡片文字修改已完成。TDD Route 继续 strict，依据原用户/项目明确指令。最小修复边界是现有模型凭据校验、后台线程所有权、单次请求事实与用量投影、受控错误分类及 React 模型流程；只改文档无法修复这些行为，因此选择代码修复。共享事务/契约/主账/Git 仍由协调者拥有，modeld 保密修复可独立实施和复核。新增错误与用量字段先写入 s02-contract 续接节；实际 Codex 协议如需变更，在相关实现前补充冻结。

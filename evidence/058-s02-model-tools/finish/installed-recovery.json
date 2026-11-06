@@ -1,0 +1,23 @@
+{
+  "observed_at": "2026-11-06T08:05:01Z",
+  "result": "authentication failure retained across installed restart",
+  "au_id": "org-39ba258522e6482c977fb52e28765e99",
+  "check_id": "640475fe-c048-445a-be1d-aa417bae068e",
+  "request_id": "model-50a635fcb4aa501d8f76d61915be7a6c",
+  "work_id": "model-work-f9f80470bc485171b884774b123c66bd",
+  "core_schema": 3,
+  "modeld_schema": 1,
+  "modeld_requests": 1,
+  "provider_responses_accepted": 0,
+  "tool_executions": 0,
+  "additional_inference_posts": 0,
+  "same_original_facts": true,
+  "current_code_preflight": "passed",
+  "incompatible_core_schema_rejected": true,
+  "incompatible_modeld_schema_rejected": true,
+  "request_state": "interrupted",
+  "check_status": "unknown",
+  "diagnostic": "provider_authentication_failed",
+  "usage_and_cost": "unknown, never fabricated as zero",
+  "au_state_sha256": "aa2b631418b7e469881292cc5e2d03afa953f29653d47934e2a17dace73060d0"
+}

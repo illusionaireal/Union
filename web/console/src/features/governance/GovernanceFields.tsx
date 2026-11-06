@@ -97,6 +97,17 @@ export function GovernanceFields({ draft }: { draft: GovernanceDraft }) {
           </label>
           <label className="check-field">
             <input
+              name="read_document"
+              type="checkbox"
+              defaultChecked={draft.read.au.charter.allowed_tools.includes('read_document')}
+            />
+            允许只读所选验证资料
+          </label>
+          <p className="form-note">
+            仅允许模型接入验证读取明确选择的文本资料，不授予宿主文件访问或其他工具权限。
+          </p>
+          <label className="check-field">
+            <input
               name="board_can_amend"
               type="checkbox"
               defaultChecked={draft.read.au.charter.board_can_amend}

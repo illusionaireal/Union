@@ -1,0 +1,13 @@
+test_cancel_after_observation_retains_usage_without_followup (tests.test_core_model_observations.CoreModelObservationTests.test_cancel_after_observation_retains_usage_without_followup) ... ok
+test_conflicting_sequence_keeps_original_observed_prefix (tests.test_core_model_observations.CoreModelObservationTests.test_conflicting_sequence_keeps_original_observed_prefix) ... ok
+test_identical_replayed_sequence_does_not_fail_original_check (tests.test_core_model_observations.CoreModelObservationTests.test_identical_replayed_sequence_does_not_fail_original_check) ... ok
+test_late_start_failure_does_not_overwrite_successful_explicit_recovery (tests.test_core_model_observations.CoreModelObservationTests.test_late_start_failure_does_not_overwrite_successful_explicit_recovery) ... ok
+test_next_poll_failure_preserves_observed_usage (tests.test_core_model_observations.CoreModelObservationTests.test_next_poll_failure_preserves_observed_usage) ... ok
+test_second_event_page_failure_preserves_first_page (tests.test_core_model_observations.CoreModelObservationTests.test_second_event_page_failure_preserves_first_page) ... ok
+test_currency_only_update_does_not_relabel_an_old_charge (tests.test_core_model_observations.CoreModelUsageFactsTests.test_currency_only_update_does_not_relabel_an_old_charge) ... ok
+test_invalid_later_values_do_not_erase_last_valid_observation (tests.test_core_model_observations.CoreModelUsageFactsTests.test_invalid_later_values_do_not_erase_last_valid_observation) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 9.116s
+
+OK
