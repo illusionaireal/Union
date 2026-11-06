@@ -1,5 +1,17 @@
 # 当前工程交接
 
+## 2026-11-06：S02 执行链设计与 U-072 开发卡样板（058）
+
+接续用户指定会话，按其最后要求先补清运行进程、接口、状态和代码设计，再展开 U-072。具体入口为 [架构部署图](docs/ARCHITECTURE.md#runtime-deployment)、[目标到首份交付时序](docs/ARCHITECTURE.md#first-delivery)、[接口与恢复](docs/ARCHITECTURE.md#execution-contracts)、[模块改造表](docs/ARCHITECTURE.md#module-changes)及主账生成的 [U-072 样板](TASKS.md#u-072)。卡片现在逐项给出已有/待写函数组件、I/O、页面入口、完整流程和完成演示；S03/S04/S06 只细化后续功能，未认领或实施。
+
+源码核对确认旧 ModelServiceTransport/HarnessExecutor 仍依赖 Engine；S02 工作树直接使用 ModelServiceClient 和持久两阶段验证。无关工作阻塞同时涉及 Console、runner 的每 AU 入口/锁及 modeld 的全服务串行队列，不能只删除 runner 一处判断。拟议 S03 接缝已补足 step_ref/attempt、核心游标与 SDK checkpoint、原事实采用待办、工具执行/核对、父子预约，S06 再承接并发和持续恢复；这些机制尚须对应契约/编码前 ADR 冻结。
+
+两份独立设计复核及受控反例见 [058 核查](evidence/058-s02-model-tools/design-readback.md)。本次没有改运行行为；原 S02 实现仍未提交、未完成。新复验中 4 个凭据反例继续失败，线程启动恢复、结构化诊断、中断事件用量投影、完整浏览器及最终安装也仍待闭合，真实 profile 的资料/账号位置/调用次数和费用范围尚未落实。不能把历史 GREEN 或这次文档检查点称为完整 S02。
+
+主账只展开 U-072，保持 doing、原 owner/claim/依赖/历史和 6/6 WIP；本机当前管理脚本已无旧宿主适配器导出，使用已保存的统一适配器快照完成锁内更新，再用当前 renderer/validator 检查，没有恢复或交付无关管理工具。在线 #21 写前/写入/读回均 HTTP 200，version 3→4、progress，全文与主账一致；其他卡未变，见 [在线收据](evidence/058-s02-model-tools/design-kanban.json)。
+
+本次交付只包含已授权 S02 的契约/设计、卡片与证据，原模型/前端/后端代码和无关修改保留。固定检查与交付范围见 [验证记录](evidence/058-s02-model-tools/design-validation.json)。继续时先核对实际分支/HEAD/上游和修改归属，再按 U-072 样板在原契约细化诊断/用量字段，以严格 TDD 修复上述缺陷；完整 M01–M10 和指定真实 profile 均通过才关闭整卡。
+
 ## 2026-11-05：完整 S05 / U-069 本地治理与责任交接（057）
 
 现在可在现有 React 工作台登记核心参与者、创建并重开 AU，采用本地治理程序，分配内部记录工作、收取并采用文字，再撤权或交接原 Work。系统在行动和成果采用处重新检查身份、任职、授权链与版本，保留初始治理根、原创建回执、迟到事实及未完责任。内容仍由人提交；S05 没有启用 Agent 自主工作、模型、真实资源或外部承诺。

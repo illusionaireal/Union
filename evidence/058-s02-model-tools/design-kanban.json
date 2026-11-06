@@ -1,0 +1,19 @@
+{
+  "at": "2026-11-06T02:26:45.307852+00:00",
+  "task": "U-072",
+  "online_card": 21,
+  "read_before_http": 200,
+  "write_http": 200,
+  "read_after_http": 200,
+  "actual_user_id": "f926a8ec-c502-41c9-910d-80bbfe88f989",
+  "before_version": 3,
+  "after_version": 4,
+  "state": "progress",
+  "branch": "rewrite/charter-v1",
+  "basis_head": "c31bf0efac7e54565e3a5fce0d6becd807b12b5a",
+  "description_matches_ledger": true,
+  "status_owner_dependencies_preserved": true,
+  "other_cards_unchanged_at_readback": true,
+  "description_sha256": "517a009cf9ed81db768631d368e881fb9ea6b301cadbdcde9343df4754d0ad74",
+  "scope": "Design and sample-card update only; U-072 remains unfinished; no real provider calls"
+}

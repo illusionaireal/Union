@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "aegis.schema.v0",
+  "taskId": "U-072",
+  "requiredBaselineRefs": [
+    "docs/UNION_CHARTER_v1.0.md",
+    "specs/053-union-rewrite/s02-contract.md",
+    "docs/decisions/0005-au-runtime-boundaries.md",
+    "docs/decisions/0006-charter-policy-adoption.md"
+  ],
+  "deliveredContextRefs": [],
+  "acknowledgedBeforePlanRefs": [
+    "docs/UNION_CHARTER_v1.0.md",
+    "specs/053-union-rewrite/s02-contract.md",
+    "docs/decisions/0005-au-runtime-boundaries.md",
+    "docs/decisions/0006-charter-policy-adoption.md"
+  ],
+  "citedInPlanRefs": [
+    "docs/UNION_CHARTER_v1.0.md",
+    "specs/053-union-rewrite/s02-contract.md",
+    "docs/decisions/0005-au-runtime-boundaries.md",
+    "docs/decisions/0006-charter-policy-adoption.md"
+  ],
+  "missingRefs": [],
+  "decision": "continue"
+}

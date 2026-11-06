@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "aegis.schema.v0",
+  "taskId": "U-072",
+  "lastCheckpointRef": "docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/todo-checkpoint-draft.json",
+  "resumeInstruction": "读主账U-072、058核查、ARCHITECTURE第8-10节、053计划第10-11节及s02-contract；核对真实HEAD/upstream和S02未提交代码，不创建新工作替代原责任",
+  "knownPartialWork": [
+    "部署图、首次交付时序、接口/恢复和模块改造表，独立设计复核无阻断",
+    "主账U-072四块样板与在线#21正文一致，HTTP200，仍doing/progress",
+    "本轮npm check通过含175前端；Python561项，556通过/5平台跳过；文档结构及预存代码保持核对通过"
+  ],
+  "mustReadBeforeContinuing": [
+    "docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/10-intent.md",
+    "docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/20-checkpoint.md",
+    "docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/todo-checkpoint-draft.json"
+  ],
+  "unsafeToAssume": [
+    "文档交付不等于整卡完成；全量测试未覆盖额外凭据反例；S03/S04/S06仅设计不实施"
+  ]
+}

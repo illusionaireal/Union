@@ -1,0 +1,55 @@
+[10:02:29.335] INFO (#5): database schema bootstrap started {
+  migrations: 59,
+}
+[10:02:29.407] INFO (#5): database schema bootstrap completed {
+  migrations: 59,
+  durationMs: 72,
+}
+{
+  "observations": {
+    "cumulative": {
+      "input_tokens": 11,
+      "output_tokens": 4,
+      "final_cost": 0.0011,
+      "all_raw_snapshots_retained": true
+    },
+    "http-error": {
+      "state": "interrupted",
+      "error": "provider_result_unconfirmed",
+      "public_secret": false,
+      "provider_posts": 1
+    },
+    "stream-error": {
+      "state": "interrupted",
+      "error": "provider_result_unconfirmed",
+      "public_secret": false,
+      "provider_posts": 1
+    },
+    "usage-secret": {
+      "state": "interrupted",
+      "error": "credential_in_model_content",
+      "public_secret": false,
+      "provider_posts": 1
+    },
+    "half_json": {
+      "state": "completed",
+      "error": null,
+      "public_tool_calls": 0,
+      "native_part_types": []
+    },
+    "unsupported_tool_type": {
+      "state": "completed",
+      "error": null,
+      "provider_posts": 1
+    },
+    "cancel_and_reopen": {
+      "state": "interrupted",
+      "action_authorized": false,
+      "result": null,
+      "raw_usage_survives": true,
+      "safe_partial_survives": true,
+      "reopening_preserves_events": true
+    }
+  },
+  "external_provider_calls": 0
+}

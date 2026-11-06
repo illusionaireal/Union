@@ -27,3 +27,17 @@ Entries are workspace records, not authoritative runtime decisions.
 | 2026-11-05 | artifact | docs/aegis/work/2026-11-05-s05-governance/evidence-bundle-draft-S05.json | 2026-11-05-s05-governance evidence S05 |
 | 2026-11-05 | artifact | docs/aegis/work/2026-11-05-s05-governance/gate-input-pack.json | 2026-11-05-s05-governance gate input pack |
 | 2026-11-05 | work | docs/aegis/work/2026-11-05-s05-governance/proof-bundle.md | 2026-11-05-s05-governance proof bundle |
+| 2026-11-06 | work | docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/10-intent.md | S02 核心模型与只读工具往返 intent |
+| 2026-11-06 | work | docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/20-checkpoint.md | S02 核心模型与只读工具往返 checkpoint |
+| 2026-11-06 | work | docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/90-evidence.md | S02 核心模型与只读工具往返 evidence |
+| 2026-11-06 | work | docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/99-reflection.md | S02 核心模型与只读工具往返 reflection |
+| 2026-11-06 | artifact | docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/task-intent-draft.json | S02 核心模型与只读工具往返 task intent draft |
+| 2026-11-06 | artifact | docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/baseline-read-set-hint.json | S02 核心模型与只读工具往返 baseline read-set hint |
+| 2026-11-06 | artifact | docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/baseline-usage-draft.json | S02 核心模型与只读工具往返 baseline usage draft |
+| 2026-11-06 | artifact | docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/impact-statement-draft.json | S02 核心模型与只读工具往返 impact statement draft |
+| 2026-11-06 | artifact | docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/todo-checkpoint-draft.json | S02 核心模型与只读工具往返 todo checkpoint draft |
+| 2026-11-06 | artifact | docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/drift-check-draft.json | S02 核心模型与只读工具往返 drift check draft |
+| 2026-11-06 | artifact | docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/resume-state-hint.json | 2026-11-06-s02-model-tool-roundtrip resume state hint |
+| 2026-11-06 | artifact | docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/evidence-bundle-draft-S02-design-readback.json | 2026-11-06-s02-model-tool-roundtrip evidence S02-design-readback |
+| 2026-11-06 | artifact | docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/gate-input-pack.json | 2026-11-06-s02-model-tool-roundtrip gate input pack |
+| 2026-11-06 | work | docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/proof-bundle.md | 2026-11-06-s02-model-tool-roundtrip proof bundle |

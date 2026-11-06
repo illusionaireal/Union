@@ -1,0 +1,189 @@
+Published verification output; line endings normalized to LF and temporary test directories replaced when present. Original retained locally.
+
+
+> union@0.0.0 check
+> npm run check:management && npm run check:plan && npm test && npm run check:console
+
+
+> union@0.0.0 check:management
+> node scripts/project-management.mjs check && node --test tests/project-management.test.mjs
+
+Management check: 15 modules, 8 milestones, 76 tasks; PASS
+✔ rejects missing owners at start and unfinished dependencies, but permits honest unassigned backlog (9.8475ms)
+✔ completion requires scope, reviewer and existing evidence, and does not promote milestones (5.6539ms)
+✔ rejects duplicate IDs, unknown references and dependency cycles (6.7609ms)
+✔ blocked work needs an unblock action; already-started blocked work counts toward WIP (6.0913ms)
+✔ rejects evidence outside repository, invalid scope and malformed dates (5.4484ms)
+✔ deterministic generated views reject stale output and preserve surrounding narrative (26.3991ms)
+✔ flow summary keeps empty live evidence distinct from completion counts (2.2036ms)
+✔ milestone acceptance and task scope cannot be asserted without their review metadata (4.8737ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 240.4806
+
+> union@0.0.0 check:plan
+> node scripts/check-plan.mjs
+
+{"baseline":"UNION-B1","tasks":82,"dependencies":181,"cycles":0,"missingDependencies":0,"baselineFiles":5,"githubTasks":8}
+
+> union@0.0.0 test
+> node --test tests/*.test.ts
+
+✔ retry uses the same reservation; changed request is rejected (163.2347ms)
+✔ unauthorized model actions and tenant/currency changes leave budget untouched (118.4526ms)
+✔ only positive safe integer amounts and bounded keys are accepted (149.1289ms)
+✔ eight competing processes cannot exceed a 100-minor-unit hard budget (721.0617ms)
+✔ process crash after external success recovers by lookup without repeating the effect (377.7149ms)
+✔ crash before external call retains reservation when lookup is inconclusive (487.158ms)
+✔ definitive failure releases reservation exactly once (165.3026ms)
+✔ settling below maximum releases the difference and invalid receipt rolls back (156.4967ms)
+✔ same key across test tenants remains independent (270.6585ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2836.3972
+
+> union@0.0.0 check:console
+> npm run typecheck --workspace @union/console && npm run test --workspace @union/console && npm run build:console
+
+
+> @union/console@0.1.0 typecheck
+> tsc --noEmit
+
+
+> @union/console@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 D:/Project/Union/web/console
+
+ ✓ src/app/workspace.test.tsx (4 tests) 863ms
+   ✓ workspace organization transitions > keeps the session and draft mounted while withholding old organization data and writes  401ms
+ ✓ src/pages/Gateways.test.tsx (3 tests) 628ms
+ ✓ src/app/governance-workspace.test.tsx (11 tests) 1034ms
+   ✓ current governance access projection > does not resurrect a cached AU after observing a changed principal_id  411ms
+ ✓ src/pages/SubscriptionConnections.test.tsx (8 tests) 917ms
+   ✓ subscription configuration > clears the key and blocks duplicate writes while original result is unknown  327ms
+ ✓ src/pages/Identity.test.tsx (14 tests) 1448ms
+   ✓ identity boundary > shows the setup form on an unconfigured deployment and keeps its fields  349ms
+ ✓ src/api/client.test.ts (3 tests) 42ms
+ ✓ src/app/url-state.test.tsx (1 test) 394ms
+   ✓ URL filter state > composes rapid edits without restoring a cleared search and preserves organization scope  392ms
+ ✓ src/pages/RuntimeObservation.test.tsx (11 tests) 871ms
+ ✓ src/features/commands/fields.test.tsx (9 tests) 1268ms
+   ✓ operation form interactions > keeps edited content and focus across snapshot refreshes  366ms
+ ✓ src/features/commands/core-creation.test.tsx (7 tests) 5620ms
+   ✓ core creation through the workspace > keeps explicit legacy company creation reachable after reopening a prepared AU  1666ms
+   ✓ core creation through the workspace > explains the prepared boundary at the empty model entry instead of promising immediate configuration  483ms
+   ✓ core creation through the workspace > opens the saved prepared AU through V1 and shows bound governance without legacy snapshot calls  1130ms
+   ✓ core creation through the workspace > retains an unknown V1 request for lookup after the result dialog closes  780ms
+   ✓ core creation through the workspace > keeps input editable after a pre-allocation V1 validation rejection  718ms
+   ✓ core creation through the workspace > refuses ordinary creation on an older service without silently sending legacy create  308ms
+   ✓ core creation through the workspace > submits ordinary creation as create_v1 with exactly the five supported fields  532ms
+ ✓ src/pages/ModelServiceConnections.test.tsx (2 tests) 648ms
+   ✓ binds adoption to selected account, model and AU; lost reply blocks a second write  577ms
+ ✓ src/features/commands/core-boundaries.test.tsx (10 tests) 6593ms
+   ✓ lets a core participant prepare its own AU while withholding legacy operations and showing its stable identity  1039ms
+   ✓ core creation identity and receipt boundaries > rejects a POST receipt with the wrong id and retains the original V1 request  876ms
+   ✓ core creation identity and receipt boundaries > rejects a POST receipt with the wrong kind and retains the original V1 request  831ms
+   ✓ core creation identity and receipt boundaries > keeps an unsubmitted creation draft and focus through a same-principal session renewal  566ms
+   ✓ core creation identity and receipt boundaries > refuses to bind a draft to a different principal even before the workspace poll notices the change  462ms
+   ✓ core creation identity and receipt boundaries > adopts a delayed creation result only for its original principal (changed=false)  840ms
+   ✓ core creation identity and receipt boundaries > adopts a delayed creation result only for its original principal (changed=true)  710ms
+   ✓ core creation identity and receipt boundaries > shows a lookup failure beside an unknown receipt while retaining its original ID  698ms
+   ✓ core creation identity and receipt boundaries > does not create an AU when the user cancels while the identity preflight is still pending  336ms
+ ✓ src/features/models/ModelsIdentity.test.tsx (11 tests) 7527ms
+   ✓ model identity, scope and input lifetime > keeps draft fields and keyboard focus through refresh and same-principal renewal  1500ms
+   ✓ model identity, scope and input lifetime > retains draft while offline and never queues a command for reconnection  1134ms
+   ✓ model identity, scope and input lifetime > clears a draft after permissions change and does not reopen it when access returns  773ms
+   ✓ model identity, scope and input lifetime > erases credentials immediately when preflight learns that read access was denied  561ms
+   ✓ model identity, scope and input lifetime > rejects a response for a different AU, then can recover on an explicit matching refresh  523ms
+   ✓ model identity, scope and input lifetime > ignores an earlier successful read arriving after a newer permission denial  818ms
+   ✓ model identity, scope and input lifetime > rejects a changed cookie identity before any command is posted  736ms
+   ✓ model identity, scope and input lifetime > does not expose a late command result to a different principal  599ms
+   ✓ model identity, scope and input lifetime > clears draft and previous results on a new service instance  334ms
+   ✓ model identity, scope and input lifetime > clears form on AU switch and never displays an old AU response as the new one  350ms
+ ✓ src/features/models/ModelsRecovery.test.tsx (10 tests) 8179ms
+   ✓ model original-request recovery > never replays a lost save and only queries the original receipt  2057ms
+   ✓ model original-request recovery > treats a concrete validation error as rejected input instead of unknown  1216ms
+   ✓ model original-request recovery > keeps an unmatched response unknown without displaying another AU receipt  826ms
+   ✓ model original-request recovery > retains own receipt lookup after AU read access is denied and clears former output  510ms
+   ✓ model original-request recovery > recovers after a service restart using the original issuer and ID  344ms
+   ✓ model original-request recovery > reconciles a saved unknown operation explicitly without resubmitting credentials  851ms
+   ✓ model original-request recovery > keeps other connections usable when one verification is unknown  863ms
+   ✓ model original-request recovery > allows the current governor to request local stop while governance is unavailable  599ms
+   ✓ model original-request recovery > lets an unavailable current governor disable a connection while enable and default stay unavailable  521ms
+   ✓ model original-request recovery > does not submit if the dialog is cancelled while checking current identity  388ms
+ ✓ src/features/commands/receipts.test.ts (5 tests) 20ms
+ ✓ src/features/models/Models.test.tsx (13 tests) 9030ms
+   ✓ core model access user journey > opens the core models route and navigation for a normal core governor  1173ms
+   ✓ core model access user journey > saves without inference or adoption, clears the key and keeps only request identities  1257ms
+   ✓ core model access user journey > grants bounded resources, reads a selected document twice and adopts independently  2908ms
+   ✓ core model access user journey > can adopt an enabled untested connection without purchasing a check  905ms
+   ✓ core model access user journey > requires a fresh API key when editing an endpoint and does not reuse an old check  336ms
+   ✓ core model access user journey > uses only an explicitly supplied modeld grant, without listing host accounts  489ms
+   ✓ core model access user journey > rejects a credential containing 空白 before preview or POST  331ms
+   ✓ core model access user journey > rejects a credential containing 非 ASCII 字符 before preview or POST  307ms
+   ✓ core model access user journey > rejects a credential containing 超过 4096 字符 before preview or POST  314ms
+   ✓ core model access user journey > keeps normal inputs after a persisted domain rejection and allows a new preview  426ms
+ ✓ src/features/governance/Governance.test.tsx (53 tests) 18109ms
+   ✓ governance user journey > keeps account-level AU creation available from a governed overview page without governing commands  1057ms
+   ✓ governance user journey > keeps account-level AU creation available from a governed tasks page without governing commands  530ms
+   ✓ governance user journey > keeps account-level AU creation available from a governed settings page without governing commands  442ms
+   ✓ governance user journey > renders server readiness gaps without misreporting missing governing identities as an expired deadline  305ms
+   ✓ governance user journey > separates the original root from current authority and renders only server-provided actions  520ms
+   ✓ governance user journey > previews and adopts a single-principal exit procedure without activating business  796ms
+   ✓ governance user journey > configures an explicit successor principal without treating its name as authority  738ms
+   ✓ governance user journey > previews and explicitly submits acknowledge_recovery using the current server version  519ms
+   ✓ governance user journey > previews and explicitly submits activate_governance using the current server version  597ms
+   ✓ governance user journey > previews and explicitly submits renew_governance using the current server version  435ms
+   ✓ governance user journey > previews and explicitly submits accept_governance using the current server version  425ms
+   ✓ governance user journey > previews and explicitly submits exit_governance using the current server version  317ms
+   ✓ governance user journey > nominates another core identity and offers explicit cancellation of an existing nomination  387ms
+   ✓ governance user journey > retains a new goal draft and focus across same-principal renewal and polling  346ms
+   ✓ controlled responsibility forms > appoints a human member with separate generated member and responsibility IDs  397ms
+   ✓ governance command recovery boundaries > retains the original request when identity verification fails with 401/'not_authenticated' after a successful POST  310ms
+   ✓ governance command recovery boundaries > retains the original request when identity verification fails with 401/undefined after a successful POST  323ms
+   ✓ governance command recovery boundaries > retains the original request when identity verification fails with 409/'incompatible_state' after a successful POST  343ms
+   ✓ governance command recovery boundaries > does not create a second request for the same action after closing an unknown result  401ms
+   ✓ governance command recovery boundaries > keeps an unknown action local and lets a different work proceed with its own request  611ms
+   ✓ governance command recovery boundaries > recovers an original request after reload onto a new service instance with the same principal  395ms
+   ✓ governance command recovery boundaries > refreshes evidence-only rejection while retaining the unadopted content and its original request  317ms
+   ✓ governance command recovery boundaries > lets the original issuer query its own receipt after losing current AU access  315ms
+
+ Test Files  17 passed (17)
+      Tests  175 passed (175)
+   Start at  10:23:41
+   Duration  31.72s (transform 4.49s, setup 34.87s, collect 29.76s, tests 63.19s, environment 90.44s, prepare 6.56s)
+
+
+> union@0.0.0 build:console
+> npm run build --workspace @union/console
+
+
+> @union/console@0.1.0 build
+> tsc --noEmit && vite build
+
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 2043 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.74 kB │ gzip:   0.51 kB
+dist/assets/index-CHFlK4ZY.css   49.73 kB │ gzip:  10.97 kB
+dist/assets/index-C5JWOPRE.js   521.34 kB │ gzip: 160.76 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 7.04s

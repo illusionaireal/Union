@@ -1,0 +1,15 @@
+{
+  "at": "2026-11-06T02:34:38.291257+00:00",
+  "scope": "Design documents and current sample card only",
+  "exit_code": 0,
+  "documents_checked": 13,
+  "relative_links_and_anchors_checked": 397,
+  "handoff_scope": "New 2026-11-06 entry only; preexisting historical entries verified unchanged",
+  "charter_hash_matches": true,
+  "four_sample_sections_match_ledger_generated_view_and_online": true,
+  "other_tasks_owners_dependencies_history_wip_preserved": true,
+  "non_documentation_snapshot_files_unchanged": 84,
+  "probe_source_and_log_hashes_match": true,
+  "review_corrections_present": true,
+  "limits": "Structure and source readback; does not repair or accept S02 runtime, browser, installation or real-profile gaps"
+}

@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "aegis.schema.v0",
+  "taskId": "U-072",
+  "taskIntentRef": "docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/task-intent-draft.json",
+  "baselineRefs": [
+    "docs/UNION_CHARTER_v1.0.md",
+    "docs/decisions/0005-au-runtime-boundaries.md",
+    "specs/053-union-rewrite/s02-contract.md"
+  ],
+  "scopeStatus": "最新要求先技术设计与样板；保留完整S02，未来卡仅拟议",
+  "compatStatus": "实际HEAD c31bf0e；源码未改，原owner/依赖/历史/租约与6/6 WIP保留；旧Engine只legacy",
+  "retirementStatus": "只描述按用例迁出/重绑后退役；本轮不删除或切换旧执行实现",
+  "newRiskSignals": [
+    "当前凭据4反例RED；线程start恢复缺陷；中断原用量投影和诊断缺口；浏览器可读性失败；尚未最终安装/真实profile"
+  ],
+  "decision": "continue"
+}

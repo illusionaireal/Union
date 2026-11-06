@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "aegis.schema.v0",
+  "taskId": "U-072",
+  "currentTodo": "当前运行设计/样板已复核和同步，完成文档检查点Git交付；原S02仍未完成",
+  "completedTodos": [
+    "部署图、首次交付时序、接口/恢复和模块改造表，独立设计复核无阻断",
+    "主账U-072四块样板与在线#21正文一致，HTTP200，仍doing/progress",
+    "本轮npm check通过含175前端；Python561项，556通过/5平台跳过；文档结构及预存代码保持核对通过"
+  ],
+  "activeSlice": "S02-design-readback",
+  "evidenceRefs": [
+    "evidence/058-s02-model-tools/design-readback.md",
+    "evidence/058-s02-model-tools/design-validation.json",
+    "evidence/058-s02-model-tools/design-kanban.json"
+  ],
+  "blockedOn": "整卡未完成：凭据4反例RED、线程start恢复、诊断/中断用量、完整浏览器/实际安装；真实profile资源范围未落实",
+  "nextStep": "精确提交本设计检查点并核对远端；继续S02时先冻结诊断/用量字段、严格TDD修复反例，再补浏览器/安装/真实出口",
+  "updatedAt": "2026-11-06"
+}

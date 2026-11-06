@@ -127,3 +127,35 @@ Compatibility / Retirement：S01 schema 1 创建/重开原样保留，只有明�
 实施核对：完整 G01–G10 已有 [057](../../evidence/057-s05-governance/README.md)的行为、独立评审、实际浏览器与安装证据，主账记录为 controlled。S05 人类内部记录不替代 AI Execution；新 V1 模型/工具入口仍由 S02/S03 交付，真实治理与持续运行未在此验收。
 
 用户要求重新核对近期用户结果及管理路线后，新增[一页近期路线建议](../../docs/NEAR_TERM_DELIVERY.md)。它明确整卡 S05 前置是本计划的工程选择，并指出本节 S05 真实出口虽与 S06 并列，U-070 主账验收尚未明确写入治理修订/交接。建议补入该卡及重映射里程碑/历史暂停；未据本页擅自变更未来卡依赖、认领或旧任务状态。
+
+## 10. 2026-11-06：完整 S02 模型与只读资料往返
+
+Goal：交付 U-072/#21 的保存、有限授权、真实工具往返和默认采用。Architecture/Tech Stack：沿 Python/SQLite/React、固定 modeld/OpenCode；复用 Harness 有界协议，治理事务保留单一写入者。Basis：PRD S02、ADR-0005/0006 编码前细化和 [精确契约](s02-contract.md)。本轮主账已认领，HEAD `c31bf0e`；开工快照在宿主 `.union/s02-taskstart.json`，预存修改保留。
+
+Change Necessity：现有模型传输构造 legacy Engine、账号入口要求 platform_admin、有界验证仅在内存，不能靠配置实现 V1 授权/恢复。最小代码责任是 V1 模型领域/应用、私有请求适配器、modeld 的用户 API profile 及原请求取证、正式模型页。无需第二套组织 Engine、通用 Agent loop 或私有平台。
+
+| 顺序 | 所有者/文件与交付 | 验证 |
+| --- | --- | --- |
+| S02.1 | domain/model_access.py、application/model_access.py、adapters/model_access_store.py；governance/core store 的 schema 3 读写装配，Console/HTTP 窄入口 | M01–M04：真实 HTTP/SQLite RED，身份、资源、并发、原字节/审计与版本 |
+| S02.2 | services/modeld/src/api-accounts.ts、kernel/server/journal；独立 API 账号/grant 同事务、完整迟到事实；model_service 的共享协议规则 | M02/M03/M06/M07：实际 modeld/SDK 回环，保存不推理、串 AU/改端点、grant 撤销/迟到用量 |
+| S02.3 | application/model_checks.py、有界共享工具往返规则；持久 attempt、资料、工具回执、原请求查询、当前授权/结果/用量 | M04–M08：正常/失败配对，崩溃、取消、重复与两次计量 |
+| S02.4 | web/console 的 features/models、Models 入口、API/types 与 V1 read_document 选择；复用现有工作台/表单样式 | M09：组件 RED、实际浏览器/四宽度/键盘、unknown与身份隔离 |
+| S02.5 | scripts/release_package.py schema 3；文档/证据/主账/Kanban/HANDOFF/Git | M10：相关回归、npm check、Python discover、实际安装；指定授权模型真实往返；独立复核，精确提交推送及远端 SHA |
+
+TDD Route：Mode off / Decision strict / Authority explicit user/project request。每个新行为先观察真实 RED 再最小 GREEN，现有正确断言保留；文档用一致性检查。共享 schema/事务/主账/Git 由协调者顺序集成，契约冻结后可委派界面与独立只读复核。执行路线为协调者实现后端、独立界面实施及独立复核；用户已经授权 S02，无需再批准常规实施决定。
+
+Complexity/Owner Fit：Console/Engine 只装配，禁止继续塞模型业务。新纯规则、应用、执行编排和私有存储各按单一责任约 250–400 行审查；超出先分析职责，不为行数压缩代码。旧消息/结果验证由共享 helper 收敛，旧 Engine/Harness 客户保留；不得双写、双循环或从主模型失败扫描其他凭据。新 state/raw 请求分别由唯一写入者保存，同一 AU 事务可联合提交。
+
+Compatibility/Stop：schema 1/2 与 legacy 回归；schema 3 显式采用且候选兼容检查。无生产迁移、部署、S03 工作或其他 profile 扩张。真实账号/profile/授权范围在执行前落实；缺失不妨碍已授权工程，不以超时未回复当花费许可。M01–M10 含真实出口全部满足才关闭整卡，工程绿色不替代它。
+
+开工容量按五项历史占用加一个 V1 实际执行位设为 6，并记 U-072 history；不再按每张 V1 卡临时增容再恢复，也不伪造历史任务暂停或完成。正式暂停/承接与里程碑改造仍是独立管理建议。
+
+## 11. 2026-11-06：执行链细化与 U-072 样板
+
+用户最新要求是先把“部署进程、目标到首份交付的代码链、每模块具体改变”说清，再展开当前开发卡。本段是 §10 的设计补充，保留完整 S02 目标；未来 S03/S04/S06 仅细化设计，不因文档变更获准开工。
+
+唯一技术说明在 [ARCHITECTURE](../../docs/ARCHITECTURE.md)：[部署与存储](../../docs/ARCHITECTURE.md#runtime-deployment)、[首份交付时序](../../docs/ARCHITECTURE.md#first-delivery)、[接口/事务/恢复](../../docs/ARCHITECTURE.md#execution-contracts)、[模块改造](../../docs/ARCHITECTURE.md#module-changes)。代码核查和证据边界在 [058](../../evidence/058-s02-model-tools/design-readback.md)。当前 U-072 的完整四块样板直接写入主账 acceptance，由 [TASKS](../../TASKS.md#u-072)生成，不另建卡片账本。
+
+已确认 S02 使用 ModelServiceClient 和持久两阶段协议，没有接入旧 Engine/runner/HarnessExecutor。它读取用户提交的单份文本；宿主目录工具是 S03 拟议资料适配器。下一次 S02 行为修改先在现有契约细化结构化诊断和事件用量字段，再按严格 TDD 修复特殊字符/跨分片凭据过滤、线程启动失败恢复、中断用量展示和具体错误。安全反例仍 RED、浏览器可读性仍失败；最终安装与真实 profile 未验证，不能写成只等真实账号。
+
+S03 的共享 Harness/单次调用提取必须先冻结 step_ref→attempt/原请求的持久关联、模型事实与采用恢复、父子预约和兼容调用者；S06 再按同一 Runtime 所有者承接独立槽位与恢复监督，不追加第二个调度器。对应可演示子功能见 [tasks S03/S04/S06](tasks.md)，具体后续机制须在对应契约及编码前 ADR 细化中确定。

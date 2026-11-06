@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "aegis.schema.v0",
+  "baselineRefs": [
+    "docs/UNION_CHARTER_v1.0.md",
+    "docs/decisions/0005-au-runtime-boundaries.md",
+    "specs/053-union-rewrite/s02-contract.md"
+  ],
+  "impactStatement": "docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/impact-statement-draft.json",
+  "compatPlan": "保留schema1/2及legacy；schema3显式采用；本设计提交仅含已授权S02文档/记录，运行代码和无关dirty保留",
+  "retirementPlan": "只描述按用例迁出/重绑后退役；本轮不删除或切换旧执行实现",
+  "evidenceBundle": [
+    "docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/evidence-bundle-draft-S02-design-readback.json"
+  ]
+}

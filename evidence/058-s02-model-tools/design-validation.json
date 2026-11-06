@@ -1,0 +1,71 @@
+{
+  "at": "2026-11-06T02:34:38.729732+00:00",
+  "scope": "Documentation and current U-072 sample-card checkpoint; S02 runtime remains unfinished",
+  "basis_head": "c31bf0efac7e54565e3a5fce0d6becd807b12b5a",
+  "branch": "rewrite/charter-v1",
+  "working_tree_includes_uncommitted_s02_code": true,
+  "runtime_changed_by_design_task": false,
+  "toolchain": {
+    "node": "24.19.0",
+    "python": "3.13.14",
+    "bun": "1.4.2",
+    "python_utf8": true
+  },
+  "checks": {
+    "npm_check": {
+      "exit_code": 0,
+      "frontend_tests_passed": 175,
+      "frontend_test_files": 17,
+      "management_tests_passed": 8,
+      "build_warning": "Existing output chunk exceeds 500 kB; build succeeded",
+      "log": {
+        "published": "evidence/058-s02-model-tools/design-npm-check.log",
+        "original_sha256": "693b168ff26dfd518f700c3c2cc9ef4dca182f704b04bce24d36930bc2cafc43",
+        "published_sha256": "31a7f5f4b054be0f8eb2dbcf9584e8b8d203687ac6a235026fe1ceb684d1aacc",
+        "temporary_paths_redacted": false,
+        "line_endings_normalized_to_lf": true
+      }
+    },
+    "python_discover": {
+      "exit_code": 0,
+      "tests_run": 561,
+      "passed": 556,
+      "skipped": 5,
+      "duration_seconds": 453.878,
+      "log": {
+        "published": "evidence/058-s02-model-tools/design-python-discover.log",
+        "original_sha256": "1b802dc178bf9d7db07a67b7912f4f986538ab01816bfdbfd7fecebd749f2c29",
+        "published_sha256": "09ff6949c30922e35b36bca42834f6694c41414f74033aac191fc0e4cc20bcef",
+        "temporary_paths_redacted": true,
+        "line_endings_normalized_to_lf": true
+      }
+    },
+    "design_structure": {
+      "exit_code": 0,
+      "source": "evidence/058-s02-model-tools/design-structure.json",
+      "relative_links_and_anchors_checked": 397,
+      "non_documentation_snapshot_files_unchanged": 84
+    },
+    "aegis_bundle_check": {
+      "exit_code": 0,
+      "scope": "Workspace index, JSON sidecars and proof-bundle shape only",
+      "work": "docs/aegis/work/2026-11-06-s02-model-tool-roundtrip"
+    }
+  },
+  "known_runtime_gaps": [
+    "Four confidentiality probe failures remain (probe exit 1)",
+    "Thread-start registration cleanup/recovery defect",
+    "Structured authentication/model/network diagnostics missing",
+    "Core projection does not yet include interrupted event-only usage",
+    "Actual browser readability failure and unfinished scenarios",
+    "Final candidate installation and specified real profile not accepted"
+  ],
+  "real_provider_calls_during_design_task": 0,
+  "task_completion": false,
+  "local_state": "doing",
+  "online_state": "progress",
+  "confidence": {
+    "design": "B: design/card checked; proposed runtime interfaces still require per-slice contract and behavioral validation",
+    "whole_s02": "partial only"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "observed_at": "2026-11-06T02:03:31Z",
+  "branch": "rewrite/charter-v1",
+  "head": "c31bf0efac7e54565e3a5fce0d6becd807b12b5a",
+  "bun_version_verified": "1.4.2",
+  "scope": "Existing probes run without edits against the current working tree; isolated temporary state, synthetic credentials and exact loopback origins only",
+  "per_probe_timeout_seconds": 45,
+  "real_provider_calls": 0,
+  "probes": [
+    {
+      "source": ".union/s02-modeld-review/secret-boundaries.ts",
+      "source_sha256": "cbbab59e2560f55d773a221b197bc0f4b8eba0a5da0171961f548cba82303c99",
+      "log": "evidence/058-s02-model-tools/design-secret-boundaries.log",
+      "exit_code": 1,
+      "elapsed_seconds": 3.161,
+      "result": "Four confidentiality violations reproduced; ordinary success and ordinary-key rejection controls held",
+      "log_sha256": "9dbe41413a0cc8231b20fe65b2262638c8f55028a86bd26876b3f8bd9fe350ce"
+    },
+    {
+      "source": ".union/s02-modeld-review/native-usage-boundaries.ts",
+      "source_sha256": "e0ffcaa2e59c994c5f97a77635ab2aa3c05791aa076ab490f8e4a9327a2ff2b3",
+      "log": "evidence/058-s02-model-tools/design-native-usage.log",
+      "exit_code": 0,
+      "elapsed_seconds": 3.705,
+      "result": "Cancellation retained raw usage and safe partial events across modeld reopen; public result remained null and action_authorized false",
+      "limitation": "This probe does not verify core.models.v1 consumption of raw event usage; half_json and unsupported_tool_type are observations, not complete rejection assertions",
+      "log_sha256": "6d1feb39453f9c5292de7fc7cd2881fa27ed567772dc3c5848ea12091351f7f6"
+    }
+  ],
+  "current_source_sha256": {
+    "services/modeld/src/kernel.ts": "bbd010715033c14ec2b6802603613be942375a77c7dba229eb7c3ab07ebb41ed",
+    "services/modeld/src/api-accounts.ts": "c66655d838869f49e50edda4f418b286da55346c15e6c69b8c21322197a25d77",
+    "ai_union/application/model_checks.py": "8336e6cbb469d183e37ea18b7a4c9fc1e8d8b6ac799b4b710a4c18443c790974"
+  },
+  "changes": "Only this audit report, probe logs and metadata were written; no implementation, test, Git, ledger, board, credential or real organization state changes"
+}
