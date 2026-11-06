@@ -40,3 +40,13 @@
 可用接口为`GET /api/board`、`POST /api/tasks`、`PATCH /api/tasks/{id}`及其`comments`/`history`；没有单任务GET。board包含归档记录，选择活动卡必须检查`archived`。鉴权使用Bearer，写入使用JSON和最新版本。普通成员的接口权限不代替任务所有权核查。
 
 在线Kanban不会自动唤醒或调度Agent。它是用户选择的开发协作工具；不是所有AU必须采用的制度，也不构成组织自主改进的证据。
+
+## 统一适配器的数据来源（2026-11-06）
+
+用户指定在线看板作为日常取数来源。适配器按此实现，但仍然只有一份正式状态：`management/project.json` 记录证据与验收，在线卡是同一批 U 任务的协作视图，两者不各写各的。
+
+- 读取：`node scripts/project-management.mjs board|next` 与 MCP 的 `union_board_status|union_card_list|union_card_get` 默认读在线 `GET /api/board`（`scripts/kanban-client.mjs`）。加 `--local` 或设置 `UNION_BOARD_SOURCE=local` 时读本地主账；没配置凭据时自动退回本地，离线检查照常可跑。
+- 写入：`claim|release|move|record`（CLI 与 MCP）先 PATCH 在线卡，必须带最新整数 `version` 且收到 HTTP 200；409/超时原样报出，先读回再决定，不自动重试。成功后把同一事实镜像进 `project.json` 并重建视图；镜像失败不撤销在线结果，只如实报告「未同步」。
+- 映射：在线卡 `progress` ↔ 本地 `doing`，`backlog/ready/review/blocked/done` 同名；U 编号取自卡标题，`#19–#30` 与 `U-065–U-076` 一一对应。
+- 凭据：`UNION_KANBAN_URL` / `UNION_KANBAN_KEY` 只放宿主环境或宿主家目录的配置文件（如 `~/.union-kanban.env`），不进入仓库、日志或协作内容。
+
