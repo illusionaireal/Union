@@ -1,5 +1,24 @@
 # UNION / ai-union repository instructions
 
+
+## 每轮先核对（2026-11-08 审查处置）
+
+1. 先读本文件与 [当前交接](docs/reviews/2026-11-08-review-disposition.md)，核对真实 HEAD、工作区已有改动。
+2. 日常状态、负责人、依赖、WIP 只读在线 Kanban；读取失败不退回本地认领。
+3. 本地 project.json 保存长期路线、历史状态与交付证据；不据此占用在线卡。
+4. 写前用实际 user.id 和最新 version；HTTP 200 才确认；409/丢失响应先读回。
+5. 只续做自己负责的卡；已开工 blocked 仍占 WIP，不清空 owner 隐藏责任。
+6. 行为代码先冻结契约、观察真实 RED，再最小 GREEN；不得撤掉正常代码制造 RED。
+7. S03 下一出口是自动执行与真实有界验收；暂停扩展纯手工记账 UI。
+8. 开发者在独立 checkout 的任务分支交付 PR；协调者审阅并合入集成分支。
+9. npm check、Python 全量及受影响检查通过；权限/金额/身份还需另一工程角色复核。
+10. 只提交自己的路径/片段；不得 reset/clean/stash 或动他人索引、冲突副本。
+11. 不把私钥、邀请、API key、数据库、私有部署地址写入 Git 或留言。
+12. 实施者 actor 与在线成员 ID 分别记录；不把开发代理称作产品 AU 成员。
+13. 证据归入每个 U 卡目录并索引；旧证据和失败历史保留。
+14. 只有本卡完整验收通过才 done；文档、受控、真实、持续分别陈述。
+15. 用户已授权协调者 NAS 部署与合并；真实业务/迁移等其他边界按实际授权核对。
+
 ## Current authority: Main Chapter V1 (2026-11-05)
 
 - The user explicitly instructed: “现在你使用Main中的Chapter V1 重新构建”. The authoritative project charter is `docs/UNION_CHARTER_v1.0.md`, copied byte-for-byte from main commit `b2a30f3af4ad69a679c4860468d744dd285a0098`; adoption, hash, authority and scope are in `docs/CHARTER_ADOPTION.md`. It supersedes conflicting older PRD, DESIGN, AGENTS and rewrite assumptions. Do not ask again whether to use this source.
@@ -33,9 +52,9 @@
 
 ## Task source and collaboration
 
-- UNION Kanban API is the sole runtime source for claims, assignees, status, dependencies, comments and WIP. `management/project.json` only mirrors long-term roadmap and delivery evidence in delivery commits; its historical status/started_at/WIP must not gate an online-claimable card or overwrite Kanban. Generated PROJECT.md/TASKS.md are historical views, not a scheduling source. Keep offline document checks separate from online task operations.
+- UNION Kanban API is the sole runtime source for claims, assignees, status, dependencies, comments and WIP. `management/project.json` only mirrors long-term roadmap and delivery evidence in delivery commits; its historical status/started_at/WIP must not gate an online-claimable card or overwrite Kanban. Generated PROJECT.md/TASKS.md are historical views, not a scheduling source. Use the unified online adapter for operational writes; explicitly record delivery evidence locally, then run management:render and check:management. Keep offline document checks separate from online task operations.
 - The user selected hosted Kanban and required removal of old-engineering requirements. Old online cards #1–#18 remain archived; #19–#30 map to U-065–U-076. Additional authorized engineering cards and execution children are tracked on Kanban; preserve existing U IDs and parent acceptance. Follow management/KANBAN.md: inspect actual assignee/comments and completed prerequisites, use actual user.id/current version, confirm success before implementation, reconcile 409/uncertain writes before retrying. A ready card with an active owner is not free. Do not fall back to repository state when API access fails; existing authorized credentials may be used privately without storing values in source or logs.
-- Preserve owners, histories, blockers and unfinished acceptance when splitting. Link parent/children on Kanban without making a parent-child dependency cycle; children inherit real prerequisites. Do not release another person's claim, hide blocked work in backlog or silently change WIP accounting. WIP facts come from the live board; absent API capacity is unknown, not a repository-derived limit. Completion records distinguish documentation, controlled, real and sustained evidence; engineering completion does not close a parent requiring real results. U-077 owns the remaining CLI/MCP enforcement repair; these instructions do not claim that repair is implemented.
+- Preserve owners, histories, blockers and unfinished acceptance when splitting. Link parent/children on Kanban without making a parent-child dependency cycle; children inherit real prerequisites. Do not release another person's claim, hide blocked work in backlog or silently change WIP accounting. WIP facts come from the live board; absent API capacity is unknown, not a repository-derived limit. Completion records distinguish documentation, controlled, real and sustained evidence; engineering completion does not close a parent requiring real results. U-077 implements the shared CLI/MCP and picker enforcement with offline behavior evidence; live operational adoption still requires actual API readback.
 - When blocked, update the original card with the cause, evidence, responsible subject and exact unblock condition, then request help in the Kanban team discussion. Link the card and explain what another developer can provide; never post credentials. Do not repeat an unchanged help request on every scheduled check. Repository uploads are authorized during the current development phase; fetch first, reconcile concurrent changes and verify the uploaded ref. Deployment, new/rotated secrets, spending and irreversible operations retain their separate authorization boundaries.
 
 ## Verification, privacy and history

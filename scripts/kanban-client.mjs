@@ -19,7 +19,7 @@ export function kanbanConfig() {
   }
   try {
     const parsed = Object.fromEntries(
-      readFileSync(join(homedir(), '.union-kanban.env'), 'utf8')
+      readFileSync(process.env.UNION_KANBAN_CONFIG ?? join(homedir(), '.union-kanban.env'), 'utf8')
         .split(/\r?\n/)
         .map(line => line.match(/^([A-Z_]+)=(.*)$/))
         .filter(Boolean)
@@ -28,7 +28,7 @@ export function kanbanConfig() {
     if (parsed.UNION_KANBAN_URL && parsed.UNION_KANBAN_KEY) {
       return { url: parsed.UNION_KANBAN_URL.replace(/\/+$/, ''), key: parsed.UNION_KANBAN_KEY };
     }
-  } catch { /* 没有配置文件就走离线 */ }
+  } catch { /* Missing configuration must not authorize offline operational writes. */ }
   return null;
 }
 
@@ -44,12 +44,13 @@ async function request(config, path, { method = 'GET', body, headers = {} } = {}
       ...headers,
     },
     body: body ? JSON.stringify(body) : undefined,
+    signal: AbortSignal.timeout(Number(process.env.UNION_KANBAN_TIMEOUT_MS ?? 30000)),
   });
   const text = await response.text();
   let payload = null;
   try { payload = text ? JSON.parse(text) : null; } catch { payload = { raw: text }; }
-  if (!response.ok) {
-    const error = new Error(`在线看板 ${method} ${path} → HTTP ${response.status}: ${payload?.error ?? text.slice(0, 200)}`);
+  if (!response.ok || (method === 'PATCH' && response.status !== 200)) {
+    const error = new Error(`在线看板 ${method} ${path} → HTTP ${response.status}`);
     error.status = response.status;
     error.payload = payload;
     throw error;
@@ -88,7 +89,9 @@ const stripPrefix = title => String(title ?? '').replace(/^\s*S\d{2}\s*\/\s*U-\d
 
 /** 把在线 board 归一成与本地 `boardView` 相同的形状，供 MCP/CLI 共用。 */
 export function hostedBoardView(board, { now = Date.now() } = {}) {
-  const memberName = id => board.members.find(m => m.id === id)?.name ?? null;
+  const memberName = id => (board.members ?? []).find(m => m.id === id)?.name ?? null;
+  const limit = board.wip_limit ?? board.config?.wip_limit ?? null;
+  if (limit !== null && (!Number.isInteger(limit) || limit < 1)) throw new Error('invalid online WIP configuration');
   const byOnlineId = new Map(board.tasks.map(task => [task.id, task]));
   const uOf = task => uIdOf(task) ?? `UNI-${String(task.id).padStart(3, '0')}`;
 
@@ -129,7 +132,7 @@ export function hostedBoardView(board, { now = Date.now() } = {}) {
         updated_at: (task.updated_at ?? '').slice(0, 10) || null,
       };
     })
-    .sort((a, b) => a.priority.localeCompare(b.priority) || a.id.localeCompare(b.id));
+    .sort((a, b) => String(a.priority).localeCompare(String(b.priority)) || a.id.localeCompare(b.id));
 
   const columns = Object.fromEntries(Object.keys(LOCAL_STATUS_LABEL).map(status => [status, cards.filter(card => card.status === status).map(card => card.id)]));
   const counts = {
@@ -145,10 +148,11 @@ export function hostedBoardView(board, { now = Date.now() } = {}) {
     user: board.user ?? null,
     generated_at: new Date(now).toISOString(),
     ledger_updated_at: cards.reduce((latest, card) => (card.updated_at && card.updated_at > latest ? card.updated_at : latest), ''),
-    wip_limit: null,
+    wip_limit: limit,
+    wip_configuration: limit === null ? 'unconfigured on server' : 'server',
     counts,
     columns,
-    next: cards.filter(card => card.status === 'ready' && card.deps_done).map(card => card.id),
+    next: cards.filter(card => card.status === 'ready' && card.claim_state === 'free' && card.deps_done && (limit === null || counts.wip < limit)).map(card => card.id),
     in_flight: cards.filter(card => ['doing', 'review'].includes(card.status)),
     blocked: cards.filter(card => card.status === 'blocked'),
     milestones: [...new Set(cards.map(card => card.milestone).filter(Boolean))].sort().map(id => ({ id, name: id, status: 'pending', evidence: [] })),

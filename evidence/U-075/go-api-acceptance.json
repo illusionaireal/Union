@@ -1,0 +1,39 @@
+{
+  "date": "2026-11-08",
+  "source_commit": "4b2d700e476298affb820dffcbc22138b9d7be81",
+  "model_service": "installed compiled package",
+  "core": "same committed candidate source",
+  "provider": "OpenCode Go",
+  "profile": "openai_compatible",
+  "model": "glm-5.3-flash",
+  "status": "succeeded",
+  "max_calls": 2,
+  "max_output_tokens_per_call": 1024,
+  "calls": 2,
+  "tool_receipts": 1,
+  "material": "public synthetic deployment checklist",
+  "first_request_has_material": false,
+  "second_request_has_material_and_challenge": true,
+  "output_has_challenge": true,
+  "same_check_after_restart": true,
+  "new_calls_on_restart": 0,
+  "usage": [
+    {
+      "input_tokens": 292,
+      "output_tokens": 38,
+      "currency": null,
+      "cost_minor": null,
+      "cost_status": "unknown"
+    },
+    {
+      "input_tokens": 286,
+      "output_tokens": 83,
+      "currency": null,
+      "cost_minor": null,
+      "cost_status": "unknown"
+    }
+  ],
+  "native_go_oauth_profile_verified": false,
+  "s03_autonomous_work_verified": false,
+  "sustained_operation": false
+}

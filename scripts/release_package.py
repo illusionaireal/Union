@@ -230,7 +230,9 @@ def read_config(path):
         original = Path(config[field])
         if field not in ('python', 'bun'):
             require(not linked(original) and not any(linked(p) for p in original.parents), 'Deployment paths cannot contain links')
-        config[field] = original.resolve()
+        # A venv interpreter's symlink path selects its environment. Resolving it
+        # would silently run the base interpreter and lose the locked packages.
+        config[field] = original if field in ('python', 'bun') else original.resolve()
     install, state, private = config['installation_root'], config['console_state'], config['modeld_config'].parent
     for a, b in ((install, state), (install, private), (state, private)):
         require(not a.is_relative_to(b) and not b.is_relative_to(a), 'Code and private state paths must be separate')
