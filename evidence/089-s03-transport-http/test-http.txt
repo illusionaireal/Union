@@ -1,0 +1,8 @@
+test_an_http_refusal_is_rejected_without_a_step (tests.test_work_transport_http.LoopbackWorkTransportTests.test_an_http_refusal_is_rejected_without_a_step) ... ok
+test_an_interrupted_request_is_reported_as_unknown (tests.test_work_transport_http.LoopbackWorkTransportTests.test_an_interrupted_request_is_reported_as_unknown) ... ok
+test_the_step_travels_over_http_with_the_expected_request_body (tests.test_work_transport_http.LoopbackWorkTransportTests.test_the_step_travels_over_http_with_the_expected_request_body) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 1.562s
+
+OK
