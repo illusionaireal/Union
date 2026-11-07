@@ -10,7 +10,7 @@ function fixture(t) {
   t.after(() => rmSync(root, { recursive: true, force: true }));
   writeFileSync(join(root, 'proof.md'), 'Evidence');
   const task = (id, status = 'ready') => ({ id, title: id, priority: 'P0', milestone: 'G1', module: 'org', status, owner: null, role: '工程', acceptance: '真实交付', dependencies: [], blocker: null, started_at: null, updated_at: '2026-10-28', completion: null });
-  const data = { schema_version: 1, updated_at: '2026-10-28', wip_limit: 2,
+  const data = { schema_version: 1, updated_at: '2026-10-28',
     modules: [{ id: 'org', name: '组织', implemented: '代码', validation: 'V1 受控', gap: '真实交付', evidence: ['proof.md'] }],
     milestones: [{ id: 'G1', name: '成立', outcome: '团队真实成立', status: 'pending', evidence: [] }], tasks: [task('U-001'), task('U-002')] };
   return { root, data };
@@ -44,15 +44,14 @@ test('rejects duplicate IDs, unknown references and dependency cycles', t => {
   data.tasks.forEach(x => x.status = 'backlog');
   assert.throws(() => validateProject(data, root), /cycle/);
 });
-test('blocked work needs an unblock action; already-started blocked work counts toward WIP', t => {
+test('blocked work needs an unblock action; repository planning does not enforce Kanban WIP', t => {
   const { root, data } = fixture(t);
   const a = data.tasks[0]; a.status = 'blocked';
   assert.throws(() => validateProject(data, root), /blocker/);
   a.blocker = { reason: 'Host absent', action: 'Supply host', owner: null }; validateProject(data, root);
   Object.assign(a, { started_at: '2026-10-28', owner: 'engineer' });
   Object.assign(data.tasks[1], { status: 'review', started_at: '2026-10-28', owner: 'engineer' });
-  data.wip_limit = 1;
-  assert.throws(() => validateProject(data, root), /WIP/);
+  validateProject(data, root);
 });
 test('rejects evidence outside repository, invalid scope and malformed dates', t => {
   const { root, data } = fixture(t);
@@ -77,7 +76,7 @@ test('deterministic generated views reject stale output and preserve surrounding
 test('flow summary keeps empty live evidence distinct from completion counts', t => {
   const { data } = fixture(t);
   const s = flowSummary(data);
-  assert.equal(s.wip, 0); assert.equal(s.ready, 2); assert.equal(s.done, 0);
+  assert.equal(s.activePlan, 0); assert.equal(s.ready, 2); assert.equal(s.done, 0);
   assert.equal(s.realAccepted, 0);
 });
 test('milestone acceptance and task scope cannot be asserted without their review metadata', t => {

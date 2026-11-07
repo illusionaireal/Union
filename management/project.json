@@ -1,7 +1,6 @@
 {
   "schema_version": 1,
   "updated_at": "2026-11-07",
-  "wip_limit": 4,
   "modules": [
     {
       "id": "governance",
@@ -492,7 +491,7 @@
       "priority": "P2",
       "milestone": "G0",
       "module": "harness",
-      "status": "candidate",
+      "status": "ready",
       "owner": null,
       "role": "工程",
       "acceptance": "若当前执行器阻碍 G2，以相同模型、任务和资源比较现有 Harness 与 Hermes 等；记录采用/保留决定",
