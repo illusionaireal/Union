@@ -1,0 +1,5 @@
+locator.isDisabled: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator('[data-command="event"]')
+
+    at $REPOSITORY\scripts\check_console.cjs:240:184

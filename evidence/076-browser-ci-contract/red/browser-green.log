@@ -1,0 +1,3 @@
+AssertionError [ERR_ASSERTION]: F06: member pages do not repeat unrelated global actions
+    at check ($REPOSITORY\scripts\check_console.cjs:15:41)
+    at $REPOSITORY\scripts\check_console.cjs:108:3
