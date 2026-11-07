@@ -1,0 +1,6 @@
+{
+  "organization_root": "/var/lib/union/ai-union-corp",
+  "console_root": "/var/lib/union/console",
+  "listen_host": "127.0.0.1",
+  "listen_port": 8766
+}

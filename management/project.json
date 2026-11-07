@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-03",
+  "updated_at": "2026-11-07",
   "wip_limit": 4,
   "modules": [
     {
@@ -1433,7 +1433,7 @@
       "priority": "P0",
       "milestone": "G0",
       "module": "hosting",
-      "status": "ready",
+      "status": "candidate",
       "owner": null,
       "role": "发布工程 / 运维验收",
       "acceptance": "候选构建绑定提交和依赖版本；配置/凭据/数据分离；安装升级、旧数据兼容、失败回滚及备份恢复有可重现验证和维护说明；受控包验证与真实目标环境部署分别报告；真实连接目标与私有路径移入宿主配置，缺失参数在变更前拒绝，保留既有路径和来源安全边界",
@@ -1443,7 +1443,7 @@
       ],
       "blocker": null,
       "started_at": null,
-      "updated_at": "2026-11-02",
+      "updated_at": "2026-11-07",
       "completion": null
     },
     {

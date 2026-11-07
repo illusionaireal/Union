@@ -27,6 +27,7 @@
     "management:status": "node scripts/project-management.mjs status",
     "check:management": "node scripts/project-management.mjs check && node --test tests/project-management.test.mjs",
     "test:gateways": "node scripts/check_gateways.cjs",
-    "test:model-access": "node scripts/check_model_access.cjs"
+    "test:model-access": "node scripts/check_model_access.cjs",
+    "test:release": "python3 tests/release_candidate.test.py"
   }
 }
