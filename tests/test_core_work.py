@@ -375,3 +375,61 @@ class CoreWorkTests(ModelAccessCase):
         status, value, _ = self.settle("work-overview", "work-overview#s4", "used")
         self.assertEqual(value["receipt"]["status"], "rejected", value)
         self.assertIn("已经结算", value["receipt"]["message"])
+
+    def submit(self, work_id="work-overview", result_id="result-overview", **kwargs):
+        data = {"work_id": work_id, "result_id": result_id, "title": "项目概览（第一版）",
+                "content": "# 概览\n- 依据 nested/a.md\n", "sources": ["work-overview#1"]}
+        data.update(kwargs)
+        return self.work_command(self.au_id, "submit_result", data)
+
+    def adopt(self, work_id="work-overview", result_id="result-overview"):
+        return self.work_command(self.au_id, "adopt_result", {"work_id": work_id, "result_id": result_id})
+
+    def test_submit_result_records_digest_and_sources_without_publishing_content(self):
+        self.work_with_listing()
+        self.prepare_materials()
+        self.start_attempt()
+        status, value, _ = self.invoke({"work_id": "work-overview", "tool": "read_document",
+                                        "arguments": {"path": "nested/a.md"}})
+        self.assertEqual(value["receipt"]["status"], "succeeded", value)
+
+        status, value, _ = self.submit(sources=["work-overview#1"])
+        self.assertEqual(status, 200, value)
+        self.assertEqual(value["receipt"]["status"], "succeeded", value)
+        digest = hashlib.sha256("# 概览\n- 依据 nested/a.md\n".encode("utf-8")).hexdigest()
+        self.assertEqual(value["receipt"]["result"]["sha256"], digest)
+
+        card = self.works()["works"][0]
+        self.assertEqual([(r["id"], r["status"], r["sha256"]) for r in card["results"]],
+                         [("result-overview", "candidate", digest)])
+        self.assertNotIn("# 概览", json.dumps(card), "content stays out of the read projection")
+
+        status, again, _ = self.adopt()
+        self.assertEqual(value["receipt"]["status"], "succeeded", value)
+        self.assertEqual(again["receipt"]["status"], "succeeded", again)
+        adopted = self.works()["works"][0]["results"][0]
+        self.assertEqual((adopted["status"], bool(adopted["adopted_at"])), ("adopted", True))
+        status, twice, _ = self.adopt()
+        self.assertEqual(twice["receipt"]["status"], "rejected", twice)
+        self.assertIn("已经采用", twice["receipt"]["message"])
+
+    def test_submit_result_requires_an_attempt_and_valid_sources(self):
+        self.work_with_listing()
+        status, value, _ = self.submit()
+        self.assertEqual(value["receipt"]["status"], "rejected", value)
+        self.assertIn("执行", value["receipt"]["message"])
+
+        self.start_attempt()
+        for sources in (["work-overview#9"], ["other-work#1"], ["work-overview#1", "work-overview#1"]):
+            status, value, _ = self.submit(result_id="result-bad", sources=sources)
+            self.assertEqual(value["receipt"]["status"], "rejected", value)
+        status, value, _ = self.submit(result_id="result-flat", sources=[], content="")
+        self.assertEqual(status, 400, value)
+
+        status, value, _ = self.reserve()
+        self.assertEqual(value["receipt"]["status"], "succeeded", value)
+        status, value, _ = self.submit(sources=["work-overview#s1"])
+        self.assertEqual(value["receipt"]["status"], "succeeded", value)
+        status, duplicate, _ = self.submit(sources=["work-overview#s1"])
+        self.assertEqual(duplicate["receipt"]["status"], "rejected", duplicate)
+        self.assertIn("已存在", duplicate["receipt"]["message"])

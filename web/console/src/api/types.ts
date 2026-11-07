@@ -368,6 +368,18 @@ export interface CoreWorkToolCall {
   count?: number;
 }
 
+export interface CoreWorkResult {
+  id: string;
+  seq: number;
+  title: string;
+  sha256: string;
+  bytes: number;
+  sources: string[];
+  status: 'candidate' | 'adopted';
+  created_at: string;
+  adopted_at: string | null;
+}
+
 export interface CoreWorkItem {
   id: string;
   title: string;
@@ -387,6 +399,7 @@ export interface CoreWorkItem {
   steps: CoreWorkStep[];
   budget: CoreWorkBudget;
   materials: { reference: string | null; available: boolean; documents: number };
+  results: CoreWorkResult[];
 }
 
 export interface CoreWork {

@@ -15,6 +15,13 @@ function receipt(item: CoreWorkItem) {
   return `${last.tool} @ ${last.step_ref} · ${detail}`;
 }
 
+function results(item: CoreWorkItem) {
+  if (!item.results.length) return '尚无候选成果';
+  return item.results
+    .map((value) => `${value.title}（${value.status === 'adopted' ? '已采用' : '候选'} · ${value.sha256.slice(0, 12)}…）`)
+    .join('；');
+}
+
 function attempt(item: CoreWorkItem) {
   const running = item.attempts.find((value) => value.status === 'running');
   const unknown = item.attempts.find((value) => value.status === 'unknown');
@@ -50,6 +57,7 @@ export function WorkPanel({ organizationId }: { organizationId: string }) {
               <div><dt>调用预算</dt><dd>{money(item)}</dd></div>
               <div><dt>执行</dt><dd>{attempt(item)}</dd></div>
               <div><dt>最近工具回执</dt><dd>{receipt(item)}</dd></div>
+              <div><dt>成果</dt><dd>{results(item)}</dd></div>
               <div>
                 <dt>授权资料</dt>
                 <dd>

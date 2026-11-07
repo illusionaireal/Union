@@ -16,7 +16,7 @@ function item(overrides: Partial<CoreWorkItem> = {}): CoreWorkItem {
     mandate: { id: 'ma1', version: 1, actions: ['list_documents'], active: true },
     attempt_ids: [], result_ids: [], tool_calls: [], attempts: [], steps: [],
     budget: { max_calls: 4, reserved: 1, used: 0 },
-    materials: { reference: 'project-docs', available: true, documents: 2 },
+    materials: { reference: 'project-docs', available: true, documents: 2 }, results: [],
     ...overrides,
   };
 }
@@ -43,6 +43,7 @@ describe('V1 work panel', () => {
     expect(screen.getByText('project-docs · 可读 2 份')).toBeTruthy();
     expect(screen.getByText('尚未开始执行')).toBeTruthy();
     expect(screen.getByText('尚无工具回执')).toBeTruthy();
+    expect(screen.getByText('尚无候选成果')).toBeTruthy();
   });
 
   it('reports an unknown execution and the last tool receipt instead of success', async () => {
@@ -60,5 +61,16 @@ describe('V1 work panel', () => {
   it('explains the empty state when no V1 work exists', async () => {
     read({ ...base, works: [] });
     await waitFor(() => expect(screen.getByText(/尚未登记 V1 工作/)).toBeTruthy());
+  });
+  it('shows an adopted result with its digest and source count', async () => {
+    read({
+      ...base,
+      works: [item({
+        results: [{ id: 'result-overview', seq: 1, title: '项目概览（第一版）', sha256: 'abcdef0123456789', bytes: 24,
+          sources: ['work-overview#s1'], status: 'adopted', created_at: '2026-11-08T00:00:00Z', adopted_at: '2026-11-08T00:10:00Z' }],
+      })],
+    });
+    await waitFor(() => expect(screen.getByText(/项目概览（第一版）/)).toBeTruthy());
+    expect(screen.getByText(/已采用 · abcdef012345/)).toBeTruthy();
   });
 });

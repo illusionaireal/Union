@@ -1,0 +1,18 @@
+test_invoke_tool_records_durable_receipts_for_authorized_documents (tests.test_core_work.CoreWorkTests.test_invoke_tool_records_durable_receipts_for_authorized_documents) ... ok
+test_invoke_tool_replays_receipts_and_refuses_unscoped_requests (tests.test_core_work.CoreWorkTests.test_invoke_tool_replays_receipts_and_refuses_unscoped_requests) ... ok
+test_reserve_step_counts_one_call_per_execution_with_purpose_and_attempt (tests.test_core_work.CoreWorkTests.test_reserve_step_counts_one_call_per_execution_with_purpose_and_attempt) ... ok
+test_reserve_step_requires_a_running_attempt_and_respects_the_call_cap (tests.test_core_work.CoreWorkTests.test_reserve_step_requires_a_running_attempt_and_respects_the_call_cap) ... ok
+test_start_work_binds_ai_member_definition_binding_work_and_mandate_in_one_command (tests.test_core_work.CoreWorkTests.test_start_work_binds_ai_member_definition_binding_work_and_mandate_in_one_command) ... ok
+test_start_work_refuses_unadopted_model_unbounded_calls_paths_and_duplicate_ids (tests.test_core_work.CoreWorkTests.test_start_work_refuses_unadopted_model_unbounded_calls_paths_and_duplicate_ids) ... ok
+test_start_work_requires_a_materials_root_when_read_document_is_granted (tests.test_core_work.CoreWorkTests.test_start_work_requires_a_materials_root_when_read_document_is_granted) ... ok
+test_start_work_requires_effective_governance_and_the_current_governor (tests.test_core_work.CoreWorkTests.test_start_work_requires_effective_governance_and_the_current_governor) ... ok
+test_submit_result_records_digest_and_sources_without_publishing_content (tests.test_core_work.CoreWorkTests.test_submit_result_records_digest_and_sources_without_publishing_content) ... ok
+test_submit_result_requires_an_attempt_and_valid_sources (tests.test_core_work.CoreWorkTests.test_submit_result_requires_an_attempt_and_valid_sources) ... ok
+test_tool_calls_require_a_running_execution_attempt (tests.test_core_work.CoreWorkTests.test_tool_calls_require_a_running_execution_attempt) ... ok
+test_unknown_attempt_blocks_further_execution_until_it_is_resolved (tests.test_core_work.CoreWorkTests.test_unknown_attempt_blocks_further_execution_until_it_is_resolved) ... ok
+test_work_projection_reports_whether_the_host_registered_materials_are_available (tests.test_core_work.CoreWorkTests.test_work_projection_reports_whether_the_host_registered_materials_are_available) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 14.799s
+
+OK

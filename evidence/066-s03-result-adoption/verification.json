@@ -1,0 +1,45 @@
+{
+  "task": "U-067",
+  "slice": "S03",
+  "step": "S03.3b result submission and adoption with traceable sources",
+  "checked_at": "2026-11-08T03:59:35+08:00",
+  "branch": "rewrite/charter-v1",
+  "real_model_calls": 0,
+  "deployed": false,
+  "commands": [
+    "submit_result",
+    "adopt_result"
+  ],
+  "changed_owners": [
+    "ai_union/domain/work.py",
+    "ai_union/application/work.py",
+    "web/console/src/features/work/WorkPanel.tsx",
+    "web/console/src/api/types.ts"
+  ],
+  "logs": {
+    "red-s03.3b.txt": [
+      "ERROR: test_submit_result_requires_an_attempt_and_valid_sources (tests.test_core_work.CoreWorkTests.test_submit_result_requires_an_attempt_and_valid_sources)",
+      "FAIL: test_submit_result_records_digest_and_sources_without_publishing_content (tests.test_core_work.CoreWorkTests.test_submit_result_records_digest_and_sources_without_publishing_content)",
+      "Ran 13 tests in 14.438s",
+      "FAILED (failures=1, errors=1)"
+    ],
+    "green-s03.3b.txt": [
+      "Ran 13 tests in 14.799s",
+      "OK"
+    ],
+    "regression-s03.3b.txt": [
+      "Ran 156 tests in 144.722s",
+      "OK (skipped=1)"
+    ],
+    "frontend-check.txt": [
+      "- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks",
+      "- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.",
+      "✓ built in 3.50s"
+    ],
+    "management-check.txt": [
+      "ℹ skipped 0",
+      "ℹ todo 0",
+      "ℹ duration_ms 117.0514"
+    ]
+  }
+}

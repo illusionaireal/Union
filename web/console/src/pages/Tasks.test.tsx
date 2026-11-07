@@ -22,7 +22,7 @@ describe('work page', () => {
         definition: { id: 'd1', version: 1, connection_id: 'c1', model: 'model-a', tools: [] },
         mandate: { id: 'ma1', version: 1, actions: ['read_document'], active: true },
         tool_calls: [], attempts: [], steps: [], budget: { max_calls: 4, reserved: 0, used: 0 },
-        materials: { reference: 'project-docs', available: false, documents: 0 },
+        materials: { reference: 'project-docs', available: false, documents: 0 }, results: [],
       }],
       capabilities: { work_registration: true, execution: 'not_started', autonomous_business: false },
     });

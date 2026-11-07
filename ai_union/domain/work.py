@@ -3,6 +3,7 @@
 Pure rules only. No transport, storage, model or host access; the governance
 store remains the single writer of AU facts.
 """
+import hashlib
 import time
 
 from . import governance, model_profiles
@@ -18,6 +19,8 @@ FIELDS = {
     "start_attempt": {"work_id"},
     "reserve_step": {"work_id"},
     "settle_step": {"work_id", "step_id", "status", "reason"},
+    "submit_result": {"work_id", "result_id", "title", "content", "sources"},
+    "adopt_result": {"work_id", "result_id"},
     "finish_attempt": {"work_id", "attempt_id", "outcome", "reason"},
 }
 TOOLS = {"read_document", "list_documents", "produce_artifact"}
@@ -49,6 +52,17 @@ def records(state):
 def validate_input(kind, data):
     require(kind in FIELDS, "不支持的核心工作命令")
     governance.exact(data, FIELDS[kind])
+    if kind == "submit_result":
+        require(reference(data["work_id"]) and reference(data["result_id"]), "工作与成果标识必须是 bounded 引用标识")
+        text(data["title"], "成果标题", 200)
+        text(data["content"], "成果正文", 32768)
+        require(isinstance(data["sources"], list) and len(data["sources"]) <= 20
+                and all(isinstance(item, str) and len(item) <= 100 for item in data["sources"]),
+                "成果来源必须是明确的执行或工具回执引用列表")
+        return
+    if kind == "adopt_result":
+        require(reference(data["work_id"]) and reference(data["result_id"]), "工作与成果标识必须是 bounded 引用标识")
+        return
     if kind == "reserve_step":
         require(reference(data["work_id"]), "工作标识必须是 bounded 引用标识")
         return
@@ -212,6 +226,16 @@ def validate_state(state):
                     and step.get("status") in STEP_STATUSES and step.get("purpose") == "work_step"
                     and isinstance(step.get("attempt_id"), str)
                     and step["attempt_id"].startswith(work["id"] + "#a"), "步进记录无效")
+        results_value = work.get("results") or []
+        require(isinstance(results_value, list) and len(results_value) <= 20, "成果记录无效")
+        for result in results_value:
+            require(isinstance(result, dict) and reference(result.get("id", ""))
+                    and result.get("status") in ("candidate", "adopted")
+                    and isinstance(result.get("sha256"), str) and len(result["sha256"]) == 64
+                    and isinstance(result.get("content"), str)
+                    and isinstance(result.get("sources"), list)
+                    and (result["status"] == "candidate") == (result.get("adopted_at") is None),
+                    "成果记录无效")
         calls = work.get("tool_calls") or []
         require(isinstance(calls, list) and len(calls) <= MAX_TOOL_CALLS, "工具调用回执超出上限")
         for call in calls:
@@ -300,6 +324,43 @@ def settle_step(state, data, clock=None):
     return step
 
 
+def _sources(work, sources):
+    known = {item["step_ref"] for item in work.get("steps") or []}
+    known |= {item["step_ref"] for item in work.get("tool_calls") or []}
+    require(len(sources) == len(set(sources)), "成果来源不能重复")
+    require(set(sources) <= known, "成果来源必须是本工作已有的执行步进或工具回执")
+
+
+def submit_result(state, data, principal, clock=None):
+    work = records(state)["works"].get(data["work_id"])
+    require(work is not None, "工作不存在或不属于此 AU")
+    require(work["status"] in OPEN, "工作已结束，不能再提交成果")
+    attempt = active_attempt(work)
+    results = work.setdefault("results", [])
+    require(len(results) < 20, "该工作的成果数量已达上限")
+    require(not any(item["id"] == data["result_id"] for item in results), "成果标识已存在；请查询原回执")
+    _sources(work, data["sources"])
+    body = data["content"].encode("utf-8")
+    result = {"id": data["result_id"], "seq": len(results) + 1, "title": data["title"], "content": data["content"],
+              "sha256": hashlib.sha256(body).hexdigest(), "bytes": len(body), "sources": list(data["sources"]),
+              "status": "candidate", "attempt_id": attempt["id"], "submitted_by_principal_id": principal,
+              "created_at": _stamp(clock), "adopted_at": None, "adopted_by_principal_id": None}
+    results.append(result)
+    return {key: value for key, value in result.items() if key != "content"}
+
+
+def adopt_result(state, data, principal, clock=None):
+    work = records(state)["works"].get(data["work_id"])
+    require(work is not None, "工作不存在或不属于此 AU")
+    result = next((item for item in work.get("results") or [] if item["id"] == data["result_id"]), None)
+    require(result is not None, "该工作没有此成果")
+    require(result["status"] == "candidate", "该成果已经采用；原采用记录不能覆盖")
+    require(hashlib.sha256(result["content"].encode("utf-8")).hexdigest() == result["sha256"],
+            "成果正文与登记摘要不一致；不能采用")
+    result.update(status="adopted", adopted_at=_stamp(clock), adopted_by_principal_id=principal)
+    return {key: value for key, value in result.items() if key != "content"}
+
+
 def tool_target(state, data):
     """Validate a tool call against the responsible member's live mandate."""
     records_value = records(state)
@@ -347,5 +408,7 @@ def projection(state):
             "tool_calls": [dict(call) for call in work.get("tool_calls") or []],
             "attempts": [dict(attempt) for attempt in work.get("attempts") or []],
             "steps": [dict(step) for step in work.get("steps") or []],
-            "budget": budget(work)})
+            "budget": budget(work),
+            "results": [{key: value for key, value in item.items() if key != "content"}
+                        for item in work.get("results") or []]})
     return sorted(result, key=lambda value: value["created_at"] + value["id"])
