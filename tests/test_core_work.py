@@ -1,6 +1,8 @@
 """S03.1: one goal becomes an answerable AI work under effective local governance."""
 import copy
+import json
 import uuid
+from pathlib import Path
 
 from tests.model_access_support import ModelAccessCase
 from tests.test_core_creation import creation
@@ -139,3 +141,39 @@ class CoreWorkTests(ModelAccessCase):
         self.assertEqual(duplicate["receipt"]["status"], "rejected", duplicate)
         self.assertIn("已存在", duplicate["receipt"]["message"])
         self.assertEqual(len(self.works()["works"]), 1)
+
+    def test_start_work_requires_a_materials_root_when_read_document_is_granted(self):
+        self.saved()
+        self.adopt_default()
+        self.allow_documents()
+        status, value, _ = self.work(data=work_data(materials_root=None))
+        self.assertEqual(status, 200, value)
+        self.assertEqual(value["receipt"]["status"], "rejected", value)
+        self.assertIn("资料目录", value["receipt"]["message"])
+        self.assertEqual(self.works()["works"], [])
+
+        artifact = work_data(tools=["produce_artifact"], materials_root=None, work_id="work-artifact",
+                             member_id="member-ai-artifact", binding_id="binding-ai-artifact",
+                             mandate_id="mandate-ai-artifact", definition_id="definition-ai-artifact")
+        status, value, _ = self.work(data=artifact)
+        self.assertEqual(status, 200, value)
+        self.assertEqual(value["receipt"]["status"], "succeeded", value)
+        self.assertEqual(len(self.works()["works"]), 1)
+
+    def test_work_projection_reports_whether_the_host_registered_materials_are_available(self):
+        self.saved()
+        self.adopt_default()
+        self.allow_documents()
+        status, value, _ = self.work()
+        self.assertEqual(value["receipt"]["status"], "succeeded", value)
+        self.assertEqual(self.works()["works"][0]["materials"],
+                         {"reference": "project-docs", "available": False, "documents": 0})
+
+        directory = Path(self.root) / "authorized-docs"
+        directory.mkdir()
+        (directory / "overview.md").write_bytes("概览\n".encode("utf-8"))
+        (Path(self.root) / "document-roots.json").write_text(
+            json.dumps({"version": 1, "roots": {"project-docs": str(directory)}}, ensure_ascii=False), encoding="utf-8")
+        materials = self.works()["works"][0]["materials"]
+        self.assertEqual((materials["reference"], materials["available"], materials["documents"]),
+                         ("project-docs", True, 1))

@@ -89,6 +89,8 @@ def apply(state, charter, kind, data, principal, request_id, clock=None):
     require(set(data["tools"]) <= TOOLS, "工具不在本核心版本支持的范围")
     require(data["materials_root"] is None or reference(data["materials_root"]),
             "资料目录须引用宿主已登记的标识，不接受路径或范围外引用")
+    require(data["materials_root"] is not None or "read_document" not in data["tools"],
+            "使用只读资料工具必须先指定宿主已登记的资料目录引用")
     model = connection(state, data["connection_id"], data["expected_revision"])
     for table in TABLES:
         require(data[{"members": "member_id", "definitions": "definition_id", "bindings": "binding_id",
@@ -152,6 +154,9 @@ def validate_state(state):
                 and work.get("mandate_id") in records_value["mandates"], "工作记录缺少责任、定义或授权")
         require(type(work.get("max_calls")) is int and work["max_calls"] >= 1, "工作调用上限无效")
         require(work.get("materials_root") is None or reference(work["materials_root"]), "工作资料引用无效")
+        require(work.get("materials_root") is not None
+                or "read_document" not in records_value["definitions"][work["definition_id"]].get("tools", []),
+                "只读资料工具缺少授权资料目录")
     for mandate in records_value["mandates"].values():
         require(mandate.get("work_id") in records_value["works"]
                 and mandate.get("binding_id") in records_value["bindings"]

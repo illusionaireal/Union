@@ -32,5 +32,6 @@
   one Agent Definition version, one binding and one root Mandate created
   together under the active current governor. It rejects host paths, tools
   outside the effective charter, unknown connections and call caps beyond the
-  AU plan. No execution, storage or dispatch; step S03.2+ extends the same
-  owner.
+  AU plan. `read_document` additionally requires a registered materials
+  reference, and stored work records keep that consistency. No execution,
+  storage or dispatch; step S03.2+ extends the same owner.

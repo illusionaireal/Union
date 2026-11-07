@@ -1,6 +1,7 @@
 """Start V1 work through the sole governance transaction; no execution side effects."""
 import copy
 
+from ..adapters import documents
 from ..adapters.core_au_store import CoreAUStore, encoded
 from ..domain import governance, work as rules
 from ..engine import identifier, now
@@ -24,11 +25,24 @@ class WorkService:
         default = (models.get("connections") or {}).get(models.get("default_connection_id") or "")
         can_start = (principal == governance.current(state) and value.get("governance_status") == "active"
                      and default is not None and default["enabled"])
+        works = rules.projection(state)
+        for item in works:
+            item["materials"] = self.materials(item["materials_root"])
         return {"protocol": rules.PROTOCOL, "organization_id": au_id, "version": state["version"],
                 "access": {"principal_id": principal, "can_start": can_start},
-                "works": rules.projection(state),
+                "works": works,
                 "capabilities": {"work_registration": True, "execution": "not_started",
                                  "autonomous_business": False}}
+
+    def materials(self, reference):
+        """Report host availability of the referenced read-only root; never reads content."""
+        if reference is None:
+            return {"reference": None, "available": False, "documents": 0}
+        try:
+            listed = documents.list_documents(documents.root_for(self.app.root, reference))
+        except (Rejected, CoreError, OSError):
+            return {"reference": reference, "available": False, "documents": 0}
+        return {"reference": reference, "available": True, "documents": len(listed)}
 
     def command(self, token, incoming):
         principal = self.app.creation.principal(self.app.session(token))

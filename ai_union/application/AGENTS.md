@@ -28,5 +28,7 @@
   returns the original receipt for a repeated request. It revalidates the
   logged-in principal, locates the actual AU, requires the active governor and
   a live adopted default connection, then registers Member/Definition/binding/
-  Work/Mandate. No model call, harness step, filesystem read or second writer;
+  Work/Mandate. Its read projection reports whether the referenced materials
+  root is registered and how many documents are readable, without reading
+  content. No model call, harness step, filesystem read or second writer;
   verify tests/test_core_work.py with S01/S02/S05 regressions.

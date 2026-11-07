@@ -1,0 +1,19 @@
+test_absent_registry_means_no_root_is_available (tests.test_documents.DocumentRootTests.test_absent_registry_means_no_root_is_available) ... ok
+test_absolute_and_traversal_document_paths_are_rejected (tests.test_documents.DocumentRootTests.test_absolute_and_traversal_document_paths_are_rejected) ... ok
+test_binary_and_oversize_documents_are_rejected (tests.test_documents.DocumentRootTests.test_binary_and_oversize_documents_are_rejected) ... ok
+test_escape_through_directory_link_is_rejected (tests.test_documents.DocumentRootTests.test_escape_through_directory_link_is_rejected) ... ok
+test_host_paths_and_unregistered_references_are_rejected (tests.test_documents.DocumentRootTests.test_host_paths_and_unregistered_references_are_rejected) ... ok
+test_malformed_registry_is_rejected_instead_of_guessed (tests.test_documents.DocumentRootTests.test_malformed_registry_is_rejected_instead_of_guessed) ... ok
+test_read_returns_exact_content_and_digest (tests.test_documents.DocumentRootTests.test_read_returns_exact_content_and_digest) ... ok
+test_registered_root_lists_only_its_own_documents (tests.test_documents.DocumentRootTests.test_registered_root_lists_only_its_own_documents) ... ok
+test_registry_refuses_relative_missing_or_file_roots (tests.test_documents.DocumentRootTests.test_registry_refuses_relative_missing_or_file_roots) ... ok
+test_start_work_binds_ai_member_definition_binding_work_and_mandate_in_one_command (tests.test_core_work.CoreWorkTests.test_start_work_binds_ai_member_definition_binding_work_and_mandate_in_one_command) ... ok
+test_start_work_refuses_unadopted_model_unbounded_calls_paths_and_duplicate_ids (tests.test_core_work.CoreWorkTests.test_start_work_refuses_unadopted_model_unbounded_calls_paths_and_duplicate_ids) ... ok
+test_start_work_requires_a_materials_root_when_read_document_is_granted (tests.test_core_work.CoreWorkTests.test_start_work_requires_a_materials_root_when_read_document_is_granted) ... ok
+test_start_work_requires_effective_governance_and_the_current_governor (tests.test_core_work.CoreWorkTests.test_start_work_requires_effective_governance_and_the_current_governor) ... ok
+test_work_projection_reports_whether_the_host_registered_materials_are_available (tests.test_core_work.CoreWorkTests.test_work_projection_reports_whether_the_host_registered_materials_are_available) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 6.180s
+
+OK

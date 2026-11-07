@@ -1,0 +1,34 @@
+test_documents (unittest.loader._FailedTest.test_documents) ... ERROR
+test_start_work_binds_ai_member_definition_binding_work_and_mandate_in_one_command (tests.test_core_work.CoreWorkTests.test_start_work_binds_ai_member_definition_binding_work_and_mandate_in_one_command) ... ok
+test_start_work_refuses_unadopted_model_unbounded_calls_paths_and_duplicate_ids (tests.test_core_work.CoreWorkTests.test_start_work_refuses_unadopted_model_unbounded_calls_paths_and_duplicate_ids) ... ok
+test_start_work_requires_a_materials_root_when_read_document_is_granted (tests.test_core_work.CoreWorkTests.test_start_work_requires_a_materials_root_when_read_document_is_granted) ... FAIL
+test_start_work_requires_effective_governance_and_the_current_governor (tests.test_core_work.CoreWorkTests.test_start_work_requires_effective_governance_and_the_current_governor) ... ok
+
+======================================================================
+ERROR: test_documents (unittest.loader._FailedTest.test_documents)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_documents
+Traceback (most recent call last):
+  File "C:\Users\Benedict\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 137, in loadTestsFromName
+    module = __import__(module_name)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SynologyDrive\project\Union\tests\test_documents.py", line 10, in <module>
+    from ai_union.adapters import documents
+ImportError: cannot import name 'documents' from 'ai_union.adapters' (unknown location)
+
+
+======================================================================
+FAIL: test_start_work_requires_a_materials_root_when_read_document_is_granted (tests.test_core_work.CoreWorkTests.test_start_work_requires_a_materials_root_when_read_document_is_granted)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 149, in test_start_work_requires_a_materials_root_when_read_document_is_granted
+    self.assertEqual(value["receipt"]["status"], "rejected", value)
+AssertionError: 'succeeded' != 'rejected'
+- succeeded
++ rejected
+ : {'receipt': {'actor_principal_id': '55bed268-583f-4486-911c-e8960385f26f', 'base_version': 6, 'binding_id': 'binding-ai-overview', 'created_at': '2026-11-07T09:02:19.272876+00:00', 'definition_id': 'definition-ai-overview', 'effect': 'applied', 'id': 'b506b87d-0d8c-4c8e-9c2f-2a9ebf5adfa8', 'kind': 'start_work', 'mandate_id': 'mandate-ai-overview', 'member_id': 'member-ai-overview', 'message': '已登记有责任成员的工作；执行尚未开始', 'organization_id': 'org-9a34cceabe8a4d41b280596204a64d3e', 'status': 'succeeded', 'version': 7, 'work_id': 'work-overview'}}
+
+----------------------------------------------------------------------
+Ran 5 tests in 4.749s
+
+FAILED (failures=1, errors=1)

@@ -33,3 +33,10 @@
 - Preserve original creation payloads/receipts and unknown recovery. Required
   tests include catalog integrity, Console, HTTP, AU contract and mechanisms;
   run the full fixed-toolchain checks before delivery.
+- S03 `documents.py` owns host-registered read-only roots
+  (`<console-root>/document-roots.json`, written by the host operator only).
+  HTTP carries the opaque reference; resolution rejects absolute, UNC, drive,
+  NUL and traversal paths and any real path escaping the registered root,
+  including directory links. Listing reports in-scope regular files; binary or
+  oversized reads are refused with an explicit reason. This adapter never
+  writes, creates or migrates, and AU work facts stay with the governance store.

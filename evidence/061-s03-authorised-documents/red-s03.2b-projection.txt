@@ -1,0 +1,14 @@
+E
+======================================================================
+ERROR: test_work_projection_reports_whether_the_host_registered_materials_are_available (tests.test_core_work.CoreWorkTests.test_work_projection_reports_whether_the_host_registered_materials_are_available)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 169, in test_work_projection_reports_whether_the_host_registered_materials_are_available
+    self.assertEqual(self.works()["works"][0]["materials"],
+                     ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+KeyError: 'materials'
+
+----------------------------------------------------------------------
+Ran 1 test in 1.025s
+
+FAILED (errors=1)
