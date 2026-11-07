@@ -1,10 +1,14 @@
 """Deployment watch must preserve work across failed reads and concurrent runs."""
 import importlib.util
+import io
 import json
+from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
 import tempfile
 import unittest
+from threading import Thread
 from types import SimpleNamespace
+from unittest.mock import patch
 
 MODULE = Path(__file__).resolve().parents[1] / "ops/automation/ops_watch.py"
 spec = importlib.util.spec_from_file_location("ops_watch", MODULE)
@@ -36,6 +40,103 @@ class OpsWatchTests(unittest.TestCase):
         self.assertTrue(failed["pending"])
         self.assertEqual(failed["error"], "RuntimeError")
         self.assertNotIn("secret", (self.root / "status.json").read_text())
+
+    def collection_fixture(self, failed_source=None):
+        env = self.root / "board.env"
+        env.write_text("UNION_KANBAN_URL=https://board.example.invalid\nUNION_KANBAN_KEY=fixture-secret\n")
+        config = {"env_file": str(env), "github_repository": "example/union", "ssh_port": 222,
+                  "ssh_target": "fixture-host", "health_command": "fixture-health"}
+        calls = []
+
+        def request(request, **kwargs):
+            url = request.full_url
+            source = "board" if "board.example.invalid" in url else "github"
+            calls.append(source)
+            if source == failed_source:
+                raise TimeoutError("fixture-secret must not enter diagnostics")
+            if "/messages?" in url:
+                result = {"latest_id": 7, "messages": []}
+            elif source == "board":
+                result = {"revision": 7, "tasks": []}
+            elif "/pulls?" in url:
+                result = []
+            else:
+                result = {"workflow_runs": []}
+            return io.StringIO(json.dumps(result))
+
+        def command(args, **kwargs):
+            if args[0] == "git":
+                return SimpleNamespace(returncode=0, stdout="password=fixture-secret\n")
+            calls.append("nas")
+            if failed_source == "nas":
+                raise TimeoutError("fixture-secret must not enter diagnostics")
+            return SimpleNamespace(returncode=0, stdout="running false 0")
+
+        self.enterContext(patch.object(watch.urllib.request, "build_opener",
+                                       return_value=SimpleNamespace(open=request)))
+        self.enterContext(patch.object(watch, "run_command", side_effect=command))
+        return config, calls
+
+    def test_board_failure_still_records_github_and_nas_without_advancing_cursor(self):
+        first = watch.poll(self.root, lambda: {"revision": 2})
+        config, calls = self.collection_fixture("board")
+        failed = watch.poll(self.root, lambda: watch.collect(config))
+        self.assertIn("github", calls)
+        self.assertIn("nas", calls)
+        self.assertEqual(failed["status"], "failed")
+        for key in ("snapshot", "last_success", "fingerprint", "pending"):
+            self.assertEqual(failed[key], first[key])
+        self.assertEqual(failed["observations"]["board"]["error"], "TimeoutError")
+        self.assertEqual(failed["observations"]["nas"]["data"]["nas"]["health"], "running false 0")
+        self.assertEqual(failed["observations"]["github"]["status"], "ok")
+        self.assertNotIn("fixture-secret", (self.root / "status.json").read_text())
+
+    def test_github_failure_keeps_board_and_nas_observations(self):
+        config, calls = self.collection_fixture("github")
+        failed = watch.poll(self.root, lambda: watch.collect(config))
+        self.assertIn("nas", calls)
+        self.assertEqual(failed["observations"]["board"]["data"]["board_revision"], 7)
+        self.assertEqual(failed["observations"]["nas"]["status"], "ok")
+        self.assertNotIn("last_success", failed)
+
+    def test_recovery_clears_partial_diagnostics_and_unchanged_snapshot_is_stable(self):
+        config, _ = self.collection_fixture("nas")
+        failed = watch.poll(self.root, lambda: watch.collect(config))
+        self.assertEqual(failed["observations"]["nas"]["error"], "TimeoutError")
+        config, _ = self.collection_fixture()
+        recovered = watch.poll(self.root, lambda: watch.collect(config))
+        self.assertEqual(recovered["status"], "ok")
+        self.assertNotIn("observations", recovered)
+        watch.acknowledge(self.root, recovered["fingerprint"])
+        unchanged = watch.poll(self.root, lambda: watch.collect(config))
+        self.assertFalse(unchanged["pending"])
+
+    def test_no_proxy_configuration_allows_actual_http_reads(self):
+        class Handler(BaseHTTPRequestHandler):
+            def do_GET(self):
+                value = {"latest_id": 1, "messages": []} if "messages" in self.path else {"revision": 1, "tasks": []}
+                body = json.dumps(value).encode()
+                self.send_response(200)
+                self.send_header("Content-Length", str(len(body)))
+                self.end_headers()
+                self.wfile.write(body)
+
+            def log_message(self, *args):
+                pass
+
+        server = self.enterContext(HTTPServer(("127.0.0.1", 0), Handler))
+        thread = Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        self.addCleanup(thread.join)
+        self.addCleanup(server.shutdown)
+        env = self.root / "loopback.env"
+        env.write_text(f"UNION_KANBAN_URL=http://127.0.0.1:{server.server_port}\nUNION_KANBAN_KEY=fixture\n")
+        # Other probes deliberately cannot start; this test only performs loopback HTTP.
+        with patch.object(watch, "run_command", side_effect=OSError("unavailable fixture")), \
+                patch.object(watch.urllib.request, "proxy_bypass", return_value=False):
+            state = watch.poll(self.root, lambda: watch.collect({"env_file": str(env)}))
+        self.assertEqual(state["observations"]["board"]["status"], "ok")
+        self.assertEqual(state["observations"]["board"]["data"]["board_revision"], 1)
 
     def test_ack_of_old_snapshot_does_not_consume_new_input(self):
         first = watch.poll(self.root, lambda: {"message": 1})

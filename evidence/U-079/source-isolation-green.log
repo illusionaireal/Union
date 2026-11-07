@@ -1,0 +1,16 @@
+test_ack_of_old_snapshot_does_not_consume_new_input (tests.test_ops_watch.OpsWatchTests.test_ack_of_old_snapshot_does_not_consume_new_input) ... ok
+test_board_failure_still_records_github_and_nas_without_advancing_cursor (tests.test_ops_watch.OpsWatchTests.test_board_failure_still_records_github_and_nas_without_advancing_cursor) ... ok
+test_failed_agent_keeps_pending_for_original_result_reconciliation (tests.test_ops_watch.OpsWatchTests.test_failed_agent_keeps_pending_for_original_result_reconciliation) ... ok
+test_failed_read_keeps_success_and_unhandled_signal (tests.test_ops_watch.OpsWatchTests.test_failed_read_keeps_success_and_unhandled_signal) ... ok
+test_github_failure_keeps_board_and_nas_observations (tests.test_ops_watch.OpsWatchTests.test_github_failure_keeps_board_and_nas_observations) ... ok
+test_health_change_queues_new_work (tests.test_ops_watch.OpsWatchTests.test_health_change_queues_new_work) ... ok
+test_lock_excludes_second_worker_and_releases_after_failure (tests.test_ops_watch.OpsWatchTests.test_lock_excludes_second_worker_and_releases_after_failure) ... ok
+test_missing_login_does_not_clear_pending_work (tests.test_ops_watch.OpsWatchTests.test_missing_login_does_not_clear_pending_work) ... ok
+test_no_proxy_configuration_allows_actual_http_reads (tests.test_ops_watch.OpsWatchTests.test_no_proxy_configuration_allows_actual_http_reads) ... ok
+test_recovery_clears_partial_diagnostics_and_unchanged_snapshot_is_stable (tests.test_ops_watch.OpsWatchTests.test_recovery_clears_partial_diagnostics_and_unchanged_snapshot_is_stable) ... ok
+test_unchanged_snapshot_after_ack_needs_no_agent (tests.test_ops_watch.OpsWatchTests.test_unchanged_snapshot_after_ack_needs_no_agent) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.857s
+
+OK
