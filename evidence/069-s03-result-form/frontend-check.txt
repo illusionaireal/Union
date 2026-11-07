@@ -1,0 +1,69 @@
+
+> union@0.0.0 check:console
+> npm run typecheck --workspace @union/console && npm run test --workspace @union/console && npm run build:console
+
+
+> @union/console@0.1.0 typecheck
+> tsc --noEmit
+
+
+> @union/console@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 D:/SynologyDrive/project/Union/web/console
+
+ ✓ src/api/client.test.ts (3 tests) 13ms
+ ✓ src/features/commands/receipts.test.ts (5 tests) 12ms
+ ✓ src/app/url-state.test.tsx (1 test) 106ms
+ ✓ src/pages/Tasks.test.tsx (1 test) 81ms
+ ✓ src/pages/ModelServiceConnections.test.tsx (2 tests) 198ms
+ ✓ src/pages/Gateways.test.tsx (3 tests) 256ms
+ ✓ src/features/commands/fields.test.tsx (9 tests) 368ms
+ ✓ src/pages/RuntimeObservation.test.tsx (11 tests) 236ms
+ ✓ src/features/work/WorkPanel.test.tsx (7 tests) 342ms
+ ✓ src/app/workspace.test.tsx (4 tests) 472ms
+ ✓ src/app/governance-workspace.test.tsx (11 tests) 543ms
+ ✓ src/pages/SubscriptionConnections.test.tsx (8 tests) 425ms
+ ✓ src/pages/Identity.test.tsx (14 tests) 832ms
+ ✓ src/features/commands/core-creation.test.tsx (7 tests) 1191ms
+   ✓ core creation through the workspace > keeps explicit legacy company creation reachable after reopening a prepared AU  374ms
+ ✓ src/features/commands/core-boundaries.test.tsx (10 tests) 1663ms
+ ✓ src/features/models/ModelsIdentity.test.tsx (11 tests) 1873ms
+   ✓ model identity, scope and input lifetime > keeps draft fields and keyboard focus through refresh and same-principal renewal  368ms
+ ✓ src/features/models/ModelsRecovery.test.tsx (10 tests) 2147ms
+   ✓ model original-request recovery > never replays a lost save and only queries the original receipt  516ms
+ ✓ src/features/models/ModelsDiagnostics.test.tsx (17 tests) 2636ms
+   ✓ model check eligibility after version changes or local stop > keeps an unstopped unknown check on the same revision blocking another check  320ms
+ ✓ src/features/models/Models.test.tsx (14 tests) 2685ms
+   ✓ core model access user journey > opens the core models route and navigation for a normal core governor  304ms
+   ✓ core model access user journey > grants bounded resources, reads a selected document twice and adopts independently  619ms
+ ✓ src/features/governance/Governance.test.tsx (53 tests) 7235ms
+
+ Test Files  20 passed (20)
+      Tests  201 passed (201)
+   Start at  05:45:18
+   Duration  10.51s (transform 2.66s, setup 6.97s, collect 14.59s, tests 23.32s, environment 21.42s, prepare 3.40s)
+
+
+> union@0.0.0 build:console
+> npm run build --workspace @union/console
+
+
+> @union/console@0.1.0 build
+> tsc --noEmit && vite build
+
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 2045 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.74 kB │ gzip:   0.51 kB
+dist/assets/index-DyiaVZUg.css   49.96 kB │ gzip:  11.02 kB
+dist/assets/index-BkHeQf7f.js   529.12 kB │ gzip: 163.21 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 2.72s

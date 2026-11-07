@@ -1,0 +1,10 @@
+
+ RUN  v3.2.7 D:/SynologyDrive/project/Union/web/console
+
+ ✓ src/features/work/WorkPanel.test.tsx (7 tests) 273ms
+
+ Test Files  1 passed (1)
+      Tests  7 passed (7)
+   Start at  05:45:06
+   Duration  1.34s (transform 65ms, setup 131ms, collect 191ms, tests 273ms, environment 361ms, prepare 87ms)
+

@@ -28,6 +28,87 @@ function attempt(item: CoreWorkItem) {
   return item.attempts.length ? '本轮执行已结束' : '尚未开始执行';
 }
 
+function ResultForm({ item, send, busy }: { item: CoreWorkItem; send: (kind: string, payload: Record<string, unknown>) => void; busy: boolean }) {
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [sources, setSources] = useState<string[]>([]);
+  const refs = [...item.steps.map((step) => step.step_ref), ...item.tool_calls.map((call) => call.step_ref)];
+  const toggle = (ref: string) =>
+    setSources((current) => (current.includes(ref) ? current.filter((value) => value !== ref) : [...current, ref]));
+  const ready = title.trim() !== '' && content.trim() !== '' && sources.length > 0;
+  return (
+    <details className="result-form">
+      <summary>提交候选成果</summary>
+      <label>
+        成果标题
+        <input value={title} onChange={(event) => setTitle(event.target.value)} />
+      </label>
+      <label>
+        成果正文
+        <textarea value={content} onChange={(event) => setContent(event.target.value)} />
+      </label>
+      <fieldset>
+        <legend>来源回执</legend>
+        {refs.length === 0 && <p>还没有可引用的执行步进或工具回执；先开始执行并读取资料。</p>}
+        {refs.map((ref) => (
+          <label key={ref}>
+            <input type="checkbox" checked={sources.includes(ref)} onChange={() => toggle(ref)} />
+            {ref}
+          </label>
+        ))}
+      </fieldset>
+      <button
+        type="button"
+        disabled={busy || !ready}
+        onClick={() =>
+          send('submit_result', {
+            work_id: item.id,
+            result_id: 'result-' + Date.now(),
+            title,
+            content,
+            sources,
+          })
+        }
+      >
+        提交成果
+      </button>
+    </details>
+  );
+}
+
+function AttemptActions({ item, send, busy }: { item: CoreWorkItem; send: (kind: string, payload: Record<string, unknown>) => void; busy: boolean }) {
+  const [outcome, setOutcome] = useState('delivered');
+  const running = item.attempts.find((attempt) => attempt.status === 'running');
+  if (!running) return null;
+  return (
+    <span className="attempt-actions">
+      <label>
+        结束结果
+        <select value={outcome} onChange={(event) => setOutcome(event.target.value)}>
+          <option value="delivered">已交付</option>
+          <option value="failed">失败</option>
+          <option value="stopped">停止</option>
+          <option value="unknown">结果未知</option>
+        </select>
+      </label>
+      <button
+        type="button"
+        disabled={busy}
+        onClick={() =>
+          send('finish_attempt', {
+            work_id: item.id,
+            attempt_id: running.id,
+            outcome,
+            reason: '界面操作：以 ' + outcome + ' 结束该次执行',
+          })
+        }
+      >
+        结束执行
+      </button>
+    </span>
+  );
+}
+
 export function WorkPanel({ organizationId }: { organizationId: string }) {
   const client = useQueryClient();
   const [busy, setBusy] = useState(false);
@@ -106,6 +187,7 @@ export function WorkPanel({ organizationId }: { organizationId: string }) {
               <button type="button" disabled={busy} onClick={() => send('reserve_step', { work_id: item.id })}>
                 预约一次调用
               </button>
+              <AttemptActions item={item} send={send} busy={busy} />
               {item.results
                 .filter((value) => value.status === 'candidate')
                 .map((value) => (
@@ -119,6 +201,7 @@ export function WorkPanel({ organizationId }: { organizationId: string }) {
                   </button>
                 ))}
             </div>
+            <ResultForm item={item} send={send} busy={busy} />
           </li>
         ))}
       </ul>

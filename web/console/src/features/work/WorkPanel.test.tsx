@@ -101,4 +101,44 @@ it('starts an execution and adopts a candidate result through the API', async ()
 
     await waitFor(() => expect(screen.getByRole('status').textContent).toContain('操作已记录'));
   });
+
+  it('submits a candidate result with the selected sources', async () => {
+    read({
+      ...base,
+      works: [item({
+        steps: [{ seq: 1, step_ref: 'work-overview#s1', attempt_id: 'work-overview#a1', purpose: 'work_step', status: 'used', at: '2026-11-08T00:00:00Z' }],
+      })],
+    });
+    const content = await screen.findByLabelText('成果正文');
+    fireEvent.change(content, { target: { value: '# 概览\n- 依据 nested/a.md\n' } });
+    fireEvent.change(screen.getByLabelText('成果标题'), { target: { value: '项目概览（第一版）' } });
+    fireEvent.click(screen.getByLabelText('work-overview#s1'));
+    coreWork.coreWorkCommand.mockResolvedValue({ receipt: { status: 'succeeded', message: '已登记候选成果与来源；尚未采用' } });
+
+    fireEvent.click(screen.getByText('提交成果'));
+    await waitFor(() => expect(coreWork.coreWorkCommand).toHaveBeenCalledWith(expect.objectContaining({
+      kind: 'submit_result',
+      data: expect.objectContaining({
+        work_id: 'work-overview', title: '项目概览（第一版）',
+        content: '# 概览\n- 依据 nested/a.md\n', sources: ['work-overview#s1'],
+      }),
+    })));
+  });
+
+  it('closes a running attempt with an explicit outcome', async () => {
+    read({
+      ...base,
+      works: [item({
+        attempts: [{ id: 'work-overview#a1', seq: 1, status: 'running', outcome: null, started_at: '2026-11-08T00:00:00Z', ended_at: null }],
+      })],
+    });
+    fireEvent.change(await screen.findByLabelText('结束结果'), { target: { value: 'unknown' } });
+    coreWork.coreWorkCommand.mockResolvedValue({ receipt: { status: 'succeeded', message: '已结束该次执行尝试并记录结果类别' } });
+
+    fireEvent.click(screen.getByText('结束执行'));
+    await waitFor(() => expect(coreWork.coreWorkCommand).toHaveBeenCalledWith(expect.objectContaining({
+      kind: 'finish_attempt',
+      data: expect.objectContaining({ work_id: 'work-overview', attempt_id: 'work-overview#a1', outcome: 'unknown' }),
+    })));
+  });
 });

@@ -1,0 +1,587 @@
+
+ RUN  v3.2.7 D:/SynologyDrive/project/Union/web/console
+
+ ❯ src/features/work/WorkPanel.test.tsx (7 tests | 1 failed) 1278ms
+   ✓ V1 work panel > shows responsibility, mandate, budget and registered materials 51ms
+   ✓ V1 work panel > reports an unknown execution and the last tool receipt instead of success 28ms
+   ✓ V1 work panel > explains the empty state when no V1 work exists 31ms
+   ✓ V1 work panel > shows an adopted result with its digest and source count 32ms
+   ✓ V1 work panel > starts an execution and adopts a candidate result through the API 78ms
+   ✓ V1 work panel > submits a candidate result with the selected sources 40ms
+   × V1 work panel > closes a running attempt with an explicit outcome 1017ms
+     → Unable to find a label with the text of: 结束结果
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33mclass[39m=[32m"card "[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"card-heading"[39m
+      [36m>[39m
+        [36m<h2>[39m
+          [0mAI 工作（V1）[0m
+        [36m</h2>[39m
+      [36m</div>[39m
+      [36m<ul[39m
+        [33maria-label[39m=[32m"V1 工作列表"[39m
+        [33mclass[39m=[32m"work-panel"[39m
+      [36m>[39m
+        [36m<li[39m
+          [33mdata-work[39m=[32m"work-overview"[39m
+        [36m>[39m
+          [36m<strong>[39m
+            [0m项目概览[0m
+          [36m</strong>[39m
+          [36m<p>[39m
+            [0m阅读授权资料写一份概览[0m
+          [36m</p>[39m
+          [36m<dl>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m负责成员[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m资料整理 Agent[0m
+                [0m（[0m
+                [0m交付项目概览[0m
+                [0m）[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m有效授权[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0mlist_documents[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m调用预算[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m0 已用 · 1 已预约 · 上限 4[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m执行[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m执行中（work-overview#a1）[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m最近工具回执[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m尚无工具回执[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m成果[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m尚无候选成果[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m授权资料[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0mproject-docs · 可读 2 份[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+          [36m</dl>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"work-actions"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0m开始执行[0m
+            [36m</button>[39m
+            [36m<button[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0m预约一次调用[0m
+            [36m</button>[39m
+          [36m</div>[39m
+          [36m<details[39m
+            [33mclass[39m=[32m"result-form"[39m
+          [36m>[39m
+            [36m<summary>[39m
+              [0m提交候选成果[0m
+            [36m</summary>[39m
+            [36m<label>[39m
+              [0m成果标题[0m
+              [36m<input[39m
+                [33mvalue[39m=[32m""[39m
+              [36m/>[39m
+            [36m</label>[39m
+            [36m<label>[39m
+              [0m成果正文[0m
+              [36m<textarea />[39m
+            [36m</label>[39m
+            [36m<fieldset>[39m
+              [36m<legend>[39m
+                [0m来源回执[0m
+              [36m</legend>[39m
+              [36m<p>[39m
+                [0m还没有可引用的执行步进或工具回执；先开始执行并读取资料。[0m
+              [36m</p>[39m
+            [36m</fieldset>[39m
+            [36m<button[39m
+              [33mdisabled[39m=[32m""[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0m提交成果[0m
+            [36m</button>[39m
+          [36m</details>[39m
+        [36m</li>[39m
+      [36m</ul>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33mclass[39m=[32m"card "[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"card-heading"[39m
+      [36m>[39m
+        [36m<h2>[39m
+          [0mAI 工作（V1）[0m
+        [36m</h2>[39m
+      [36m</div>[39m
+      [36m<ul[39m
+        [33maria-label[39m=[32m"V1 工作列表"[39m
+        [33mclass[39m=[32m"work-panel"[39m
+      [36m>[39m
+        [36m<li[39m
+          [33mdata-work[39m=[32m"work-overview"[39m
+        [36m>[39m
+          [36m<strong>[39m
+            [0m项目概览[0m
+          [36m</strong>[39m
+          [36m<p>[39m
+            [0m阅读授权资料写一份概览[0m
+          [36m</p>[39m
+          [36m<dl>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m负责成员[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m资料整理 Agent[0m
+                [0m（[0m
+                [0m交付项目概览[0m
+                [0m）[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m有效授权[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0mlist_documents[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m调用预算[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m0 已用 · 1 已预约 · 上限 4[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m执行[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m执行中（work-overview#a1）[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m最近工具回执[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m尚无工具回执[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m成果[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m尚无候选成果[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m授权资料[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0mproject-docs · 可读 2 份[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+          [36m</dl>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"work-actions"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0m开始执行[0m
+            [36m</button>[39m
+            [36m<button[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0m预约一次调用[0m
+            [36m</button>[39m
+          [36m</div>[39m
+          [36m<details[39m
+            [33mclass[39m=[32m"result-form"[39m
+          [36m>[39m
+            [36m<summary>[39m
+              [0m提交候选成果[0m
+            [36m</summary>[39m
+            [36m<label>[39m
+              [0m成果标题[0m
+              [36m<input[39m
+                [33mvalue[39m=[32m""[39m
+              [36m/>[39m
+            [36m</label>[39m
+            [36m<label>[39m
+              [0m成果正文[0m
+              [36m<textarea />[39m
+            [36m</label>[39m
+            [36m<fieldset>[39m
+              [36m<legend>[39m
+                [0m来源回执[0m
+              [36m</legend>[39m
+              [36m<p>[39m
+                [0m还没有可引用的执行步进或工具回执；先开始执行并读取资料。[0m
+              [36m</p>[39m
+            [36m</fieldset>[39m
+            [36m<button[39m
+              [33mdisabled[39m=[32m""[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0m提交成果[0m
+            [36m</button>[39m
+          [36m</details>[39m
+        [36m</li>[39m
+      [36m</ul>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/work/WorkPanel.test.tsx > V1 work panel > closes a running attempt with an explicit outcome
+TestingLibraryElementError: Unable to find a label with the text of: 结束结果
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      class="card "
+    >
+      <div
+        class="card-heading"
+      >
+        <h2>
+          AI 工作（V1）
+        </h2>
+      </div>
+      <ul
+        aria-label="V1 工作列表"
+        class="work-panel"
+      >
+        <li
+          data-work="work-overview"
+        >
+          <strong>
+            项目概览
+          </strong>
+          <p>
+            阅读授权资料写一份概览
+          </p>
+          <dl>
+            <div>
+              <dt>
+                负责成员
+              </dt>
+              <dd>
+                资料整理 Agent
+                （
+                交付项目概览
+                ）
+              </dd>
+            </div>
+            <div>
+              <dt>
+                有效授权
+              </dt>
+              <dd>
+                list_documents
+              </dd>
+            </div>
+            <div>
+              <dt>
+                调用预算
+              </dt>
+              <dd>
+                0 已用 · 1 已预约 · 上限 4
+              </dd>
+            </div>
+            <div>
+              <dt>
+                执行
+              </dt>
+              <dd>
+                执行中（work-overview#a1）
+              </dd>
+            </div>
+            <div>
+              <dt>
+                最近工具回执
+              </dt>
+              <dd>
+                尚无工具回执
+              </dd>
+            </div>
+            <div>
+              <dt>
+                成果
+              </dt>
+              <dd>
+                尚无候选成果
+              </dd>
+            </div>
+            <div>
+              <dt>
+                授权资料
+              </dt>
+              <dd>
+                project-docs · 可读 2 份
+              </dd>
+            </div>
+          </dl>
+          <div
+            class="work-actions"
+          >
+            <button
+              type="button"
+            >
+              开始执行
+            </button>
+            <button
+              type="button"
+            >
+              预约一次调用
+            </button>
+          </div>
+          <details
+            class="result-form"
+          >
+            <summary>
+              提交候选成果
+            </summary>
+            <label>
+              成果标题
+              <input
+                value=""
+              />
+            </label>
+            <label>
+              成果正文
+              <textarea />
+            </label>
+            <fieldset>
+              <legend>
+                来源回执
+              </legend>
+              <p>
+                还没有可引用的执行步进或工具回执；先开始执行并读取资料。
+              </p>
+            </fieldset>
+            <button
+              disabled=""
+              type="button"
+            >
+              提交成果
+            </button>
+          </details>
+        </li>
+      </ul>
+    </section>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      class="card "
+    >
+      <div
+        class="card-heading"
+      >
+        <h2>
+          AI 工作（V1）
+        </h2>
+      </div>
+      <ul
+        aria-label="V1 工作列表"
+        class="work-panel"
+      >
+        <li
+          data-work="work-overview"
+        >
+          <strong>
+            项目概览
+          </strong>
+          <p>
+            阅读授权资料写一份概览
+          </p>
+          <dl>
+            <div>
+              <dt>
+                负责成员
+              </dt>
+              <dd>
+                资料整理 Agent
+                （
+                交付项目概览
+                ）
+              </dd>
+            </div>
+            <div>
+              <dt>
+                有效授权
+              </dt>
+              <dd>
+                list_documents
+              </dd>
+            </div>
+            <div>
+              <dt>
+                调用预算
+              </dt>
+              <dd>
+                0 已用 · 1 已预约 · 上限 4
+              </dd>
+            </div>
+            <div>
+              <dt>
+                执行
+              </dt>
+              <dd>
+                执行中（work-overview#a1）
+              </dd>
+            </div>
+            <div>
+              <dt>
+                最近工具回执
+              </dt>
+              <dd>
+                尚无工具回执
+              </dd>
+            </div>
+            <div>
+              <dt>
+                成果
+              </dt>
+              <dd>
+                尚无候选成果
+              </dd>
+            </div>
+            <div>
+              <dt>
+                授权资料
+              </dt>
+              <dd>
+                project-docs · 可读 2 份
+              </dd>
+            </div>
+          </dl>
+          <div
+            class="work-actions"
+          >
+            <button
+              type="button"
+            >
+              开始执行
+            </button>
+            <button
+              type="button"
+            >
+              预约一次调用
+            </button>
+          </div>
+          <details
+            class="result-form"
+          >
+            <summary>
+              提交候选成果
+            </summary>
+            <label>
+              成果标题
+              <input
+                value=""
+              />
+            </label>
+            <label>
+              成果正文
+              <textarea />
+            </label>
+            <fieldset>
+              <legend>
+                来源回执
+              </legend>
+              <p>
+                还没有可引用的执行步进或工具回执；先开始执行并读取资料。
+              </p>
+            </fieldset>
+            <button
+              disabled=""
+              type="button"
+            >
+              提交成果
+            </button>
+          </details>
+        </li>
+      </ul>
+    </section>
+  </div>
+</body>
+ ❯ waitForWrapper ../../node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/features/work/WorkPanel.test.tsx:135:35
+    133|       })],
+    134|     });
+    135|     fireEvent.change(await screen.findByLabelText('结束结果'), { target: {…
+       |                                   ^
+    136|     coreWork.coreWorkCommand.mockResolvedValue({ receipt: { status: 's…
+    137| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 6 passed (7)
+   Start at  05:44:56
+   Duration  2.37s (transform 67ms, setup 134ms, collect 190ms, tests 1.28s, environment 366ms, prepare 91ms)
+

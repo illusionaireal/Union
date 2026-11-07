@@ -1,0 +1,40 @@
+{
+  "task": "U-067",
+  "slice": "S03",
+  "steps": [
+    "S03.3e candidate result form",
+    "S03.3e finish attempt with outcome"
+  ],
+  "checked_at": "2026-11-08T05:45:50+08:00",
+  "branch": "rewrite/charter-v1",
+  "real_model_calls": 0,
+  "deployed": false,
+  "note": "both sub-steps touch the same component and test file, so they share one commit",
+  "logs": {
+    "red-result-form.txt": [
+      "      Tests  1 failed | 5 passed (6)",
+      "   Start at  05:44:36",
+      "   Duration  2.35s (transform 65ms, setup 136ms, collect 197ms, tests 1.24s, environment 371ms, prepare 89ms)"
+    ],
+    "green-result-form.txt": [
+      "      Tests  6 passed (6)",
+      "   Start at  05:44:46",
+      "   Duration  1.37s (transform 67ms, setup 139ms, collect 193ms, tests 268ms, environment 367ms, prepare 94ms)"
+    ],
+    "red-finish-attempt.txt": [
+      "      Tests  1 failed | 6 passed (7)",
+      "   Start at  05:44:56",
+      "   Duration  2.37s (transform 67ms, setup 134ms, collect 190ms, tests 1.28s, environment 366ms, prepare 91ms)"
+    ],
+    "green-finish-attempt.txt": [
+      "      Tests  7 passed (7)",
+      "   Start at  05:45:06",
+      "   Duration  1.34s (transform 65ms, setup 131ms, collect 191ms, tests 273ms, environment 361ms, prepare 87ms)"
+    ],
+    "frontend-check.txt": [
+      "- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks",
+      "- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.",
+      "✓ built in 2.72s"
+    ]
+  }
+}
