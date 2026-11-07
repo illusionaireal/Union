@@ -5,7 +5,7 @@ import threading
 import unittest
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from urllib.parse import urlsplit
+from urllib.parse import parse_qs, urlsplit
 
 from ai_union.errors import Rejected
 from ai_union.model_service import ModelServiceClient, ServiceError
@@ -23,6 +23,7 @@ class ModeldDouble(BaseHTTPRequestHandler):
     seen = []
     state = "completed"
     post_status = 202
+    result = None
 
     def log_message(self, *args):  # keep the test output quiet
         pass
@@ -50,8 +51,10 @@ class ModeldDouble(BaseHTTPRequestHandler):
         if parts.path.endswith("/events"):
             return self._send(200, {"events": []})
         request_id = parts.path.rsplit("/", 1)[-1]
-        result = {"message": MESSAGE, "usage": USAGE} if type(self).state == "completed" else None
-        self._send(200, {"id": request_id, "au_id": "au-1", "state": type(self).state, "result": result})
+        au_id = parse_qs(parts.query).get("au_id", ["au-1"])[0]
+        payload = type(self).result if type(self).result is not None else {"message": MESSAGE, "usage": USAGE}
+        result = payload if type(self).state == "completed" else None
+        self._send(200, {"id": request_id, "au_id": au_id, "state": type(self).state, "result": result})
 
 
 class LoopbackWorkTransportTests(unittest.TestCase):
@@ -59,6 +62,7 @@ class LoopbackWorkTransportTests(unittest.TestCase):
         ModeldDouble.seen = []
         ModeldDouble.state = "completed"
         ModeldDouble.post_status = 202
+        ModeldDouble.result = None
         self.server = ThreadingHTTPServer(("127.0.0.1", 0), ModeldDouble)
         self.thread = threading.Thread(target=self.server.serve_forever, daemon=True)
         self.thread.start()

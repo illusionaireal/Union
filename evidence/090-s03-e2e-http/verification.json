@@ -1,0 +1,30 @@
+{
+  "kind": "end-to-end verification over real HTTP double",
+  "task": "U-067",
+  "slice": "S03",
+  "product_changes": 0,
+  "checked_at": "2026-11-08T07:46:32+08:00",
+  "branch": "dsh/s03-work-runtime (local, unpushed)",
+  "real_model_calls": 0,
+  "not_tdd": "verifies behaviour delivered in 079-088; no prior RED was possible",
+  "test_defects_fixed": [
+    "prepare() shadowed the base AU creation helper",
+    "self.server collided with the base console server",
+    "the double hard-coded au_id instead of echoing the request"
+  ],
+  "logs": {
+    "test-e2e.txt": [
+      "Ran 11 tests in 2.544s",
+      "OK"
+    ],
+    "regression.txt": [
+      "Ran 111 tests in 52.651s",
+      "OK (skipped=3)"
+    ],
+    "management-check.txt": [
+      "ℹ skipped 0",
+      "ℹ todo 0",
+      "ℹ duration_ms 1642.6194"
+    ]
+  }
+}
