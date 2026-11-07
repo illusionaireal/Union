@@ -10,7 +10,24 @@
 | 文件 | 作用 |
 | --- | --- |
 | `pick-next.mjs` | 只读在线 `GET /api/board`，输出 JSON：`resume`（在制卡，优先续做）、`ready`（依赖已 done 的 backlog/ready）、`blocked`、`done`、`next`、`all_v1_done`。 |
+| `team-feed.mjs` | 只读“团队动态”（活动流 + 留言板），列出未回复的求助与阻塞卡；`--ask` 在留言板发求助、`--reply` 回复指定留言。 |
 | `union-autodev.yaml` | goose recipe：一轮推进一张卡的一个可验证子步骤（严格 TDD），提交推送并**即时**同步在线卡与主账。 |
+
+## 每轮先看团队动态（2026-11-08）
+
+用户要求：定时任务**启动时先检查团队动态**，能帮就帮；自己遇到问题也在团队动态求助。在线看板的“团队动态”是本项目的团队协作面（`data-view="activity"`：评论、留言、建/改卡等），留言板是 `POST /api/messages`，两者都会出现在动态里。
+
+```sh
+node ops/automation/team-feed.mjs              # 团队动态 + 未回复求助(asks) + 阻塞卡(blocked)
+node ops/automation/team-feed.mjs --limit 15   # 只看最近 15 条
+node ops/automation/team-feed.mjs --ask "【求助｜U-0xx】现象/已尝试/需要谁做什么"
+node ops/automation/team-feed.mjs --ask "补充说明" --reply 4
+```
+
+- 每轮先把 `asks`（未回复留言）与 `blocked` 过一遍：能本轮解决的（读证据、定位、给最小修复或明确归属）就做，并在留言板回复结论；解决不了的说明限制与所需信息，不装懂、不重复刷同样求助。
+- 自己卡住（缺凭据/需他人判断/环境问题/反复失败）：用 `--ask` 发一条求助，写清 U 卡、现象、已尝试、需要谁做什么；同时在当前卡评论引用该留言编号。
+- 求助与回复都会进入团队动态，别人（或下一轮）能看到；不贴密钥、邀请片段、私有主机信息。
+- 不因“帮别人”抢占对方在制卡或越过对方授权范围；帮的是诊断、证据、回复与明确责任。
 
 ## 调度注册
 
