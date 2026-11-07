@@ -72,5 +72,8 @@ describe('V1 work panel', () => {
     });
     await waitFor(() => expect(screen.getByText(/项目概览（第一版）/)).toBeTruthy());
     expect(screen.getByText(/已采用 · abcdef012345/)).toBeTruthy();
+    const link = screen.getByText('下载').getAttribute('href') ?? '';
+    expect(link).toContain('/api/v1/work/results?organization_id=au-1');
+    expect(link).toContain('id=result-overview');
   });
 });
