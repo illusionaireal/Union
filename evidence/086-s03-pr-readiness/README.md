@@ -99,3 +99,14 @@ node scripts/project-management.mjs record U-078 --actor "dsh/deepseek-v4.1-flas
 5. 未知资源不会返回 SPA 外壳。
 
 真实模型调用 0。这补上了"产品能真正启动并服务前端"的离线证据（此前只有单元/集成测试与浏览器脚本历史记录）。
+
+## 追加验证（2026-11-08 07:39，真实 Chromium 浏览器门槛）
+
+网络仍不可用，但两个实际浏览器验收在本机通过（Chrome，临时目录 + 回环替身，真实模型调用 0）：
+
+| 检查 | 结果 | 日志 |
+| --- | --- | --- |
+| `npm run test:workspace`（React 工作台，含我新增的 V1 工作面板/操作） | **71 项通过** | `browser-workspace.txt` |
+| `node scripts/check_core_creation.cjs`（S01 创建/重开门槛） | **30 项通过** | `browser-core-creation.txt` |
+
+这两项此前记录于 S01/workspace 证据，本轮是在**含 15 个本地提交的当前树**上复跑，确认新增的自动执行与通道装配没有破坏既有用户流程（创建、重开、模型配置、工作页）。
