@@ -1,5 +1,23 @@
 # 从新环境接手开发
 
+## 2026-11-08：S03 自动执行的宿主模型通道（`UNION_MODELD_CONFIG`）
+
+V1 的自动执行（`POST /api/v1/work/commands` 的 `kind: run_step` / `kind: run_loop`）**默认没有模型通道**，调用会返回"宿主尚未配置模型执行通道"的拒绝。宿主需要显式接线：
+
+1. 准备宿主私有的 modeld 配置（回环 `origin` + `admin_token_file` / `worker_token_file`，令牌文件 32–256 字符、二者不同；非 Windows 需 0600 权限）；
+2. 启动工作台前设置环境变量 `UNION_MODELD_CONFIG=<该配置文件路径>`；
+3. 工作台启动时会把 `Console.work.transport_factory` 接成 `modeld_factory(该路径)`，`run_step` 才会真正发起模型请求。
+
+失败语义（与证据 085/082 对应）：
+
+- 配置缺失/格式非法 → 建立通道时抛 `Rejected` → 回执 **rejected**，**不留下步进、不占调用预算**；
+- 通道超时、5xx、`interrupted` → 回执 `succeeded` + **`model_outcome: unknown`**，并留下一条 `status: unknown` 的步进，**预算保持占用**；必须用 `kind: reconcile_step` 核对（`used`/`released`/`failed` + 依据）后才释放；
+- 4xx/422 明确拒绝、`action_authorized=false` → **rejected**，可重新发起。
+
+用量与费用：每次步进记录 `usage{input_tokens,output_tokens}` 与 `cost_status: unknown`；核心不估算金额、未知不写 0。真实有界验收仍在等待网络与宿主通道（≤2 次调用、每次 ≤1024 输出 tokens、仅合成公开测试资料）。
+
+离线验证：`tests.test_core_work`、`tests.test_work_transport`、`tests.test_work_transport_http`（真实回环 HTTP 替身）、`tests.test_core_work_http`（API→步进→通道→工具→候选成果端到端）。
+
 ## 2026-11-05：从 Main Chapter V1 接手
 
 先读[采用记录](CHARTER_ADOPTION.md)、[Chapter V1](UNION_CHARTER_v1.0.md)、[PRD v1.0](PRD.md)、[总体架构](ARCHITECTURE.md)、[053 plan](../specs/053-union-rewrite/plan.md)与根[HANDOFF](../HANDOFF.md)。S01a–S01c 的稳定 principal、准备态创建/重开和旧入口隔离见 [056](../evidence/056-s01-core-creation/README.md)。S05/U-069 的本地治理、修章/撤权及责任交接见 [契约](../specs/053-union-rewrite/s05-contract.md)和 [057](../evidence/057-s05-governance/README.md)。S02/U-072 和 S03 必须在完整 S05 受控工程验收后继续；主账状态、容量、在线负责人及后续资源授权需在开工前重新核对。
