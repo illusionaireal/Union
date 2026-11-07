@@ -433,3 +433,32 @@ class CoreWorkTests(ModelAccessCase):
         status, duplicate, _ = self.submit(sources=["work-overview#s1"])
         self.assertEqual(duplicate["receipt"]["status"], "rejected", duplicate)
         self.assertIn("已存在", duplicate["receipt"]["message"])
+
+    def result_content(self, result_id="result-overview", au_id=None, token="current"):
+        query = "/api/v1/work/results?organization_id=" + (au_id or self.au_id) + "&id=" + result_id
+        return self.request(query, token=token)
+
+    def test_result_content_is_readable_and_digest_verified(self):
+        self.work_with_listing()
+        self.prepare_materials()
+        self.start_attempt()
+        self.reserve()
+        self.submit(sources=["work-overview#s1"])
+        digest = hashlib.sha256("# 概览\n- 依据 nested/a.md\n".encode("utf-8")).hexdigest()
+
+        status, value, _ = self.result_content()
+        self.assertEqual(status, 200, value)
+        self.assertEqual(value["protocol"], "core.work.v1")
+        self.assertEqual(value["content"], "# 概览\n- 依据 nested/a.md\n")
+        self.assertEqual(value["result"]["sha256"], digest)
+        self.assertEqual(value["result"]["sources"], ["work-overview#s1"])
+        self.assertEqual(value["result"]["status"], "candidate")
+
+        status, value, _ = self.result_content("result-absent")
+        self.assertEqual(status, 400, value)
+        self.assertNotIn("content", value)
+
+        other = self.second_au()
+        status, value, _ = self.result_content(au_id=other)
+        self.assertIn(status, (400, 403), value)
+        self.assertNotIn("content", value)

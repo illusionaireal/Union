@@ -1,0 +1,14 @@
+test_result_content_is_readable_and_digest_verified (tests.test_core_work.CoreWorkTests.test_result_content_is_readable_and_digest_verified) ... FAIL
+
+======================================================================
+FAIL: test_result_content_is_readable_and_digest_verified (tests.test_core_work.CoreWorkTests.test_result_content_is_readable_and_digest_verified)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 450, in test_result_content_is_readable_and_digest_verified
+    self.assertEqual(status, 200, value)
+AssertionError: 404 != 200 : {'error': '接口不存在'}
+
+----------------------------------------------------------------------
+Ran 1 test in 1.048s
+
+FAILED (failures=1)

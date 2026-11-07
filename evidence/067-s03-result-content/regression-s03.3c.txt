@@ -1,0 +1,20 @@
+................................s............................................................................................................................
+已重置 C:\Users\Benedict\AppData\Local\Temp\tmpbnez9ev7\console.sqlite3
+重置前备份: C:\Users\Benedict\AppData\Local\Temp\tmpbnez9ev7\console.sqlite3.bak-1794085281
+重启工作台后，任意第一个访问者都可以重新设置管理员账号。
+----------------------------------------------------------------------
+已重置 C:\Users\Benedict\AppData\Local\Temp\tmp5fajxbvd\console.sqlite3
+重置前备份: C:\Users\Benedict\AppData\Local\Temp\tmp5fajxbvd\console.sqlite3.bak-1794085357
+Ran 157 tests in 142.713s
+重启工作台后，任意第一个访问者都可以重新设置管理员账号。
+
+已重置 C:\Users\Benedict\AppData\Local\Temp\tmp6koosbsu\console.sqlite3
+OK (skipped=1)
+重置前备份: C:\Users\Benedict\AppData\Local\Temp\tmp6koosbsu\console.sqlite3.bak-1794085367
+重启工作台后，任意第一个访问者都可以重新设置管理员账号。
+已重置 C:\Users\Benedict\AppData\Local\Temp\tmp4s9ju5j6\console.sqlite3
+重置前备份: C:\Users\Benedict\AppData\Local\Temp\tmp4s9ju5j6\console.sqlite3.bak-1794085371
+重启工作台后，任意第一个访问者都可以重新设置管理员账号。
+已重置 C:\Users\Benedict\AppData\Local\Temp\tmplrm8xm3x\console.sqlite3
+重置前备份: C:\Users\Benedict\AppData\Local\Temp\tmplrm8xm3x\console.sqlite3.bak-1794085385
+重启工作台后，任意第一个访问者都可以重新设置管理员账号。

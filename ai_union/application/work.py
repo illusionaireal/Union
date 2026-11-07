@@ -1,6 +1,8 @@
 """Start V1 work through the sole governance transaction; no execution side effects."""
 import copy
 
+import hashlib
+
 from ..adapters import documents
 from ..adapters.core_au_store import CoreAUStore, encoded
 from ..domain import governance, work as rules
@@ -129,3 +131,23 @@ class WorkService:
             result, detail = {"text": text_value, "sha256": digest, "bytes": size}, {"sha256": digest, "bytes": size}
         entry = rules.record_tool_call(work, data["tool"], data["arguments"], detail, attempt["id"])
         return {"tool_call": entry, "result": result}
+
+    def result_content(self, token, au_id, result_id):
+        """Read one adopted or candidate result body; the digest is re-checked on read."""
+        try:
+            identifier(au_id)
+            identifier(result_id)
+        except (Rejected, TypeError) as error:
+            raise CoreError("invalid_request", str(error)) from error
+        value = self.app.core_au(token, au_id)
+        for work in rules.records(value["au"])["works"].values():
+            for result in work.get("results") or []:
+                if result["id"] != result_id:
+                    continue
+                digest = hashlib.sha256(result["content"].encode("utf-8")).hexdigest()
+                if digest != result["sha256"]:
+                    raise CoreError("incompatible_state", "成果正文与登记摘要不一致；不能作为正式成果读取")
+                return {"protocol": rules.PROTOCOL, "organization_id": au_id,
+                        "result": {key: item for key, item in result.items() if key != "content"},
+                        "content": result["content"]}
+        raise CoreError("invalid_request", "此 AU 中没有该成果标识")

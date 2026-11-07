@@ -1,0 +1,47 @@
+{
+  "task": "U-067",
+  "slice": "S03",
+  "steps": [
+    "S03.3c result content endpoint",
+    "S03.3c download link on the work page"
+  ],
+  "checked_at": "2026-11-08T05:04:08+08:00",
+  "branch": "rewrite/charter-v1",
+  "real_model_calls": 0,
+  "deployed": false,
+  "logs": {
+    "red-s03.3c.txt": [
+      "FAIL: test_result_content_is_readable_and_digest_verified (tests.test_core_work.CoreWorkTests.test_result_content_is_readable_and_digest_verified)",
+      "Ran 1 test in 1.048s",
+      "FAILED (failures=1)"
+    ],
+    "green-s03.3c.txt": [
+      "Ran 14 tests in 15.599s",
+      "OK"
+    ],
+    "regression-s03.3c.txt": [
+      "Ran 157 tests in 142.713s",
+      "OK (skipped=1)"
+    ],
+    "red-download-link.txt": [
+      "      Tests  1 failed | 3 passed (4)",
+      "   Start at  05:01:10",
+      "   Duration  1.41s (transform 71ms, setup 150ms, collect 228ms, tests 152ms, environment 422ms, prepare 105ms)"
+    ],
+    "green-download-link.txt": [
+      "      Tests  4 passed (4)",
+      "   Start at  05:01:13",
+      "   Duration  1.41s (transform 67ms, setup 158ms, collect 216ms, tests 145ms, environment 424ms, prepare 117ms)"
+    ],
+    "frontend-check.txt": [
+      "- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks",
+      "- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.",
+      "✓ built in 3.34s"
+    ],
+    "management-check.txt": [
+      "ℹ skipped 0",
+      "ℹ todo 0",
+      "ℹ duration_ms 110.8845"
+    ]
+  }
+}

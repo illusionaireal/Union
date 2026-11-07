@@ -154,6 +154,8 @@ class Handler(BaseHTTPRequestHandler):
                 return self.send(200, app.session_info(token))
             if path.path == '/api/v1/work':
                 return self.send(200, app.work.read(token, query.get('organization_id', [None])[0]))
+            if path.path == '/api/v1/work/results':
+                return self.send(200, app.work.result_content(token, query.get('organization_id', [None])[0], query.get('id', [None])[0]))
             if path.path == '/api/v1/models':
                 return self.send(200, app.models.read(token, query.get('organization_id', [None])[0]))
             if path.path == '/api/v1/models/receipts':

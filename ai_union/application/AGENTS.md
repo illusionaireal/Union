@@ -32,7 +32,8 @@
   root is registered and how many documents are readable, without reading
   content. `invoke_tool` runs one authorized read-only tool through
   `adapters/documents.py` inside the same transaction and records its
-  receipt there; it never calls a model. Attempt lifecycle commands record
+  receipt there; it never calls a model. `result_content` serves a result body
+  read-only and re-checks its digest on every read. Attempt lifecycle commands record
   ownership and call-budget facts in the same transaction and never start
   execution or spend a call by themselves. No harness step and no second writer; verify
   tests/test_core_work.py with S01/S02/S05 regressions.
