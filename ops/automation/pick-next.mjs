@@ -66,12 +66,22 @@ for (const [id, c] of byTask) {
 const ready = eligible.filter((e) => !e.blocked).sort((a, b) => ORDER(a.id) - ORDER(b.id));
 const blocked = eligible.filter((e) => e.blocked);
 
-const next = inFlight.length >= WIP_LIMIT ? null : ready[0] || null;
+// Resuming in-flight work comes first: an already-claimed card that is not done
+// is the most valuable thing to advance, and starting new cards while old ones
+// sit in progress would just raise WIP.
+const resume = cards
+  .filter((c) => ['progress', 'review'].includes(c.status))
+  .map((c) => ({ id: idOf(c.title), card: c.id, version: c.version, status: c.status, title: c.title }))
+  .filter((c) => c.id && c.id.startsWith(V1_PREFIX))
+  .sort((a, b) => ORDER(a.id) - ORDER(b.id));
+
+const next = resume[0] || (inFlight.length >= WIP_LIMIT ? null : ready[0] || null);
 console.log(JSON.stringify({
   source: 'online',
   generated_at: new Date().toISOString(),
   revision: board.revision ?? null,
   in_flight: inFlight.length,
+  resume,
   wip_limit: WIP_LIMIT,
   ready: ready.map((r) => ({ id: r.id, card: r.card, version: r.version, status: r.status, title: r.title, deps: r.deps })),
   blocked: blocked.map((b) => ({ id: b.blocked, missing: b.missing })),
