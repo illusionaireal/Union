@@ -5,6 +5,7 @@ import json
 import uuid
 from pathlib import Path
 
+from ai_union.errors import Rejected
 from tests.model_access_support import ModelAccessCase
 from tests.test_core_creation import creation
 
@@ -784,3 +785,65 @@ class CoreWorkTests(ModelAccessCase):
         self.assertEqual(value["receipt"]["turns"], 2, "the loop never exceeds the work call budget")
         card = [w for w in self.works()["works"] if w["id"] == "work-tight"][0]
         self.assertEqual(len(card["steps"]), 2)
+
+    def test_a_definite_channel_refusal_creates_no_step_fact(self):
+        self.work_with_listing()
+        self.prepare_materials()
+        self.start_attempt()
+
+        class Refusing:
+            def chat(self, package, messages, tools):
+                raise Rejected("模型服务拒绝本次请求")
+
+        self.app.work.transport = Refusing()
+        status, value, _ = self.work_step()
+        self.assertEqual(value["receipt"]["status"], "rejected", value)
+        self.assertIn("拒绝", value["receipt"]["message"])
+        card = self.works()["works"][0]
+        self.assertEqual(card["steps"], [], "a refusal leaves no reserved step behind")
+        self.assertEqual(card["budget"], {"max_calls": 4, "reserved": 0, "used": 0})
+
+    def test_the_host_can_wire_the_channel_through_a_factory(self):
+        self.work_with_listing()
+        self.prepare_materials()
+        self.start_attempt()
+        self.app.work.transport = None
+        seen = {}
+
+        def factory(au_id, connection):
+            seen["au_id"] = au_id
+            seen["connection"] = connection
+            return FakeTransport([({"content": "# 概览\n", "tool_calls": []}, {"input_tokens": 7, "output_tokens": 3})])
+
+        self.app.work.transport_factory = factory
+        status, value, _ = self.work_step()
+        self.assertEqual(status, 200, value)
+        self.assertEqual(value["receipt"]["status"], "succeeded", value)
+        self.assertEqual(seen["au_id"], self.au_id)
+        self.assertEqual(seen["connection"]["id"], "connection-a")
+        self.assertEqual(seen["connection"]["model"], "model-a")
+        self.assertEqual(self.works()["works"][0]["steps"][0]["usage"], {"input_tokens": 7, "output_tokens": 3})
+
+    def test_a_factory_that_cannot_build_the_channel_refuses_without_a_step(self):
+        self.work_with_listing()
+        self.prepare_materials()
+        self.start_attempt()
+        self.app.work.transport = None
+
+        def factory(au_id, connection):
+            raise Rejected("模型服务宿主配置尚未就绪")
+
+        self.app.work.transport_factory = factory
+        status, value, _ = self.work_step()
+        self.assertEqual(value["receipt"]["status"], "rejected", value)
+        self.assertIn("就绪", value["receipt"]["message"])
+        self.assertEqual(self.works()["works"][0]["steps"], [])
+
+    def test_no_channel_and_no_factory_still_refuses(self):
+        self.work_with_listing()
+        self.start_attempt()
+        self.app.work.transport = None
+        self.app.work.transport_factory = None
+        status, value, _ = self.work_step()
+        self.assertEqual(value["receipt"]["status"], "rejected", value)
+        self.assertIn("通道", value["receipt"]["message"])

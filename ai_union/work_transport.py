@@ -83,3 +83,13 @@ class ModeldWorkTransport:
         require(isinstance(result, dict) and isinstance(result.get("message"), dict), "模型服务缺少完整结果")
         usage = result.get("usage") if isinstance(result.get("usage"), dict) else {}
         return result["message"], dict(usage)
+
+
+def modeld_factory(config_file=None, *, timeout_seconds=60):
+    """Host wiring: build the channel from the host-private modeld configuration."""
+    def build(au_id, connection):
+        from .model_service import ModelServiceClient
+        require(isinstance(connection, dict), "该工作没有可用的模型连接")
+        return ModeldWorkTransport(ModelServiceClient(config_file), au_id, connection,
+                                   timeout_seconds=timeout_seconds)
+    return build

@@ -440,7 +440,9 @@ def step_plan(state, charter, work_id, instance=None):
     messages = [{"role": "system", "content": definition["instruction"]},
                 {"role": "user", "content": "目标：" + work["goal"]
                  + "\n请先用电只读工具查看授权资料，再给出可直接交付的成果正文（Markdown）。"}]
+    connection = (state.get("model_access") or {}).get("connections", {}).get(definition["connection_id"])
     return {"work_id": work_id, "attempt_id": attempt["id"], "materials_root": work["materials_root"],
+            "connection": dict(connection) if isinstance(connection, dict) else None,
             "messages": messages, "tools": [{"type": "function", "function": TOOL_SPECS[name]} for name in allowed],
             "package": {"kind": "work_step", "work_id": work_id, "attempt_id": attempt["id"],
                         "run_id": work_id + "#s" + str(len(work.get("steps") or []) + 1)}}

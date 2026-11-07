@@ -84,5 +84,22 @@ class ModeldWorkTransportTests(unittest.TestCase):
             self.transport(client).chat(PACKAGE, [], [])
 
 
+    def test_the_host_factory_builds_a_channel_from_the_private_configuration(self):
+        from unittest.mock import patch
+        from ai_union import work_transport
+
+        with patch("ai_union.model_service.ModelServiceClient") as client:
+            build = work_transport.modeld_factory("host-private.json", timeout_seconds=30)
+            transport = build("au-1", CONNECTION)
+        self.assertIsInstance(transport, work_transport.ModeldWorkTransport)
+        self.assertEqual(transport.au_id, "au-1")
+        self.assertEqual(transport.timeout_seconds, 30)
+        client.assert_called_once_with("host-private.json")
+
+    def test_the_host_factory_refuses_a_work_without_a_connection(self):
+        from ai_union import work_transport
+        with self.assertRaises(Rejected):
+            work_transport.modeld_factory("host-private.json")("au-1", None)
+
 if __name__ == "__main__":
     unittest.main()

@@ -15,6 +15,8 @@ class WorkService:
     def __init__(self, app):
         self.app = app
         self.store = app.governance.store
+        self.transport = None
+        self.transport_factory = None
 
     def read(self, token, au_id):
         try:
@@ -186,11 +188,25 @@ class WorkService:
                 plan = rules.step_plan(state, state["charter"], request["data"]["work_id"],
                                        instance=self.app.instance)
         transport = getattr(self, "transport", None)
+        if transport is None:
+            factory = getattr(self, "transport_factory", None)
+            if factory is not None:
+                try:
+                    transport = factory(request["organization_id"], plan.get("connection"))
+                except Rejected as error:
+                    return self.reject_step(directory, intent, request, principal,
+                                            "宿主未能建立模型通道：" + str(error)[:280])
+                except Exception as error:  # noqa: BLE001 - a channel that cannot be built never ran anything
+                    return self.reject_step(directory, intent, request, principal,
+                                            "宿主建立模型通道失败：" + str(error)[:280])
         if transport is None or not hasattr(transport, "chat"):
             return self.reject_step(directory, intent, request, principal, "宿主尚未配置模型执行通道；请先在宿主接入模型通道")
         try:
             message, usage = transport.chat(copy.deepcopy(plan["package"]), copy.deepcopy(plan["messages"]),
                                             copy.deepcopy(plan["tools"]))
+        except Rejected as error:
+            return self.reject_step(directory, intent, request, principal,
+                                    "模型通道拒绝本次请求；本轮未执行，未产生步进事实：" + str(error)[:280])
         except Exception as error:  # noqa: BLE001 - an unconfirmed call keeps a reservation to reconcile
             return self.unknown_step(directory, intent, request, principal,
                                      "模型通道结果未知；已保留该次调用预约等待核对，不自动重放：" + str(error)[:280])
