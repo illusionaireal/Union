@@ -18,3 +18,6 @@ board.key
 *.db-*
 *.sqlite3
 *.sqlite3-*
+
+# Synology conflict copies remain on disk for owner comparison.
+*_Conflict*

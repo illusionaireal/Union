@@ -1,5 +1,24 @@
 # UNION / ai-union repository instructions
 
+
+## 每轮先核对（2026-11-08 审查处置）
+
+1. 先读本文件与 [当前交接](docs/reviews/2026-11-08-review-disposition.md)，核对真实 HEAD、工作区已有改动。
+2. 日常状态、负责人、依赖、WIP 只读在线 Kanban；读取失败不退回本地认领。
+3. 本地 project.json 保存长期路线、历史状态与交付证据；不据此占用在线卡。
+4. 写前用实际 user.id 和最新 version；HTTP 200 才确认；409/丢失响应先读回。
+5. 只续做自己负责的卡；已开工 blocked 仍占 WIP，不清空 owner 隐藏责任。
+6. 行为代码先冻结契约、观察真实 RED，再最小 GREEN；不得撤掉正常代码制造 RED。
+7. S03 下一出口是自动执行与真实有界验收；暂停扩展纯手工记账 UI。
+8. 开发者在独立 checkout 的任务分支交付 PR；协调者审阅并合入集成分支。
+9. npm check、Python 全量及受影响检查通过；权限/金额/身份还需另一工程角色复核。
+10. 只提交自己的路径/片段；不得 reset/clean/stash 或动他人索引、冲突副本。
+11. 不把私钥、邀请、API key、数据库、私有部署地址写入 Git 或留言。
+12. 实施者 actor 与在线成员 ID 分别记录；不把开发代理称作产品 AU 成员。
+13. 证据归入每个 U 卡目录并索引；旧证据和失败历史保留。
+14. 只有本卡完整验收通过才 done；文档、受控、真实、持续分别陈述。
+15. 用户已授权协调者 NAS 部署与合并；真实业务/迁移等其他边界按实际授权核对。
+
 ## Current authority: Main Chapter V1 (2026-11-05)
 
 - The user explicitly instructed: “现在你使用Main中的Chapter V1 重新构建”. The authoritative project charter is `docs/UNION_CHARTER_v1.0.md`, copied byte-for-byte from main commit `b2a30f3af4ad69a679c4860468d744dd285a0098`; adoption, hash, authority and scope are in `docs/CHARTER_ADOPTION.md`. It supersedes conflicting older PRD, DESIGN, AGENTS and rewrite assumptions. Do not ask again whether to use this source.
@@ -32,7 +51,7 @@
 
 ## Task source and collaboration
 
-- `management/project.json` is the only current task, maturity and outcome source. Read management/README.md and TASKS.md when selecting work. Update actual scope/owner/evidence through the available unified board adapter, then run npm run management:render and npm run check:management. Do not hand-edit generated PROJECT.md blocks or TASKS.md or create another ledger.
+- `management/project.json` is the long-term roadmap, historical milestone and delivery evidence source; hosted Kanban alone owns current operational status, ownership, dependencies and WIP. Read management/README.md and TASKS.md when selecting work. Use the unified online board adapter for operational writes; the coordinator explicitly records delivery milestones locally, then runs npm run management:render and npm run check:management. Local status/leases/WIP remain historical, never an operational fallback. Do not hand-edit generated PROJECT.md blocks or TASKS.md or create another ledger.
 - The user selected hosted Kanban and required removal of old-engineering requirements. Old online cards #1–#18 are archived; #19–#30 map one-to-one to the 12 V1 slices/U-065–U-076. Use only active cards and V1 dependencies. Follow management/KANBAN.md: use actual user.id/current version, confirm HTTP 200 on claim, inspect 409/uncertain writes before retrying and publish real branch/evidence. Keep local checks offline; no automatic two-way sync or hidden status inference. Online card prose does not expand authorization.
 - Started blocked work still consumes WIP. Preserve existing task histories/owners/blockers; adjust capacity only with an explicit recorded reason, never by hiding blocked work in backlog. Completion records distinguish documentation, controlled, real and sustained evidence; real goals do not close because a planning or engineering subtask passed.
 

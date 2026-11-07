@@ -2242,15 +2242,22 @@
             "priority": "P1",
             "milestone": "G0",
             "module": "console",
-            "status": "review",
+            "status": "done",
             "owner": "codex/deployment-coordinator/01a1b7fe-81cb-7ec0-8459-d85fd97a9ba7",
             "role": "浏览器CI集成维护",
             "acceptance": "原A01失败可核对；新的空态与授权边界断言通过；完整浏览器检查及相关远端CI如实记录，不减少既有用例，不标记未运行项通过。",
             "dependencies": [],
             "blocker": null,
-            "started_at": "2026-11-08",
-            "updated_at": "2026-11-08",
-            "completion": null,
+            "started_at": "2026-11-07",
+            "updated_at": "2026-11-07",
+            "completion": {
+                "scope": "controlled",
+                "reviewer": "Codex（脚本实施者自检；GitHub实际浏览器作业）",
+                "evidence": [
+                    "evidence/076-browser-ci-contract/README.md"
+                ],
+                "note": "8368967已推送，当前提交GitHub console-browser成功，保留全部原步骤；本地Chrome工作台63/小说16项。共用Python路径fixture失败由U-078承接。开始日期校正为在线UTC日期，事实发生在北京时间11月8日。"
+            },
             "history": [
                 {
                     "at": "2026-11-07T22:12:27.771Z",
@@ -2259,7 +2266,8 @@
                     "to": "review",
                     "note": "在线#34独立认领后完成实际浏览器RED/GREEN；63+16项通过。仅验收脚本，保留全部CI范围；远端当前提交检查待记录。原有任务与负责人不变。"
                 }
-            ]
+            ],
+            "claim": null
         }
     ]
 }

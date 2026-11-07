@@ -2,21 +2,21 @@
 
 用户于2026-11-05指定在线 UNION Kanban 用于重写协作，并要求删除依据旧工程提出的需求。旧#1–#18已通过`archived: 1`归档退出活动看板；服务保留历史记录，本次没有物理删除接口。新#19–#30直接依据[Main Chapter V1](../docs/UNION_CHARTER_v1.0.md)、PRD和垂直切片建立。
 
-`management/project.json`继续拥有正式任务状态、依赖、成熟度和验收证据；在线卡是同一批U任务的协作视图。旧公司、供应商、主机排期不产生V1前置条件。当前12个任务只依赖彼此；历史实现可核查复用，不作为新需求来源。
+2026-11-08 审查处置：在线 Kanban 独占当前运行态（状态、负责人、依赖、WIP）；`management/project.json` 保存长期路线、历史里程碑、成熟度和交付证据。本地旧状态/租约字段保留历史，不再授权认领。旧公司、供应商、主机排期不产生V1前置条件。当前12个任务只依赖彼此；历史实现可核查复用，不作为新需求来源。
 
 ## 认领、记录和冲突
 
-1. 读取主账和最新在线board，从`archived: 0`的卡核对U编号、范围、依赖、实际负责人和版本。不要重新启用归档旧卡作为开发前置。
+1. 读取最新在线 board，从`archived: 0`的卡核对U编号、范围、依赖、实际负责人和版本。不要重新启用归档旧卡作为开发前置。
 2. 用个人凭据取得实际`user.id`。PATCH携带最新整数`version`，认领同时设置实际`assignee`和`status: progress`；收到HTTP 200才确认成功。仓库认领通过可用的统一board适配器及真实harness/会话actor进行。
 3. 一张在线V1卡对应一个正式U任务，状态/证据按同一范围更新。工程、真实集成、用户、发布和持续运行分别取证，不能相互代替。在线里程碑分组不另加开发门槛。
-4. 完成先准备可审阅文件和真实验证，经主账`record`留证；在线附实际分支/提交和证据进入review，符合本卡验收才done。没有PR则省略`pr_url`。
+4. 完成先准备可审阅文件和真实验证；在线附实际分支/提交和证据进入 review，符合本卡验收才用 `record` 写 done。协调者随后显式经 `mutateLedger` 保存交付镜像；镜像失败不撤销在线事实，不自动重试在线写入。没有PR则省略`pr_url`。
 5. 每次写前重新读board；409先检查负责人和内容变化。超时先读board/comments/history核对结果，避免重复创建或覆盖他人修改。网络不可用时明确尚未同步的范围。
 
 状态冲突时比较双方最新版本、认领和证据，暂停争议卡的修改，由协调者合并事实。不建立自动双向同步或第二份本地状态表，本地检查保持离线可运行。在线协作文字不扩大其他操作授权。
 
 ## V1切片索引
 
-此表仅保存稳定ID和范围映射；实时状态以主账和最新在线读回为准。详细需求、兼容和测试见[053 tasks](../specs/053-union-rewrite/tasks.md)。
+此表仅保存稳定ID和范围映射；实时状态仅以最新在线读回为准。详细需求、兼容和测试见[053 tasks](../specs/053-union-rewrite/tasks.md)。
 
 | 在线卡 | 切片 / 正式任务 | 用户结果 |
 | --- | --- | --- |
@@ -41,12 +41,16 @@
 
 在线Kanban不会自动唤醒或调度Agent。它是用户选择的开发协作工具；不是所有AU必须采用的制度，也不构成组织自主改进的证据。
 
-## 统一适配器的数据来源（2026-11-06）
+## 统一适配器的数据来源（2026-11-08）
 
-用户指定在线看板作为日常取数来源。适配器按此实现，但仍然只有一份正式状态：`management/project.json` 记录证据与验收，在线卡是同一批 U 任务的协作视图，两者不各写各的。
+- CLI `board/status/next`、MCP 读取与 `ops/automation/pick-next.mjs` 默认在线；`--local` / `UNION_BOARD_SOURCE=local` 仅允许历史读取。缺凭据/超时/认证失败明确报错，不回退。
+- CLI 与 MCP `claim/release/move/record` 共用 `scripts/kanban-operations.mjs`。本地不存在的新卡仍可正常认领；他人占用、未完成依赖、无效状态在 PATCH 前拒绝。
+- 认领以当前 `user.id` 为准，actor 另记真实 harness/model/session。没有本地租约超时自动接管，也不靠 force 抢占。
+- 完成证据路径、scope、reviewer、note 先校验，再一次 PATCH；不在成功状态写入后追加一个可能失败的自动评论/本地镜像。
+- PATCH 仅接受 HTTP 200；409、超时、响应丢失或其他状态先读回并返回核对信息；不自动重放。
+- WIP 包括 progress/review/blocked。只使用服务端 `wip_limit`（或 `config.wip_limit`），未提供时输出 `null/unconfigured`；不把本地历史上限或环境变量当在线设置。客户端预检不是服务端全局事务：任务 version 不锁住依赖卡与全局容量，多成员同时开工仍需服务端原子配置支持。
+- 选卡仅返回无人负责、依赖完成的 ready 卡；只续做实际用户自己的 progress/review，blocked 保留责任，等待明确解除条件。backlog 需协调者先准备为 ready。
+- `check/render` 和所有测试完全离线；本地历史字段兼容保留，不大规模抹除或伪造历史完成。
+- 凭据可通过 `UNION_KANBAN_CONFIG` 指向宿主私有 env 文件，或注入 `UNION_KANBAN_URL/KEY`；不覆盖其他成员的个人配置。
 
-- 读取：`node scripts/project-management.mjs board|next` 与 MCP 的 `union_board_status|union_card_list|union_card_get` 默认读在线 `GET /api/board`（`scripts/kanban-client.mjs`）。加 `--local` 或设置 `UNION_BOARD_SOURCE=local` 时读本地主账；没配置凭据时自动退回本地，离线检查照常可跑。
-- 写入：`claim|release|move|record`（CLI 与 MCP）先 PATCH 在线卡，必须带最新整数 `version` 且收到 HTTP 200；409/超时原样报出，先读回再决定，不自动重试。成功后把同一事实镜像进 `project.json` 并重建视图；镜像失败不撤销在线结果，只如实报告「未同步」。
-- 映射：在线卡 `progress` ↔ 本地 `doing`，`backlog/ready/review/blocked/done` 同名；U 编号取自卡标题，`#19–#30` 与 `U-065–U-076` 一一对应。
-- 凭据：`UNION_KANBAN_URL` / `UNION_KANBAN_KEY` 只放宿主环境或宿主家目录的配置文件（如 `~/.union-kanban.env`），不进入仓库、日志或协作内容。
-
+冻结契约与反例见 [OPERATIONAL_CONTRACT.md](OPERATIONAL_CONTRACT.md) 和 `tests/kanban-operational.test.mjs`。
