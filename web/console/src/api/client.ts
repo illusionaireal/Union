@@ -3,6 +3,7 @@ import type {
   CommandRequest,
   CommandKind,
   CoreAURead,
+  CoreWork,
   ModelConnection,
   Receipt,
   Session,
@@ -55,6 +56,8 @@ const query = (values: Record<string, string>) => new URLSearchParams(values).to
 export const api = {
   coreAU: (id: string, signal?: AbortSignal) =>
     request<CoreAURead>('/api/v1/aus/' + encodeURIComponent(id), { signal }),
+  coreWork: (id: string, signal?: AbortSignal) =>
+    request<CoreWork>('/api/v1/work?organization_id=' + encodeURIComponent(id), { signal }),
   catalog: () => request<{version:number; models: Array<{provider:string; model:string; context_window?:number; tool_call?:boolean; revision?:string}>}>('/api/model-catalog'),
   exportModels: (organization_id: string) => '/api/model-export?' + query({organization_id}),
   modelCosts: (organization_id: string) => request<{vouchers:Array<{id:string;basis:string;period:string;amount_minor:number;currency:string}>}>('/api/model-costs?'+query({organization_id})),

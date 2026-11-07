@@ -331,3 +331,69 @@ export interface Company {
     output_tokens?: number | null;
   }[];
 }
+
+export interface CoreWorkBudget {
+  max_calls: number;
+  reserved: number;
+  used: number;
+}
+
+export interface CoreWorkAttempt {
+  id: string;
+  seq: number;
+  status: 'running' | 'unknown' | 'closed';
+  outcome: string | null;
+  started_at: string;
+  ended_at: string | null;
+}
+
+export interface CoreWorkStep {
+  seq: number;
+  step_ref: string;
+  attempt_id: string;
+  purpose: string;
+  status: 'reserved' | 'used' | 'released' | 'unknown';
+  at: string;
+}
+
+export interface CoreWorkToolCall {
+  seq: number;
+  step_ref: string;
+  tool: string;
+  attempt_id: string;
+  arguments: Record<string, unknown>;
+  at: string;
+  sha256?: string;
+  bytes?: number;
+  count?: number;
+}
+
+export interface CoreWorkItem {
+  id: string;
+  title: string;
+  goal: string;
+  status: string;
+  version: number;
+  max_calls: number;
+  materials_root: string | null;
+  created_at: string;
+  responsible: { member_id: string; name: string; binding_id: string; duty: string };
+  definition: { id: string; version: number; connection_id: string; model: string; tools: string[] };
+  mandate: { id: string; version: number; actions: string[]; active: boolean };
+  attempt_ids: string[];
+  result_ids: string[];
+  tool_calls: CoreWorkToolCall[];
+  attempts: CoreWorkAttempt[];
+  steps: CoreWorkStep[];
+  budget: CoreWorkBudget;
+  materials: { reference: string | null; available: boolean; documents: number };
+}
+
+export interface CoreWork {
+  protocol: string;
+  organization_id: string;
+  version: number;
+  access: { principal_id: string; can_start: boolean };
+  works: CoreWorkItem[];
+  capabilities: { work_registration: boolean; execution: string; autonomous_business: boolean };
+}

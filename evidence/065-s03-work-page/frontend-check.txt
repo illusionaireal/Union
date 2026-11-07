@@ -1,0 +1,78 @@
+
+> union@0.0.0 check:console
+> npm run typecheck --workspace @union/console && npm run test --workspace @union/console && npm run build:console
+
+
+> @union/console@0.1.0 typecheck
+> tsc --noEmit
+
+
+> @union/console@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 D:/SynologyDrive/project/Union/web/console
+
+ ✓ src/features/commands/receipts.test.ts (5 tests) 11ms
+ ✓ src/api/client.test.ts (3 tests) 15ms
+ ✓ src/app/url-state.test.tsx (1 test) 101ms
+ ✓ src/pages/Tasks.test.tsx (1 test) 85ms
+ ✓ src/features/work/WorkPanel.test.tsx (3 tests) 151ms
+ ✓ src/pages/ModelServiceConnections.test.tsx (2 tests) 220ms
+ ✓ src/pages/Gateways.test.tsx (3 tests) 275ms
+ ✓ src/pages/RuntimeObservation.test.tsx (11 tests) 249ms
+ ✓ src/features/commands/fields.test.tsx (9 tests) 366ms
+ ✓ src/app/workspace.test.tsx (4 tests) 463ms
+ ✓ src/app/governance-workspace.test.tsx (11 tests) 514ms
+ ✓ src/pages/SubscriptionConnections.test.tsx (8 tests) 416ms
+ ✓ src/pages/Identity.test.tsx (14 tests) 892ms
+ ✓ src/features/commands/core-creation.test.tsx (7 tests) 1557ms
+   ✓ core creation through the workspace > keeps explicit legacy company creation reachable after reopening a prepared AU  448ms
+ ✓ src/features/commands/core-boundaries.test.tsx (10 tests) 2134ms
+   ✓ lets a core participant prepare its own AU while withholding legacy operations and showing its stable identity  360ms
+ ✓ src/features/models/ModelsIdentity.test.tsx (11 tests) 2593ms
+   ✓ model identity, scope and input lifetime > keeps draft fields and keyboard focus through refresh and same-principal renewal  439ms
+ ✓ src/features/models/ModelsRecovery.test.tsx (10 tests) 2991ms
+   ✓ model original-request recovery > never replays a lost save and only queries the original receipt  668ms
+   ✓ model original-request recovery > keeps other connections usable when one verification is unknown  378ms
+ ✓ src/features/models/ModelsDiagnostics.test.tsx (17 tests) 3837ms
+   ✓ model check eligibility after version changes or local stop > keeps an unstopped unknown check on the same revision blocking another check  374ms
+   ✓ model check eligibility after version changes or local stop > rechecks an unfinished current-version check that appears before preview  303ms
+   ✓ model check eligibility after version changes or local stop > allows an explicit new bounded check after an updated connection version  425ms
+   ✓ model check eligibility after version changes or local stop > allows an explicit new bounded check after a requested local stop  372ms
+   ✓ model diagnostics and observed usage > keeps worker_start_failed on explicit original-check reconciliation  330ms
+   ✓ model diagnostics and observed usage > keeps provider_result_unconfirmed on explicit original-check reconciliation  344ms
+ ✓ src/features/models/Models.test.tsx (14 tests) 3976ms
+   ✓ core model access user journey > opens the core models route and navigation for a normal core governor  375ms
+   ✓ core model access user journey > saves without inference or adoption, clears the key and keeps only request identities  398ms
+   ✓ core model access user journey > grants bounded resources, reads a selected document twice and adopts independently  1169ms
+ ✓ src/features/governance/Governance.test.tsx (53 tests) 8893ms
+   ✓ governance user journey > keeps account-level AU creation available from a governed overview page without governing commands  387ms
+
+ Test Files  20 passed (20)
+      Tests  197 passed (197)
+   Start at  00:57:37
+   Duration  12.45s (transform 2.69s, setup 7.43s, collect 16.38s, tests 29.74s, environment 21.69s, prepare 3.65s)
+
+
+> union@0.0.0 build:console
+> npm run build --workspace @union/console
+
+
+> @union/console@0.1.0 build
+> tsc --noEmit && vite build
+
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 2045 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.74 kB │ gzip:   0.51 kB
+dist/assets/index-DyiaVZUg.css   49.96 kB │ gzip:  11.02 kB
+dist/assets/index-4yTCBOrH.js   525.66 kB │ gzip: 162.26 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 8.13s

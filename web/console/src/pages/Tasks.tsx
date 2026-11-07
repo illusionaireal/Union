@@ -4,8 +4,9 @@ import { useWorkspace } from '../app/workspace';
 import { WorkRows } from '../components/Records';
 import { Card, labels } from '../components/ui';
 import { PageStats } from '../components/SetupGuide';
+import { WorkPanel } from '../features/work/WorkPanel';
 export default function Tasks() {
-  const { data } = useWorkspace();
+  const { data, core } = useWorkspace();
   const [params, update] = useUrlState();
   const query = params.get('q') || '',
     status = params.get('status') || 'all',
@@ -34,6 +35,7 @@ export default function Tasks() {
           { label: '执行中', value: works.filter((w) => w.display_status === 'running').length },
         ]}
       />
+      {core && <WorkPanel organizationId={core.au.id} />}
       <Card
         title="工作列表"
         action={
