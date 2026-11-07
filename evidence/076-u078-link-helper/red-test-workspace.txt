@@ -1,0 +1,16 @@
+test_host_binding_rejects_board_failure_and_private_directory_overlap (tests.test_workspace.WorkspaceTests.test_host_binding_rejects_board_failure_and_private_directory_overlap) ... ERROR
+
+======================================================================
+ERROR: test_host_binding_rejects_board_failure_and_private_directory_overlap (tests.test_workspace.WorkspaceTests.test_host_binding_rejects_board_failure_and_private_directory_overlap)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SynologyDrive\project\Union\tests\test_workspace.py", line 142, in test_host_binding_rejects_board_failure_and_private_directory_overlap
+    (self.directory / "linked").symlink_to(self.e.root, target_is_directory=True)
+  File "C:\Users\Benedict\AppData\Local\Programs\Python\Python312\Lib\pathlib.py", line 1386, in symlink_to
+    os.symlink(target, self, target_is_directory)
+OSError: [WinError 1314] 客户端没有所需的特权。: 'C:\\Users\\Benedict\\AppData\\Local\\Temp\\tmpre2msumw\\org' -> 'C:\\Users\\Benedict\\AppData\\Local\\Temp\\tmpre2msumw\\checkout\\linked'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.133s
+
+FAILED (errors=1)

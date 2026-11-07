@@ -5,6 +5,7 @@ import argparse
 import json
 import os
 import re
+import stat
 import selectors
 import shutil
 import subprocess
@@ -40,6 +41,18 @@ def binding(engine):
         return {"revision": row["revision"], "config": json.loads(row["config"])} if row else None
 
 
+def _linked(path):
+    """True for symlinks and Windows junctions/reparse points; both escape a bind."""
+    if path.is_symlink():
+        return True
+    if os.name == "nt":
+        try:
+            return bool(os.lstat(path).st_file_attributes & stat.FILE_ATTRIBUTE_REPARSE_POINT)
+        except OSError:
+            return True
+    return False
+
+
 def validate_config(engine, config):
     require(isinstance(config, dict) and set(config) == {"directory", "image", "timeout_seconds", "enabled"}, "工作区配置字段不正确")
     require(type(config["enabled"]) is bool, "工作区启用必须为布尔值")
@@ -47,14 +60,15 @@ def validate_config(engine, config):
     require(isinstance(config["image"], str) and re.fullmatch(r"sha256:[0-9a-f]{64}", config["image"]), "使用本机预先安装的完整 Docker image ID，禁止自动拉取镜像")
     text(config["directory"], "工作区目录", 4096)
     raw = Path(config["directory"])
-    require(raw.is_absolute() and raw.is_dir() and not raw.is_symlink(), "工作区须为现有绝对目录，不能是符号链接")
+    require(raw.is_absolute() and raw.is_dir() and not _linked(raw), "工作区须为现有绝对目录，不能是符号链接或目录联接")
     directory = raw.resolve()
     require(not any(c in str(directory) for c in (",", "\n", "\r")), "工作区路径含不支持字符")
     runtime = Path(__file__).resolve().parents[1]
     require(not directory.is_relative_to(engine.root) and not engine.root.is_relative_to(directory), "工作区不能与组织私有目录重叠")
     require(not runtime.is_relative_to(directory) and not directory.is_relative_to(runtime), "使用独立业务目录，不能挂载运行系统源码目录")
     for item in directory.rglob("*"):
-        require(not item.is_symlink() and (item.is_file() or item.is_dir()), "首次绑定不能包含链接或特殊文件")
+        require(not _linked(item) and (item.is_file() or item.is_dir()), "首次绑定不能包含链接、目录联接或特殊文件")
+        require(item.resolve().is_relative_to(directory), "首次绑定不能包含指向外部的链接或目录联接")
         require(item.name not in {".git", ".union", "board.key", "local-access.json", ".env"} and not item.name.startswith(".env."), "首次绑定包含私有数据或 Git 元数据；请使用干净业务快照")
     return config | {"directory": str(directory)}
 

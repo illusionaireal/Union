@@ -1,12 +1,12 @@
 """S03.2: only host-registered read-only roots are readable, and escapes are refused."""
 import hashlib
 import json
-import subprocess
 import sys
 import tempfile
 import unittest
 from pathlib import Path
 
+from tests import links
 from ai_union.adapters import documents
 from ai_union.errors import Rejected
 
@@ -72,11 +72,10 @@ class DocumentRootTests(unittest.TestCase):
             documents.read_text(root, "big.md")
 
     def test_escape_through_directory_link_is_rejected(self):
-        link = self.docs / "linked"
-        created = subprocess.run(["cmd", "/c", "mklink", "/J", str(link), str(self.outside)],
-                                 capture_output=True, text=True)
-        if created.returncode != 0 or not link.exists():
-            self.skipTest("host cannot create a directory junction: " + (created.stderr or created.stdout).strip())
+        try:
+            links.directory_link(self.outside, self.docs / "linked")
+        except links.LinkUnavailable as error:
+            self.skipTest(links.skip_reason(error))
         root = documents.root_for(self.root, "project-docs")
         with self.assertRaises(Rejected):
             documents.read_text(root, "linked/secret.txt")

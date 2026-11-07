@@ -8,6 +8,7 @@ from http.client import HTTPException
 import unittest
 from unittest.mock import patch
 
+from tests import links
 from tests import test_core_creation as http
 
 
@@ -28,9 +29,9 @@ class CoreCreationFailureTests(unittest.TestCase):
             outside = Path(temporary)
             link = self.root / 'organizations'
             try:
-                link.symlink_to(outside, target_is_directory=True)
-            except OSError as error:
-                self.skipTest('directory symlink unavailable: ' + str(error))
+                links.directory_link(outside, link)
+            except links.LinkUnavailable as error:
+                self.skipTest(links.skip_reason(error))
             try:
                 status, value, _ = self.request('/api/commands', http.creation())
                 self.assertEqual(status, 200)

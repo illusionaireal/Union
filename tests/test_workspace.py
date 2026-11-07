@@ -9,6 +9,7 @@ from contextlib import contextmanager
 from pathlib import Path
 from unittest.mock import patch
 
+from tests import links
 from ai_union.engine import Rejected
 from ai_union.executor import ExecutionFailure
 from ai_union import workspace
@@ -139,7 +140,10 @@ class WorkspaceTests(unittest.TestCase):
         for directory in (self.e.root, self.e.root.parent, self.e.root / "assets"):
             with self.subTest(directory=directory), self.assertRaises(Rejected):
                 workspace.validate_config(self.e, self.config | {"directory": str(directory)})
-        (self.directory / "linked").symlink_to(self.e.root, target_is_directory=True)
+        try:
+            links.directory_link(self.e.root, self.directory / "linked")
+        except links.LinkUnavailable as error:
+            self.skipTest(links.skip_reason(error))
         with self.assertRaises(Rejected):
             workspace.validate_config(self.e, self.config)
 
