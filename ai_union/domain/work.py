@@ -272,6 +272,13 @@ def start_attempt(state, data, principal, clock=None):
     require(len(calls) < MAX_ATTEMPTS, "该工作的执行尝试已达上限")
     require(not [item for item in calls if item["status"] in ("running", "unknown")],
             "该工作已有进行中或结果未知的执行；请先结束它")
+    root = work.get("materials_root")
+    if root is not None:
+        for other in records(state)["works"].values():
+            if other["id"] == work["id"] or other.get("materials_root") != root:
+                continue
+            require(not [item for item in other.get("attempts") or [] if item["status"] in ("running", "unknown")],
+                    "另一个工作正在使用同一资料目录；请等它结束或为该工作指定其他目录")
     attempt = {"id": work["id"] + "#a" + str(len(calls) + 1), "seq": len(calls) + 1, "status": "running",
                "outcome": None, "owner_principal_id": principal, "reason": None,
                "started_at": _stamp(clock), "ended_at": None}

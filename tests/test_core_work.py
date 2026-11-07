@@ -462,3 +462,29 @@ class CoreWorkTests(ModelAccessCase):
         status, value, _ = self.result_content(au_id=other)
         self.assertIn(status, (400, 403), value)
         self.assertNotIn("content", value)
+
+    def second_work(self, materials_root="project-docs", work_id="work-second"):
+        data = work_data(tools=["list_documents"], materials_root=materials_root, work_id=work_id,
+                         member_id=work_id + "-member", binding_id=work_id + "-binding",
+                         mandate_id=work_id + "-mandate", definition_id=work_id + "-definition")
+        return self.work(data=data)
+
+    def test_shared_materials_root_allows_only_one_open_execution_at_a_time(self):
+        self.work_with_listing()
+        self.second_work()
+        self.start_attempt("work-overview")
+
+        status, blocked, _ = self.work_command(self.au_id, "start_attempt", {"work_id": "work-second"})
+        self.assertEqual(blocked["receipt"]["status"], "rejected", blocked)
+        self.assertIn("资料目录", blocked["receipt"]["message"])
+
+        status, closed, _ = self.work_command(self.au_id, "finish_attempt",
+                                              {"work_id": "work-overview", "attempt_id": "work-overview#a1",
+                                               "outcome": "delivered", "reason": "本轮完成"})
+        self.assertEqual(closed["receipt"]["status"], "succeeded", closed)
+        status, allowed, _ = self.work_command(self.au_id, "start_attempt", {"work_id": "work-second"})
+        self.assertEqual(allowed["receipt"]["status"], "succeeded", allowed)
+
+        self.second_work(materials_root="other-docs", work_id="work-third")
+        status, independent, _ = self.work_command(self.au_id, "start_attempt", {"work_id": "work-third"})
+        self.assertEqual(independent["receipt"]["status"], "succeeded", independent)
