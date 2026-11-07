@@ -1,0 +1,37 @@
+{
+  "task": "U-067",
+  "slice": "S03",
+  "step": "S03.2d per-call budget reservation and settlement",
+  "checked_at": "2026-11-07T23:59:06+08:00",
+  "branch": "rewrite/charter-v1",
+  "real_model_calls": 0,
+  "deployed": false,
+  "commands": [
+    "reserve_step",
+    "settle_step"
+  ],
+  "changed_owners": [
+    "ai_union/domain/work.py",
+    "ai_union/application/work.py"
+  ],
+  "logs": {
+    "red-s03.2d.txt": [
+      "FAIL: test_reserve_step_counts_one_call_per_execution_with_purpose_and_attempt (tests.test_core_work.CoreWorkTests.test_reserve_step_counts_one_call_per_execution_with_purpose_and_attempt)",
+      "Ran 11 tests in 11.606s",
+      "FAILED (failures=1, errors=1)"
+    ],
+    "green-s03.2d.txt": [
+      "Ran 11 tests in 11.952s",
+      "OK"
+    ],
+    "regression-s03.2d.txt": [
+      "Ran 154 tests in 135.802s",
+      "OK (skipped=1)"
+    ],
+    "management-check.txt": [
+      "ℹ skipped 0",
+      "ℹ todo 0",
+      "ℹ duration_ms 127.7154"
+    ]
+  }
+}

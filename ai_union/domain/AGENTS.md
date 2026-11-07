@@ -40,5 +40,8 @@
   `finish_attempt` own the execution-ownership boundary: only one running
   attempt may act, a closed attempt cannot act again, and an `unknown`
   outcome blocks new attempts and tool calls until it is explicitly
-  resolved with a recorded reason. No model call, storage or dispatch;
-  step S03.2+ extends the same owner.
+  resolved with a recorded reason. `reserve_step` / `settle_step` own the
+  per-call budget: one reserved call per step, capped by the work plan,
+  purpose and attempt recorded, `unknown` keeps its reservation and a
+  settled step can never be re-judged. No model call, storage or
+  dispatch; step S03.2+ extends the same owner.

@@ -16,12 +16,16 @@ FIELDS = {
                    "tools", "reason"},
     "invoke_tool": {"work_id", "tool", "arguments"},
     "start_attempt": {"work_id"},
+    "reserve_step": {"work_id"},
+    "settle_step": {"work_id", "step_id", "status", "reason"},
     "finish_attempt": {"work_id", "attempt_id", "outcome", "reason"},
 }
 TOOLS = {"read_document", "list_documents", "produce_artifact"}
 MAX_TOOL_CALLS = 50
 MAX_ATTEMPTS = 20
 OUTCOMES = ("delivered", "failed", "stopped", "unknown")
+STEP_STATUSES = ("reserved", "used", "released", "unknown")
+SETTLED = ("used", "released", "unknown")
 OPEN = ("pending", "running", "waiting")
 CLOSED = ("delivered", "stopped", "failed")
 TABLES = ("members", "definitions", "bindings", "works", "mandates")
@@ -45,6 +49,16 @@ def records(state):
 def validate_input(kind, data):
     require(kind in FIELDS, "不支持的核心工作命令")
     governance.exact(data, FIELDS[kind])
+    if kind == "reserve_step":
+        require(reference(data["work_id"]), "工作标识必须是 bounded 引用标识")
+        return
+    if kind == "settle_step":
+        require(reference(data["work_id"]), "工作标识必须是 bounded 引用标识")
+        require(isinstance(data["step_id"], str) and data["step_id"].startswith(data["work_id"] + "#s")
+                and len(data["step_id"]) <= 100, "步进标识无效")
+        require(data["status"] in SETTLED, "结算结果必须是 used/released/unknown")
+        text(data["reason"], "结算依据", 10000)
+        return
     if kind == "start_attempt":
         require(reference(data["work_id"]), "工作标识必须是 bounded 引用标识")
         return
@@ -191,6 +205,13 @@ def validate_state(state):
                     and attempt.get("status") in ("running", "unknown", "closed")
                     and (attempt.get("outcome") is None or attempt.get("outcome") in OUTCOMES),
                     "执行尝试记录无效")
+        steps_value = work.get("steps") or []
+        require(isinstance(steps_value, list) and len(steps_value) <= 10000, "步进记录无效")
+        for step in steps_value:
+            require(isinstance(step, dict) and step.get("step_ref") == work["id"] + "#s" + str(step.get("seq"))
+                    and step.get("status") in STEP_STATUSES and step.get("purpose") == "work_step"
+                    and isinstance(step.get("attempt_id"), str)
+                    and step["attempt_id"].startswith(work["id"] + "#a"), "步进记录无效")
         calls = work.get("tool_calls") or []
         require(isinstance(calls, list) and len(calls) <= MAX_TOOL_CALLS, "工具调用回执超出上限")
         for call in calls:
@@ -245,6 +266,40 @@ def finish_attempt(state, data, clock=None):
     return attempt
 
 
+def budget(work):
+    """One call per step; unknown keeps its reservation until reconciled."""
+    steps = work.get("steps") or []
+    reserved = sum(1 for item in steps if item["status"] in ("reserved", "unknown"))
+    return {"max_calls": work["max_calls"], "reserved": reserved,
+            "used": sum(1 for item in steps if item["status"] == "used")}
+
+
+def reserve_step(state, data, clock=None):
+    work = records(state)["works"].get(data["work_id"])
+    require(work is not None, "工作不存在或不属于此 AU")
+    require(work["status"] in OPEN, "工作已结束，不能再预约调用")
+    attempt = active_attempt(work)
+    steps = work.setdefault("steps", [])
+    current = budget(work)
+    require(current["reserved"] + current["used"] + 1 <= work["max_calls"],
+            "该工作的调用上限已用尽；需要调整计划或先完成其他工作")
+    step = {"seq": len(steps) + 1, "step_ref": work["id"] + "#s" + str(len(steps) + 1),
+            "attempt_id": attempt["id"], "purpose": "work_step", "status": "reserved",
+            "at": _stamp(clock), "settled_at": None, "reason": None}
+    steps.append(step)
+    return step
+
+
+def settle_step(state, data, clock=None):
+    work = records(state)["works"].get(data["work_id"])
+    require(work is not None, "工作不存在或不属于此 AU")
+    step = next((item for item in work.get("steps") or [] if item["step_ref"] == data["step_id"]), None)
+    require(step is not None, "该工作没有此步进记录")
+    require(step["status"] == "reserved", "该步已经结算；原记录不能覆盖，请另立步进")
+    step.update(status=data["status"], reason=data["reason"], settled_at=_stamp(clock))
+    return step
+
+
 def tool_target(state, data):
     """Validate a tool call against the responsible member's live mandate."""
     records_value = records(state)
@@ -290,5 +345,7 @@ def projection(state):
                         "active": mandate["active"]},
             "attempt_ids": list(work["attempt_ids"]), "result_ids": list(work["result_ids"]),
             "tool_calls": [dict(call) for call in work.get("tool_calls") or []],
-            "attempts": [dict(attempt) for attempt in work.get("attempts") or []]})
+            "attempts": [dict(attempt) for attempt in work.get("attempts") or []],
+            "steps": [dict(step) for step in work.get("steps") or []],
+            "budget": budget(work)})
     return sorted(result, key=lambda value: value["created_at"] + value["id"])

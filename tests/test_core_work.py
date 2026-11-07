@@ -320,3 +320,58 @@ class CoreWorkTests(ModelAccessCase):
         self.assertEqual(resolved["receipt"]["status"], "succeeded", resolved)
         self.assertEqual(self.works()["works"][0]["attempts"][0]["outcome"], "failed")
         self.start_attempt()
+
+    def reserve(self, work_id="work-overview", **kwargs):
+        return self.work_command(self.au_id, "reserve_step", {"work_id": work_id}, **kwargs)
+
+    def settle(self, work_id, step_id, status, reason="本轮步进已结算"):
+        return self.work_command(self.au_id, "settle_step",
+                                 {"work_id": work_id, "step_id": step_id, "status": status, "reason": reason})
+
+    def test_reserve_step_counts_one_call_per_execution_with_purpose_and_attempt(self):
+        self.work_with_listing()
+        attempt_id = self.start_attempt()
+        status, value, _ = self.reserve()
+        self.assertEqual(status, 200, value)
+        self.assertEqual(value["receipt"]["status"], "succeeded", value)
+        step = value["receipt"]["step"]
+        self.assertEqual((step["step_ref"], step["status"], step["attempt_id"], step["purpose"]),
+                         ("work-overview#s1", "reserved", attempt_id, "work_step"))
+
+        card = self.works()["works"][0]
+        self.assertEqual(card["budget"], {"max_calls": 4, "reserved": 1, "used": 0})
+        self.assertEqual([(item["step_ref"], item["status"]) for item in card["steps"]],
+                         [("work-overview#s1", "reserved")])
+
+        status, value, _ = self.settle("work-overview", "work-overview#s1", "used")
+        self.assertEqual(value["receipt"]["status"], "succeeded", value)
+        self.assertEqual(self.works()["works"][0]["budget"], {"max_calls": 4, "reserved": 0, "used": 1})
+
+        status, released, _ = self.reserve()
+        self.assertEqual(released["receipt"]["status"], "succeeded", released)
+        status, value, _ = self.settle("work-overview", "work-overview#s2", "released")
+        self.assertEqual(value["receipt"]["status"], "succeeded", value)
+        self.assertEqual(self.works()["works"][0]["budget"], {"max_calls": 4, "reserved": 0, "used": 1})
+
+    def test_reserve_step_requires_a_running_attempt_and_respects_the_call_cap(self):
+        self.work_with_listing()
+        status, value, _ = self.reserve()
+        self.assertEqual(value["receipt"]["status"], "rejected", value)
+        self.assertIn("执行", value["receipt"]["message"])
+
+        self.start_attempt()
+        for _ in range(4):
+            status, value, _ = self.reserve()
+            self.assertEqual(value["receipt"]["status"], "succeeded", value)
+        status, value, _ = self.reserve()
+        self.assertEqual(value["receipt"]["status"], "rejected", value)
+        self.assertIn("调用", value["receipt"]["message"])
+
+        status, value, _ = self.settle("work-overview", "work-overview#s4", "unknown", "供应商未回执")
+        self.assertEqual(value["receipt"]["status"], "succeeded", value)
+        card = self.works()["works"][0]
+        self.assertEqual(card["budget"], {"max_calls": 4, "reserved": 4, "used": 0})
+        self.assertEqual(card["steps"][-1]["status"], "unknown")
+        status, value, _ = self.settle("work-overview", "work-overview#s4", "used")
+        self.assertEqual(value["receipt"]["status"], "rejected", value)
+        self.assertIn("已经结算", value["receipt"]["message"])

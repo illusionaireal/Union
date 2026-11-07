@@ -85,6 +85,12 @@ class WorkService:
                     if request["kind"] == "invoke_tool":
                         receipt.update(self.invoke(local, request["data"]))
                         receipt["message"] = "已按该工作的有效授权调用只读资料工具并留存回执；未调用模型"
+                    elif request["kind"] == "reserve_step":
+                        receipt["step"] = rules.reserve_step(local, request["data"])
+                        receipt["message"] = "已为该次执行预约一次调用；尚未调用模型"
+                    elif request["kind"] == "settle_step":
+                        receipt["step"] = rules.settle_step(local, request["data"])
+                        receipt["message"] = "已结算该次步进"
                     elif request["kind"] == "start_attempt":
                         receipt["attempt"] = rules.start_attempt(local, request["data"], principal)
                         receipt["message"] = "已开始一次执行尝试；尚未调用模型"
