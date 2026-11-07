@@ -1,0 +1,45 @@
+............................................................................s.........................................................................................................s..................s...............................................................s....s........................................................................................................................................................................................................----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 50324)
+Traceback (most recent call last):
+  File "C:\Users\Benedict\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "C:\Users\Benedict\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "C:\Users\Benedict\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 766, in __init__
+    self.handle()
+  File "C:\Users\Benedict\AppData\Local\Programs\Python\Python312\Lib\http\server.py", line 436, in handle
+    self.handle_one_request()
+  File "C:\Users\Benedict\AppData\Local\Programs\Python\Python312\Lib\http\server.py", line 424, in handle_one_request
+    method()
+  File "D:\SynologyDrive\project\Union\tests\test_model_api.py", line 67, in do_POST
+    self.wfile.write(raw)
+  File "C:\Users\Benedict\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 845, in write
+    self._sock.sendall(b)
+ConnectionAbortedError: [WinError 10053] 你的主机中的软件中止了一个已建立的连接。
+----------------------------------------
+.......................................................................................................................................................s.s.....s......
+----------------------------------------------------------------------
+Ran 637 tests in 367.059s
+
+OK (skipped=8)
+已重置 C:\Users\Benedict\AppData\Local\Temp\tmpwfy4ijhl\console.sqlite3
+重置前备份: C:\Users\Benedict\AppData\Local\Temp\tmpwfy4ijhl\console.sqlite3.bak-1794092718
+重启工作台后，任意第一个访问者都可以重新设置管理员账号。
+已重置 C:\Users\Benedict\AppData\Local\Temp\tmpv1hkx2rg\console.sqlite3
+重置前备份: C:\Users\Benedict\AppData\Local\Temp\tmpv1hkx2rg\console.sqlite3.bak-1794092809
+重启工作台后，任意第一个访问者都可以重新设置管理员账号。
+已重置 C:\Users\Benedict\AppData\Local\Temp\tmpslh7qmtn\console.sqlite3
+重置前备份: C:\Users\Benedict\AppData\Local\Temp\tmpslh7qmtn\console.sqlite3.bak-1794092883
+重启工作台后，任意第一个访问者都可以重新设置管理员账号。
+已重置 C:\Users\Benedict\AppData\Local\Temp\tmpyzqftdm_\console.sqlite3
+重置前备份: C:\Users\Benedict\AppData\Local\Temp\tmpyzqftdm_\console.sqlite3.bak-1794092891
+重启工作台后，任意第一个访问者都可以重新设置管理员账号。
+已重置 C:\Users\Benedict\AppData\Local\Temp\tmplf1esi0w\console.sqlite3
+重置前备份: C:\Users\Benedict\AppData\Local\Temp\tmplf1esi0w\console.sqlite3.bak-1794092895
+重启工作台后，任意第一个访问者都可以重新设置管理员账号。
+数据库: C:\Users\Benedict\AppData\Local\Temp\tmpbsvom_26\console.sqlite3
+将删除: {'owner_account': 1, 'login_sessions': 1, 'login_limit': 0, 'account_login_limit': 0}
+加 --yes 才会执行；执行前请先停止工作台服务。
+已重置 C:\Users\Benedict\AppData\Local\Temp\tmpa6d4gxyv\console.sqlite3
+重置前备份: C:\Users\Benedict\AppData\Local\Temp\tmpa6d4gxyv\console.sqlite3.bak-1794092980
+重启工作台后，任意第一个访问者都可以重新设置管理员账号。
