@@ -50,6 +50,16 @@ async function save(call: Awaited<ReturnType<typeof setup>>['call'], body = regi
   return { body, receipt: await response.json() as any };
 }
 
+test('runtime advertises Responses only when the API kernel is available and binds it on registration', async () => {
+  const { call, counts } = await setup();
+  const runtime = await (await call('GET', '/v1/runtime')).json() as any;
+  expect(runtime.profiles).toContain('openai_responses');
+  const selected = { ...registration(), wire_api: 'responses' };
+  const { receipt } = await save(call, selected);
+  expect(receipt).toMatchObject({ profile: 'openai_responses', wire_api: 'responses' });
+  expect(counts().inferenceCalls).toBe(0);
+});
+
 test('saving an API connection is atomic, durable, idempotent and independent from Go or inference', async () => {
   const { directory, service, call, counts } = await setup();
   const { body, receipt } = await save(call);

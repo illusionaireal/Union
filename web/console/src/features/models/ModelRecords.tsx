@@ -69,7 +69,8 @@ export function ConnectionRecords({
                 </div>
                 <p>
                   {connection.model} ·{' '}
-                  {connection.profile === 'openai_compatible' ? '兼容文本 API' : '已有 AU 模型授权'}{' '}
+                  {connection.profile === 'openai_compatible' ? '兼容文本 API'
+                    : connection.profile === 'openai_responses' ? 'OpenAI Responses API' : '已有 AU 模型授权'}{' '}
                   · 连接 v{connection.revision}
                 </p>
                 <p className="model-address">
