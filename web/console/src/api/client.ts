@@ -58,6 +58,12 @@ export const api = {
     request<CoreAURead>('/api/v1/aus/' + encodeURIComponent(id), { signal }),
   coreWork: (id: string, signal?: AbortSignal) =>
     request<CoreWork>('/api/v1/work?organization_id=' + encodeURIComponent(id), { signal }),
+  coreWorkCommand: (body: Record<string, unknown>) =>
+    request<{ receipt: { id?: string; status: string; message?: string } }>('/api/v1/work/commands', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    }),
   catalog: () => request<{version:number; models: Array<{provider:string; model:string; context_window?:number; tool_call?:boolean; revision?:string}>}>('/api/model-catalog'),
   exportModels: (organization_id: string) => '/api/model-export?' + query({organization_id}),
   modelCosts: (organization_id: string) => request<{vouchers:Array<{id:string;basis:string;period:string;amount_minor:number;currency:string}>}>('/api/model-costs?'+query({organization_id})),

@@ -1,11 +1,14 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import type { CoreWork, CoreWorkItem } from '../../api/types';
 import { WorkPanel } from './WorkPanel';
 
-const coreWork = vi.hoisted(() => ({ coreWork: vi.fn() }));
-vi.mock('../../api/client', () => ({ api: coreWork }));
+const coreWork = vi.hoisted(() => ({ coreWork: vi.fn(), coreWorkCommand: vi.fn() }));
+vi.mock('../../api/client', () => ({
+  api: coreWork,
+  errorText: (error: unknown) => (error instanceof Error ? error.message : '服务暂不可用'),
+}));
 
 function item(overrides: Partial<CoreWorkItem> = {}): CoreWorkItem {
   return {
@@ -75,5 +78,27 @@ describe('V1 work panel', () => {
     const link = screen.getByText('下载').getAttribute('href') ?? '';
     expect(link).toContain('/api/v1/work/results?organization_id=au-1');
     expect(link).toContain('id=result-overview');
+  });
+it('starts an execution and adopts a candidate result through the API', async () => {
+    read({
+      ...base,
+      works: [item({
+        results: [{
+          id: 'result-overview', seq: 1, title: '项目概览（第一版）', sha256: 'abcdef0123456789', bytes: 24,
+          sources: ['work-overview#s1'], status: 'candidate', created_at: '2026-11-08T00:00:00Z', adopted_at: null,
+        }],
+      })],
+    });
+    coreWork.coreWorkCommand.mockResolvedValue({ receipt: { status: 'succeeded', message: '已开始一次执行尝试' } });
+
+    fireEvent.click(await screen.findByText('开始执行'));
+    await waitFor(() => expect(coreWork.coreWorkCommand).toHaveBeenCalledWith(
+      expect.objectContaining({ kind: 'start_attempt', organization_id: 'au-1', base_version: 3 })));
+
+    fireEvent.click(await screen.findByText('采用成果'));
+    await waitFor(() => expect(coreWork.coreWorkCommand).toHaveBeenCalledWith(
+      expect.objectContaining({ kind: 'adopt_result', data: { work_id: 'work-overview', result_id: 'result-overview' } })));
+
+    await waitFor(() => expect(screen.getByRole('status').textContent).toContain('操作已记录'));
   });
 });

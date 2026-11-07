@@ -1,0 +1,465 @@
+
+ RUN  v3.2.7 D:/SynologyDrive/project/Union/web/console
+
+ ❯ src/features/work/WorkPanel.test.tsx (5 tests | 1 failed) 1161ms
+   ✓ V1 work panel > shows responsibility, mandate, budget and registered materials 61ms
+   ✓ V1 work panel > reports an unknown execution and the last tool receipt instead of success 26ms
+   ✓ V1 work panel > explains the empty state when no V1 work exists 30ms
+   ✓ V1 work panel > shows an adopted result with its digest and source count 32ms
+   × V1 work panel > starts an execution and adopts a candidate result through the API 1010ms
+     → Unable to find an element with the text: 开始执行. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33mclass[39m=[32m"card "[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"card-heading"[39m
+      [36m>[39m
+        [36m<h2>[39m
+          [0mAI 工作（V1）[0m
+        [36m</h2>[39m
+      [36m</div>[39m
+      [36m<ul[39m
+        [33maria-label[39m=[32m"V1 工作列表"[39m
+        [33mclass[39m=[32m"work-panel"[39m
+      [36m>[39m
+        [36m<li[39m
+          [33mdata-work[39m=[32m"work-overview"[39m
+        [36m>[39m
+          [36m<strong>[39m
+            [0m项目概览[0m
+          [36m</strong>[39m
+          [36m<p>[39m
+            [0m阅读授权资料写一份概览[0m
+          [36m</p>[39m
+          [36m<dl>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m负责成员[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m资料整理 Agent[0m
+                [0m（[0m
+                [0m交付项目概览[0m
+                [0m）[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m有效授权[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0mlist_documents[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m调用预算[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m0 已用 · 1 已预约 · 上限 4[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m执行[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m尚未开始执行[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m最近工具回执[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m尚无工具回执[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m成果[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"result-line"[39m
+                [36m>[39m
+                  [0m项目概览（第一版）[0m
+                  [0m（[0m
+                  [0m候选[0m
+                  [0m · [0m
+                  [0mabcdef012345[0m
+                  [0m…）[0m
+                  [36m<a[39m
+                    [33mdownload[39m=[32m"result-overview.json"[39m
+                    [33mhref[39m=[32m"/api/v1/work/results?organization_id=au-1&id=result-overview"[39m
+                  [36m>[39m
+                    [0m下载[0m
+                  [36m</a>[39m
+                [36m</span>[39m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m授权资料[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0mproject-docs · 可读 2 份[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+          [36m</dl>[39m
+        [36m</li>[39m
+      [36m</ul>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33mclass[39m=[32m"card "[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"card-heading"[39m
+      [36m>[39m
+        [36m<h2>[39m
+          [0mAI 工作（V1）[0m
+        [36m</h2>[39m
+      [36m</div>[39m
+      [36m<ul[39m
+        [33maria-label[39m=[32m"V1 工作列表"[39m
+        [33mclass[39m=[32m"work-panel"[39m
+      [36m>[39m
+        [36m<li[39m
+          [33mdata-work[39m=[32m"work-overview"[39m
+        [36m>[39m
+          [36m<strong>[39m
+            [0m项目概览[0m
+          [36m</strong>[39m
+          [36m<p>[39m
+            [0m阅读授权资料写一份概览[0m
+          [36m</p>[39m
+          [36m<dl>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m负责成员[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m资料整理 Agent[0m
+                [0m（[0m
+                [0m交付项目概览[0m
+                [0m）[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m有效授权[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0mlist_documents[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m调用预算[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m0 已用 · 1 已预约 · 上限 4[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m执行[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m尚未开始执行[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m最近工具回执[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m尚无工具回执[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m成果[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"result-line"[39m
+                [36m>[39m
+                  [0m项目概览（第一版）[0m
+                  [0m（[0m
+                  [0m候选[0m
+                  [0m · [0m
+                  [0mabcdef012345[0m
+                  [0m…）[0m
+                  [36m<a[39m
+                    [33mdownload[39m=[32m"result-overview.json"[39m
+                    [33mhref[39m=[32m"/api/v1/work/results?organization_id=au-1&id=result-overview"[39m
+                  [36m>[39m
+                    [0m下载[0m
+                  [36m</a>[39m
+                [36m</span>[39m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m授权资料[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0mproject-docs · 可读 2 份[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+          [36m</dl>[39m
+        [36m</li>[39m
+      [36m</ul>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/work/WorkPanel.test.tsx > V1 work panel > starts an execution and adopts a candidate result through the API
+TestingLibraryElementError: Unable to find an element with the text: 开始执行. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      class="card "
+    >
+      <div
+        class="card-heading"
+      >
+        <h2>
+          AI 工作（V1）
+        </h2>
+      </div>
+      <ul
+        aria-label="V1 工作列表"
+        class="work-panel"
+      >
+        <li
+          data-work="work-overview"
+        >
+          <strong>
+            项目概览
+          </strong>
+          <p>
+            阅读授权资料写一份概览
+          </p>
+          <dl>
+            <div>
+              <dt>
+                负责成员
+              </dt>
+              <dd>
+                资料整理 Agent
+                （
+                交付项目概览
+                ）
+              </dd>
+            </div>
+            <div>
+              <dt>
+                有效授权
+              </dt>
+              <dd>
+                list_documents
+              </dd>
+            </div>
+            <div>
+              <dt>
+                调用预算
+              </dt>
+              <dd>
+                0 已用 · 1 已预约 · 上限 4
+              </dd>
+            </div>
+            <div>
+              <dt>
+                执行
+              </dt>
+              <dd>
+                尚未开始执行
+              </dd>
+            </div>
+            <div>
+              <dt>
+                最近工具回执
+              </dt>
+              <dd>
+                尚无工具回执
+              </dd>
+            </div>
+            <div>
+              <dt>
+                成果
+              </dt>
+              <dd>
+                <span
+                  class="result-line"
+                >
+                  项目概览（第一版）
+                  （
+                  候选
+                   · 
+                  abcdef012345
+                  …）
+                  <a
+                    download="result-overview.json"
+                    href="/api/v1/work/results?organization_id=au-1&id=result-overview"
+                  >
+                    下载
+                  </a>
+                </span>
+              </dd>
+            </div>
+            <div>
+              <dt>
+                授权资料
+              </dt>
+              <dd>
+                project-docs · 可读 2 份
+              </dd>
+            </div>
+          </dl>
+        </li>
+      </ul>
+    </section>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      class="card "
+    >
+      <div
+        class="card-heading"
+      >
+        <h2>
+          AI 工作（V1）
+        </h2>
+      </div>
+      <ul
+        aria-label="V1 工作列表"
+        class="work-panel"
+      >
+        <li
+          data-work="work-overview"
+        >
+          <strong>
+            项目概览
+          </strong>
+          <p>
+            阅读授权资料写一份概览
+          </p>
+          <dl>
+            <div>
+              <dt>
+                负责成员
+              </dt>
+              <dd>
+                资料整理 Agent
+                （
+                交付项目概览
+                ）
+              </dd>
+            </div>
+            <div>
+              <dt>
+                有效授权
+              </dt>
+              <dd>
+                list_documents
+              </dd>
+            </div>
+            <div>
+              <dt>
+                调用预算
+              </dt>
+              <dd>
+                0 已用 · 1 已预约 · 上限 4
+              </dd>
+            </div>
+            <div>
+              <dt>
+                执行
+              </dt>
+              <dd>
+                尚未开始执行
+              </dd>
+            </div>
+            <div>
+              <dt>
+                最近工具回执
+              </dt>
+              <dd>
+                尚无工具回执
+              </dd>
+            </div>
+            <div>
+              <dt>
+                成果
+              </dt>
+              <dd>
+                <span
+                  class="result-line"
+                >
+                  项目概览（第一版）
+                  （
+                  候选
+                   · 
+                  abcdef012345
+                  …）
+                  <a
+                    download="result-overview.json"
+                    href="/api/v1/work/results?organization_id=au-1&id=result-overview"
+                  >
+                    下载
+                  </a>
+                </span>
+              </dd>
+            </div>
+            <div>
+              <dt>
+                授权资料
+              </dt>
+              <dd>
+                project-docs · 可读 2 份
+              </dd>
+            </div>
+          </dl>
+        </li>
+      </ul>
+    </section>
+  </div>
+</body>
+ ❯ waitForWrapper ../../node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/features/work/WorkPanel.test.tsx:94:34
+     92|     coreWork.coreWorkCommand.mockResolvedValue({ receipt: { status: 's…
+     93| 
+     94|     fireEvent.click(await screen.findByText('开始执行'));
+       |                                  ^
+     95|     await waitFor(() => expect(coreWork.coreWorkCommand).toHaveBeenCal…
+     96|       expect.objectContaining({ kind: 'start_attempt', organization_id…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 passed (5)
+   Start at  05:21:26
+   Duration  2.42s (transform 73ms, setup 155ms, collect 235ms, tests 1.16s, environment 433ms, prepare 105ms)
+

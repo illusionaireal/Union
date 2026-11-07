@@ -1,5 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
-import { api } from '../../api/client';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
+import { api, errorText } from '../../api/client';
 import type { CoreWorkItem } from '../../api/types';
 import { Card } from '../../components/ui';
 
@@ -28,10 +29,33 @@ function attempt(item: CoreWorkItem) {
 }
 
 export function WorkPanel({ organizationId }: { organizationId: string }) {
+  const client = useQueryClient();
+  const [busy, setBusy] = useState(false);
+  const [note, setNote] = useState<{ status: string; message?: string } | null>(null);
   const { data, isPending, error } = useQuery({
     queryKey: ['core-work', organizationId],
     queryFn: ({ signal }) => api.coreWork(organizationId, signal),
   });
+  const send = async (kind: string, payload: Record<string, unknown>) => {
+    if (!data) return;
+    setBusy(true);
+    setNote(null);
+    try {
+      const response = await api.coreWorkCommand({
+        id: 'ui-' + Date.now() + '-' + Math.random().toString(16).slice(2),
+        organization_id: organizationId,
+        base_version: data.version,
+        kind,
+        data: payload,
+      });
+      setNote(response.receipt);
+      await client.invalidateQueries({ queryKey: ['core-work', organizationId] });
+    } catch (failure) {
+      setNote({ status: 'failed', message: errorText(failure) });
+    } finally {
+      setBusy(false);
+    }
+  };
   if (isPending) return <Card title="AI 工作（V1）">正在读取…</Card>;
   if (error || !data) return <Card title="AI 工作（V1）">读取失败，可刷新重试。</Card>;
   if (!data.works.length) {
@@ -75,9 +99,34 @@ export function WorkPanel({ organizationId }: { organizationId: string }) {
                 </dd>
               </div>
             </dl>
+            <div className="work-actions">
+              <button type="button" disabled={busy} onClick={() => send('start_attempt', { work_id: item.id })}>
+                开始执行
+              </button>
+              <button type="button" disabled={busy} onClick={() => send('reserve_step', { work_id: item.id })}>
+                预约一次调用
+              </button>
+              {item.results
+                .filter((value) => value.status === 'candidate')
+                .map((value) => (
+                  <button
+                    key={value.id}
+                    type="button"
+                    disabled={busy}
+                    onClick={() => send('adopt_result', { work_id: item.id, result_id: value.id })}
+                  >
+                    采用成果
+                  </button>
+                ))}
+            </div>
           </li>
         ))}
       </ul>
+      {note && (
+        <p role="status" className="form-note">
+          {note.status === 'succeeded' ? '操作已记录：' + (note.message ?? '') : '操作未完成：' + (note.message ?? note.status)}
+        </p>
+      )}
     </Card>
   );
 }

@@ -1,0 +1,88 @@
+
+> union@0.0.0 check:console
+> npm run typecheck --workspace @union/console && npm run test --workspace @union/console && npm run build:console
+
+
+> @union/console@0.1.0 typecheck
+> tsc --noEmit
+
+
+> @union/console@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 D:/SynologyDrive/project/Union/web/console
+
+ ✓ src/api/client.test.ts (3 tests) 13ms
+ ✓ src/features/commands/receipts.test.ts (5 tests) 10ms
+ ✓ src/app/url-state.test.tsx (1 test) 97ms
+ ✓ src/pages/Tasks.test.tsx (1 test) 104ms
+ ✓ src/pages/ModelServiceConnections.test.tsx (2 tests) 217ms
+ ✓ src/features/work/WorkPanel.test.tsx (5 tests) 237ms
+ ✓ src/pages/Gateways.test.tsx (3 tests) 284ms
+ ✓ src/features/commands/fields.test.tsx (9 tests) 371ms
+ ✓ src/app/workspace.test.tsx (4 tests) 504ms
+ ✓ src/pages/RuntimeObservation.test.tsx (11 tests) 252ms
+ ✓ src/app/governance-workspace.test.tsx (11 tests) 614ms
+ ✓ src/pages/SubscriptionConnections.test.tsx (8 tests) 460ms
+ ✓ src/pages/Identity.test.tsx (14 tests) 884ms
+ ✓ src/features/commands/core-creation.test.tsx (7 tests) 1724ms
+   ✓ core creation through the workspace > keeps explicit legacy company creation reachable after reopening a prepared AU  479ms
+   ✓ core creation through the workspace > opens the saved prepared AU through V1 and shows bound governance without legacy snapshot calls  328ms
+ ✓ src/features/commands/core-boundaries.test.tsx (10 tests) 2342ms
+   ✓ lets a core participant prepare its own AU while withholding legacy operations and showing its stable identity  377ms
+ ✓ src/features/models/ModelsIdentity.test.tsx (11 tests) 2860ms
+   ✓ model identity, scope and input lifetime > keeps draft fields and keyboard focus through refresh and same-principal renewal  529ms
+   ✓ model identity, scope and input lifetime > ignores an earlier successful read arriving after a newer permission denial  336ms
+ ✓ src/features/models/ModelsRecovery.test.tsx (10 tests) 3310ms
+   ✓ model original-request recovery > never replays a lost save and only queries the original receipt  745ms
+   ✓ model original-request recovery > treats a concrete validation error as rejected input instead of unknown  329ms
+   ✓ model original-request recovery > keeps an unmatched response unknown without displaying another AU receipt  314ms
+   ✓ model original-request recovery > reconciles a saved unknown operation explicitly without resubmitting credentials  313ms
+   ✓ model original-request recovery > keeps other connections usable when one verification is unknown  391ms
+   ✓ model original-request recovery > allows the current governor to request local stop while governance is unavailable  340ms
+   ✓ model original-request recovery > lets an unavailable current governor disable a connection while enable and default stay unavailable  333ms
+ ✓ src/features/models/Models.test.tsx (14 tests) 3984ms
+   ✓ core model access user journey > opens the core models route and navigation for a normal core governor  421ms
+   ✓ core model access user journey > saves without inference or adoption, clears the key and keeps only request identities  423ms
+   ✓ core model access user journey > grants bounded resources, reads a selected document twice and adopts independently  993ms
+   ✓ core model access user journey > can adopt an enabled untested connection without purchasing a check  300ms
+ ✓ src/features/models/ModelsDiagnostics.test.tsx (17 tests) 4249ms
+   ✓ model check eligibility after version changes or local stop > keeps an unstopped unknown check on the same revision blocking another check  403ms
+   ✓ model check eligibility after version changes or local stop > rechecks an unfinished current-version check that appears before preview  345ms
+   ✓ model check eligibility after version changes or local stop > allows an explicit new bounded check after an updated connection version  486ms
+   ✓ model check eligibility after version changes or local stop > allows an explicit new bounded check after a requested local stop  423ms
+   ✓ model diagnostics and observed usage > keeps worker_start_failed on explicit original-check reconciliation  372ms
+   ✓ model diagnostics and observed usage > keeps original_request_missing on explicit original-check reconciliation  343ms
+   ✓ model diagnostics and observed usage > keeps provider_result_unconfirmed on explicit original-check reconciliation  330ms
+ ✓ src/features/governance/Governance.test.tsx (53 tests) 9802ms
+   ✓ governance user journey > keeps account-level AU creation available from a governed overview page without governing commands  390ms
+   ✓ governance command recovery boundaries > keeps an unknown action local and lets a different work proceed with its own request  340ms
+
+ Test Files  20 passed (20)
+      Tests  199 passed (199)
+   Start at  05:21:42
+   Duration  13.52s (transform 2.34s, setup 7.69s, collect 16.37s, tests 32.32s, environment 22.65s, prepare 4.19s)
+
+
+> union@0.0.0 build:console
+> npm run build --workspace @union/console
+
+
+> @union/console@0.1.0 build
+> tsc --noEmit && vite build
+
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 2045 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.74 kB │ gzip:   0.51 kB
+dist/assets/index-DyiaVZUg.css   49.96 kB │ gzip:  11.02 kB
+dist/assets/index-BwiQl82C.js   527.28 kB │ gzip: 162.68 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 3.43s

@@ -1,0 +1,27 @@
+{
+  "task": "U-067",
+  "slice": "S03",
+  "step": "S03.3d execution and adoption actions on the work page",
+  "checked_at": "2026-11-08T05:22:18+08:00",
+  "branch": "rewrite/charter-v1",
+  "real_model_calls": 0,
+  "deployed": false,
+  "process_note": "test written after the implementation; a real RED was then produced by removing the action block, and the first attempt lost its log because the evidence folder did not exist yet",
+  "logs": {
+    "red-work-actions.txt": [
+      "      Tests  1 failed | 4 passed (5)",
+      "   Start at  05:21:26",
+      "   Duration  2.42s (transform 73ms, setup 155ms, collect 235ms, tests 1.16s, environment 433ms, prepare 105ms)"
+    ],
+    "green-work-actions.txt": [
+      "      Tests  5 passed (5)",
+      "   Start at  05:21:30",
+      "   Duration  1.51s (transform 80ms, setup 159ms, collect 234ms, tests 223ms, environment 433ms, prepare 106ms)"
+    ],
+    "frontend-check.txt": [
+      "- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks",
+      "- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.",
+      "✓ built in 3.43s"
+    ]
+  }
+}
