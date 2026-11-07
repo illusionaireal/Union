@@ -273,6 +273,12 @@ class WorkService:
                 previous = self.store.existing(cx, request, principal)
                 if previous is not None:
                     return previous
+                current = CoreAUStore.read_in(cx, request["organization_id"], creation=intent)["au"]
+                work = rules.records(current)["works"].get(request["data"]["work_id"])
+                require(work is not None, "工作不存在或不属于此 AU")
+                remaining = work["max_calls"] - rules.budget(work)["reserved"] - rules.budget(work)["used"]
+                require(remaining > 0, "该工作的调用上限已用尽")
+                turn_cap = min(3, remaining)
         version = request["base_version"]
         turns = 0
         tool_calls = 0
@@ -280,7 +286,7 @@ class WorkService:
         usage_total = {"input_tokens": 0, "output_tokens": 0}
         status = "succeeded"
         message = "自动循环结束：模型没有给出成果，已用满本轮轮次"
-        for index in range(3):
+        for index in range(turn_cap):
             step_request = {"id": request["id"] + "-t" + str(index + 1),
                             "organization_id": request["organization_id"], "base_version": version,
                             "kind": "run_step", "data": dict(request["data"])}
@@ -288,6 +294,10 @@ class WorkService:
             if step.get("status") != "succeeded":
                 status = step.get("status", "rejected")
                 message = step.get("message", "自动循环被拒绝")
+                break
+            if step.get("model_outcome") == "unknown":
+                status = "unknown"
+                message = "自动循环在模型结果未知时停止；已保留该次调用预约等待核对，不自动重放"
                 break
             turns += 1
             tool_calls += int(step.get("tool_calls") or 0)
@@ -303,6 +313,8 @@ class WorkService:
             "effect": "applied" if turns else "none", "message": message, "turns": turns,
             "tool_calls": tool_calls, "result": produced, "version": version,
             "usage": usage_total, "cost_status": "unknown"}
+        if status == "unknown":
+            receipt["model_outcome"] = "unknown"
         return self.store_receipt(directory, intent, request, principal, receipt)
 
     def unknown_step(self, directory, intent, request, principal, message):

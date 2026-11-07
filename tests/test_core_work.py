@@ -752,3 +752,35 @@ class CoreWorkTests(ModelAccessCase):
         card = self.works()["works"][0]
         self.assertEqual(card["steps"][0]["status"], "released")
         self.assertEqual(card["budget"], {"max_calls": 4, "reserved": 0, "used": 0})
+
+    def test_run_loop_stops_when_a_turn_leaves_the_model_outcome_unknown(self):
+        self.work_with_listing()
+        self.prepare_materials()
+        self.start_attempt()
+        self.failing_transport()
+
+        status, value, _ = self.run_loop()
+        self.assertEqual(status, 200, value)
+        self.assertEqual(value["receipt"]["status"], "unknown", value)
+        self.assertEqual(value["receipt"]["model_outcome"], "unknown")
+        self.assertEqual(value["receipt"]["turns"], 0)
+        card = self.works()["works"][0]
+        self.assertEqual([s["status"] for s in card["steps"]], ["unknown"], "no second call after an unknown turn")
+        self.assertEqual(card["budget"], {"max_calls": 4, "reserved": 1, "used": 0})
+
+    def test_run_loop_cap_follows_the_remaining_call_budget(self):
+        self.work_with_listing()
+        self.prepare_materials()
+        self.work_command(self.au_id, "start_work", work_data(
+            work_id="work-tight", member_id="m-tight", binding_id="b-tight", mandate_id="ma-tight",
+            definition_id="d-tight", materials_root="project-docs", max_calls=2))
+        self.start_attempt("work-tight")
+        call = {"content": None, "tool_calls": [{"id": "c1", "type": "function",
+                "function": {"name": "list_documents", "arguments": "{}"}}]}
+        self.with_transport(call, call, call)
+
+        status, value, _ = self.run_loop("work-tight")
+        self.assertEqual(value["receipt"]["status"], "succeeded", value)
+        self.assertEqual(value["receipt"]["turns"], 2, "the loop never exceeds the work call budget")
+        card = [w for w in self.works()["works"] if w["id"] == "work-tight"][0]
+        self.assertEqual(len(card["steps"]), 2)
