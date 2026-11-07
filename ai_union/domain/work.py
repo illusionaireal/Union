@@ -23,6 +23,7 @@ FIELDS = {
     "adopt_result": {"work_id", "result_id"},
     "deliver_work": {"work_id", "result_id"},
     "run_step": {"work_id"},
+    "run_loop": {"work_id"},
     "finish_attempt": {"work_id", "attempt_id", "outcome", "reason"},
 }
 TOOLS = {"read_document", "list_documents", "produce_artifact"}
@@ -61,6 +62,9 @@ def validate_input(kind, data):
         require(isinstance(data["sources"], list) and len(data["sources"]) <= 20
                 and all(isinstance(item, str) and len(item) <= 100 for item in data["sources"]),
                 "成果来源必须是明确的执行或工具回执引用列表")
+        return
+    if kind == "run_loop":
+        require(reference(data["work_id"]), "工作标识必须是 bounded 引用标识")
         return
     if kind == "run_step":
         require(reference(data["work_id"]), "工作标识必须是 bounded 引用标识")

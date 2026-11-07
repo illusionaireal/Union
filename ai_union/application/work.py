@@ -50,6 +50,8 @@ class WorkService:
     def command(self, token, incoming):
         if isinstance(incoming, dict) and incoming.get("kind") == "run_step":
             return self.run_step(token, incoming)
+        if isinstance(incoming, dict) and incoming.get("kind") == "run_loop":
+            return self.run_loop(token, incoming)
         principal = self.app.creation.principal(self.app.session(token))
         request = copy.deepcopy(incoming)
         try:
@@ -249,8 +251,55 @@ class WorkService:
                 self.store.save(cx, state, charter, request, receipt, state["policy_version"], changed=changed)
         return receipt
 
-    def reject_step(self, directory, intent, request, principal, message):
-        """Record a refused step without changing AU facts (the model was not credited)."""
+    def run_loop(self, token, incoming):
+        """Drive automatic turns until the model answers or the turn cap is reached."""
+        principal = self.app.creation.principal(self.app.session(token))
+        request = copy.deepcopy(incoming)
+        try:
+            governance.exact(request, {"id", "organization_id", "base_version", "kind", "data"})
+            identifier(request["id"])
+            identifier(request["organization_id"])
+            require(type(request["base_version"]) is int and request["base_version"] >= 0, "须提供当前 AU 版本")
+            rules.validate_input(request["kind"], request["data"])
+        except (Rejected, TypeError, ValueError) as error:
+            raise CoreError("invalid_request", str(error)) from error
+        with self.app.mutex, self.app.catalog() as accounts:
+            require(self.app.identity.principal_in(accounts, token) == principal, "登录主体已变化")
+            directory, intent = self.app.governance.locate(request["organization_id"])
+            with self.store.transaction(directory) as cx:
+                previous = self.store.existing(cx, request, principal)
+                if previous is not None:
+                    return previous
+        version = request["base_version"]
+        turns = 0
+        tool_calls = 0
+        produced = False
+        status = "succeeded"
+        message = "自动循环结束：模型没有给出成果，已用满本轮轮次"
+        for index in range(3):
+            step_request = {"id": request["id"] + "-t" + str(index + 1),
+                            "organization_id": request["organization_id"], "base_version": version,
+                            "kind": "run_step", "data": dict(request["data"])}
+            step = self.run_step(token, step_request)
+            if step.get("status") != "succeeded":
+                status = step.get("status", "rejected")
+                message = step.get("message", "自动循环被拒绝")
+                break
+            turns += 1
+            tool_calls += int(step.get("tool_calls") or 0)
+            if step.get("result"):
+                produced = True
+                message = "自动循环结束：已产出候选成果"
+                break
+            version = int(step.get("version") or version + 1)
+        receipt = {key: request[key] for key in ("id", "organization_id", "base_version", "kind")} | {
+            "actor_principal_id": principal, "created_at": now(), "status": status,
+            "effect": "applied" if turns else "none", "message": message, "turns": turns,
+            "tool_calls": tool_calls, "result": produced, "version": version}
+        return self.store_receipt(directory, intent, request, principal, receipt)
+
+    def store_receipt(self, directory, intent, request, principal, receipt):
+        """Persist only the receipt of this request; AU facts stay untouched."""
         with self.app.mutex:
             with self.store.transaction(directory) as cx:
                 state = CoreAUStore.read_in(cx, request["organization_id"], creation=intent)["au"]
@@ -260,8 +309,17 @@ class WorkService:
                 self.store.ensure_commands(cx)
                 state = copy.deepcopy(state)
                 charter = state.pop("charter")
-                receipt = {key: request[key] for key in ("id", "organization_id", "base_version", "kind")} | {
-                    "actor_principal_id": principal, "created_at": now(), "status": "rejected",
-                    "effect": "none", "message": message, "version": state["version"]}
                 self.store.save(cx, state, charter, request, receipt, state["policy_version"], changed=False)
         return receipt
+
+    def reject_step(self, directory, intent, request, principal, message):
+        """Record a refused step without changing AU facts (the model was not credited)."""
+        state = None
+        with self.app.mutex:
+            with self.store.transaction(directory) as cx:
+                current = CoreAUStore.read_in(cx, request["organization_id"], creation=intent)["au"]
+                state = current["version"]
+        receipt = {key: request[key] for key in ("id", "organization_id", "base_version", "kind")} | {
+            "actor_principal_id": principal, "created_at": now(), "status": "rejected",
+            "effect": "none", "message": message, "version": state}
+        return self.store_receipt(directory, intent, request, principal, receipt)

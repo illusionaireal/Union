@@ -641,3 +641,53 @@ class CoreWorkTests(ModelAccessCase):
         status, value, _ = self.work_step()
         self.assertEqual(value["receipt"]["status"], "rejected", value)
         self.assertIn("通道", value["receipt"]["message"])
+
+    def run_loop(self, work_id="work-overview"):
+        return self.work_command(self.au_id, "run_loop", {"work_id": work_id})
+
+    def test_run_loop_keeps_calling_the_model_until_it_answers(self):
+        self.work_with_listing()
+        self.prepare_materials()
+        self.start_attempt()
+        self.with_transport(
+            {"content": None, "tool_calls": [{"id": "c1", "type": "function",
+             "function": {"name": "read_document", "arguments": "{\"path\": \"nested/a.md\"}"}}]},
+            {"content": "# 概览\n- 依据 nested/a.md\n", "tool_calls": []},
+        )
+
+        status, value, _ = self.run_loop()
+        self.assertEqual(status, 200, value)
+        self.assertEqual(value["receipt"]["status"], "succeeded", value)
+        self.assertEqual(value["receipt"]["turns"], 2)
+        self.assertIs(value["receipt"]["result"], True)
+        card = self.works()["works"][0]
+        self.assertEqual([step["status"] for step in card["steps"]], ["used", "used"])
+        self.assertEqual(len(card["tool_calls"]), 1)
+        self.assertEqual(len(card["results"]), 1)
+
+    def test_run_loop_stops_at_the_turn_cap_when_the_model_never_answers(self):
+        self.work_with_listing()
+        self.prepare_materials()
+        self.start_attempt()
+        call = {"content": None, "tool_calls": [{"id": "c1", "type": "function",
+                "function": {"name": "list_documents", "arguments": "{}"}}]}
+        self.with_transport(call, call, call)
+
+        status, value, request = self.run_loop()
+        self.assertEqual(value["receipt"]["status"], "succeeded", value)
+        self.assertEqual(value["receipt"]["turns"], 3)
+        self.assertIs(value["receipt"]["result"], False)
+        card = self.works()["works"][0]
+        self.assertEqual(len(card["steps"]), 3)
+        self.assertEqual(len(card["results"]), 0)
+        replay_status, again, _ = self.request("/api/v1/work/commands", request)
+        self.assertEqual(replay_status, 200, again)
+        self.assertEqual(again["receipt"], value["receipt"], "the same loop request returns its original receipt")
+
+    def test_run_loop_requires_the_host_transport(self):
+        self.work_with_listing()
+        self.start_attempt()
+        self.app.work.transport = None
+        status, value, _ = self.run_loop()
+        self.assertEqual(value["receipt"]["status"], "rejected", value)
+        self.assertIn("通道", value["receipt"]["message"])
