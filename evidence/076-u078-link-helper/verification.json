@@ -1,0 +1,19 @@
+{
+  "task": "U-078",
+  "title": "cross-platform directory-link preparation + Windows junction escape fix",
+  "checked_at": "2026-11-08T06:23:19+08:00",
+  "branch": "rewrite/charter-v1",
+  "real_model_calls": 0,
+  "deployed": false,
+  "claim_blocked": "local ledger has no U-077/U-078; reported in team feed #11",
+  "product_fix": "ai_union/workspace.py rejects Windows junctions/reparse points and requires resolved containment",
+  "python_full": {
+    "tests": 618,
+    "skipped": 8,
+    "result": "OK"
+  },
+  "modules": {
+    "test_workspace": "12 ok (3 linux-only skipped)",
+    "links+documents+creation_failures+catalog_integrity+checkpoints+core_creation+workspace_harness": "61 ok (1 skipped)"
+  }
+}

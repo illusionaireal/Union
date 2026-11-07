@@ -1,0 +1,46 @@
+test_an_unsupported_host_reports_a_preparation_limit (tests.test_links.DirectoryLinkTests.test_an_unsupported_host_reports_a_preparation_limit) ... ok
+test_linux_uses_a_symlink_and_never_calls_windows_cmd (tests.test_links.DirectoryLinkTests.test_linux_uses_a_symlink_and_never_calls_windows_cmd) ... ok
+test_posix_symlink_failure_is_also_a_preparation_limit (tests.test_links.DirectoryLinkTests.test_posix_symlink_failure_is_also_a_preparation_limit) ... ok
+test_windows_falls_back_to_a_junction_when_symlink_is_unavailable (tests.test_links.DirectoryLinkTests.test_windows_falls_back_to_a_junction_when_symlink_is_unavailable) ... ok
+test_absent_registry_means_no_root_is_available (tests.test_documents.DocumentRootTests.test_absent_registry_means_no_root_is_available) ... ok
+test_absolute_and_traversal_document_paths_are_rejected (tests.test_documents.DocumentRootTests.test_absolute_and_traversal_document_paths_are_rejected) ... ok
+test_binary_and_oversize_documents_are_rejected (tests.test_documents.DocumentRootTests.test_binary_and_oversize_documents_are_rejected) ... ok
+test_escape_through_directory_link_is_rejected (tests.test_documents.DocumentRootTests.test_escape_through_directory_link_is_rejected) ... ok
+test_host_paths_and_unregistered_references_are_rejected (tests.test_documents.DocumentRootTests.test_host_paths_and_unregistered_references_are_rejected) ... ok
+test_malformed_registry_is_rejected_instead_of_guessed (tests.test_documents.DocumentRootTests.test_malformed_registry_is_rejected_instead_of_guessed) ... ok
+test_read_returns_exact_content_and_digest (tests.test_documents.DocumentRootTests.test_read_returns_exact_content_and_digest) ... ok
+test_registered_root_lists_only_its_own_documents (tests.test_documents.DocumentRootTests.test_registered_root_lists_only_its_own_documents) ... ok
+test_registry_refuses_relative_missing_or_file_roots (tests.test_documents.DocumentRootTests.test_registry_refuses_relative_missing_or_file_roots) ... ok
+test_au_state_charter_and_root_audit_roll_back_in_one_real_transaction (tests.test_core_creation_failures.CoreCreationFailureTests.test_au_state_charter_and_root_audit_roll_back_in_one_real_transaction) ... ok
+test_authentication_catalog_lock_returns_typed_storage_error (tests.test_core_creation_failures.CoreCreationFailureTests.test_authentication_catalog_lock_returns_typed_storage_error) ... ok
+test_creation_audit_must_still_match_its_original_request (tests.test_core_creation_failures.CoreCreationFailureTests.test_creation_audit_must_still_match_its_original_request) ... ok
+test_creation_rejects_escaped_parent_before_any_outside_file_write (tests.test_core_creation_failures.CoreCreationFailureTests.test_creation_rejects_escaped_parent_before_any_outside_file_write) ... ok
+test_directory_failure_keeps_unknown_without_retrying_allocation (tests.test_core_creation_failures.CoreCreationFailureTests.test_directory_failure_keeps_unknown_without_retrying_allocation) ... ok
+test_intent_storage_failure_returns_503_without_allocating_or_faking_unknown (tests.test_core_creation_failures.CoreCreationFailureTests.test_intent_storage_failure_returns_503_without_allocating_or_faking_unknown) ... ok
+test_interruptions_before_and_after_au_commit_keep_original_id_and_bytes (tests.test_core_creation_failures.CoreCreationFailureTests.test_interruptions_before_and_after_au_commit_keep_original_id_and_bytes) ... ok
+test_adapter_error_remains_unknown_and_can_be_reconciled (tests.test_workspace.WorkspaceTests.test_adapter_error_remains_unknown_and_can_be_reconciled) ... ok
+test_attach_client_exit_requires_container_stop_evidence (tests.test_workspace.WorkspaceTests.test_attach_client_exit_requires_container_stop_evidence) ... skipped 'Linux-only container host'
+test_command_receipt_is_idempotent_and_survives_reopen (tests.test_workspace.WorkspaceTests.test_command_receipt_is_idempotent_and_survives_reopen) ... ok
+test_container_command_exposes_only_selected_workspace_without_network_or_secrets (tests.test_workspace.WorkspaceTests.test_container_command_exposes_only_selected_workspace_without_network_or_secrets) ... skipped 'Linux-only container host'
+test_crash_receipt_blocks_later_command_until_explicit_reconciliation (tests.test_workspace.WorkspaceTests.test_crash_receipt_blocks_later_command_until_explicit_reconciliation) ... ok
+test_current_authority_and_pause_rechecked_before_sandbox (tests.test_workspace.WorkspaceTests.test_current_authority_and_pause_rechecked_before_sandbox) ... ok
+test_disable_retains_unknown_receipts_even_when_directory_disappears (tests.test_workspace.WorkspaceTests.test_disable_retains_unknown_receipts_even_when_directory_disappears) ... ok
+test_failure_receipt_write_error_does_not_lose_unknown_classification (tests.test_workspace.WorkspaceTests.test_failure_receipt_write_error_does_not_lose_unknown_classification) ... ok
+test_host_binding_rejects_board_failure_and_private_directory_overlap (tests.test_workspace.WorkspaceTests.test_host_binding_rejects_board_failure_and_private_directory_overlap) ... FAIL
+test_killed_attach_client_is_unknown (tests.test_workspace.WorkspaceTests.test_killed_attach_client_is_unknown) ... skipped 'Linux-only container host'
+test_missing_runtime_never_falls_back_to_host_shell (tests.test_workspace.WorkspaceTests.test_missing_runtime_never_falls_back_to_host_shell) ... ok
+test_unknown_command_is_never_replayed_or_erased_by_reconfiguration (tests.test_workspace.WorkspaceTests.test_unknown_command_is_never_replayed_or_erased_by_reconfiguration) ... ok
+
+======================================================================
+FAIL: test_host_binding_rejects_board_failure_and_private_directory_overlap (tests.test_workspace.WorkspaceTests.test_host_binding_rejects_board_failure_and_private_directory_overlap)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SynologyDrive\project\Union\tests\test_workspace.py", line 147, in test_host_binding_rejects_board_failure_and_private_directory_overlap
+    with self.assertRaises(Rejected):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Rejected not raised
+
+----------------------------------------------------------------------
+Ran 32 tests in 22.702s
+
+FAILED (failures=1, skipped=3)

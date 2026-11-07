@@ -1,0 +1,9 @@
+test_an_unsupported_host_reports_a_preparation_limit (tests.test_links.DirectoryLinkTests.test_an_unsupported_host_reports_a_preparation_limit) ... ok
+test_linux_uses_a_symlink_and_never_calls_windows_cmd (tests.test_links.DirectoryLinkTests.test_linux_uses_a_symlink_and_never_calls_windows_cmd) ... ok
+test_posix_symlink_failure_is_also_a_preparation_limit (tests.test_links.DirectoryLinkTests.test_posix_symlink_failure_is_also_a_preparation_limit) ... ok
+test_windows_falls_back_to_a_junction_when_symlink_is_unavailable (tests.test_links.DirectoryLinkTests.test_windows_falls_back_to_a_junction_when_symlink_is_unavailable) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.001s
+
+OK
