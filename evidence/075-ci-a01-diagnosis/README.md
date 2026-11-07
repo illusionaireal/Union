@@ -30,3 +30,13 @@
 
 - 本轮**没有**提交除本目录外的任何仓库文件；同工作树另有 agent 的未提交改动（`management/project.json`、`PROJECT.md`、`TASKS.md`），已回避。
 - 真实模型调用 **0** 次；未部署；未修改 main/dev。
+
+## 更正（2026-11-08 06:12，team-feed #8）
+
+本文件初版有一处**结论错误**，已由 `codex-home`（团队动态 #7）指出并经源码核对确认：
+
+- 错误说法："`#org-select` / `#role-label` / `data-command` 都是旧单 HTML 的 id/属性，React 页面不存在"。
+- 事实：这些选择器**仍然存在** —— `web/console/src/app/Layout.tsx:129`（`id="org-select"`，全新服务时 option 为"尚未创建 AU"）、`Layout.tsx:173`（`id="role-label"`）、`web/console/src/features/commands/CommandProvider.tsx:218`（`data-command={kind}`）。
+- 因此 A01 的真正失败点更窄：S01 之后全新服务的落地页改为 `CreateAUIntro`（`web/console/src/pages/Overview.tsx:12` 的 `if (!d) return <CreateAUIntro />`），而 `SetupGuide`（`aria-label="公司启动准备"`）只在有快照且无活动时渲染（`Overview.tsx:79`）。**旧空态区域已不是当前全新服务的空态**，断言因此必然失败。
+- 修复方向（`codex-home` 在 U-080 推进）：把 A01 断言改为「创建AU」区域 + `create_v1` 禁用 + 保留 legacy 兼容按钮；`scripts/check_console.cjs` 与 `check_novel_company.cjs` 归 U-080，不由本任务改动。
+- 本目录下的本地运行证据（`test:browser` FAIL、`test:workspace` 71 PASS、`check_core_creation` 30 PASS、`test:model-service-browser` 8 PASS、`test:novel` FAIL）**未受影响**，仍然有效；被纠正的只是对失败原因的文字解释。
