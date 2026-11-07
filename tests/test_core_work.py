@@ -21,6 +21,18 @@ def work_data(**changes):
     return data
 
 
+class FakeTransport:
+    """Stands in for the host model channel; records what it was asked to run."""
+
+    def __init__(self, responses):
+        self.responses = list(responses)
+        self.calls = []
+
+    def chat(self, package, messages, tools):
+        self.calls.append({"package": package, "messages": messages, "tools": tools})
+        return self.responses.pop(0), {}
+
+
 class CoreWorkTests(ModelAccessCase):
     def adopt_default(self):
         return self.model_success("set_connection", {"connection_id": "connection-a", "expected_revision": 1,
@@ -574,3 +586,58 @@ class CoreWorkTests(ModelAccessCase):
         old, current = card["attempts"][0], card["attempts"][1]
         self.assertEqual((old["steps"], old["tool_calls"]), (1, 1), "a settled attempt keeps its own counts")
         self.assertEqual((current["steps"], current["tool_calls"]), (0, 0))
+
+    def with_transport(self, *responses):
+        self.app.work.transport = FakeTransport(list(responses))
+        return self.app.work.transport
+
+    def work_step(self, work_id="work-overview"):
+        return self.work_command(self.au_id, "run_step", {"work_id": work_id})
+
+    def test_run_step_executes_the_tool_the_model_asks_for_and_records_a_receipt(self):
+        self.work_with_listing()
+        self.prepare_materials()
+        self.start_attempt()
+        transport = self.with_transport(
+            {"content": None, "tool_calls": [{"id": "call-1", "type": "function",
+             "function": {"name": "read_document", "arguments": "{\"path\": \"nested/a.md\"}"}}]},
+            {},
+        )
+
+        status, value, _ = self.work_step()
+        self.assertEqual(status, 200, value)
+        self.assertEqual(value["receipt"]["status"], "succeeded", value)
+        self.assertEqual(value["receipt"]["tool_calls"], 1)
+        self.assertEqual(transport.calls[0]["package"]["work_id"], "work-overview")
+        self.assertTrue(any(tool["function"]["name"] == "read_document" for tool in transport.calls[0]["tools"]))
+
+        card = self.works()["works"][0]
+        self.assertEqual([c["tool"] for c in card["tool_calls"]], ["read_document"])
+        self.assertEqual(card["tool_calls"][0]["sha256"],
+                         hashlib.sha256("a 正文\n".encode("utf-8")).hexdigest())
+        self.assertEqual(card["steps"][0]["status"], "used")
+        self.assertEqual(card["steps"][0]["purpose"], "work_step")
+
+    def test_run_step_stores_a_candidate_result_when_the_model_answers(self):
+        self.work_with_listing()
+        self.prepare_materials()
+        self.start_attempt()
+        self.with_transport({"content": "# 概览\n- 依据 nested/a.md\n", "tool_calls": []}, {})
+
+        status, value, _ = self.work_step()
+        self.assertEqual(value["receipt"]["status"], "succeeded", value)
+        self.assertEqual(value["receipt"]["tool_calls"], 0)
+        card = self.works()["works"][0]
+        self.assertEqual(len(card["results"]), 1)
+        self.assertEqual(card["results"][0]["status"], "candidate")
+        self.assertEqual(card["results"][0]["sha256"],
+                         hashlib.sha256("# 概览\n- 依据 nested/a.md\n".encode("utf-8")).hexdigest())
+        self.assertEqual(card["steps"][0]["status"], "used")
+
+    def test_run_step_requires_a_configured_host_transport(self):
+        self.work_with_listing()
+        self.start_attempt()
+        self.app.work.transport = None
+        status, value, _ = self.work_step()
+        self.assertEqual(value["receipt"]["status"], "rejected", value)
+        self.assertIn("通道", value["receipt"]["message"])

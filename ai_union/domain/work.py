@@ -22,6 +22,7 @@ FIELDS = {
     "submit_result": {"work_id", "result_id", "title", "content", "sources"},
     "adopt_result": {"work_id", "result_id"},
     "deliver_work": {"work_id", "result_id"},
+    "run_step": {"work_id"},
     "finish_attempt": {"work_id", "attempt_id", "outcome", "reason"},
 }
 TOOLS = {"read_document", "list_documents", "produce_artifact"}
@@ -60,6 +61,9 @@ def validate_input(kind, data):
         require(isinstance(data["sources"], list) and len(data["sources"]) <= 20
                 and all(isinstance(item, str) and len(item) <= 100 for item in data["sources"]),
                 "成果来源必须是明确的执行或工具回执引用列表")
+        return
+    if kind == "run_step":
+        require(reference(data["work_id"]), "工作标识必须是 bounded 引用标识")
         return
     if kind == "deliver_work":
         require(reference(data["work_id"]) and reference(data["result_id"]), "工作与成果标识必须是 bounded 引用标识")
@@ -397,6 +401,57 @@ def deliver_work(state, data, principal, clock=None):
                 delivered_result_id=result["id"], version=work["version"] + 1)
     return {"work_id": work["id"], "work_status": work["status"], "delivered_at": work["delivered_at"],
             "result_id": result["id"]}
+
+
+TOOL_SPECS = {
+    "list_documents": {"name": "list_documents", "description": "列出宿主已登记只读资料目录内的文档路径。",
+                       "parameters": {"type": "object", "properties": {}, "additionalProperties": False}},
+    "read_document": {"name": "read_document", "description": "读取授权资料目录内的一个文本资料。",
+                      "parameters": {"type": "object",
+                                     "properties": {"path": {"type": "string"}},
+                                     "required": ["path"], "additionalProperties": False}},
+}
+
+
+def step_plan(state, charter, work_id, instance=None):
+    """What one automatic step would send to the model; pure and revalidated."""
+    work = records(state)["works"].get(work_id)
+    require(work is not None, "工作不存在或不属于此 AU")
+    require(work["status"] in OPEN, "工作已结束，不能继续执行")
+    attempt = active_attempt(work, instance)
+    definition = records(state)["definitions"][work["definition_id"]]
+    current = budget(work)
+    require(current["reserved"] + current["used"] < work["max_calls"], "该工作的调用上限已用尽")
+    allowed = [name for name in definition.get("tools") or [] if name in TOOL_SPECS]
+    require(allowed, "该工作的 Agent 定义没有可用的只读工具")
+    require(set(allowed) <= set(charter["allowed_tools"]), "工具不在当前有效章程允许的范围内")
+    messages = [{"role": "system", "content": definition["instruction"]},
+                {"role": "user", "content": "目标：" + work["goal"]
+                 + "\n请先用电只读工具查看授权资料，再给出可直接交付的成果正文（Markdown）。"}]
+    return {"work_id": work_id, "attempt_id": attempt["id"], "materials_root": work["materials_root"],
+            "messages": messages, "tools": [{"type": "function", "function": TOOL_SPECS[name]} for name in allowed],
+            "package": {"kind": "work_step", "work_id": work_id, "attempt_id": attempt["id"],
+                        "run_id": work_id + "#s" + str(len(work.get("steps") or []) + 1)}}
+
+
+def apply_step(state, charter, data, principal, instance, clock=None):
+    """Commit one model turn: reserve a step, record the tools it used, settle it."""
+    work = records(state)["works"].get(data["work_id"])
+    require(work is not None, "工作不存在或不属于此 AU")
+    attempt = active_attempt(work, instance)
+    step = reserve_step(state, {"work_id": data["work_id"]}, clock, instance)
+    recorded = []
+    for call in data["tool_calls"]:
+        require(isinstance(call.get("tool"), str) and call["tool"] in TOOL_SPECS, "模型请求了不支持的只读工具")
+        detail = {key: call[key] for key in ("sha256", "bytes", "count") if key in call}
+        recorded.append(record_tool_call(work, call["tool"], call.get("arguments") or {}, detail, attempt["id"], clock))
+    if data["content"]:
+        submit_result(state, {"work_id": data["work_id"], "result_id": data["result_id"],
+                              "title": data["title"], "content": data["content"],
+                              "sources": [item["step_ref"] for item in recorded]}, principal, clock)
+    settle_step(state, {"work_id": data["work_id"], "step_id": step["step_ref"],
+                        "status": "used", "reason": "模型步进已完成"}, clock)
+    return {"step": step["step_ref"], "tool_calls": len(recorded), "result": bool(data["content"])}
 
 
 def tool_target(state, data, instance=None):

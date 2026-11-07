@@ -2,6 +2,7 @@
 import copy
 
 import hashlib
+import json
 
 from ..adapters import documents
 from ..adapters.core_au_store import CoreAUStore, encoded
@@ -47,6 +48,8 @@ class WorkService:
         return {"reference": reference, "available": True, "documents": len(listed)}
 
     def command(self, token, incoming):
+        if isinstance(incoming, dict) and incoming.get("kind") == "run_step":
+            return self.run_step(token, incoming)
         principal = self.app.creation.principal(self.app.session(token))
         request = copy.deepcopy(incoming)
         try:
@@ -155,3 +158,110 @@ class WorkService:
                         "result": {key: item for key, item in result.items() if key != "content"},
                         "content": result["content"]}
         raise CoreError("invalid_request", "此 AU 中没有该成果标识")
+
+    def run_step(self, token, incoming):
+        """One automatic model turn: decide outside the lock, apply inside one transaction."""
+        principal = self.app.creation.principal(self.app.session(token))
+        request = copy.deepcopy(incoming)
+        try:
+            governance.exact(request, {"id", "organization_id", "base_version", "kind", "data"})
+            identifier(request["id"])
+            identifier(request["organization_id"])
+            require(type(request["base_version"]) is int and request["base_version"] >= 0, "须提供当前 AU 版本")
+            rules.validate_input(request["kind"], request["data"])
+        except (Rejected, TypeError, ValueError) as error:
+            raise CoreError("invalid_request", str(error)) from error
+        with self.app.mutex, self.app.catalog() as accounts:
+            require(self.app.identity.principal_in(accounts, token) == principal, "登录主体已变化")
+            directory, intent = self.app.governance.locate(request["organization_id"])
+            with self.store.transaction(directory) as cx:
+                state = CoreAUStore.read_in(cx, request["organization_id"], creation=intent)["au"]
+                rules.authorize(state, principal)
+                require(request["base_version"] == state["version"], "AU 版本已变化；请读取最新状态检查原输入")
+                plan = rules.step_plan(state, state["charter"], request["data"]["work_id"],
+                                       instance=self.app.instance)
+        transport = getattr(self, "transport", None)
+        if transport is None or not hasattr(transport, "chat"):
+            return self.reject_step(directory, intent, request, principal, "宿主尚未配置模型执行通道；请先在宿主接入模型通道")
+        try:
+            message, _usage = transport.chat(copy.deepcopy(plan["package"]), copy.deepcopy(plan["messages"]),
+                                             copy.deepcopy(plan["tools"]))
+        except Exception as error:  # noqa: BLE001 - host channel failures are reported, never replayed
+            return self.reject_step(directory, intent, request, principal,
+                                    "模型通道调用失败，未产生步进事实：" + str(error)[:300])
+        calls = (message or {}).get("tool_calls") or []
+        content = (message or {}).get("content") or ""
+        if calls and plan["materials_root"] is None:
+            return self.reject_step(directory, intent, request, principal, "模型请求只读工具，但该工作未绑定授权资料目录")
+        with self.app.mutex, self.app.catalog() as accounts:
+            require(self.app.identity.principal_in(accounts, token) == principal, "登录主体已变化")
+            with self.store.transaction(directory) as cx:
+                state = CoreAUStore.read_in(cx, request["organization_id"], creation=intent)["au"]
+                previous = self.store.existing(cx, request, principal)
+                if previous is not None:
+                    return previous
+                rules.authorize(state, principal)
+                self.store.ensure_commands(cx)
+                state = copy.deepcopy(state)
+                charter = state.pop("charter")
+                receipt = {key: request[key] for key in ("id", "organization_id", "base_version", "kind")} | {
+                    "actor_principal_id": principal, "created_at": now(), "status": "succeeded",
+                    "effect": "applied", "message": "已执行一次自动模型步进"}
+                changed = False
+                cx.execute("SAVEPOINT work_step")
+                try:
+                    require(request["base_version"] == state["version"], "AU 版本已变化；请读取最新状态检查原输入")
+                    principals = {row[0] for row in accounts.execute("SELECT principal_id FROM owner_account")}
+                    rules.effective(state, principals)
+                    local = copy.deepcopy(state)
+                    work = rules.records(local)["works"][request["data"]["work_id"]]
+                    executed = []
+                    for call in calls[:10]:
+                        function = call.get("function") or {}
+                        name = function.get("name")
+                        try:
+                            arguments = json.loads(function.get("arguments") or "{}")
+                        except ValueError as error:
+                            raise Rejected("模型工具参数不是合法 JSON；本轮未执行任何工具") from error
+                        if name == "list_documents":
+                            root = documents.root_for(self.app.root, work["materials_root"])
+                            executed.append({"tool": name, "arguments": {},
+                                             "count": len(documents.list_documents(root))})
+                        elif name == "read_document":
+                            root = documents.root_for(self.app.root, work["materials_root"])
+                            _text, digest, size = documents.read_text(root, arguments.get("path"))
+                            executed.append({"tool": name, "arguments": {"path": arguments.get("path")},
+                                             "sha256": digest, "bytes": size})
+                        else:
+                            raise Rejected("模型请求了本核心不支持的只读工具")
+                    payload = {"work_id": request["data"]["work_id"], "content": content, "tool_calls": executed,
+                               "result_id": "result-" + request["id"].replace("-", "")[:12],
+                               "title": "自动成果：" + work["title"]}
+                    receipt.update(rules.apply_step(local, charter, payload, principal, self.app.instance))
+                    local["version"] = state["version"] + 1
+                    state = local
+                    changed = True
+                except Rejected as error:
+                    cx.execute("ROLLBACK TO work_step")
+                    receipt.update(status="rejected", effect="none", message=str(error))
+                cx.execute("RELEASE work_step")
+                receipt["version"] = state["version"]
+                self.store.save(cx, state, charter, request, receipt, state["policy_version"], changed=changed)
+        return receipt
+
+    def reject_step(self, directory, intent, request, principal, message):
+        """Record a refused step without changing AU facts (the model was not credited)."""
+        with self.app.mutex:
+            with self.store.transaction(directory) as cx:
+                state = CoreAUStore.read_in(cx, request["organization_id"], creation=intent)["au"]
+                previous = self.store.existing(cx, request, principal)
+                if previous is not None:
+                    return previous
+                self.store.ensure_commands(cx)
+                state = copy.deepcopy(state)
+                charter = state.pop("charter")
+                receipt = {key: request[key] for key in ("id", "organization_id", "base_version", "kind")} | {
+                    "actor_principal_id": principal, "created_at": now(), "status": "rejected",
+                    "effect": "none", "message": message, "version": state["version"]}
+                self.store.save(cx, state, charter, request, receipt, state["policy_version"], changed=False)
+        return receipt
