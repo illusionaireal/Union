@@ -63,7 +63,8 @@ async function waitFor(page,predicate){await page.waitForFunction(predicate,null
   page.on('pageerror',error=>errors.push(error.message));
   await page.goto(host.board_url);await waitConnected(page);
   check('C05: one-time host session establishes board role',await page.locator('#role-label').textContent()==='本机发起人');
-  check('A01: fresh service has a clear empty state',await page.getByRole('region', {name:'公司启动准备'}).isVisible() && !(await page.locator('#org-select').inputValue()));
+  check('A01: fresh service offers prepared AU creation and explicit legacy compatibility',await page.getByRole('region', {name:'创建AU'}).isVisible() && !(await page.locator('#org-select').inputValue()) && await page.getByRole('button', {name:'旧版兼容试验（含小说）'}).isEnabled());
+  check('C05: an unbound host session cannot create a prepared V1 AU',await page.locator('[data-command="create_v1"]').isDisabled());
   await page.locator('[data-command="create"]').click();
   await page.locator('#cancel-operation').click();
   check('C01: cancelled creation does not create an organization',(await page.locator('#org-select option').count())===1 && !(await page.locator('#org-select').inputValue()));
@@ -104,7 +105,7 @@ async function waitFor(page,predicate){await page.waitForFunction(predicate,null
   check('F02: browser back restores the previous route',await page.locator('#page-title').textContent()==='工作与协作');
   await page.goForward();await page.waitForURL('**/members?**');
   check('F02: browser forward restores the next route',await page.locator('#page-title').textContent()==='团队与责任');
-  check('F06: member pages do not repeat unrelated global actions',await page.locator('[data-command]').count()===0);
+  check('F06: member content has no business actions and retains only the compatibility footer',await page.locator('#view [data-command]').count()===0 && await page.locator('[data-command]').count()===1 && await page.getByRole('button', {name:'旧版兼容试验（含小说）'}).isEnabled());
   await page.locator('[data-nav="activity"]').click();
   await page.locator('[data-command="event"]').click();
   await page.locator('[name="content"]').fill('轮询期间未提交的表单');await page.locator('[name="content"]').focus();
@@ -149,8 +150,10 @@ async function waitFor(page,predicate){await page.waitForFunction(predicate,null
   await page.locator('[data-command="event"]').click();
   await page.locator('[name="content"]').fill('保留版本冲突时的输入');await page.locator('[name="source"]').fill('conflict-test');
   await page.locator('#preview-operation').click();
+  await page.locator('#commit-operation').waitFor({state:'visible'});
   const stale=await snap(page);
   await page.evaluate(async value=>{await fetch('/api/commands',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(value)});},{id:'second-operator-change',organization_id:org,base_version:stale.organization.version,kind:'resources',data:{resources:{max_calls:12,timeout_seconds:180},reason:'second operator test'}});
+  check('C04: second operator changes the version after preview', (await snap(page)).organization.version > stale.organization.version);
   await page.locator('#commit-operation').click();await page.locator('#operation-error').waitFor({state:'visible'});
   check('C04/C09: version conflict preserves input and requires a new preview',await page.locator('[name="content"]').inputValue()==='保留版本冲突时的输入' && (await page.locator('#operation-error').textContent()).includes('版本冲突'));
   await closeOperation(page);await fresh(page);
@@ -234,7 +237,7 @@ async function waitFor(page,predicate){await page.waitForFunction(predicate,null
   check('A01/A10: switching organizations rejects a late response from the former organization',second!==org && await page.locator('#org-select').inputValue()===org && (await page.locator('#snapshot-meta').textContent()).startsWith(org+' ·'));
   // Server restart invalidates the old session; a new host ticket binds the new service instance.
   const oldInstance=(await snap(page)).service_instance,port=Number(new URL(host.origin).port);await host.stop();host=await startHost(port);
-  await fresh(page).catch(()=>{});await page.getByText('连接断开',{exact:true}).waitFor();check('A10/C05: restarted host rejects old session',await page.locator('[data-command="event"]').isDisabled());
+  await fresh(page).catch(()=>{});await page.getByText('连接断开',{exact:true}).waitFor();check('A10/C05: restarted host rejects old session and exposes no enabled event action',(await page.request.get(host.origin+'/api/session')).status()===401 && await page.locator('[data-command="event"]:enabled').count()===0);
   await page.goto(host.board_url);await waitConnected(page);check('A10: fresh host session reads a new instance with persisted data',(await snap(page)).service_instance!==oldInstance && Object.keys((await snap(page)).organization.artifacts).length===3);
   check('C10: organization model survives service restart',(await snap(page)).execution_config.codex_model==='test-model-a');
   check('browser has no uncaught JavaScript errors',errors.length===0);

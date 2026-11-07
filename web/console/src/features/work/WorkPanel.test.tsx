@@ -1,10 +1,12 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { CoreWork, CoreWorkItem } from '../../api/types';
 import { WorkPanel } from './WorkPanel';
 
-const coreWork = vi.hoisted(() => ({ coreWork: vi.fn(), coreWorkCommand: vi.fn() }));
+afterEach(cleanup);
+
+const coreWork = vi.hoisted(() => ({ coreWork: vi.fn(), coreWorkCommand: vi.fn(), coreModels: vi.fn() }));
 vi.mock('../../api/client', () => ({
   api: coreWork,
   errorText: (error: unknown) => (error instanceof Error ? error.message : '服务暂不可用'),
@@ -38,7 +40,7 @@ const base: CoreWork = {
 
 describe('V1 work panel', () => {
   it('shows responsibility, mandate, budget and registered materials', async () => {
-    read(base);
+    read({ ...base, access: { principal_id: 'p1', can_start: false } });
     await waitFor(() => expect(screen.getByText('项目概览')).toBeTruthy());
     expect(screen.getByText('资料整理 Agent（交付项目概览）')).toBeTruthy();
     expect(screen.getByText('list_documents')).toBeTruthy();
@@ -140,5 +142,65 @@ it('starts an execution and adopts a candidate result through the API', async ()
       kind: 'finish_attempt',
       data: expect.objectContaining({ work_id: 'work-overview', attempt_id: 'work-overview#a1', outcome: 'unknown' }),
     })));
+  });
+
+  it('registers an AI work from the page with the adopted default connection', async () => {
+    coreWork.coreModels.mockResolvedValue({
+      protocol: 'core.models.v1', organization_id: 'au-1', version: 3,
+      access: { principal_id: 'p1', can_configure: true }, governance_status: 'active',
+      document_read_allowed: true,
+      connections: [{ id: 'connection-a', name: '主连接', revision: 1, enabled: true, is_default: true, profile: 'modeld_grant', model: 'model-a' }],
+      resources: { grant: null, reserved_calls: 0, plan_max_calls: 12 },
+    });
+    read({ ...base, works: [] });
+
+    fireEvent.change(await screen.findByLabelText('工作标题'), { target: { value: '项目概览' } });
+    fireEvent.change(screen.getByLabelText('目标'), { target: { value: '阅读授权资料写一份概览' } });
+    fireEvent.change(screen.getByLabelText('资料目录引用'), { target: { value: 'project-docs' } });
+    fireEvent.change(screen.getByLabelText('调用上限'), { target: { value: '4' } });
+    coreWork.coreWorkCommand.mockResolvedValue({ receipt: { status: 'succeeded', message: '已登记有责任成员的工作' } });
+
+    await waitFor(() => expect(screen.getByText('登记 AI 工作')).toBeEnabled());
+    fireEvent.click(screen.getByText('登记 AI 工作'));
+    await waitFor(() => expect(coreWork.coreWorkCommand).toHaveBeenCalledWith(expect.objectContaining({
+      kind: 'start_work',
+      data: expect.objectContaining({
+        title: '项目概览', goal: '阅读授权资料写一份概览', materials_root: 'project-docs', max_calls: 4,
+        tools: ['read_document'], connection_id: 'connection-a', expected_revision: 1,
+      }),
+    })));
+  });
+
+  it('completes a work with its adopted result', async () => {
+    read({
+      ...base,
+      works: [item({
+        results: [{
+          id: 'result-overview', seq: 1, title: '项目概览（第一版）', sha256: 'abcdef0123456789', bytes: 24,
+          sources: ['work-overview#s1'], status: 'adopted', created_at: '2026-11-08T00:00:00Z', adopted_at: '2026-11-08T00:10:00Z',
+        }],
+      })],
+    });
+    coreWork.coreWorkCommand.mockResolvedValue({ receipt: { status: 'succeeded', message: '已按采用的成果把该工作记为完成' } });
+    fireEvent.click(await screen.findByText('完成工作'));
+    await waitFor(() => expect(coreWork.coreWorkCommand).toHaveBeenCalledWith(expect.objectContaining({
+      kind: 'deliver_work',
+      data: { work_id: 'work-overview', result_id: 'result-overview' },
+    })));
+  });
+
+  it('hides the completion button while an execution is still running', async () => {
+    read({
+      ...base,
+      works: [item({
+        attempts: [{ id: 'work-overview#a1', seq: 1, status: 'running', outcome: null, started_at: '2026-11-08T00:00:00Z', ended_at: null }],
+        results: [{
+          id: 'result-overview', seq: 1, title: '项目概览（第一版）', sha256: 'abcdef0123456789', bytes: 24,
+          sources: ['work-overview#s1'], status: 'adopted', created_at: '2026-11-08T00:00:00Z', adopted_at: '2026-11-08T00:10:00Z',
+        }],
+      })],
+    });
+    await screen.findByText(/项目概览（第一版）/);
+    expect(screen.queryByText('完成工作')).toBeNull();
   });
 });

@@ -1,6 +1,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { api, errorText } from '../../api/client';
+import { useQuery as useModelsQuery } from '@tanstack/react-query';
 import type { CoreWorkItem } from '../../api/types';
 import { Card } from '../../components/ui';
 
@@ -26,6 +27,79 @@ function attempt(item: CoreWorkItem) {
   if (unknown) return `执行结果未知，待核对（${unknown.id}）`;
   if (running) return `执行中（${running.id}）`;
   return item.attempts.length ? '本轮执行已结束' : '尚未开始执行';
+}
+
+function StartWorkForm({ organizationId, send, busy }: { organizationId: string; send: (kind: string, payload: Record<string, unknown>) => void; busy: boolean }) {
+  const models = useModelsQuery({
+    queryKey: ['core-models', organizationId],
+    queryFn: ({ signal }) => api.coreModels(organizationId, signal),
+  });
+  const [title, setTitle] = useState('');
+  const [goal, setGoal] = useState('');
+  const [materials, setMaterials] = useState('');
+  const [maxCalls, setMaxCalls] = useState('4');
+  const [tools, setTools] = useState<string[]>(['read_document']);
+  const connection = (models.data?.connections ?? []).find((value) => value.is_default && value.enabled);
+  const toggleTool = (tool: string) =>
+    setTools((current) => (current.includes(tool) ? current.filter((value) => value !== tool) : [...current, tool]));
+  const needsMaterials = tools.includes('read_document') || tools.includes('list_documents');
+  const ready = title.trim() !== '' && goal.trim() !== '' && tools.length > 0 && (needsMaterials ? materials.trim() !== '' : true);
+  return (
+    <details className="start-work">
+      <summary>登记新的 AI 工作</summary>
+      {!connection && <p className="form-note">还没有已采用的默认模型连接；先在“模型与 API”页保存、测试并采用一个连接。</p>}
+      <label>
+        工作标题
+        <input value={title} onChange={(event) => setTitle(event.target.value)} />
+      </label>
+      <label>
+        目标
+        <textarea value={goal} onChange={(event) => setGoal(event.target.value)} />
+      </label>
+      <label>
+        资料目录引用
+        <input value={materials} onChange={(event) => setMaterials(event.target.value)} placeholder="宿主已登记的引用，例如 project-docs" />
+      </label>
+      <label>
+        调用上限
+        <input type="number" min={1} value={maxCalls} onChange={(event) => setMaxCalls(event.target.value)} />
+      </label>
+      <fieldset>
+        <legend>允许的工具</legend>
+        {['read_document', 'list_documents'].map((tool) => (
+          <label key={tool}>
+            <input type="checkbox" checked={tools.includes(tool)} onChange={() => toggleTool(tool)} />
+            {tool}
+          </label>
+        ))}
+      </fieldset>
+      <button
+        type="button"
+        disabled={busy || !ready || !connection}
+        onClick={() => {
+          const workId = 'work-' + Date.now();
+          send('start_work', {
+            work_id: workId,
+            title,
+            goal,
+            member_name: '资料整理 Agent',
+            member_id: workId + '-member',
+            binding_id: workId + '-binding',
+            mandate_id: workId + '-mandate',
+            definition_id: workId + '-definition',
+            connection_id: connection?.id,
+            expected_revision: connection?.revision,
+            materials_root: needsMaterials ? materials : null,
+            max_calls: Number(maxCalls),
+            tools,
+            reason: '界面登记有责任成员的 AI 工作',
+          });
+        }}
+      >
+        登记 AI 工作
+      </button>
+    </details>
+  );
 }
 
 function ResultForm({ item, send, busy }: { item: CoreWorkItem; send: (kind: string, payload: Record<string, unknown>) => void; busy: boolean }) {
@@ -142,12 +216,14 @@ export function WorkPanel({ organizationId }: { organizationId: string }) {
   if (!data.works.length) {
     return (
       <Card title="AI 工作（V1）">
+        {data.access.can_start && <StartWorkForm organizationId={organizationId} send={send} busy={busy} />}
         <p>尚未登记 V1 工作。登记后这里会显示负责成员、有效授权、调用预算、执行尝试与工具回执。</p>
       </Card>
     );
   }
   return (
     <Card title="AI 工作（V1）">
+      {data.access.can_start && <StartWorkForm organizationId={organizationId} send={send} busy={busy} />}
       <ul className="work-panel" aria-label="V1 工作列表">
         {data.works.map((item) => (
           <li key={item.id} data-work={item.id}>
@@ -188,6 +264,20 @@ export function WorkPanel({ organizationId }: { organizationId: string }) {
                 预约一次调用
               </button>
               <AttemptActions item={item} send={send} busy={busy} />
+              {(() => {
+                const adopted = item.results.find((value) => value.status === 'adopted');
+                const running = item.attempts.some((attempt) => attempt.status === 'running');
+                if (!adopted || running || item.status === 'delivered') return null;
+                return (
+                  <button
+                    type="button"
+                    disabled={busy}
+                    onClick={() => send('deliver_work', { work_id: item.id, result_id: adopted.id })}
+                  >
+                    完成工作
+                  </button>
+                );
+              })()}
               {item.results
                 .filter((value) => value.status === 'candidate')
                 .map((value) => (

@@ -1,0 +1,10 @@
+AssertionError [ERR_ASSERTION]: Settings has configuration actions without repeated create/run buttons
+    at check ($REPOSITORY\scripts\check_novel_company.cjs:14:53)
+    at $REPOSITORY\scripts\check_novel_company.cjs:48:3 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}

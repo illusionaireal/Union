@@ -21,6 +21,7 @@ FIELDS = {
     "settle_step": {"work_id", "step_id", "status", "reason"},
     "submit_result": {"work_id", "result_id", "title", "content", "sources"},
     "adopt_result": {"work_id", "result_id"},
+    "deliver_work": {"work_id", "result_id"},
     "finish_attempt": {"work_id", "attempt_id", "outcome", "reason"},
 }
 TOOLS = {"read_document", "list_documents", "produce_artifact"}
@@ -59,6 +60,9 @@ def validate_input(kind, data):
         require(isinstance(data["sources"], list) and len(data["sources"]) <= 20
                 and all(isinstance(item, str) and len(item) <= 100 for item in data["sources"]),
                 "成果来源必须是明确的执行或工具回执引用列表")
+        return
+    if kind == "deliver_work":
+        require(reference(data["work_id"]) and reference(data["result_id"]), "工作与成果标识必须是 bounded 引用标识")
         return
     if kind == "adopt_result":
         require(reference(data["work_id"]) and reference(data["result_id"]), "工作与成果标识必须是 bounded 引用标识")
@@ -226,6 +230,12 @@ def validate_state(state):
                     and step.get("status") in STEP_STATUSES and step.get("purpose") == "work_step"
                     and isinstance(step.get("attempt_id"), str)
                     and step["attempt_id"].startswith(work["id"] + "#a"), "步进记录无效")
+        require((work.get("status") == "delivered") == bool(work.get("delivered_at")),
+                "工作完成状态与完成时间不一致")
+        if work.get("status") == "delivered":
+            require(isinstance(work.get("delivered_result_id"), str)
+                    and any(item["id"] == work["delivered_result_id"] for item in work.get("results") or []),
+                    "工作完成缺少成果引用")
         results_value = work.get("results") or []
         require(isinstance(results_value, list) and len(results_value) <= 20, "成果记录无效")
         for result in results_value:
@@ -272,6 +282,13 @@ def start_attempt(state, data, principal, clock=None):
     require(len(calls) < MAX_ATTEMPTS, "该工作的执行尝试已达上限")
     require(not [item for item in calls if item["status"] in ("running", "unknown")],
             "该工作已有进行中或结果未知的执行；请先结束它")
+    root = work.get("materials_root")
+    if root is not None:
+        for other in records(state)["works"].values():
+            if other["id"] == work["id"] or other.get("materials_root") != root:
+                continue
+            require(not [item for item in other.get("attempts") or [] if item["status"] in ("running", "unknown")],
+                    "另一个工作正在使用同一资料目录；请等它结束或为该工作指定其他目录")
     attempt = {"id": work["id"] + "#a" + str(len(calls) + 1), "seq": len(calls) + 1, "status": "running",
                "outcome": None, "owner_principal_id": principal, "reason": None,
                "started_at": _stamp(clock), "ended_at": None}
@@ -361,6 +378,22 @@ def adopt_result(state, data, principal, clock=None):
     return {key: value for key, value in result.items() if key != "content"}
 
 
+def deliver_work(state, data, principal, clock=None):
+    """D-03: completion needs an adopted result, and the work then stops accepting actions."""
+    work = records(state)["works"].get(data["work_id"])
+    require(work is not None, "工作不存在或不属于此 AU")
+    require(work["status"] in OPEN, "该工作已经完成或已结束；原完成记录不能覆盖")
+    result = next((item for item in work.get("results") or [] if item["id"] == data["result_id"]), None)
+    require(result is not None, "该工作没有此成果")
+    require(result["status"] == "adopted", "须先采用该成果，才能把工作记为完成")
+    require(not [item for item in work.get("attempts") or [] if item["status"] == "running"],
+            "该工作还有进行中的执行；请先结束该次执行")
+    work.update(status="delivered", delivered_at=_stamp(clock), delivered_by_principal_id=principal,
+                delivered_result_id=result["id"], version=work["version"] + 1)
+    return {"work_id": work["id"], "work_status": work["status"], "delivered_at": work["delivered_at"],
+            "result_id": result["id"]}
+
+
 def tool_target(state, data):
     """Validate a tool call against the responsible member's live mandate."""
     records_value = records(state)
@@ -408,7 +441,8 @@ def projection(state):
             "tool_calls": [dict(call) for call in work.get("tool_calls") or []],
             "attempts": [dict(attempt) for attempt in work.get("attempts") or []],
             "steps": [dict(step) for step in work.get("steps") or []],
-            "budget": budget(work),
+            "budget": budget(work), "delivered_at": work.get("delivered_at"),
+            "delivered_result_id": work.get("delivered_result_id"),
             "results": [{key: value for key, value in item.items() if key != "content"}
                         for item in work.get("results") or []]})
     return sorted(result, key=lambda value: value["created_at"] + value["id"])

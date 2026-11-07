@@ -1,0 +1,24 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "$HOST_HOME\AppData\Local\Programs\Python\Python312\Lib\unittest\__main__.py", line 18, in <module>
+    main(module=None)
+  File "$HOST_HOME\AppData\Local\Programs\Python\Python312\Lib\unittest\main.py", line 104, in __init__
+    self.parseArgs(argv)
+  File "$HOST_HOME\AppData\Local\Programs\Python\Python312\Lib\unittest\main.py", line 153, in parseArgs
+    self.createTests()
+  File "$HOST_HOME\AppData\Local\Programs\Python\Python312\Lib\unittest\main.py", line 164, in createTests
+    self.test = self.testLoader.loadTestsFromNames(self.testNames,
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "$HOST_HOME\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 207, in loadTestsFromNames
+    suites = [self.loadTestsFromName(name, module) for name in names]
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "$HOST_HOME\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 137, in loadTestsFromName
+    module = __import__(module_name)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "$REPOSITORY\tests\test_ops_watch.py", line 11, in <module>
+    spec.loader.exec_module(watch)
+  File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1132, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1190, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: 'D:\\SynologyDrive\\project\\Union\\ops\\automation\\ops_watch.py'

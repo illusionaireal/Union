@@ -4,6 +4,7 @@ import type {
   CommandKind,
   CoreAURead,
   CoreWork,
+  CoreModels,
   ModelConnection,
   Receipt,
   Session,
@@ -58,6 +59,8 @@ export const api = {
     request<CoreAURead>('/api/v1/aus/' + encodeURIComponent(id), { signal }),
   coreWork: (id: string, signal?: AbortSignal) =>
     request<CoreWork>('/api/v1/work?organization_id=' + encodeURIComponent(id), { signal }),
+  coreModels: (id: string, signal?: AbortSignal) =>
+    request<CoreModels>('/api/v1/models?organization_id=' + encodeURIComponent(id), { signal }),
   coreWorkCommand: (body: Record<string, unknown>) =>
     request<{ receipt: { id?: string; status: string; message?: string } }>('/api/v1/work/commands', {
       method: 'POST',

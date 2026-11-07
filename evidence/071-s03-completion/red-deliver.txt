@@ -1,0 +1,15 @@
+test_work_completes_only_with_an_adopted_result_and_then_stops_accepting_actions (tests.test_core_work.CoreWorkTests.test_work_completes_only_with_an_adopted_result_and_then_stops_accepting_actions) ... ERROR
+
+======================================================================
+ERROR: test_work_completes_only_with_an_adopted_result_and_then_stops_accepting_actions (tests.test_core_work.CoreWorkTests.test_work_completes_only_with_an_adopted_result_and_then_stops_accepting_actions)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 503, in test_work_completes_only_with_an_adopted_result_and_then_stops_accepting_actions
+    self.assertEqual(blocked["receipt"]["status"], "rejected", blocked)
+                     ~~~~~~~^^^^^^^^^^^
+KeyError: 'receipt'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.942s
+
+FAILED (errors=1)

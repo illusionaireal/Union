@@ -1,0 +1,32 @@
+
+ RUN  v3.2.7 D:/SynologyDrive/project/Union/web/console
+
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/work/ResultList.test.tsx [ src/features/work/ResultList.test.tsx ]
+Error: Failed to resolve import "./ResultList" from "src/features/work/ResultList.test.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: D:/SynologyDrive/project/Union/web/console/src/features/work/ResultList.test.tsx:4:0
+  4  |  const __vi_import_1__ = await import("@tanstack/react-query");
+  5  |  const __vi_import_2__ = await import("@testing-library/react");
+  6  |  const __vi_import_3__ = await import("./ResultList");
+     |                                       ^
+  7  |  
+  8  |  
+ ❯ TransformPluginContext._formatLog ../../node_modules/vite/dist/node/chunks/config.js:29250:43
+ ❯ TransformPluginContext.error ../../node_modules/vite/dist/node/chunks/config.js:29247:14
+ ❯ normalizeUrl ../../node_modules/vite/dist/node/chunks/config.js:27370:18
+ ❯ ../../node_modules/vite/dist/node/chunks/config.js:27428:32
+ ❯ TransformPluginContext.transform ../../node_modules/vite/dist/node/chunks/config.js:27396:4
+ ❯ EnvironmentPluginContainer.transform ../../node_modules/vite/dist/node/chunks/config.js:29048:14
+ ❯ loadAndTransform ../../node_modules/vite/dist/node/chunks/config.js:22914:26
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  no tests
+   Start at  06:00:23
+   Duration  1.01s (transform 25ms, setup 149ms, collect 0ms, tests 0ms, environment 391ms, prepare 120ms)
+

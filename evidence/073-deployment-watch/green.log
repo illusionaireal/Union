@@ -1,0 +1,12 @@
+test_ack_of_old_snapshot_does_not_consume_new_input (tests.test_ops_watch.OpsWatchTests.test_ack_of_old_snapshot_does_not_consume_new_input) ... ok
+test_failed_agent_keeps_pending_for_original_result_reconciliation (tests.test_ops_watch.OpsWatchTests.test_failed_agent_keeps_pending_for_original_result_reconciliation) ... ok
+test_failed_read_keeps_success_and_unhandled_signal (tests.test_ops_watch.OpsWatchTests.test_failed_read_keeps_success_and_unhandled_signal) ... ok
+test_health_change_queues_new_work (tests.test_ops_watch.OpsWatchTests.test_health_change_queues_new_work) ... ok
+test_lock_excludes_second_worker_and_releases_after_failure (tests.test_ops_watch.OpsWatchTests.test_lock_excludes_second_worker_and_releases_after_failure) ... ok
+test_missing_login_does_not_clear_pending_work (tests.test_ops_watch.OpsWatchTests.test_missing_login_does_not_clear_pending_work) ... ok
+test_unchanged_snapshot_after_ack_needs_no_agent (tests.test_ops_watch.OpsWatchTests.test_unchanged_snapshot_after_ack_needs_no_agent) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.201s
+
+OK

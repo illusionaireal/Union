@@ -1,0 +1,8 @@
+...................................................................................
+----------------------------------------------------------------------
+Ran 83 tests in 54.613s
+
+OK
+已重置 C:\Users\Benedict\AppData\Local\Temp\tmpnre50wd0\console.sqlite3
+重置前备份: C:\Users\Benedict\AppData\Local\Temp\tmpnre50wd0\console.sqlite3.bak-1794088214
+重启工作台后，任意第一个访问者都可以重新设置管理员账号。

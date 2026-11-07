@@ -45,7 +45,7 @@ async function command(page, kind, fill = async () => {}) {
   await page.locator('.company-panel').waitFor();
   await page.locator('[data-nav="models"]').click();
   await page.getByRole('heading', { name: '模型与 API', exact: true }).waitFor();
-  check('Settings has configuration actions without repeated create/run buttons', await page.locator('[data-command="create"], [data-command="start"]').count() === 0);
+  check('Models content has configuration actions and only the explicit compatibility footer', await page.locator('#view [data-command="create"], [data-command="start"]').count() === 0 && await page.locator('[data-command="api_connection"]').first().isEnabled() && await page.getByRole('button', {name:'旧版兼容试验（含小说）'}).isEnabled());
   const secret = 'browser-test-key-not-real';
   await page.locator('[data-command="api_connection"]').first().click();
   await page.locator('#operation-form summary').filter({ hasText: '高级设置' }).click();

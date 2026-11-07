@@ -1,7 +1,7 @@
 {
     "schema_version": 1,
-    "updated_at": "2026-11-07",
-    "wip_limit": 7,
+    "updated_at": "2026-11-08",
+    "wip_limit": 8,
     "modules": [
         {
             "id": "governance",
@@ -2207,6 +2207,64 @@
                     "from": "backlog",
                     "to": "backlog",
                     "note": "按用户“每张卡看不懂、内容太抽象”的反馈，改为具体功能、操作和完成演示。原技术验收完整保留在 specs/053-union-rewrite/tasks.md#u-076-development；范围、状态、owner、依赖、claim和既有验收记录不变，不执行未来卡。"
+                }
+            ]
+        },
+        {
+            "id": "U-079",
+            "title": "NAS 部署值守接入：五分钟巡检与可追溯交接",
+            "priority": "P1",
+            "milestone": "G0",
+            "module": "hosting",
+            "status": "done",
+            "owner": "codex/deployment-coordinator/01a1b7fe-81cb-7ec0-8459-d85fd97a9ba7",
+            "role": "部署与集成值守",
+            "acceptance": "实际NAS密钥连接及服务状态有脱敏记录；5分钟计划任务可查询且至少两次实际轮询成功；重复启动互斥、读取失败不更新成功游标、无变化不调用模型；自动处理所需CLI登录不足时明确阻塞，不伪报自动修复；凭据/地址/私有日志不入库。提供关闭/恢复和故障处理说明，并同步长期交付证据。",
+            "dependencies": [],
+            "blocker": null,
+            "started_at": "2026-11-07",
+            "updated_at": "2026-11-07",
+            "completion": {
+                "scope": "real",
+                "reviewer": "Codex（实施者自检；限实际只读巡检与调度注册）",
+                "evidence": [
+                    "evidence/073-deployment-watch/README.md"
+                ],
+                "note": "已建立并实测Windows五分钟巡检：两次计划运行返回0，NAS服务/看板/留言/GitHub读取成功。7项行为测试和npm检查通过；全量614项保留1既有WinError1314及9skip，由#32承接。CLI未登录，自动Agent处理未验收；不等于S08完整部署。"
+            },
+            "history": [
+                {
+                    "at": "2026-11-07T22:00:42.106Z",
+                    "actor": "codex/deployment-coordinator/01a1b7fe-81cb-7ec0-8459-d85fd97a9ba7",
+                    "from": "ready",
+                    "to": "doing",
+                    "note": "用户2026-11-08授权独立部署与集成值守；在线#33按实际user.id认领成功。保留所有既有在制和阻塞记录。新增实际运维并行责任，容量7→8；仅增加本轮一个值守接入任务，不改变S08完整出口。"
+                }
+            ],
+            "claim": null
+        },
+        {
+            "id": "U-080",
+            "title": "修复工作台浏览器 CI 的 V1 空态契约失配",
+            "priority": "P1",
+            "milestone": "G0",
+            "module": "console",
+            "status": "review",
+            "owner": "codex/deployment-coordinator/01a1b7fe-81cb-7ec0-8459-d85fd97a9ba7",
+            "role": "浏览器CI集成维护",
+            "acceptance": "原A01失败可核对；新的空态与授权边界断言通过；完整浏览器检查及相关远端CI如实记录，不减少既有用例，不标记未运行项通过。",
+            "dependencies": [],
+            "blocker": null,
+            "started_at": "2026-11-08",
+            "updated_at": "2026-11-08",
+            "completion": null,
+            "history": [
+                {
+                    "at": "2026-11-07T22:12:27.771Z",
+                    "actor": "codex/deployment-coordinator/01a1b7fe-81cb-7ec0-8459-d85fd97a9ba7",
+                    "from": "ready",
+                    "to": "review",
+                    "note": "在线#34独立认领后完成实际浏览器RED/GREEN；63+16项通过。仅验收脚本，保留全部CI范围；远端当前提交检查待记录。原有任务与负责人不变。"
                 }
             ]
         }
