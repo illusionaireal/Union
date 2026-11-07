@@ -1,0 +1,26 @@
+{
+  "task": "U-067",
+  "slice": "S03",
+  "step": "S03.3f V1 results table on the artifacts page",
+  "checked_at": "2026-11-08T06:01:17+08:00",
+  "branch": "rewrite/charter-v1",
+  "real_model_calls": 0,
+  "deployed": false,
+  "logs": {
+    "red-results-page.txt": [
+      "      Tests  no tests",
+      "   Start at  06:00:23",
+      "   Duration  1.01s (transform 25ms, setup 149ms, collect 0ms, tests 0ms, environment 391ms, prepare 120ms)"
+    ],
+    "green-results-page.txt": [
+      "      Tests  2 passed (2)",
+      "   Start at  06:00:33",
+      "   Duration  1.19s (transform 53ms, setup 137ms, collect 181ms, tests 67ms, environment 381ms, prepare 97ms)"
+    ],
+    "frontend-check.txt": [
+      "- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks",
+      "- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.",
+      "✓ built in 2.83s"
+    ]
+  }
+}
