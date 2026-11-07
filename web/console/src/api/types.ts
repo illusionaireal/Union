@@ -410,3 +410,24 @@ export interface CoreWork {
   works: CoreWorkItem[];
   capabilities: { work_registration: boolean; execution: string; autonomous_business: boolean };
 }
+
+export interface CoreModelConnection {
+  id: string;
+  name: string;
+  revision: number;
+  enabled: boolean;
+  is_default: boolean;
+  profile: string;
+  model: string;
+}
+
+export interface CoreModels {
+  protocol: string;
+  organization_id: string;
+  version: number;
+  access: { principal_id: string; can_configure: boolean };
+  governance_status: string;
+  document_read_allowed: boolean;
+  connections: CoreModelConnection[];
+  resources: { grant: unknown; reserved_calls: number; plan_max_calls: number };
+}

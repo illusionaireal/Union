@@ -1,0 +1,27 @@
+{
+  "task": "U-067",
+  "slice": "S03",
+  "step": "S03.1e register an AI work from the page",
+  "checked_at": "2026-11-08T05:57:20+08:00",
+  "branch": "rewrite/charter-v1",
+  "real_model_calls": 0,
+  "deployed": false,
+  "test_infrastructure_fix": "added afterEach(cleanup); renders previously accumulated across cases",
+  "logs": {
+    "red-start-form.txt": [
+      "      Tests  1 failed | 7 passed (8)",
+      "   Start at  05:54:45",
+      "   Duration  2.33s (transform 69ms, setup 140ms, collect 208ms, tests 1.25s, environment 347ms, prepare 94ms)"
+    ],
+    "green-start-form.txt": [
+      "      Tests  8 passed (8)",
+      "   Start at  05:56:36",
+      "   Duration  1.38s (transform 73ms, setup 136ms, collect 197ms, tests 307ms, environment 346ms, prepare 97ms)"
+    ],
+    "frontend-check.txt": [
+      "- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks",
+      "- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.",
+      "✓ built in 2.81s"
+    ]
+  }
+}
