@@ -27,7 +27,7 @@ class WorkService:
         default = (models.get("connections") or {}).get(models.get("default_connection_id") or "")
         can_start = (principal == governance.current(state) and value.get("governance_status") == "active"
                      and default is not None and default["enabled"])
-        works = rules.projection(state)
+        works = rules.projection(state, instance=self.app.instance)
         for item in works:
             item["materials"] = self.materials(item["materials_root"])
         return {"protocol": rules.PROTOCOL, "organization_id": au_id, "version": state["version"],
@@ -97,13 +97,14 @@ class WorkService:
                         receipt["result"] = rules.adopt_result(local, request["data"], principal)
                         receipt["message"] = "已采用该成果并记录采用人"
                     elif request["kind"] == "reserve_step":
-                        receipt["step"] = rules.reserve_step(local, request["data"])
+                        receipt["step"] = rules.reserve_step(local, request["data"], instance=self.app.instance)
                         receipt["message"] = "已为该次执行预约一次调用；尚未调用模型"
                     elif request["kind"] == "settle_step":
                         receipt["step"] = rules.settle_step(local, request["data"])
                         receipt["message"] = "已结算该次步进"
                     elif request["kind"] == "start_attempt":
-                        receipt["attempt"] = rules.start_attempt(local, request["data"], principal)
+                        receipt["attempt"] = rules.start_attempt(local, request["data"], principal,
+                                                                  instance=self.app.instance)
                         receipt["message"] = "已开始一次执行尝试；尚未调用模型"
                     elif request["kind"] == "finish_attempt":
                         receipt["attempt"] = rules.finish_attempt(local, request["data"])
@@ -124,7 +125,7 @@ class WorkService:
 
     def invoke(self, state, data):
         """Run one authorized read-only tool through the host adapter; no model call."""
-        work, _mandate, attempt = rules.tool_target(state, data)
+        work, _mandate, attempt = rules.tool_target(state, data, instance=self.app.instance)
         root = documents.root_for(self.app.root, work["materials_root"])
         if data["tool"] == "list_documents":
             listed = documents.list_documents(root)

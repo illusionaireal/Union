@@ -1,0 +1,15 @@
+test_an_attempt_records_its_host_instance_and_reads_as_stale_after_a_restart (tests.test_core_work.CoreWorkTests.test_an_attempt_records_its_host_instance_and_reads_as_stale_after_a_restart) ... ERROR
+
+======================================================================
+ERROR: test_an_attempt_records_its_host_instance_and_reads_as_stale_after_a_restart (tests.test_core_work.CoreWorkTests.test_an_attempt_records_its_host_instance_and_reads_as_stale_after_a_restart)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 533, in test_an_attempt_records_its_host_instance_and_reads_as_stale_after_a_restart
+    self.assertEqual(recorded["host_instance"], self.app.instance)
+                     ~~~~~~~~^^^^^^^^^^^^^^^^^
+KeyError: 'host_instance'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.880s
+
+FAILED (errors=1)

@@ -8,7 +8,7 @@ import time
 
 from . import governance, model_profiles
 from .creation import text
-from ..errors import CoreError, require
+from ..errors import CoreError, Rejected, require
 
 PROTOCOL = "core.work.v1"
 FIELDS = {
@@ -221,6 +221,7 @@ def validate_state(state):
         for attempt in attempts_value:
             require(isinstance(attempt, dict) and attempt.get("id") == work["id"] + "#a" + str(attempt.get("seq"))
                     and attempt.get("status") in ("running", "unknown", "closed")
+                    and (attempt.get("host_instance") is None or isinstance(attempt.get("host_instance"), str))
                     and (attempt.get("outcome") is None or attempt.get("outcome") in OUTCOMES),
                     "执行尝试记录无效")
         steps_value = work.get("steps") or []
@@ -264,17 +265,21 @@ def _stamp(clock=None):
     return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() if clock is None else clock))
 
 
-def active_attempt(work):
+def active_attempt(work, instance=None):
     """The one execution allowed to act right now; unknown must be resolved first."""
     calls = work.get("attempts") or []
     unresolved = [item for item in calls if item["status"] == "unknown"]
     require(not unresolved, "上一次执行结果未知；请先核对并结束该次执行")
     running = [item for item in calls if item["status"] == "running"]
     require(len(running) == 1, "该工作没有进行中的执行尝试；请先开始一次执行")
-    return running[0]
+    attempt = running[0]
+    held = attempt.get("host_instance")
+    if instance is not None and held not in (None, instance):
+        raise Rejected("该次执行由已结束的服务实例持有；请先核对并结束该次执行，不能继续用旧实例执行")
+    return attempt
 
 
-def start_attempt(state, data, principal, clock=None):
+def start_attempt(state, data, principal, clock=None, instance=None):
     work = records(state)["works"].get(data["work_id"])
     require(work is not None, "工作不存在或不属于此 AU")
     require(work["status"] in OPEN, "工作已结束，不能再开始执行")
@@ -290,7 +295,7 @@ def start_attempt(state, data, principal, clock=None):
             require(not [item for item in other.get("attempts") or [] if item["status"] in ("running", "unknown")],
                     "另一个工作正在使用同一资料目录；请等它结束或为该工作指定其他目录")
     attempt = {"id": work["id"] + "#a" + str(len(calls) + 1), "seq": len(calls) + 1, "status": "running",
-               "outcome": None, "owner_principal_id": principal, "reason": None,
+               "outcome": None, "owner_principal_id": principal, "reason": None, "host_instance": instance,
                "started_at": _stamp(clock), "ended_at": None}
     calls.append(attempt)
     return attempt
@@ -315,11 +320,11 @@ def budget(work):
             "used": sum(1 for item in steps if item["status"] == "used")}
 
 
-def reserve_step(state, data, clock=None):
+def reserve_step(state, data, clock=None, instance=None):
     work = records(state)["works"].get(data["work_id"])
     require(work is not None, "工作不存在或不属于此 AU")
     require(work["status"] in OPEN, "工作已结束，不能再预约调用")
-    attempt = active_attempt(work)
+    attempt = active_attempt(work, instance)
     steps = work.setdefault("steps", [])
     current = budget(work)
     require(current["reserved"] + current["used"] + 1 <= work["max_calls"],
@@ -394,7 +399,7 @@ def deliver_work(state, data, principal, clock=None):
             "result_id": result["id"]}
 
 
-def tool_target(state, data):
+def tool_target(state, data, instance=None):
     """Validate a tool call against the responsible member's live mandate."""
     records_value = records(state)
     work = records_value["works"].get(data["work_id"])
@@ -404,7 +409,7 @@ def tool_target(state, data):
     require(mandate["active"] and data["tool"] in mandate["actions"], "工具不在该工作的有效授权范围内")
     require(work["materials_root"] is not None, "该工作尚未绑定授权资料目录")
     require(len(work.get("tool_calls") or []) < MAX_TOOL_CALLS, "该工作的工具调用回执已达上限")
-    return work, mandate, active_attempt(work)
+    return work, mandate, active_attempt(work, instance)
 
 
 def record_tool_call(work, tool, arguments, detail, attempt_id, clock=None):
@@ -418,7 +423,7 @@ def record_tool_call(work, tool, arguments, detail, attempt_id, clock=None):
     return entry
 
 
-def projection(state):
+def projection(state, instance=None):
     records_value = records(state)
     result = []
     for work in records_value["works"].values():
@@ -439,7 +444,10 @@ def projection(state):
                         "active": mandate["active"]},
             "attempt_ids": list(work["attempt_ids"]), "result_ids": list(work["result_ids"]),
             "tool_calls": [dict(call) for call in work.get("tool_calls") or []],
-            "attempts": [dict(attempt) for attempt in work.get("attempts") or []],
+            "attempts": [dict(attempt) | {"host_instance": attempt.get("host_instance"),
+                                           "stale": attempt["status"] == "running"
+                                                    and attempt.get("host_instance") not in (None, instance)}
+                         for attempt in work.get("attempts") or []],
             "steps": [dict(step) for step in work.get("steps") or []],
             "budget": budget(work), "delivered_at": work.get("delivered_at"),
             "delivered_result_id": work.get("delivered_result_id"),

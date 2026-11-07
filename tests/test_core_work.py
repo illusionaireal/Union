@@ -524,3 +524,34 @@ class CoreWorkTests(ModelAccessCase):
         self.assertIn("已经完成", twice["receipt"]["message"])
         status, after, _ = self.invoke({"work_id": "work-overview", "tool": "list_documents", "arguments": {}})
         self.assertEqual(after["receipt"]["status"], "rejected", after)
+
+    def test_an_attempt_records_its_host_instance_and_reads_as_stale_after_a_restart(self):
+        self.work_with_listing()
+        attempt_id = self.start_attempt()
+        card = self.works()["works"][0]
+        recorded = card["attempts"][0]
+        self.assertEqual(recorded["host_instance"], self.app.instance)
+        self.assertIs(recorded["stale"], False)
+
+        previous = self.app.instance
+        self.app.instance = "service-restarted"
+        try:
+            card = self.works()["works"][0]
+            restarted = card["attempts"][0]
+            self.assertEqual(restarted["id"], attempt_id)
+            self.assertEqual(restarted["host_instance"], previous)
+            self.assertIs(restarted["stale"], True, "an attempt from a previous service instance is stale")
+            status, value, _ = self.invoke({"work_id": "work-overview", "tool": "list_documents", "arguments": {}})
+            self.assertEqual(value["receipt"]["status"], "rejected", value)
+            self.assertIn("实例", value["receipt"]["message"])
+            status, reserved, _ = self.reserve()
+            self.assertEqual(reserved["receipt"]["status"], "rejected", reserved)
+        finally:
+            self.app.instance = previous
+
+        self.work_command(self.au_id, "finish_attempt",
+                          {"work_id": "work-overview", "attempt_id": attempt_id, "outcome": "unknown",
+                           "reason": "服务重启后核对：该次执行没有结果"})
+        card = self.works()["works"][0]
+        self.assertEqual(card["attempts"][0]["status"], "unknown")
+        self.assertIs(card["attempts"][0]["stale"], False, "a settled attempt is no longer stale")

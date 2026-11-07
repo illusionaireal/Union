@@ -43,5 +43,7 @@
   resolved with a recorded reason. `reserve_step` / `settle_step` own the
   per-call budget: one reserved call per step, capped by the work plan,
   purpose and attempt recorded, `unknown` keeps its reservation and a
-  settled step can never be re-judged. No model call, storage or
-  dispatch; step S03.2+ extends the same owner.
+  settled step can never be re-judged. An attempt also records the host
+  service instance that owns it; after a restart the attempt reads as stale
+  and cannot act until it is settled through finish_attempt. No model call,
+  storage or dispatch; step S03.2+ extends the same owner.
