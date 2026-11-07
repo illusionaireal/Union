@@ -1,6 +1,8 @@
 """S03.1: one goal becomes an answerable AI work under effective local governance."""
 import copy
 import hashlib
+import os
+import tempfile
 import json
 import uuid
 from pathlib import Path
@@ -847,3 +849,23 @@ class CoreWorkTests(ModelAccessCase):
         status, value, _ = self.work_step()
         self.assertEqual(value["receipt"]["status"], "rejected", value)
         self.assertIn("通道", value["receipt"]["message"])
+
+    def test_the_console_wires_the_channel_only_when_the_host_names_its_configuration(self):
+        from unittest.mock import patch
+        from ai_union.console import Console
+
+        with tempfile.TemporaryDirectory() as temporary:
+            with patch.dict(os.environ, {}, clear=False):
+                os.environ.pop("UNION_MODELD_CONFIG", None)
+                plain = Console(Path(temporary) / "plain", fixture=None, enable_api=False)
+                try:
+                    self.assertIsNone(plain.work.transport_factory,
+                                      "an unconfigured host never invents a model channel")
+                finally:
+                    plain.close()
+            with patch.dict(os.environ, {"UNION_MODELD_CONFIG": str(Path(temporary) / "modeld.json")}):
+                wired = Console(Path(temporary) / "wired", fixture=None, enable_api=False)
+                try:
+                    self.assertTrue(callable(wired.work.transport_factory))
+                finally:
+                    wired.close()

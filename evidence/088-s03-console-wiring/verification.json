@@ -1,0 +1,33 @@
+{
+  "task": "U-067",
+  "slice": "S03",
+  "step": "S03.2e console wires the channel only when the host configures it",
+  "checked_at": "2026-11-08T07:17:00+08:00",
+  "branch": "dsh/s03-work-runtime (local, unpushed)",
+  "real_model_calls": 0,
+  "deployed": false,
+  "unverified": [
+    "no live modeld round trip yet",
+    "real bounded acceptance pending network"
+  ],
+  "logs": {
+    "red-console-wiring.txt": [
+      "FAIL: test_the_console_wires_the_channel_only_when_the_host_names_its_configuration (tests.test_core_work.CoreWorkTests.test_the_console_wires_the_channel_only_when_the_host_names_its_configuration)",
+      "Ran 1 test in 0.723s",
+      "FAILED (failures=1)"
+    ],
+    "green-console-wiring.txt": [
+      "Ran 34 tests in 32.625s",
+      "OK"
+    ],
+    "regression.txt": [
+      "Ran 138 tests in 78.894s",
+      "OK (skipped=3)"
+    ],
+    "management-check.txt": [
+      "ℹ skipped 0",
+      "ℹ todo 0",
+      "ℹ duration_ms 1648.3399"
+    ]
+  }
+}

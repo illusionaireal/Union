@@ -1,0 +1,14 @@
+test_the_console_wires_the_channel_only_when_the_host_names_its_configuration (tests.test_core_work.CoreWorkTests.test_the_console_wires_the_channel_only_when_the_host_names_its_configuration) ... FAIL
+
+======================================================================
+FAIL: test_the_console_wires_the_channel_only_when_the_host_names_its_configuration (tests.test_core_work.CoreWorkTests.test_the_console_wires_the_channel_only_when_the_host_names_its_configuration)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 869, in test_the_console_wires_the_channel_only_when_the_host_names_its_configuration
+    self.assertTrue(callable(wired.work.transport_factory))
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 1 test in 0.723s
+
+FAILED (failures=1)

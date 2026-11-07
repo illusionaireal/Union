@@ -1,5 +1,6 @@
 """Local host-bound sessions, durable commands and bounded dispatcher jobs."""
 import copy
+import os
 import json
 import secrets
 import sqlite3
@@ -22,6 +23,18 @@ from .failures import runtime_failure
 
 
 class Console:
+    def _work_channel_factory(self):
+        """Host wiring is opt-in: only when the host names its private modeld configuration.
+
+        The core never guesses a channel, and a host that has not configured one keeps
+        the explicit "no channel" refusal instead of a silent fake.
+        """
+        config = os.environ.get("UNION_MODELD_CONFIG")
+        if not config:
+            return None
+        from .work_transport import modeld_factory
+        return modeld_factory(config)
+
     def __init__(self, root, fixture=None, enable_codex=False, enable_api=True):
         self.root = Path(root).resolve()
         self.root.mkdir(parents=True, exist_ok=True)
@@ -53,6 +66,7 @@ class Console:
             self.models = ModelAccessService(self)
             from .application.work import WorkService
             self.work = WorkService(self)
+            self.work.transport_factory = self._work_channel_factory()
             self.creation.catalog.recover()
             # Validate the whole catalog before any AU receives recovery writes.
             engines = self._legacy_engines()
