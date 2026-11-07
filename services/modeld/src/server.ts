@@ -98,7 +98,7 @@ export async function startService(options: {
         requireValue(!stopping, 'service_stopping', 503);
         if (method === 'GET' && path === '/v1/runtime') return json({ protocol_version: 1,
           upstream: options.upstream, inference: 'single_native_stream', queue: 'persistent_serial', real_model_calls: 'not_inferred',
-          profiles: ['modeld_grant', ...(kernel.inferAPI ? ['openai_compatible'] : [])] });
+          profiles: ['modeld_grant', ...(kernel.inferAPI ? ['openai_compatible', 'openai_responses'] : [])] });
         const adminPath = /^\/v1\/(accounts|auth|grants|api-connections)(\/|$)/.test(path);
         requireValue(adminPath ? admin : worker, 'role_forbidden', 403);
         if (method === 'POST' && path === '/v1/api-connections')

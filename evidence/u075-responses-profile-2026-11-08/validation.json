@@ -1,0 +1,100 @@
+{
+  "date": "2026-11-08",
+  "task": "U-075",
+  "kanban_task": 28,
+  "baseline": "1bbd7fc9393e8f5349b9c8795678ec6654023ca0",
+  "branch": "codex/u075-profile-acceptance",
+  "level": "controlled",
+  "real_model_calls": 0,
+  "red": {
+    "core_profile": {
+      "tests": 9,
+      "failures": 6,
+      "errors": 1,
+      "reason": "Unknown openai_responses profile / absent scope"
+    },
+    "ui": {
+      "tests": 15,
+      "failed": 1,
+      "reason": "Responses option missing"
+    },
+    "modeld": {
+      "tests": 23,
+      "failed": 1,
+      "reason": "Runtime omitted openai_responses"
+    },
+    "packaging": {
+      "tests": 1,
+      "failed": 1,
+      "reason": "Manifest used loaded packer registry rather than packaged source"
+    }
+  },
+  "green": {
+    "core_affected": {
+      "tests": 46,
+      "passed": true
+    },
+    "final_profile_and_release": {
+      "tests": 24,
+      "passed": true
+    },
+    "models_ui": {
+      "tests": 53,
+      "passed": true
+    },
+    "npm_check": {
+      "passed": true,
+      "frontend_tests": 198,
+      "frontend_files": 20
+    },
+    "modeld": {
+      "tests": 89,
+      "passed": true
+    },
+    "browser": {
+      "checks": 69,
+      "passed": true,
+      "browser": "Chromium Headless Shell 141.0.7390.37",
+      "controlled_inference_posts": 7,
+      "real_model_calls": 0
+    }
+  },
+  "full_python": {
+    "tests": 612,
+    "errors": 1,
+    "skipped": 1,
+    "passed": false,
+    "baseline_error": {
+      "test": "tests.test_documents.DocumentRootTests.test_escape_through_directory_link_is_rejected",
+      "reason": "Existing Windows-only cmd /c mklink /J invoked on Linux: FileNotFoundError: cmd",
+      "affected_files_unchanged_from_baseline": [
+        "tests/test_documents.py",
+        "ai_union/adapters/documents.py"
+      ]
+    }
+  },
+  "post_fetch_validation": {
+    "upstream": "0dc9e98dec3bd3237a51fdae03ef96414605bb76",
+    "upstream_commits_integrated": 5,
+    "text_conflicts": 0,
+    "npm_check": {"passed": true, "frontend_files": 20, "frontend_tests": 202},
+    "targeted_python": {
+      "modules": ["tests.test_core_responses_profile", "tests.test_core_model_release", "tests.test_core_work"],
+      "tests": 26,
+      "passed": true
+    },
+    "node": "24.22.1",
+    "python": "3.12.14",
+    "real_model_calls": 0,
+    "full_python_rerun": false,
+    "remaining_baseline_failure_card": "U-078 / #32",
+    "real_acceptance_help_message": 2
+  },
+  "limits": [
+    "New profile real supplier authentication/inference and real interruption recovery need approved credentials and bounded resource authorization.",
+    "Browser saves Responses through actual core/modeld without dispatching that profile; core two-stage loop and native SDK Responses are separately controlled-tested.",
+    "CJK fonts were unavailable in this test browser; DOM/interaction checks passed, glyph appearance is not a visual acceptance claim.",
+    "Default Chromium 156 CDN download was invalid; Chromium 141 full browser hit the environment UNIX socket restriction; official headless shell completed 69 checks.",
+    "No production deployment, real migration, key rotation or payment; five upstream commits were merged locally before upload."
+  ]
+}

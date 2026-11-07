@@ -6,6 +6,7 @@ the installation. Hashes detect corruption, not an untrusted package publisher.
 from __future__ import annotations
 
 import argparse
+import ast
 from contextlib import closing, contextmanager
 import hashlib
 import json
@@ -121,9 +122,19 @@ def pack(root, output, release_id):
     changed = sorted(set(subprocess.check_output(
         ['git', 'diff', '--name-only', '-z', 'HEAD', '--', *source_bytes], cwd=root).decode().split('\0')) - {''}
         | (set(source_bytes) - set(tracked)))
+    # Derive capabilities from the exact --root source, never the packer's loaded
+    # modules (which may belong to another checkout/version). Do not execute it.
+    registry = ast.parse(source_bytes['ai_union/domain/model_profiles.py'])
+    declarations = [node.value for node in registry.body if isinstance(node, ast.Assign)
+                    and any(isinstance(target, ast.Name) and target.id == 'PROFILES' for target in node.targets)]
+    require(len(declarations) == 1 and isinstance(declarations[0], ast.Dict), 'Invalid model profile registry')
+    keys = declarations[0].keys
+    require(all(isinstance(key, ast.Constant) and isinstance(key.value, str) for key in keys), 'Invalid model profile names')
+    profiles = sorted(key.value for key in keys)
     manifest = {'schema_version': 1, 'release_id': release_id, 'git_baseline': baseline,
                 'core_schemas': {'auth': 2, 'catalog': 1},
                 'core_au_schemas': [1, 2, 3],
+                'core_model_profiles': profiles,
                 'modeld_schemas': [0, 1],
                 'source_state': 'working_tree' if changed else 'committed', 'changed_sources': changed,
                 'source_hashes': source_hashes, 'upstream': json.loads(payload['services/modeld/upstream.lock.json']),
@@ -151,6 +162,10 @@ def validate_manifest(manifest):
     au_schemas = manifest.get('core_au_schemas', [])
     require(isinstance(au_schemas, list) and all(type(value) is int and value >= 1 for value in au_schemas)
             and len(set(au_schemas)) == len(au_schemas), 'Invalid core AU schema declaration')
+    profiles = manifest.get('core_model_profiles', ['modeld_grant', 'openai_compatible'])
+    require(isinstance(profiles, list) and profiles
+            and all(isinstance(p, str) and re.fullmatch(r'[a-z][a-z0-9_]{0,79}', p) for p in profiles)
+            and len(set(profiles)) == len(profiles), 'Invalid core model profile declaration')
     modeld_schemas = manifest.get('modeld_schemas', [0])
     require(isinstance(modeld_schemas, list) and modeld_schemas
             and all(type(value) is int and value >= 0 for value in modeld_schemas)
@@ -336,6 +351,11 @@ def check_au_schemas(database, manifest, root):
             state = CoreAUStore().read(directory, entry['id'], creation=intent)['au']
             require(state['schema_version'] in manifest.get('core_au_schemas', []),
                     'Candidate does not declare support for the persisted AU schema; keep compatible code and original history')
+            models = state.get('model_access', {})
+            used_profiles = {c['profile'] for c in models.get('connections', {}).values()}
+            used_profiles.update(o['config']['profile'] for o in models.get('operations', {}).values())
+            require(used_profiles <= set(manifest.get('core_model_profiles', ['modeld_grant', 'openai_compatible'])),
+                    'Candidate does not support the persisted model connection profiles; keep compatible code and original history')
 
 
 def preflight(directory, config):
