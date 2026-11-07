@@ -1,0 +1,3 @@
+AssertionError [ERR_ASSERTION]: A01: fresh service has a clear empty state
+    at check (D:\SynologyDrive\project\Union\scripts\check_console.cjs:15:41)
+    at D:\SynologyDrive\project\Union\scripts\check_console.cjs:66:3

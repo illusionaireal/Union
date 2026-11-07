@@ -1,0 +1,5 @@
+
+> union@0.0.0 test:model-service-browser
+> node scripts/check_model_service.cjs
+
+{"passed":8,"real_model_calls":0}
