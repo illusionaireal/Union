@@ -88,10 +88,12 @@ class CoreCreationFailureTests(unittest.TestCase):
         self.assertEqual(self.request('/api/v1/aus/org-missing')[0], 403)
 
     def test_directory_failure_keeps_unknown_without_retrying_allocation(self):
+        # Exercise an equivalent path spelling, as Windows CI expands short temp names.
+        self.root = self.root / '..' / self.root.name
         original = Path.mkdir
 
         def fail_directory(path, *args, **kwargs):
-            if path.parent == self.root / 'organizations':
+            if path.parent.resolve() == (self.root / 'organizations').resolve():
                 raise OSError('controlled directory failure')
             return original(path, *args, **kwargs)
 
