@@ -101,6 +101,9 @@ class WorkService:
                     elif request["kind"] == "adopt_result":
                         receipt["result"] = rules.adopt_result(local, request["data"], principal)
                         receipt["message"] = "已采用该成果并记录采用人"
+                    elif request["kind"] == "reconcile_step":
+                        receipt["step"] = rules.reconcile_step(local, request["data"])
+                        receipt["message"] = "已按核对结果处理该次未知步进"
                     elif request["kind"] == "reserve_step":
                         receipt["step"] = rules.reserve_step(local, request["data"], instance=self.app.instance)
                         receipt["message"] = "已为该次执行预约一次调用；尚未调用模型"
@@ -188,9 +191,9 @@ class WorkService:
         try:
             message, usage = transport.chat(copy.deepcopy(plan["package"]), copy.deepcopy(plan["messages"]),
                                             copy.deepcopy(plan["tools"]))
-        except Exception as error:  # noqa: BLE001 - host channel failures are reported, never replayed
-            return self.reject_step(directory, intent, request, principal,
-                                    "模型通道调用失败，未产生步进事实：" + str(error)[:300])
+        except Exception as error:  # noqa: BLE001 - an unconfirmed call keeps a reservation to reconcile
+            return self.unknown_step(directory, intent, request, principal,
+                                     "模型通道结果未知；已保留该次调用预约等待核对，不自动重放：" + str(error)[:280])
         calls = (message or {}).get("tool_calls") or []
         content = (message or {}).get("content") or ""
         if calls and plan["materials_root"] is None:
@@ -301,6 +304,30 @@ class WorkService:
             "tool_calls": tool_calls, "result": produced, "version": version,
             "usage": usage_total, "cost_status": "unknown"}
         return self.store_receipt(directory, intent, request, principal, receipt)
+
+    def unknown_step(self, directory, intent, request, principal, message):
+        """Record a reserved step whose model result is unknown; never pretend it did not happen."""
+        with self.app.mutex:
+            with self.store.transaction(directory) as cx:
+                state = CoreAUStore.read_in(cx, request["organization_id"], creation=intent)["au"]
+                previous = self.store.existing(cx, request, principal)
+                if previous is not None:
+                    return previous
+                rules.authorize(state, principal)
+                self.store.ensure_commands(cx)
+                state = copy.deepcopy(state)
+                charter = state.pop("charter")
+                local = copy.deepcopy(state)
+                details = rules.fail_step(local, {"work_id": request["data"]["work_id"], "reason": message},
+                                          instance=self.app.instance)
+                local["version"] = state["version"] + 1
+                state = local
+                receipt = {key: request[key] for key in ("id", "organization_id", "base_version", "kind")} | {
+                    "actor_principal_id": principal, "created_at": now(), "status": "succeeded",
+                    "effect": "applied", "message": message, "step": details["step"], "model_outcome": "unknown",
+                    "tool_calls": 0, "result": False, "version": state["version"], "cost_status": "unknown"}
+                self.store.save(cx, state, charter, request, receipt, state["policy_version"], changed=True)
+        return receipt
 
     def store_receipt(self, directory, intent, request, principal, receipt):
         """Persist only the receipt of this request; AU facts stay untouched."""

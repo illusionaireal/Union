@@ -24,6 +24,7 @@ FIELDS = {
     "deliver_work": {"work_id", "result_id"},
     "run_step": {"work_id"},
     "run_loop": {"work_id"},
+    "reconcile_step": {"work_id", "step_id", "status", "reason"},
     "finish_attempt": {"work_id", "attempt_id", "outcome", "reason"},
 }
 TOOLS = {"read_document", "list_documents", "produce_artifact"}
@@ -62,6 +63,13 @@ def validate_input(kind, data):
         require(isinstance(data["sources"], list) and len(data["sources"]) <= 20
                 and all(isinstance(item, str) and len(item) <= 100 for item in data["sources"]),
                 "成果来源必须是明确的执行或工具回执引用列表")
+        return
+    if kind == "reconcile_step":
+        require(reference(data["work_id"]), "工作标识必须是 bounded 引用标识")
+        require(isinstance(data["step_id"], str) and data["step_id"].startswith(data["work_id"] + "#s")
+                and len(data["step_id"]) <= 100, "步进标识无效")
+        require(data["status"] in ("used", "released", "failed"), "核对结果必须是 used/released/failed")
+        text(data["reason"], "核对依据", 10000)
         return
     if kind == "run_loop":
         require(reference(data["work_id"]), "工作标识必须是 bounded 引用标识")
@@ -461,6 +469,26 @@ def apply_step(state, charter, data, principal, instance, clock=None):
                         "status": "used", "reason": "模型步进已完成"}, clock)
     return {"step": step["step_ref"], "tool_calls": len(recorded), "result": bool(data["content"]),
             "usage": dict(step["usage"]), "cost_status": step["cost_status"]}
+
+
+def fail_step(state, data, instance=None, clock=None):
+    """A call whose result is unknown keeps its reservation until someone reconciles it."""
+    step = reserve_step(state, {"work_id": data["work_id"]}, clock, instance)
+    step["cost_status"] = "unknown"
+    settle_step(state, {"work_id": data["work_id"], "step_id": step["step_ref"], "status": "unknown",
+                        "reason": data["reason"]}, clock)
+    return {"step": step["step_ref"], "status": "unknown"}
+
+
+def reconcile_step(state, data, clock=None):
+    """Resolve a step whose model result was unknown, with a recorded reason."""
+    work = records(state)["works"].get(data["work_id"])
+    require(work is not None, "工作不存在或不属于此 AU")
+    step = next((item for item in work.get("steps") or [] if item["step_ref"] == data["step_id"]), None)
+    require(step is not None, "该工作没有此步进记录")
+    require(step["status"] == "unknown", "只有结果未知的步进需要核对")
+    step.update(status=data["status"], reason=data["reason"], settled_at=_stamp(clock))
+    return {key: step[key] for key in ("step_ref", "status", "reason")}
 
 
 def tool_target(state, data, instance=None):

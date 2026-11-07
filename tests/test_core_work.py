@@ -720,3 +720,35 @@ class CoreWorkTests(ModelAccessCase):
         self.assertEqual(value["receipt"]["status"], "succeeded", value)
         self.assertEqual(value["receipt"]["usage"], {"input_tokens": 30, "output_tokens": 10})
         self.assertEqual(value["receipt"]["cost_status"], "unknown")
+
+    def failing_transport(self, error=TimeoutError("provider did not answer")):
+        class Failing:
+            def chat(self, package, messages, tools):
+                raise error
+        self.app.work.transport = Failing()
+        return self.app.work.transport
+
+    def test_a_channel_failure_keeps_a_reserved_step_and_reports_unknown(self):
+        self.work_with_listing()
+        self.prepare_materials()
+        self.start_attempt()
+        self.failing_transport()
+
+        status, value, _ = self.work_step()
+        self.assertEqual(status, 200, value)
+        self.assertEqual(value["receipt"]["status"], "succeeded", value)
+        self.assertEqual(value["receipt"]["model_outcome"], "unknown")
+        self.assertIn("核对", value["receipt"]["message"])
+
+        card = self.works()["works"][0]
+        self.assertEqual([(s["status"], s["cost_status"]) for s in card["steps"]], [("unknown", "unknown")])
+        self.assertEqual(card["budget"], {"max_calls": 4, "reserved": 1, "used": 0},
+                         "an unconfirmed call keeps its reservation")
+
+        reconciled = self.work_command(self.au_id, "reconcile_step",
+                                       {"work_id": "work-overview", "step_id": card["steps"][0]["step_ref"],
+                                        "status": "released", "reason": "宿主确认供应商未收到请求"})
+        self.assertEqual(reconciled[1]["receipt"]["status"], "succeeded", reconciled[1])
+        card = self.works()["works"][0]
+        self.assertEqual(card["steps"][0]["status"], "released")
+        self.assertEqual(card["budget"], {"max_calls": 4, "reserved": 0, "used": 0})
