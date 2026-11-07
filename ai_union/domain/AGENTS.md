@@ -36,5 +36,9 @@
   reference, and stored work records keep that consistency. `invoke_tool`
   validates each call against the responsible member's live Mandate, caps
   durable receipts, and keeps document content out of AU state (only
-  digest, size, arguments and step_ref are recorded). No execution,
-  storage or dispatch; step S03.2+ extends the same owner.
+  digest, size, arguments and step_ref are recorded). `start_attempt` /
+  `finish_attempt` own the execution-ownership boundary: only one running
+  attempt may act, a closed attempt cannot act again, and an `unknown`
+  outcome blocks new attempts and tool calls until it is explicitly
+  resolved with a recorded reason. No model call, storage or dispatch;
+  step S03.2+ extends the same owner.

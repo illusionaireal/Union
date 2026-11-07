@@ -85,6 +85,12 @@ class WorkService:
                     if request["kind"] == "invoke_tool":
                         receipt.update(self.invoke(local, request["data"]))
                         receipt["message"] = "已按该工作的有效授权调用只读资料工具并留存回执；未调用模型"
+                    elif request["kind"] == "start_attempt":
+                        receipt["attempt"] = rules.start_attempt(local, request["data"], principal)
+                        receipt["message"] = "已开始一次执行尝试；尚未调用模型"
+                    elif request["kind"] == "finish_attempt":
+                        receipt["attempt"] = rules.finish_attempt(local, request["data"])
+                        receipt["message"] = "已结束该次执行尝试并记录结果类别"
                     else:
                         receipt.update(rules.apply(local, charter, request["kind"], request["data"], principal,
                                                    request["id"]))
@@ -101,7 +107,7 @@ class WorkService:
 
     def invoke(self, state, data):
         """Run one authorized read-only tool through the host adapter; no model call."""
-        work, _mandate = rules.tool_target(state, data)
+        work, _mandate, attempt = rules.tool_target(state, data)
         root = documents.root_for(self.app.root, work["materials_root"])
         if data["tool"] == "list_documents":
             listed = documents.list_documents(root)
@@ -109,5 +115,5 @@ class WorkService:
         else:
             text_value, digest, size = documents.read_text(root, data["arguments"]["path"])
             result, detail = {"text": text_value, "sha256": digest, "bytes": size}, {"sha256": digest, "bytes": size}
-        entry = rules.record_tool_call(work, data["tool"], data["arguments"], detail)
+        entry = rules.record_tool_call(work, data["tool"], data["arguments"], detail, attempt["id"])
         return {"tool_call": entry, "result": result}

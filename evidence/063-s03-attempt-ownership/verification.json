@@ -1,0 +1,47 @@
+{
+  "task": "U-067",
+  "slice": "S03",
+  "step": "S03.2c execution ownership (attempt) and unknown outcomes",
+  "checked_at": "2026-11-07T22:49:14+08:00",
+  "branch": "rewrite/charter-v1",
+  "real_model_calls": 0,
+  "deployed": false,
+  "takeover": {
+    "from": "goose/auto-tick (goose app not running)",
+    "to": "dsh/deepseek-v4.1-flash/DESKTOP-SA4MRG7",
+    "cards": {
+      "U-067": "online #22 progress v6",
+      "U-075": "online #28 progress v6"
+    }
+  },
+  "commands": [
+    "start_attempt",
+    "finish_attempt",
+    "invoke_tool (now requires a running attempt)"
+  ],
+  "changed_owners": [
+    "ai_union/domain/work.py",
+    "ai_union/application/work.py",
+    "ops/automation/README.md"
+  ],
+  "logs": {
+    "red-s03.2c.txt": [
+      "FAIL: test_unknown_attempt_blocks_further_execution_until_it_is_resolved (tests.test_core_work.CoreWorkTests.test_unknown_attempt_blocks_further_execution_until_it_is_resolved)",
+      "Ran 9 tests in 7.925s",
+      "FAILED (failures=4)"
+    ],
+    "green-s03.2c.txt": [
+      "Ran 9 tests in 8.227s",
+      "OK"
+    ],
+    "regression-s03.2c.txt": [
+      "Ran 152 tests in 118.071s",
+      "OK (skipped=1)"
+    ],
+    "management-check.txt": [
+      "ℹ skipped 0",
+      "ℹ todo 0",
+      "ℹ duration_ms 116.7708"
+    ]
+  }
+}

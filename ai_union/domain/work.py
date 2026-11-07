@@ -15,9 +15,13 @@ FIELDS = {
                    "definition_id", "connection_id", "expected_revision", "materials_root", "max_calls",
                    "tools", "reason"},
     "invoke_tool": {"work_id", "tool", "arguments"},
+    "start_attempt": {"work_id"},
+    "finish_attempt": {"work_id", "attempt_id", "outcome", "reason"},
 }
 TOOLS = {"read_document", "list_documents", "produce_artifact"}
 MAX_TOOL_CALLS = 50
+MAX_ATTEMPTS = 20
+OUTCOMES = ("delivered", "failed", "stopped", "unknown")
 OPEN = ("pending", "running", "waiting")
 CLOSED = ("delivered", "stopped", "failed")
 TABLES = ("members", "definitions", "bindings", "works", "mandates")
@@ -41,6 +45,16 @@ def records(state):
 def validate_input(kind, data):
     require(kind in FIELDS, "不支持的核心工作命令")
     governance.exact(data, FIELDS[kind])
+    if kind == "start_attempt":
+        require(reference(data["work_id"]), "工作标识必须是 bounded 引用标识")
+        return
+    if kind == "finish_attempt":
+        require(reference(data["work_id"]), "工作标识必须是 bounded 引用标识")
+        require(isinstance(data["attempt_id"], str) and data["attempt_id"].startswith(data["work_id"] + "#a")
+                and len(data["attempt_id"]) <= 100, "执行尝试标识无效")
+        require(data["outcome"] in OUTCOMES, "执行结果类别必须是 delivered/failed/stopped/unknown")
+        text(data["reason"], "结束依据", 10000)
+        return
     if kind == "invoke_tool":
         require(reference(data["work_id"]), "工作标识必须是 bounded 引用标识")
         require(isinstance(data["tool"], str) and data["tool"] in TOOLS, "工具不在本核心版本支持的范围")
@@ -170,6 +184,13 @@ def validate_state(state):
         require(work.get("materials_root") is not None
                 or "read_document" not in records_value["definitions"][work["definition_id"]].get("tools", []),
                 "只读资料工具缺少授权资料目录")
+        attempts_value = work.get("attempts") or []
+        require(isinstance(attempts_value, list) and len(attempts_value) <= MAX_ATTEMPTS, "执行尝试记录无效")
+        for attempt in attempts_value:
+            require(isinstance(attempt, dict) and attempt.get("id") == work["id"] + "#a" + str(attempt.get("seq"))
+                    and attempt.get("status") in ("running", "unknown", "closed")
+                    and (attempt.get("outcome") is None or attempt.get("outcome") in OUTCOMES),
+                    "执行尝试记录无效")
         calls = work.get("tool_calls") or []
         require(isinstance(calls, list) and len(calls) <= MAX_TOOL_CALLS, "工具调用回执超出上限")
         for call in calls:
@@ -184,6 +205,46 @@ def validate_state(state):
                 and isinstance(mandate.get("actions"), list), "工作授权无效")
 
 
+def _stamp(clock=None):
+    return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() if clock is None else clock))
+
+
+def active_attempt(work):
+    """The one execution allowed to act right now; unknown must be resolved first."""
+    calls = work.get("attempts") or []
+    unresolved = [item for item in calls if item["status"] == "unknown"]
+    require(not unresolved, "上一次执行结果未知；请先核对并结束该次执行")
+    running = [item for item in calls if item["status"] == "running"]
+    require(len(running) == 1, "该工作没有进行中的执行尝试；请先开始一次执行")
+    return running[0]
+
+
+def start_attempt(state, data, principal, clock=None):
+    work = records(state)["works"].get(data["work_id"])
+    require(work is not None, "工作不存在或不属于此 AU")
+    require(work["status"] in OPEN, "工作已结束，不能再开始执行")
+    calls = work.setdefault("attempts", [])
+    require(len(calls) < MAX_ATTEMPTS, "该工作的执行尝试已达上限")
+    require(not [item for item in calls if item["status"] in ("running", "unknown")],
+            "该工作已有进行中或结果未知的执行；请先结束它")
+    attempt = {"id": work["id"] + "#a" + str(len(calls) + 1), "seq": len(calls) + 1, "status": "running",
+               "outcome": None, "owner_principal_id": principal, "reason": None,
+               "started_at": _stamp(clock), "ended_at": None}
+    calls.append(attempt)
+    return attempt
+
+
+def finish_attempt(state, data, clock=None):
+    work = records(state)["works"].get(data["work_id"])
+    require(work is not None, "工作不存在或不属于此 AU")
+    attempt = next((item for item in work.get("attempts") or [] if item["id"] == data["attempt_id"]), None)
+    require(attempt is not None, "该工作没有此执行尝试")
+    require(attempt["status"] in ("running", "unknown"), "该次执行已经结束，不能再改判")
+    attempt.update(outcome=data["outcome"], reason=data["reason"], ended_at=_stamp(clock),
+                   status="unknown" if data["outcome"] == "unknown" else "closed")
+    return attempt
+
+
 def tool_target(state, data):
     """Validate a tool call against the responsible member's live mandate."""
     records_value = records(state)
@@ -194,15 +255,15 @@ def tool_target(state, data):
     require(mandate["active"] and data["tool"] in mandate["actions"], "工具不在该工作的有效授权范围内")
     require(work["materials_root"] is not None, "该工作尚未绑定授权资料目录")
     require(len(work.get("tool_calls") or []) < MAX_TOOL_CALLS, "该工作的工具调用回执已达上限")
-    return work, mandate
+    return work, mandate, active_attempt(work)
 
 
-def record_tool_call(work, tool, arguments, detail, clock=None):
+def record_tool_call(work, tool, arguments, detail, attempt_id, clock=None):
     """Persist a durable tool receipt; content stays out of AU state."""
     calls = work.setdefault("tool_calls", [])
     at = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() if clock is None else clock))
     entry = {"seq": len(calls) + 1, "step_ref": work["id"] + "#" + str(len(calls) + 1), "tool": tool,
-             "arguments": dict(arguments), "at": at}
+             "attempt_id": attempt_id, "arguments": dict(arguments), "at": at}
     entry.update(detail)
     calls.append(entry)
     return entry
@@ -228,5 +289,6 @@ def projection(state):
             "mandate": {"id": mandate["id"], "version": mandate["version"], "actions": list(mandate["actions"]),
                         "active": mandate["active"]},
             "attempt_ids": list(work["attempt_ids"]), "result_ids": list(work["result_ids"]),
-            "tool_calls": [dict(call) for call in work.get("tool_calls") or []]})
+            "tool_calls": [dict(call) for call in work.get("tool_calls") or []],
+            "attempts": [dict(attempt) for attempt in work.get("attempts") or []]})
     return sorted(result, key=lambda value: value["created_at"] + value["id"])

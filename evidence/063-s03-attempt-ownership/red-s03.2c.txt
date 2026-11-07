@@ -1,0 +1,56 @@
+test_invoke_tool_records_durable_receipts_for_authorized_documents (tests.test_core_work.CoreWorkTests.test_invoke_tool_records_durable_receipts_for_authorized_documents) ... FAIL
+test_invoke_tool_replays_receipts_and_refuses_unscoped_requests (tests.test_core_work.CoreWorkTests.test_invoke_tool_replays_receipts_and_refuses_unscoped_requests) ... FAIL
+test_start_work_binds_ai_member_definition_binding_work_and_mandate_in_one_command (tests.test_core_work.CoreWorkTests.test_start_work_binds_ai_member_definition_binding_work_and_mandate_in_one_command) ... ok
+test_start_work_refuses_unadopted_model_unbounded_calls_paths_and_duplicate_ids (tests.test_core_work.CoreWorkTests.test_start_work_refuses_unadopted_model_unbounded_calls_paths_and_duplicate_ids) ... ok
+test_start_work_requires_a_materials_root_when_read_document_is_granted (tests.test_core_work.CoreWorkTests.test_start_work_requires_a_materials_root_when_read_document_is_granted) ... ok
+test_start_work_requires_effective_governance_and_the_current_governor (tests.test_core_work.CoreWorkTests.test_start_work_requires_effective_governance_and_the_current_governor) ... ok
+test_tool_calls_require_a_running_execution_attempt (tests.test_core_work.CoreWorkTests.test_tool_calls_require_a_running_execution_attempt) ... FAIL
+test_unknown_attempt_blocks_further_execution_until_it_is_resolved (tests.test_core_work.CoreWorkTests.test_unknown_attempt_blocks_further_execution_until_it_is_resolved) ... FAIL
+test_work_projection_reports_whether_the_host_registered_materials_are_available (tests.test_core_work.CoreWorkTests.test_work_projection_reports_whether_the_host_registered_materials_are_available) ... ok
+
+======================================================================
+FAIL: test_invoke_tool_records_durable_receipts_for_authorized_documents (tests.test_core_work.CoreWorkTests.test_invoke_tool_records_durable_receipts_for_authorized_documents)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 220, in test_invoke_tool_records_durable_receipts_for_authorized_documents
+    self.start_attempt()
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 213, in start_attempt
+    self.assertEqual(status, 200, value)
+AssertionError: 400 != 200 : {'code': 'invalid_request', 'error': '不支持的核心工作命令'}
+
+======================================================================
+FAIL: test_invoke_tool_replays_receipts_and_refuses_unscoped_requests (tests.test_core_work.CoreWorkTests.test_invoke_tool_replays_receipts_and_refuses_unscoped_requests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 243, in test_invoke_tool_replays_receipts_and_refuses_unscoped_requests
+    self.start_attempt()
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 213, in start_attempt
+    self.assertEqual(status, 200, value)
+AssertionError: 400 != 200 : {'code': 'invalid_request', 'error': '不支持的核心工作命令'}
+
+======================================================================
+FAIL: test_tool_calls_require_a_running_execution_attempt (tests.test_core_work.CoreWorkTests.test_tool_calls_require_a_running_execution_attempt)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 276, in test_tool_calls_require_a_running_execution_attempt
+    self.assertEqual(value["receipt"]["status"], "rejected", value)
+AssertionError: 'succeeded' != 'rejected'
+- succeeded
++ rejected
+ : {'receipt': {'actor_principal_id': 'ccb8f2fe-295c-4e2c-bd45-c5418a36f8d5', 'base_version': 7, 'created_at': '2026-11-07T14:46:18.907768+00:00', 'effect': 'applied', 'id': 'af5243df-7060-4a77-988a-eb767168b4e1', 'kind': 'invoke_tool', 'message': '已按该工作的有效授权调用只读资料工具并留存回执；未调用模型', 'organization_id': 'org-df73c188d10b46959fd2f4f9db04eca2', 'result': {'documents': ['nested/a.md', 'overview.md']}, 'status': 'succeeded', 'tool_call': {'arguments': {}, 'at': '2026-11-07T14:46:18Z', 'count': 2, 'seq': 1, 'step_ref': 'work-overview#1', 'tool': 'list_documents'}, 'version': 8}}
+
+======================================================================
+FAIL: test_unknown_attempt_blocks_further_execution_until_it_is_resolved (tests.test_core_work.CoreWorkTests.test_unknown_attempt_blocks_further_execution_until_it_is_resolved)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 303, in test_unknown_attempt_blocks_further_execution_until_it_is_resolved
+    attempt_id = self.start_attempt()
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 213, in start_attempt
+    self.assertEqual(status, 200, value)
+AssertionError: 400 != 200 : {'code': 'invalid_request', 'error': '不支持的核心工作命令'}
+
+----------------------------------------------------------------------
+Ran 9 tests in 7.925s
+
+FAILED (failures=4)

@@ -208,9 +208,16 @@ class CoreWorkTests(ModelAccessCase):
     def invoke(self, data, **kwargs):
         return self.work_command(self.au_id, "invoke_tool", data, **kwargs)
 
+    def start_attempt(self, work_id="work-overview"):
+        status, value, _ = self.work_command(self.au_id, "start_attempt", {"work_id": work_id})
+        self.assertEqual(status, 200, value)
+        self.assertEqual(value["receipt"]["status"], "succeeded", value)
+        return value["receipt"]["attempt"]["id"]
+
     def test_invoke_tool_records_durable_receipts_for_authorized_documents(self):
         self.work_with_listing()
         self.prepare_materials()
+        self.start_attempt()
         status, value, _ = self.invoke({"work_id": "work-overview", "tool": "list_documents", "arguments": {}})
         self.assertEqual(status, 200, value)
         self.assertEqual(value["receipt"]["status"], "succeeded", value)
@@ -233,6 +240,7 @@ class CoreWorkTests(ModelAccessCase):
     def test_invoke_tool_replays_receipts_and_refuses_unscoped_requests(self):
         self.work_with_listing()
         self.prepare_materials()
+        self.start_attempt()
         status, first, request = self.invoke({"work_id": "work-overview", "tool": "list_documents", "arguments": {}})
         self.assertEqual(first["receipt"]["status"], "succeeded", first)
         replay_status, replay, _ = self.request("/api/v1/work/commands", request)
@@ -260,3 +268,55 @@ class CoreWorkTests(ModelAccessCase):
         status, value, _ = self.invoke({"work_id": "work-overview", "tool": "list_documents", "arguments": {}})
         self.assertEqual(value["receipt"]["status"], "rejected", value)
         self.assertEqual(len(self.works()["works"][0]["tool_calls"]), recorded)
+
+    def test_tool_calls_require_a_running_execution_attempt(self):
+        self.work_with_listing()
+        self.prepare_materials()
+        status, value, _ = self.invoke({"work_id": "work-overview", "tool": "list_documents", "arguments": {}})
+        self.assertEqual(value["receipt"]["status"], "rejected", value)
+        self.assertIn("执行", value["receipt"]["message"])
+
+        attempt_id = self.start_attempt()
+        status, value, _ = self.invoke({"work_id": "work-overview", "tool": "list_documents", "arguments": {}})
+        self.assertEqual(value["receipt"]["status"], "succeeded", value)
+        self.assertEqual(value["receipt"]["tool_call"]["attempt_id"], attempt_id)
+        self.assertEqual(self.works()["works"][0]["attempts"][0]["status"], "running")
+
+        status, again, _ = self.work_command(self.au_id, "start_attempt", {"work_id": "work-overview"})
+        self.assertEqual(again["receipt"]["status"], "rejected", again)
+        self.assertIn("执行", again["receipt"]["message"])
+
+        status, closed, _ = self.work_command(self.au_id, "finish_attempt",
+                                              {"work_id": "work-overview", "attempt_id": attempt_id,
+                                               "outcome": "delivered", "reason": "本轮只读资料已产出候选"})
+        self.assertEqual(closed["receipt"]["status"], "succeeded", closed)
+        card = self.works()["works"][0]
+        self.assertEqual([(a["id"], a["status"], a["outcome"]) for a in card["attempts"]],
+                         [(attempt_id, "closed", "delivered")])
+        status, value, _ = self.invoke({"work_id": "work-overview", "tool": "list_documents", "arguments": {}})
+        self.assertEqual(value["receipt"]["status"], "rejected", value)
+        self.assertIn("执行", value["receipt"]["message"])
+
+    def test_unknown_attempt_blocks_further_execution_until_it_is_resolved(self):
+        self.work_with_listing()
+        self.prepare_materials()
+        attempt_id = self.start_attempt()
+        status, value, _ = self.work_command(self.au_id, "finish_attempt",
+                                             {"work_id": "work-overview", "attempt_id": attempt_id,
+                                              "outcome": "unknown", "reason": "宿主未取得供应商回执"})
+        self.assertEqual(value["receipt"]["status"], "succeeded", value)
+        self.assertEqual(self.works()["works"][0]["attempts"][0]["status"], "unknown")
+
+        status, blocked, _ = self.work_command(self.au_id, "start_attempt", {"work_id": "work-overview"})
+        self.assertEqual(blocked["receipt"]["status"], "rejected", blocked)
+        self.assertIn("未知", blocked["receipt"]["message"])
+        status, call, _ = self.invoke({"work_id": "work-overview", "tool": "list_documents", "arguments": {}})
+        self.assertEqual(call["receipt"]["status"], "rejected", call)
+        self.assertIn("未知", call["receipt"]["message"])
+
+        status, resolved, _ = self.work_command(self.au_id, "finish_attempt",
+                                                {"work_id": "work-overview", "attempt_id": attempt_id,
+                                                 "outcome": "failed", "reason": "核对后确认该次未产生结果"})
+        self.assertEqual(resolved["receipt"]["status"], "succeeded", resolved)
+        self.assertEqual(self.works()["works"][0]["attempts"][0]["outcome"], "failed")
+        self.start_attempt()
