@@ -444,10 +444,12 @@ def projection(state, instance=None):
                         "active": mandate["active"]},
             "attempt_ids": list(work["attempt_ids"]), "result_ids": list(work["result_ids"]),
             "tool_calls": [dict(call) for call in work.get("tool_calls") or []],
-            "attempts": [dict(attempt) | {"host_instance": attempt.get("host_instance"),
-                                           "stale": attempt["status"] == "running"
-                                                    and attempt.get("host_instance") not in (None, instance)}
-                         for attempt in work.get("attempts") or []],
+            "attempts": [dict(attempt) | {
+                "host_instance": attempt.get("host_instance"),
+                "stale": attempt["status"] == "running" and attempt.get("host_instance") not in (None, instance),
+                "steps": sum(1 for step in work.get("steps") or [] if step["attempt_id"] == attempt["id"]),
+                "tool_calls": sum(1 for call in work.get("tool_calls") or [] if call["attempt_id"] == attempt["id"]),
+            } for attempt in work.get("attempts") or []],
             "steps": [dict(step) for step in work.get("steps") or []],
             "budget": budget(work), "delivered_at": work.get("delivered_at"),
             "delivered_result_id": work.get("delivered_result_id"),

@@ -555,3 +555,22 @@ class CoreWorkTests(ModelAccessCase):
         card = self.works()["works"][0]
         self.assertEqual(card["attempts"][0]["status"], "unknown")
         self.assertIs(card["attempts"][0]["stale"], False, "a settled attempt is no longer stale")
+
+    def test_each_attempt_reports_how_much_it_already_produced(self):
+        self.work_with_listing()
+        self.prepare_materials()
+        first = self.start_attempt()
+        self.reserve()
+        self.invoke({"work_id": "work-overview", "tool": "read_document", "arguments": {"path": "nested/a.md"}})
+        attempt = self.works()["works"][0]["attempts"][0]
+        self.assertEqual((attempt["steps"], attempt["tool_calls"]), (1, 1))
+
+        self.work_command(self.au_id, "finish_attempt",
+                          {"work_id": "work-overview", "attempt_id": first, "outcome": "failed",
+                           "reason": "服务重启后核对：该次执行没有产生可交付结果"})
+        second = self.start_attempt()
+        self.assertNotEqual(first, second)
+        card = self.works()["works"][0]
+        old, current = card["attempts"][0], card["attempts"][1]
+        self.assertEqual((old["steps"], old["tool_calls"]), (1, 1), "a settled attempt keeps its own counts")
+        self.assertEqual((current["steps"], current["tool_calls"]), (0, 0))

@@ -1,0 +1,20 @@
+{
+  "task": "U-067",
+  "slice": "S03",
+  "step": "S03.4d per-attempt summary of steps and tool receipts",
+  "checked_at": "2026-11-08T06:35:52+08:00",
+  "branch": "rewrite/charter-v1",
+  "real_model_calls": 0,
+  "deployed": false,
+  "logs": {
+    "red-counts.txt": [
+      "ERROR: test_each_attempt_reports_how_much_it_already_produced (tests.test_core_work.CoreWorkTests.test_each_attempt_reports_how_much_it_already_produced)",
+      "Ran 1 test in 0.987s",
+      "FAILED (errors=1)"
+    ],
+    "green-counts.txt": [
+      "Ran 18 tests in 19.336s",
+      "OK"
+    ]
+  }
+}
