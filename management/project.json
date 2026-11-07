@@ -2169,6 +2169,13 @@
                     "from": "backlog",
                     "to": "backlog",
                     "note": "按用户“每张卡看不懂、内容太抽象”的反馈，改为具体功能、操作和完成演示。原技术验收完整保留在 specs/053-union-rewrite/tasks.md#u-075-development；范围、状态、owner、依赖、claim和既有验收记录不变，不执行未来卡。"
+                },
+                {
+                    "at": "2026-11-07T18:53:06Z",
+                    "actor": "chatGPT-online",
+                    "from": "ready",
+                    "to": "ready",
+                    "note": "S09.2 Responses 直接配置工程候选：specs/053-union-rewrite/s09-responses-contract.md；evidence/u075-responses-profile-2026-11-08/README.md。受控工程、协议绑定/恢复及候选兼容检查已交付，真实供应商与中断恢复仍待有界授权；不关闭 U-075。本条只同步长期实现证据，实时负责人、状态、依赖和 WIP 以 Kanban #28 为准，不从此镜像反向覆盖看板。"
                 }
             ],
             "claim": null

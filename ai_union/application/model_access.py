@@ -264,9 +264,12 @@ class ModelAccessService:
                 else:
                     self.mutate(au_id, principal, "saving", lambda state, charter, cx, principals: self.check_operation(state, operation, principals))
                     registered = client.call("POST", "/v1/api-connections", {"id": operation_id, "au_id": au_id,
-                        "principal_id": principal, "name": config["name"], "base_url": config["base_url"], "api_key": secret, "model_id": config["model"]}, admin=True)
+                        "principal_id": principal, "name": config["name"], "base_url": config["base_url"], "api_key": secret, "model_id": config["model"],
+                        **model_profiles.registration_options(config["profile"])}, admin=True)
                 require(registered.get("id") == operation_id and registered.get("au_id") == au_id and registered.get("principal_id") == principal
-                        and registered.get("model_id") == config["model"] and registered.get("profile") == "openai_compatible", "模型服务原保存回执范围不一致")
+                        and registered.get("model_id") == config["model"] and registered.get("profile") == config["profile"]
+                        and all(registered.get(k) == v for k, v in model_profiles.registration_options(config["profile"]).items()),
+                        "模型服务原保存回执范围不一致")
                 config = config | {"grant_ref": registered["grant_ref"], "grant_revision": registered["grant_revision"]}
             self.check_grant(client, au_id, config)
             def adopt(state, charter, cx, principals):
