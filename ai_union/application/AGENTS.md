@@ -30,5 +30,7 @@
   a live adopted default connection, then registers Member/Definition/binding/
   Work/Mandate. Its read projection reports whether the referenced materials
   root is registered and how many documents are readable, without reading
-  content. No model call, harness step, filesystem read or second writer;
-  verify tests/test_core_work.py with S01/S02/S05 regressions.
+  content. `invoke_tool` runs one authorized read-only tool through
+  `adapters/documents.py` inside the same transaction and records its
+  receipt there; it never calls a model. No harness step and no second
+  writer; verify tests/test_core_work.py with S01/S02/S05 regressions.

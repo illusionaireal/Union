@@ -1,5 +1,6 @@
 """S03.1: one goal becomes an answerable AI work under effective local governance."""
 import copy
+import hashlib
 import json
 import uuid
 from pathlib import Path
@@ -177,3 +178,85 @@ class CoreWorkTests(ModelAccessCase):
         materials = self.works()["works"][0]["materials"]
         self.assertEqual((materials["reference"], materials["available"], materials["documents"]),
                          ("project-docs", True, 1))
+
+    def allow_listing(self):
+        charter = copy.deepcopy(self.read()["au"]["charter"])
+        for tool in ("read_document", "list_documents"):
+            if tool not in charter["allowed_tools"]:
+                charter["allowed_tools"].append(tool)
+        self.success("amend_charter", {"charter": charter,
+                                       "reason": "Authorize bounded read-only listing and reading of the registered root"})
+
+    def prepare_materials(self):
+        directory = Path(self.root) / "authorized-docs"
+        (directory / "nested").mkdir(parents=True, exist_ok=True)
+        (directory / "overview.md").write_bytes("# 概览\n".encode("utf-8"))
+        (directory / "nested" / "a.md").write_bytes("a 正文\n".encode("utf-8"))
+        (Path(self.root) / "document-roots.json").write_text(
+            json.dumps({"version": 1, "roots": {"project-docs": str(directory)}}, ensure_ascii=False), encoding="utf-8")
+        return directory
+
+    def work_with_listing(self):
+        self.saved()
+        self.adopt_default()
+        self.allow_listing()
+        status, value, _ = self.work(data=work_data(tools=["list_documents", "read_document"]))
+        self.assertEqual(status, 200, value)
+        self.assertEqual(value["receipt"]["status"], "succeeded", value)
+        return value["receipt"]["work_id"]
+
+    def invoke(self, data, **kwargs):
+        return self.work_command(self.au_id, "invoke_tool", data, **kwargs)
+
+    def test_invoke_tool_records_durable_receipts_for_authorized_documents(self):
+        self.work_with_listing()
+        self.prepare_materials()
+        status, value, _ = self.invoke({"work_id": "work-overview", "tool": "list_documents", "arguments": {}})
+        self.assertEqual(status, 200, value)
+        self.assertEqual(value["receipt"]["status"], "succeeded", value)
+        self.assertEqual(value["receipt"]["result"]["documents"], ["nested/a.md", "overview.md"])
+
+        status, value, _ = self.invoke({"work_id": "work-overview", "tool": "read_document",
+                                        "arguments": {"path": "nested/a.md"}})
+        self.assertEqual(value["receipt"]["status"], "succeeded", value)
+        digest = hashlib.sha256("a 正文\n".encode("utf-8")).hexdigest()
+        self.assertEqual(value["receipt"]["result"]["text"], "a 正文\n")
+        self.assertEqual(value["receipt"]["result"]["sha256"], digest)
+
+        calls = self.works()["works"][0]["tool_calls"]
+        self.assertEqual([(call["tool"], call["step_ref"]) for call in calls],
+                         [("list_documents", "work-overview#1"), ("read_document", "work-overview#2")])
+        self.assertEqual(calls[1]["sha256"], digest)
+        self.assertEqual(calls[1]["bytes"], len("a 正文\n".encode("utf-8")))
+        self.assertNotIn(str(Path(self.root)), json.dumps(calls), "host paths never enter AU state")
+
+    def test_invoke_tool_replays_receipts_and_refuses_unscoped_requests(self):
+        self.work_with_listing()
+        self.prepare_materials()
+        status, first, request = self.invoke({"work_id": "work-overview", "tool": "list_documents", "arguments": {}})
+        self.assertEqual(first["receipt"]["status"], "succeeded", first)
+        replay_status, replay, _ = self.request("/api/v1/work/commands", request)
+        self.assertEqual(replay_status, 200, replay)
+        self.assertEqual(replay["receipt"], first["receipt"])
+        recorded = len(self.works()["works"][0]["tool_calls"])
+
+        for arguments in ({"path": "../outside/secret.txt"}, {"path": "C:\\Windows\\win.ini"},
+                          {"path": "nested"}, {"path": "absent.md"}):
+            status, value, _ = self.invoke({"work_id": "work-overview", "tool": "read_document",
+                                            "arguments": arguments})
+            self.assertEqual(status, 200, value)
+            self.assertEqual(value["receipt"]["status"], "rejected", value)
+
+        status, value, _ = self.invoke({"work_id": "work-overview", "tool": "read_document",
+                                        "arguments": {"path": ""}})
+        self.assertEqual(status, 400, value)
+        self.assertEqual(value.get("code"), "invalid_request")
+
+        status, value, _ = self.invoke({"work_id": "work-overview", "tool": "produce_artifact", "arguments": {}})
+        self.assertEqual(value["receipt"]["status"], "rejected", value)
+        self.assertIn("授权", value["receipt"]["message"])
+
+        (Path(self.root) / "document-roots.json").unlink()
+        status, value, _ = self.invoke({"work_id": "work-overview", "tool": "list_documents", "arguments": {}})
+        self.assertEqual(value["receipt"]["status"], "rejected", value)
+        self.assertEqual(len(self.works()["works"][0]["tool_calls"]), recorded)

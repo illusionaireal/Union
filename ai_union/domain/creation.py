@@ -22,7 +22,7 @@ def validate_charter(c, *, v1=False):
     require(set(c) == {"text", "allowed_operations", "allowed_tools", "reserved_matters", "board_can_amend"},
             "章程只支持明确的正文、操作、工具、保留事项和修章字段")
     text(c["text"], "章程正文")
-    for field, known in (("allowed_operations", OPERATIONS), ("allowed_tools", TOOLS | ({"read_document"} if v1 else set())),
+    for field, known in (("allowed_operations", OPERATIONS), ("allowed_tools", TOOLS | ({"read_document", "list_documents"} if v1 else set())),
                          ("reserved_matters", {"goal", "resources", "charter", "funding", "dissolution"})):
         require(isinstance(c[field], list) and all(isinstance(v, str) for v in c[field])
                 and set(c[field]) <= known, "章程含不支持的 " + field)

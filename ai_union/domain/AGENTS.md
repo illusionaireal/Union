@@ -33,5 +33,8 @@
   together under the active current governor. It rejects host paths, tools
   outside the effective charter, unknown connections and call caps beyond the
   AU plan. `read_document` additionally requires a registered materials
-  reference, and stored work records keep that consistency. No execution,
+  reference, and stored work records keep that consistency. `invoke_tool`
+  validates each call against the responsible member's live Mandate, caps
+  durable receipts, and keeps document content out of AU state (only
+  digest, size, arguments and step_ref are recorded). No execution,
   storage or dispatch; step S03.2+ extends the same owner.

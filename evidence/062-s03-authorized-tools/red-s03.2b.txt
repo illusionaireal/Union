@@ -1,0 +1,40 @@
+test_invoke_tool_records_durable_receipts_for_authorized_documents (tests.test_core_work.CoreWorkTests.test_invoke_tool_records_durable_receipts_for_authorized_documents) ... FAIL
+test_invoke_tool_replays_receipts_and_refuses_unscoped_requests (tests.test_core_work.CoreWorkTests.test_invoke_tool_replays_receipts_and_refuses_unscoped_requests) ... FAIL
+test_start_work_binds_ai_member_definition_binding_work_and_mandate_in_one_command (tests.test_core_work.CoreWorkTests.test_start_work_binds_ai_member_definition_binding_work_and_mandate_in_one_command) ... ok
+test_start_work_refuses_unadopted_model_unbounded_calls_paths_and_duplicate_ids (tests.test_core_work.CoreWorkTests.test_start_work_refuses_unadopted_model_unbounded_calls_paths_and_duplicate_ids) ... ok
+test_start_work_requires_a_materials_root_when_read_document_is_granted (tests.test_core_work.CoreWorkTests.test_start_work_requires_a_materials_root_when_read_document_is_granted) ... ok
+test_start_work_requires_effective_governance_and_the_current_governor (tests.test_core_work.CoreWorkTests.test_start_work_requires_effective_governance_and_the_current_governor) ... ok
+test_work_projection_reports_whether_the_host_registered_materials_are_available (tests.test_core_work.CoreWorkTests.test_work_projection_reports_whether_the_host_registered_materials_are_available) ... ok
+
+======================================================================
+FAIL: test_invoke_tool_records_durable_receipts_for_authorized_documents (tests.test_core_work.CoreWorkTests.test_invoke_tool_records_durable_receipts_for_authorized_documents)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 212, in test_invoke_tool_records_durable_receipts_for_authorized_documents
+    self.work_with_listing()
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 202, in work_with_listing
+    self.allow_listing()
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 187, in allow_listing
+    self.success("amend_charter", {"charter": charter,
+  File "D:\SynologyDrive\project\Union\tests\governance_support.py", line 54, in success
+    self.assertEqual(status, 200, result)
+AssertionError: 400 != 200 : {'code': 'invalid_request', 'error': '章程含不支持的 allowed_tools'}
+
+======================================================================
+FAIL: test_invoke_tool_replays_receipts_and_refuses_unscoped_requests (tests.test_core_work.CoreWorkTests.test_invoke_tool_replays_receipts_and_refuses_unscoped_requests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 234, in test_invoke_tool_replays_receipts_and_refuses_unscoped_requests
+    self.work_with_listing()
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 202, in work_with_listing
+    self.allow_listing()
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 187, in allow_listing
+    self.success("amend_charter", {"charter": charter,
+  File "D:\SynologyDrive\project\Union\tests\governance_support.py", line 54, in success
+    self.assertEqual(status, 200, result)
+AssertionError: 400 != 200 : {'code': 'invalid_request', 'error': '章程含不支持的 allowed_tools'}
+
+----------------------------------------------------------------------
+Ran 7 tests in 6.981s
+
+FAILED (failures=2)

@@ -1,0 +1,12 @@
+test_invoke_tool_records_durable_receipts_for_authorized_documents (tests.test_core_work.CoreWorkTests.test_invoke_tool_records_durable_receipts_for_authorized_documents) ... ok
+test_invoke_tool_replays_receipts_and_refuses_unscoped_requests (tests.test_core_work.CoreWorkTests.test_invoke_tool_replays_receipts_and_refuses_unscoped_requests) ... ok
+test_start_work_binds_ai_member_definition_binding_work_and_mandate_in_one_command (tests.test_core_work.CoreWorkTests.test_start_work_binds_ai_member_definition_binding_work_and_mandate_in_one_command) ... ok
+test_start_work_refuses_unadopted_model_unbounded_calls_paths_and_duplicate_ids (tests.test_core_work.CoreWorkTests.test_start_work_refuses_unadopted_model_unbounded_calls_paths_and_duplicate_ids) ... ok
+test_start_work_requires_a_materials_root_when_read_document_is_granted (tests.test_core_work.CoreWorkTests.test_start_work_requires_a_materials_root_when_read_document_is_granted) ... ok
+test_start_work_requires_effective_governance_and_the_current_governor (tests.test_core_work.CoreWorkTests.test_start_work_requires_effective_governance_and_the_current_governor) ... ok
+test_work_projection_reports_whether_the_host_registered_materials_are_available (tests.test_core_work.CoreWorkTests.test_work_projection_reports_whether_the_host_registered_materials_are_available) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 7.323s
+
+OK

@@ -82,7 +82,12 @@ class WorkService:
                     principals = {row[0] for row in accounts.execute("SELECT principal_id FROM owner_account")}
                     rules.effective(state, principals)
                     local = copy.deepcopy(state)
-                    receipt.update(rules.apply(local, charter, request["kind"], request["data"], principal, request["id"]))
+                    if request["kind"] == "invoke_tool":
+                        receipt.update(self.invoke(local, request["data"]))
+                        receipt["message"] = "已按该工作的有效授权调用只读资料工具并留存回执；未调用模型"
+                    else:
+                        receipt.update(rules.apply(local, charter, request["kind"], request["data"], principal,
+                                                   request["id"]))
                     local["version"] = state["version"] + 1
                     state = local
                     changed = True
@@ -93,3 +98,16 @@ class WorkService:
                 receipt["version"] = state["version"]
                 self.store.save(cx, state, charter, request, receipt, state["policy_version"], changed=changed)
         return receipt
+
+    def invoke(self, state, data):
+        """Run one authorized read-only tool through the host adapter; no model call."""
+        work, _mandate = rules.tool_target(state, data)
+        root = documents.root_for(self.app.root, work["materials_root"])
+        if data["tool"] == "list_documents":
+            listed = documents.list_documents(root)
+            result, detail = {"documents": listed}, {"count": len(listed)}
+        else:
+            text_value, digest, size = documents.read_text(root, data["arguments"]["path"])
+            result, detail = {"text": text_value, "sha256": digest, "bytes": size}, {"sha256": digest, "bytes": size}
+        entry = rules.record_tool_call(work, data["tool"], data["arguments"], detail)
+        return {"tool_call": entry, "result": result}

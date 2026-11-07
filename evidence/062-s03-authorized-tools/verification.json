@@ -1,0 +1,38 @@
+{
+  "task": "U-067",
+  "slice": "S03",
+  "step": "S03.2b authorized read-only tool invocation with durable receipts",
+  "checked_at": "2026-11-07T18:05:29+08:00",
+  "branch": "rewrite/charter-v1",
+  "real_model_calls": 0,
+  "deployed": false,
+  "changed_owners": [
+    "ai_union/domain/creation.py",
+    "ai_union/domain/work.py",
+    "ai_union/application/work.py"
+  ],
+  "endpoints": [
+    "POST /api/v1/work/commands (kind=invoke_tool)",
+    "GET /api/v1/work"
+  ],
+  "logs": {
+    "red-s03.2b.txt": [
+      "FAIL: test_invoke_tool_replays_receipts_and_refuses_unscoped_requests (tests.test_core_work.CoreWorkTests.test_invoke_tool_replays_receipts_and_refuses_unscoped_requests)",
+      "Ran 7 tests in 6.981s",
+      "FAILED (failures=2)"
+    ],
+    "green-s03.2b.txt": [
+      "Ran 7 tests in 7.323s",
+      "OK"
+    ],
+    "regression-s03.2b.txt": [
+      "Ran 150 tests in 130.838s",
+      "OK (skipped=1)"
+    ],
+    "management-check.txt": [
+      "ℹ skipped 0",
+      "ℹ todo 0",
+      "ℹ duration_ms 104.455"
+    ]
+  }
+}

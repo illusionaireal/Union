@@ -14,8 +14,10 @@ FIELDS = {
     "start_work": {"work_id", "title", "member_name", "goal", "member_id", "binding_id", "mandate_id",
                    "definition_id", "connection_id", "expected_revision", "materials_root", "max_calls",
                    "tools", "reason"},
+    "invoke_tool": {"work_id", "tool", "arguments"},
 }
-TOOLS = {"read_document", "produce_artifact"}
+TOOLS = {"read_document", "list_documents", "produce_artifact"}
+MAX_TOOL_CALLS = 50
 OPEN = ("pending", "running", "waiting")
 CLOSED = ("delivered", "stopped", "failed")
 TABLES = ("members", "definitions", "bindings", "works", "mandates")
@@ -39,6 +41,17 @@ def records(state):
 def validate_input(kind, data):
     require(kind in FIELDS, "不支持的核心工作命令")
     governance.exact(data, FIELDS[kind])
+    if kind == "invoke_tool":
+        require(reference(data["work_id"]), "工作标识必须是 bounded 引用标识")
+        require(isinstance(data["tool"], str) and data["tool"] in TOOLS, "工具不在本核心版本支持的范围")
+        require(isinstance(data["arguments"], dict), "工具参数必须是明确的对象")
+        if data["tool"] == "read_document":
+            governance.exact(data["arguments"], {"path"})
+            require(isinstance(data["arguments"]["path"], str) and data["arguments"]["path"],
+                    "读取授权资料必须提供目录内相对路径")
+        else:
+            governance.exact(data["arguments"], set())
+        return
     for field in ("work_id", "member_id", "binding_id", "mandate_id", "definition_id", "connection_id"):
         require(reference(data[field]), "工作标识必须是 bounded 引用标识")
     text(data["title"], "工作标题", 200)
@@ -157,11 +170,42 @@ def validate_state(state):
         require(work.get("materials_root") is not None
                 or "read_document" not in records_value["definitions"][work["definition_id"]].get("tools", []),
                 "只读资料工具缺少授权资料目录")
+        calls = work.get("tool_calls") or []
+        require(isinstance(calls, list) and len(calls) <= MAX_TOOL_CALLS, "工具调用回执超出上限")
+        for call in calls:
+            require(isinstance(call, dict) and call.get("tool") in TOOLS
+                    and type(call.get("seq")) is int
+                    and call.get("step_ref") == work["id"] + "#" + str(call["seq"]),
+                    "工具调用回执无效")
     for mandate in records_value["mandates"].values():
         require(mandate.get("work_id") in records_value["works"]
                 and mandate.get("binding_id") in records_value["bindings"]
                 and type(mandate.get("active")) is bool and type(mandate.get("version")) is int
                 and isinstance(mandate.get("actions"), list), "工作授权无效")
+
+
+def tool_target(state, data):
+    """Validate a tool call against the responsible member's live mandate."""
+    records_value = records(state)
+    work = records_value["works"].get(data["work_id"])
+    require(work is not None, "工作不存在或不属于此 AU")
+    require(work["status"] in OPEN, "工作已结束，不能再调用工具")
+    mandate = records_value["mandates"][work["mandate_id"]]
+    require(mandate["active"] and data["tool"] in mandate["actions"], "工具不在该工作的有效授权范围内")
+    require(work["materials_root"] is not None, "该工作尚未绑定授权资料目录")
+    require(len(work.get("tool_calls") or []) < MAX_TOOL_CALLS, "该工作的工具调用回执已达上限")
+    return work, mandate
+
+
+def record_tool_call(work, tool, arguments, detail, clock=None):
+    """Persist a durable tool receipt; content stays out of AU state."""
+    calls = work.setdefault("tool_calls", [])
+    at = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() if clock is None else clock))
+    entry = {"seq": len(calls) + 1, "step_ref": work["id"] + "#" + str(len(calls) + 1), "tool": tool,
+             "arguments": dict(arguments), "at": at}
+    entry.update(detail)
+    calls.append(entry)
+    return entry
 
 
 def projection(state):
@@ -183,5 +227,6 @@ def projection(state):
                            "tools": list(definition["tools"])},
             "mandate": {"id": mandate["id"], "version": mandate["version"], "actions": list(mandate["actions"]),
                         "active": mandate["active"]},
-            "attempt_ids": list(work["attempt_ids"]), "result_ids": list(work["result_ids"])})
+            "attempt_ids": list(work["attempt_ids"]), "result_ids": list(work["result_ids"]),
+            "tool_calls": [dict(call) for call in work.get("tool_calls") or []]})
     return sorted(result, key=lambda value: value["created_at"] + value["id"])
