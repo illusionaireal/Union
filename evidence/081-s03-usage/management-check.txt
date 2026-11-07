@@ -1,0 +1,50 @@
+
+> union@0.0.0 check:management
+> node scripts/project-management.mjs check && node --test tests/project-management.test.mjs tests/union-board.test.mjs tests/kanban-operational.test.mjs
+
+Management check: 15 modules, 8 milestones, 78 tasks; PASS
+✔ CLI claims online-only card with real user/version without reading damaged local mirror (113.4627ms)
+✔ CLI refuses a foreign assignee and unmet dependencies before PATCH (191.7958ms)
+✔ MCP uses the same owner protection and does not steal a card (92.3936ms)
+✔ 409 produces one PATCH, reads back the card and preserves mirror (129.3727ms)
+✔ completion without real evidence is refused before changing online status (59.5462ms)
+✔ configured live WIP includes blocked work and refuses a further claim (96.7935ms)
+✔ lost PATCH response and HTTP 202 are read back without replay (220.5758ms)
+✔ successful CLI and MCP records preserve complete evidence without a second write (183.2289ms)
+✔ own started claim is idempotent and cannot release or force-hide started work (255.9655ms)
+✔ missing credentials never fall back to a local operational write (53.9862ms)
+✔ status reads online despite damaged historical ledger and exposes absent WIP configuration (87.516ms)
+✔ picker resumes only current user, does not select foreign work or backlog, and counts blocked WIP (92.6937ms)
+✔ rejects missing owners at start and unfinished dependencies, but permits honest unassigned backlog (4.6756ms)
+✔ completion requires scope, reviewer and existing evidence, and does not promote milestones (1.9154ms)
+✔ rejects duplicate IDs, unknown references and dependency cycles (2.0051ms)
+✔ blocked work needs an unblock action; already-started blocked work counts toward WIP (2.6097ms)
+✔ rejects evidence outside repository, invalid scope and malformed dates (1.5694ms)
+✔ deterministic generated views reject stale output and preserve surrounding narrative (12.5115ms)
+✔ flow summary keeps empty live evidence distinct from completion counts (1.2101ms)
+✔ milestone acceptance and task scope cannot be asserted without their review metadata (1.7196ms)
+✔ claim writes a lease and enters doing, and blocks a second harness until the lease expires (4.9026ms)
+✔ claim refuses cards that are not ready and refuses to exceed the WIP limit (2.3793ms)
+✔ claim requires a real actor and refuses unknown cards (2.0785ms)
+✔ release only gives back an unstarted claim and clears the lease (1.6963ms)
+✔ done needs scope, reviewer, note and real evidence; completion clears the lease (2.1546ms)
+✔ a non-holder cannot move a card, and force cannot smuggle a foreign lease silently (1.7141ms)
+✔ blocked needs a reason and an unblock action, and started work cannot hide back in ready (1.8322ms)
+✔ board view exposes columns, the ready queue and lease state (9.417ms)
+✔ serializeLedger keeps the ledger byte format (4 spaces, CRLF, trailing newline) (2.0127ms)
+✔ the ledger lock refuses a second writer, then recovers after the holder finishes (130.7751ms)
+✔ mutateLedger writes the ledger and rebuilds both generated views in one locked step (7.2233ms)
+✔ a rejected mutation leaves the ledger untouched (3.7543ms)
+✔ a doing card with no live lease can be claimed, but a live lease still blocks it (1.6382ms)
+✔ a view failure cannot leave a half-written ledger behind (3.3838ms)
+✔ a forced transition must record why and keeps the reason in the task history (1.6574ms)
+✔ a failed view write keeps the ledger unchanged, so the state stays recoverable (4.2306ms)
+✔ the MCP server refuses local operational writes even with force (54.0411ms)
+ℹ tests 37
+ℹ suites 0
+ℹ pass 37
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1657.7051

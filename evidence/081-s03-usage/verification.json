@@ -1,0 +1,30 @@
+{
+  "task": "U-067",
+  "slice": "S03",
+  "step": "S03.2e record model usage per automatic step; cost stays unknown",
+  "checked_at": "2026-11-08T06:48:09+08:00",
+  "branch": "rewrite/charter-v1 (local; task branch dsh/s03-work-runtime)",
+  "real_model_calls": 0,
+  "deployed": false,
+  "logs": {
+    "red-usage.txt": [
+      "ERROR: test_run_loop_accumulates_usage_across_turns (tests.test_core_work.CoreWorkTests.test_run_loop_accumulates_usage_across_turns)",
+      "ERROR: test_run_step_records_model_usage_and_keeps_cost_unknown (tests.test_core_work.CoreWorkTests.test_run_step_records_model_usage_and_keeps_cost_unknown)",
+      "Ran 26 tests in 25.703s",
+      "FAILED (errors=2)"
+    ],
+    "green-usage.txt": [
+      "Ran 26 tests in 26.022s",
+      "OK"
+    ],
+    "regression-usage.txt": [
+      "Ran 123 tests in 71.467s",
+      "OK (skipped=3)"
+    ],
+    "management-check.txt": [
+      "ℹ skipped 0",
+      "ℹ todo 0",
+      "ℹ duration_ms 1657.7051"
+    ]
+  }
+}

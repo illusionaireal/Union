@@ -186,8 +186,8 @@ class WorkService:
         if transport is None or not hasattr(transport, "chat"):
             return self.reject_step(directory, intent, request, principal, "宿主尚未配置模型执行通道；请先在宿主接入模型通道")
         try:
-            message, _usage = transport.chat(copy.deepcopy(plan["package"]), copy.deepcopy(plan["messages"]),
-                                             copy.deepcopy(plan["tools"]))
+            message, usage = transport.chat(copy.deepcopy(plan["package"]), copy.deepcopy(plan["messages"]),
+                                            copy.deepcopy(plan["tools"]))
         except Exception as error:  # noqa: BLE001 - host channel failures are reported, never replayed
             return self.reject_step(directory, intent, request, principal,
                                     "模型通道调用失败，未产生步进事实：" + str(error)[:300])
@@ -238,7 +238,7 @@ class WorkService:
                             raise Rejected("模型请求了本核心不支持的只读工具")
                     payload = {"work_id": request["data"]["work_id"], "content": content, "tool_calls": executed,
                                "result_id": "result-" + request["id"].replace("-", "")[:12],
-                               "title": "自动成果：" + work["title"]}
+                               "title": "自动成果：" + work["title"], "usage": usage if isinstance(usage, dict) else {}}
                     receipt.update(rules.apply_step(local, charter, payload, principal, self.app.instance))
                     local["version"] = state["version"] + 1
                     state = local
@@ -274,6 +274,7 @@ class WorkService:
         turns = 0
         tool_calls = 0
         produced = False
+        usage_total = {"input_tokens": 0, "output_tokens": 0}
         status = "succeeded"
         message = "自动循环结束：模型没有给出成果，已用满本轮轮次"
         for index in range(3):
@@ -287,6 +288,8 @@ class WorkService:
                 break
             turns += 1
             tool_calls += int(step.get("tool_calls") or 0)
+            for key in usage_total:
+                usage_total[key] += int((step.get("usage") or {}).get(key) or 0)
             if step.get("result"):
                 produced = True
                 message = "自动循环结束：已产出候选成果"
@@ -295,7 +298,8 @@ class WorkService:
         receipt = {key: request[key] for key in ("id", "organization_id", "base_version", "kind")} | {
             "actor_principal_id": principal, "created_at": now(), "status": status,
             "effect": "applied" if turns else "none", "message": message, "turns": turns,
-            "tool_calls": tool_calls, "result": produced, "version": version}
+            "tool_calls": tool_calls, "result": produced, "version": version,
+            "usage": usage_total, "cost_status": "unknown"}
         return self.store_receipt(directory, intent, request, principal, receipt)
 
     def store_receipt(self, directory, intent, request, principal, receipt):

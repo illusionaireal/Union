@@ -30,7 +30,8 @@ class FakeTransport:
 
     def chat(self, package, messages, tools):
         self.calls.append({"package": package, "messages": messages, "tools": tools})
-        return self.responses.pop(0), {}
+        answer = self.responses.pop(0)
+        return answer if isinstance(answer, tuple) else (answer, {})
 
 
 class CoreWorkTests(ModelAccessCase):
@@ -691,3 +692,31 @@ class CoreWorkTests(ModelAccessCase):
         status, value, _ = self.run_loop()
         self.assertEqual(value["receipt"]["status"], "rejected", value)
         self.assertIn("通道", value["receipt"]["message"])
+
+    def test_run_step_records_model_usage_and_keeps_cost_unknown(self):
+        self.work_with_listing()
+        self.prepare_materials()
+        self.start_attempt()
+        self.with_transport(({"content": "# 概览\n", "tool_calls": []},
+                             {"input_tokens": 12, "output_tokens": 5}))
+
+        status, value, _ = self.work_step()
+        self.assertEqual(value["receipt"]["status"], "succeeded", value)
+        card = self.works()["works"][0]
+        step = card["steps"][0]
+        self.assertEqual(step["usage"], {"input_tokens": 12, "output_tokens": 5})
+        self.assertEqual(step["cost_status"], "unknown", "an unverified call never records a definite cost")
+
+    def test_run_loop_accumulates_usage_across_turns(self):
+        self.work_with_listing()
+        self.prepare_materials()
+        self.start_attempt()
+        call = ({"content": None, "tool_calls": [{"id": "c1", "type": "function",
+                 "function": {"name": "list_documents", "arguments": "{}"}}]}, {"input_tokens": 10, "output_tokens": 2})
+        answer = ({"content": "# 概览\n", "tool_calls": []}, {"input_tokens": 20, "output_tokens": 8})
+        self.with_transport(call, answer)
+
+        status, value, _ = self.run_loop()
+        self.assertEqual(value["receipt"]["status"], "succeeded", value)
+        self.assertEqual(value["receipt"]["usage"], {"input_tokens": 30, "output_tokens": 10})
+        self.assertEqual(value["receipt"]["cost_status"], "unknown")

@@ -444,6 +444,10 @@ def apply_step(state, charter, data, principal, instance, clock=None):
     require(work is not None, "工作不存在或不属于此 AU")
     attempt = active_attempt(work, instance)
     step = reserve_step(state, {"work_id": data["work_id"]}, clock, instance)
+    usage = data.get("usage") or {}
+    step["usage"] = {key: int(usage[key]) for key in ("input_tokens", "output_tokens")
+                     if isinstance(usage.get(key), int)}
+    step["cost_status"] = "unknown"
     recorded = []
     for call in data["tool_calls"]:
         require(isinstance(call.get("tool"), str) and call["tool"] in TOOL_SPECS, "模型请求了不支持的只读工具")
@@ -455,7 +459,8 @@ def apply_step(state, charter, data, principal, instance, clock=None):
                               "sources": [item["step_ref"] for item in recorded]}, principal, clock)
     settle_step(state, {"work_id": data["work_id"], "step_id": step["step_ref"],
                         "status": "used", "reason": "模型步进已完成"}, clock)
-    return {"step": step["step_ref"], "tool_calls": len(recorded), "result": bool(data["content"])}
+    return {"step": step["step_ref"], "tool_calls": len(recorded), "result": bool(data["content"]),
+            "usage": dict(step["usage"]), "cost_status": step["cost_status"]}
 
 
 def tool_target(state, data, instance=None):
