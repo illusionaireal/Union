@@ -170,4 +170,37 @@ it('starts an execution and adopts a candidate result through the API', async ()
       }),
     })));
   });
+
+  it('completes a work with its adopted result', async () => {
+    read({
+      ...base,
+      works: [item({
+        results: [{
+          id: 'result-overview', seq: 1, title: '项目概览（第一版）', sha256: 'abcdef0123456789', bytes: 24,
+          sources: ['work-overview#s1'], status: 'adopted', created_at: '2026-11-08T00:00:00Z', adopted_at: '2026-11-08T00:10:00Z',
+        }],
+      })],
+    });
+    coreWork.coreWorkCommand.mockResolvedValue({ receipt: { status: 'succeeded', message: '已按采用的成果把该工作记为完成' } });
+    fireEvent.click(await screen.findByText('完成工作'));
+    await waitFor(() => expect(coreWork.coreWorkCommand).toHaveBeenCalledWith(expect.objectContaining({
+      kind: 'deliver_work',
+      data: { work_id: 'work-overview', result_id: 'result-overview' },
+    })));
+  });
+
+  it('hides the completion button while an execution is still running', async () => {
+    read({
+      ...base,
+      works: [item({
+        attempts: [{ id: 'work-overview#a1', seq: 1, status: 'running', outcome: null, started_at: '2026-11-08T00:00:00Z', ended_at: null }],
+        results: [{
+          id: 'result-overview', seq: 1, title: '项目概览（第一版）', sha256: 'abcdef0123456789', bytes: 24,
+          sources: ['work-overview#s1'], status: 'adopted', created_at: '2026-11-08T00:00:00Z', adopted_at: '2026-11-08T00:10:00Z',
+        }],
+      })],
+    });
+    await screen.findByText(/项目概览（第一版）/);
+    expect(screen.queryByText('完成工作')).toBeNull();
+  });
 });

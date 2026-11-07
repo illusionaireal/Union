@@ -264,6 +264,20 @@ export function WorkPanel({ organizationId }: { organizationId: string }) {
                 预约一次调用
               </button>
               <AttemptActions item={item} send={send} busy={busy} />
+              {(() => {
+                const adopted = item.results.find((value) => value.status === 'adopted');
+                const running = item.attempts.some((attempt) => attempt.status === 'running');
+                if (!adopted || running || item.status === 'delivered') return null;
+                return (
+                  <button
+                    type="button"
+                    disabled={busy}
+                    onClick={() => send('deliver_work', { work_id: item.id, result_id: adopted.id })}
+                  >
+                    完成工作
+                  </button>
+                );
+              })()}
               {item.results
                 .filter((value) => value.status === 'candidate')
                 .map((value) => (
