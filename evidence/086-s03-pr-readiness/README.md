@@ -69,3 +69,19 @@ node scripts/project-management.mjs record U-078 --actor "dsh/deepseek-v4.1-flas
 - `ModeldWorkTransport` **未对运行中的 modeld 跑过**；事件与 `result` 字段形状取自既有 `ModelServiceTransport` 用法。
 - 适配器目前**未在宿主自动装配**：需要显式把 `ModelServiceClient` + AU 连接配置注入 `WorkService.transport`（下一步的接线工作，或由宿主启动参数提供）。
 - 本轮所有验证均为本机 Windows + 临时目录 + 测试替身；未部署、未迁移真实 AU、未花费真实额度。
+
+## 更新（2026-11-08 07:19，网络仍不可达）
+
+本地提交增至 **12 个**，在 086 之后续加了三个（均属 S03.2e 通道接线，不是新功能面）：
+
+| # | 提交 | 内容 |
+| --- | --- | --- |
+| 10 | `f5bcfed` 之后 | 见 085：modeld 工作通道适配器（明确拒绝 / 结果未知分离） |
+| 11 | 087 | 宿主可通过 `transport_factory` 装配通道；`step_plan` 带出该工作的模型连接；`modeld_factory` 便利装配 |
+| 12 | 088 | `Console` 仅在宿主设置 `UNION_MODELD_CONFIG` 时装配通道；未配置保持"无通道"拒绝 |
+
+至此 **S03 自动执行链的代码侧已闭环**：目标 → 工作/授权/预算 → 通道（宿主按需装配）→ 模型回合 + 授权工具执行 → 回执/候选成果 → 用量披露（费用 unknown）→ 未知保留预约 + `reconcile_step` → 循环（未知即停、预算内轮次）。
+
+**唯一剩余缺口 = 真实有界验收**（≤2 次调用、≤1024 输出 tokens、仅合成公开资料），需要：网络恢复 + modeld 运行 + 宿主设置 `UNION_MODELD_CONFIG` + AU 内已采用默认连接。
+
+因此后续轮次在没有网络时不建议再新增功能代码，只做复核与交接维护；恢复后按本文件 §3 的命令推送/开 PR，再按 §4 做真实验收。
