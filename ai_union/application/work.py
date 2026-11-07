@@ -90,6 +90,9 @@ class WorkService:
                     elif request["kind"] == "submit_result":
                         receipt["result"] = rules.submit_result(local, request["data"], principal)
                         receipt["message"] = "已登记候选成果与来源；尚未采用"
+                    elif request["kind"] == "deliver_work":
+                        receipt["work"] = rules.deliver_work(local, request["data"], principal)
+                        receipt["message"] = "已按采用的成果把该工作记为完成"
                     elif request["kind"] == "adopt_result":
                         receipt["result"] = rules.adopt_result(local, request["data"], principal)
                         receipt["message"] = "已采用该成果并记录采用人"

@@ -488,3 +488,39 @@ class CoreWorkTests(ModelAccessCase):
         self.second_work(materials_root="other-docs", work_id="work-third")
         status, independent, _ = self.work_command(self.au_id, "start_attempt", {"work_id": "work-third"})
         self.assertEqual(independent["receipt"]["status"], "succeeded", independent)
+
+    def deliver(self, work_id="work-overview", result_id="result-overview"):
+        return self.work_command(self.au_id, "deliver_work", {"work_id": work_id, "result_id": result_id})
+
+    def test_work_completes_only_with_an_adopted_result_and_then_stops_accepting_actions(self):
+        self.work_with_listing()
+        self.prepare_materials()
+        self.start_attempt()
+        self.reserve()
+        self.submit(sources=["work-overview#s1"])
+
+        status, blocked, _ = self.deliver()
+        self.assertEqual(blocked["receipt"]["status"], "rejected", blocked)
+        self.assertIn("采用", blocked["receipt"]["message"])
+        self.assertEqual(self.works()["works"][0]["status"], "pending")
+
+        self.adopt()
+        status, midway, _ = self.deliver()
+        self.assertEqual(midway["receipt"]["status"], "rejected", midway)
+        self.assertIn("执行", midway["receipt"]["message"])
+
+        self.work_command(self.au_id, "finish_attempt", {"work_id": "work-overview",
+                                                         "attempt_id": "work-overview#a1",
+                                                         "outcome": "delivered", "reason": "成果已采用"})
+        status, done, _ = self.deliver()
+        self.assertEqual(status, 200, done)
+        self.assertEqual(done["receipt"]["status"], "succeeded", done)
+        card = self.works()["works"][0]
+        self.assertEqual(card["status"], "delivered")
+        self.assertTrue(card["delivered_at"])
+
+        status, twice, _ = self.deliver()
+        self.assertEqual(twice["receipt"]["status"], "rejected", twice)
+        self.assertIn("已经完成", twice["receipt"]["message"])
+        status, after, _ = self.invoke({"work_id": "work-overview", "tool": "list_documents", "arguments": {}})
+        self.assertEqual(after["receipt"]["status"], "rejected", after)

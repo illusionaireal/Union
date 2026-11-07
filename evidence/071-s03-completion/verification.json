@@ -1,0 +1,33 @@
+{
+  "task": "U-067",
+  "slice": "S03",
+  "step": "S03.4b deliver_work: completion requires an adopted result (D-03)",
+  "checked_at": "2026-11-08T05:54:04+08:00",
+  "branch": "rewrite/charter-v1",
+  "real_model_calls": 0,
+  "deployed": false,
+  "defects_found_in_own_work": [
+    "receipt.status overwritten by work status (fixed by namespacing)",
+    "validate_state had an always-true check (replaced with a real reference check)"
+  ],
+  "logs": {
+    "red-deliver.txt": [
+      "ERROR: test_work_completes_only_with_an_adopted_result_and_then_stops_accepting_actions (tests.test_core_work.CoreWorkTests.test_work_completes_only_with_an_adopted_result_and_then_stops_accepting_actions)",
+      "Ran 1 test in 0.942s",
+      "FAILED (errors=1)"
+    ],
+    "green-deliver.txt": [
+      "Ran 16 tests in 16.753s",
+      "OK"
+    ],
+    "regression-deliver.txt": [
+      "Ran 127 tests in 82.695s",
+      "OK"
+    ],
+    "management-check.txt": [
+      "ℹ skipped 0",
+      "ℹ todo 0",
+      "ℹ duration_ms 102.5272"
+    ]
+  }
+}
