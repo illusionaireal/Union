@@ -1,0 +1,19 @@
+test_work_transport (unittest.loader._FailedTest.test_work_transport) ... ERROR
+
+======================================================================
+ERROR: test_work_transport (unittest.loader._FailedTest.test_work_transport)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_work_transport
+Traceback (most recent call last):
+  File "C:\Users\Benedict\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 137, in loadTestsFromName
+    module = __import__(module_name)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SynologyDrive\project\Union\tests\test_work_transport.py", line 6, in <module>
+    from ai_union.work_transport import ModeldWorkTransport
+ModuleNotFoundError: No module named 'ai_union.work_transport'
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (errors=1)

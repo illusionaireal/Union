@@ -1,0 +1,17 @@
+test_a_definite_channel_refusal_creates_no_step_fact (tests.test_core_work.CoreWorkTests.test_a_definite_channel_refusal_creates_no_step_fact) ... FAIL
+
+======================================================================
+FAIL: test_a_definite_channel_refusal_creates_no_step_fact (tests.test_core_work.CoreWorkTests.test_a_definite_channel_refusal_creates_no_step_fact)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 799, in test_a_definite_channel_refusal_creates_no_step_fact
+    self.assertEqual(value["receipt"]["status"], "rejected", value)
+AssertionError: 'succeeded' != 'rejected'
+- succeeded
++ rejected
+ : {'receipt': {'actor_principal_id': '5b31c31c-7404-4a6f-8c69-c7e897b32ef0', 'base_version': 8, 'cost_status': 'unknown', 'created_at': '2026-11-07T23:00:15.754364+00:00', 'effect': 'applied', 'id': '0bd27c72-b467-4910-843c-0c10b1b6da57', 'kind': 'run_step', 'message': "模型通道结果未知；已保留该次调用预约等待核对，不自动重放：name 'Rejected' is not defined", 'model_outcome': 'unknown', 'organization_id': 'org-043f561560cd4501b4753d19084bc6fa', 'result': False, 'status': 'succeeded', 'step': 'work-overview#s1', 'tool_calls': 0, 'version': 9}}
+
+----------------------------------------------------------------------
+Ran 1 test in 1.025s
+
+FAILED (failures=1)
