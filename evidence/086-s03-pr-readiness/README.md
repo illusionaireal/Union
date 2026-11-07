@@ -85,3 +85,17 @@ node scripts/project-management.mjs record U-078 --actor "dsh/deepseek-v4.1-flas
 **唯一剩余缺口 = 真实有界验收**（≤2 次调用、≤1024 输出 tokens、仅合成公开资料），需要：网络恢复 + modeld 运行 + 宿主设置 `UNION_MODELD_CONFIG` + AU 内已采用默认连接。
 
 因此后续轮次在没有网络时不建议再新增功能代码，只做复核与交接维护；恢复后按本文件 §3 的命令推送/开 PR，再按 §4 做真实验收。
+
+## 追加验证（2026-11-08 07:34，离线启动冒烟）
+
+网络仍不可达，但在本机跑了真实启动冒烟：`python scripts/check_console_start.py --output …`
+
+**5 项全部通过**（`startup-smoke.json` / `startup-smoke.txt`）：
+
+1. `npm start` 能构建并服务深层 SPA 路由；
+2. 同源 CSP 存在；
+3. 构建后的 JS 资源可被服务；
+4. 私有一次性会话可连接，且**不创建、不运行组织**；
+5. 未知资源不会返回 SPA 外壳。
+
+真实模型调用 0。这补上了"产品能真正启动并服务前端"的离线证据（此前只有单元/集成测试与浏览器脚本历史记录）。
