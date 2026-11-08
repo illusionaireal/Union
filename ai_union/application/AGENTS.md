@@ -39,6 +39,13 @@
   this sole AU writer; verify
   tests/test_core_work.py with S01/S02/S05 regressions.
 
+- Automatic work turns use `work_context_store.py` within that same transaction
+  to retain private assistant/tool messages, native context and original tool
+  sources. Before redisclosure, recheck the current work scope, root binding and
+  snapshot digest. Never expose these private inputs in AU projections or
+  rebuild them by rereading files. Follow `s03-tool-context-contract.md` and
+  `tests/test_work_context.py`; pre-dispatch reservation remains an open item.
+
 - Completed modeld calls that lose authorization keep their original request
   ID and usage as used steps; `record_channel_outcome` never adopts their
   content or runs returned tools. Follow

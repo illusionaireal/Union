@@ -48,6 +48,12 @@
   and cannot act until it is settled through finish_attempt. No model call,
   storage or dispatch; step S03.2+ extends the same owner.
 
+- Automatic step plans carry the current scope for private context integrity;
+  active bindings/Mandates constrain all advertised and executed tools. Result
+  sources include original tool receipts actually supplied to later turns.
+  Private messages/storage stay outside this pure owner. See the S03 tool
+  context contract and `tests/test_work_context.py`.
+
 - `record_unadoptable_step` records completed model inference as used, including
   the original model request ID and observed token usage. Revocation denies
   content/tool adoption; it does not erase executed calls. Unknown remains

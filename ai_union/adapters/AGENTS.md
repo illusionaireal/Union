@@ -40,3 +40,10 @@
   including directory links. Listing reports in-scope regular files; binary or
   oversized reads are refused with an explicit reason. This adapter never
   writes, creates or migrates, and AU work facts stay with the governance store.
+
+- `work_context_store.py` owns private S03 model turns in the caller's existing
+  GovernanceStore transaction. Step digests bind immutable payloads, original
+  tool receipts and AU/Work/definition/binding/Mandate scope. Explicit successful
+  turns create the optional table; reads never migrate or repair old history.
+  Missing/tampered snapshots fail before redisclosure. No host paths, document
+  bodies or native context enter public state. Verify `tests/test_work_context.py`.
