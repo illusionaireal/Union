@@ -1,0 +1,138 @@
+{
+  "card": "#36 / U-082",
+  "parent": "#22 / U-067",
+  "reviewer": "chatGPT-online (independent from codex-home implementation)",
+  "actor": "Codex / GPT-6 / current Work Mode session",
+  "candidate_commit": "894f5106a105a9ab269ef9035c9a40f36e5d791c",
+  "baseline_commit": "4494b758348312f71d37d00e4db7e99fd92fdaab",
+  "helper_blob": "373e6894f199333f7b1f79e84ca9e6a7ef526fff",
+  "scope": "controlled fixture review only; PR24/25/28 product adoption and real S03 acceptance remain open",
+  "toolchain": {
+    "python": "3.12.14",
+    "node": "v24.22.1",
+    "os": "Linux"
+  },
+  "checks": [
+    {
+      "name": "red",
+      "log_sha256": "a4ff852cbf7b08a45279b34f8de3b4eafecde70513659c1fe261806f1e50a24c",
+      "summary": [
+        "Ran 2 tests in 6.655s",
+        "FAILED (errors=1)",
+        "EXPECTED_RED: actual baseline default 5s times out; explicit timeout test still passes"
+      ],
+      "expected_error": "Exactly one TimeoutError in real baseline default-wait probe; explicit-timeout probe passed",
+      "exit_code": 0
+    },
+    {
+      "name": "green",
+      "log_sha256": "040aa320c05d4d1df8d0fb59ea2ad880495ccd1edc7408b56ddafe50b8fc2170",
+      "summary": [
+        "Ran 2 tests in 7.202s",
+        "OK"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "affected",
+      "log_sha256": "bf5d113c0aeea0ecdce0f0ddab33a55fbd5d3998eb03a95d457975a02d5ae7f5",
+      "summary": [
+        "Ran 33 tests in 23.895s",
+        "OK"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "npm_check",
+      "log_sha256": "e4049b14ac1f84b45ded7af0c0de8e0696b157b3c19b344a99e0c0ebba049774",
+      "summary": [
+        "      Tests  220 passed (220)"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "original_probes",
+      "log_sha256": "97929cdbe2543a89d9a8f80192a6613299ff561463a7f41aa97314894ecfeb95",
+      "summary": [
+        "Ran 3 tests in 1.954s",
+        "OK"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "python_full",
+      "command": ".venv/bin/python -m unittest discover -v",
+      "exit_code": 0,
+      "tests": 725,
+      "skipped": 2,
+      "seconds": 266.143,
+      "log_sha256": "60b7dcc42578c1aa2a8d1396fb36bd482596f2df41c5a8fbd9decafa441bc166"
+    }
+  ],
+  "real_model_calls": 0,
+  "production_deployment": false,
+  "ast_check": "After normalizing only request timeout default 30 -> 5, old and new tests/test_core_creation.py ASTs are identical",
+  "candidate_ci": [
+    {
+      "run_id": 42484009285,
+      "url": "https://github.com/illusionaireal/Union/actions/runs/42484009285",
+      "head_sha": "894f5106a105a9ab269ef9035c9a40f36e5d791c",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 128741834492,
+          "name": "unittest (windows-latest)",
+          "conclusion": "success"
+        },
+        {
+          "id": 128741834696,
+          "name": "unittest (ubuntu-latest)",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "run_id": 42484008914,
+      "url": "https://github.com/illusionaireal/Union/actions/runs/42484008914",
+      "head_sha": "894f5106a105a9ab269ef9035c9a40f36e5d791c",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 128741832649,
+          "name": "model-service (windows-latest)",
+          "conclusion": "success"
+        },
+        {
+          "id": 128741832928,
+          "name": "model-service (ubuntu-latest)",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "run_id": 42484008795,
+      "url": "https://github.com/illusionaireal/Union/actions/runs/42484008795",
+      "head_sha": "894f5106a105a9ab269ef9035c9a40f36e5d791c",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 128741832418,
+          "name": "offline-checks (ubuntu-latest)",
+          "conclusion": "success"
+        },
+        {
+          "id": 128741832426,
+          "name": "offline-checks (windows-latest)",
+          "conclusion": "success"
+        },
+        {
+          "id": 128741832463,
+          "name": "console-browser",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "verdict": "accepted for the fixture increment only; no PR24/25/28 product adoption",
+  "source_preservation": "Only new U-082 review evidence authored; dirty services/modeld/vendor/opencode and history mirrors preserved"
+}
