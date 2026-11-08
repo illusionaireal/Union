@@ -33,3 +33,13 @@ document. Preserve all previous runs, including their failures and uncertainty.
 Observe meaningful failing counterexamples on the unmodified helpers, then apply
 the smallest corrections and validate real local HTTP/model doubles, the full
 Python suite, npm check and current-head CI. This turn uses zero real model calls.
+## 2026-11-08：provider usage metadata in acceptance evidence
+
+The observer receives the full `ModeldWorkTransport.chat` usage dictionary. Core
+work steps persist canonical `input_tokens` and `output_tokens`. Acceptance must
+compare those two values per original request and their aggregate, while keeping
+extra provider/cache/reasoning/cost metadata in the captured evidence. Extra
+metadata must not cause a correct token attribution to fail, and cached tokens
+must not be added to input tokens a second time. A genuine per-step token mismatch
+must still fail. This correction does not increase the two-call/output limits or
+turn the author's past failed real runs into successful acceptance.

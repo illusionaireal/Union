@@ -28,5 +28,24 @@
     "seconds": 1.403,
     "log_sha256": "fecaafc5286411a87cc8dee411f63378d7e7cc8dc01cc515fb26b2351880a1a4"
   },
-  "adoption_gate": "Final documentation head still requires current successful CI; retained failure is not relabeled as success."
+  "adoption_gate": "Final source including usage-metadata correction requires full-suite/npm and exact-head CI; report final checks on PR33. Historical failures remain.",
+  "fixture_fixed_baseline": {
+    "head": "23ce810febe2ad439406023e11ac6e7dbe8be451",
+    "python": {
+      "tests": 756,
+      "skipped": 9,
+      "failures": 0,
+      "errors": 0,
+      "seconds": 497.948,
+      "log_sha256": "b1ee512bb8213f9a1350e6c7294b0217f1e417d6a6a1af9b40ceb048f790a550"
+    },
+    "npm_check": {
+      "passed": true,
+      "log_sha256": "0adc9f81ac275d192aba9e2a7c1558d6b1fccfd1499d6b04c8a1d90b440711db"
+    },
+    "ci": {
+      "successful_checks": 14,
+      "observed_at": "2026-11-08T15:22:00Z"
+    }
+  }
 }

@@ -1,0 +1,40 @@
+test_extra_provider_usage_fields_do_not_change_token_attribution (tests.test_work_acceptance_intervention.AcceptanceInterventionTests.test_extra_provider_usage_fields_do_not_change_token_attribution) ... FAIL
+test_step_token_mismatch_is_rejected_with_provider_metadata (tests.test_work_acceptance_intervention.AcceptanceInterventionTests.test_step_token_mismatch_is_rejected_with_provider_metadata) ... ok
+test_bounded_driver_exercises_actual_http_document_and_candidate_download (tests.test_work_acceptance_intervention.AcceptanceInterventionTests.test_bounded_driver_exercises_actual_http_document_and_candidate_download) ... FAIL
+
+======================================================================
+FAIL: test_extra_provider_usage_fields_do_not_change_token_attribution (tests.test_work_acceptance_intervention.AcceptanceInterventionTests.test_extra_provider_usage_fields_do_not_change_token_attribution)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_work_acceptance_intervention.py", line 70, in test_extra_provider_usage_fields_do_not_change_token_attribution
+    self.assertEqual(bounded.acceptance_problems(work, receipt, 1024), [])
+AssertionError: Lists differ: ['原步进与观察到的模型用量不一致', '原步进与观察到的模型用量不一致'] != []
+
+First list contains 2 additional elements.
+First extra element 0:
+'原步进与观察到的模型用量不一致'
+
+- ['原步进与观察到的模型用量不一致', '原步进与观察到的模型用量不一致']
++ []
+
+======================================================================
+FAIL: test_bounded_driver_exercises_actual_http_document_and_candidate_download (tests.test_work_acceptance_intervention.AcceptanceInterventionTests.test_bounded_driver_exercises_actual_http_document_and_candidate_download)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_work_acceptance_intervention.py", line 204, in test_bounded_driver_exercises_actual_http_document_and_candidate_download
+    case.test_one_work_uses_at_most_two_calls_and_reports_usage_without_cost()
+  File "<checkout>\tests\test_core_work_real.py", line 233, in test_one_work_uses_at_most_two_calls_and_reports_usage_without_cost
+    self.assertEqual(problems, [], "acceptance evidence must prove a real exchange")
+AssertionError: Lists differ: ['原步进与观察到的模型用量不一致', '原步进与观察到的模型用量不一致'] != []
+
+First list contains 2 additional elements.
+First extra element 0:
+'原步进与观察到的模型用量不一致'
+
+- ['原步进与观察到的模型用量不一致', '原步进与观察到的模型用量不一致']
++ [] : acceptance evidence must prove a real exchange
+
+----------------------------------------------------------------------
+Ran 3 tests in 1.264s
+
+FAILED (failures=2)

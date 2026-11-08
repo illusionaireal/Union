@@ -3,6 +3,7 @@
 当前采用见[前台交付记录](coordinator-adoption.md)和[五卡粒度复核](../../docs/reviews/2026-11-08-task-granularity.md)。以下候选/待复核描述保留形成时的历史范围。
 
 - [2026-11-08：长期阻塞的验收驱动修正](acceptance-intervention/README.md)：正文/来源/原请求/取消与核对逐项验证；保留旧失败历史，不把离线通过当成真实验收。
+- [2026-11-08：用量元数据误报修正](usage-metadata/README.md)：保留供应商完整证据，按逐请求的规范 token 字段核对；真实 HTTP 反例 RED/GREEN，不追加真实调用。
 - [2026-11-08：同请求并发准备失败不能抢占原派发回执](preflight-receipt-race/README.md)：4 RED → 6 GREEN，迟到拒绝与真实调用事实分开；保留原预约、用量和重启幂等，待独立工程复核。
 - [2026-11-08：组合候选的 V1 HTTP 夹具超时修复](core-http-fixture/README.md)：真实延迟 RED/GREEN、原 POST 一次与显式短超时；不改变产品权限或 CI 门禁。
 - [2026-11-08：待审候选的组合验证](combined-integration/README.md)：PR #24/#25/#26/#27 顺序组合，schema 4 下成果与未知预约的真实浏览器验证；不是独立复核或真实模型验收。
