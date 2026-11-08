@@ -211,7 +211,32 @@ export function WorkExecution({
       const result = await api.coreWorkReceipt(scope.organizationId, reference.id);
       if (current()) await accept(reference, result.receipt);
     } catch (error) {
-      failure(error);
+      if (Number((error as { status?: number })?.status) === 403) {
+        // The receipt endpoint deliberately uses 403 for both missing and foreign
+        // receipts. A long loop may not have committed its final receipt yet.
+        try {
+          await liveSession();
+          const read = await api.coreWork(scope.organizationId);
+          requireCurrent();
+          if (
+            read.protocol !== 'core.work.v1' ||
+            read.organization_id !== scope.organizationId ||
+            read.access.principal_id !== scope.principalId
+          ) {
+            throw new ScopeLost('权限或身份已变化');
+          }
+          await liveSession();
+          await client.invalidateQueries({ queryKey: ['core-work', scope.organizationId] });
+          requireCurrent();
+          if (!refs.current.some((r) => r.id === reference.id && r.resolved)) {
+            setNote('原回执尚不可取得；原请求已保留，请稍后查询。');
+          }
+        } catch (accessError) {
+          failure(accessError);
+        }
+      } else {
+        failure(error);
+      }
     } finally {
       querying.current = false;
       if (current()) setChecking(false);

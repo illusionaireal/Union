@@ -1,0 +1,54 @@
+{
+  "date": "2026-11-08",
+  "scope": "controlled",
+  "original_pr": 34,
+  "original_head": "3cabe0d4205fd8d59597cc7f1f1e792cab4d1f49",
+  "integration_base": "cbdbb552106089629984dda0473753a37a264506",
+  "review_combination": "4ca8cb232e2607aa05f004c366365dc161f40eaf",
+  "implementation_actor": "current Codex session / codex-home",
+  "online_member_id": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+  "dom_red": {
+    "failed": 1,
+    "passed": 14
+  },
+  "dom_green": {
+    "passed": 15
+  },
+  "browser_red": "missing receipt 403 was displayed as lost AU access",
+  "first_browser_attempt": "fixture transport timeout; retained, not the product-defect proof",
+  "browser_green": {
+    "pending_checks": 7,
+    "default_checks": 6,
+    "work_posts_per_scenario": 1,
+    "real_model_calls": 0
+  },
+  "npm_check": {
+    "passed": true,
+    "frontend_tests": 237,
+    "management_tests": 37,
+    "action_tests": 9
+  },
+  "python": {
+    "tests": 759,
+    "seconds": 496.749,
+    "skipped": 9,
+    "failures": 0,
+    "errors": 0,
+    "scope": "complete combined Python source; recovery change only affects UI and browser fixtures"
+  },
+  "log_sha256": {
+    "pending-receipt-red.log": "9d226666d1b3363d4f8372952bff6fe999cc19047220527de3cdcd1db127565c",
+    "pending-receipt-green.log": "5bd9e0e4f4f27a9ec521ba768ee86a2461109683927e7d28fd151d89b28d134f",
+    "pending-browser-red.log": "1800554c33ffde327961f50b6e621add97344b4c1b6b7359899e8e51a2c3c46c",
+    "pending-browser-red-2.log": "032a068473e476989c8d69640912cded024aff91fc66394bf7f126d78b897fd2",
+    "pending-browser-green.log": "40b3b7939a57c2b37548bfa3ca0d5ccb76b29e8e169a5c174932f50f9d6db805",
+    "browser-regression-green.log": "b65609062ffa2fdd5111b34220b010ebe21cefbc21e025e457f5cdecafd4b320",
+    "fixed-npm.log": "d92b9d004084ad61a35e391680e4f791424a2d1b2eb1c973434c9b183a19c473",
+    "combined-python.log": "799dfd6947db89846cafbadd8c171c5b1f0a68e8a43d61b88db651a80aef8205"
+  },
+  "server_authorization_or_accounting_changed": false,
+  "real_model_calls": 0,
+  "deployment_switch": false,
+  "independent_review": "required from another engineering role before adoption",
+  "ci": "new exact candidate head checks required; original PR34 checks do not cover this fix"
+}

@@ -7,9 +7,10 @@ const fs = require("node:fs");
 const assert = require("node:assert/strict");
 
 async function main() {
+  const pendingReceipt = process.env.UNION_U084_PENDING_RECEIPT === "1";
   const host = spawn(
     process.env.UNION_PYTHON || "python3",
-    [path.join(__dirname, "u084_work_execution_host.py")],
+    [path.join(__dirname, "u084_work_execution_host.py"), ...(pendingReceipt ? ["--pending-receipt"] : [])],
     {
       cwd: path.join(__dirname, ".."),
       stdio: ["pipe", "pipe", "inherit"],
@@ -52,21 +53,26 @@ async function main() {
     const page = await context.newPage();
     let posts = 0,
       original;
-    let confirmCommit;
+    let confirmCommit, commandError;
     const committed = new Promise((resolve) => {
       confirmCommit = resolve;
     });
     await page.route("**/api/v1/work/commands", async (route) => {
-      posts++;
-      original = route.request().postDataJSON();
-      const response = await route.fetch();
-      assert.equal(response.status(), 200);
-      const ack = await response.json();
-      assert.equal(ack.receipt.status, "succeeded");
-      assert.equal(ack.receipt.result, true);
-      // Lose only the response after the actual command commits. Never post again.
-      await route.abort("failed");
-      confirmCommit();
+      try {
+        posts++;
+        original = route.request().postDataJSON();
+        const response = await route.fetch();
+        assert.equal(response.status(), 200);
+        const ack = await response.json();
+        assert.equal(ack.receipt.status, "succeeded");
+        assert.equal(ack.receipt.result, true);
+        // Lose only the response after the actual command commits. Never post again.
+        await route.abort("failed");
+      } catch (error) {
+        commandError = error;
+      } finally {
+        confirmCommit();
+      }
     });
     await page.goto(
       ready.origin +
@@ -76,7 +82,21 @@ async function main() {
     const run = page.getByRole("button", { name: "运行 AI 工作", exact: true });
     await run.click();
     await page.getByText(/原请求已保留/).waitFor();
+    if (pendingReceipt) {
+      const lookup = page.getByRole("button", { name: "查询原请求", exact: true });
+      const unavailable = page.waitForResponse((r) => r.url().includes("/api/v1/governance/receipts?"));
+      await lookup.click();
+      assert.equal((await unavailable).status(), 403);
+      const feedback = page.getByText(/原回执尚不可取得|权限或身份已变化/);
+      await feedback.waitFor({ timeout: 3000 });
+      assert.match(await feedback.textContent(), /原回执尚不可取得/);
+      assert.equal(await lookup.isEnabled(), true);
+      assert.equal(await page.getByRole("list", { name: "V1 工作列表", exact: true }).count(), 1);
+      assert.equal(posts, 1);
+      host.stdin.write("complete\n");
+    }
     await committed;
+    if (commandError) throw commandError;
     await page.reload();
     await page.getByRole("button", { name: "查询原请求", exact: true }).click();
     await page.getByText(/本次操作已记录/).waitFor();
@@ -118,6 +138,7 @@ async function main() {
           original_id: original.id,
           work_posts: posts,
           checks: [
+            ...(pendingReceipt ? ["pending receipt 403 preserves authorized work and original lookup"] : []),
             "actual run_loop over HTTP",
             "response lost after commit",
             "reload preserves original ID",
@@ -132,11 +153,11 @@ async function main() {
       ) + "\n",
     );
     console.log(
-      "U084 browser: 6 checks passed; one original POST, zero real model calls",
+      `U084 browser: ${pendingReceipt ? 7 : 6} checks passed; one original POST, zero real model calls`,
     );
   } finally {
-    if (browser) await browser.close();
     host.stdin.end();
+    if (browser) await browser.close();
     if (host.exitCode === null && host.signalCode === null)
       await new Promise((r) => host.once("exit", r));
   }
