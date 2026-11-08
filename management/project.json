@@ -1,6 +1,6 @@
 {
     "schema_version": 1,
-    "updated_at": "2026-11-08",
+    "updated_at": "2026-11-09",
     "wip_limit": 8,
     "modules": [
         {
@@ -2244,7 +2244,7 @@
             ],
             "blocker": null,
             "started_at": null,
-            "updated_at": "2026-11-08",
+            "updated_at": "2026-11-09",
             "completion": null,
             "history": [
                 {
@@ -2274,6 +2274,13 @@
                     "from": "ready",
                     "to": "ready",
                     "note": "用户继续后实际建立执行子卡#51–#54 / U-097–U-100；在线revision351逐张读回，父卡原owner/status/依赖保留。全部五卡合计21子卡，无依赖环；仅38/51依实际前置ready，其余backlog，未自动认领。证据docs/reviews/2026-11-08-task-granularity.md、evidence/U-079/five-card-split.json。本条是交付历史，不用于在线调度。"
+                },
+                {
+                    "at": "2026-11-08T16:19:26.252Z",
+                    "actor": "codex-home/current deployment-watch session",
+                    "from": "ready",
+                    "to": "ready",
+                    "note": "执行子卡#51/U-097已按在线v1→v2认领，在cbdbb552基线上交付V1模型页原请求生成观测候选。冻结合同specs/053-union-rewrite/s09-model-observation-contract.md；HTTP 6 RED→10 GREEN、DOM反例及15 GREEN、真实Chrome/本地HTTP/明确替身6项、23 profile/HTTP组合通过，证据evidence/U-097/README.md与verification.json。当前head CI和另一工程角色权限复核待采用；父#28原owner/blocked/WIP及真实profile验收保持。仅记录长期交付证据，不据此改在线运行态；真实模型新增调用0。"
                 }
             ],
             "claim": null

@@ -63,6 +63,10 @@ class ModelAccessService:
     def receipt(self, token, au_id, request_id):
         return self.app.governance.receipt(token, au_id, request_id)
 
+    def events(self, token, au_id, check_id, attempt_id, after="0"):
+        from .model_events import read_events
+        return read_events(self, token, au_id, check_id, attempt_id, after)
+
     def command(self, token, incoming):
         principal = self.app.creation.principal(self.app.session(token))
         request = copy.deepcopy(incoming)
