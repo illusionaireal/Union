@@ -51,8 +51,15 @@ def main():
                 op = json.loads(line)["op"]
                 if op == "stop": break
                 if op == "advance": phase[0] = 2; wait_seq(3)
+                elif op == "interrupt":
+                    case.provider.result_state = "interrupted"
+                    case.wait_for("checks", receipt["check_id"])
                 elif op == "restart": case.stop(); case.start()
                 elif op == "revoke": case.provider.revoked = True
+                elif op == "disable":
+                    connection = next(c for c in case.models()["connections"] if c["id"] == "connection-a")
+                    case.model_success("set_connection", {"connection_id": connection["id"],
+                        "expected_revision": connection["revision"], "enabled": False, "make_default": False})
                 elif op != "status": raise AssertionError("unknown fixture operation")
                 print(json.dumps(info()), flush=True)
     finally:

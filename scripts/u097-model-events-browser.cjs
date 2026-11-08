@@ -55,6 +55,7 @@ async function main() {
     await page.waitForFunction(() => !document.querySelector('[aria-label="原调用生成观测"] [role="alert"]'));
     assert.ok(queries.includes('3'));
     checks.push('disconnect retains prefix; reconnect GET deduplicates original events');
+    if (process.env.UNION_U097_CONNECTION_REVOKE === '1') await command('interrupt');
     ready = await command('restart');
     await visit();
     await page.getByText('正在生成的片段一，片段二', { exact: true }).waitFor();
@@ -65,13 +66,23 @@ async function main() {
       assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `overflow at ${width}px`);
     }
     checks.push('1440/390/320 layout');
-    await command('revoke');
-    await page.getByRole('button', { name: '查询原生成记录', exact: true }).click();
-    await page.getByText(/生成内容已清除/).waitFor();
+    if (process.env.UNION_U097_CONNECTION_REVOKE === '1') {
+      await region.getByText(/原调用已停止或结束/).waitFor();
+      const readsBeforeDisable = queries.length;
+      await command('disable');
+      await page.getByRole('button', { name: '刷新模型记录', exact: true }).click();
+      await page.getByText(/原调用的连接或读取资格已变化/).waitFor();
+      assert.equal(queries.length, readsBeforeDisable);
+      checks.push('stopped observation is cleared on current connection disable without another event GET');
+    } else {
+      await command('revoke');
+      await page.getByRole('button', { name: '查询原生成记录', exact: true }).click();
+      await page.getByText(/生成内容已清除/).waitFor();
+      checks.push('current grant revocation clears output; browser writes and additional model posts are zero');
+    }
     assert.equal(await page.getByText('正在生成的片段一，片段二', { exact: true }).count(), 0);
     assert.equal((await command('status')).inference_posts, 1);
     assert.equal(posts.length, 0);
-    checks.push('current grant revocation clears output; browser writes and additional model posts are zero');
     const output = path.resolve(process.env.UNION_U097_EVIDENCE || '.union/u097-model-events-browser');
     fs.mkdirSync(output, { recursive: true });
     fs.writeFileSync(path.join(output, 'checks.json'), JSON.stringify({ scope: 'controlled', checks,

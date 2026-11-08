@@ -53,6 +53,11 @@ jobs:
       - run: node scripts/u097-model-events-browser.cjs
         env:
           UNION_PYTHON: python3
+      - run: node scripts/u097-model-events-browser.cjs
+        env:
+          UNION_PYTHON: python3
+          UNION_U097_CONNECTION_REVOKE: '1'
+          UNION_U097_EVIDENCE: .union/u097-connection-access-browser
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -62,3 +67,4 @@ jobs:
             .union/novel-browser-evidence
             .union/u081-work-read-browser
             .union/u097-model-events-browser
+            .union/u097-connection-access-browser

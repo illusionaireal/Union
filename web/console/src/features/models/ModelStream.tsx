@@ -44,16 +44,20 @@ export function ModelStream({ controller }: { controller: ModelsController }) {
   const [expanded, setExpanded] = useState(false);
   const options = controller.read?.checks.flatMap(check => check.attempts.map(attempt => ({
     key: `${check.id}:${attempt.id}`, checkId: check.id, attemptId: attempt.id,
+    connectionId: check.connection_id, connectionRevision: check.connection_revision,
     label: `${check.document_name} · 第 ${attempt.stage + 1} 次`,
   }))) ?? [];
-  const selected = options.find(item => item.key === selection) ?? options.at(-1);
+  const selected = selection ? options.find(item => item.key === selection) : options.at(-1);
+  const connection = controller.read?.connections.find(item => item.id === selected?.connectionId);
+  const readable = !!selected && !!connection?.enabled && connection.revision === selected.connectionRevision;
   const core = controller.workspace.core;
   if (!options.length || !core || !isGovernedAU(core) || core.access.role !== 'governor') return null;
   return <Card title="原请求生成过程">
     <p>查看已保存的部分输出；完整回应、采用结果与用量见原验证记录。</p>
     <label>查看哪次原调用
-      <select aria-label="查看哪次原调用" value={selected?.key}
+      <select aria-label="查看哪次原调用" value={selected?.key ?? ''}
         onChange={event => setSelection(event.target.value)}>
+        {!selected && <option value="" disabled>请选择原调用</option>}
         {options.map(item => <option key={item.key} value={item.key}>{item.label}</option>)}
       </select>
     </label>
@@ -63,8 +67,9 @@ export function ModelStream({ controller }: { controller: ModelsController }) {
     }}>
       {expanded ? '收起生成过程' : '查看生成过程'}
     </button>
-    {expanded && selected && <Observation key={selected.key} controller={controller}
-      checkId={selected.checkId} attemptId={selected.attemptId} />}
+    {expanded && (readable && selected ? <Observation key={selected.key} controller={controller}
+      checkId={selected.checkId} attemptId={selected.attemptId} />
+      : <p role="status">原调用的连接或读取资格已变化，生成内容已清除。可选择其他原调用。</p>)}
   </Card>;
 }
 

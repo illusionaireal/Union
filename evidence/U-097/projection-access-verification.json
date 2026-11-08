@@ -1,0 +1,83 @@
+{
+  "date": "2026-11-09",
+  "scope": "controlled",
+  "parent_head": "21fbb9bc8980aa85c4fed967809c571d5d57b8cb",
+  "integration_base": "cbdbb552106089629984dda0473753a37a264506",
+  "branch": "codex/u097-model-observation",
+  "actor": "current Codex deployment-watch session / codex-home",
+  "online_member_id": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+  "dom_red": {
+    "failed": 5,
+    "passed": 16,
+    "reason": "stopped original text survives confirmed connection disable/revision/removal; late read and selected request loss are unsafe"
+  },
+  "dom_green": {
+    "passed": 21
+  },
+  "npm_check": {
+    "passed": true,
+    "frontend": 241,
+    "management": 37,
+    "action": 9
+  },
+  "python_full": {
+    "run": 768,
+    "skipped": 9,
+    "failed": 0,
+    "seconds": 504.347
+  },
+  "browser_grant": {
+    "scope": "controlled",
+    "checks": [
+      "partial output before completion, native body stays private",
+      "new persisted prefix with original cursor",
+      "disconnect retains prefix; reconnect GET deduplicates original events",
+      "normal host reopen reads original persisted attempt with no dispatch",
+      "1440/390/320 layout",
+      "current grant revocation clears output; browser writes and additional model posts are zero"
+    ],
+    "inference_posts_fixture_setup": 1,
+    "inference_posts_from_observation": 0,
+    "browser_posts": 0,
+    "real_model_calls": 0
+  },
+  "browser_connection": {
+    "scope": "controlled",
+    "checks": [
+      "partial output before completion, native body stays private",
+      "new persisted prefix with original cursor",
+      "disconnect retains prefix; reconnect GET deduplicates original events",
+      "normal host reopen reads original persisted attempt with no dispatch",
+      "1440/390/320 layout",
+      "stopped observation is cleared on current connection disable without another event GET"
+    ],
+    "inference_posts_fixture_setup": 1,
+    "inference_posts_from_observation": 0,
+    "browser_posts": 0,
+    "real_model_calls": 0
+  },
+  "retained_fixture_failure": "Initial new browser scenario wrongly assumed restart ended the persisted running attempt; timed out before disable. Fixed by explicitly reporting interrupted from the model double and waiting for the product to persist it. Not counted as a product RED.",
+  "source_sha256": {
+    "web/console/src/features/models/ModelStream.tsx": "4ebc9d18b7548dced427bf0b4b0222db0cf375174ab40e59b2bd3ec137642fd0",
+    "web/console/src/features/models/ModelsStream.test.tsx": "50dddadbce804f36427b95fa7bbb4af14d33f9cf9759dce8c20fa9c4135c7c11",
+    "scripts/u097-model-events-browser.cjs": "6de9614845523130699c241c0f7242407838f77cbe91b25eafbdbeda562d3a2c",
+    "scripts/u097_model_events_host.py": "29a3b23a81f0103a3cef2cdb34faf7e71dba8496724c9d6e2bd2df19ae90c2de",
+    ".github/workflows/ci.yml": "69c97df76543cad99e97db584d7c9cd1e82cc6c6dbf903356786137c8b8a1078",
+    "specs/053-union-rewrite/s09-model-observation-contract.md": "7e190bc9e17165136904541bb3309ede808260a6f22aa51530d504da4306fe95"
+  },
+  "private_log_sha256": {
+    "u097-observation-access-red.log": "b0a96469eb6a7c35d9110a498a4ab1532ff4f55422a4c0121188ac34f88c64bc",
+    "u097-observation-access-red-direct.log": "15cce1c3a4aea7b1c5a1f13da01a7731959137c1818152ce210d1fb8fc6836b8",
+    "u097-observation-access-green.log": "3a2f593d35761b9291ba4793524b701e59f40f61fd88c3e7b335871f1c04798c",
+    "u097-observation-access-npm.log": "071cf00d8c0b76315af9da4be9b6a5c83b7a3b314445983703308849ceeca6c8",
+    "u097-observation-access-python.log": "281dd73a31c9ed7d695bd464e5cf6cecd286543338075161cbf33ec0db81a889",
+    "u097-access-browser-connection.log": "c6520b912c92ffaa9f48b3b7110e160535944744c4990312b02bdc08587a90d9",
+    "u097-access-browser-connection-final.log": "1b3c34ec6670a68bc981a51d4a6b757f121e5d1bb8a96eb24b8e12dc7355f1d5",
+    "u097-access-browser-grant.log": "1b3c34ec6670a68bc981a51d4a6b757f121e5d1bb8a96eb24b8e12dc7355f1d5"
+  },
+  "independent_review": "pending another engineering role; implementing session does not approve",
+  "exact_head_ci": "required after publication",
+  "real_model_calls": 0,
+  "production_service_switch": false,
+  "live_migration": false
+}

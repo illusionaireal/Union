@@ -136,4 +136,53 @@ describe('V1 original-request observation', () => {
     expect(screen.getByRole('combobox', { name: '查看哪次原调用' })).toHaveValue('check-one:attempt-one');
     expect(calls.every(url => url.searchParams.get('attempt_id') === 'attempt-one')).toBe(true);
   });
+  it.each(['disabled', 'revised', 'removed'])('clears stopped output when its connection is %s in the current projection', async change => {
+    const { client } = mount(); await open(); await screen.findByText('部分正文');
+    if (change === 'disabled') state.read.connections[0].enabled = false;
+    else if (change === 'revised') state.read.connections[0].revision += 1;
+    else state.read.connections = [];
+    await act(async () => { await client.invalidateQueries({ queryKey: ['core-models'] }); });
+    await waitFor(() => expect(screen.queryByText('部分正文')).not.toBeInTheDocument());
+    expect(await screen.findByText(/原调用的连接或读取资格已变化/)).toBeVisible();
+    expect(screen.queryByText('部分正文')).not.toBeInTheDocument();
+    expect(calls).toHaveLength(1);
+    expect(state.commands).toHaveLength(0);
+  });
+  it('discards a delayed observation after current connection access is removed', async () => {
+    const { client } = mount(); await open(); await screen.findByText('部分正文');
+    let finish!: (r: Response) => void;
+    respond = () => new Promise(resolve => { finish = resolve; });
+    fireEvent.click(screen.getByRole('button', { name: '查询原生成记录' }));
+    await waitFor(() => expect(finish).toBeDefined());
+    state.read.connections[0].enabled = false;
+    await act(async () => { await client.invalidateQueries({ queryKey: ['core-models'] }); });
+    await waitFor(() => expect(screen.queryByText('部分正文')).not.toBeInTheDocument());
+    await screen.findByText(/原调用的连接或读取资格已变化/);
+    await act(async () => { finish(json(page({ cursor: 4, last_seq: 4,
+      events: [{ seq: 4, type: 'text_delta', text: '迟到正文' }] }))); });
+    expect(screen.queryByText(/部分正文|迟到正文/)).not.toBeInTheDocument();
+    expect(state.commands).toHaveLength(0);
+  });
+  it('does not replace a removed selected request with a different available attempt', async () => {
+    const { client } = mount(); await open(); await screen.findByText('部分正文');
+    state.read.checks[0].attempts = [{ ...state.read.checks[0].attempts[0], id: 'attempt-two', stage: 1 }];
+    await act(async () => { await client.invalidateQueries({ queryKey: ['core-models'] }); });
+    await screen.findByRole('option', { name: '项目说明.txt · 第 2 次' });
+    await waitFor(() => expect(screen.queryByText('部分正文')).not.toBeInTheDocument());
+    expect(await screen.findByText(/原调用的连接或读取资格已变化/)).toBeVisible();
+    expect(screen.queryByText('部分正文')).not.toBeInTheDocument();
+    expect(calls.every(url => url.searchParams.get('attempt_id') === 'attempt-one')).toBe(true);
+    expect(state.commands).toHaveLength(0);
+  });
+  it('keeps stopped output for unchanged authority when unrelated connection metadata changes', async () => {
+    const { client } = mount(); await open(); await screen.findByText('部分正文');
+    state.read.connections[0].last_check = { check_id: 'check-one', revision: 1, profile: 'openai_compatible', at: 1 };
+    state.read.connections.push({ ...savedConnection('other-connection'), enabled: false });
+    state.read.version += 1;
+    await act(async () => { await client.invalidateQueries({ queryKey: ['core-models'] }); });
+    await screen.findByText('另一模型');
+    expect(screen.getByText('部分正文')).toBeVisible();
+    expect(calls).toHaveLength(1);
+    expect(state.commands).toHaveLength(0);
+  });
 });
