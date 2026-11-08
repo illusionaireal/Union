@@ -1,0 +1,8 @@
+test_an_interrupted_call_stays_unknown_and_a_manual_reconcile_cannot_release_it (tests.test_core_work_real_interrupt.RealInterruptTests.test_an_interrupted_call_stays_unknown_and_a_manual_reconcile_cannot_release_it) ... ok
+interrupt observed: {"step_ref": "work-real#s1", "request_id": "work-ac71383339fa9a121cb4894c111f5cbc404f6d942d5eda0cebb8ed41751e4e9f", "observed": true, "cancelled": true}
+interrupt: {"request_id": "work-ac71383339fa9a121cb4894c111f5cbc404f6d942d5eda0cebb8ed41751e4e9f", "receipt": {"status": "succeeded", "message": "原模型请求仍未确认；保留预约，不重新派发"}, "budget": {"max_calls": 1, "reserved": 1, "used": 0}, "steps": ["unknown"]}
+
+----------------------------------------------------------------------
+Ran 1 test in 1.954s
+
+OK

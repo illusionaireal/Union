@@ -1,0 +1,51 @@
+{
+  "gate": "real bounded acceptance + real interruption (corrected drivers)",
+  "task": "U-067",
+  "slice": "S03",
+  "checked_at": "2026-11-08T21:41:56+08:00",
+  "model": "deepseek-v4.1-flash",
+  "account": "explicit UNION_REAL_ACCOUNT",
+  "acceptance": {
+    "turns": 2,
+    "tool_calls": [
+      "read_document"
+    ],
+    "read_sha256_prefix": "faa42c42",
+    "read_bytes": 101,
+    "usage": {
+      "input_tokens": 998,
+      "output_tokens": 157
+    },
+    "budget_used": 2,
+    "results": 1,
+    "cost_status": "unknown",
+    "guard_problems": []
+  },
+  "interruption": {
+    "request_id_prefix": "work-ac7138",
+    "observed_in_modeld": true,
+    "cancelled": true,
+    "manual_reconcile_released": false,
+    "budget": {
+      "reserved": 1,
+      "used": 0
+    },
+    "steps": [
+      "unknown"
+    ]
+  },
+  "real_calls_total_this_round": 5,
+  "authorised": "unlimited (user 2026-11-08)",
+  "logs": {
+    "acceptance.txt": [
+      "acceptance summary: {\"receipt\": {\"status\": \"succeeded\", \"message\": \"自动循环结束：已产出候选成果\", \"turns\": 2, \"tool_calls\": 1, \"result\": true, \"usage\": {\"input_tokens\": 998, \"output_tokens\": 157}}, \"budget\": {\"max_calls\": 2, \"reserved\": 0, \"used\": 2}, \"usage\": {\"input_tokens\": 998, \"output_tokens\": 157}, \"tool_calls\": [\"read_document\"], \"results\": 1, \"problems\": []}",
+      "Ran 1 test in 6.799s",
+      "OK"
+    ],
+    "interrupt.txt": [
+      "interrupt: {\"request_id\": \"work-ac71383339fa9a121cb4894c111f5cbc404f6d942d5eda0cebb8ed41751e4e9f\", \"receipt\": {\"status\": \"succeeded\", \"message\": \"原模型请求仍未确认；保留预约，不重新派发\"}, \"budget\": {\"max_calls\": 1, \"reserved\": 1, \"used\": 0}, \"steps\": [\"unknown\"]}",
+      "Ran 1 test in 1.954s",
+      "OK"
+    ]
+  }
+}

@@ -1,0 +1,8 @@
+test_one_work_uses_at_most_two_calls_and_reports_usage_without_cost (tests.test_core_work_real.RealBoundedAcceptanceTests.test_one_work_uses_at_most_two_calls_and_reports_usage_without_cost) ... ok
+
+----------------------------------------------------------------------
+acceptance summary: {"receipt": {"status": "succeeded", "message": "自动循环结束：已产出候选成果", "turns": 2, "tool_calls": 1, "result": true, "usage": {"input_tokens": 998, "output_tokens": 157}}, "budget": {"max_calls": 2, "reserved": 0, "used": 2}, "usage": {"input_tokens": 998, "output_tokens": 157}, "tool_calls": ["read_document"], "results": 1, "problems": []}
+Ran 1 test in 6.799s
+
+real acceptance: {"model": "deepseek-v4.1-flash", "receipt": {"status": "succeeded", "message": "自动循环结束：已产出候选成果", "turns": 2, "tool_calls": 1, "result": true, "usage": {"input_tokens": 998, "output_tokens": 157}, "cost_status": "unknown"}, "budget": {"max_calls": 2, "reserved": 0, "used": 2}, "usage": {"input_tokens": 998, "output_tokens": 157}, "cost_status": "unknown", "tool_calls": [{"tool": "read_document", "sha256": "faa42c4278bfcae1648ff04eb561fcd1c23dc61495c1b80a3519fb07d8fc2ba5", "bytes": 101}], "results": [{"id": "result-0922103f4ef9", "status": "candidate"}]}
+OK

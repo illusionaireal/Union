@@ -112,7 +112,7 @@ class RealBoundedAcceptanceTests(RealChannelCase):
         models_state = self.request("/api/v1/models?organization_id=" + au_id)[1]
         connection = next(item for item in models_state["connections"] if item["id"] == "connection-a")
         data = {"work_id": "work-real", "title": "合成概览", "member_name": "资料整理 Agent",
-                "goal": "阅读合成资料并写三行概览", "member_id": "m-real", "binding_id": "b-real",
+                "goal": "先 read_document 读取 brief.md，然后用三行中文概览作为最终回答，不要再调用工具", "member_id": "m-real", "binding_id": "b-real",
                 "mandate_id": "ma-real", "definition_id": "d-real", "connection_id": "connection-a",
                 "expected_revision": connection["revision"], "materials_root": "project-docs", "max_calls": 2,
                 "tools": ["read_document", "list_documents"], "reason": "有界真实验收"}
@@ -136,7 +136,11 @@ class RealBoundedAcceptanceTests(RealChannelCase):
         work = [item for item in card["works"] if item["id"] == "work-real"][0]
         used = work["budget"]["used"]
         problems = acceptance_problems(work, looped["receipt"], MAX_OUTPUT)
-        print("acceptance problems:", json.dumps(problems, ensure_ascii=False))
+        print("acceptance summary:", json.dumps({
+            "receipt": {k: looped["receipt"].get(k) for k in ("status", "message", "turns", "tool_calls", "result", "usage")},
+            "budget": work["budget"], "usage": work["usage"],
+            "tool_calls": [call.get("tool") for call in work["tool_calls"]],
+            "results": len(work["results"]), "problems": problems}, ensure_ascii=False))
         self.assertEqual(problems, [], "acceptance evidence must prove a real exchange")
         self.assertLessEqual(used, 2, work["budget"])
         print("real acceptance:", json.dumps({
