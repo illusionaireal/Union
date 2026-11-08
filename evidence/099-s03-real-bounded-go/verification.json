@@ -1,0 +1,48 @@
+{
+  "gate": "real bounded acceptance",
+  "task": "U-067",
+  "slice": "S03",
+  "checked_at": "2026-11-08T14:23:19+08:00",
+  "service": {
+    "modeld": "release build services/modeld/dist/main.js",
+    "runtime": "bun 1.4.2",
+    "origin": "http://127.0.0.1:63504",
+    "protocol_version": 1
+  },
+  "account": {
+    "provider": "opencode-go",
+    "auth_method": "oauth",
+    "state": "connected"
+  },
+  "model": "deepseek-v4.1-flash",
+  "materials": "synthetic only",
+  "authorized_limits": {
+    "calls": 2,
+    "output_tokens_per_call": 1024
+  },
+  "observed": {
+    "turns": 1,
+    "calls": 1,
+    "input_tokens": 396,
+    "output_tokens": 29,
+    "tool_calls": [
+      "list_documents"
+    ],
+    "results": 1,
+    "result_status": "candidate",
+    "budget": {
+      "max_calls": 2,
+      "reserved": 0,
+      "used": 1
+    },
+    "cost_status": "unknown"
+  },
+  "business_workspace_touched": false,
+  "real_model_calls": 1,
+  "deployed": false,
+  "harness_defects_fixed": [
+    "fixture double must be unpatched for a real run",
+    "expected_revision must come from the saved connection",
+    "charter amendment must follow connection save"
+  ]
+}
