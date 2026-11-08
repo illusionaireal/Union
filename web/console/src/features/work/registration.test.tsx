@@ -412,3 +412,36 @@ it('a late failed POST cannot downgrade an independently confirmed original rece
   expect(screen.getByText('登记完成')).toBeTruthy();
   expect(screen.queryByText('late lost response')).toBeNull();
 });
+
+it.each(['principal', 'service', 'read401', 'read403', 'post401', 'post403'])(
+  'confirmed receipt does not suppress a later %s denial while POST is pending',
+  async (change) => {
+    let finish!: (value: { receipt: ReturnType<typeof receipt> }) => void;
+    let fail!: (reason: Error) => void;
+    vi.mocked(api.coreWorkCommand).mockImplementation(
+      () => new Promise((resolve, reject) => { finish = resolve; fail = reject; }),
+    );
+    mount();
+    fireEvent.click(await fill());
+    await waitFor(() => expect(api.coreWorkCommand).toHaveBeenCalledTimes(1));
+    const original = vi.mocked(api.coreWorkCommand).mock.calls[0][0];
+    vi.mocked(api.coreWorkReceipt).mockResolvedValue({ receipt: receipt(original) });
+    fireEvent.click(screen.getByRole('button', { name: '查询登记原请求' }));
+    await screen.findByText('登记完成');
+
+    if (change === 'principal')
+      vi.mocked(api.session).mockResolvedValue({ ...session, principal_id: 'p2' });
+    if (change === 'service')
+      vi.mocked(api.session).mockResolvedValue({ ...session, service_instance: 's2' });
+    if (change.startsWith('read'))
+      vi.mocked(api.coreWork).mockRejectedValue(new ApiError('not_authorized', Number(change.slice(4))));
+    if (change.startsWith('post')) fail(new ApiError('not_authorized', Number(change.slice(4))));
+    else finish({ receipt: receipt(original) });
+
+    await screen.findByText(/权限或身份已变化/);
+    expect(screen.queryByText('登记完成')).toBeNull();
+    expect(screen.queryByRole('button', { name: '登记另一项工作' })).toBeNull();
+    expect(JSON.stringify(sessionStorage)).toContain(String(original.id));
+    expect(api.coreWorkCommand).toHaveBeenCalledTimes(1);
+  },
+);

@@ -12,6 +12,9 @@ type Reference = WorkScope & {
   resolved: boolean;
 };
 export class WorkScopeLost extends Error {}
+const accessLost = (error: unknown) =>
+  error instanceof WorkScopeLost ||
+  [401, 403].includes(Number((error as { status?: number })?.status));
 const storageKey = (scope: WorkScope) => 'union-work-command:' + JSON.stringify(scope);
 function load(scope: WorkScope): Reference[] {
   const value: unknown = JSON.parse(sessionStorage.getItem(storageKey(scope)) || '[]');
@@ -104,11 +107,7 @@ export function useWorkCommand(scope: WorkScope, onAccessLost: () => void) {
   const refresh = () => client.invalidateQueries({ queryKey: ['core-work', scope.organizationId] });
   const failure = (error: unknown) => {
     if (!current()) return;
-    if (
-      error instanceof WorkScopeLost ||
-      [401, 403].includes(Number((error as { status?: number })?.status))
-    )
-      onAccessLost();
+    if (accessLost(error)) onAccessLost();
     else setNote(errorText(error));
   };
   const accept = async (original: Reference, value: unknown) => {
@@ -196,7 +195,8 @@ export function useWorkCommand(scope: WorkScope, onAccessLost: () => void) {
       });
       if (current()) await accept(original, response.receipt);
     } catch (error) {
-      if (!dispatchedId || !refs.current.some((r) => r.id === dispatchedId && r.resolved))
+      // A confirmed receipt preserves execution history, not ongoing read access.
+      if (accessLost(error) || !dispatchedId || !refs.current.some((r) => r.id === dispatchedId && r.resolved))
         failure(error);
     } finally {
       busy.current = false;

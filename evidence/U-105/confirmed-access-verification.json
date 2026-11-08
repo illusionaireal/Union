@@ -1,0 +1,81 @@
+{
+  "scope": "controlled candidate; independent review and current-head CI required",
+  "parent_head": "948d8c31e8dc157014688ec0f2bf7ffda306cca8",
+  "integration_base": "bb5795b50bd7e00627178319ecd3756cd7c804b7",
+  "actor": "codex-home / single duty Codex implementation session",
+  "online_member": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+  "card": 59,
+  "red": {
+    "registration_failed": 6,
+    "registration_passed": 27,
+    "production_unmodified_for_red": true,
+    "cause": "A prior successful receipt lookup suppressed late POST identity/service changes and HTTP 401/403; old content remained visible."
+  },
+  "green": {
+    "registration_dom": 33,
+    "npm": {
+      "passed": true,
+      "frontend_tests": 294,
+      "management_tests": 37,
+      "action_safety_tests": 9
+    },
+    "browser": {
+      "new_checks": 6,
+      "existing_registration_checks": 11,
+      "work_posts_each_run": 1,
+      "model_requests": 0
+    },
+    "python": {
+      "status": "passed",
+      "tests": 773,
+      "seconds": 487.464,
+      "skipped": 9,
+      "failures": 0,
+      "version": "Python 3.12.10"
+    }
+  },
+  "browser_failure_history": {
+    "used_as_product_red": false,
+    "causes": [
+      "Expected component-local access text while the outer workspace had already cleared content.",
+      "Installing a clock after startup left existing polling timers active.",
+      "Installing the clock before startup and pausing it prevented query rendering."
+    ],
+    "final_assertion": "Real HTTP identity switch, late committed POST delivered, old Work/actions hidden by the command or workspace identity boundary, original request and one Work retained. Isolated DOM tests prove the command catch defect."
+  },
+  "prior_head_ci_failure": {
+    "head": "948d8c31e8dc157014688ec0f2bf7ffda306cca8",
+    "job": 128815352021,
+    "test": "tests.test_model_api.ModelAPITests.test_whole_http_loop_is_persistent_and_explicitly_simulated",
+    "cause": "join_jobs reached its existing 10 second wait with the job still alive; 773 tests, 1 error, 10 skipped. No production timeout change or old-head rerun."
+  },
+  "source_sha256": {
+    "web/console/src/features/work/useWorkCommand.ts": "28dc897027a144816a93955e7580d0bf4521dd1efb4829d53e8afb9f1c1f82bb",
+    "web/console/src/features/work/registration.test.tsx": "953d007b82e072d95c0444476c55621251fae999908e03a0c7baaa5c7c96280b",
+    "scripts/u105-confirmed-access-browser.cjs": "3680aac64bafc9492cb7c86eef1b25b610c2181e685842de41250719787b0377",
+    "scripts/u105_work_registration_host.py": "95933bf93016aa91a9ba978a7b7dcd5a1b73646c836b844d05b484b7a0f6379c",
+    ".github/workflows/ci.yml": "a74fd2c4bb87fbdf3eafaa5141627e76d2de6380810639fe6e0c438c381fd2a8",
+    "specs/053-union-rewrite/s03-work-registration-contract.md": "ce505fd351aa44454b4513b238e12c2d2b33e6c4b27d3c1a57d598b8153f2a39"
+  },
+  "source_hash_encoding": "UTF-8 bytes with CRLF normalized to LF, matching Git blobs",
+  "python_tree": "6191f3f60e28355f83da180d72502f237dc02da8",
+  "python_tests_tree": "ce1f2bca1867173603735eed6a60cd6ab7a9bbee",
+  "local_log_sha256": {
+    "confirmed-access-red.log": "4e3666445a2070496210ca1a4b4e3042e99f85135a88851719ba72c78b24e135",
+    "confirmed-access-green.log": "c716a2758442f2f00753f11baec91a0309d53750c62990d531cd9e1d9c0389cf",
+    "confirmed-access-npm-check.log": "ed7af1c5d81323e775c63f3de287dcbf5a0052d8d74b17396efc19236dc2e9d7",
+    "confirmed-access-browser-red.log": "53be3821f833a76c176011ddda08d048d12454db467036af069d5a81349df979",
+    "confirmed-access-browser-green.log": "53be3821f833a76c176011ddda08d048d12454db467036af069d5a81349df979",
+    "confirmed-access-browser-green-2.log": "725f2be46583d547bf0cbe0f3e2ced06f8f2f9020dd0eadd85747f14f3cbdd9f",
+    "confirmed-access-browser-diagnostic.log": "cddae3cfcfee72bf040ca70e44a8627fb11e399cce9d329807eaceece742ff69",
+    "confirmed-access-browser-green-3.log": "ebe6dfbb324136238292f56929fa34ac1a9b38721403db2f6e7ff183b9a935b9",
+    "confirmed-access-browser-final.log": "30654d7378cb1e57ddec13be2749a08632b93e2e1c4b76d6185288befca6f685",
+    "confirmed-access-browser-regression.log": "85a33fd9beb4d4743bd42c4bcc3c56759413a9616e23be1b5a5a6f3734954be0",
+    "confirmed-access-python-full.log": "de510d6aa8e4a10d84a3726825b830c3f4eea76575a24da8349acc3fccc4db63",
+    "confirmed-access-management-render.log": "0e34220545e52afa374590398a63becffd0e0bb78c5a5f56f04918f84bd5b98a",
+    "confirmed-access-management-check.log": "27e1d3b5848221c62ec035e362e7da22158b9075be606126b3af41d377a31cbc"
+  },
+  "real_model_requests": 0,
+  "adopted": false,
+  "verified_at": "2026-11-08T18:23:41.920328+00:00"
+}
