@@ -44,11 +44,19 @@
   sources. Before redisclosure, recheck the current work scope, root binding and
   snapshot digest. Never expose these private inputs in AU projections or
   rebuild them by rereading files. Follow `s03-tool-context-contract.md` and
-  `tests/test_work_context.py`; pre-dispatch reservation remains an open item.
+  `tests/test_work_context.py`; dispatch intent now follows the contract below.
 
 - Completed modeld calls that lose authorization keep their original request
   ID and usage as used steps; `record_channel_outcome` never adopts their
   content or runs returned tools. Follow
   `specs/053-union-rewrite/s03-model-observation-contract.md` and verify
-  `tests/test_work_observation.py`. Pre-dispatch durable reservation remains a
-  separate open review item; do not claim this handler closes that window.
+  `tests/test_work_observation.py` together with dispatch recovery tests.
+
+- `work_dispatch.py` records prepared/observed dispatch facts through the same
+  GovernanceStore transaction. Persist the original command digest, scoped
+  model request, responsibility versions and reservation before calling the
+  transport. Replays return the original receipt or unresolved intent; never
+  POST an unknown request again. Accounting survives revocation/session loss;
+  content/tool adoption separately checks current authority and host material
+  binding. Recovery queries the original request without adopting its body.
+  Follow `s03-dispatch-contract.md` and `tests/test_work_dispatch.py`.

@@ -47,3 +47,9 @@
   turns create the optional table; reads never migrate or repair old history.
   Missing/tampered snapshots fail before redisclosure. No host paths, document
   bodies or native context enter public state. Verify `tests/test_work_context.py`.
+
+- GovernanceStore checks pending automatic command identities as well as final
+  receipts. Every command kind shares this exclusion; a new command cannot
+  occupy the ID of a model call that has not yet returned. Internal dispatch
+  events and final public receipts commit through this same writer, with their
+  respective actual base versions; original public receipts stay immutable.

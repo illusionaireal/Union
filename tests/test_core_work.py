@@ -753,8 +753,9 @@ class CoreWorkTests(ModelAccessCase):
                                         "status": "released", "reason": "宿主确认供应商未收到请求"})
         self.assertEqual(reconciled[1]["receipt"]["status"], "succeeded", reconciled[1])
         card = self.works()["works"][0]
-        self.assertEqual(card["steps"][0]["status"], "released")
-        self.assertEqual(card["budget"], {"max_calls": 4, "reserved": 0, "used": 0})
+        self.assertEqual(reconciled[1]["receipt"]["model_outcome"], "unknown")
+        self.assertEqual(card["steps"][0]["status"], "unknown", "an unsupported lookup cannot prove nonexecution")
+        self.assertEqual(card["budget"], {"max_calls": 4, "reserved": 1, "used": 0})
 
     def test_run_loop_stops_when_a_turn_leaves_the_model_outcome_unknown(self):
         self.work_with_listing()
@@ -788,7 +789,7 @@ class CoreWorkTests(ModelAccessCase):
         card = [w for w in self.works()["works"] if w["id"] == "work-tight"][0]
         self.assertEqual(len(card["steps"]), 2)
 
-    def test_a_definite_channel_refusal_creates_no_step_fact(self):
+    def test_a_definite_channel_refusal_preserves_a_released_reservation(self):
         self.work_with_listing()
         self.prepare_materials()
         self.start_attempt()
@@ -802,7 +803,8 @@ class CoreWorkTests(ModelAccessCase):
         self.assertEqual(value["receipt"]["status"], "rejected", value)
         self.assertIn("拒绝", value["receipt"]["message"])
         card = self.works()["works"][0]
-        self.assertEqual(card["steps"], [], "a refusal leaves no reserved step behind")
+        self.assertEqual([step["status"] for step in card["steps"]], ["released"],
+                         "a refusal releases the committed reservation without erasing its history")
         self.assertEqual(card["budget"], {"max_calls": 4, "reserved": 0, "used": 0})
 
     def test_the_host_can_wire_the_channel_through_a_factory(self):

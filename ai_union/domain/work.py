@@ -357,6 +357,7 @@ def settle_step(state, data, clock=None):
     require(work is not None, "工作不存在或不属于此 AU")
     step = next((item for item in work.get("steps") or [] if item["step_ref"] == data["step_id"]), None)
     require(step is not None, "该工作没有此步进记录")
+    require(not step.get("command_id"), "自动调用只能通过原模型请求核对，不能手工释放预约")
     require(step["status"] == "reserved", "该步已经结算；原记录不能覆盖，请另立步进")
     step.update(status=data["status"], reason=data["reason"], settled_at=_stamp(clock))
     return step
@@ -425,7 +426,7 @@ TOOL_SPECS = {
 }
 
 
-def step_plan(state, charter, work_id, instance=None):
+def step_plan(state, charter, work_id, instance=None, reserved_step=None):
     """What one automatic step would send to the model; pure and revalidated."""
     work = records(state)["works"].get(work_id)
     require(work is not None, "工作不存在或不属于此 AU")
@@ -436,7 +437,10 @@ def step_plan(state, charter, work_id, instance=None):
     mandate = records(state)["mandates"][work["mandate_id"]]
     require(binding["active"] and mandate["active"], "工作责任绑定或授权已失效")
     current = budget(work)
-    require(current["reserved"] + current["used"] < work["max_calls"], "该工作的调用上限已用尽")
+    pending = [s for s in work.get("steps", []) if s["status"] in ("reserved", "unknown") and s.get("command_id")]
+    require(all(s["step_ref"] == reserved_step for s in pending), "该工作已有未决模型请求；请先核对原请求")
+    allowance = int(any(s["step_ref"] == reserved_step for s in pending))
+    require(current["reserved"] + current["used"] - allowance < work["max_calls"], "该工作的调用上限已用尽")
     allowed = [name for name in definition.get("tools") or [] if name in TOOL_SPECS]
     require(allowed, "该工作的 Agent 定义没有可用的只读工具")
     require(set(allowed) <= set(charter["allowed_tools"]), "工具不在当前有效章程允许的范围内")
@@ -467,10 +471,12 @@ def apply_step(state, charter, data, principal, instance, clock=None):
     work = records(state)["works"].get(data["work_id"])
     require(work is not None, "工作不存在或不属于此 AU")
     attempt = active_attempt(work, instance)
-    step = reserve_step(state, {"work_id": data["work_id"]}, clock, instance)
+    step = (next(item for item in work["steps"] if item["step_ref"] == data["step_id"])
+            if data.get("step_id") else reserve_step(state, {"work_id": data["work_id"]}, clock, instance))
+    require(step["status"] == "reserved" and step["attempt_id"] == attempt["id"], "原调用预约或执行归属已变化")
     usage = data.get("usage") or {}
-    step["usage"] = {key: int(usage[key]) for key in ("input_tokens", "output_tokens")
-                     if isinstance(usage.get(key), int)}
+    step["usage"] = {key: usage[key] for key in ("input_tokens", "output_tokens")
+                     if type(usage.get(key)) is int and usage[key] >= 0}
     step["cost_status"] = "unknown"
     recorded = []
     for call in data["tool_calls"]:
@@ -482,8 +488,7 @@ def apply_step(state, charter, data, principal, instance, clock=None):
                               "title": data["title"], "content": data["content"],
                               "sources": list(dict.fromkeys(data.get("sources", [])
                                          + [item["step_ref"] for item in recorded]))}, principal, clock)
-    settle_step(state, {"work_id": data["work_id"], "step_id": step["step_ref"],
-                        "status": "used", "reason": "模型步进已完成"}, clock)
+    step.update(status="used", reason="模型步进已完成", settled_at=_stamp(clock))
     return {"step": step["step_ref"], "tool_calls": len(recorded), "result": bool(data["content"]),
             "usage": dict(step["usage"]), "cost_status": step["cost_status"]}
 
@@ -514,6 +519,7 @@ def reconcile_step(state, data, clock=None):
     require(work is not None, "工作不存在或不属于此 AU")
     step = next((item for item in work.get("steps") or [] if item["step_ref"] == data["step_id"]), None)
     require(step is not None, "该工作没有此步进记录")
+    require(not step.get("command_id"), "自动调用须查询原模型请求，不能凭手工判断释放预约")
     require(step["status"] == "unknown", "只有结果未知的步进需要核对")
     step.update(status=data["status"], reason=data["reason"], settled_at=_stamp(clock))
     return {key: step[key] for key in ("step_ref", "status", "reason")}

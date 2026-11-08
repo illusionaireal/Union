@@ -97,6 +97,17 @@ class ModeldWorkTransport:
             raise UnadoptableWorkResult(request_id, usage)
         return result["message"], dict(usage)
 
+    def lookup(self, request_id):
+        """Only GET the original scoped request; missing is not proof of no call."""
+        remote = self.client.request(request_id, self.au_id)
+        if remote.get("id") != request_id or remote.get("au_id") != self.au_id:
+            raise ServiceError("模型服务回执范围不匹配；原调用待核对")
+        if remote.get("state") != "completed":
+            return None
+        result = remote.get("result")
+        usage = result.get("usage") if isinstance(result, dict) else None
+        return dict(usage) if isinstance(usage, dict) else {}
+
 
 def modeld_factory(config_file=None, *, timeout_seconds=60):
     """Host wiring: build the channel from the host-private modeld configuration."""
