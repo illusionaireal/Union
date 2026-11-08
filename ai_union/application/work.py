@@ -163,7 +163,6 @@ class WorkService:
                     receipt.update(status="rejected", effect="none", message=str(error))
                 cx.execute("RELEASE work_command")
                 receipt["version"] = state["version"]
-                self.store.save(cx, state, charter, request, receipt, state["policy_version"], changed=changed)
                 if receipt.get("cancel_accepted") is False and receipt.get("model_request_id"):
                     channel = getattr(self, "transport", None)
                     if channel is None and self.transport_factory is not None:
@@ -180,6 +179,7 @@ class WorkService:
                             receipt["message"] = "取消受理已送达原线端请求；执行事实仍按原请求核对，预约保留"
                         except Exception:  # noqa: BLE001 - a refused cancel keeps the original facts
                             receipt["cancel_accepted"] = False
+                self.store.save(cx, state, charter, request, receipt, state["policy_version"], changed=changed)
         return receipt
 
     def close_completed_result_attempt(self, cx, state, data):
