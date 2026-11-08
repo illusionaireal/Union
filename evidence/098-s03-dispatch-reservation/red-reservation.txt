@@ -1,0 +1,23 @@
+test_the_reservation_is_persisted_before_the_model_is_called (tests.test_core_work.CoreWorkTests.test_the_reservation_is_persisted_before_the_model_is_called) ... FAIL
+test_a_second_step_cannot_dispatch_while_the_first_call_is_in_flight (tests.test_core_work.CoreWorkTests.test_a_second_step_cannot_dispatch_while_the_first_call_is_in_flight) ... ERROR
+
+======================================================================
+ERROR: test_a_second_step_cannot_dispatch_while_the_first_call_is_in_flight (tests.test_core_work.CoreWorkTests.test_a_second_step_cannot_dispatch_while_the_first_call_is_in_flight)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 935, in test_a_second_step_cannot_dispatch_while_the_first_call_is_in_flight
+    self.work_with_listing(**{"max_calls": 1})
+TypeError: CoreWorkTests.work_with_listing() got an unexpected keyword argument 'max_calls'
+
+======================================================================
+FAIL: test_the_reservation_is_persisted_before_the_model_is_called (tests.test_core_work.CoreWorkTests.test_the_reservation_is_persisted_before_the_model_is_called)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 927, in test_the_reservation_is_persisted_before_the_model_is_called
+    self.assertEqual(observed["budget"]["reserved"], 1, "the call is reserved while it is being dispatched")
+AssertionError: 0 != 1 : the call is reserved while it is being dispatched
+
+----------------------------------------------------------------------
+Ran 2 tests in 1.645s
+
+FAILED (failures=1, errors=1)
