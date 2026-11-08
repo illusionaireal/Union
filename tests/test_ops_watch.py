@@ -41,7 +41,7 @@ class OpsWatchTests(unittest.TestCase):
         self.assertEqual(failed["error"], "RuntimeError")
         self.assertNotIn("secret", (self.root / "status.json").read_text())
 
-    def collection_fixture(self, failed_source=None):
+    def collection_fixture(self, failed_source=None, tasks=None):
         env = self.root / "board.env"
         env.write_text("UNION_KANBAN_URL=https://board.example.invalid\nUNION_KANBAN_KEY=fixture-secret\n")
         config = {"env_file": str(env), "github_repository": "example/union", "ssh_port": 222,
@@ -57,7 +57,7 @@ class OpsWatchTests(unittest.TestCase):
             if "/messages?" in url:
                 result = {"latest_id": 7, "messages": []}
             elif source == "board":
-                result = {"revision": 7, "tasks": []}
+                result = {"revision": 7, "tasks": tasks or []}
             elif "/pulls?" in url:
                 result = []
             else:
@@ -76,6 +76,43 @@ class OpsWatchTests(unittest.TestCase):
                                        return_value=SimpleNamespace(open=request)))
         self.enterContext(patch.object(watch, "run_command", side_effect=command))
         return config, calls
+
+    def test_elapsed_blocker_wakes_once_per_review_period_without_board_edits(self):
+        card = {"id": 22, "version": 7, "status": "blocked", "assignee": "original-owner",
+                "archived": 0, "updated_at": "2026-11-08T00:00:00Z"}
+        config, _ = self.collection_fixture(tasks=[card])
+        def observe(at):
+            with patch.object(watch, "now", return_value=at):
+                return watch.poll(self.root, lambda: watch.collect(config))
+        before = observe("2026-11-08T03:59:59+00:00")
+        watch.acknowledge(self.root, before["fingerprint"])
+        due = observe("2026-11-08T04:00:00+00:00")
+        self.assertTrue(due["pending"], "elapsed time must wake review without a board edit")
+        self.assertEqual(due["snapshot"]["attention"][0]["assignee"], "original-owner")
+        self.assertEqual(due["snapshot"]["attention"][0]["period"], 1)
+        watch.acknowledge(self.root, due["fingerprint"])
+        self.assertFalse(observe("2026-11-08T04:05:00+00:00")["pending"])
+        self.assertTrue(observe("2026-11-08T08:00:00+00:00")["pending"])
+
+    def test_review_uses_fresh_online_states_and_configured_interval(self):
+        tasks = [{"id": i, "version": 1, "status": status, "assignee": "owner", "archived": 0,
+                  "updated_at": "2026-11-08T00:00:00Z"}
+                 for i, status in enumerate(("progress", "review", "blocked", "done", "backlog"))]
+        tasks.extend([{**tasks[0], "id": 10, "archived": 1}, {**tasks[0], "id": 11, "updated_at": "bad"},
+                      {**tasks[0], "id": 12, "updated_at": "2026-11-08T00:00:00"}])
+        config, _ = self.collection_fixture(tasks=tasks)
+        config["blocked_review_seconds"] = 600
+        with patch.object(watch, "now", return_value="2026-11-08T00:10:00+00:00"):
+            value = watch.collect(config)
+        self.assertEqual([x["id"] for x in value.get("attention", [])], [0, 1, 2])
+
+    def test_failed_board_read_does_not_age_cached_cards_into_fresh_attention(self):
+        watch.poll(self.root, lambda: {"attention": [{"id": 22, "period": 1}]})
+        config, _ = self.collection_fixture("board")
+        failed = watch.poll(self.root, lambda: watch.collect(config))
+        self.assertEqual(failed["observations"]["board"]["status"], "failed")
+        self.assertNotIn("attention", failed["observations"]["github"]["data"])
+        self.assertNotEqual(watch.execution_signal(failed)["kind"], "complete")
 
     def test_board_failure_still_records_github_and_nas_without_advancing_cursor(self):
         first = watch.poll(self.root, lambda: {"revision": 2})
