@@ -1,0 +1,36 @@
+test_one_work_uses_at_most_two_calls_and_reports_usage_without_cost (tests.test_core_work_real.RealBoundedAcceptanceTests.test_one_work_uses_at_most_two_calls_and_reports_usage_without_cost) ... FAIL
+test_an_interrupted_call_stays_unknown_and_a_manual_reconcile_cannot_release_it (tests.test_core_work_real_interrupt.RealInterruptTests.test_an_interrupted_call_stays_unknown_and_a_manual_reconcile_cannot_release_it) ... FAIL
+
+======================================================================
+FAIL: test_one_work_uses_at_most_two_calls_and_reports_usage_without_cost (tests.test_core_work_real.RealBoundedAcceptanceTests.test_one_work_uses_at_most_two_calls_and_reports_usage_without_cost)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Benedict\AppData\Local\Temp\union-rebase\tests\test_core_work_real.py", line 233, in test_one_work_uses_at_most_two_calls_and_reports_usage_without_cost
+    self.assertEqual(problems, [], "acceptance evidence must prove a real exchange")
+AssertionError: Lists differ: ['没有产出任何成果', '需要读取后第二次模型调用及候选成果，不能以单回合摘要验收[62 chars]轮模型'] != []
+
+First list contains 5 additional elements.
+acceptance summary: {"receipt": {"status": "succeeded", "message": "自动循环结束：模型没有给出成果，已用满本轮轮次", "turns": 2, "tool_calls": 2, "result": false, "usage": {"input_tokens": 935, "output_tokens": 77}}, "budget": {"max_calls": 2, "reserved": 0, "used": 2}, "usage": {"input_tokens": 935, "output_tokens": 77}, "tool_calls": ["list_documents", "read_document"], "results": 0, "problems": ["没有产出任何成果", "需要读取后第二次模型调用及候选成果，不能以单回合摘要验收", "原步进与观察到的模型用量不一致", "原步进与观察到的模型用量不一致", "未证明授权资料正文及匹配工具回执进入下一轮模型"]}
+First extra element 0:
+'没有产出任何成果'
+interrupt observed: {"request_id": "work-77e9c2d26e82ea4d819ab671a9e0227c7c74438bf8264668ee1cfeb676b7c563", "step_ref": "work-real#s1", "remote_cancellation_confirmed": false, "state": "streaming", "provider_output_observed": true, "cancel_error": "unconfirmed_or_completed"}
+
++ []
+- ['没有产出任何成果',
+-  '需要读取后第二次模型调用及候选成果，不能以单回合摘要验收',
+-  '原步进与观察到的模型用量不一致',
+-  '原步进与观察到的模型用量不一致',
+-  '未证明授权资料正文及匹配工具回执进入下一轮模型'] : acceptance evidence must prove a real exchange
+
+======================================================================
+FAIL: test_an_interrupted_call_stays_unknown_and_a_manual_reconcile_cannot_release_it (tests.test_core_work_real_interrupt.RealInterruptTests.test_an_interrupted_call_stays_unknown_and_a_manual_reconcile_cannot_release_it)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Benedict\AppData\Local\Temp\union-rebase\tests\test_core_work_real_interrupt.py", line 147, in test_an_interrupted_call_stays_unknown_and_a_manual_reconcile_cannot_release_it
+    self.assertTrue(observed.get("cancel_requested"), "modeld did not acknowledge the original cancellation")
+AssertionError: None is not true : modeld did not acknowledge the original cancellation
+
+----------------------------------------------------------------------
+Ran 2 tests in 15.780s
+
+FAILED (failures=2)
