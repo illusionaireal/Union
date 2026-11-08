@@ -1,0 +1,65 @@
+test_cancel_intent_is_committed_before_external_delivery (__main__.CancelDeliveryProbes.test_cancel_intent_is_committed_before_external_delivery) ... {"transport": [{"intent": false, "receipt_count": 0, "writer_available": false}], "cancel_posts": 1, "post_http": 200, "post_accepted": true, "saved_intent": true}
+FAIL
+test_external_cancel_does_not_hold_the_au_writer (__main__.CancelDeliveryProbes.test_external_cancel_does_not_hold_the_au_writer) ... {"transport": [{"intent": false, "receipt_count": 0, "writer_available": false}], "cancel_posts": 1, "post_http": 200, "post_accepted": true, "saved_intent": true}
+FAIL
+test_delivered_receipt_survives_original_get_and_restart (__main__.CancelDeliveryProbes.test_delivered_receipt_survives_original_get_and_restart) ... {"transport": [{"intent": false, "receipt_count": 0, "writer_available": false}], "cancel_posts": 1, "post_http": 200, "post_accepted": true, "saved_intent": true}
+ok
+test_wrong_model_request_response_cannot_confirm_delivery (__main__.CancelDeliveryProbes.test_wrong_model_request_response_cannot_confirm_delivery) ... {"transport": [{"intent": false, "receipt_count": 0, "writer_available": false}], "cancel_posts": 1, "post_http": 200, "post_accepted": true, "saved_intent": true}
+FAIL
+test_wrong_au_response_cannot_confirm_delivery (__main__.CancelDeliveryProbes.test_wrong_au_response_cannot_confirm_delivery) ... {"transport": [{"intent": false, "receipt_count": 0, "writer_available": false}], "cancel_posts": 1, "post_http": 200, "post_accepted": true, "saved_intent": true}
+FAIL
+test_commit_failure_cannot_send_cancel_and_lose_its_intent (__main__.CancelDeliveryProbes.test_commit_failure_cannot_send_cancel_and_lose_its_intent) ... {"transport": [{"intent": false, "receipt_count": 0, "writer_available": false}], "cancel_posts": 1, "post_http": 503, "post_accepted": null, "saved_intent": false}
+FAIL
+
+======================================================================
+FAIL: test_cancel_intent_is_committed_before_external_delivery (__main__.CancelDeliveryProbes.test_cancel_intent_is_committed_before_external_delivery)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Benedict\AppData\Local\Temp\u086-delivery-probes.py", line 126, in test_cancel_intent_is_committed_before_external_delivery
+    self.assertTrue(value["at_transport"][0]["intent"],
+AssertionError: False is not true : external cancel began before the intent was committed
+
+======================================================================
+FAIL: test_external_cancel_does_not_hold_the_au_writer (__main__.CancelDeliveryProbes.test_external_cancel_does_not_hold_the_au_writer)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Benedict\AppData\Local\Temp\u086-delivery-probes.py", line 132, in test_external_cancel_does_not_hold_the_au_writer
+    self.assertTrue(value["at_transport"][0]["writer_available"],
+AssertionError: False is not true : external cancellation still holds the AU write transaction
+
+======================================================================
+FAIL: test_wrong_model_request_response_cannot_confirm_delivery (__main__.CancelDeliveryProbes.test_wrong_model_request_response_cannot_confirm_delivery)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Benedict\AppData\Local\Temp\u086-delivery-probes.py", line 149, in test_wrong_model_request_response_cannot_confirm_delivery
+    self.assertIsNot(value["post"]["value"]["receipt"].get("cancel_accepted"), True,
+AssertionError: unexpectedly identical: True : wrong model request identity was accepted
+
+======================================================================
+FAIL: test_wrong_au_response_cannot_confirm_delivery (__main__.CancelDeliveryProbes.test_wrong_au_response_cannot_confirm_delivery)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Benedict\AppData\Local\Temp\u086-delivery-probes.py", line 154, in test_wrong_au_response_cannot_confirm_delivery
+    self.assertIsNot(value["post"]["value"]["receipt"].get("cancel_accepted"), True,
+AssertionError: unexpectedly identical: True : wrong AU identity was accepted
+
+======================================================================
+FAIL: test_commit_failure_cannot_send_cancel_and_lose_its_intent (__main__.CancelDeliveryProbes.test_commit_failure_cannot_send_cancel_and_lose_its_intent)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Benedict\AppData\Local\Temp\u086-delivery-probes.py", line 161, in test_commit_failure_cannot_send_cancel_and_lose_its_intent
+    self.assertEqual(value["cancellations"], [],
+AssertionError: Lists differ: [('work-3606589b6ef9734b035b881713ffbd13c0[68 chars]f4')] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+('work-3606589b6ef9734b035b881713ffbd13c000dfe38a0b1b77e8321f27329ef98c', 'org-5ca8424567e7428aab2d8bc095cc7df4')
+
++ []
+- [('work-3606589b6ef9734b035b881713ffbd13c000dfe38a0b1b77e8321f27329ef98c',
+-   'org-5ca8424567e7428aab2d8bc095cc7df4')] : cancel was sent but the transaction rolled back its only durable intent
+
+----------------------------------------------------------------------
+Ran 6 tests in 6.592s
+
+FAILED (failures=5)

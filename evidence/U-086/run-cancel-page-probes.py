@@ -3,7 +3,8 @@
 Usage: python run-cancel-page-probes.py <export-directory> <node-executable>
 Install the candidate's locked dependencies or link an identical installation
 as export-directory/node_modules first. No tracked candidate source is replaced.
-Expected result on a3bb2cc: four failures and one passing browsing control.
+The initial five probes had four failures on a3bb2cc; all five pass on 22649f4.
+The expanded seven probes add two continuation failures on 22649f4.
 """
 import subprocess
 import sys
