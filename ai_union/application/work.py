@@ -533,6 +533,8 @@ class WorkService:
             "effect": "applied" if turns else "none", "message": message, "turns": turns,
             "tool_calls": tool_calls, "result": produced, "version": version,
             "usage": usage_total, "cost_status": "unknown"}
+        if status == "rejected":
+            receipt["phase"] = "loop-stopped"
         if status == "unknown":
             receipt["model_outcome"] = "unknown"
         elif model_outcome is not None:

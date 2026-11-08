@@ -2,6 +2,7 @@
 import unittest
 from unittest.mock import patch
 
+from ai_union.domain import work as rules
 from ai_union.errors import CoreError, Rejected
 from tests.test_core_work import work_data
 from tests.test_work_context import tool_call
@@ -37,6 +38,8 @@ class WorkLoopReceiptTests(WorkDispatchTests):
 
     def assert_completed_facts(self, receipt):
         self.assertEqual(receipt["status"], "rejected", receipt)
+        self.assertEqual(receipt.get("phase"), "loop-stopped")
+        self.assertEqual(receipt["effect"], "applied")
         self.assertEqual(receipt["turns"], 1)
         self.assertEqual(receipt["tool_calls"], 1)
         self.assertEqual(receipt["usage"], {"input_tokens": 11, "output_tokens": 4})
@@ -44,6 +47,9 @@ class WorkLoopReceiptTests(WorkDispatchTests):
         self.assertEqual(receipt["version"], self.state()["version"])
         self.assertEqual(len(self.channel.calls), 1, "the refused next turn never dispatched")
         self.assertEqual([step["status"] for step in self.card()["steps"]], ["used"])
+        self.assertEqual(rules.budget(self.card())["used"], 1)
+        self.assertEqual(rules.budget(self.card())["reserved"], 0)
+        self.assertEqual(rules.usage_total(self.card()), receipt["usage"])
         self.assertEqual(self.card().get("results", []), [])
 
     def test_version_change_between_turns_returns_facts_and_replays_after_restart(self):
@@ -98,6 +104,7 @@ class WorkLoopReceiptTests(WorkDispatchTests):
         self.assertEqual(status, 200, value)
         receipt = value["receipt"]
         self.assertEqual(receipt["status"], "rejected")
+        self.assertEqual(receipt.get("phase"), "loop-stopped")
         self.assertEqual((receipt["turns"], receipt["tool_calls"], receipt["effect"]), (0, 0, "none"))
         self.assertEqual(receipt["usage"], {"input_tokens": 0, "output_tokens": 0})
         self.assertEqual(self.channel.calls, [])
@@ -132,6 +139,48 @@ class WorkLoopReceiptTests(WorkDispatchTests):
 
     def test_storage_failure_cannot_be_reported_as_admission_refusal(self):
         self.assert_uncommitted_result_keeps_reservation(OSError("controlled final storage failure"))
+
+    def test_completed_loop_does_not_claim_an_admission_stop(self):
+        request = self.loop_request()
+        self.app.work.transport = self.channel = CallbackTransport()
+        receipt = self.app.work.run_loop(self.token, request)
+        self.assertEqual(receipt["status"], "succeeded")
+        self.assertEqual(receipt["turns"], 1)
+        self.assertTrue(receipt["result"])
+        self.assertNotIn("phase", receipt)
+
+    def test_schema_three_second_turn_reservation_is_not_a_pre_dispatch_refusal(self):
+        request = self.loop_request()
+        save = self.app.work.store.save
+
+        def historical_save(cx, state, charter, command, *args, **kwargs):
+            # Preserve PR #17's real schema-3 format and coherent audit chain.
+            # The fault follows the second call; its reservation is committed.
+            if len(self.channel.calls) == 2:
+                raise Rejected("controlled second-turn final save rejection")
+            if command["kind"].startswith("work_dispatch_"):
+                state["schema_version"] = 3
+            return save(cx, state, charter, command, *args, **kwargs)
+
+        with patch.object(self.app.work.store, "save", side_effect=historical_save):
+            with self.assertRaisesRegex(Rejected, "second-turn final save"):
+                self.app.work.run_loop(self.token, request)
+        self.assertEqual(self.state()["schema_version"], 3)
+        self.assertEqual([step["status"] for step in self.card()["steps"]], ["used", "reserved"])
+        original = self.card()["steps"][1]["model_request_id"]
+        with self.app.work.store.transaction(self.directory) as cx:
+            self.assertIsNone(self.app.work.store.existing(cx, request, self.principal))
+        receipt = self.app.work.run_loop(self.token, request)
+        self.assertEqual(receipt["status"], "unknown")
+        self.assertEqual(receipt["model_outcome"], "unknown")
+        self.assertNotIn("phase", receipt)
+        self.assertEqual(receipt["turns"], 1)
+        self.assertEqual(receipt["usage"], {"input_tokens": 11, "output_tokens": 4})
+        self.assertEqual(rules.budget(self.card())["used"], 1)
+        self.assertEqual(rules.budget(self.card())["reserved"], 1)
+        self.assertEqual(self.state()["schema_version"], 3)
+        self.assertEqual(self.card()["steps"][1]["model_request_id"], original)
+        self.assertEqual(len(self.channel.calls), 2, "original unknown request is never resent")
 
 
 def load_tests(loader, tests, pattern):
