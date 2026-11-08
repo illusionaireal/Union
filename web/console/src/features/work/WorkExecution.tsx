@@ -245,8 +245,39 @@ export function WorkExecution({
       if (current()) setChecking(false);
     }
   }
+  const cancellable = item.steps.find((step) => step.status === 'reserved' && !step.command_id);
+  const [cancelling, setCancelling] = useState(false);
+  async function cancelLocal() {
+    if (busy.current || !cancellable) return;
+    busy.current = true;
+    setCancelling(true);
+    setNote('');
+    try {
+      await liveSession();
+      const result = await api.coreWorkCommand({
+        id: crypto.randomUUID(),
+        kind: 'cancel_step',
+        base_version: item.version,
+        organization_id: scope.organizationId,
+        data: { work_id: scope.workId, step_id: cancellable.step_ref,
+                reason: '页面级取消：操作者在派发前请求停止' },
+      });
+      if (current()) setNote(String(result.receipt?.message || '已记录本地取消；远端结果未知，预约已释放且费用保持未知'));
+      await client.invalidateQueries({ queryKey: ['core-work', scope.organizationId] });
+    } catch (error) {
+      failure(error);
+    } finally {
+      busy.current = false;
+      if (current()) setCancelling(false);
+    }
+  }
   return (
     <div className="work-execution" aria-label={'运行 ' + item.title}>
+      {cancellable && (
+        <button type="button" disabled={cancelling} onClick={() => void cancelLocal()}>
+          取消本次执行
+        </button>
+      )}
       {reference ? (
         <>
           <p>

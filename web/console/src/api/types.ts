@@ -354,6 +354,8 @@ export interface CoreWorkStep {
   attempt_id: string;
   purpose: string;
   status: 'reserved' | 'used' | 'released' | 'unknown';
+  command_id?: string | null;
+  model_request_id?: string;
   at: string;
 }
 
