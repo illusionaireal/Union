@@ -1892,6 +1892,13 @@
                     "from": "doing",
                     "to": "doing",
                     "note": "沿在线#22评论70在PR28@894f510基线上交付同请求并发准备失败的回执归属修复候选，分支codex/u067-preflight-receipt-race。4个行为RED后6行修复；46项定向、原3探针与npm check通过，完整验证见evidence/U-067/preflight-receipt-race/README.md。迟到准入拒绝在原AU事务内核对已提交意图，不抢占实际派发的终态/用量，unknown保留原预约；无schema/审计规则变更。待当前head CI与另一工程角色复核，原owner/status和PR22 driver分工、真实验收未完成状态保持；0真实调用、无部署或迁移。仅追加交付历史，不用本地主账改写在线运行态。"
+                },
+                {
+                    "at": "2026-11-08T14:36:32.799Z",
+                    "actor": "codex-home/foreground-resume-01a1b7fe-81cb-7ec0-8459-d85fd97a9ba7",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "前台独立复核并采用PR24/25/30和组合PR28（bd3445a），PR29夹具证据822847d；逾期driver由前台修正并采用PR32（86f283a），751 Python/9跳过、npm及14项当前CI通过，初次隔离失败保留。证据evidence/U-067/coordinator-adoption.md。仍缺页面接自动循环和真实有界成果/中断出口；0新增真实调用，原owner/未完状态保留。用户指定五卡粒度复核见docs/reviews/2026-11-08-task-granularity.md；剩余建议3组，未自动认领或改变在线依赖。"
                 }
             ],
             "claim": {
@@ -1915,7 +1922,7 @@
             "owner": null,
             "blocker": null,
             "started_at": null,
-            "updated_at": "2026-11-06",
+            "updated_at": "2026-11-08",
             "completion": null,
             "history": [
                 {
@@ -1924,6 +1931,13 @@
                     "from": "backlog",
                     "to": "backlog",
                     "note": "按用户“每张卡看不懂、内容太抽象”的反馈，改为具体功能、操作和完成演示。原技术验收完整保留在 specs/053-union-rewrite/tasks.md#u-068-development；范围、状态、owner、依赖、claim和既有验收记录不变，不执行未来卡。"
+                },
+                {
+                    "at": "2026-11-08T14:36:32.800Z",
+                    "actor": "codex-home/foreground-resume-01a1b7fe-81cb-7ec0-8459-d85fd97a9ba7",
+                    "from": "backlog",
+                    "to": "backlog",
+                    "note": "用户指定在线#23粒度复核：反馈接收、采用并交付二版、来源事实纠正、真实反馈闭环建议4组，完整父卡验收/依赖保持。报告docs/reviews/2026-11-08-task-granularity.md；仅评审，不开启未来切片。"
                 }
             ]
         },
@@ -2001,7 +2015,7 @@
             "owner": null,
             "blocker": null,
             "started_at": null,
-            "updated_at": "2026-11-06",
+            "updated_at": "2026-11-08",
             "completion": null,
             "history": [
                 {
@@ -2010,6 +2024,13 @@
                     "from": "backlog",
                     "to": "backlog",
                     "note": "按用户“每张卡看不懂、内容太抽象”的反馈，改为具体功能、操作和完成演示。原技术验收完整保留在 specs/053-union-rewrite/tasks.md#u-070-development；范围、状态、owner、依赖、claim和既有验收记录不变，不执行未来卡。"
+                },
+                {
+                    "at": "2026-11-08T14:36:32.800Z",
+                    "actor": "codex-home/foreground-resume-01a1b7fe-81cb-7ec0-8459-d85fd97a9ba7",
+                    "from": "backlog",
+                    "to": "backlog",
+                    "note": "用户指定在线#25粒度复核：独立工作隔离、重启原请求核对、长任务输入、有目的唤醒、独立监督、真实故障/治理窗口建议6组；共享记录先冻结并顺序集成。报告docs/reviews/2026-11-08-task-granularity.md；未改原owner/状态/依赖。"
                 }
             ]
         },
@@ -2029,7 +2050,7 @@
             ],
             "blocker": null,
             "started_at": null,
-            "updated_at": "2026-11-06",
+            "updated_at": "2026-11-08",
             "completion": null,
             "history": [
                 {
@@ -2038,6 +2059,13 @@
                     "from": "backlog",
                     "to": "backlog",
                     "note": "按用户“每张卡看不懂、内容太抽象”的反馈，改为具体功能、操作和完成演示。原技术验收完整保留在 specs/053-union-rewrite/tasks.md#u-071-development；范围、状态、owner、依赖、claim和既有验收记录不变，不执行未来卡。"
+                },
+                {
+                    "at": "2026-11-08T14:36:32.800Z",
+                    "actor": "codex-home/foreground-resume-01a1b7fe-81cb-7ec0-8459-d85fd97a9ba7",
+                    "from": "backlog",
+                    "to": "backlog",
+                    "note": "用户指定在线#30粒度复核：独立客户端创建/读取、一个受控命令、逐调用者用例重绑/退役、核心独立性黑盒4类；报告docs/reviews/2026-11-08-task-granularity.md。保留原依赖与未开始状态，不用文档通过代替公开契约采用。"
                 }
             ]
         },
@@ -2188,7 +2216,7 @@
             ],
             "blocker": null,
             "started_at": null,
-            "updated_at": "2026-11-07",
+            "updated_at": "2026-11-08",
             "completion": null,
             "history": [
                 {
@@ -2204,6 +2232,13 @@
                     "from": "ready",
                     "to": "ready",
                     "note": "S09.2 Responses 直接配置工程候选：specs/053-union-rewrite/s09-responses-contract.md；evidence/u075-responses-profile-2026-11-08/README.md。受控工程、协议绑定/恢复及候选兼容检查已交付，真实供应商与中断恢复仍待有界授权；不关闭 U-075。本条只同步长期实现证据，实时负责人、状态、依赖和 WIP 以 Kanban #28 为准，不从此镜像反向覆盖看板。"
+                },
+                {
+                    "at": "2026-11-08T14:36:32.800Z",
+                    "actor": "codex-home/foreground-resume-01a1b7fe-81cb-7ec0-8459-d85fd97a9ba7",
+                    "from": "ready",
+                    "to": "ready",
+                    "note": "在线#28 v12已记录V1流式独立工程缺口，评论81/交流44确认；原owner/blocked/WIP保留。用户粒度复核：当前Responses剩余流式、profile输入/续接、真实资料往返、真实中断恢复4组，未来profile另定范围。报告docs/reviews/2026-11-08-task-granularity.md；PR15已采用范围不重复开发。"
                 }
             ],
             "claim": null
@@ -2251,14 +2286,16 @@
             "dependencies": [],
             "blocker": null,
             "started_at": "2026-11-07",
-            "updated_at": "2026-11-07",
+            "updated_at": "2026-11-08",
             "completion": {
                 "scope": "real",
                 "reviewer": "Codex（实施者自检；限实际只读巡检与调度注册）",
                 "evidence": [
-                    "evidence/073-deployment-watch/README.md"
+                    "evidence/073-deployment-watch/README.md",
+                    "evidence/U-079/agent-resume.md",
+                    "evidence/U-079/overdue-host-adoption.md"
                 ],
-                "note": "已建立并实测Windows五分钟巡检：两次计划运行返回0，NAS服务/看板/留言/GitHub读取成功。7项行为测试和npm检查通过；全量614项保留1既有WinError1314及9skip，由#32承接。CLI未登录，自动Agent处理未验收；不等于S08完整部署。"
+                "note": "已建立并实测Windows五分钟巡检：两次计划运行返回0，NAS服务/看板/留言/GitHub读取成功。7项行为测试和npm检查通过；全量614项保留1既有WinError1314及9skip，由#32承接。CLI未登录，自动Agent处理未验收；不等于S08完整部署。 后续2026-11-08：PR19已修复实际执行；PR31增加四小时停滞复查，宿主精确源安装/三源读取/attention和互斥实测通过，原只读交付记录保留。"
             },
             "history": [
                 {
@@ -2267,6 +2304,13 @@
                     "from": "ready",
                     "to": "doing",
                     "note": "用户2026-11-08授权独立部署与集成值守；在线#33按实际user.id认领成功。保留所有既有在制和阻塞记录。新增实际运维并行责任，容量7→8；仅增加本轮一个值守接入任务，不改变S08完整出口。"
+                },
+                {
+                    "at": "2026-11-08T14:36:32.800Z",
+                    "actor": "codex-home/foreground-resume-01a1b7fe-81cb-7ec0-8459-d85fd97a9ba7",
+                    "from": "done",
+                    "to": "done",
+                    "note": "PR31经17 watcher回归及当前14项CI合并e7b139f，已安装精确源；14:21:55Z三源成功，board299，NAS running/OOM=false/restart=0，attention实际标出#28，前台锁下agent busy。#33 v5读回采用，证据evidence/U-079/overdue-host-adoption.md。每五分钟轮询/四小时停滞重评已生效，0新增真实产品调用。"
                 }
             ],
             "claim": null

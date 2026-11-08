@@ -1,5 +1,7 @@
 # U-067 证据索引
 
+当前采用见[前台交付记录](coordinator-adoption.md)和[五卡粒度复核](../../docs/reviews/2026-11-08-task-granularity.md)。以下候选/待复核描述保留形成时的历史范围。
+
 - [2026-11-08：长期阻塞的验收驱动修正](acceptance-intervention/README.md)：正文/来源/原请求/取消与核对逐项验证；保留旧失败历史，不把离线通过当成真实验收。
 - [2026-11-08：同请求并发准备失败不能抢占原派发回执](preflight-receipt-race/README.md)：4 RED → 6 GREEN，迟到拒绝与真实调用事实分开；保留原预约、用量和重启幂等，待独立工程复核。
 - [2026-11-08：组合候选的 V1 HTTP 夹具超时修复](core-http-fixture/README.md)：真实延迟 RED/GREEN、原 POST 一次与显式短超时；不改变产品权限或 CI 门禁。
