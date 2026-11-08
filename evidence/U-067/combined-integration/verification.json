@@ -1,0 +1,81 @@
+{
+  "baseline": "bbe8068335c32c04bdcf6d4fa20375245b912cf9",
+  "inputs": {
+    "24": "39db061e307accc7410bee6d71c14756abd43fbd",
+    "25": "4bce4919c36e2505d77da7619945ad148d0124d2",
+    "26_and_27": "9d60a948f5d89123f185b6456553ce7fefe1ed1a"
+  },
+  "combined_source_head": "e0da6b48a0a6bacce45e84629966b2d0c38be4ba",
+  "combined_source_tree": "7fed1f0517fa46a609c2b61d77c63c5a4b5e11fd",
+  "scope": "controlled",
+  "actor": "codex-home",
+  "independent_review": false,
+  "product_conflicts": [],
+  "evidence_conflict": "evidence/U-067/README.md; retained both entries",
+  "python_full": {
+    "tests": 723,
+    "skipped": 8,
+    "seconds": 447.38,
+    "exit_code": 0
+  },
+  "npm_check": {
+    "exit_code": 0,
+    "frontend_tests": 220,
+    "management_tests": 37,
+    "action_tests": 9,
+    "typecheck": "passed",
+    "build": "passed"
+  },
+  "original_review_probes": {
+    "passed": 3,
+    "exit_code": 0
+  },
+  "combined_browser": {
+    "source_head": "e0da6b48a0a6bacce45e84629966b2d0c38be4ba",
+    "scope": "controlled",
+    "actor": "codex-home",
+    "independent_review": false,
+    "checks": [
+      "schema 4 survives normal Console restart",
+      "document body delivered to the subsequent loopback model turn",
+      "stored document digest and exact result bytes agree",
+      "three distinct original model request IDs across two Works",
+      "reopened unknown request retains its original reservation without redispatch",
+      "completed and pending Work budgets visible together in the core route",
+      "refresh/reload preserve both Works",
+      "read-only controls and zero Work POSTs",
+      "1440/390/320 widths",
+      "expired session cannot download result"
+    ],
+    "loopback_model_posts": 3,
+    "real_model_calls": 0
+  },
+  "reused_privacy_checks": {
+    "checks": [
+      "authenticated download contains stored result body",
+      "principal mismatch hides records and downloads",
+      "organization mismatch hides records and downloads",
+      "protocol mismatch hides records and downloads",
+      "403 refresh removes previously rendered work",
+      "download endpoint rejects an expired session",
+      "all review navigation remains free of work writes"
+    ],
+    "passed": 7,
+    "independent_review_of_combination": false
+  },
+  "earlier_fixture_failures": [
+    "Compared decoded tool text to serialized JSON before parsing its envelope.",
+    "Tried the second attempt before stopping the first attempt on the same document root.",
+    "Compared the result JSON envelope to its text body before decoding."
+  ],
+  "earlier_probe_invocation": "Required source directory argument omitted; no tests executed; corrected invocation passed.",
+  "real_model_calls": 0,
+  "nas_service_switched": false,
+  "live_data_migrated": false,
+  "reviews_remaining": [
+    24,
+    25,
+    27
+  ],
+  "combined_head_ci": "required after publication"
+}
