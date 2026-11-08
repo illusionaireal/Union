@@ -1,0 +1,17 @@
+test_cancel_intent_is_committed_before_external_delivery (__main__.CancelDeliveryProbes.test_cancel_intent_is_committed_before_external_delivery) ... {"transport": [{"intent": true, "receipt_count": 1, "writer_available": true}], "cancel_posts": 1, "post_http": 200, "post_accepted": true, "saved_intent": true}
+ok
+test_external_cancel_does_not_hold_the_au_writer (__main__.CancelDeliveryProbes.test_external_cancel_does_not_hold_the_au_writer) ... {"transport": [{"intent": true, "receipt_count": 1, "writer_available": true}], "cancel_posts": 1, "post_http": 200, "post_accepted": true, "saved_intent": true}
+ok
+test_delivered_receipt_survives_original_get_and_restart (__main__.CancelDeliveryProbes.test_delivered_receipt_survives_original_get_and_restart) ... {"transport": [{"intent": true, "receipt_count": 1, "writer_available": true}], "cancel_posts": 1, "post_http": 200, "post_accepted": true, "saved_intent": true}
+ok
+test_wrong_model_request_response_cannot_confirm_delivery (__main__.CancelDeliveryProbes.test_wrong_model_request_response_cannot_confirm_delivery) ... {"transport": [{"intent": true, "receipt_count": 1, "writer_available": true}], "cancel_posts": 1, "post_http": 200, "post_accepted": false, "saved_intent": true}
+ok
+test_wrong_au_response_cannot_confirm_delivery (__main__.CancelDeliveryProbes.test_wrong_au_response_cannot_confirm_delivery) ... {"transport": [{"intent": true, "receipt_count": 1, "writer_available": true}], "cancel_posts": 1, "post_http": 200, "post_accepted": false, "saved_intent": true}
+ok
+test_commit_failure_cannot_send_cancel_and_lose_its_intent (__main__.CancelDeliveryProbes.test_commit_failure_cannot_send_cancel_and_lose_its_intent) ... {"transport": [], "cancel_posts": 0, "post_http": 503, "post_accepted": null, "saved_intent": false}
+ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 7.338s
+
+OK

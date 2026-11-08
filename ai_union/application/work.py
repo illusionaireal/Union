@@ -132,10 +132,10 @@ class WorkService:
                              .get("steps") or [] if s["step_ref"] == request["data"]["step_id"]), None)
                         if step is not None and step.get("command_id"):
                             receipt["step"] = rules.cancel_intent(local, request["data"])
-                            receipt["message"] = "取消受理已记录；原线端请求取消须送达 modeld，执行事实仍按原请求核对"
+                            receipt["message"] = "取消意图已提交；线端送达观察另行持久化，执行事实仍按原请求核对"
                             receipt["model_request_id"] = step["model_request_id"]
-                            receipt["cancel_accepted"] = False
-                            line_end = step["model_request_id"]
+                            receipt["cancel_accepted"] = None
+                            receipt["cancel_connection"] = copy.deepcopy(step.get("connection") or {})
                         else:
                             receipt["step"] = rules.cancel_step(local, request["data"])
                             receipt["message"] = "已记录本地取消；远端结果未知，预约已释放且费用保持未知"
@@ -163,23 +163,37 @@ class WorkService:
                     receipt.update(status="rejected", effect="none", message=str(error))
                 cx.execute("RELEASE work_command")
                 receipt["version"] = state["version"]
-                if receipt.get("cancel_accepted") is False and receipt.get("model_request_id"):
-                    channel = getattr(self, "transport", None)
-                    if channel is None and self.transport_factory is not None:
-                        try:
-                            channel = self.transport_factory(request["organization_id"], step.get("connection") or {})
-                        except Exception:  # noqa: BLE001 - delivery failure cannot change AU facts
-                            channel = None
-                    if channel is not None and hasattr(channel, "client"):
-                        from urllib.parse import urlencode
-                        try:
-                            channel.client.call("POST", "/v1/requests/" + receipt["model_request_id"]
-                                                + "/cancel?" + urlencode({"au_id": request["organization_id"]}), {})
-                            receipt["cancel_accepted"] = True
-                            receipt["message"] = "取消受理已送达原线端请求；执行事实仍按原请求核对，预约保留"
-                        except Exception:  # noqa: BLE001 - a refused cancel keeps the original facts
-                            receipt["cancel_accepted"] = False
                 self.store.save(cx, state, charter, request, receipt, state["policy_version"], changed=changed)
+        if receipt.get("cancel_accepted") is None and receipt.get("model_request_id"):
+            # The committed intent is durable; delivery happens outside the AU writer
+            # lock, and its observed result is stored as a second immutable fact of the
+            # same command (changed=False): replay always shows the latest observation.
+            channel = getattr(self, "transport", None)
+            if channel is None and self.transport_factory is not None:
+                try:
+                    channel = self.transport_factory(request["organization_id"],
+                                                     receipt.get("cancel_connection") or {})
+                except Exception:  # noqa: BLE001 - a refused cancel keeps the intent only
+                    channel = None
+            accepted, note = False, "线端取消送达失败；意图已持久化，可重试核对"
+            if channel is not None and hasattr(channel, "client"):
+                from urllib.parse import urlencode
+                try:
+                    remote = channel.client.call(
+                        "POST", "/v1/requests/" + receipt["model_request_id"]
+                        + "/cancel?" + urlencode({"au_id": request["organization_id"]}), {})
+                    if isinstance(remote, dict) and remote.get("id") == receipt["model_request_id"] \
+                            and remote.get("au_id") == request["organization_id"]:
+                        accepted = True
+                        note = "取消已送达原线端请求；执行事实仍按原请求核对，预约保留"
+                except Exception:  # noqa: BLE001 - delivery failure keeps the intent only
+                    accepted = False
+            receipt["cancel_accepted"] = accepted
+            receipt["message"] = note
+            observation = {"cancel_accepted": accepted, "message": note}
+            directory, intent = self.app.governance.locate(request["organization_id"])
+            self.store.record_delivery(directory, request["id"], principal, observation)
+            receipt["delivery"] = observation
         return receipt
 
     def close_completed_result_attempt(self, cx, state, data):

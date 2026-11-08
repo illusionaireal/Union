@@ -133,4 +133,14 @@ class GovernanceService:
         except Rejected as error:
             raise CoreError("invalid_request", str(error)) from error
         directory, intent = self.locate(au_id)
-        return self.store.receipt(directory, au_id, request_id, principal, intent)
+        receipt = self.store.receipt(directory, au_id, request_id, principal, intent)
+        # A cancel delivery observation is a separate durable fact of the same
+        # command; the merged view distinguishes acceptance from delivery.
+        observation = self.store.delivery_observation(directory, request_id, principal)
+        if observation is not None:
+            receipt = dict(receipt)
+            if receipt.get("kind") == "cancel_step" and observation.get("cancel_accepted") is not None:
+                receipt["cancel_accepted"] = observation["cancel_accepted"]
+                receipt["message"] = observation["message"]
+            receipt["delivery"] = observation
+        return receipt

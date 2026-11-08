@@ -99,6 +99,35 @@ class GovernanceStore:
             cx.execute("BEGIN IMMEDIATE")
             yield cx
 
+    def record_delivery(self, directory, request_id, principal, observation):
+        """A durable delivery observation for an already-committed cancel command.
+
+        The observation is its own fact (receipt hash over the observation), kept
+        out of the command row so the audited command/receipt stay immutable."""
+        with self.transaction(directory) as cx:
+            row = cx.execute("SELECT principal_id FROM governance_commands WHERE id=?",
+                             (request_id,)).fetchone()
+            require(row is not None and row[0] == principal, "原取消命令不存在或身份不匹配")
+            record = {"id": request_id, "principal_id": principal,
+                      "observed": encoded(observation)}
+            record["hash"] = digest({key: value for key, value in record.items() if key != "hash"})
+            cx.execute("CREATE TABLE IF NOT EXISTS delivery_observations(id TEXT PRIMARY KEY, principal_id TEXT NOT NULL, observed TEXT NOT NULL, hash TEXT NOT NULL)")
+            cx.execute("INSERT OR REPLACE INTO delivery_observations VALUES(?,?,?,?)",
+                       tuple(record[key] for key in ("id", "principal_id", "observed", "hash")))
+
+    def delivery_observation(self, directory, request_id, principal):
+        with self.transaction(directory) as cx:
+            if not self.has_commands(cx):
+                return None
+            table = cx.execute("SELECT 1 FROM sqlite_master WHERE name='delivery_observations'").fetchone()
+            if table is None:
+                return None
+            row = cx.execute("SELECT principal_id,observed FROM delivery_observations WHERE id=?",
+                             (request_id,)).fetchone()
+            if row is None or row[0] != principal:
+                return None
+            return json.loads(row[1])
+
     def initialize(self, cx):
         state = cx.execute("SELECT data FROM state WHERE id=1").fetchone()[0]
         charter = cx.execute("SELECT data FROM charters WHERE version=1").fetchone()[0]

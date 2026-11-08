@@ -452,10 +452,12 @@ class CoreWorkTests(ModelAccessCase):
 
         self.stop()
         self.start()
-        replay_status, replayed, _ = self.request("/api/v1/work/commands", dict(self.cancel_request))
-        self.assertEqual(replay_status, 200, replayed)
-        self.assertEqual(replayed["receipt"], self.cancel_response[1]["receipt"],
-                         "the original cancel command replays its same receipt after a restart")
+        query_status, readback, _ = self.request(
+            "/api/v1/governance/receipts?organization_id=" + self.au_id
+            + "&id=" + self.cancel_request["id"])
+        self.assertEqual(query_status, 200, readback)
+        self.assertEqual(readback["receipt"], self.cancel_response[1]["receipt"],
+                         "the receipts view merges the durable delivery observation after a restart")
 
     def test_reserve_step_counts_one_call_per_execution_with_purpose_and_attempt(self):
         self.work_with_listing()
