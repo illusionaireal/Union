@@ -45,3 +45,13 @@ npm run check:console
 | `npm run test:workspace`（真实 Chromium 浏览器验收） | **71 项通过**，`real_model_calls: 0` |
 
 日志：`npm-check.txt`、`browser-workspace.txt`。浏览器验收在工作面板上跑通既有用户流程，说明新增的自动执行/核对按钮没有破坏原有交互。
+
+## 重要：本分支只含证据，UI 代码在单独分支（2026-11-08 23:45）
+
+`work-ui-auto` 分支上的 UI 提交 `9bce6d3` 基于旧版 `WorkPanel.tsx`；PR #26（U-081）重写了该文件，直接 cherry-pick 会冲突。因此本证据分支（`dsh/s03-final-evidence`）**只含证据**，UI 需在最新 `WorkPanel.tsx` 上重放：
+
+- 新增组件 `AutoRunActions`：有 running attempt → 按钮「自动执行（连续，最多 3 步）」→ `run_loop{work_id}`；有 `unknown` 步进 → 提示「存在未确认的原模型请求：<step_ref>」+「核对原请求」→ `reconcile_step{status:'used'}`；
+- 在工作动作区渲染该组件（紧跟 `AttemptActions`）；
+- 两个测试用例文本见 `ui-tests.txt`（自动执行触发 run_loop；unknown 显示提示并触发 reconcile_step）。
+
+重放后需跑 `npm run check:console`（预期 21 文件 / 208 测试）与 `npm run test:workspace`（71 项）。
