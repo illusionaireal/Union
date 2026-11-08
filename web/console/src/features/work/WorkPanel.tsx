@@ -183,16 +183,22 @@ function AttemptActions({ item, send, busy }: { item: CoreWorkItem; send: (kind:
   );
 }
 
-export function WorkPanel({ organizationId }: { organizationId: string }) {
+export function WorkPanel({ organizationId, readOnly = false, principalId, serviceInstance }: {
+  organizationId: string;
+  readOnly?: boolean;
+  principalId?: string;
+  serviceInstance?: string;
+}) {
   const client = useQueryClient();
   const [busy, setBusy] = useState(false);
   const [note, setNote] = useState<{ status: string; message?: string } | null>(null);
-  const { data, isPending, error } = useQuery({
-    queryKey: ['core-work', organizationId],
+  const { data, isPending, isFetching, error, refetch } = useQuery({
+    queryKey: ['core-work', organizationId, principalId, serviceInstance],
     queryFn: ({ signal }) => api.coreWork(organizationId, signal),
+    enabled: !readOnly || !!(principalId && serviceInstance),
   });
   const send = async (kind: string, payload: Record<string, unknown>) => {
-    if (!data) return;
+    if (readOnly || !data) return;
     setBusy(true);
     setNote(null);
     try {
@@ -211,19 +217,26 @@ export function WorkPanel({ organizationId }: { organizationId: string }) {
       setBusy(false);
     }
   };
+  const refreshAction = readOnly ? <button type="button" className="button secondary compact"
+    disabled={isFetching} onClick={() => void refetch()}>刷新 AI 工作</button> : undefined;
   if (isPending) return <Card title="AI 工作（V1）">正在读取…</Card>;
-  if (error || !data) return <Card title="AI 工作（V1）">读取失败，可刷新重试。</Card>;
+  if (error || !data) return <Card title="AI 工作（V1）" action={refreshAction}>读取失败，可刷新重试。</Card>;
+  if (readOnly && (data.protocol !== 'core.work.v1' || data.organization_id !== organizationId
+    || data.access.principal_id !== principalId)) {
+    return <Card title="AI 工作（V1）" action={refreshAction}>工作读取与当前身份或组织不匹配，请刷新后重试。</Card>;
+  }
   if (!data.works.length) {
     return (
-      <Card title="AI 工作（V1）">
-        {data.access.can_start && <StartWorkForm organizationId={organizationId} send={send} busy={busy} />}
+      <Card title="AI 工作（V1）" action={refreshAction}>
+        {!readOnly && data.access.can_start && <StartWorkForm organizationId={organizationId} send={send} busy={busy} />}
         <p>尚未登记 V1 工作。登记后这里会显示负责成员、有效授权、调用预算、执行尝试与工具回执。</p>
       </Card>
     );
   }
   return (
-    <Card title="AI 工作（V1）">
-      {data.access.can_start && <StartWorkForm organizationId={organizationId} send={send} busy={busy} />}
+    <Card title="AI 工作（V1）" action={refreshAction}>
+      {readOnly && <p className="form-note">查看已保存的执行记录与成果；本页暂不提供运行操作。</p>}
+      {!readOnly && data.access.can_start && <StartWorkForm organizationId={organizationId} send={send} busy={busy} />}
       <ul className="work-panel" aria-label="V1 工作列表">
         {data.works.map((item) => (
           <li key={item.id} data-work={item.id}>
@@ -256,7 +269,7 @@ export function WorkPanel({ organizationId }: { organizationId: string }) {
                 </dd>
               </div>
             </dl>
-            <div className="work-actions">
+            {!readOnly && <div className="work-actions">
               <button type="button" disabled={busy} onClick={() => send('start_attempt', { work_id: item.id })}>
                 开始执行
               </button>
@@ -290,8 +303,8 @@ export function WorkPanel({ organizationId }: { organizationId: string }) {
                     采用成果
                   </button>
                 ))}
-            </div>
-            <ResultForm item={item} send={send} busy={busy} />
+            </div>}
+            {!readOnly && <ResultForm item={item} send={send} busy={busy} />}
           </li>
         ))}
       </ul>
