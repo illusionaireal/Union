@@ -5,6 +5,7 @@ import os
 import sqlite3
 
 from ..domain.creation import FIELDS, prepared_state, valid_principal, validate_creation
+from ..domain.governance import SUPPORTED_SCHEMAS
 from ..errors import CoreError, Rejected, require
 
 INCOMPATIBLE = "AU 准备态记录不完整或不兼容；请保留原记录核对"
@@ -40,7 +41,7 @@ class CoreAUStore:
             require(row is not None, INCOMPATIBLE)
             state = json.loads(row[0])
             require(isinstance(state, dict) and state.get("id") == au_id, INCOMPATIBLE)
-            governed = state if type(state.get("schema_version")) is int and state["schema_version"] in (2, 3) else None
+            governed = state if type(state.get("schema_version")) is int and state["schema_version"] in SUPPORTED_SCHEMAS else None
             if governed is not None:
                 from .governance_store import origin_in
                 state, _ = origin_in(cx)

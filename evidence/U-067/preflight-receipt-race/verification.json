@@ -1,0 +1,78 @@
+{
+  "date": "2026-11-08",
+  "actor": "codex-home",
+  "online_member_id": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+  "card": 22,
+  "scope_comment": 70,
+  "base_commit": "894f5106a105a9ab269ef9035c9a40f36e5d791c",
+  "branch": "codex/u067-preflight-receipt-race",
+  "sources": {
+    "ai_union/application/work.py": {
+      "normalized_lf_sha256": "2641feefa1aa2a04b91909b627ed7cc0d24829f5882d8b8ee5af5c956f9ccc2f",
+      "git_blob": "d3701355f6cadb6d2b7507688864cd60f80f8b63"
+    },
+    "tests/test_work_preflight_race.py": {
+      "normalized_lf_sha256": "e8daebe23af6684d42149c26925460f674bce2844cea5026e24df35f8e152037",
+      "git_blob": "162d0d8a0c855d1ae996c4bf8af6021529ac5f3d"
+    }
+  },
+  "checks": [
+    {
+      "name": "red",
+      "log_sha256": "96d2e34ea1b4ac83971e3c873bc111b8e61e5d7df0719d7ef80ed17bc51f682b",
+      "tests": 6,
+      "seconds": 5.372,
+      "skipped": 0,
+      "outcome": "expected_red",
+      "failures": 4,
+      "errors": 0
+    },
+    {
+      "name": "green",
+      "log_sha256": "5d80db83a6a52728c7f7096f7bb18c1f882b521dff088e2321de48a18f5ed699",
+      "tests": 46,
+      "seconds": 48.001,
+      "skipped": 0,
+      "outcome": "passed"
+    },
+    {
+      "name": "original-probes",
+      "log_sha256": "f94df1788bd604b5339e66806a6a3bdb292bfc27438853b1e63effef43f0720c",
+      "tests": 3,
+      "seconds": 2.817,
+      "skipped": 0,
+      "outcome": "passed"
+    },
+    {
+      "name": "python-full",
+      "log_sha256": "5ec6deb788d8d10fc12b114b3f0ad3d1fedcc3369630b1a8a3f18f9012fae3eb",
+      "tests": 731,
+      "seconds": 456.365,
+      "skipped": 8,
+      "outcome": "passed"
+    },
+    {
+      "name": "npm-check",
+      "log_sha256": "a59a5acf650de8f8721b554dd43f8b10a0983dd6b8f3af8562519604510ab209",
+      "outcome": "passed"
+    },
+    {
+      "name": "management-check",
+      "log_sha256": "6178050b61925eb7a7f6abe1c72731cd3745f688ad11dcc072189f172ff91983",
+      "outcome": "passed"
+    }
+  ],
+  "toolchain": {
+    "python": "3.12.10",
+    "node": "24.19.0"
+  },
+  "frontend_tests": 220,
+  "management_tests": 37,
+  "action_tests": 9,
+  "independent_review": "pending; implementer is not the independent reviewer",
+  "publication_ci": "new current-head checks required",
+  "real_model_calls": 0,
+  "nas_service_switch": false,
+  "live_data_migration": false,
+  "preexisting_vendor_edit": "preserved and excluded"
+}

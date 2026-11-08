@@ -112,7 +112,7 @@ class ModelAccessService:
                     if kind not in ("reconcile_connection", "reconcile_model_check", "cancel_model_check") and not stopping_connection:
                         rules.active(state, principal, time.time(), principals)
                     else:
-                        require(state["schema_version"] == 3, "没有可核对的模型操作")
+                        require(state["schema_version"] in (3, 4), "没有可核对的模型操作")
                     ModelAccessStore.initialize(cx)
                     if kind == "start_model_check":
                         check = model_checks.prepare(state, charter, data, principal, request["id"], time.time(), principals)
@@ -159,7 +159,7 @@ class ModelAccessService:
                 if self.store.existing(cx, request, principal) is not None:
                     return None
                 rules.authorize(state, principal)
-                if state["schema_version"] != 3 or request["base_version"] != state["version"]:
+                if state["schema_version"] not in (3, 4) or request["base_version"] != state["version"]:
                     return None
                 try:
                     rules.validate_input(request["kind"], data)
@@ -203,7 +203,7 @@ class ModelAccessService:
             if profile != "core_v1":
                 continue
             state = self.state(entry["id"])
-            if state["schema_version"] != 3:
+            if state["schema_version"] not in (3, 4):
                 continue
             for table in ("operations", "checks"):
                 for key, record in state["model_access"][table].items():

@@ -1,0 +1,84 @@
+{
+  "date": "2026-11-08",
+  "actor": "codex-home",
+  "online_member_id": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+  "card": 22,
+  "scope_comment": 68,
+  "pr": 28,
+  "base_commit": "4494b758348312f71d37d00e4db7e99fd92fdaab",
+  "source_delta": {
+    "tests/test_core_creation.py": "373e6894f199333f7b1f79e84ca9e6a7ef526fff"
+  },
+  "product_source": "unchanged from base_commit; only the HTTP test helper default changes",
+  "toolchain": {
+    "python": "3.12.10",
+    "node": "24.19.0"
+  },
+  "checks": [
+    {
+      "name": "python-full",
+      "status": "passed",
+      "tests": 725,
+      "skipped": 8,
+      "log_sha256": "29ddaf989f0a954eb0207bafbfb4d10de5eab75bd0325e061ad7f87117e3adff",
+      "provenance": "completed local run from the same resumed fixture task; no later product/helper changes"
+    },
+    {
+      "name": "npm-check",
+      "status": "passed",
+      "tests": null,
+      "skipped": null,
+      "log_sha256": "9136043b689d0f4437c968cf5c6024cd2464a526423ed3184a0b2def5db94384",
+      "provenance": "completed local run from the same resumed fixture task; no later product/helper changes"
+    },
+    {
+      "name": "original-probes",
+      "status": "passed",
+      "tests": 3,
+      "skipped": 0,
+      "log_sha256": "9f1b94ed1ea0dec45d453bc6232a967de06eeeb985c748c328dc4da26779fd2f",
+      "provenance": "completed local run from the same resumed fixture task; no later product/helper changes"
+    },
+    {
+      "name": "resume-probe",
+      "exit_code": 0,
+      "seconds": 7.594,
+      "sha256": "002cec6042e394eb1649166ea724bc7bc43c638afcc3bfc679369a8fefb6943d",
+      "summary": [
+        "Ran 2 tests in 7.411s",
+        "OK"
+      ]
+    },
+    {
+      "name": "resume-affected",
+      "exit_code": 0,
+      "seconds": 55.484,
+      "sha256": "6316769302849960059b4f12ed2bf0426201a1eccbc6c34c342c1fccffa87b43",
+      "summary": [
+        "Ran 40 tests in 55.288s",
+        "OK"
+      ]
+    }
+  ],
+  "red": {
+    "tests": 2,
+    "errors": 1,
+    "error": "TimeoutError on the default five-second wait",
+    "sha256": "bb149c47f54a583cb62fcc7329190a1953eece8169b4460c3d9d6723328eecad"
+  },
+  "green": {
+    "tests": 2,
+    "errors": 0,
+    "sha256": "85236bb09a98b06eb1b1975001746eaa435ec80fe07c7496959e804ab93916ea"
+  },
+  "frontend_tests": 220,
+  "management_tests": 37,
+  "action_tests": 9,
+  "old_failed_ci_job": 128721896081,
+  "publication_ci": "fresh current-head checks required; old failure retained",
+  "independent_review": "pending for PR24/25, combined changes and this fixture repair; implementer is not reviewer",
+  "real_model_calls": 0,
+  "nas_service_switch": false,
+  "live_data_migration": false,
+  "preexisting_vendor_edit": "preserved and excluded"
+}

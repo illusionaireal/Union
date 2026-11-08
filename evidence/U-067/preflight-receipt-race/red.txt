@@ -1,0 +1,58 @@
+test_completed_call_survives_duplicate_factory_refusal (tests.test_work_preflight_race.WorkPreflightRaceTests.test_completed_call_survives_duplicate_factory_refusal) ... FAIL
+test_completed_call_survives_duplicate_factory_error (tests.test_work_preflight_race.WorkPreflightRaceTests.test_completed_call_survives_duplicate_factory_error) ... FAIL
+test_completed_call_survives_duplicate_missing_channel (tests.test_work_preflight_race.WorkPreflightRaceTests.test_completed_call_survives_duplicate_missing_channel) ... FAIL
+test_unknown_call_keeps_original_reservation_after_duplicate_refusal_and_restart (tests.test_work_preflight_race.WorkPreflightRaceTests.test_unknown_call_keeps_original_reservation_after_duplicate_refusal_and_restart) ... FAIL
+test_late_preflight_failure_returns_already_completed_original_receipt (tests.test_work_preflight_race.WorkPreflightRaceTests.test_late_preflight_failure_returns_already_completed_original_receipt) ... ok
+test_ordinary_preflight_failure_has_no_call_reservation_or_version_change (tests.test_work_preflight_race.WorkPreflightRaceTests.test_ordinary_preflight_failure_has_no_call_reservation_or_version_change) ... ok
+
+======================================================================
+FAIL: test_completed_call_survives_duplicate_factory_refusal (tests.test_work_preflight_race.WorkPreflightRaceTests.test_completed_call_survives_duplicate_factory_refusal)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repository>\tests\test_work_preflight_race.py", line 72, in test_completed_call_survives_duplicate_factory_refusal
+    self.assert_completion(Rejected("controlled duplicate preflight refusal"))
+  File "<repository>\tests\test_work_preflight_race.py", line 60, in assert_completion
+    self.assertEqual(receipt["status"], "succeeded", receipt)
+AssertionError: 'rejected' != 'succeeded'
+- rejected
++ succeeded
+ : {'actor_principal_id': 'fed8893f-d7d0-4e33-b239-92533279c4e2', 'base_version': 8, 'created_at': '2026-11-08T13:34:26.459471+00:00', 'effect': 'none', 'id': 'd072d56c-8ee4-497f-9d5e-6f054e46a04d', 'kind': 'run_step', 'message': '宿主未能建立模型通道：controlled duplicate preflight refusal', 'organization_id': 'org-ccbc3e5cdb05407a8b181123dec80367', 'status': 'rejected', 'version': 9}
+
+======================================================================
+FAIL: test_completed_call_survives_duplicate_factory_error (tests.test_work_preflight_race.WorkPreflightRaceTests.test_completed_call_survives_duplicate_factory_error)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repository>\tests\test_work_preflight_race.py", line 75, in test_completed_call_survives_duplicate_factory_error
+    self.assert_completion(RuntimeError("controlled duplicate construction error"))
+  File "<repository>\tests\test_work_preflight_race.py", line 60, in assert_completion
+    self.assertEqual(receipt["status"], "succeeded", receipt)
+AssertionError: 'rejected' != 'succeeded'
+- rejected
++ succeeded
+ : {'actor_principal_id': '700d8aca-d673-475e-a4fa-4e7450731960', 'base_version': 8, 'created_at': '2026-11-08T13:34:27.353369+00:00', 'effect': 'none', 'id': '99a17f96-b59a-4022-93d7-0ebffe44f84a', 'kind': 'run_step', 'message': '宿主建立模型通道失败：controlled duplicate construction error', 'organization_id': 'org-2a516e2f1da04e178ec28a39d2b33753', 'status': 'rejected', 'version': 9}
+
+======================================================================
+FAIL: test_completed_call_survives_duplicate_missing_channel (tests.test_work_preflight_race.WorkPreflightRaceTests.test_completed_call_survives_duplicate_missing_channel)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repository>\tests\test_work_preflight_race.py", line 78, in test_completed_call_survives_duplicate_missing_channel
+    self.assert_completion(None)
+  File "<repository>\tests\test_work_preflight_race.py", line 60, in assert_completion
+    self.assertEqual(receipt["status"], "succeeded", receipt)
+AssertionError: 'rejected' != 'succeeded'
+- rejected
++ succeeded
+ : {'actor_principal_id': 'd0851b91-6888-4ec9-b461-6f4dc2536783', 'base_version': 8, 'created_at': '2026-11-08T13:34:28.200796+00:00', 'effect': 'none', 'id': '1e087e18-bbd4-436f-98c0-e83cc94eca54', 'kind': 'run_step', 'message': '宿主尚未配置模型执行通道；请先在宿主接入模型通道', 'organization_id': 'org-cb1368b868af473f82394873fdd3cefa', 'status': 'rejected', 'version': 9}
+
+======================================================================
+FAIL: test_unknown_call_keeps_original_reservation_after_duplicate_refusal_and_restart (tests.test_work_preflight_race.WorkPreflightRaceTests.test_unknown_call_keeps_original_reservation_after_duplicate_refusal_and_restart)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repository>\tests\test_work_preflight_race.py", line 82, in test_unknown_call_keeps_original_reservation_after_duplicate_refusal_and_restart
+    self.assertEqual(receipt.get("model_outcome"), "unknown", receipt)
+AssertionError: None != 'unknown' : {'actor_principal_id': '2f1a306e-345a-4018-a22b-04354ef867db', 'base_version': 8, 'created_at': '2026-11-08T13:34:29.125085+00:00', 'effect': 'none', 'id': 'd5d3af6f-c4cd-4c18-ac88-1154fa44ee24', 'kind': 'run_step', 'message': '宿主未能建立模型通道：duplicate refused', 'organization_id': 'org-c2b44603486541cc99c01f8847066415', 'status': 'rejected', 'version': 9}
+
+----------------------------------------------------------------------
+Ran 6 tests in 5.372s
+
+FAILED (failures=4)
