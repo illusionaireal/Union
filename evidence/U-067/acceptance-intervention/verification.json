@@ -1,0 +1,47 @@
+{
+  "baseline": "0821cff9f0744ab90e55d9178bacca0c0495b378",
+  "actor": "Codex foreground coordinator, resumed session 01a1b7fe-81cb-7ec0-8459-d85fd97a9ba7",
+  "online_member": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+  "scope": "controlled acceptance-driver correction",
+  "red": {
+    "tests": 8,
+    "assertion_failures": 14
+  },
+  "green": {
+    "tests": 18,
+    "passed": true,
+    "actual_http_driver_with_fake_model": true
+  },
+  "real_model_calls": 0,
+  "checks": [
+    {
+      "name": "red",
+      "raw_sha256": "f1660180e12b079552d15ddc403c05c8729bd96028bb6055ff68e372d283795f",
+      "published_sha256": "e48ecb98b5c3c517a701841a18682ec8d3830ec786a98bd04987bb1c57cfd0cc"
+    },
+    {
+      "name": "green",
+      "raw_sha256": "22b3d0159b9b09e4dfbc0afc99202705af2bbf4bab156988cdfb40aaa983840c",
+      "published_sha256": "625bf132cff65b8a0aea976220023a68f3e6fd94f0862c0f7b23d4f10d2d1820"
+    }
+  ],
+  "npm_check": {
+    "passed": true,
+    "log_sha256": "9bff58e4692eb93394ddfca0b91ec852bfc4ffb5e3cd1648a68699ed4435af85"
+  },
+  "python_full": {
+    "status": "failed_then_corrected_pending_final_run",
+    "tests": 727,
+    "failures": 2,
+    "errors": 12,
+    "skipped": 9,
+    "seconds": 432.343,
+    "cause": "Nested test observer cleanup restored the fake transport after the outer patch; later transport tests inherited it. No product change caused this failure.",
+    "log_sha256": "29338f430dc92bd3df998fb4b791149b64fd31f4fa8a4c68b1a9c42a90228cdd"
+  },
+  "isolation_regression": {
+    "passed": true,
+    "tests": 25,
+    "log_sha256": "70b8d7f54e32924e5c9063b99e44f6835ed9f4402449be93e56c0904b2cff655"
+  }
+}

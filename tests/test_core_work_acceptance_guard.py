@@ -24,8 +24,8 @@ def receipt(status="succeeded", turns=1, result=True):
 
 
 class AcceptanceGuardTests(unittest.TestCase):
-    def test_a_real_shaped_run_reports_no_problem(self):
-        self.assertEqual(acceptance_problems(work(), receipt(), 512), [])
+    def test_a_real_shaped_summary_without_observation_is_insufficient(self):
+        self.assertTrue(acceptance_problems(work(), receipt(), 512))
 
     def test_a_zero_call_run_cannot_pass(self):
         problems = acceptance_problems(work(calls=0), receipt(turns=0, result=False), 512)
