@@ -9,6 +9,7 @@ from ..adapters.core_au_store import CoreAUStore, encoded
 from ..domain import governance, work as rules
 from ..engine import identifier, now
 from ..errors import CoreError, Rejected, require
+from ..work_transport import UnadoptableWorkResult
 
 
 class WorkService:
@@ -214,11 +215,13 @@ class WorkService:
         try:
             message, usage = transport.chat(copy.deepcopy(plan["package"]), copy.deepcopy(plan["messages"]),
                                             copy.deepcopy(plan["tools"]))
+        except UnadoptableWorkResult as error:
+            return self.record_channel_outcome(directory, intent, request, principal, str(error), completed=error)
         except Rejected as error:
             return self.reject_step(directory, intent, request, principal,
                                     "模型通道拒绝本次请求；本轮未执行，未产生步进事实：" + str(error)[:280])
         except Exception as error:  # noqa: BLE001 - an unconfirmed call keeps a reservation to reconcile
-            return self.unknown_step(directory, intent, request, principal,
+            return self.record_channel_outcome(directory, intent, request, principal,
                                      "模型通道结果未知；已保留该次调用预约等待核对，不自动重放：" + str(error)[:280])
         calls = (message or {}).get("tool_calls") or []
         content = (message or {}).get("content") or ""
@@ -311,6 +314,7 @@ class WorkService:
         produced = False
         usage_total = {"input_tokens": 0, "output_tokens": 0}
         status = "succeeded"
+        model_outcome = None
         message = "自动循环结束：模型没有给出成果，已用满本轮轮次"
         for index in range(turn_cap):
             step_request = {"id": request["id"] + "-t" + str(index + 1),
@@ -329,6 +333,11 @@ class WorkService:
             tool_calls += int(step.get("tool_calls") or 0)
             for key in usage_total:
                 usage_total[key] += int((step.get("usage") or {}).get(key) or 0)
+            if step.get("model_outcome") == "not_adoptable":
+                status, model_outcome = "rejected", "not_adoptable"
+                message = step["message"]
+                version = step["version"]
+                break
             if step.get("result"):
                 produced = True
                 message = "自动循环结束：已产出候选成果"
@@ -341,10 +350,12 @@ class WorkService:
             "usage": usage_total, "cost_status": "unknown"}
         if status == "unknown":
             receipt["model_outcome"] = "unknown"
+        elif model_outcome is not None:
+            receipt["model_outcome"] = model_outcome
         return self.store_receipt(directory, intent, request, principal, receipt)
 
-    def unknown_step(self, directory, intent, request, principal, message):
-        """Record a reserved step whose model result is unknown; never pretend it did not happen."""
+    def record_channel_outcome(self, directory, intent, request, principal, message, *, completed=None):
+        """Keep unknown calls reserved, and completed unadoptable calls used."""
         with self.app.mutex:
             with self.store.transaction(directory) as cx:
                 state = CoreAUStore.read_in(cx, request["organization_id"], creation=intent)["au"]
@@ -356,13 +367,18 @@ class WorkService:
                 state = copy.deepcopy(state)
                 charter = state.pop("charter")
                 local = copy.deepcopy(state)
-                details = rules.fail_step(local, {"work_id": request["data"]["work_id"], "reason": message},
-                                          instance=self.app.instance)
+                data = {"work_id": request["data"]["work_id"], "reason": message}
+                if completed is None:
+                    details = rules.fail_step(local, data, instance=self.app.instance)
+                    details = {"step": details["step"], "model_outcome": "unknown"}
+                else:
+                    details = rules.record_unadoptable_step(local, data | {
+                        "model_request_id": completed.request_id, "usage": completed.usage}, instance=self.app.instance)
                 local["version"] = state["version"] + 1
                 state = local
                 receipt = {key: request[key] for key in ("id", "organization_id", "base_version", "kind")} | {
                     "actor_principal_id": principal, "created_at": now(), "status": "succeeded",
-                    "effect": "applied", "message": message, "step": details["step"], "model_outcome": "unknown",
+                    "effect": "applied", "message": message, **details,
                     "tool_calls": 0, "result": False, "version": state["version"], "cost_status": "unknown"}
                 self.store.save(cx, state, charter, request, receipt, state["policy_version"], changed=True)
         return receipt

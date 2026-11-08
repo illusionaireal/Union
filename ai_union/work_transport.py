@@ -8,8 +8,10 @@ Failure contract used by the work runtime:
 
 - `Rejected` means the request was definitely **not** executed (a 4xx/422 answer or
   a rejected payload), so no step fact may be invented.
-- Any other exception means the outcome is unknown, so the caller keeps the
-  reservation and asks an operator to reconcile.
+- `UnadoptableWorkResult` carries a completed call's usage, but never its
+  response content or tool calls. Revocation prevents adoption, not accounting.
+- Other post-dispatch errors mean the outcome needs reconciliation; they must
+  never be reported as a definite refusal or proof of no execution.
 """
 import copy
 import time
@@ -19,6 +21,15 @@ from .model_service import ServiceError
 
 TERMINAL = ("completed", "failed", "interrupted")
 DEFINITE = (400, 401, 403, 404, 405, 413, 422)
+
+
+class UnadoptableWorkResult(ServiceError):
+    """A scoped, completed request whose result cannot authorize more actions."""
+    def __init__(self, request_id, usage):
+        super().__init__("模型调用已完成，但当前授权已失效；仅保留执行与用量，不能采用结果")
+        self.request_id = request_id
+        self.usage = {key: usage[key] for key in ("input_tokens", "output_tokens")
+                      if type(usage.get(key)) is int and usage[key] >= 0}
 
 
 class ModeldWorkTransport:
@@ -65,23 +76,25 @@ class ModeldWorkTransport:
             if self.clock() - started > self.timeout_seconds + 15:
                 raise ServiceError("work_step_wait_expired")
             remote = self.client.request(request_id, self.au_id)
-            require(remote.get("id") == request_id and remote.get("au_id") == self.au_id,
-                    "模型服务回执范围不匹配")
+            if remote.get("id") != request_id or remote.get("au_id") != self.au_id:
+                raise ServiceError("模型服务回执范围不匹配；原调用待核对")
             events = self.client.events(request_id, self.au_id, after).get("events", [])
             for event in events:
-                require(event.get("request_id") == request_id and type(event.get("seq")) is int
-                        and event["seq"] > after, "模型流事件标识或顺序不匹配")
+                if (event.get("request_id") != request_id or type(event.get("seq")) is not int
+                        or event["seq"] <= after):
+                    raise ServiceError("模型流事件标识或顺序不匹配；原调用待核对")
                 after = event["seq"]
             if remote["state"] in TERMINAL and len(events) < 500:
                 break
             self.sleep(self.poll_seconds)
-        if remote.get("action_authorized") is False:
-            raise Rejected("原模型结果仅供核对；当前授权已失效，不能采用")
         if remote["state"] != "completed":
             raise ServiceError("work_step_" + str(remote["state"]))
         result = remote.get("result")
-        require(isinstance(result, dict) and isinstance(result.get("message"), dict), "模型服务缺少完整结果")
+        if not isinstance(result, dict) or not isinstance(result.get("message"), dict):
+            raise ServiceError("模型服务缺少完整结果；原调用待核对")
         usage = result.get("usage") if isinstance(result.get("usage"), dict) else {}
+        if remote.get("action_authorized") is False:
+            raise UnadoptableWorkResult(request_id, usage)
         return result["message"], dict(usage)
 
 

@@ -35,5 +35,13 @@
   receipt there; it never calls a model. `result_content` serves a result body
   read-only and re-checks its digest on every read. Attempt lifecycle commands record
   ownership and call-budget facts in the same transaction and never start
-  execution or spend a call by themselves. No harness step and no second writer; verify
+  execution or spend a call by themselves. Automatic channel outcomes still use
+  this sole AU writer; verify
   tests/test_core_work.py with S01/S02/S05 regressions.
+
+- Completed modeld calls that lose authorization keep their original request
+  ID and usage as used steps; `record_channel_outcome` never adopts their
+  content or runs returned tools. Follow
+  `specs/053-union-rewrite/s03-model-observation-contract.md` and verify
+  `tests/test_work_observation.py`. Pre-dispatch durable reservation remains a
+  separate open review item; do not claim this handler closes that window.
