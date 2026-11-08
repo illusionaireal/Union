@@ -1,0 +1,27 @@
+{
+  "task": "U-067",
+  "slice": "S03",
+  "kind": "acceptance guard (review finding on #22 item 7)",
+  "checked_at": "2026-11-08T16:51:30+08:00",
+  "guard_tests": 6,
+  "gated_real_tests_run": 0,
+  "real_model_calls_this_round": 0,
+  "real_calls_total_today": 2,
+  "authorized_calls": 2,
+  "rules": [
+    "successful receipt",
+    "turns >= 1",
+    "used >= 1",
+    "usage > 0",
+    "output within authorised cap",
+    "cost unknown",
+    "at least one document read",
+    "read must carry digest",
+    "at least one result"
+  ],
+  "python_full": {
+    "tests": 657,
+    "skipped": 10,
+    "result": "OK"
+  }
+}

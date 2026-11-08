@@ -23,16 +23,18 @@ class RealInterruptTests(RealChannelCase):
     def request_id(self):
         return "work-real-s1"
 
-    def cancel_when_dispatched(self, client, sent):
-        for _ in range(60):
+    def cancel_when_dispatched(self, client, au_id, observed):
+        """Cancel only after modeld confirms the original request exists."""
+        for _ in range(100):
             try:
-                client.call("GET", "/v1/requests/" + self.request_id() + "?au_id=" + self.au_id, admin=False)
-                sent.set()
-                client.call("POST", "/v1/requests/" + self.request_id() + "/cancel?au_id=" + self.au_id,
-                            {}, admin=True)
-                return
-            except Exception:  # noqa: BLE001 - not dispatched yet
+                client.call("GET", "/v1/requests/" + self.request_id() + "?au_id=" + au_id, admin=False)
+            except Exception:  # noqa: BLE001 - not created yet
                 time.sleep(0.1)
+                continue
+            observed["observed"] = True
+            client.call("POST", "/v1/requests/" + self.request_id() + "/cancel?au_id=" + au_id, {}, admin=True)
+            observed["cancelled"] = True
+            return
 
     def test_an_interrupted_call_keeps_an_unknown_reservation_until_reconciled(self):
         au_id = self.prepare()
@@ -66,20 +68,22 @@ class RealInterruptTests(RealChannelCase):
                                            "kind": "start_attempt", "data": {"work_id": "work-real"}})
         self.assertEqual(started["receipt"]["status"], "succeeded", started)
 
-        sent = threading.Event()
-        cancelled = threading.Event()
+        observed = {"observed": False, "cancelled": False}
+        done = threading.Event()
 
         def canceller():
             client = ModelServiceClient(CONFIG)
-            self.cancel_when_dispatched(client, sent)
-            cancelled.set()
+            self.cancel_when_dispatched(client, au_id, observed)
+            done.set()
 
         threading.Thread(target=canceller, daemon=True).start()
         status, stepped, _ = self.request("/api/v1/work/commands",
                                           {"id": str(uuid.uuid4()), "organization_id": au_id,
                                            "base_version": self.read()["au"]["version"],
                                            "kind": "run_step", "data": {"work_id": "work-real"}})
-        cancelled.wait(10)
+        done.wait(20)
+        self.assertTrue(observed["observed"], "modeld never confirmed the original request; a lookup failure is not a cancellation")
+        self.assertTrue(observed["cancelled"], "the cancel was never actually sent")
         card = self.request("/api/v1/work?organization_id=" + au_id)[1]
         work = [item for item in card["works"] if item["id"] == "work-real"][0]
         print("interrupt:", json.dumps({"receipt": {k: stepped["receipt"].get(k) for k in
