@@ -1,0 +1,12 @@
+{
+  "checks": [
+    "Second process cannot open the active private state",
+    "Copied build starts without checkout dependencies",
+    "Same private state reopens after process exit",
+    "Pinned upstream record and dependency notices accompany the build"
+  ],
+  "passed": 4,
+  "real_model_calls": 0,
+  "real_accounts": 0,
+  "deployment": false
+}

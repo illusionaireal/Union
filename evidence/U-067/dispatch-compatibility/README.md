@@ -82,3 +82,42 @@ schema 3 和 4 页面都不显示该工作：`Layout` 对核心 `/tasks` 路由�
 安装器或直接执行的旧二进制。schema 4 后代码回退只能选择兼容候选，
 不能声称可回退至任意历史版本。没有 NAS 服务切换、真实业务数据迁移
 或新增真实模型调用；完整产品构建/部署、真实业务及持续运行分别验收。
+
+## 2026-11-08 完整安装包补验
+
+上述缺少 modeld 构建的本地限制已补验，产品源码仍为 PR #25 的精确
+`ede96fa519a32b22d278b7717931926c8e49aef6`。使用锁定 Node 24.19.0、
+Bun 1.4.2、Python 依赖和 OpenCode `805a42f` 完成构建，归档 93 个文件，
+声明 `source_state: committed`、AU schemas `[1,2,3,4]`。保留包 SHA-256：
+`a254d7ac70501c04d9ae7e724f7be396e13716cbba74e9c32c2fb2b9feb1ebfd`。
+ZIP 和原日志留在本机，仓库只保存可复现探针及脱敏结果。
+
+- [modeld 安装结果](modeld-install-result.json)：复制后的完整构建可独立
+  启动/重启，第二进程不能占用同一状态，固定上游及许可随包交付，4 项通过。
+- [完整安装结果](installed-release-result.json)：真实 Python/React/modeld
+  包在全新目录安装并启动两个服务；同源码两个版本名的采用与代码回退保留
+  测试登录、最新测试数据及私有令牌，5 项通过。这不是历史版本的数据兼容结论。
+- [安装后预约探针](installed-package-probe.py) 与
+  [结果](installed-dispatch-result.json)：子进程确认产品模块来自安装目录，
+  使用实际依赖预检和安装后的 CLI；普通 schema 3 先允许选择，显式预约后
+  schema 4 使不兼容的 activate/rollback/run 均拒绝，数据库/catalog/指针
+  字节不变。兼容候选重新选择后，同一身份/原请求经 HTTP 返回 unknown，
+  原预约保留，0 次重派，安装目录仍通过摘要验证。
+  负例使用相同可执行文件、刻意仅声明 schema 1–3 的清单，测试发布门禁；
+  不冒充历史可执行版本。旧 `90d8b1f` 执行拒绝仍以此前跨版本探针为证。
+- 原全量中的 `test_built_candidate_declares_durable_dispatch_support` 现在
+  实际执行通过，不再因缺构建而跳过。此前 716 项/10 跳过的全量历史保留；
+  本次未重跑已通过的其余 Python 用例，没有把新结果改写为一次新全量。
+
+首次构建在全历史克隆上因 Git 默认把 diff 索引缩写到 10 位、锁定补丁为
+7 位而停止；仅在构建进程设置 `core.abbrev=7` 后，原完整补丁比对通过，
+没有放宽校验或改宿主/系统配置。首次安装预约探针将 attempt 建在停服前，
+新服务实例正常拒绝派发；改为停服/选择完成后创建 attempt，探针通过。
+这些环境/夹具失败的原日志保留，不算产品 RED 或新增产品修复。
+
+复现：先按 `ops/release/README.md` 构建及 pack，再运行
+`python -B evidence/U-067/dispatch-compatibility/installed-package-probe.py --archive <zip> --bun <bun-1.4.2> --output <result.json>`。
+同源码安装脚本为 `scripts/check_release_install.py`，modeld 安装脚本为
+`scripts/check_model_service_install.py`；全部只使用临时数据和模型替身。
+本次 0 次真实推理、0 个真实账号、无 NAS 切换或业务数据迁移。候选独立
+工程复核仍待前台完成；补验和原 head 的 14/14 CI 不代替新 head 检查。
