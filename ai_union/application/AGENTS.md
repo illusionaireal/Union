@@ -44,6 +44,13 @@
   this sole AU writer; verify
   tests/test_core_work.py with S01/S02/S05 regressions.
 
+- U106 result governance eligibility is independent of model-start eligibility.
+  Explicit result adoption may close only its proven completed original loop
+  attempt in the same transaction, using saved loop/step receipts; unknown or
+  later execution stays open. Work delivery still requires an adopted result
+  and no running attempt. Scoped downloads bind AU/Work/result and verify the
+  digest. Follow `s03-result-delivery-contract.md` and `test_core_result_delivery`.
+
 - Automatic work turns use `work_context_store.py` within that same transaction
   to retain private assistant/tool messages, native context and original tool
   sources. Before redisclosure, recheck the current work scope, root binding and

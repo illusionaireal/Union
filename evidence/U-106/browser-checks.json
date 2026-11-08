@@ -1,0 +1,28 @@
+{
+  "scope": "controlled",
+  "checks": [
+    "actual Core route",
+    "disabled connection retains result authority",
+    "identity persisted before both POSTs",
+    "adoption response lost after transaction",
+    "adopted state reload keeps original GET",
+    "original loop attempt closed on adoption",
+    "delivery response lost after transaction",
+    "delivered state reload keeps both original GETs",
+    "exactly two action POSTs",
+    "source/result/work/digest match",
+    "actual browser download matches HTTP",
+    "three viewport widths",
+    "foreign principal clears prior content",
+    "original server receipts survive",
+    "manual body and finish controls hidden",
+    "two fake turns and zero real calls"
+  ],
+  "work_posts": 2,
+  "command_ids": [
+    "bb358f1b-943c-4c3c-9da7-3b11f4064726",
+    "cfc9bddf-31a8-4e43-ac57-cb80f334cad2"
+  ],
+  "fake_model_calls": 2,
+  "real_model_calls": 0
+}

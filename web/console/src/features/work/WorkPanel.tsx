@@ -6,6 +6,7 @@ import type { CoreWorkItem } from '../../api/types';
 import { Card } from '../../components/ui';
 import { WorkExecution } from './WorkExecution';
 import { CoreWorkRegistration } from './CoreWorkRegistration';
+import { CoreResultDelivery } from './CoreResultDelivery';
 
 function money(item: CoreWorkItem) {
   const { max_calls: max, reserved, used } = item.budget;
@@ -19,8 +20,8 @@ function receipt(item: CoreWorkItem) {
   return `${last.tool} @ ${last.step_ref} · ${detail}`;
 }
 
-function resultHref(organizationId: string, id: string) {
-  return `/api/v1/work/results?organization_id=${encodeURIComponent(organizationId)}&id=${encodeURIComponent(id)}`;
+function resultHref(organizationId: string, workId: string, id: string) {
+  return `/api/v1/work/results?organization_id=${encodeURIComponent(organizationId)}&id=${encodeURIComponent(id)}&work_id=${encodeURIComponent(workId)}`;
 }
 
 function attempt(item: CoreWorkItem) {
@@ -185,13 +186,14 @@ function AttemptActions({ item, send, busy }: { item: CoreWorkItem; send: (kind:
   );
 }
 
-export function WorkPanel({ organizationId, readOnly = false, principalId, serviceInstance, allowExecution = false, allowRegistration = false }: {
+export function WorkPanel({ organizationId, readOnly = false, principalId, serviceInstance, allowExecution = false, allowRegistration = false, allowResultDelivery = false }: {
   organizationId: string;
   readOnly?: boolean;
   principalId?: string;
   serviceInstance?: string;
   allowExecution?: boolean;
   allowRegistration?: boolean;
+  allowResultDelivery?: boolean;
 }) {
   const client = useQueryClient();
   const [busy, setBusy] = useState(false);
@@ -258,7 +260,7 @@ export function WorkPanel({ organizationId, readOnly = false, principalId, servi
                   {item.results.map((value) => (
                     <span key={value.id} className="result-line">
                       {value.title}（{value.status === 'adopted' ? '已采用' : '候选'} · {value.sha256.slice(0, 12)}…）
-                      <a href={resultHref(organizationId, value.id)} download={`${value.id}.json`}>下载</a>
+                      <a href={resultHref(organizationId, item.id, value.id)} download={`${value.id}.json`}>下载</a>
                     </span>
                   ))}
                 </dd>
@@ -272,6 +274,10 @@ export function WorkPanel({ organizationId, readOnly = false, principalId, servi
                 </dd>
               </div>
             </dl>
+            {readOnly && allowResultDelivery && principalId && serviceInstance &&
+              <CoreResultDelivery key={`${serviceInstance}:${principalId}:${organizationId}:${item.id}:results`}
+                scope={{principalId, serviceInstance, organizationId}} item={item} version={data.version}
+                canManage={data.access.can_manage_results === true} onAccessLost={() => setAccessLost(true)} />}
             {readOnly && allowExecution && principalId && serviceInstance &&
               <WorkExecution key={`${serviceInstance}:${principalId}:${organizationId}:${item.id}`}
                 item={item} scope={{principalId,serviceInstance,organizationId,workId:item.id}}

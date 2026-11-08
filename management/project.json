@@ -1927,6 +1927,13 @@
                     "from": "doing",
                     "to": "doing",
                     "note": "U-105/#59在PR38@a727e8e追加登记资格/读取分离修复：DOM及实际Chrome均先复现can_start=false使合法已有工作和原执行查询消失，再最小修复；55相关DOM、11实际浏览器和npm288/37/9通过，模型请求0。证据evidence/U-105/README.md；新源码全量验证与当前head CI/另一工程角色权限复核分别记录，保持受控候选及父卡原owner/真实未完成出口。仅追加交付历史，不改在线任务准入。"
+                },
+                {
+                    "at": "2026-11-08T19:12:05.099Z",
+                    "actor": "codex-home / single duty Codex session",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "U-106/#60从3e1071b实施实际Core原AI成果采用/交付与原请求恢复候选。独立治理资格、kind/Work/result隔离、原loop完成证据关闭原attempt、范围下载与迟到读取保护经过RED→GREEN；72相关HTTP/Python、16实际Chrome（fake2/real0）、npm315/37/9通过，证据evidence/U-106/README.md和verification.json，契约specs/053-union-rewrite/s03-result-delivery-contract.md。完整Python/当前head CI和前台独立权限/身份复核分别取证，尚未采用；父#22原owner/真实出口不变。本条只追加交付历史，不作为在线调度依据。"
                 }
             ],
             "claim": {

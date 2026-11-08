@@ -1,0 +1,16 @@
+.work-result-delivery {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.work-result-delivery .work-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.work-result-delivery .work-actions .form-note {
+  min-width: 0;
+}

@@ -6,6 +6,7 @@ import json
 
 from ..adapters import documents
 from ..adapters.core_au_store import CoreAUStore, encoded
+from ..adapters.governance_store import commands_in
 from ..adapters.work_context_store import WorkContextStore
 from ..domain import governance, work as rules
 from ..engine import identifier, now
@@ -33,8 +34,8 @@ class WorkService:
         state = value["au"]
         models = state.get("model_access") or {}
         default = (models.get("connections") or {}).get(models.get("default_connection_id") or "")
-        can_start = (principal == governance.current(state) and value.get("governance_status") == "active"
-                     and default is not None and default["enabled"])
+        can_manage_results = principal == governance.current(state) and value.get("governance_status") == "active"
+        can_start = can_manage_results and default is not None and default["enabled"]
         works = rules.projection(state, instance=self.app.instance)
         for item in works:
             item["materials"] = self.materials(item["materials_root"])
@@ -43,7 +44,8 @@ class WorkService:
             for key in usage:
                 usage[key] += item["usage"][key]
         return {"protocol": rules.PROTOCOL, "organization_id": au_id, "version": state["version"],
-                "access": {"principal_id": principal, "can_start": can_start},
+                "access": {"principal_id": principal, "can_start": can_start,
+                           "can_manage_results": can_manage_results},
                 "works": works, "usage": usage, "cost_status": "unknown",
                 "capabilities": {"work_registration": True, "execution": "not_started",
                                  "autonomous_business": False}}
@@ -119,6 +121,7 @@ class WorkService:
                         receipt["message"] = "已按采用的成果把该工作记为完成"
                     elif request["kind"] == "adopt_result":
                         receipt["result"] = rules.adopt_result(local, request["data"], principal)
+                        self.close_completed_result_attempt(cx, local, request["data"])
                         receipt["message"] = "已采用该成果并记录采用人"
                     elif request["kind"] == "reconcile_step":
                         receipt["step"] = rules.reconcile_step(local, request["data"])
@@ -150,6 +153,38 @@ class WorkService:
                 self.store.save(cx, state, charter, request, receipt, state["policy_version"], changed=changed)
         return receipt
 
+    def close_completed_result_attempt(self, cx, state, data):
+        """Adoption may retire its proven finished loop, never unknown or later work.
+
+        This runs after current authority/version/digest checks in the adoption
+        transaction. It neither completes the Work nor releases any reservation.
+        """
+        work = rules.records(state)["works"][data["work_id"]]
+        result = next(r for r in work["results"] if r["id"] == data["result_id"])
+        attempt = next((a for a in work.get("attempts", []) if a["id"] == result["attempt_id"]), None)
+        steps = [s for s in work.get("steps", []) if s["attempt_id"] == result["attempt_id"]]
+        if not attempt or attempt["status"] != "running" or not steps or any(
+                s["status"] in ("reserved", "unknown") for s in steps):
+            return
+        saved = commands_in(cx, state["id"])
+        last = steps[-1]
+        for loop in work.get("loops", []):
+            parent = saved.get(loop["command_id"])
+            if not parent or parent["request"]["kind"] != "run_loop" or parent["request"]["data"] != {"work_id": work["id"]}:
+                continue
+            receipt = parent["value"]
+            if receipt["status"] != "succeeded" or receipt.get("result") is not True:
+                continue
+            command_id = loop["command_id"] + "-t" + str(receipt.get("turns"))
+            step_receipt = saved.get(command_id, {}).get("value", {})
+            if (last.get("command_id") == command_id and last["status"] == "used"
+                    and result["id"] == "result-" + command_id.replace("-", "")[:12]
+                    and step_receipt.get("status") == "succeeded" and step_receipt.get("result") is True
+                    and step_receipt.get("step") == last["step_ref"]):
+                rules.finish_attempt(state, {"work_id": work["id"], "attempt_id": attempt["id"],
+                    "outcome": "stopped", "reason": "原自动循环 " + loop["command_id"] + " 已完成并采用成果；工作待交付"})
+                return
+
     def invoke(self, state, data):
         """Run one authorized read-only tool through the host adapter; no model call."""
         work, _mandate, attempt = rules.tool_target(state, data, instance=self.app.instance)
@@ -163,24 +198,33 @@ class WorkService:
         entry = rules.record_tool_call(work, data["tool"], data["arguments"], detail, attempt["id"])
         return {"tool_call": entry, "result": result}
 
-    def result_content(self, token, au_id, result_id):
+    def result_content(self, token, au_id, result_id, work_id=None):
         """Read one adopted or candidate result body; the digest is re-checked on read."""
         try:
             identifier(au_id)
             identifier(result_id)
+            if work_id is not None:
+                identifier(work_id)
         except (Rejected, TypeError) as error:
             raise CoreError("invalid_request", str(error)) from error
         value = self.app.core_au(token, au_id)
+        matches = []
         for work in rules.records(value["au"])["works"].values():
+            if work_id is not None and work["id"] != work_id:
+                continue
             for result in work.get("results") or []:
                 if result["id"] != result_id:
                     continue
                 digest = hashlib.sha256(result["content"].encode("utf-8")).hexdigest()
                 if digest != result["sha256"]:
                     raise CoreError("incompatible_state", "成果正文与登记摘要不一致；不能作为正式成果读取")
-                return {"protocol": rules.PROTOCOL, "organization_id": au_id,
-                        "result": {key: item for key, item in result.items() if key != "content"},
-                        "content": result["content"]}
+                matches.append({"protocol": rules.PROTOCOL, "organization_id": au_id, "work_id": work["id"],
+                                "result": {key: item for key, item in result.items() if key != "content"},
+                                "content": result["content"]})
+        if len(matches) == 1:
+            return matches[0]
+        if len(matches) > 1:
+            raise CoreError("invalid_request", "成果标识有多个工作匹配；请提供原工作标识")
         raise CoreError("invalid_request", "此 AU 中没有该成果标识")
 
     def run_step(self, token, incoming):

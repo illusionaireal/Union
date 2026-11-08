@@ -33,6 +33,7 @@ export function GovernanceWorkspace({ read }: { read: GovernedAURead }) {
       readOnly
       allowExecution
       allowRegistration
+      allowResultDelivery
     />
     <ResponsibilityWorkspace read={read} />
   </>;

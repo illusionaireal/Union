@@ -4,20 +4,32 @@ import { api, errorText } from '../../api/client';
 import type { CoreWork } from '../../api/types';
 
 export type WorkScope = { principalId: string; serviceInstance: string; organizationId: string };
+export type ResultCommandTarget = {
+  kind: 'adopt_result' | 'deliver_work';
+  workId: string;
+  resultId: string;
+  sha256: string;
+};
 type Reference = WorkScope & {
   id: string;
-  kind: 'start_work';
+  kind: 'start_work' | ResultCommandTarget['kind'];
   workId: string;
+  resultId?: string;
+  sha256?: string;
   base_version: number;
   resolved: boolean;
+  outcome?: string;
 };
 export class WorkScopeLost extends Error {}
 const accessLost = (error: unknown) =>
   error instanceof WorkScopeLost ||
   [401, 403].includes(Number((error as { status?: number })?.status));
-const storageKey = (scope: WorkScope) => 'union-work-command:' + JSON.stringify(scope);
-function load(scope: WorkScope): Reference[] {
-  const value: unknown = JSON.parse(sessionStorage.getItem(storageKey(scope)) || '[]');
+const storageKey = (scope: WorkScope, target?: ResultCommandTarget) =>
+  'union-work-command:' +
+  JSON.stringify(scope) +
+  (target ? ':' + JSON.stringify([target.kind, target.workId, target.resultId]) : '');
+function load(scope: WorkScope, target?: ResultCommandTarget): Reference[] {
+  const value: unknown = JSON.parse(sessionStorage.getItem(storageKey(scope, target)) || '[]');
   if (
     !Array.isArray(value) ||
     !value.every(
@@ -28,7 +40,12 @@ function load(scope: WorkScope): Reference[] {
         r.id &&
         typeof r.workId === 'string' &&
         r.workId &&
-        r.kind === 'start_work' &&
+        r.kind === (target?.kind ?? 'start_work') &&
+        (!target ||
+          (r.workId === target.workId &&
+            r.resultId === target.resultId &&
+            typeof r.sha256 === 'string' &&
+            /^[a-f0-9]{64}$/.test(r.sha256))) &&
         Number.isInteger(r.base_version) &&
         r.base_version >= 0 &&
         typeof r.resolved === 'boolean',
@@ -41,6 +58,7 @@ function load(scope: WorkScope): Reference[] {
     id: r.id,
     kind: r.kind,
     workId: r.workId,
+    ...(target ? { resultId: r.resultId, sha256: r.sha256 } : {}),
     base_version: r.base_version,
     // Persisted completion is a recovery hint; verify the receipt again this mount.
     resolved: false,
@@ -48,11 +66,15 @@ function load(scope: WorkScope): Reference[] {
 }
 
 /** One scoped command, no retry queue and no persisted form contents. */
-export function useWorkCommand(scope: WorkScope, onAccessLost: () => void) {
+export function useWorkCommand(
+  scope: WorkScope,
+  onAccessLost: () => void,
+  target?: ResultCommandTarget,
+) {
   const client = useQueryClient();
   const [initial] = useState(() => {
     try {
-      return { references: load(scope), error: '' };
+      return { references: load(scope, target), error: '' };
     } catch {
       return {
         references: [] as Reference[],
@@ -70,7 +92,7 @@ export function useWorkCommand(scope: WorkScope, onAccessLost: () => void) {
   const busy = useRef(false),
     querying = useRef(false),
     alive = useRef(true);
-  const key = storageKey(scope),
+  const key = storageKey(scope, target),
     latestKey = useRef(key);
   latestKey.current = key;
   useEffect(() => {
@@ -113,6 +135,18 @@ export function useWorkCommand(scope: WorkScope, onAccessLost: () => void) {
   const accept = async (original: Reference, value: unknown) => {
     requireCurrent();
     const r = value as Record<string, unknown> | null;
+    const result = r?.result as Record<string, unknown> | undefined;
+    const work = r?.work as Record<string, unknown> | undefined;
+    const successMatches =
+      original.kind === 'start_work'
+        ? r?.work_id === original.workId
+        : original.kind === 'adopt_result'
+          ? result?.id === original.resultId &&
+            result?.sha256 === original.sha256 &&
+            result?.status === 'adopted'
+          : work?.work_id === original.workId &&
+            work?.result_id === original.resultId &&
+            work?.work_status === 'delivered';
     if (
       !r ||
       r.id !== original.id ||
@@ -123,7 +157,7 @@ export function useWorkCommand(scope: WorkScope, onAccessLost: () => void) {
       !Number.isInteger(r.version) ||
       Number(r.version) < original.base_version ||
       !['succeeded', 'rejected', 'unknown'].includes(String(r.status)) ||
-      (r.status === 'succeeded' && r.work_id !== original.workId)
+      (r.status === 'succeeded' && !successMatches)
     )
       throw new Error('回执与原请求不匹配');
     await liveSession();
@@ -135,7 +169,7 @@ export function useWorkCommand(scope: WorkScope, onAccessLost: () => void) {
       refs.current.some((x) => x.id === original.id && x.resolved)
     )
       return;
-    const next = { ...original, resolved: r.status !== 'unknown' };
+    const next = { ...original, resolved: r.status !== 'unknown', outcome: String(r.status) };
     refs.current = refs.current.map((x) => (x.id === original.id ? next : x));
     setReference(next);
     try {
@@ -143,7 +177,7 @@ export function useWorkCommand(scope: WorkScope, onAccessLost: () => void) {
     } catch {
       /* Keep the original unresolved ID. */
     }
-    setNote(String(r.message || (next.resolved ? '登记已记录' : '登记结果未知，请查询原请求')));
+    setNote(String(r.message || (next.resolved ? '操作已记录' : '结果未知，请查询原请求')));
     await refresh();
   };
   async function send(
@@ -159,10 +193,14 @@ export function useWorkCommand(scope: WorkScope, onAccessLost: () => void) {
     try {
       await liveSession();
       const read = await liveRead();
-      if (!read.access.can_start) {
+      if (!(target ? read.access.can_manage_results : read.access.can_start)) {
         await liveSession();
         await refresh();
-        throw new Error('当前不能登记新工作；已有工作和原请求仍可查询，请核对模型连接及当前授权。');
+        throw new Error(
+          target
+            ? '当前不能采用或交付成果；已有成果和原请求仍可查询，请核对当前治理授权。'
+            : '当前不能登记新工作；已有工作和原请求仍可查询，请核对模型连接及当前授权。',
+        );
       }
       if (read.version !== baseVersion) throw new Error('配置或版本已变化，请刷新核对后提交');
       await preflight(read);
@@ -171,8 +209,9 @@ export function useWorkCommand(scope: WorkScope, onAccessLost: () => void) {
       const original: Reference = {
         ...scope,
         id: crypto.randomUUID(),
-        kind: 'start_work',
+        kind: target?.kind ?? 'start_work',
         workId: String(data.work_id),
+        ...(target ? { resultId: target.resultId, sha256: target.sha256 } : {}),
         base_version: read.version,
         resolved: false,
       };
@@ -196,7 +235,11 @@ export function useWorkCommand(scope: WorkScope, onAccessLost: () => void) {
       if (current()) await accept(original, response.receipt);
     } catch (error) {
       // A confirmed receipt preserves execution history, not ongoing read access.
-      if (accessLost(error) || !dispatchedId || !refs.current.some((r) => r.id === dispatchedId && r.resolved))
+      if (
+        accessLost(error) ||
+        !dispatchedId ||
+        !refs.current.some((r) => r.id === dispatchedId && r.resolved)
+      )
         failure(error);
     } finally {
       busy.current = false;
@@ -223,7 +266,12 @@ export function useWorkCommand(scope: WorkScope, onAccessLost: () => void) {
         } catch (accessError) {
           failure(accessError);
         }
-      } else failure(error);
+      } else if (
+        accessLost(error) ||
+        !refs.current.some((x) => x.id === original.id && x.resolved)
+      ) {
+        failure(error);
+      }
     } finally {
       querying.current = false;
       if (current()) setChecking(false);
