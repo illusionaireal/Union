@@ -487,7 +487,24 @@ class WorkService:
             step_request = {"id": request["id"] + "-t" + str(index + 1),
                             "organization_id": request["organization_id"], "base_version": version,
                             "kind": "run_step", "data": dict(request["data"])}
-            step = self.run_step(token, step_request)
+            try:
+                step = self.run_step(token, step_request)
+            except Rejected as error:
+                if isinstance(error, CoreError) and error.code not in (
+                        "not_authenticated", "not_authorized", "unsupported_capability"):
+                    raise
+                # Admission can fail before run_step has a receipt. Preserve the
+                # parent's completed facts, but never turn a dispatch/storage
+                # failure into proof that a reserved request did not run.
+                with self.app.mutex, self.store.transaction(directory) as cx:
+                    current = CoreAUStore.read_in(cx, request["organization_id"], creation=intent)["au"]
+                    step = self.store.existing(cx, step_request, principal)
+                    if step is None:
+                        if dispatch.find(current, step_request, principal) is not None:
+                            raise
+                        step = dispatch.receipt(step_request, principal, current["version"],
+                            status="rejected", effect="none",
+                            message=f"自动循环在第 {index + 1} 步派发前停止；之前已完成 {turns} 次调用：{error}")
             version = step.get("version", version)
             if step.get("status") != "succeeded" and step.get("model_outcome") != "not_adoptable":
                 status = step.get("status", "rejected")
