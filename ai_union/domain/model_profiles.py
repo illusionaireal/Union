@@ -12,6 +12,7 @@ CAPABILITIES = ("text_answer", "tool_roundtrip", "usage_reporting",
 REAL_EVIDENCE = "evidence/058-s02-model-tools/README.md"
 CHECK_EVIDENCE = "tests/test_core_model_checks.py"
 RECOVERY_EVIDENCE = "tests/test_core_model_recovery.py"
+EVENT_EVIDENCE = "tests/test_core_model_events.py"
 
 
 def _claim(status, note, evidence=None):
@@ -30,7 +31,7 @@ PROFILES = {
             "text_answer": _claim("verified_real", "U-072 已用所选连接完成两次真实推理，回答已保存。", REAL_EVIDENCE),
             "tool_roundtrip": _claim("verified_real", "真实读取所选文本，经 read_document 回执继续回答。", REAL_EVIDENCE),
             "usage_reporting": _claim("verified_real", "真实响应记录输入/输出 token；供应商未返回金额时保留未知。", REAL_EVIDENCE),
-            "streaming": _claim("unsupported", "连接检查要求完整应答，页面不承诺边生成边显示。"),
+            "streaming": _claim("controlled", "V1页面可观测原请求已保存的部分文本，重连只查询原ID；共同投影已受控验证，此profile真实流式能力未验。", EVENT_EVIDENCE),
             "long_job_new_input": _claim("unsupported", "长任务执行期间追加输入尚未实现；刷新后用原请求查询。"),
             "cancel_and_query": _claim("controlled", "取消意图、原请求查询和 unknown 保留已受控验证，未做真实中断恢复。", REAL_EVIDENCE),
         },
@@ -43,7 +44,7 @@ PROFILES = {
             "text_answer": _claim("controlled", "以显式模型替身验证文本回答；未用真实账号验收此 profile。", CHECK_EVIDENCE),
             "tool_roundtrip": _claim("controlled", "两阶段工具往返、回执配对和迟到结果隔离已受控验证。", CHECK_EVIDENCE),
             "usage_reporting": _claim("controlled", "事件与结果用量合并、金额未知保留已受控验证。", CHECK_EVIDENCE),
-            "streaming": _claim("unsupported", "连接检查要求完整应答，此 profile 未验证流式输出。"),
+            "streaming": _claim("controlled", "V1页面可观测原请求已保存的部分文本，重连只查询原ID；共同投影已受控验证，此profile真实流式能力未验。", EVENT_EVIDENCE),
             "long_job_new_input": _claim("unsupported", "此 profile 未验证长任务执行期间接收新输入。"),
             "cancel_and_query": _claim("controlled", "取消、原请求查询与 unknown 保留已受控验证。", RECOVERY_EVIDENCE),
         },
@@ -57,7 +58,7 @@ PROFILES = {
             "text_answer": _claim("controlled", "通过 Responses 单次内核接入；尚未完成此连接方式的真实供应商验收。", "tests/test_core_responses_profile.py"),
             "tool_roundtrip": _claim("controlled", "所选资料工具、原生上下文续传和两阶段回答经过受控验证。", "services/modeld/test/responses.test.ts"),
             "usage_reporting": _claim("controlled", "每次调用独立记录 token，未返回金额时保持未知。", "tests/test_core_responses_profile.py"),
-            "streaming": _claim("unsupported", "底层读取原生事件流，当前页面不提供边生成边显示。"),
+            "streaming": _claim("controlled", "V1页面可观测原请求已保存的部分文本，重连只查询原ID；共同投影已受控验证，此profile真实流式能力未验。", EVENT_EVIDENCE),
             "long_job_new_input": _claim("unsupported", "尚未实现执行期间追加输入。"),
             "cancel_and_query": _claim("controlled", "复用原请求取消和 unknown 核对，不保证远端已取消；真实中断恢复待验收。", RECOVERY_EVIDENCE),
         },

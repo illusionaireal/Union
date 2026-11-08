@@ -1,0 +1,99 @@
+{
+  "date": "2026-11-09",
+  "scope": "controlled",
+  "base": "cbdbb552106089629984dda0473753a37a264506",
+  "branch": "codex/u097-model-observation",
+  "actor": "current Codex deployment-watch session / codex-home",
+  "online_member_id": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+  "http_red": {
+    "failed": 6,
+    "reason": "missing V1 original event route (404)"
+  },
+  "http_green": {
+    "passed": 10
+  },
+  "metadata_red": {
+    "failed": 1,
+    "reason": "non-authority last_check update incorrectly denied same connection"
+  },
+  "dom_red": {
+    "failed": 10
+  },
+  "malformed_response_red": {
+    "failed": 2,
+    "passed": 12
+  },
+  "selection_probe_history": {
+    "first_probe": "passed before React rendered new option; not counted as behavioral proof",
+    "corrected_red": {
+      "failed": 1,
+      "passed": 14
+    }
+  },
+  "dom_final": {
+    "passed": 15
+  },
+  "profile_claim_red": {
+    "failed": 2
+  },
+  "profiles_and_http_final": {
+    "passed": 23
+  },
+  "browser": {
+    "scope": "controlled",
+    "checks": [
+      "partial output before completion, native body stays private",
+      "new persisted prefix with original cursor",
+      "disconnect retains prefix; reconnect GET deduplicates original events",
+      "normal host reopen reads original persisted attempt with no dispatch",
+      "1440/390/320 layout",
+      "current grant revocation clears output; browser writes and additional model posts are zero"
+    ],
+    "inference_posts_fixture_setup": 1,
+    "inference_posts_from_observation": 0,
+    "browser_posts": 0,
+    "real_model_calls": 0
+  },
+  "npm_check": {
+    "passed": true,
+    "frontend_tests": 235,
+    "management_tests": 37,
+    "action_tests": 9
+  },
+  "python_full": {
+    "tests": 768,
+    "seconds": 510.003,
+    "skipped": 9,
+    "failures": 0,
+    "errors": 0,
+    "status": "passed",
+    "note": "Runtime implementation frozen before full suite. Capability declaration metadata and its two assertions were subsequently changed and verified with the 23 profile/HTTP tests; exact published-head CI remains required."
+  },
+  "real_model_calls": 0,
+  "deployment_switch": false,
+  "migration": false,
+  "independent_review": "required from another engineering role before adoption",
+  "ci": "published exact head checks required",
+  "log_sha256": {
+    "browser-final.log": "1b3c34ec6670a68bc981a51d4a6b757f121e5d1bb8a96eb24b8e12dc7355f1d5",
+    "browser.log": "1b3c34ec6670a68bc981a51d4a6b757f121e5d1bb8a96eb24b8e12dc7355f1d5",
+    "claims-red.log": "70454d59df2beeae26769366fba0441955d5c2c638247b3dd15f19deab66680d",
+    "console-2.log": "91e9da63fa17bcc89f3a52df1cfb4a9c4c1e45f0b45698af2ff452201d8974a5",
+    "console.log": "c3a15bed2dee89ac2048fc6b34b337f23df1fc466039d60efd1841505f880a31",
+    "dom-final.log": "c99d3a2251988d1c449111e87f7d374c0e272287befc3c1d63bdb4cb1dad361f",
+    "dom-green.log": "ed0431c76d2684f1d7383ccf1062b70bd368b6f7fe733f9e2c2fa44f11ad3364",
+    "dom-red.log": "abedc2772c51f454c1ace710b588f67f9cdb3dcbfa69e5e98ca3077c9a768a84",
+    "http-green-2.log": "92a095c39f41ce1142b5ef7972896c992ed402558d72526e2d514e138aa7d9c2",
+    "http-green.log": "c741c79c1094edce3f396bbc8827f4e10de24acf22a286d3588f37a1318079fc",
+    "http-red.log": "912a1f23b793b7b97485df896cb2fae07d0810d8eec83c7b4696b79b023d5f2a",
+    "malformed-red.log": "caf0243bd50d5af1fed88e7c9b9ac0c2b400f5d4903e5b0f9f79e47789b9fc7a",
+    "management-final.log": "1c23523bf2d16bc23f7a088437a84a5d739c99f09b39374f46c19f774f340fbf",
+    "metadata-red.log": "9c2e530db5625deeef7800df3d9c9960e094a651e35f8a2d1749796d53d17f75",
+    "npm-check.log": "70affb5861c26f0edf3aa288a203f9f84daac71854010cddbd6ecb7ca53622f7",
+    "npm-final.log": "7e1b3e68108941ce881e42a0f69fb6ae213d2b0e4e122dadbceb8a1d0593e64a",
+    "profiles-final.log": "117621394bec0c84553e637f94f3d27bc0500f22d2f425cb6bb8cd5f22724af3",
+    "python-full.log": "61e247d00723d4f16fc1bee0d3521de8f0687ab6c76ca22fb42e82c79dd4f925",
+    "selection-red-2.log": "808f42f2213ef2eec67028f0a064feac39e49ad62de7b3a6d8058366c0fe0949",
+    "selection-red.log": "c646da2965f9d020c7b57155244afe78905a57322c390bf4cda3b1f1126b5b9c"
+  }
+}

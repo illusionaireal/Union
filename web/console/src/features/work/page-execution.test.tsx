@@ -283,3 +283,49 @@ it.each(['denied', 'principal', 'organization', 'protocol', 'session'])(
     expect(api.coreWorkCommand).toHaveBeenCalledTimes(1);
   },
 );
+
+it('independent review: losing start permission preserves a readable original receipt lookup', async () => {
+  vi.mocked(api.coreWorkCommand).mockRejectedValue(new Error('lost response'));
+  mount();
+  fireEvent.click(await screen.findByRole('button', { name: '准备本轮执行' }));
+  await screen.findByText(/原请求已保留/);
+  const original = vi.mocked(api.coreWorkCommand).mock.calls[0][0];
+  vi.mocked(api.coreWorkReceipt).mockImplementation(async () => {
+    current.access.can_start = false;
+    throw new ApiError('not available', 403, 'not_authorized');
+  });
+  fireEvent.click(screen.getByRole('button', { name: '查询原请求' }));
+  await waitFor(() => expect(api.coreWork).toHaveBeenCalledTimes(4));
+  expect(screen.getByText('已登记概览')).toBeVisible();
+  expect(screen.getByRole('button', { name: '查询原请求' })).toBeEnabled();
+  expect(JSON.stringify(sessionStorage)).toContain(String(original.id));
+  expect(screen.queryByRole('button', { name: '准备本轮执行' })).toBeNull();
+  expect(api.coreWorkCommand).toHaveBeenCalledTimes(1);
+});
+
+it('an original reference survives reload without current start permission', async () => {
+  vi.mocked(api.coreWorkCommand).mockRejectedValue(new Error('lost response'));
+  const view = mount();
+  fireEvent.click(await screen.findByRole('button', { name: '准备本轮执行' }));
+  await screen.findByText(/原请求已保留/);
+  const original = vi.mocked(api.coreWorkCommand).mock.calls[0][0];
+  current.access.can_start = false;
+  vi.mocked(api.coreWorkReceipt).mockResolvedValue({ receipt: receipt(original) });
+  view.unmount();
+  mount();
+  fireEvent.click(await screen.findByRole('button', { name: '查询原请求' }));
+  await screen.findByText(/本次操作已记录/);
+  expect(api.coreWorkReceipt).toHaveBeenCalledWith('au-1', original.id);
+  expect(api.coreWorkCommand).toHaveBeenCalledTimes(1);
+  expect(screen.queryByRole('button', { name: '准备本轮执行' })).toBeNull();
+});
+
+it('read access alone never offers a new execution without an original reference', async () => {
+  current.access.can_start = false;
+  mount();
+  await screen.findByText('已登记概览');
+  expect(screen.queryByRole('button', { name: '准备本轮执行' })).toBeNull();
+  expect(screen.queryByRole('button', { name: '运行 AI 工作' })).toBeNull();
+  expect(screen.queryByRole('button', { name: '查询原请求' })).toBeNull();
+  expect(api.coreWorkCommand).not.toHaveBeenCalled();
+});

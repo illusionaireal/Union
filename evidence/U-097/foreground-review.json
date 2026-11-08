@@ -1,0 +1,15 @@
+{
+  "head": "ce10e343dd586aaf323edbc68262bf0a1cd89d72",
+  "review_id": 5818722576,
+  "review_http": 200,
+  "http_probes": 5,
+  "dom": 21,
+  "browser": 12,
+  "log_sha256": {
+    "pr36-independent-http.log": "5c44e3ced0002aa8191e8ee72db9325e26150a6947e43dca0b13842212281570",
+    "pr36-independent-http-green.log": "11237a1c1e8e89d1d17f2469346a33f76b6d4f01b6952238db0e77eca4889901",
+    "pr36-independent-dom.log": "47d560c7e03f3dd6b6a28a6b51661b3a6ecf7a6fe922aac037769d5b97c70f57",
+    "pr36-independent-browser-grant.log": "1b3c34ec6670a68bc981a51d4a6b757f121e5d1bb8a96eb24b8e12dc7355f1d5",
+    "pr36-independent-browser-connection.log": "1b3c34ec6670a68bc981a51d4a6b757f121e5d1bb8a96eb24b8e12dc7355f1d5"
+  }
+}

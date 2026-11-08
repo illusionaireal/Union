@@ -8,6 +8,7 @@ const assert = require("node:assert/strict");
 
 async function main() {
   const pendingReceipt = process.env.UNION_U084_PENDING_RECEIPT === "1";
+  const readOnlyReceipt = process.env.UNION_U084_READ_ONLY_RECEIPT === "1";
   const host = spawn(
     process.env.UNION_PYTHON || "python3",
     [path.join(__dirname, "u084_work_execution_host.py"), ...(pendingReceipt ? ["--pending-receipt"] : [])],
@@ -97,8 +98,28 @@ async function main() {
     }
     await committed;
     if (commandError) throw commandError;
+    if (readOnlyReceipt) {
+      const models = await (await context.request.get(ready.origin + "/api/v1/models?organization_id=" +
+        encodeURIComponent(ready.organization_id))).json();
+      const connection = models.connections.find(item => item.id === "connection-a");
+      const disabled = await context.request.post(ready.origin + "/api/v1/models/commands", {
+        headers: { Origin: ready.origin },
+        data: { id: require("node:crypto").randomUUID(), organization_id: ready.organization_id,
+          base_version: models.version, kind: "set_connection", data: {
+            connection_id: connection.id, expected_revision: connection.revision,
+            enabled: false, make_default: false } },
+      });
+      assert.equal(disabled.status(), 200);
+      assert.equal((await disabled.json()).receipt.status, "succeeded");
+      const work = await (await context.request.get(ready.origin + "/api/v1/work?organization_id=" +
+        encodeURIComponent(ready.organization_id))).json();
+      assert.equal(work.access.can_start, false);
+      assert.equal(work.works.length, 1);
+    }
     await page.reload();
-    await page.getByRole("button", { name: "查询原请求", exact: true }).click();
+    const recoveredLookup = page.getByRole("button", { name: "查询原请求", exact: true });
+    await recoveredLookup.waitFor({ timeout: 3000 });
+    await recoveredLookup.click();
     await page.getByText(/本次操作已记录/).waitFor();
     assert.equal(posts, 1);
     assert.equal(original.kind, "run_loop");
@@ -139,6 +160,7 @@ async function main() {
           work_posts: posts,
           checks: [
             ...(pendingReceipt ? ["pending receipt 403 preserves authorized work and original lookup"] : []),
+            ...(readOnlyReceipt ? ["disabled execution preserves readable original lookup after reload"] : []),
             "actual run_loop over HTTP",
             "response lost after commit",
             "reload preserves original ID",
@@ -153,7 +175,7 @@ async function main() {
       ) + "\n",
     );
     console.log(
-      `U084 browser: ${pendingReceipt ? 7 : 6} checks passed; one original POST, zero real model calls`,
+      `U084 browser: ${6 + Number(pendingReceipt) + Number(readOnlyReceipt)} checks passed; one original POST, zero real model calls`,
     );
   } finally {
     host.stdin.end();

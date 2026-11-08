@@ -50,10 +50,12 @@ const sameSession = (scope: Scope, session: Session) =>
 export function WorkExecution({
   item,
   scope,
+  canExecute,
   onAccessLost,
 }: {
   item: CoreWorkItem;
   scope: Scope;
+  canExecute: boolean;
   onAccessLost: () => void;
 }) {
   const client = useQueryClient();
@@ -140,6 +142,7 @@ export function WorkExecution({
     : 'start_attempt';
   const reference = references.find((r) => !r.resolved) || references.find((r) => r.kind === kind);
   const eligible =
+    canExecute &&
     item.mandate.active &&
     !item.attempts.some((a) => a.stale) &&
     !['delivered', 'stopped', 'failed'].includes(item.status) &&

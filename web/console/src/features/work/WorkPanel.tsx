@@ -273,9 +273,10 @@ export function WorkPanel({ organizationId, readOnly = false, principalId, servi
                 </dd>
               </div>
             </dl>
-            {readOnly && allowExecution && principalId && serviceInstance && data.access.can_start &&
+            {readOnly && allowExecution && principalId && serviceInstance &&
               <WorkExecution key={`${serviceInstance}:${principalId}:${organizationId}:${item.id}`}
                 item={item} scope={{principalId,serviceInstance,organizationId,workId:item.id}}
+                canExecute={data.access.can_start}
                 onAccessLost={() => setAccessLost(true)} />}
             {!readOnly && <div className="work-actions">
               <button type="button" disabled={busy} onClick={() => send('start_attempt', { work_id: item.id })}>

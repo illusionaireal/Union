@@ -82,7 +82,8 @@ class ResponsesProfileTests(ModelAccessCase):
     def test_scope_does_not_inherit_compatible_api_real_validation(self):
         claims = self.models()["capabilities"]["profile_scope"]["openai_responses"]["capabilities"]
         self.assertEqual(claims["tool_roundtrip"]["status"], "controlled")
-        self.assertEqual(claims["streaming"]["status"], "unsupported")
+        self.assertEqual(claims["streaming"]["status"], "controlled")
+        self.assertIn("真实", claims["streaming"]["note"])
         self.assertFalse(any(c["status"] == "verified_real" for c in claims.values()))
 
     def test_legacy_chat_registration_retains_its_original_request_shape(self):

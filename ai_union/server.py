@@ -158,6 +158,9 @@ class Handler(BaseHTTPRequestHandler):
                 return self.send(200, app.work.result_content(token, query.get('organization_id', [None])[0], query.get('id', [None])[0]))
             if path.path == '/api/v1/models':
                 return self.send(200, app.models.read(token, query.get('organization_id', [None])[0]))
+            if path.path == '/api/v1/models/events':
+                return self.send(200, app.models.events(token, query.get('organization_id', [None])[0],
+                    query.get('check_id', [None])[0], query.get('attempt_id', [None])[0], query.get('after', ['0'])[0]))
             if path.path == '/api/v1/models/receipts':
                 return self.send(200, {"receipt": app.models.receipt(token, query.get('organization_id', [None])[0], query.get('id', [None])[0])})
             if path.path == '/api/v1/governance/receipts':

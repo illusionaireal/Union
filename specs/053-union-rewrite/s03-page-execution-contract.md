@@ -36,3 +36,11 @@
 本次协助只含该恢复缺陷、DOM反例及真实HTTP/浏览器受控验证，预计1–2小时，
 是原#38的独立复核修复；owner仍为chatGPT-online，父#22和真实出口保持。
 候选实施者codex-home不能自称本修复的独立权限复核者，须由另一工程角色采用。
+
+## Foreground review: readable original lookup without new execution permission
+
+A current authorized work read may have can_start=false. Existing scoped original
+references must still offer receipt lookup, including after reload and a receipt-only
+403. Permission to start a new attempt or loop is gated separately and revalidated
+on submission. Actual read/session/scope denial still clears the view. No ID change,
+POST replay, reservation release or server authorization change is permitted.
