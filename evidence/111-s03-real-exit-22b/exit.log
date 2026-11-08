@@ -1,0 +1,7 @@
+test_exit_22b (tests.test_exit_22b_evidence.Exit22B.test_exit_22b) ... ok
+EXIT22B: {"loop": {"status": "succeeded", "message": "自动循环结束：已产出候选成果", "turns": 2, "tool_calls": 1, "result": true, "usage": {"input_tokens": 957, "output_tokens": 164}}, "budget": {"max_calls": 3, "reserved": 0, "used": 2}, "usage": {"input_tokens": 957, "output_tokens": 164}, "reads": [{"sha256": "1f152757343b87c7a4b606ba74f1fab4c1e4bbd820867bf6f6b8f2f50916e8ac", "bytes": 108}], "document_sha256": "1f152757343b87c7a4b606ba74f1fab4c1e4bbd820867bf6f6b8f2f50916e8ac", "results": [{"id": "result-5beabf3183f7", "status": "candidate"}], "download": {"bytes": 119, "sha256_matches": false}, "deliver": {"status": "succeeded", "message": "已按采用的成果把该工作记为完成"}, "reopen": {"status": "delivered", "results": [{"id": "result-5beabf3183f7", "status": "adopted"}], "steps": ["used", "used"]}}
+
+----------------------------------------------------------------------
+Ran 1 test in 10.410s
+
+OK
