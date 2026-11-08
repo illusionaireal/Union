@@ -1899,6 +1899,13 @@
                     "from": "doing",
                     "to": "doing",
                     "note": "前台独立复核并采用PR24/25/30和组合PR28（bd3445a），PR29夹具证据822847d；逾期driver由前台修正并采用PR32（86f283a），751 Python/9跳过、npm及14项当前CI通过，初次隔离失败保留。证据evidence/U-067/coordinator-adoption.md。仍缺页面接自动循环和真实有界成果/中断出口；0新增真实调用，原owner/未完状态保留。用户指定五卡粒度复核见docs/reviews/2026-11-08-task-granularity.md；剩余建议3组，未自动认领或改变在线依赖。"
+                },
+                {
+                    "at": "2026-11-08T15:08:38.802Z",
+                    "actor": "codex-home/foreground-resume-01a1b7fe",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "用户继续后实际建立执行子卡#38–#40 / U-084–U-086；在线revision351逐张读回，父卡原owner/status/依赖保留。全部五卡合计21子卡，无依赖环；仅38/51依实际前置ready，其余backlog，未自动认领。证据docs/reviews/2026-11-08-task-granularity.md、evidence/U-079/five-card-split.json。本条是交付历史，不用于在线调度。"
                 }
             ],
             "claim": {
@@ -1938,6 +1945,13 @@
                     "from": "backlog",
                     "to": "backlog",
                     "note": "用户指定在线#23粒度复核：反馈接收、采用并交付二版、来源事实纠正、真实反馈闭环建议4组，完整父卡验收/依赖保持。报告docs/reviews/2026-11-08-task-granularity.md；仅评审，不开启未来切片。"
+                },
+                {
+                    "at": "2026-11-08T15:08:38.803Z",
+                    "actor": "codex-home/foreground-resume-01a1b7fe",
+                    "from": "backlog",
+                    "to": "backlog",
+                    "note": "用户继续后实际建立执行子卡#41–#44 / U-087–U-090；在线revision351逐张读回，父卡原owner/status/依赖保留。全部五卡合计21子卡，无依赖环；仅38/51依实际前置ready，其余backlog，未自动认领。证据docs/reviews/2026-11-08-task-granularity.md、evidence/U-079/five-card-split.json。本条是交付历史，不用于在线调度。"
                 }
             ]
         },
@@ -2031,6 +2045,13 @@
                     "from": "backlog",
                     "to": "backlog",
                     "note": "用户指定在线#25粒度复核：独立工作隔离、重启原请求核对、长任务输入、有目的唤醒、独立监督、真实故障/治理窗口建议6组；共享记录先冻结并顺序集成。报告docs/reviews/2026-11-08-task-granularity.md；未改原owner/状态/依赖。"
+                },
+                {
+                    "at": "2026-11-08T15:08:38.803Z",
+                    "actor": "codex-home/foreground-resume-01a1b7fe",
+                    "from": "backlog",
+                    "to": "backlog",
+                    "note": "用户继续后实际建立执行子卡#45–#50 / U-091–U-096；在线revision351逐张读回，父卡原owner/status/依赖保留。全部五卡合计21子卡，无依赖环；仅38/51依实际前置ready，其余backlog，未自动认领。证据docs/reviews/2026-11-08-task-granularity.md、evidence/U-079/five-card-split.json。本条是交付历史，不用于在线调度。"
                 }
             ]
         },
@@ -2066,6 +2087,13 @@
                     "from": "backlog",
                     "to": "backlog",
                     "note": "用户指定在线#30粒度复核：独立客户端创建/读取、一个受控命令、逐调用者用例重绑/退役、核心独立性黑盒4类；报告docs/reviews/2026-11-08-task-granularity.md。保留原依赖与未开始状态，不用文档通过代替公开契约采用。"
+                },
+                {
+                    "at": "2026-11-08T15:08:38.803Z",
+                    "actor": "codex-home/foreground-resume-01a1b7fe",
+                    "from": "backlog",
+                    "to": "backlog",
+                    "note": "用户继续后实际建立执行子卡#55–#58 / U-101–U-104；在线revision351逐张读回，父卡原owner/status/依赖保留。全部五卡合计21子卡，无依赖环；仅38/51依实际前置ready，其余backlog，未自动认领。证据docs/reviews/2026-11-08-task-granularity.md、evidence/U-079/five-card-split.json。本条是交付历史，不用于在线调度。"
                 }
             ]
         },
@@ -2239,6 +2267,13 @@
                     "from": "ready",
                     "to": "ready",
                     "note": "在线#28 v12已记录V1流式独立工程缺口，评论81/交流44确认；原owner/blocked/WIP保留。用户粒度复核：当前Responses剩余流式、profile输入/续接、真实资料往返、真实中断恢复4组，未来profile另定范围。报告docs/reviews/2026-11-08-task-granularity.md；PR15已采用范围不重复开发。"
+                },
+                {
+                    "at": "2026-11-08T15:08:38.803Z",
+                    "actor": "codex-home/foreground-resume-01a1b7fe",
+                    "from": "ready",
+                    "to": "ready",
+                    "note": "用户继续后实际建立执行子卡#51–#54 / U-097–U-100；在线revision351逐张读回，父卡原owner/status/依赖保留。全部五卡合计21子卡，无依赖环；仅38/51依实际前置ready，其余backlog，未自动认领。证据docs/reviews/2026-11-08-task-granularity.md、evidence/U-079/five-card-split.json。本条是交付历史，不用于在线调度。"
                 }
             ],
             "claim": null

@@ -1,0 +1,32 @@
+{
+  "scope": "combined engineering validation; no real model calls",
+  "tested_head": "9f352e077548543ae72d350276b81d911d09e7e7",
+  "python": {
+    "tests": 754,
+    "skipped": 9,
+    "failures": 0,
+    "errors": 0,
+    "seconds": 483.637,
+    "log_sha256": "ac97f7fb266bc4cc0149fabfe48ef9c70ca22ae17387d272ca5031b48e58fd12"
+  },
+  "npm_check": {
+    "passed": true,
+    "log_sha256": "d105952bfc485ace6d00720e0f727d79ff7b10a6b7366a3e4536852e021e348d"
+  },
+  "historical_ci_attempt": {
+    "head": "9f352e077548543ae72d350276b81d911d09e7e7",
+    "windows_job": 128762174256,
+    "tests": 754,
+    "failures": 1,
+    "skipped": 10,
+    "failure": "CoreModelObservationTests.test_late_start_failure_does_not_overwrite_successful_explicit_recovery timed out in the five-second fixture wait while the second attempt remained dispatching. No assertion or production code was changed.",
+    "log_sha256": "60902c72d6b00c340432facad9fc4c7a9551a302d90cc6e1672326fb25ba6c3d"
+  },
+  "targeted_diagnostic": {
+    "tests": 1,
+    "passed": true,
+    "seconds": 1.403,
+    "log_sha256": "fecaafc5286411a87cc8dee411f63378d7e7cc8dc01cc515fb26b2351880a1a4"
+  },
+  "adoption_gate": "Final documentation head still requires current successful CI; retained failure is not relabeled as success."
+}
