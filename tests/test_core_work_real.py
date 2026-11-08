@@ -22,8 +22,8 @@ MAX_OUTPUT = min(int(os.environ.get("UNION_REAL_MAX_OUTPUT", "1024")), 1024)
 SKIP = (not CONFIG) or os.environ.get("UNION_REAL_ACCEPTANCE") != "1"
 
 
-@unittest.skipIf(SKIP, "real acceptance needs UNION_MODELD_CONFIG and UNION_REAL_ACCEPTANCE=1")
-class RealBoundedAcceptanceTests(ModelAccessCase):
+class RealChannelCase(ModelAccessCase):
+    """Host wiring shared by the gated real tests; never carries its own test methods."""
     def setUp(self):
         super().setUp()
         # the shared fixture replaces ModelServiceClient with a double; a real run must not use it
@@ -56,6 +56,9 @@ class RealBoundedAcceptanceTests(ModelAccessCase):
                 "profile": "modeld_grant", "model": MODEL, "max_output_tokens": MAX_OUTPUT,
                 "grant_ref": grant_ref, "grant_revision": grant_revision}
 
+
+@unittest.skipIf(SKIP, "real acceptance needs UNION_MODELD_CONFIG and UNION_REAL_ACCEPTANCE=1")
+class RealBoundedAcceptanceTests(RealChannelCase):
     def test_one_work_uses_at_most_two_calls_and_reports_usage_without_cost(self):
         au_id = self.prepare()
         grant_ref, grant_revision = self.grant(au_id)
