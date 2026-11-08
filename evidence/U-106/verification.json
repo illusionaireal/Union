@@ -1,0 +1,161 @@
+{
+  "scope": "controlled",
+  "baseline": "3e1071bc22139233ad512bc40c824168cb53b8b9",
+  "actor": "current single Codex duty session / codex-home",
+  "real_model_calls": 0,
+  "independent_review": "pending foreground review",
+  "exact_head_ci": "pending publication",
+  "checks": {
+    "http_scoped": {
+      "tests": 72,
+      "failures": 0
+    },
+    "npm_check": {
+      "exit": 0,
+      "frontend_tests": 315,
+      "management_tests": 37,
+      "action_safety_tests": 9
+    },
+    "browser": {
+      "checks": 16,
+      "fake_calls": 2,
+      "real_calls": 0
+    },
+    "python_full": {
+      "tests": 782,
+      "seconds": 497.048,
+      "skipped": 9,
+      "failures": 0,
+      "exit": 0
+    },
+    "dom_result_delivery": {
+      "tests": 21,
+      "failures": 0
+    }
+  },
+  "private_log_hashes": {
+    "browser-final.log": {
+      "sha256": "7453874f373543a3502af89b4b030b08c623af6a9b34457cbbe628b71d6c71e6",
+      "bytes": 56
+    },
+    "browser-first.log": {
+      "sha256": "66e81db2e46767f3444d4afcfc60b8b0f05880f05ae4a250393b7089f49c3b86",
+      "bytes": 254
+    },
+    "browser-second.log": {
+      "sha256": "7453874f373543a3502af89b4b030b08c623af6a9b34457cbbe628b71d6c71e6",
+      "bytes": 56
+    },
+    "build-second.log": {
+      "sha256": "1d6dc5370b56270b9790067f2224d7c051ef2e80a45219bf707fdbce17b65f3b",
+      "bytes": 839
+    },
+    "build.log": {
+      "sha256": "a87a5eca799e3c27b6f7e46bc1864c7bd2848e744fff0ec83634b0a61188c30e",
+      "bytes": 839
+    },
+    "format.log": {
+      "sha256": "37fe30d4c8ceba7c0d4f86e87c59d69ed3590ff9fd104820d4afd4336f2dc269",
+      "bytes": 243
+    },
+    "green-dom-final.log": {
+      "sha256": "8034ef5f1e3736e964063311c10911231aeb1c6c534bb9d35c8b304367647d00",
+      "bytes": 3723
+    },
+    "green-dom-first.log": {
+      "sha256": "cd36d88b6f0d2ea83b8a83bceeea1b9be80bb3b4f4999828d7494af4cbd87d6b",
+      "bytes": 2849
+    },
+    "green-http-second.log": {
+      "sha256": "48888de29ec9076baaa7e29bffaf8cbbc1ad2daea3abc6b4c5973ebd0306c6ea",
+      "bytes": 1607
+    },
+    "green-http.log": {
+      "sha256": "c7080f77311bf7859eb0daa719d8f081c5e7df8c6182a0a1901ea2acc97f5fb4",
+      "bytes": 2086
+    },
+    "green-python-scoped.log": {
+      "sha256": "70b7ebb241633fdb3e38b0d39165fd41921215d007032b81f1110febb3f135ad",
+      "bytes": 13051
+    },
+    "npm-check-final.log": {
+      "sha256": "81798e7611562e0a4e302619d32ffb095d80ae216f7d020840b817aaf4588989",
+      "bytes": 12758
+    },
+    "npm-check-first.log": {
+      "sha256": "d85332113c0f4f2ef2e74a1765e16233a8ab474b37a247fbc335430783aeae83",
+      "bytes": 14101
+    },
+    "python-full.log": {
+      "sha256": "0fa6ed61310e1b43db26cf205f70cdd241cde673b3f9990a7c91952284644765",
+      "bytes": 141586
+    },
+    "red-attempt.log": {
+      "sha256": "464f66891d3cc28fd974ff3b31b1a6453fbc16edf6936e9b284f0375b2135d9a",
+      "bytes": 997
+    },
+    "red-dom.log": {
+      "sha256": "4a2a8853bcf8f8a178e771ffe175243668f935fd0bd6f2781b9fa03d14242321",
+      "bytes": 186125
+    },
+    "red-http.log": {
+      "sha256": "dcaf0ec35ffbbc0262c8a7e3fb1d0366234bfb1a102cb14749a290545a20a651",
+      "bytes": 1753
+    },
+    "red-late-lookup.log": {
+      "sha256": "ba3eaf1c967ea20f181a445422bf98f2efa8ccf5c09ee3dfd154d4c6995ae39a",
+      "bytes": 3194
+    },
+    "red-reconsider.log": {
+      "sha256": "fe9af8a6e2ad7d732c7ee0b7f626bbecc593cc87060a6709029f3348ed509c07",
+      "bytes": 17942
+    },
+    "render-final.log": {
+      "sha256": "0e34220545e52afa374590398a63becffd0e0bb78c5a5f56f04918f84bd5b98a",
+      "bytes": 144
+    },
+    "render.log": {
+      "sha256": "0e34220545e52afa374590398a63becffd0e0bb78c5a5f56f04918f84bd5b98a",
+      "bytes": 144
+    },
+    "typecheck-second.log": {
+      "sha256": "a3597187e3c9d10ed698e72fb188d0a9d52a7687f7dbb056122405d832aa3bbf",
+      "bytes": 54
+    },
+    "typecheck.log": {
+      "sha256": "bd438b683622bfe61317cad6b1267d66236ef3a591ff527ab43df99d33ae0328",
+      "bytes": 8797
+    }
+  },
+  "toolchain": {
+    "node": "24.19.0",
+    "python": "3.12.10",
+    "dependencies": "existing pinned repository environment and package-lock.json"
+  },
+  "source_blobs": {
+    "ai_union/application/work.py": "48b50d78074d079f925011123cd01e2d90c74962",
+    "ai_union/server.py": "bcd373b42c6c45200289e8f5dd3503c088d319ff",
+    "web/console/src/api/types.ts": "8010f0f75805e1f7d7c7fe9692fd0ad503f5b75a",
+    "web/console/src/features/governance/GovernanceWorkspace.tsx": "f447e787d9aa7e1b905b7235041de8f3e24252ea",
+    "web/console/src/features/work/WorkPanel.tsx": "685107e7eb7f7ac87158ca66db214250295e6e4b",
+    "web/console/src/features/work/useWorkCommand.ts": "1e8fc7549b7459af0b3d6e8d954ea7edbebb42a1",
+    "web/console/src/features/work/CoreResultDelivery.tsx": "e2a59ef4995a4f1caa37043e6c0d427e6142f78c",
+    "web/console/src/features/work/result-delivery.css": "759d909c75ab448e621fe2a734fc14f52d23f497",
+    "web/console/src/features/work/result-delivery.test.tsx": "d0533bd2169b672dc315bf3ddd27f024cd3bbd88",
+    "web/console/src/app/work-route.test.tsx": "87763d237124d2bb83a5dcebbb3dc52964593756",
+    "tests/test_core_result_delivery.py": "cb7af8e38d8e92ce4da8e06a2c3cd35a6f13b10f",
+    "scripts/u106_result_delivery_host.py": "9c9b77ec3749f8d8bfcf87993d36bf080d28aa6c",
+    "scripts/u106-result-delivery-browser.cjs": "49d07818eea93354d2069a6dc856ac63c04fed6e",
+    ".github/workflows/ci.yml": "9bf9955679511dd538fcc6ff9fdad68412de90dd"
+  },
+  "failure_history": {
+    "initial_dom": "15 failed: missing actual page controls",
+    "initial_http": "2 failed: missing result governance eligibility and ignored Work scope",
+    "attempt_closure": "original loop leaves running; explicit additional probe failed before fix",
+    "late_lookup": "1 failed / 19 passed before fix",
+    "reconsider_rejected": "1 failed before explicit correction action",
+    "browser_mobile": "390px digest overflow failed before scoped CSS wrap",
+    "test_only": "first mock receipt typing error and old exact download URL assertion; preserved logs",
+    "ledger_only": "first delivery mirror callback assumed a nonexistent evidence array; no mutation committed; corrected to append existing history"
+  }
+}

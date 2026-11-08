@@ -407,7 +407,7 @@ export interface CoreWork {
   protocol: string;
   organization_id: string;
   version: number;
-  access: { principal_id: string; can_start: boolean };
+  access: { principal_id: string; can_start: boolean; can_manage_results?: boolean };
   works: CoreWorkItem[];
   capabilities: { work_registration: boolean; execution: string; autonomous_business: boolean };
 }

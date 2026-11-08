@@ -134,7 +134,7 @@ describe('AI work on the actual core tasks route', () => {
     expect(screen.getByText('1 已用 · 0 已预约 · 上限 2')).toBeTruthy();
     expect(screen.getByRole('link', { name: '下载' })).toHaveAttribute(
       'href',
-      '/api/v1/work/results?organization_id=au-1&id=result-1',
+      '/api/v1/work/results?organization_id=au-1&id=result-1&work_id=work-1',
     );
     expect(screen.getByText('登记新的 AI 工作')).toBeTruthy();
     expect(screen.queryByRole('button', { name: '开始执行' })).toBeNull();

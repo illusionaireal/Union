@@ -1,0 +1,166 @@
+{
+  "reviewed_head": "702fd8718d817a61f8e57fdeef05c73b4ef01571",
+  "baseline": "3e1071bc22139233ad512bc40c824168cb53b8b9",
+  "scope": "controlled",
+  "implementer": "preceding scheduled Codex engineering run 20261108T184413398187Z",
+  "reviewer": "foreground independent coordinating engineering session",
+  "online_member": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+  "independent_http": 11,
+  "combined_http": 20,
+  "related_dom": 86,
+  "independent_dom": 5,
+  "browser": {
+    "core": {
+      "scope": "controlled",
+      "checks": [
+        "actual Core route",
+        "disabled connection retains result authority",
+        "identity persisted before both POSTs",
+        "adoption response lost after transaction",
+        "adopted state reload keeps original GET",
+        "original loop attempt closed on adoption",
+        "delivery response lost after transaction",
+        "delivered state reload keeps both original GETs",
+        "exactly two action POSTs",
+        "source/result/work/digest match",
+        "actual browser download matches HTTP",
+        "three viewport widths",
+        "foreign principal clears prior content",
+        "original server receipts survive",
+        "manual body and finish controls hidden",
+        "two fake turns and zero real calls"
+      ],
+      "work_posts": 2,
+      "command_ids": [
+        "e7e5bb7c-574c-427b-94c1-35ec449335bc",
+        "affb573a-155a-4a03-8b7f-541430e4550f"
+      ],
+      "fake_model_calls": 2,
+      "real_model_calls": 0
+    },
+    "rejection": {
+      "scope": "controlled",
+      "checks": [
+        "actual concurrent AU update causes a genuine rejected work receipt",
+        "no automatic retry on the rejected command",
+        "explicit new action revalidates and uses a new command ID",
+        "original rejection and successful adoption both preserved",
+        "reload looks up successful original without another POST",
+        "successful adoption is not offered for retry",
+        "two local fake turns and zero real inference"
+      ],
+      "work_posts": 2,
+      "fake_model_calls": 2,
+      "real_model_calls": 0
+    }
+  },
+  "author_full_python": {
+    "tests": 782,
+    "skipped": 9,
+    "failed": 0
+  },
+  "author_npm_frontend_tests": 315,
+  "source_sha256": {
+    ".github/workflows/ci.yml": "4462f93d6a380daa66232d8a815ea6e59e4f33f417a387f308cc330b68d7675c",
+    "HANDOFF.md": "ab87400ed555ee56cbfdab38b77b7332922c793aaf4b3048f47975857307e825",
+    "ai_union/application/AGENTS.md": "985403b54e2eea1a3d978120c076f106dac6d3a18de4c663711e0bd35c632ec7",
+    "ai_union/application/work.py": "003f858a7ce83245c8ed4e715ab77bb3e80fbb40b8ef5b67efdf36c01559c67c",
+    "ai_union/server.py": "ca1f22571743979b48f7ecff917a863d5145d47f9cbc361549fa710885abd53e",
+    "docs/ai-union/STATUS.md": "cf5db7b094a71df79e3fe29827aeeb162dce07e382e2c2b68879c9e381291276",
+    "evidence/U-106/README.md": "a9391bfdf5b9dc968cbdcbeb6b840b347c7be1a459997b164fb3a57b18dd1d2c",
+    "evidence/U-106/browser-checks.json": "79bd04b82d7102b257352c9fdd1c2a13846b263de76dc07fbd45562aee566170",
+    "evidence/U-106/verification.json": "9e14b7e43c1247e7fca6a84a5f66d0fee3d43d6386e91c96a48c1a344433b4d2",
+    "management/project.json": "c7950e0ce7148b0194e99b9e5732769f91974bfdf07ca68f1f9a64256c5d2228",
+    "scripts/u106-result-delivery-browser.cjs": "c8e2e37a4f3fc6a8250d9a16da2aa3ff6ac3c7f796b0c125725aaded7ae74c43",
+    "scripts/u106_result_delivery_host.py": "f565c90d7667768e982250d9bc189967e2b06d559abfd6b85a38ea3204cddcbd",
+    "specs/053-union-rewrite/s03-result-delivery-contract.md": "c51bcbda933a743b6c08559e38236ba1d540250db14849f9ec59fa62516ef243",
+    "tests/test_core_result_delivery.py": "85ab34610c63e2f8709fd17755c8d5316e065d1cc6c96e9cb00d7f54471ed79d",
+    "web/console/src/api/types.ts": "6e97715a1276e9bc1b284312614105c014c36d16d0c31d06471f08fadb9ee06a",
+    "web/console/src/app/work-route.test.tsx": "90cfe0ab9bbde6f37e7215df45bd5970039ec49c12dfdc8da412b2f761fbd321",
+    "web/console/src/features/governance/GovernanceWorkspace.tsx": "079f24b07401f854d28e8e358945c2416d64637dd022f4e739fe671ce6195488",
+    "web/console/src/features/work/CoreResultDelivery.tsx": "eebb1f38429d6927cda72ad9f521b0405dee9cfd3d13454f0c080608c2fcde40",
+    "web/console/src/features/work/WorkPanel.tsx": "a6e7c5c7437d18473ecd1cc46c381e82b476240a09cbb360a119f73f16651ba2",
+    "web/console/src/features/work/result-delivery.css": "0cbf795d0fd742d33f327d35c080798494102b43000f07e48637e47f1a03864e",
+    "web/console/src/features/work/result-delivery.test.tsx": "7d6cc17dd5bbfb498f2b515ae85935fe2b506533a6bb89f768de1a5e4f2865a1",
+    "web/console/src/features/work/useWorkCommand.ts": "9ab76fd8deb54e9858ee5c17adb5b06f8382b86b3acde9b9c965f55100932329"
+  },
+  "log_hashes": {
+    "u106-independent-baseline-http.log": {
+      "sha256": "2559d833d2333fc71fa76ce0ce6547859af0e66982de6c1f326dcd3d313836c1",
+      "bytes": 4188
+    },
+    "u106-independent-contract-red.log": {
+      "sha256": "43475966721f9b8ded216e1a18005e241a7a9d7ba3add61c70426cf90ce6fa47",
+      "bytes": 3058
+    },
+    "u106-independent-preliminary-dom-fixture-corrected.log": {
+      "sha256": "c042a500d53dc082f1c8c021bcee1b8ab8f4d7545ccf1824c3fbe6156cf2dfb0",
+      "bytes": 16530
+    },
+    "u106-independent-rejection-browser-actual-red.log": {
+      "sha256": "8df970a54137cab52d97923f77d83d2f01c18396fe8ebb6377ee299f9d1b97b0",
+      "bytes": 400
+    },
+    "u106-independent-preliminary-dom.log": {
+      "sha256": "027e006fcba99d33164d9a86dda253e085f03e54598321af2c2b88a4b00646ec",
+      "bytes": 17434
+    },
+    "u106-independent-preliminary-build.log": {
+      "sha256": "5b4826631fef2113a6bc5bb49762cd326ce755a818dbce9423dc92bff89143c3",
+      "bytes": 14484
+    },
+    "u106-independent-rejection-browser-red.log": {
+      "sha256": "4a938663db940eef3dec2c89a3b507aa911aa7372d295555996cd81e3dd2d5e5",
+      "bytes": 218
+    },
+    "u106-exact-candidate-http.log": {
+      "sha256": "30a39e158a05a2633a3a0b79e684b03d1dd41fc536e31f8b0918ea869d3be645",
+      "bytes": 3935
+    },
+    "u106-exact-candidate-dom.log": {
+      "sha256": "63bb54dff6e021559bc36371fc30862b7de3c174220185f2d1883915c5443cb1",
+      "bytes": 611
+    },
+    "u106-exact-candidate-build.log": {
+      "sha256": "56617e2f4ecaeb0676aca102304a0bdf482d92cd6ab7499f33472c1755e02607",
+      "bytes": 839
+    },
+    "u106-exact-core-browser.log": {
+      "sha256": "7453874f373543a3502af89b4b030b08c623af6a9b34457cbbe628b71d6c71e6",
+      "bytes": 56
+    },
+    "u106-exact-rejection-browser.log": {
+      "sha256": "645e2a39c39ae06540e93fbb56de0d51ec62b3dc0a62e20a9ce796ddc1d0c6dd",
+      "bytes": 73
+    },
+    "author-python-full.log": {
+      "sha256": "0fa6ed61310e1b43db26cf205f70cdd241cde673b3f9990a7c91952284644765",
+      "bytes": 141586
+    },
+    "author-npm-check-final.log": {
+      "sha256": "81798e7611562e0a4e302619d32ffb095d80ae216f7d020840b817aaf4588989",
+      "bytes": 12758
+    }
+  },
+  "real_model_calls": 0,
+  "open_parent_acceptance": [
+    "#22",
+    "#39",
+    "#40"
+  ],
+  "findings": [
+    {
+      "finding": "completed automatic loop left original attempt running and blocked delivery",
+      "disposition": "fixed; adoption transaction closes only original loop with durable succeeded/result step receipts; manual result, missing receipt, unknown reservation and later attempt remain protected"
+    },
+    {
+      "finding": "confirmed rejection left result action permanently unusable",
+      "disposition": "fixed; explicit recheck and a new authorized command only after a verified rejection; original rejection persists; unknown and success do not retry"
+    }
+  ],
+  "fixture_errors": [
+    "initial independent DOM omitted ApiError import",
+    "incomplete mock receipt typing and omitted CSS in preliminary source copy",
+    "initial browser concurrent-update helper omitted Origin header; only corrected run counts as product RED"
+  ]
+}
