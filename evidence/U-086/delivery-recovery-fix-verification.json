@@ -1,0 +1,183 @@
+{
+  "actor": "codex-home single duty implementation",
+  "online_user_id": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+  "card": 40,
+  "scope_comment": 157,
+  "card_owner_retained": "DSH",
+  "integration": "31f6b60b99318db2246e8962d26600d4175ce7ef",
+  "author_input": "a8c7280b23b2eeac37662bc86d3a7bcff05cbb50",
+  "page_input": "915cc151c9e13854480a58d0bbb0619eb9d36728",
+  "combination": "66c97a8d26cdf59850d663cecf0f6415ccac490f",
+  "source_blobs": {
+    "ai_union/adapters/governance_store.py": "0540d77b5561140153ef93e4d86127c555d5d8f8",
+    "ai_union/application/governance.py": "60b1835c0f4db55d1e32e0122649b78bfcb2ca96",
+    "ai_union/application/work.py": "6651284fdaf7a64abdfdbcfef7287471c82cbfb8",
+    "tests/test_core_work.py": "c196fb8c897350a261178e34030804cc70984a74",
+    "tests/test_cancel_delivery_observation.py": "7723a3ef311daebdf66bfb9a94f8211daefad8e0",
+    "web/console/src/features/work/WorkExecution.tsx": "5c5a1927b5d06c5a023d3ab6524736d6db550eda",
+    "web/console/src/features/work/cancel-recovery.test.tsx": "b04e1a268c77d31262746e5122c5b5972bac92fa",
+    "web/console/src/features/work/page-execution.test.tsx": "40aba354eabe59aec2857b7d0dafc5e59ed98ebb",
+    "scripts/u086-cancel-recovery-browser.cjs": "7cbf5ff0b8e395ffc5a564313f07b9c67addcbf1",
+    "scripts/u086_cancel_recovery_host.py": "d9727b912272bfa62a1882062bfa5d9f2209c5e9"
+  },
+  "python": {
+    "version": "3.12.10",
+    "tests": 792,
+    "seconds": 501.666,
+    "skipped": 9,
+    "failures": 0
+  },
+  "npm": {
+    "node": "24.19.0",
+    "frontend": 335,
+    "management": 37,
+    "action": 9,
+    "passed": true
+  },
+  "browsers": {
+    "normal": {
+      "scope": "controlled",
+      "checks": [
+        "page sends cancel while original run POST is pending",
+        "separate original IDs",
+        "actual HTTP cancel reaches original model request and AU",
+        "SQLite retains original run reservation",
+        "cancel cannot be posted twice",
+        "both original GETs survive reload",
+        "unknown retains one reservation",
+        "three viewport widths",
+        "host restart preserves original cancellation receipt",
+        "new service scope excludes old browser references",
+        "cancel POST and original GET contain the same complete accepted receipt",
+        "restarted original GET contains the same complete accepted receipt",
+        "real disabled default refuses stale cancel while preserving original run lookup",
+        "eligibility refusal and original lookup produce zero additional POSTs",
+        "ordinary GET failure retains confirmed cancellation"
+      ],
+      "lose_cancel_response": false,
+      "work_posts": 2,
+      "fake_model_calls": 1,
+      "cancel_posts": 1,
+      "real_model_calls": 0
+    },
+    "lost_post": {
+      "scope": "controlled",
+      "checks": [
+        "page sends cancel while original run POST is pending",
+        "separate original IDs",
+        "actual HTTP cancel reaches original model request and AU",
+        "SQLite retains original run reservation",
+        "cancel cannot be posted twice",
+        "both original GETs survive reload",
+        "unknown retains one reservation",
+        "three viewport widths",
+        "host restart preserves original cancellation receipt",
+        "new service scope excludes old browser references",
+        "cancel POST and original GET contain the same complete accepted receipt",
+        "restarted original GET contains the same complete accepted receipt",
+        "real disabled default refuses stale cancel while preserving original run lookup",
+        "eligibility refusal and original lookup produce zero additional POSTs",
+        "ordinary GET failure retains confirmed cancellation",
+        "confirmed original cancellation survives its late failed POST"
+      ],
+      "lose_cancel_response": true,
+      "work_posts": 2,
+      "fake_model_calls": 1,
+      "cancel_posts": 1,
+      "real_model_calls": 0
+    }
+  },
+  "logs": {
+    "fixture_name_error": {
+      "sha256": "e0709ccc6ab319b4cdc51e61a85dacf29da372e3aa4c8597fd2343c516b8092b",
+      "summary": [
+        "Ran 9 tests in 6.076s",
+        "FAILED (failures=1, errors=8)"
+      ]
+    },
+    "fixture_helper_error": {
+      "sha256": "0a74cfdf0659de26d76fb0fb9f6a3c48297784d13af2cf9353094b971c4aa512",
+      "summary": [
+        "Ran 9 tests in 7.717s",
+        "FAILED (failures=1, errors=8)"
+      ]
+    },
+    "behavior_red": {
+      "sha256": "aabb82ecfca66295439f8f83e53f3d7fc80597191c4236e0426ea85586fa7c7c",
+      "summary": [
+        "Ran 9 tests in 14.878s",
+        "FAILED (failures=9, errors=1)"
+      ]
+    },
+    "focused_green": {
+      "sha256": "e5f52df04d5160de76f84f65f0232a6efdbc152da704eaf9aa37d1fa133da147",
+      "summary": [
+        "Ran 9 tests in 10.191s",
+        "OK"
+      ]
+    },
+    "original_six": {
+      "sha256": "6f5f1b24d2498b23b1b3a854cdd22f62efdec29e30b95040a9715e411fdf0bbf",
+      "summary": [
+        "Ran 6 tests in 7.128s",
+        "OK"
+      ]
+    },
+    "original_two": {
+      "sha256": "1aa9be3281d4697e293ccdc5fae972dfd3f211518f12d3cf572e43568f480c47",
+      "summary": [
+        "Ran 2 tests in 3.129s",
+        "OK"
+      ]
+    },
+    "original_s03": {
+      "sha256": "f94df1788bd604b5339e66806a6a3bdb292bfc27438853b1e63effef43f0720c",
+      "summary": [
+        "Ran 3 tests in 2.817s",
+        "OK"
+      ]
+    },
+    "npm": {
+      "sha256": "de801f05e91504b45e210e92f40e97a29e2e1a19d5254a491a0d2409140a41f9",
+      "summary": [
+        "ℹ pass 37",
+        "ℹ fail 0",
+        "ℹ pass 9",
+        "ℹ fail 0",
+        "Tests  335 passed (335)"
+      ]
+    },
+    "python": {
+      "sha256": "1850e97dc0bbdfdb8390566592be2346adf36e9c578f69eb57c5655a634e7d27",
+      "summary": [
+        "Ran 792 tests in 501.666s",
+        "OK (skipped=9)"
+      ]
+    },
+    "browser": {
+      "sha256": "8f4ca564b159904210f0777b9939ca5b20e284919dffbccf10fb90ed082743c9",
+      "summary": [
+        "U086 page recovery: 15 checks passed; command POST=2, fake=1, real=0; lost cancel=false"
+      ]
+    },
+    "browser_lost": {
+      "sha256": "6fc39311d12944aa1dd90ca77ce87d2ac1769ca17da5ce43fff07a30ecd20def",
+      "summary": [
+        "U086 page recovery: 16 checks passed; command POST=2, fake=1, real=0; lost cancel=true"
+      ]
+    },
+    "management": {
+      "sha256": "3d04f13fab3e51c09ec695a42b260743f95deb001ea438e46f24c1775fbf1ab2",
+      "summary": [
+        "ℹ pass 37",
+        "ℹ fail 0"
+      ]
+    }
+  },
+  "red_classification": "Two initial fixture failures retained; final 9 cases: 7 failing cases / 2 controls pass, 9 assertion failures plus one product RemoteDisconnected from malformed list. Product code unchanged before RED.",
+  "independent_review": "Required from another engineering role for this implementation; not self-approved",
+  "ci": "Final published head is tracked by PR43, not predecessor checks",
+  "real_model_calls": 0,
+  "migration": false,
+  "production_switch": false
+}

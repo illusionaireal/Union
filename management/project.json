@@ -1955,6 +1955,13 @@
                     "from": "doing",
                     "to": "doing",
                     "note": "U106/PR39最终采用：准确head13195dd41517934ce75b5b8ba9ec308b8ad13964全14CI成功，已合入22a5a0da2299a7b6f002be90574220be34133308，tree36defb2ad4adaf49b4e5eeff00d807691ecb27d0相同。782 Python/9跳过、npm315前端；独立工程review5819335235和20 HTTP/86 DOM/23实际Chrome通过。证据evidence/U-106/foreground-review.md/json，实际合并回执https://github.com/illusionaireal/Union/pull/39#issuecomment-6726232752。#60受控工程完成；#39/#40及父#22真实出口保留，零新增真实调用。"
+                },
+                {
+                    "at": "2026-11-08T23:34:51.480Z",
+                    "actor": "codex-home/duty-cancel-recovery-implementation",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "U086/#40原取消恢复协助候选：作者a8c7280与页面915cc15合为66c97a8，修复原POST重放丢送达和读取未核验观察。GovernanceStore同一读取快照校验摘要/主体/命令/结构，观察不可覆盖，无观察保持unknown且不重发。严格HTTP/SQLite RED→9 GREEN，原6+2送达/恢复及S03三探针通过，npm335前端/37管理/9动作，两模式实际Chrome15/16（各fake1、real0）。证据evidence/U-086/delivery-recovery-fix.md及验证JSON保存完整检查和源码摘要；PR43仍是候选，需另一工程角色复核本值守页面/服务端与准确head CI。原owner/WIP、#40/父22真实出口及历史保持；本条仅交付历史，不作为在线调度或采用事实。"
                 }
             ],
             "claim": {

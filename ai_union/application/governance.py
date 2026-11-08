@@ -133,17 +133,4 @@ class GovernanceService:
         except Rejected as error:
             raise CoreError("invalid_request", str(error)) from error
         directory, intent = self.locate(au_id)
-        receipt = self.store.receipt(directory, au_id, request_id, principal, intent)
-        # A cancel delivery observation is a separate durable fact of the same
-        # command; the merged view distinguishes acceptance from delivery.
-        observation = self.store.delivery_observation(directory, request_id, principal)
-        if receipt.get("kind") == "cancel_step" and receipt.get("cancel_accepted") is None:
-            # A cancel acceptance always has an expected observation; an unreadable
-            # or tampered one is not a trustworthy fact, so the read must fail.
-            if observation is None:
-                raise CoreError("storage_unavailable", "送达观察缺失或未通过完整性校验；请稍后重试查询")
-            receipt = dict(receipt)
-            receipt["cancel_accepted"] = observation["cancel_accepted"]
-            receipt["message"] = observation["message"]
-            receipt["delivery"] = observation
-        return receipt
+        return self.store.receipt(directory, au_id, request_id, principal, intent)
