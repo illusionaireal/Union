@@ -166,8 +166,8 @@ class WorkService:
                 self.store.save(cx, state, charter, request, receipt, state["policy_version"], changed=changed)
         if receipt.get("cancel_accepted") is None and receipt.get("model_request_id"):
             # The committed intent is durable; delivery happens outside the AU writer
-            # lock, and its observed result is stored as a second immutable fact of the
-            # same command (changed=False): replay always shows the latest observation.
+            # lock. Store a separate immutable observation without rewriting the
+            # audited acceptance receipt; all recovery paths use the same view.
             channel = getattr(self, "transport", None)
             if channel is None and self.transport_factory is not None:
                 try:
@@ -188,12 +188,9 @@ class WorkService:
                         note = "取消已送达原线端请求；执行事实仍按原请求核对，预约保留"
                 except Exception:  # noqa: BLE001 - delivery failure keeps the intent only
                     accepted = False
-            receipt["cancel_accepted"] = accepted
-            receipt["message"] = note
             observation = {"cancel_accepted": accepted, "message": note}
             directory, intent = self.app.governance.locate(request["organization_id"])
-            self.store.record_delivery(directory, request["id"], principal, observation)
-            receipt["delivery"] = observation
+            receipt = self.store.record_delivery(directory, request["id"], principal, observation)
         return receipt
 
     def close_completed_result_attempt(self, cx, state, data):

@@ -390,7 +390,7 @@ class CoreWorkTests(ModelAccessCase):
                          "unknown", "an unknown reservation is only reconciled by the original request")
         self.assertEqual(card["budget"]["reserved"], 1)
 
-    def test_a_cancel_intent_receipt_survives_a_console_restart(self):
+    def cancel_in_flight(self):
         """The page recovery path queries the original cancel command after a reload:
         its receipt must still be readable under the same command id. The intent is
         recorded while the automatic step is reserved in flight (the reviewer
@@ -449,7 +449,10 @@ class CoreWorkTests(ModelAccessCase):
         card = self.works()["works"][0]
         self.assertEqual(card["budget"]["reserved"], 1,
                          "cancel_requested/interrupted never release the occupancy")
+        return cancellations, client
 
+    def test_a_cancel_intent_receipt_survives_a_console_restart(self):
+        cancellations, client = self.cancel_in_flight()
         self.stop()
         self.start()
         query_status, readback, _ = self.request(
@@ -458,6 +461,12 @@ class CoreWorkTests(ModelAccessCase):
         self.assertEqual(query_status, 200, readback)
         self.assertEqual(readback["receipt"], self.cancel_response[1]["receipt"],
                          "the receipts view merges the durable delivery observation after a restart")
+        replay_status, replayed, _ = self.request("/api/v1/work/commands", dict(self.cancel_request))
+        self.assertEqual(replay_status, 200, replayed)
+        self.assertEqual(replayed["receipt"], self.cancel_response[1]["receipt"],
+                         "the original POST must retain the same delivery fact after restart")
+        self.assertEqual(len(cancellations), 1)
+        self.assertEqual(len(client.bodies), 1)
 
     def test_reserve_step_counts_one_call_per_execution_with_purpose_and_attempt(self):
         self.work_with_listing()
