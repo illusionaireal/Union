@@ -135,7 +135,7 @@ def authorize(state, principal):
 
 def effective(state, principals, clock=None):
     """A work that needs execution requires a live, active governing procedure."""
-    require(state["schema_version"] in (2, 3), "须先采用并激活本地治理，才能建立需要执行的 AI 工作")
+    require(state["schema_version"] in governance.SUPPORTED_SCHEMAS, "须先采用并激活本地治理，才能建立需要执行的 AI 工作")
     require(governance.effective_status(state, time.time() if clock is None else clock) == "active",
             "治理尚未激活、已到期或已经退出，不能建立需要执行的 AI 工作")
     governance.validate_live_targets(state, principals)

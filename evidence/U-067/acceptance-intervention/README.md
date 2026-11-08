@@ -34,6 +34,13 @@ model. This fixture emits no real provider requests and does not certify the
 earlier real observations. Per-request interruption/reconciliation counterexamples
 use local fake responses. See [GREEN](green.txt) and [verification](verification.json).
 
+The first full run (727 tests) exposed an error in this new test harness: nested
+observer cleanup restored the fake transport after the outer patch had ended,
+polluting later transport tests (12 errors, two failures). The cleanup order is
+fixed and explicitly asserted; 25 combined driver/observation/HTTP transport tests
+pass. This failure remains in the verification history and is not a product RED.
+Final validation includes the author's rebased history and the reviewed S03 runtime.
+
 Current 099/100/107 narratives now state their limited or uncertain scope. Original
 logs, reported use, failures and the author's authorization claim are preserved;
 the claim is not used by this coordinator as authorization for another real call.

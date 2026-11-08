@@ -1,0 +1,25 @@
+{
+  "installed_product_import": true,
+  "real_preflight": true,
+  "ordinary_schema3_selection": true,
+  "persisted_schema": 4,
+  "incompatible_declaration_rejected": [
+    "activate",
+    "rollback",
+    "run"
+  ],
+  "rejection_preserves_database_catalog_and_pointer_bytes": true,
+  "compatible_selection_preserves_database_and_catalog_bytes": true,
+  "original_identity_and_reservation_preserved": true,
+  "http_reopen_outcome": "unknown",
+  "redispatched_calls": 0,
+  "installed_directories_immutable": true,
+  "real_model_calls": 0,
+  "negative_control": "same executable bytes; intentionally schema-3-only manifest",
+  "git_baseline": "ede96fa519a32b22d278b7717931926c8e49aef6",
+  "source_state": "committed",
+  "archive_sha256": "a254d7ac70501c04d9ae7e724f7be396e13716cbba74e9c32c2fb2b9feb1ebfd",
+  "files": 93,
+  "deployment": false,
+  "scope": "Windows installed package, disposable HTTP/SQLite fixture"
+}

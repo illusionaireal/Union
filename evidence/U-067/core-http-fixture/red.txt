@@ -1,0 +1,33 @@
+test_default_wait_returns_the_one_original_persisted_creation (__main__.CoreHTTPFixtureTests.test_default_wait_returns_the_one_original_persisted_creation) ... ERROR
+test_explicit_timeout_still_raises_without_replaying_the_committed_post (__main__.CoreHTTPFixtureTests.test_explicit_timeout_still_raises_without_replaying_the_committed_post) ... ok
+
+======================================================================
+ERROR: test_default_wait_returns_the_one_original_persisted_creation (__main__.CoreHTTPFixtureTests.test_default_wait_returns_the_one_original_persisted_creation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>\evidence\U-067\core-http-fixture\probe.py", line 57, in test_default_wait_returns_the_one_original_persisted_creation
+    receipt = self.create(request)
+              ^^^^^^^^^^^^^^^^^^^^
+  File "<repo>\tests\test_core_creation.py", line 71, in create
+    status, result, _ = self.request("/api/commands", request or creation())
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>\tests\test_core_creation.py", line 60, in request
+    response = client.getresponse()
+               ^^^^^^^^^^^^^^^^^^^^
+  File "<python>\Lib\http\client.py", line 1430, in getresponse
+    response.begin()
+  File "<python>\Lib\http\client.py", line 331, in begin
+    version, status, reason = self._read_status()
+                              ^^^^^^^^^^^^^^^^^^^
+  File "<python>\Lib\http\client.py", line 292, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<python>\Lib\socket.py", line 720, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+TimeoutError: timed out
+
+----------------------------------------------------------------------
+Ran 2 tests in 6.915s
+
+FAILED (errors=1)

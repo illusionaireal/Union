@@ -5,6 +5,7 @@ from .creation import text, valid_principal, validate_charter
 from ..errors import CoreError, require
 
 PROFILE = "local_governance.v1"
+SUPPORTED_SCHEMAS = (2, 3, 4)
 RESERVED = {"charter", "goal", "resources", "appointments", "mandates", "dissolution"}
 FIELDS = {
     "adopt_governance": {"config", "reason"},
@@ -161,7 +162,7 @@ def apply(state, charter, kind, data, principal, clock, principals):
         require(charter["board_can_amend"], "旧有效章程不允许采用新规则；新规则不能自授权")
         adopt(state, data["config"])
         return charter
-    require(state["schema_version"] in (2, 3), "须先采用明确的治理程序")
+    require(state["schema_version"] in SUPPORTED_SCHEMAS, "须先采用明确的治理程序")
     governance = state["governance"]
     status = effective_status(state, clock)
     if kind not in ("recover_governance", "exit_governance"):
@@ -212,7 +213,7 @@ def apply(state, charter, kind, data, principal, clock, principals):
 
 
 def validate_state(state, origin, charter):
-    require(type(state.get("schema_version")) is int and state["schema_version"] in (2, 3), "AU 治理版本不兼容")
+    require(type(state.get("schema_version")) is int and state["schema_version"] in SUPPORTED_SCHEMAS, "AU 治理版本不兼容")
     for name in ("id", "name", "board_name", "runtime_profile", "governance_root", "resources", "autonomy_state", "resource_state"):
         require(state.get(name) == origin[name], "不可变创建边界发生改变")
     for name in ("version", "charter_version", "policy_version", "goal_version"):
@@ -230,6 +231,6 @@ def validate_state(state, origin, charter):
         require(type(governance["valid_until"]) in (int, float) and governance["valid_until"] > 0, "缺少治理有效期")
     for name in ("members", "bindings", "work", "mandates", "attempts", "results"):
         require(isinstance(state.get(name), dict), "责任记录不完整")
-    if state["schema_version"] == 3:
+    if state["schema_version"] in (3, 4):
         from .model_access import validate_state as validate_models
         validate_models(state)
