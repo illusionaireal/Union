@@ -137,10 +137,13 @@ class GovernanceService:
         # A cancel delivery observation is a separate durable fact of the same
         # command; the merged view distinguishes acceptance from delivery.
         observation = self.store.delivery_observation(directory, request_id, principal)
-        if observation is not None:
+        if receipt.get("kind") == "cancel_step" and receipt.get("cancel_accepted") is None:
+            # A cancel acceptance always has an expected observation; an unreadable
+            # or tampered one is not a trustworthy fact, so the read must fail.
+            if observation is None:
+                raise CoreError("storage_unavailable", "送达观察缺失或未通过完整性校验；请稍后重试查询")
             receipt = dict(receipt)
-            if receipt.get("kind") == "cancel_step" and observation.get("cancel_accepted") is not None:
-                receipt["cancel_accepted"] = observation["cancel_accepted"]
-                receipt["message"] = observation["message"]
+            receipt["cancel_accepted"] = observation["cancel_accepted"]
+            receipt["message"] = observation["message"]
             receipt["delivery"] = observation
         return receipt

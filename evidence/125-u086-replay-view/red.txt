@@ -1,0 +1,26 @@
+test_original_post_replay_preserves_delivered_receipt_after_restart (__main__.DeliveryObservationProbes.test_original_post_replay_preserves_delivered_receipt_after_restart) ... {"transport": [{"intent": true, "receipt_count": 1, "writer_available": true}], "cancel_posts": 1, "post_http": 200, "post_accepted": true, "saved_intent": true}
+FAIL
+test_changed_observation_with_unchanged_hash_is_not_accepted (__main__.DeliveryObservationProbes.test_changed_observation_with_unchanged_hash_is_not_accepted) ... {"transport": [{"intent": true, "receipt_count": 1, "writer_available": true}], "cancel_posts": 1, "post_http": 200, "post_accepted": true, "saved_intent": true}
+FAIL
+
+======================================================================
+FAIL: test_original_post_replay_preserves_delivered_receipt_after_restart (__main__.DeliveryObservationProbes.test_original_post_replay_preserves_delivered_receipt_after_restart)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Benedict\AppData\Local\Temp\u086-obs-probes.py", line 31, in test_original_post_replay_preserves_delivered_receipt_after_restart
+    self.assertEqual(replay["receipt"], original,
+AssertionError: {'act[91 chars]ed': None, 'cancel_connection': {'enabled': Tr[769 chars]: 10} != {'act[91 chars]ed': True, 'cancel_connection': {'enabled': Tr[846 chars]: 10}
+Diff is 1446 characters long. Set self.maxDiff to None to see it. : same original POST must return the same durable delivery fact
+
+======================================================================
+FAIL: test_changed_observation_with_unchanged_hash_is_not_accepted (__main__.DeliveryObservationProbes.test_changed_observation_with_unchanged_hash_is_not_accepted)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Benedict\AppData\Local\Temp\u086-obs-probes.py", line 49, in test_changed_observation_with_unchanged_hash_is_not_accepted
+    self.assertNotEqual(status, 200,
+AssertionError: 200 == 200 : modified observation passed its stored hash: {'receipt': {'actor_principal_id': 'b216ed0c-7dde-4e70-84e1-f440f7d808d3', 'base_version': 9, 'cancel_accepted': False, 'cancel_connection': {'enabled': True, 'grant_ref': 'grant-a', 'grant_revision': 1, 'id': 'connection-a', 'last_check': None, 'max_output_tokens': 256, 'model': 'model-a', 'name': 'Test connection', 'profile': 'modeld_grant', 'revision': 1}, 'created_at': '2026-11-08T23:20:04.253397+00:00', 'delivery': {'cancel_accepted': False, 'message': 'tampered observation'}, 'effect': 'applied', 'id': 'cancel-delivery-original', 'kind': 'cancel_step', 'message': 'tampered observation', 'model_request_id': 'work-86901044398e6afa80d3d6a6004a3011c6c1f760f30d10be7c5beae98a787348', 'organization_id': 'org-9fe5acc2b4c84f0a838731d9f737a166', 'status': 'succeeded', 'step': {'cancel_requested_at': '2026-11-08T23:20:04Z', 'model_request_id': 'work-86901044398e6afa80d3d6a6004a3011c6c1f760f30d10be7c5beae98a787348', 'status': 'reserved', 'step_ref': 'work-overview#s1'}, 'version': 10}}
+
+----------------------------------------------------------------------
+Ran 2 tests in 2.532s
+
+FAILED (failures=2)

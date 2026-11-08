@@ -6,7 +6,7 @@ import json
 
 from ..adapters import documents
 from ..adapters.core_au_store import CoreAUStore, encoded
-from ..adapters.governance_store import commands_in
+from ..adapters.governance_store import commands_in, digest
 from ..adapters.work_context_store import WorkContextStore
 from ..domain import governance, work as rules
 from ..engine import identifier, now
@@ -16,6 +16,24 @@ from . import work_dispatch as dispatch
 
 
 class WorkService:
+    def _delivered_view(self, request, receipt):
+        """Replay must equal the first POST and the receipts GET: merge the durable
+        delivery observation (integrity-checked) into a cancel_step acceptance."""
+        if receipt.get("kind") != "cancel_step" or receipt.get("cancel_accepted") is not None:
+            return receipt
+        try:
+            directory, intent = self.app.governance.locate(request["organization_id"])
+            observation = self.store.delivery_observation(directory, request["id"], receipt["actor_principal_id"])
+        except Exception as _error:  # noqa: BLE001 - an unreadable observation keeps the acceptance view
+            return receipt
+        if observation is None:
+            return receipt
+        merged = dict(receipt)
+        merged["cancel_accepted"] = observation["cancel_accepted"]
+        merged["message"] = observation["message"]
+        merged["delivery"] = observation
+        return merged
+
     def __init__(self, app):
         self.app = app
         self.store = app.governance.store
@@ -23,6 +41,32 @@ class WorkService:
         self.transport_factory = None
         self.active_steps = {}
         self.active_loops = set()
+
+    def _existing_view(self, cx, directory, request, principal, previous):
+        """existing() runs inside the caller's transaction; the delivery observation
+        must be read on that same connection and integrity-checked before it can
+        override the stored acceptance."""
+        if previous.get("kind") != "cancel_step" or previous.get("cancel_accepted") is not None:
+            return previous
+        try:
+            table = cx.execute("SELECT 1 FROM sqlite_master WHERE name='delivery_observations'").fetchone()
+            if table is None:
+                return previous
+            row = cx.execute("SELECT principal_id,observed,hash FROM delivery_observations WHERE id=?",
+                             (request["id"],)).fetchone()
+            if row is None or row[0] != previous["actor_principal_id"]:
+                return previous
+            record = {"id": request["id"], "principal_id": previous["actor_principal_id"], "observed": row[1]}
+            if row[2] != digest({key: value for key, value in record.items() if key != "hash"}):
+                return previous  # a tampered observation is not a trustworthy fact
+            observation = json.loads(row[1])
+        except Exception:  # noqa: BLE001 - an unreadable observation keeps the acceptance view
+            return previous
+        merged = dict(previous)
+        merged["cancel_accepted"] = observation["cancel_accepted"]
+        merged["message"] = observation["message"]
+        merged["delivery"] = observation
+        return merged
 
     def read(self, token, au_id):
         try:
@@ -91,7 +135,7 @@ class WorkService:
                 state = CoreAUStore.read_in(cx, request["organization_id"], creation=intent)["au"]
                 previous = self.store.existing(cx, request, principal)
                 if previous is not None:
-                    return previous
+                    return self._existing_view(cx, directory, request, principal, previous)
                 rules.authorize(state, principal)
                 try:
                     rules.validate_input(request["kind"], request["data"])
@@ -303,7 +347,7 @@ class WorkService:
                 state = CoreAUStore.read_in(cx, request["organization_id"], creation=intent)["au"]
                 previous = self.store.existing(cx, request, principal)
                 if previous is not None:
-                    return previous
+                    return self._existing_view(cx, directory, request, principal, previous)
                 original = dispatch.find(state, request, principal)
                 if original is not None:
                     return dispatch.pending(request, principal, state, original)
@@ -359,7 +403,7 @@ class WorkService:
                 state = CoreAUStore.read_in(cx, request["organization_id"], creation=intent)["au"]
                 previous = self.store.existing(cx, request, principal)
                 if previous is not None:
-                    return previous
+                    return self._existing_view(cx, directory, request, principal, previous)
                 original = dispatch.find(state, request, principal)
                 if original is not None:
                     return dispatch.pending(request, principal, state, original)
@@ -389,7 +433,7 @@ class WorkService:
                 state = CoreAUStore.read_in(cx, request["organization_id"], creation=intent)["au"]
                 previous = self.store.existing(cx, request, principal)
                 if previous is not None:
-                    return previous
+                    return self._existing_view(cx, directory, request, principal, previous)
                 self.store.ensure_commands(cx)
                 state = copy.deepcopy(state)
                 charter = state.pop("charter")
@@ -532,7 +576,7 @@ class WorkService:
             with self.store.transaction(directory) as cx:
                 previous = self.store.existing(cx, request, principal)
                 if previous is not None:
-                    return previous
+                    return self._existing_view(cx, directory, request, principal, previous)
                 current = CoreAUStore.read_in(cx, request["organization_id"], creation=intent)["au"]
                 rules.authorize(current, principal)
                 work = rules.records(current)["works"].get(request["data"]["work_id"])
@@ -637,7 +681,7 @@ class WorkService:
                 state = CoreAUStore.read_in(cx, request["organization_id"], creation=intent)["au"]
                 previous = self.store.existing(cx, request, principal)
                 if previous is not None:
-                    return previous
+                    return self._existing_view(cx, directory, request, principal, previous)
                 rules.authorize(state, principal)
                 work = rules.records(state)["works"].get(request["data"]["work_id"], {})
                 step = next((s for s in work.get("steps", []) if s["step_ref"] == request["data"]["step_id"]), None)
@@ -668,7 +712,7 @@ class WorkService:
                 state = CoreAUStore.read_in(cx, request["organization_id"], creation=intent)["au"]
                 previous = self.store.existing(cx, request, principal)
                 if previous is not None:
-                    return previous
+                    return self._existing_view(cx, directory, request, principal, previous)
                 state = copy.deepcopy(state)
                 charter = state.pop("charter")
                 work = rules.records(state)["works"][request["data"]["work_id"]]
@@ -694,7 +738,7 @@ class WorkService:
                 state = CoreAUStore.read_in(cx, request["organization_id"], creation=intent)["au"]
                 previous = self.store.existing(cx, request, principal)
                 if previous is not None:
-                    return previous
+                    return self._existing_view(cx, directory, request, principal, previous)
                 self.store.ensure_commands(cx)
                 state = copy.deepcopy(state)
                 charter = state.pop("charter")
@@ -722,7 +766,7 @@ class WorkService:
                 state = CoreAUStore.read_in(cx, request["organization_id"], creation=intent)["au"]
                 previous = self.store.existing(cx, request, principal)
                 if previous is not None:
-                    return previous
+                    return self._existing_view(cx, directory, request, principal, previous)
                 # A duplicate may commit intent while this invocation is still
                 # preparing its channel. Its dispatch owns the final receipt;
                 # a late preflight refusal cannot declare that call unexecuted.

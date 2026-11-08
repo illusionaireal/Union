@@ -122,10 +122,13 @@ class GovernanceStore:
             table = cx.execute("SELECT 1 FROM sqlite_master WHERE name='delivery_observations'").fetchone()
             if table is None:
                 return None
-            row = cx.execute("SELECT principal_id,observed FROM delivery_observations WHERE id=?",
+            row = cx.execute("SELECT principal_id,observed,hash FROM delivery_observations WHERE id=?",
                              (request_id,)).fetchone()
             if row is None or row[0] != principal:
                 return None
+            record = {"id": request_id, "principal_id": principal, "observed": row[1]}
+            if row[2] != digest({key: value for key, value in record.items() if key != "hash"}):
+                return None  # a tampered observation is not a trustworthy fact
             return json.loads(row[1])
 
     def initialize(self, cx):
