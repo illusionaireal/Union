@@ -4,11 +4,17 @@ import hashlib
 import os
 import tempfile
 import json
+import threading
+import time
 import uuid
 from pathlib import Path
 
+from urllib.parse import parse_qs, unquote, urlsplit
+
 from ai_union.errors import Rejected
+from ai_union.work_transport import ModeldWorkTransport
 from tests.model_access_support import ModelAccessCase
+from tests.test_work_transport import CONNECTION, FakeClient
 from tests.test_core_creation import creation
 
 
@@ -383,6 +389,73 @@ class CoreWorkTests(ModelAccessCase):
         self.assertEqual(next(s for s in card["steps"] if s["step_ref"] == unknown["step_ref"])["status"],
                          "unknown", "an unknown reservation is only reconciled by the original request")
         self.assertEqual(card["budget"]["reserved"], 1)
+
+    def test_a_cancel_intent_receipt_survives_a_console_restart(self):
+        """The page recovery path queries the original cancel command after a reload:
+        its receipt must still be readable under the same command id. The intent is
+        recorded while the automatic step is reserved in flight (the reviewer
+        cancel-route contract); occupancy stays unknown afterwards."""
+        self.work_with_listing()
+        self.prepare_materials()
+        self.start_attempt()
+        cancellations = []
+        provider = self.provider
+
+        class Client(FakeClient):
+            before_read = None
+
+            def call(self, method, path, body=None, **kwargs):
+                route = urlsplit(path)
+                if method == "POST" and route.path.endswith("/cancel"):
+                    request_id = unquote(route.path.split("/")[-2])
+                    au_id = parse_qs(route.query).get("au_id", [None])[0]
+                    cancellations.append((request_id, au_id))
+                    return {"id": request_id, "au_id": au_id, "state": "cancel_requested"}
+                if method == "POST" and route.path == "/v1/requests":
+                    return super().call(method, path, body, **kwargs)
+                return provider.call(method, path, body, **kwargs)
+
+            def request(self, request_id, au_id):
+                callback, self.before_read = self.before_read, None
+                if callback:
+                    callback(request_id, au_id)
+                return super().request(request_id, au_id)
+
+        client = Client(states=["interrupted"])
+
+        def cancel_during_read(request_id, au_id):
+            card = self.works()["works"][0]
+            step = card["steps"][0]
+            cancel_request = {"id": "cancel-restart-" + uuid.uuid4().hex[:8],
+                              "organization_id": self.au_id,
+                              "base_version": self.read()["au"]["version"],
+                              "kind": "cancel_step",
+                              "data": {"work_id": "work-overview", "step_id": step["step_ref"],
+                                       "reason": "页面级取消：等待期请求停止"}}
+            self.cancel_request = cancel_request
+            self.cancel_response = self.request("/api/v1/work/commands", cancel_request)
+
+        client.before_read = cancel_during_read
+        self.app.work.transport = ModeldWorkTransport(
+            client, self.au_id, CONNECTION, sleep=lambda _: None, clock=lambda: 0)
+        status, value, _ = self.work_step()
+        self.assertEqual(status, 200, value)
+        self.assertEqual(value["receipt"]["model_outcome"], "unknown", value)
+        self.assertEqual(cancellations, [(client.bodies[0]["id"], self.au_id)],
+                         "the cancel intent must reach the original line-end request")
+        self.assertEqual(self.cancel_response[0], 200, self.cancel_response)
+        self.assertEqual(self.cancel_response[1]["receipt"]["status"], "succeeded", self.cancel_response)
+        self.assertEqual(self.cancel_response[1]["receipt"].get("cancel_accepted"), True, self.cancel_response)
+        card = self.works()["works"][0]
+        self.assertEqual(card["budget"]["reserved"], 1,
+                         "cancel_requested/interrupted never release the occupancy")
+
+        self.stop()
+        self.start()
+        replay_status, replayed, _ = self.request("/api/v1/work/commands", dict(self.cancel_request))
+        self.assertEqual(replay_status, 200, replayed)
+        self.assertEqual(replayed["receipt"], self.cancel_response[1]["receipt"],
+                         "the original cancel command replays its same receipt after a restart")
 
     def test_reserve_step_counts_one_call_per_execution_with_purpose_and_attempt(self):
         self.work_with_listing()

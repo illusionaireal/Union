@@ -1,0 +1,17 @@
+test_a_cancel_intent_receipt_survives_a_console_restart (tests.test_core_work.CoreWorkTests.test_a_cancel_intent_receipt_survives_a_console_restart)
+The page recovery path queries the original cancel command after a reload: ... ERROR
+
+======================================================================
+ERROR: test_a_cancel_intent_receipt_survives_a_console_restart (tests.test_core_work.CoreWorkTests.test_a_cancel_intent_receipt_survives_a_console_restart)
+The page recovery path queries the original cancel command after a reload:
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Benedict\AppData\Local\Temp\union-consolidate\tests\test_core_work.py", line 442, in test_a_cancel_intent_receipt_survives_a_console_restart
+    self.assertEqual(cancellations, [(client.bodies[0]["id"], self.au_id)],
+                                      ~~~~~~~~~~~~~^^^
+IndexError: list index out of range
+
+----------------------------------------------------------------------
+Ran 1 test in 0.883s
+
+FAILED (errors=1)
