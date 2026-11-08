@@ -39,7 +39,11 @@ observer cleanup restored the fake transport after the outer patch had ended,
 polluting later transport tests (12 errors, two failures). The cleanup order is
 fixed and explicitly asserted; 25 combined driver/observation/HTTP transport tests
 pass. This failure remains in the verification history and is not a product RED.
-Final validation includes the author's rebased history and the reviewed S03 runtime.
+Final validation on `1c5780f55c4c41a949e31901fcfaa969d3edfb7d` includes the author's
+rebased history and the reviewed S03 runtime: **751 Python tests pass, nine
+skipped, zero errors/failures**, and `npm run check` passes. Raw-log hashes and
+the retained initial failure are in [verification](verification.json). This
+follow-up changes evidence only; no additional real model call was made.
 
 Current 099/100/107 narratives now state their limited or uncertain scope. Original
 logs, reported use, failures and the author's authorization claim are preserved;

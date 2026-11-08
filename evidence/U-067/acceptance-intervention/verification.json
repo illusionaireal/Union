@@ -30,7 +30,7 @@
     "log_sha256": "9bff58e4692eb93394ddfca0b91ec852bfc4ffb5e3cd1648a68699ed4435af85"
   },
   "python_full": {
-    "status": "failed_then_corrected_pending_final_run",
+    "status": "failed_then_corrected",
     "tests": 727,
     "failures": 2,
     "errors": 12,
@@ -43,5 +43,24 @@
     "passed": true,
     "tests": 25,
     "log_sha256": "70b8d7f54e32924e5c9063b99e44f6835ed9f4402449be93e56c0904b2cff655"
+  },
+  "final_integrated_validation": {
+    "tested_head": "1c5780f55c4c41a949e31901fcfaa969d3edfb7d",
+    "python_full": {
+      "passed": true,
+      "tests": 751,
+      "skipped": 9,
+      "failures": 0,
+      "errors": 0,
+      "seconds": 474.089,
+      "log_sha256": "3abe932503a54a283ebcdf0e82b1dcf785f0f3517d9dabf9c511bc655c41446d"
+    },
+    "npm_check": {
+      "passed": true,
+      "log_sha256": "e88e3893fc816d7f22c1bc52abaa8cca0ed28ab227bf67aef8b84f1af57935ec"
+    },
+    "real_model_calls": 0,
+    "production_tree": "identical to independently reviewed cba62604b86455d39745dc9e06bfc5e1716bc25a",
+    "scope": "controlled engineering validation; original failure above retained; real result and interruption gates remain open"
   }
 }
