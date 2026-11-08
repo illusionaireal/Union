@@ -43,7 +43,8 @@
     "web/console/src/app/work-route.test.tsx": "09b0fd4377749111fe7b0135861c66114a9ccc7acb9871c8348f49dfcc393312",
     "tests/test_core_work_registration.py": "b85613b122fe6b0195e4fe9164de43fd509466159358ab671efcc938f698205c",
     "scripts/u105-work-registration-browser.cjs": "35c7ece64a4b3ec073e7b68c86c43f699de5e8f754a7298b26e477c1111fd2d8",
-    "scripts/u105_work_registration_host.py": "39f085c12bdd7dea12121315c429891e7dcc3f56ccc60485c319419785311066"
+    "scripts/u105_work_registration_host.py": "39f085c12bdd7dea12121315c429891e7dcc3f56ccc60485c319419785311066",
+    "scripts/u081-work-read-browser.cjs": "0956967041ea09c19c95987889286d46d7d82666e35ed8c2ff3ac292ff8d1ef2"
   },
   "local_log_sha256": {
     "dom-red.log": "aad231368ba736fccd866d943633f99f427ada31d836214d6a3a635335716f1e",
@@ -55,7 +56,21 @@
     "npm-release.log": "26e158158bec66d352f923282174379ee9c62af4d64f756223fe66262d4c3b25",
     "browser-release.log": "c6de1de7abdd06ae5195667c77ab4eef1ed6af81f204549f47ac8f149d0d6f15",
     "management-final.log": "5f1d0968115d772c29a33ab4caff4da6108e53b64d59982de263ef569445e018",
-    "python-full.log": "2e2ceb80f3ea2f4ef91b9080ad9bd2868791892df43c545e6777eb1d8630893f"
+    "python-full.log": "2e2ceb80f3ea2f4ef91b9080ad9bd2868791892df43c545e6777eb1d8630893f",
+    "u081-red.log": "2beb630c211c94761a5386863d7001fcea3f6824f16069f2b749c51c1f8a7457",
+    "u081-green.log": "0e3404b8f7d5db8c31a4ce654755912c9e589513957ff4522ce9a2606cb07000"
   },
-  "source_hash_encoding": "UTF-8 file bytes with CRLF normalized to LF, matching Git blobs"
+  "source_hash_encoding": "UTF-8 file bytes with CRLF normalized to LF, matching Git blobs",
+  "ci_followup": {
+    "failed_head": "640e61315e30865b1c1ac4d9867b22fbe33d43a6",
+    "failed_jobs": [
+      128809208839,
+      128809050096
+    ],
+    "cause": "U081 browser expected registration control count 0; U105 intentionally enables registration. Actual Chrome reproduced 1 != 0.",
+    "change": "Browser assertion now requires registration and explicitly forbids manual reservation/result/finish; zero work POSTs still required.",
+    "local_u081_browser_passed": 6,
+    "product_dom_python_unchanged": true,
+    "current_head_ci": "pending publication and readback"
+  }
 }

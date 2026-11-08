@@ -34,8 +34,10 @@ async function main() {
     await page.goto(url);
     const works = page.getByRole('list', { name: 'V1 工作列表', exact: true });
     await works.getByText('项目概览', { exact: true }).waitFor();
-    assert.equal(await page.getByText('登记新的 AI 工作', { exact: true }).count(), 0);
+    assert.equal(await page.getByText('登记新的 AI 工作', { exact: true }).count(), 1);
     assert.equal(await page.getByRole('button', { name: '预约一次调用', exact: true }).count(), 0);
+    assert.equal(await page.getByLabel('成果正文', { exact: true }).count(), 0);
+    assert.equal(await page.getByRole('button', { name: '结束执行', exact: true }).count(), 0);
     const link = works.getByRole('link', { name: '下载', exact: true });
     const result = await context.request.get(new URL(await link.getAttribute('href'), ready.origin).href);
     assert.equal(result.status(), 200);
@@ -52,7 +54,7 @@ async function main() {
     fs.mkdirSync(output, { recursive: true });
     fs.writeFileSync(path.join(output, 'checks.json'), JSON.stringify({
       scope: 'controlled', checks: ['core route shows persisted work', 'result download over authenticated HTTP',
-        'read-only controls', 'refresh and reload', '1440/390/320 widths', 'zero work POSTs'],
+        'registration available; manual bookkeeping hidden', 'refresh and reload', '1440/390/320 widths', 'zero work POSTs'],
       real_model_calls: 0,
     }, null, 2));
     console.log('U081 browser: 6 controlled checks passed; real model calls: 0');
