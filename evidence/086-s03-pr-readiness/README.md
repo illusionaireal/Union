@@ -167,3 +167,31 @@ file:C:/Users/Benedict/.gitconfig   http.https://github.com.proxy   http://127.0
 3. 看板（Cloudflare Worker）另有一层不可达（`cloudflare.com` 可达、该 Worker 超时），需要单独排查。
 
 **当前远端状态**：`origin/dsh/s03-work-runtime` = `bb1b417`（20 个提交，含全部产品代码与证据）；本地另有 1 个仅文档提交 `abd9f35` 未推送。
+
+## 恢复推送：DNS 污染 + 代理损坏的组合，已找到可用命令（2026-11-08 08:40）
+
+**现象链**（实测）：
+
+| 目标 | 解析结果 | TCP 443 | 说明 |
+| --- | --- | --- | --- |
+| `github.com` | `20.205.243.166` | **不可达** | 被污染到不可用 IP |
+| `api.github.com` | `20.205.243.168` | 可达（API 200） | 只有 API 通 |
+| `union-kanban.361102304.workers.dev` | `69.63.184.14` | **不可达** | 同样被污染 |
+| 其他 GitHub IP（`140.82.121.3`、`140.82.112.3`、`20.27.177.113`） | — | **可达** | 可用绕行 |
+| 代理 `127.0.0.1:7897` | — | TLS 握手失败 | 已损坏，且被 `~/.gitconfig` 按 URL 绑定 |
+
+**可用推送/拉取命令**（本机已验证成功）：
+
+```powershell
+$env:ALL_PROXY=''; $env:HTTPS_PROXY=''; $env:HTTP_PROXY=''; $env:NO_PROXY='github.com'
+git -c "http.https://github.com.proxy=" `
+    -c "http.curloptResolve=github.com:443:140.82.121.3" `
+    -c "http.version=HTTP/1.1" push origin dsh/s03-work-runtime
+```
+
+`git fetch origin` 用同一组 `-c` 参数亦可（本次已成功拉取，看到 `origin/rewrite/charter-v1` 前进到 `9fff477`，含合并的 PR #18）。
+
+**推送状态**：`origin/dsh/s03-work-runtime` = `bbb1d8130652dd0bd8bde66d8d6a914cb7502e97`（**21 个提交，全部产品代码与证据**）；本地与远端 0/0。
+
+**仍不可用**：在线看板（DNS 污染 + 该 IP 不可达），因此 #22 四段 checklist 与 #32/U-078 的在线同步仍待网络恢复；PR 仍需协调者创建：
+`https://github.com/illusionaireal/Union/compare/rewrite/charter-v1...dsh/s03-work-runtime?expand=1`
