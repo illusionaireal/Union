@@ -76,6 +76,15 @@ jobs:
       - run: node scripts/u106-result-delivery-browser.cjs
         env:
           UNION_PYTHON: python3
+      - run: node scripts/u086-cancel-recovery-browser.cjs
+        env:
+          UNION_PYTHON: python3
+          UNION_U086_EVIDENCE: .union/u086-cancel-recovery
+      - run: node scripts/u086-cancel-recovery-browser.cjs
+        env:
+          UNION_PYTHON: python3
+          UNION_U086_LOSE_CANCEL: '1'
+          UNION_U086_EVIDENCE: .union/u086-cancel-recovery-lost
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -91,3 +100,5 @@ jobs:
             .union/u105-browser
             .union/u105-confirmed-access
             .union/u106-browser
+            .union/u086-cancel-recovery
+            .union/u086-cancel-recovery-lost

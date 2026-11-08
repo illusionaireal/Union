@@ -1,0 +1,198 @@
+{
+  "actor": "codex-home single duty implementation session",
+  "online_user_id": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+  "card": 40,
+  "scope_comment": 149,
+  "fresh_board_revision": 506,
+  "owner_preserved": true,
+  "scope": "controlled",
+  "page_parent": "67d1225860714d6f22bc48c7328edcbf53edb8e7",
+  "author_parent": "813b3b55b88485872ea9f7e040b8b82dec891ef2",
+  "combination_merge": "45af934006e5babc451db360ca05e345341bea8c",
+  "integration": "2ff90f1fe631e46fc71f9ba5487417415e0e4f63",
+  "real_model_calls": 0,
+  "independent_review": "Required; implementing session has not approved itself",
+  "server_product_matches_author": true,
+  "page_product_matches_published": true,
+  "logs": {
+    "red": {
+      "sha256": "45b1a521744c67432e1ea02513b176c936f9d7e5d203ec2ef183f1e952c549c4",
+      "summary": [],
+      "classification": "Product RED: original GET returns cancel_accepted=false while POST reports true"
+    },
+    "accepted": {
+      "sha256": "dff6794944168a1a836d9c44133fc3c0d7814be5a8678842e6637259d5980b5c",
+      "summary": [
+        "U086 page recovery: 12 checks passed; command POST=2, fake=1, real=0; lost cancel=false"
+      ]
+    },
+    "lost": {
+      "sha256": "2380afb57d728430e83ee64cb0ca16e75116012a4a1b8c194f84e696b8f20cca",
+      "summary": [
+        "U086 page recovery: 12 checks passed; command POST=2, fake=1, real=0; lost cancel=true"
+      ]
+    },
+    "npm": {
+      "sha256": "c0872eff1a2ab0dd7aedad3b806e1b51c41df0ea8776ad08c1571572edb5f628",
+      "summary": [
+        "      Tests  326 passed (326)"
+      ]
+    },
+    "server-faults": {
+      "sha256": "63d35b6ef5f3fb99d935fc217a711788954ca6b8e60d0b4d7285d3b1f87ecaae",
+      "summary": [
+        "FAIL: test_cancel_intent_is_committed_before_external_delivery (__main__.CancelDeliveryProbes.test_cancel_intent_is_committed_before_external_delivery)",
+        "FAIL: test_external_cancel_does_not_hold_the_au_writer (__main__.CancelDeliveryProbes.test_external_cancel_does_not_hold_the_au_writer)",
+        "FAIL: test_wrong_model_request_response_cannot_confirm_delivery (__main__.CancelDeliveryProbes.test_wrong_model_request_response_cannot_confirm_delivery)",
+        "FAIL: test_wrong_au_response_cannot_confirm_delivery (__main__.CancelDeliveryProbes.test_wrong_au_response_cannot_confirm_delivery)",
+        "FAIL: test_commit_failure_cannot_send_cancel_and_lose_its_intent (__main__.CancelDeliveryProbes.test_commit_failure_cannot_send_cancel_and_lose_its_intent)",
+        "Ran 6 tests in 7.817s",
+        "FAILED (failures=5)"
+      ],
+      "classification": "Expected unresolved author faults; 1 pass, 5 failures, no errors"
+    },
+    "original": {
+      "sha256": "e941d0c8984f83363dfaa94e5799a03bb579cd5bbf0045f33f821eb86e6d9e2a",
+      "summary": [
+        "Ran 3 tests in 2.860s",
+        "OK"
+      ]
+    },
+    "cancel-route": {
+      "sha256": "d0e25380f142e2b1f31d06f478f13cd79267debbf1b0cb6f4af5d11aa5a0ca6c",
+      "summary": [
+        "Ran 1 test in 1.080s",
+        "OK"
+      ]
+    },
+    "cancel-budget": {
+      "sha256": "ec33324fe6ac41a9fc9babd6224befa04f96de011b7c23fb5c86689c1a7ed099",
+      "summary": [
+        "Ran 4 tests in 4.566s",
+        "OK"
+      ]
+    },
+    "python_full": {
+      "sha256": "0fef6be9a73f0d6fb88ce453c55888355c12c14254b0a07b58dd3cd772685482",
+      "summary": [
+        "Ran 784 tests in 516.574s",
+        "OK (skipped=9)"
+      ],
+      "classification": "Full suite passed on the combined candidate source"
+    }
+  },
+  "source": {
+    ".github/workflows/ci.yml": {
+      "sha256": "43faf753cb7fa61b373308fdfb7b1206b0c8d69ff81ad795bc47d895919d9df4",
+      "git_blob": "a8aef4f562782ed1a18618d9616a28ba31830fb8"
+    },
+    "scripts/u086-cancel-recovery-browser.cjs": {
+      "sha256": "98fe1335a51a740173333714c5f1f69c1e7ecec56742bfb02c78ece7f9678b50",
+      "git_blob": "d3ee7e952215cd1b67f89a28ac105aa7328f8c28"
+    },
+    "scripts/u086_cancel_recovery_host.py": {
+      "sha256": "f6d0f9a6672835b863aefed04b2b23e489514c31cf99a690ea619843e8424a12",
+      "git_blob": "cba3aeea79c7e069a99b2565ab6f0792093e61d4"
+    },
+    "web/console/src/features/work/WorkExecution.tsx": {
+      "sha256": "9bab56eb67424b3339e71820bbf96977f970d991fd63e2a4b8d1db0e520529f0",
+      "git_blob": "244e7be42b47893969d4c12334cc411da6051bb4"
+    },
+    "web/console/src/features/work/cancel-recovery.test.tsx": {
+      "sha256": "eff2593c10e48b13eeadc4bf2c2859746b632035d6b8e336b4a8f29e5a1eabce",
+      "git_blob": "9e5ff061cba8b9ac9651742d65a45d0e133a0219"
+    },
+    "ai_union/application/work.py": {
+      "sha256": "f4634869c81a4d7052298a83118891587b0c8d0761369a05afc9cb3f6227823c",
+      "git_blob": "bcb5eb025fe68721dde941b27f0179202a90518f"
+    },
+    "ai_union/work_transport.py": {
+      "sha256": "dd163f5ee604adcb1328e0ba8ff160942544e1757cee5335105f1bc5702e66ab",
+      "git_blob": "25ec2b019c9d4586a7cec1d7ef5e790dc6184004"
+    },
+    "tests/test_core_work.py": {
+      "sha256": "e649c8f75d39ecdc7408c3dc836bbc399cede93f3fbd9180cc1c0422deeba4ab",
+      "git_blob": "9db826181967b8d933e72c9ead3266dbf7442274"
+    }
+  },
+  "browser": {
+    "accepted": {
+      "scope": "controlled",
+      "checks": [
+        "page sends cancel while original run POST is pending",
+        "separate original IDs",
+        "actual HTTP cancel reaches original model request and AU",
+        "SQLite retains original run reservation",
+        "cancel cannot be posted twice",
+        "both original GETs survive reload",
+        "unknown retains one reservation",
+        "three viewport widths",
+        "host restart preserves original cancellation receipt",
+        "new service scope excludes old browser references",
+        "cancel POST and original GET contain the same complete accepted receipt",
+        "restarted original GET contains the same complete accepted receipt"
+      ],
+      "lose_cancel_response": false,
+      "work_posts": 2,
+      "fake_model_calls": 1,
+      "cancel_posts": 1,
+      "real_model_calls": 0,
+      "cancellation_receipt": {
+        "post_cancel_accepted": true,
+        "stored_cancel_accepted": true,
+        "complete_receipt_equal": true,
+        "note": "Only receipt persistence is verified here; pre-delivery commit, unlocked I/O and response identity remain separate author-owned faults."
+      }
+    },
+    "lost": {
+      "scope": "controlled",
+      "checks": [
+        "page sends cancel while original run POST is pending",
+        "separate original IDs",
+        "actual HTTP cancel reaches original model request and AU",
+        "SQLite retains original run reservation",
+        "cancel cannot be posted twice",
+        "both original GETs survive reload",
+        "unknown retains one reservation",
+        "three viewport widths",
+        "host restart preserves original cancellation receipt",
+        "new service scope excludes old browser references",
+        "cancel POST and original GET contain the same complete accepted receipt",
+        "restarted original GET contains the same complete accepted receipt"
+      ],
+      "lose_cancel_response": true,
+      "work_posts": 2,
+      "fake_model_calls": 1,
+      "cancel_posts": 1,
+      "real_model_calls": 0,
+      "cancellation_receipt": {
+        "post_cancel_accepted": true,
+        "stored_cancel_accepted": true,
+        "complete_receipt_equal": true,
+        "note": "Only receipt persistence is verified here; pre-delivery commit, unlocked I/O and response identity remain separate author-owned faults."
+      }
+    }
+  },
+  "pending": [
+    "exact published head CI",
+    "another engineering role review",
+    "five author-owned server faults"
+  ],
+  "server_fault_probe": {
+    "commit": "51b5ca15dab845857ed0a40c52c986c186f98ad8",
+    "path": "evidence/U-086/cancel-delivery-probes.py",
+    "sha256": "b8c7f73b9da48a5e4108c50d96b808a77210a3ae962996233e2c20a5b36bf237",
+    "source_unchanged": true
+  },
+  "nas": {
+    "running": true,
+    "oom": false,
+    "restart_count": 0,
+    "changed": false
+  },
+  "status_poll": {
+    "last_attempt": "2026-11-08T22:44:24.907906+00:00",
+    "status": "ok",
+    "revision": 506
+  }
+}

@@ -87,6 +87,7 @@ async function main() {
     while (!cancelResponse() && Date.now() < deadline) await page.waitForTimeout(50);
     if (routeError) throw routeError;
     assert.ok(cancelPostReceipt, 'actual cancel POST must complete');
+    assert.equal(cancelPostReceipt.cancel_accepted, true, 'the original endpoint must accept this fixture cancellation');
     if (!loseCancel) await page.getByRole('group', { name: '原取消请求', exact: true })
       .getByText(/本次操作已记录/).waitFor();
     assert.deepEqual(posts.map(p => p.kind), ['run_loop', 'cancel_step']);
@@ -120,6 +121,8 @@ async function main() {
       const value = (await r.json()).receipt;
       assert.equal(value.id, original.id); assert.equal(value.kind, original.kind);
       assert.equal(value.organization_id, ready.organization_id);
+      if (original.kind === 'cancel_step') assert.deepEqual(value, cancelPostReceipt,
+        'original cancellation GET must preserve the complete POST receipt');
       await group.getByRole('button').waitFor();
       // Receipt content adoption includes a subsequent session read.
       await page.waitForFunction(() => Array.from(document.querySelectorAll('button'))
@@ -139,6 +142,8 @@ async function main() {
     const storedCancel = (await persisted.json()).receipt;
     assert.equal(storedCancel.id, cancelled.id);
     assert.equal(storedCancel.kind, 'cancel_step');
+    assert.deepEqual(storedCancel, cancelPostReceipt,
+      'original cancellation receipt must remain identical after service restart');
     assert.equal(posts.length, 2);
     assert.equal(after.fake_model_calls, 1); assert.equal(after.cancel_posts, 1);
     assert.equal(after.steps[0].status, 'unknown');
@@ -146,14 +151,17 @@ async function main() {
       'actual HTTP cancel reaches original model request and AU', 'SQLite retains original run reservation',
       'cancel cannot be posted twice', 'both original GETs survive reload',
       'unknown retains one reservation', 'three viewport widths',
-      'host restart preserves original cancellation receipt', 'new service scope excludes old browser references'];
+      'host restart preserves original cancellation receipt', 'new service scope excludes old browser references',
+      'cancel POST and original GET contain the same complete accepted receipt',
+      'restarted original GET contains the same complete accepted receipt'];
     const output = path.resolve(process.env.UNION_U086_EVIDENCE || '.union/u086-cancel-recovery');
     fs.mkdirSync(output, { recursive: true });
     fs.writeFileSync(path.join(output, 'checks.json'), JSON.stringify({ scope: 'controlled', checks,
       lose_cancel_response: loseCancel, work_posts: 2, fake_model_calls: 1, cancel_posts: 1, real_model_calls: 0,
-      known_server_gap: { post_cancel_accepted: cancelPostReceipt.cancel_accepted,
+      cancellation_receipt: { post_cancel_accepted: cancelPostReceipt.cancel_accepted,
         stored_cancel_accepted: storedCancel.cancel_accepted,
-        note: 'Delivery observation consistency remains the author-owned server repair; not approved by this page test.' }
+        complete_receipt_equal: true,
+        note: 'Only receipt persistence is verified here; pre-delivery commit, unlocked I/O and response identity remain separate author-owned faults.' }
     }, null, 2) + '\n');
     console.log(`U086 page recovery: ${checks.length} checks passed; command POST=2, fake=1, real=0; lost cancel=${loseCancel}`);
   } finally {
