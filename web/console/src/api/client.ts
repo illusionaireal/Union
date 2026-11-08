@@ -25,16 +25,16 @@ export function errorText(error: unknown): string {
   return error instanceof Error ? error.message : '服务暂不可用';
 }
 /** Cancellation and timeouts apply to reads AND writes; a timed out write is never retried. */
-export async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
+export async function request<T>(path: string, init: RequestInit = {}, timeoutMs: number | null = 5000): Promise<T> {
   const controller = new AbortController();
   const cancel = () => controller.abort();
   if (init.signal?.aborted) controller.abort();
   init.signal?.addEventListener('abort', cancel, { once: true });
   let timedOut = false;
-  const timer = setTimeout(() => {
+  const timer = timeoutMs === null ? undefined : setTimeout(() => {
     timedOut = true;
     controller.abort();
-  }, 5000);
+  }, timeoutMs);
   try {
     const response = await fetch(path, {
       credentials: 'same-origin',
@@ -66,7 +66,10 @@ export const api = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
-    }),
+    }, body.kind === 'run_loop' ? null : 5000),
+  coreWorkReceipt: (organizationId: string, id: string) =>
+    request<{ receipt: unknown }>('/api/v1/governance/receipts?' +
+      new URLSearchParams({ organization_id: organizationId, id }).toString()),
   catalog: () => request<{version:number; models: Array<{provider:string; model:string; context_window?:number; tool_call?:boolean; revision?:string}>}>('/api/model-catalog'),
   exportModels: (organization_id: string) => '/api/model-export?' + query({organization_id}),
   modelCosts: (organization_id: string) => request<{vouchers:Array<{id:string;basis:string;period:string;amount_minor:number;currency:string}>}>('/api/model-costs?'+query({organization_id})),
