@@ -18,3 +18,7 @@ Inspected the transport, application and domain changes against the frozen contr
 - Commands: `python -m unittest tests.test_work_transport_http tests.test_core_work_http -v` on Linux; add `tests.test_work_observation tests.test_work_transport` for the Windows regression.
 
 This review used no real model calls. The NAS application was not switched or migrated. Full checks on the resulting PR head remain the merge gate; the earlier CI failure is retained as evidence rather than hidden by a rerun.
+
+## Windows inherited integration fix
+
+After the Linux fixture fix, Windows CI job `128645022754` failed the existing creation directory-failure test: the fault injector compared a short temporary path spelling to its expanded path and therefore did not inject the failure. This is the same issue already fixed on `rewrite/charter-v1` by `b9b461a953f967730a2eceedd5d6456716bf5b46`; the S03 branch did not include it. Reused that exact test repair: exercise an equivalent spelling and compare canonical parent paths. The unknown/no-reallocation assertions and product implementation remain unchanged. The failure and its provenance are retained; this is not an unexplained CI rerun.
