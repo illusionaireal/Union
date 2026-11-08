@@ -1,5 +1,6 @@
 # U-067 证据索引
 
+- [2026-11-08：组合候选的 V1 HTTP 夹具超时修复](core-http-fixture/README.md)：真实延迟 RED/GREEN、原 POST 一次与显式短超时；不改变产品权限或 CI 门禁。
 - [2026-11-08：待审候选的组合验证](combined-integration/README.md)：PR #24/#25/#26/#27 顺序组合，schema 4 下成果与未知预约的真实浏览器验证；不是独立复核或真实模型验收。
 - [2026-11-08：后续准入拒绝仍保存父循环用量回执](loop-receipt-fix/README.md)：4 个真实 RED 后最小修复，保留已发生调用、未知预约及原请求恢复；真实验收另计。
 - [2026-11-08：自动派发的代码回退兼容候选](dispatch-compatibility/README.md)：事务内 schema 4、旧候选拒绝、原预约保留及跨版本探针；待当前 CI 和另一工程角色复核，不关闭真实父卡。

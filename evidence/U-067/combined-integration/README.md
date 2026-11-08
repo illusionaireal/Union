@@ -104,3 +104,25 @@ to tested `9f9e6d0`. This does not merge PR #26 into the integration branch;
 that PR's current-head CI must pass first. PR #24/#25 and their combination
 still need a different engineering role's acceptance. PR #22 remains with
 DSH. See [incremental verification](review-response-verification.json).
+
+## 2026-11-08 adopted UI baseline and new CI fixture failure
+
+GitHub confirms PR #26 was merged as `90de860e653673e5ecdc74205739011812c193ef`.
+The combination includes that actual history at `4494b75`; its entire tree is
+identical to `9e1ac0e`. PR #26/#27 must not be merged again.
+
+On `4494b75`, Windows job `128721896081` failed in the separate V1 creation
+helper's five-second socket wait, before the responsibility test assertions.
+The [fixture follow-up](../core-http-fixture/README.md) retains that failure,
+the real delayed-response RED/GREEN and original-request recovery evidence.
+It changes the default fixture wait to 30 seconds and keeps explicit timeout
+overrides, single POST behavior and all product checks. PR #24/#25 and this
+combination still need independent adoption review and current-head CI.
+
+The fixture candidate's completed local validation is now indexed in
+[verification.json](../core-http-fixture/verification.json): Python 725 tests
+(eight skips), npm check and the original three probes pass. Resumption adds
+two delayed-response checks and 40 affected HTTP/identity/responsibility checks,
+all passing. The earlier full runs belong to this unchanged product/helper
+source; the original failed Windows job is retained, and the published head
+still needs its own CI and independent adoption review.

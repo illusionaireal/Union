@@ -48,7 +48,9 @@ class CoreCreationTests(unittest.TestCase):
         if self.app and not self.app.closed:
             self.app.close()
 
-    def request(self, path, body=None, token="current", timeout=5):
+    def request(self, path, body=None, token="current", timeout=30):
+        # Allow fixture SQLite setup on shared CI hosts; never retry a POST.
+        # Explicit timeouts still exercise caller-selected failure boundaries.
         client = http.client.HTTPConnection("127.0.0.1", self.server.server_port, timeout=timeout)
         headers = {"Origin": self.server.origin, "Content-Type": "application/json"}
         actual = getattr(self, "token", None) if token == "current" else token
