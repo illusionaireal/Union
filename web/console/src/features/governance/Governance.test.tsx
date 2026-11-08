@@ -40,6 +40,11 @@ beforeEach(() => {
   vi.spyOn(api, 'session').mockResolvedValue(governanceSession);
   vi.spyOn(api, 'authStatus').mockResolvedValue(auth);
   vi.spyOn(api, 'coreAU').mockResolvedValue(governedAU());
+  vi.spyOn(api, 'coreWork').mockResolvedValue({
+    protocol: 'core.work.v1', organization_id: 'core-au', version: 3,
+    access: { principal_id: principal, can_start: false }, works: [],
+    capabilities: { work_registration: true, execution: 'not_started', autonomous_business: false },
+  });
   fetchMock = vi.fn(async (_path, init) =>
     json({ receipt: receipt(JSON.parse(String(init?.body))) }),
   );

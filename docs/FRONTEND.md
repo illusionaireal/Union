@@ -2,6 +2,10 @@
 
 > 当前产品依据为[Main Chapter V1](UNION_CHARTER_v1.0.md)、[PRD v1.0](PRD.md)与[053切片](../specs/053-union-rewrite/tasks.md)。本文件保留React工程说明；历史验收和旧界面描述不代表V1能力已经交付。
 
+## 2026-11-08：U-081 核心任务页的 AI 工作读取
+
+核心 `/tasks` 的治理路由复用 WorkPanel，只读显示已保存的 AI 工作、责任、预算、工具回执和成果下载，保留原责任工作区。查询按当前主体、服务实例和 AU 分隔，错配记录不显示；“刷新 AI 工作”只重读记录。准备态和 legacy 路由沿原行为，不暴露旧手工记账控件。自动派发控制、原请求恢复及真实成果验收仍由 U-067 的未完成出口承接，不能把本次读取接线称为自主工作闭环。契约见 [U-081](../specs/053-union-rewrite/s03-work-read-ui-contract.md)，验证及未完成条件见 [证据](../evidence/U-081/README.md)。
+
 ## 2026-11-06：S02 模型与资料验证
 
 2026-11-06：V1 `/models` 由 `features/models/` 维护，复用核心身份、工作区、同源客户端、预览与回执组件。保存、授权、文本工具验证和默认采用分开；原请求、输入/焦点、身份切换、断网和逐次用量均有实际浏览器证据。结构化诊断只展示受控说明及下一步，浏览器不保存密钥、资料正文或 native 数据。见 [S02 契约](../specs/053-union-rewrite/s02-contract.md)和 [058](../evidence/058-s02-model-tools/README.md)。

@@ -47,6 +47,9 @@ jobs:
       - run: npm run test:model-service-browser
         env:
           UNION_PYTHON: python3
+      - run: node scripts/u081-work-read-browser.cjs
+        env:
+          UNION_PYTHON: python3
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -54,3 +57,4 @@ jobs:
           path: |
             .union/frontend-browser-evidence
             .union/novel-browser-evidence
+            .union/u081-work-read-browser
