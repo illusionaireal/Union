@@ -74,7 +74,8 @@ class LoopbackWorkTransportTests(unittest.TestCase):
         self.config.write_text(json.dumps({
             "origin": "http://127.0.0.1:%d" % self.server.server_address[1],
             "admin_token_file": "admin.token", "worker_token_file": "worker.token"}), encoding="utf-8")
-
+        for private_file in (self.config, root / "admin.token", root / "worker.token"):
+            private_file.chmod(0o600)
 
     def tearDown(self):
         self.server.shutdown()
