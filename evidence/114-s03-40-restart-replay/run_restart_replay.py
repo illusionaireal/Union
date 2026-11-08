@@ -16,10 +16,10 @@ from pathlib import Path
 from ai_union.model_service import ModelServiceClient
 from tests.model_access_support import ModelAccessCase
 
-CONFIG = os.environ["UNION_MODELD_CONFIG"]
+CONFIG = os.environ.get("UNION_MODELD_CONFIG")
 MODEL = os.environ.get("UNION_REAL_MODEL", "deepseek-v4.1-flash")
-ACCOUNT = os.environ["UNION_REAL_ACCOUNT"]
-SKIP = not os.environ.get("UNION_REAL_RESTART_ACCEPTANCE") == "1"
+ACCOUNT = os.environ.get("UNION_REAL_ACCOUNT")
+SKIP = (not CONFIG) or (not ACCOUNT) or os.environ.get("UNION_REAL_RESTART_ACCEPTANCE") != "1"
 
 
 @unittest.skipIf(SKIP, "需要 UNION_REAL_RESTART_ACCEPTANCE=1 的明确授权才会真的发起调用")
