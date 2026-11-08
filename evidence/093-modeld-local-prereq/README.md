@@ -24,3 +24,18 @@ bun test services/modeld/test
 ## 仍未验证
 
 真实 modeld 进程与真实推理（需要宿主凭据与准备好的 vendor）。
+
+## 补充（2026-11-08 13:01）：本机无法直接启动 modeld
+
+尝试用仓库现有产物起一个本地实例以验证 `/v1/runtime` 协议，结论是不可行：
+
+| 检查 | 结果 |
+| --- | --- |
+| `services/modeld/dist/` | 只有 `LICENSE.opencode`、`THIRD_PARTY_NOTICES.json`、`upstream.lock.json`，**没有可执行的 `main.js`** |
+| `services/modeld/vendor/` | 仅 1 项，**上游 OpenCode 源码未展开** |
+| `package.json` scripts | 只有 `test` 与 `build`（`build.ts`），没有 `start` |
+| 本机工具链 | Bun 已安装（`~/.bun/bin/bun.exe`） |
+
+因此要起真实 modeld，需要先：`prepare.mjs`（拉取并构建固定的上游内核，可能需要 Go 工具链与网络）→ 生成 `dist/main.js` → 提供宿主私有配置（回环 origin + admin/worker 令牌）与上游账号凭据。**后两项只能由宿主提供**，本卡不索取密钥正文。
+
+结论：真实有界验收（≤2 次调用、≤1024 输出 tokens、仅合成资料）仍阻塞在宿主的 modeld 构建产物与凭据上，而不是本卡代码。
