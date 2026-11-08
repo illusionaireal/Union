@@ -123,8 +123,8 @@ class ModelAccessCase(GovernanceCase):
     def wait_operation(self, operation_id):
         return self.wait_for("operations", operation_id)
 
-    def wait_for(self, table, key):
-        deadline = time.monotonic() + 5
+    def wait_for(self, table, key, *, timeout=30):
+        deadline = time.monotonic() + timeout
         while time.monotonic() < deadline:
             value = next((x for x in self.models()[table] if x["id"] == key), None)
             if value and value["status"] not in ("queued", "running", "saving"):

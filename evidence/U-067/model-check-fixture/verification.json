@@ -1,0 +1,21 @@
+{
+  "scope": "test polling fixture only; original request identity and product behavior retained",
+  "red": {
+    "tests": 2,
+    "behavior_failures": 1,
+    "unsupported_explicit_timeout_errors": 1,
+    "seconds": 7.441,
+    "log_sha256": "3e6f4679807766fe11bd412dc582cd719888a0593c819d9dc4af0611ff452823"
+  },
+  "green": {
+    "tests": 10,
+    "passed": true,
+    "seconds": 15.193,
+    "includes": "two actual local HTTP/SQLite delayed-original probes and all model-observation regressions",
+    "log_sha256": "f5b150b0ad63252c88cfb4c1ad6cf67d7e84158bd1d93e3c49cbaacb0796530e"
+  },
+  "default_wait_seconds": 30,
+  "explicit_short_wait_seconds": 0.05,
+  "artificial_delay_seconds": 5.5,
+  "real_provider_requests": 0
+}

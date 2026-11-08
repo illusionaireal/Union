@@ -1,0 +1,46 @@
+{
+  "scope": "host adoption; not product sustained operation",
+  "pr": 31,
+  "head": "a39ca585ef9d8b0bbf78afb53a19ef8c6db57dfc",
+  "merge_commit": "e7b139fb4e10b544d8b006307e7ed986ff3053fc",
+  "checks_success": 14,
+  "installed_at": "2026-11-08T14:21:36.967655+00:00",
+  "source_sha256": "3819bfe7de63328c3ca834904fc4d1736c65e3cc281c19617dad7db2f44576d0",
+  "previous_sha256": "5f79b0379ae65f39bc0046eb12183599a9be182c5d0c351df38a2ca56f977f47",
+  "previous_host_retry_patch_preserved": true,
+  "poll": {
+    "status": "ok",
+    "last_success": "2026-11-08T14:21:55.260107+00:00",
+    "board_revision": 299,
+    "attention": [
+      {
+        "id": 28,
+        "status": "blocked",
+        "assignee": "54f3ed9e-817b-482a-90c1-d46bfc01728c",
+        "updated_at": "2026-11-08T05:59:05.905Z",
+        "period": 2
+      }
+    ],
+    "nas": {
+      "exit_code": 0,
+      "health": "running false 0"
+    },
+    "agent_gate": "busy"
+  },
+  "poll_seconds": 300,
+  "review_seconds": 14400,
+  "watcher_tests_passed": 17,
+  "public_receipt": "https://github.com/illusionaireal/Union/pull/31#issuecomment-6722660728",
+  "board_readback": {
+    "card": 33,
+    "version": 5
+  },
+  "blocker_intervention": {
+    "card": 28,
+    "version": 12,
+    "comment": 81,
+    "team_message": 44,
+    "owner_and_blocked_preserved": true
+  },
+  "real_model_calls": 0
+}

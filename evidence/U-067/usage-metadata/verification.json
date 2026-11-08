@@ -1,0 +1,22 @@
+{
+  "scope": "acceptance driver only; zero real model calls",
+  "baseline": "23ce810febe2ad439406023e11ac6e7dbe8be451",
+  "red": {
+    "tests": 3,
+    "failures": 2,
+    "seconds": 1.264,
+    "log_sha256": "c9608db054e82b4e07034beebe6630b98a2532f8757e596d67409d1496762782"
+  },
+  "green": {
+    "tests": 20,
+    "failures": 0,
+    "errors": 0,
+    "seconds": 1.227,
+    "log_sha256": "4e7f3d30928a192e2cb05c45fa263cc9ce5adbf32f2a21e4537795b0fabb7913"
+  },
+  "limits_unchanged": {
+    "calls": 2,
+    "max_output_tokens_each": 1024
+  },
+  "final_validation": "See PR33 exact-head result; past failed real observations remain historical."
+}

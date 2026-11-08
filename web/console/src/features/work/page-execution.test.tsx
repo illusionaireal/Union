@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
-import { api } from '../../api/client';
+import { api, ApiError } from '../../api/client';
 import type { CoreWork, CoreWorkItem, Session } from '../../api/types';
 import { WorkPanel } from './WorkPanel';
 
@@ -236,3 +236,50 @@ it('storage refusal prevents POST and cookie principal mismatch clears old work'
   expect(api.coreWorkCommand).not.toHaveBeenCalled();
   spy.mockRestore();
 });
+
+it('a pending original receipt returns 403 without removing an independently authorized work or its lookup', async () => {
+  current.works[0].attempts = [
+    { id: 'w1#a1', seq: 1, status: 'running', outcome: null, started_at: '', ended_at: null },
+  ];
+  let finish!: (value: Awaited<ReturnType<typeof api.coreWorkCommand>>) => void;
+  vi.mocked(api.coreWorkCommand).mockImplementation(() => new Promise((resolve) => { finish = resolve; }));
+  vi.mocked(api.coreWorkReceipt).mockRejectedValue(new ApiError('无权访问', 403, 'not_authorized'));
+  mount();
+  fireEvent.click(await screen.findByRole('button', { name: '运行 AI 工作' }));
+  await waitFor(() => expect(api.coreWorkCommand).toHaveBeenCalledTimes(1));
+  const original = vi.mocked(api.coreWorkCommand).mock.calls[0][0];
+  fireEvent.click(await screen.findByRole('button', { name: '查询原请求' }));
+  await screen.findByText(/原回执尚不可取得/);
+  expect(screen.getByText('已登记概览')).toBeTruthy();
+  expect(screen.getByRole('button', { name: '查询原请求' })).toBeEnabled();
+  expect(screen.queryByRole('button', { name: '运行 AI 工作' })).toBeNull();
+  expect(JSON.stringify(sessionStorage)).toContain(String(original.id));
+  expect(api.coreWorkCommand).toHaveBeenCalledTimes(1);
+  finish({ receipt: receipt(original) });
+  await screen.findByText(/本次操作已记录/);
+});
+
+it.each(['denied', 'principal', 'organization', 'protocol', 'session'])(
+  'a forbidden receipt still clears old work when the independent access check is %s',
+  async (failure) => {
+    vi.mocked(api.coreWorkCommand).mockRejectedValue(new Error('丢失响应'));
+    mount();
+    fireEvent.click(await screen.findByRole('button', { name: '准备本轮执行' }));
+    await screen.findByText(/原请求已保留/);
+    vi.mocked(api.coreWorkReceipt).mockRejectedValue(new ApiError('无权访问', 403, 'not_authorized'));
+    vi.mocked(api.coreWork).mockImplementation(async () => {
+      if (failure === 'denied') throw new ApiError('无权访问', 403, 'not_authorized');
+      const read = structuredClone(current);
+      if (failure === 'principal') read.access.principal_id = 'p2';
+      if (failure === 'organization') read.organization_id = 'au-2';
+      if (failure === 'protocol') read.protocol = 'other' as CoreWork['protocol'];
+      if (failure === 'session') vi.mocked(api.session).mockResolvedValue({ ...session, principal_id: 'p2' });
+      return read;
+    });
+    fireEvent.click(screen.getByRole('button', { name: '查询原请求' }));
+    await screen.findByText(/权限或身份已变化/);
+    expect(screen.queryByText('已登记概览')).toBeNull();
+    expect(screen.queryByRole('button', { name: '查询原请求' })).toBeNull();
+    expect(api.coreWorkCommand).toHaveBeenCalledTimes(1);
+  },
+);
