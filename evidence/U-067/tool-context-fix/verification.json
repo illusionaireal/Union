@@ -55,6 +55,14 @@
     "tests/test_core_work.py": "7082ee3690ef49f928e15337078f7dc1d0f3a2a9ad205feefa66703af69e1bab",
     "tests/test_core_work_http.py": "5b46c34d7523e8332d5b39265bbba34890974f1c82c8e3789f161b826092c69b",
     "tests/test_work_transport_http.py": "ad26baaef56e1a133804c0d56dd91919590c32ff245eff5afde4558ab579b017",
-    "specs/053-union-rewrite/s03-tool-context-contract.md": "5c68447379ea5c919893f3aa80719a1533cb6204d0c820ce578c452bd77a05fe"
+    "specs/053-union-rewrite/s03-tool-context-contract.md": "5c68447379ea5c919893f3aa80719a1533cb6204d0c820ce578c452bd77a05fe",
+    "tests/test_core_creation_failures.py": "c0ed96ed19346e9145e97740b8618234d7aa651b64e54ec7c4e14bb3b72b8657"
+  },
+  "creation_fixture_fix": {
+    "original": "b9b461a",
+    "cherry_pick": "5dbe68f",
+    "tests": 1,
+    "outcome": "OK",
+    "seconds": 1.169
   }
 }

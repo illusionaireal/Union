@@ -18,6 +18,8 @@ PR #20 的当前 Linux CI [运行 42451847017](https://github.com/illusionaireal
 
 PR #20 随后在当前 Windows job `128645022754` 出现另一项原测试失败：目录故障注入按未解析路径比较，CI 的等价临时路径别名使注入失效，预期 unknown 实际 succeeded。该文件与本轮基线相同；修复已经在 PR #15 的 `b9b461a` 被审阅、合入集成分支。本候选以保留来源的 cherry-pick 复用这一单文件修正，不另改生产身份/创建代码或故障断言；S03 作者分支仍须完成其余集成分支收敛。
 
+已在本分支以 `5dbe68f` 接入原 `b9b461a`，保留作者和原提交引用。目录失败/原请求不重放定向 **1 test / OK，1.169s**；原全量没有包含该额外路径别名变体，当前候选 CI 仍为采用门槛。
+
 ## 验证与可复现入口
 
 固定 Python 3.12.10、deepagents 0.7.28、langgraph-checkpoint-sqlite 3.1.2；Node 24.19.0 / npm 11.13.0，UTF-8。模型全部为合成 fake 或回环 HTTP；真实推理次数为 0。
