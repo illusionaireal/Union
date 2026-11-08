@@ -1,0 +1,34 @@
+{
+  "task": "U-067",
+  "slice": "S03",
+  "step": "S03.2e unknown model outcome keeps a reservation and needs reconcile_step",
+  "checked_at": "2026-11-08T06:52:54+08:00",
+  "branch": "rewrite/charter-v1 (local; task branch dsh/s03-work-runtime)",
+  "real_model_calls": 0,
+  "deployed": false,
+  "invariant_respected": "only succeeded receipts may accompany state changes; the unknown model result is a separate model_outcome field",
+  "own_defects_fixed": [
+    "receipt status unknown + changed state violated governance invariant",
+    "broadening settle_step contradicted an existing guarantee; new reconcile_step added instead"
+  ],
+  "logs": {
+    "red-unknown.txt": [
+      "FAIL: test_a_channel_failure_keeps_a_reserved_step_and_reports_unknown (tests.test_core_work.CoreWorkTests.test_a_channel_failure_keeps_a_reserved_step_and_reports_unknown)",
+      "Ran 27 tests in 26.500s",
+      "FAILED (failures=1)"
+    ],
+    "green-unknown.txt": [
+      "Ran 27 tests in 26.599s",
+      "OK"
+    ],
+    "regression-unknown.txt": [
+      "Ran 130 tests in 77.403s",
+      "OK (skipped=3)"
+    ],
+    "management-check.txt": [
+      "ℹ skipped 0",
+      "ℹ todo 0",
+      "ℹ duration_ms 1660.5822"
+    ]
+  }
+}

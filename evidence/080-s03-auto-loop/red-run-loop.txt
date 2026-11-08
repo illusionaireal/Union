@@ -1,0 +1,55 @@
+test_an_attempt_records_its_host_instance_and_reads_as_stale_after_a_restart (tests.test_core_work.CoreWorkTests.test_an_attempt_records_its_host_instance_and_reads_as_stale_after_a_restart) ... ok
+test_each_attempt_reports_how_much_it_already_produced (tests.test_core_work.CoreWorkTests.test_each_attempt_reports_how_much_it_already_produced) ... ok
+test_invoke_tool_records_durable_receipts_for_authorized_documents (tests.test_core_work.CoreWorkTests.test_invoke_tool_records_durable_receipts_for_authorized_documents) ... ok
+test_invoke_tool_replays_receipts_and_refuses_unscoped_requests (tests.test_core_work.CoreWorkTests.test_invoke_tool_replays_receipts_and_refuses_unscoped_requests) ... ok
+test_reserve_step_counts_one_call_per_execution_with_purpose_and_attempt (tests.test_core_work.CoreWorkTests.test_reserve_step_counts_one_call_per_execution_with_purpose_and_attempt) ... ok
+test_reserve_step_requires_a_running_attempt_and_respects_the_call_cap (tests.test_core_work.CoreWorkTests.test_reserve_step_requires_a_running_attempt_and_respects_the_call_cap) ... ok
+test_result_content_is_readable_and_digest_verified (tests.test_core_work.CoreWorkTests.test_result_content_is_readable_and_digest_verified) ... ok
+test_run_loop_keeps_calling_the_model_until_it_answers (tests.test_core_work.CoreWorkTests.test_run_loop_keeps_calling_the_model_until_it_answers) ... FAIL
+test_run_loop_requires_the_host_transport (tests.test_core_work.CoreWorkTests.test_run_loop_requires_the_host_transport) ... ERROR
+test_run_loop_stops_at_the_turn_cap_when_the_model_never_answers (tests.test_core_work.CoreWorkTests.test_run_loop_stops_at_the_turn_cap_when_the_model_never_answers) ... ERROR
+test_run_step_executes_the_tool_the_model_asks_for_and_records_a_receipt (tests.test_core_work.CoreWorkTests.test_run_step_executes_the_tool_the_model_asks_for_and_records_a_receipt) ... ok
+test_run_step_requires_a_configured_host_transport (tests.test_core_work.CoreWorkTests.test_run_step_requires_a_configured_host_transport) ... ok
+test_run_step_stores_a_candidate_result_when_the_model_answers (tests.test_core_work.CoreWorkTests.test_run_step_stores_a_candidate_result_when_the_model_answers) ... ok
+test_shared_materials_root_allows_only_one_open_execution_at_a_time (tests.test_core_work.CoreWorkTests.test_shared_materials_root_allows_only_one_open_execution_at_a_time) ... ok
+test_start_work_binds_ai_member_definition_binding_work_and_mandate_in_one_command (tests.test_core_work.CoreWorkTests.test_start_work_binds_ai_member_definition_binding_work_and_mandate_in_one_command) ... ok
+test_start_work_refuses_unadopted_model_unbounded_calls_paths_and_duplicate_ids (tests.test_core_work.CoreWorkTests.test_start_work_refuses_unadopted_model_unbounded_calls_paths_and_duplicate_ids) ... ok
+test_start_work_requires_a_materials_root_when_read_document_is_granted (tests.test_core_work.CoreWorkTests.test_start_work_requires_a_materials_root_when_read_document_is_granted) ... ok
+test_start_work_requires_effective_governance_and_the_current_governor (tests.test_core_work.CoreWorkTests.test_start_work_requires_effective_governance_and_the_current_governor) ... ok
+test_submit_result_records_digest_and_sources_without_publishing_content (tests.test_core_work.CoreWorkTests.test_submit_result_records_digest_and_sources_without_publishing_content) ... ok
+test_submit_result_requires_an_attempt_and_valid_sources (tests.test_core_work.CoreWorkTests.test_submit_result_requires_an_attempt_and_valid_sources) ... ok
+test_tool_calls_require_a_running_execution_attempt (tests.test_core_work.CoreWorkTests.test_tool_calls_require_a_running_execution_attempt) ... ok
+test_unknown_attempt_blocks_further_execution_until_it_is_resolved (tests.test_core_work.CoreWorkTests.test_unknown_attempt_blocks_further_execution_until_it_is_resolved) ... ok
+test_work_completes_only_with_an_adopted_result_and_then_stops_accepting_actions (tests.test_core_work.CoreWorkTests.test_work_completes_only_with_an_adopted_result_and_then_stops_accepting_actions) ... ok
+test_work_projection_reports_whether_the_host_registered_materials_are_available (tests.test_core_work.CoreWorkTests.test_work_projection_reports_whether_the_host_registered_materials_are_available) ... ok
+
+======================================================================
+ERROR: test_run_loop_requires_the_host_transport (tests.test_core_work.CoreWorkTests.test_run_loop_requires_the_host_transport)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 691, in test_run_loop_requires_the_host_transport
+    self.assertEqual(value["receipt"]["status"], "rejected", value)
+                     ~~~~~^^^^^^^^^^^
+KeyError: 'receipt'
+
+======================================================================
+ERROR: test_run_loop_stops_at_the_turn_cap_when_the_model_never_answers (tests.test_core_work.CoreWorkTests.test_run_loop_stops_at_the_turn_cap_when_the_model_never_answers)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 677, in test_run_loop_stops_at_the_turn_cap_when_the_model_never_answers
+    self.assertEqual(value["receipt"]["status"], "succeeded", value)
+                     ~~~~~^^^^^^^^^^^
+KeyError: 'receipt'
+
+======================================================================
+FAIL: test_run_loop_keeps_calling_the_model_until_it_answers (tests.test_core_work.CoreWorkTests.test_run_loop_keeps_calling_the_model_until_it_answers)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 659, in test_run_loop_keeps_calling_the_model_until_it_answers
+    self.assertEqual(status, 200, value)
+AssertionError: 400 != 200 : {'code': 'invalid_request', 'error': '不支持的核心工作命令'}
+
+----------------------------------------------------------------------
+Ran 24 tests in 23.562s
+
+FAILED (failures=1, errors=2)

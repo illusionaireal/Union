@@ -16,7 +16,7 @@
 | 进行中 | [U-056](#u-056)、[U-060](#u-060)、[U-067](#u-067) |
 | 阻塞 | [U-002](#u-002)、[U-005](#u-005)、[U-007](#u-007)、[U-044](#u-044)、[U-008](#u-008)、[U-039](#u-039)、[U-041](#u-041) |
 | 待验收 | — |
-| 完成 | [U-001](#u-001)、[U-004](#u-004)、[U-016](#u-016)、[U-017](#u-017)、[U-018](#u-018)、[U-021](#u-021)、[U-022](#u-022)、[U-023](#u-023)、[U-033](#u-033)、[U-045](#u-045)、[U-046](#u-046)、[U-047](#u-047)、[U-048](#u-048)、[U-049](#u-049)、[U-050](#u-050)、[U-051](#u-051)、[U-052](#u-052)、[U-053](#u-053)、[U-055](#u-055)、[U-057](#u-057)、[U-061](#u-061)、[U-063](#u-063)、[U-064](#u-064)、[U-065](#u-065)、[U-066](#u-066)、[U-012](#u-012)、[U-025](#u-025)、[U-027](#u-027)、[U-034](#u-034)、[U-035](#u-035)、[U-037](#u-037)、[U-040](#u-040)、[U-058](#u-058)、[U-059](#u-059)、[U-069](#u-069)、[U-072](#u-072)、[U-079](#u-079)、[U-080](#u-080)、[U-024](#u-024) |
+| 完成 | [U-001](#u-001)、[U-004](#u-004)、[U-016](#u-016)、[U-017](#u-017)、[U-018](#u-018)、[U-021](#u-021)、[U-022](#u-022)、[U-023](#u-023)、[U-033](#u-033)、[U-045](#u-045)、[U-046](#u-046)、[U-047](#u-047)、[U-048](#u-048)、[U-049](#u-049)、[U-050](#u-050)、[U-051](#u-051)、[U-052](#u-052)、[U-053](#u-053)、[U-055](#u-055)、[U-057](#u-057)、[U-061](#u-061)、[U-063](#u-063)、[U-064](#u-064)、[U-065](#u-065)、[U-066](#u-066)、[U-077](#u-077)、[U-012](#u-012)、[U-025](#u-025)、[U-027](#u-027)、[U-034](#u-034)、[U-035](#u-035)、[U-037](#u-037)、[U-040](#u-040)、[U-058](#u-058)、[U-059](#u-059)、[U-069](#u-069)、[U-072](#u-072)、[U-078](#u-078)、[U-079](#u-079)、[U-080](#u-080)、[U-024](#u-024) |
 
 ## U-001
 
@@ -628,6 +628,24 @@ Main Chapter V1原文、40条与子条款追踪、PRD/架构/ADR、12垂直切�
 
 证据：[evidence/056-s01-core-creation/README.md](evidence/056-s01-core-creation/README.md)、[docs/reviews/2026-11-05-s01-core-creation.md](docs/reviews/2026-11-05-s01-core-creation.md)、[evidence/056-s01-core-creation/python-full.log](evidence/056-s01-core-creation/python-full.log)、[evidence/056-s01-core-creation/npm-check.log](evidence/056-s01-core-creation/npm-check.log)、[evidence/056-s01-core-creation/browser-core/checks.json](evidence/056-s01-core-creation/browser-core/checks.json)、[evidence/056-s01-core-creation/browser-legacy/checks.json](evidence/056-s01-core-creation/browser-legacy/checks.json)、[evidence/056-s01-core-creation/candidate-install.json](evidence/056-s01-core-creation/candidate-install.json)、[evidence/056-s01-core-creation/candidate-installed-python.log](evidence/056-s01-core-creation/candidate-installed-python.log)、[evidence/056-s01-core-creation/git-delivery.json](evidence/056-s01-core-creation/git-delivery.json)、[evidence/056-s01-core-creation/kanban-sync.json](evidence/056-s01-core-creation/kanban-sync.json)
 
+## U-077
+
+**Kanban 运行态统一：CLI/MCP 认领与 WIP 依据实时 API**
+
+状态：完成；优先级：P0；里程碑：G1；模块：management。
+
+实际负责人：chatGPT-online；所需责任：开发协作 / 跨平台验证。开始：2026-11-07；更新：2026-11-08。
+
+依赖：无。
+
+验收条件：PR #16 已合并0d5214c；37项回归与真实CLI/MCP版本化采纳已由原负责人验收。验收范围为受控工程，不代表AU业务或持续部署。
+
+验收范围：controlled；验收者：chatGPT-online（独立核验协调者实现）。
+
+PR #16 已合并0d5214c；37项回归与真实CLI/MCP版本化采纳已由原负责人验收。
+
+证据：[evidence/U-077/README.md](evidence/U-077/README.md)、[management/OPERATIONAL_CONTRACT.md](management/OPERATIONAL_CONTRACT.md)
+
 ## U-008
 
 **部署持久服务**
@@ -976,7 +994,7 @@ Main Chapter V1原文、40条与子条款追踪、PRD/架构/ADR、12垂直切�
 
 状态：进行中；优先级：P1；里程碑：G1；模块：formation。
 
-实际负责人：dsh/deepseek-v4.1-flash/DESKTOP-SA4MRG7；所需责任：组织运行时 / Harness / 工作台 / 验证。开始：2026-11-06；更新：2026-11-07。
+实际负责人：dsh/deepseek-v4.1-flash/DESKTOP-SA4MRG7；所需责任：组织运行时 / Harness / 工作台 / 验证。开始：2026-11-06；更新：2026-11-08。
 
 依赖：[U-066](#u-066)、[U-069](#u-069)、[U-072](#u-072)。
 
@@ -1231,6 +1249,24 @@ U-072/S02/#21限定验收通过。实现41ae2daa022fe42835a3ab767a529d2f7cdcabe1
 2026-11-06 核对：未开始。先验证两个组织合作，再逐段验证组合和重组；合作不会自动让一方获得另一方的管理权。
 
 开发与完整验收依据：[代码、接口和技术约束](specs/053-union-rewrite/tasks.md#u-076-development)。
+
+## U-078
+
+**跨平台测试准备与目录链接越界防护**
+
+状态：完成；优先级：P1；里程碑：G1；模块：workspace。
+
+实际负责人：dsh/deepseek-v4.1-flash（在线 HOME-GOOSE）；所需责任：开发协作 / 跨平台验证。开始：2026-11-07；更新：2026-11-08。
+
+依赖：无。
+
+验收条件：DSH d5e779f通过Windows/Linux各32项独立验证；PR #15合并1baf7d1包含Windows路径等价修复。验收范围为受控工程，不代表AU业务或持续部署。
+
+验收范围：controlled；验收者：codex-home（独立工程复核）。
+
+DSH d5e779f通过Windows/Linux各32项独立验证；PR #15合并1baf7d1包含Windows路径等价修复。
+
+证据：[evidence/U-078/independent-review.md](evidence/U-078/independent-review.md)
 
 ## U-079
 

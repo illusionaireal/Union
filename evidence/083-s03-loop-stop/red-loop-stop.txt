@@ -1,0 +1,29 @@
+test_run_loop_stops_when_a_turn_leaves_the_model_outcome_unknown (tests.test_core_work.CoreWorkTests.test_run_loop_stops_when_a_turn_leaves_the_model_outcome_unknown) ... FAIL
+test_run_loop_cap_follows_the_remaining_call_budget (tests.test_core_work.CoreWorkTests.test_run_loop_cap_follows_the_remaining_call_budget) ... FAIL
+
+======================================================================
+FAIL: test_run_loop_stops_when_a_turn_leaves_the_model_outcome_unknown (tests.test_core_work.CoreWorkTests.test_run_loop_stops_when_a_turn_leaves_the_model_outcome_unknown)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 764, in test_run_loop_stops_when_a_turn_leaves_the_model_outcome_unknown
+    self.assertEqual(value["receipt"]["status"], "unknown", value)
+AssertionError: 'succeeded' != 'unknown'
+- succeeded
++ unknown
+ : {'receipt': {'actor_principal_id': '62c6c75d-8d9f-4521-b0dd-5e0cdb654bf2', 'base_version': 8, 'cost_status': 'unknown', 'created_at': '2026-11-07T22:54:13.314000+00:00', 'effect': 'applied', 'id': '1e0be942-d5b1-454a-9593-e9f9336650ba', 'kind': 'run_loop', 'message': '自动循环结束：模型没有给出成果，已用满本轮轮次', 'organization_id': 'org-fdd0d7a5cb0940d5a69f68f5cd12eb60', 'result': False, 'status': 'succeeded', 'tool_calls': 0, 'turns': 3, 'usage': {'input_tokens': 0, 'output_tokens': 0}, 'version': 11}}
+
+======================================================================
+FAIL: test_run_loop_cap_follows_the_remaining_call_budget (tests.test_core_work.CoreWorkTests.test_run_loop_cap_follows_the_remaining_call_budget)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 782, in test_run_loop_cap_follows_the_remaining_call_budget
+    self.assertEqual(value["receipt"]["status"], "succeeded", value)
+AssertionError: 'rejected' != 'succeeded'
+- rejected
++ succeeded
+ : {'receipt': {'actor_principal_id': 'e8d83a99-21ff-4b36-a1a2-8769bf8c4725', 'base_version': 9, 'cost_status': 'unknown', 'created_at': '2026-11-07T22:54:14.163938+00:00', 'effect': 'none', 'id': '648a176f-caf5-46d4-b436-97e1117d09e5', 'kind': 'run_loop', 'message': '资料目录引用未由宿主登记', 'organization_id': 'org-0f064b68084f486993c1007dc877dbbc', 'result': False, 'status': 'rejected', 'tool_calls': 0, 'turns': 0, 'usage': {'input_tokens': 0, 'output_tokens': 0}, 'version': 9}}
+
+----------------------------------------------------------------------
+Ran 2 tests in 1.831s
+
+FAILED (failures=2)

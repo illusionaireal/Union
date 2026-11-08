@@ -8,7 +8,7 @@ import time
 
 from . import governance, model_profiles
 from .creation import text
-from ..errors import CoreError, require
+from ..errors import CoreError, Rejected, require
 
 PROTOCOL = "core.work.v1"
 FIELDS = {
@@ -22,6 +22,9 @@ FIELDS = {
     "submit_result": {"work_id", "result_id", "title", "content", "sources"},
     "adopt_result": {"work_id", "result_id"},
     "deliver_work": {"work_id", "result_id"},
+    "run_step": {"work_id"},
+    "run_loop": {"work_id"},
+    "reconcile_step": {"work_id", "step_id", "status", "reason"},
     "finish_attempt": {"work_id", "attempt_id", "outcome", "reason"},
 }
 TOOLS = {"read_document", "list_documents", "produce_artifact"}
@@ -60,6 +63,19 @@ def validate_input(kind, data):
         require(isinstance(data["sources"], list) and len(data["sources"]) <= 20
                 and all(isinstance(item, str) and len(item) <= 100 for item in data["sources"]),
                 "成果来源必须是明确的执行或工具回执引用列表")
+        return
+    if kind == "reconcile_step":
+        require(reference(data["work_id"]), "工作标识必须是 bounded 引用标识")
+        require(isinstance(data["step_id"], str) and data["step_id"].startswith(data["work_id"] + "#s")
+                and len(data["step_id"]) <= 100, "步进标识无效")
+        require(data["status"] in ("used", "released", "failed"), "核对结果必须是 used/released/failed")
+        text(data["reason"], "核对依据", 10000)
+        return
+    if kind == "run_loop":
+        require(reference(data["work_id"]), "工作标识必须是 bounded 引用标识")
+        return
+    if kind == "run_step":
+        require(reference(data["work_id"]), "工作标识必须是 bounded 引用标识")
         return
     if kind == "deliver_work":
         require(reference(data["work_id"]) and reference(data["result_id"]), "工作与成果标识必须是 bounded 引用标识")
@@ -221,6 +237,7 @@ def validate_state(state):
         for attempt in attempts_value:
             require(isinstance(attempt, dict) and attempt.get("id") == work["id"] + "#a" + str(attempt.get("seq"))
                     and attempt.get("status") in ("running", "unknown", "closed")
+                    and (attempt.get("host_instance") is None or isinstance(attempt.get("host_instance"), str))
                     and (attempt.get("outcome") is None or attempt.get("outcome") in OUTCOMES),
                     "执行尝试记录无效")
         steps_value = work.get("steps") or []
@@ -264,17 +281,21 @@ def _stamp(clock=None):
     return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() if clock is None else clock))
 
 
-def active_attempt(work):
+def active_attempt(work, instance=None):
     """The one execution allowed to act right now; unknown must be resolved first."""
     calls = work.get("attempts") or []
     unresolved = [item for item in calls if item["status"] == "unknown"]
     require(not unresolved, "上一次执行结果未知；请先核对并结束该次执行")
     running = [item for item in calls if item["status"] == "running"]
     require(len(running) == 1, "该工作没有进行中的执行尝试；请先开始一次执行")
-    return running[0]
+    attempt = running[0]
+    held = attempt.get("host_instance")
+    if instance is not None and held not in (None, instance):
+        raise Rejected("该次执行由已结束的服务实例持有；请先核对并结束该次执行，不能继续用旧实例执行")
+    return attempt
 
 
-def start_attempt(state, data, principal, clock=None):
+def start_attempt(state, data, principal, clock=None, instance=None):
     work = records(state)["works"].get(data["work_id"])
     require(work is not None, "工作不存在或不属于此 AU")
     require(work["status"] in OPEN, "工作已结束，不能再开始执行")
@@ -290,7 +311,7 @@ def start_attempt(state, data, principal, clock=None):
             require(not [item for item in other.get("attempts") or [] if item["status"] in ("running", "unknown")],
                     "另一个工作正在使用同一资料目录；请等它结束或为该工作指定其他目录")
     attempt = {"id": work["id"] + "#a" + str(len(calls) + 1), "seq": len(calls) + 1, "status": "running",
-               "outcome": None, "owner_principal_id": principal, "reason": None,
+               "outcome": None, "owner_principal_id": principal, "reason": None, "host_instance": instance,
                "started_at": _stamp(clock), "ended_at": None}
     calls.append(attempt)
     return attempt
@@ -315,11 +336,11 @@ def budget(work):
             "used": sum(1 for item in steps if item["status"] == "used")}
 
 
-def reserve_step(state, data, clock=None):
+def reserve_step(state, data, clock=None, instance=None):
     work = records(state)["works"].get(data["work_id"])
     require(work is not None, "工作不存在或不属于此 AU")
     require(work["status"] in OPEN, "工作已结束，不能再预约调用")
-    attempt = active_attempt(work)
+    attempt = active_attempt(work, instance)
     steps = work.setdefault("steps", [])
     current = budget(work)
     require(current["reserved"] + current["used"] + 1 <= work["max_calls"],
@@ -336,6 +357,7 @@ def settle_step(state, data, clock=None):
     require(work is not None, "工作不存在或不属于此 AU")
     step = next((item for item in work.get("steps") or [] if item["step_ref"] == data["step_id"]), None)
     require(step is not None, "该工作没有此步进记录")
+    require(not step.get("command_id"), "自动调用只能通过原模型请求核对，不能手工释放预约")
     require(step["status"] == "reserved", "该步已经结算；原记录不能覆盖，请另立步进")
     step.update(status=data["status"], reason=data["reason"], settled_at=_stamp(clock))
     return step
@@ -394,7 +416,116 @@ def deliver_work(state, data, principal, clock=None):
             "result_id": result["id"]}
 
 
-def tool_target(state, data):
+TOOL_SPECS = {
+    "list_documents": {"name": "list_documents", "description": "列出宿主已登记只读资料目录内的文档路径。",
+                       "parameters": {"type": "object", "properties": {}, "additionalProperties": False}},
+    "read_document": {"name": "read_document", "description": "读取授权资料目录内的一个文本资料。",
+                      "parameters": {"type": "object",
+                                     "properties": {"path": {"type": "string"}},
+                                     "required": ["path"], "additionalProperties": False}},
+}
+
+
+def step_plan(state, charter, work_id, instance=None, reserved_step=None):
+    """What one automatic step would send to the model; pure and revalidated."""
+    work = records(state)["works"].get(work_id)
+    require(work is not None, "工作不存在或不属于此 AU")
+    require(work["status"] in OPEN, "工作已结束，不能继续执行")
+    attempt = active_attempt(work, instance)
+    definition = records(state)["definitions"][work["definition_id"]]
+    binding = records(state)["bindings"][work["responsible_binding_id"]]
+    mandate = records(state)["mandates"][work["mandate_id"]]
+    require(binding["active"] and mandate["active"], "工作责任绑定或授权已失效")
+    current = budget(work)
+    pending = [s for s in work.get("steps", []) if s["status"] in ("reserved", "unknown") and s.get("command_id")]
+    require(all(s["step_ref"] == reserved_step for s in pending), "该工作已有未决模型请求；请先核对原请求")
+    allowance = int(any(s["step_ref"] == reserved_step for s in pending))
+    require(current["reserved"] + current["used"] - allowance < work["max_calls"], "该工作的调用上限已用尽")
+    allowed = [name for name in definition.get("tools") or [] if name in TOOL_SPECS]
+    require(allowed, "该工作的 Agent 定义没有可用的只读工具")
+    require(set(allowed) <= set(charter["allowed_tools"]), "工具不在当前有效章程允许的范围内")
+    require(set(allowed) <= set(mandate["actions"]), "工具不在该工作的有效授权范围内")
+    messages = [{"role": "system", "content": definition["instruction"]},
+                {"role": "user", "content": "目标：" + work["goal"]
+                 + "\n请先用电只读工具查看授权资料，再给出可直接交付的成果正文（Markdown）。"}]
+    models = state.get("model_access") or {}
+    connection = (models.get("connections") or {}).get(definition["connection_id"])
+    require(isinstance(connection, dict), "该工作引用的模型连接不存在；请重新配置")
+    require(bool(connection.get("enabled")), "该工作的模型连接已停用；请先启用或重新采用有效连接")
+    require(models.get("default_connection_id") == definition["connection_id"],
+            "须先采用该工作的模型连接为默认连接，才能继续执行")
+    return {"work_id": work_id, "attempt_id": attempt["id"], "materials_root": work["materials_root"],
+            "connection": dict(connection),
+            "context_scope": {"au_id": state["id"], "work_id": work_id,
+                              "definition_id": definition["id"], "definition_version": definition["version"],
+                              "binding_id": binding["id"], "binding_version": binding["version"],
+                              "member_id": binding["member_id"], "mandate_id": mandate["id"],
+                              "mandate_version": mandate["version"], "materials_root": work["materials_root"]},
+            "messages": messages, "tools": [{"type": "function", "function": TOOL_SPECS[name]} for name in allowed],
+            "package": {"kind": "work_step", "work_id": work_id, "attempt_id": attempt["id"],
+                        "run_id": work_id + "#s" + str(len(work.get("steps") or []) + 1)}}
+
+
+def apply_step(state, charter, data, principal, instance, clock=None):
+    """Commit one model turn: reserve a step, record the tools it used, settle it."""
+    work = records(state)["works"].get(data["work_id"])
+    require(work is not None, "工作不存在或不属于此 AU")
+    attempt = active_attempt(work, instance)
+    step = (next(item for item in work["steps"] if item["step_ref"] == data["step_id"])
+            if data.get("step_id") else reserve_step(state, {"work_id": data["work_id"]}, clock, instance))
+    require(step["status"] == "reserved" and step["attempt_id"] == attempt["id"], "原调用预约或执行归属已变化")
+    usage = data.get("usage") or {}
+    step["usage"] = {key: usage[key] for key in ("input_tokens", "output_tokens")
+                     if type(usage.get(key)) is int and usage[key] >= 0}
+    step["cost_status"] = "unknown"
+    recorded = []
+    for call in data["tool_calls"]:
+        require(isinstance(call.get("tool"), str) and call["tool"] in TOOL_SPECS, "模型请求了不支持的只读工具")
+        detail = {key: call[key] for key in ("sha256", "bytes", "count") if key in call}
+        recorded.append(record_tool_call(work, call["tool"], call.get("arguments") or {}, detail, attempt["id"], clock))
+    if data["content"]:
+        submit_result(state, {"work_id": data["work_id"], "result_id": data["result_id"],
+                              "title": data["title"], "content": data["content"],
+                              "sources": list(dict.fromkeys(data.get("sources", [])
+                                         + [item["step_ref"] for item in recorded]))}, principal, clock)
+    step.update(status="used", reason="模型步进已完成", settled_at=_stamp(clock))
+    return {"step": step["step_ref"], "tool_calls": len(recorded), "result": bool(data["content"]),
+            "usage": dict(step["usage"]), "cost_status": step["cost_status"]}
+
+
+def fail_step(state, data, instance=None, clock=None):
+    """A call whose result is unknown keeps its reservation until someone reconciles it."""
+    step = reserve_step(state, {"work_id": data["work_id"]}, clock, instance)
+    step["cost_status"] = "unknown"
+    settle_step(state, {"work_id": data["work_id"], "step_id": step["step_ref"], "status": "unknown",
+                        "reason": data["reason"]}, clock)
+    return {"step": step["step_ref"], "status": "unknown"}
+
+
+def record_unadoptable_step(state, data, instance=None, clock=None):
+    """Record completed inference without adopting content or authorizing tools."""
+    step = reserve_step(state, {"work_id": data["work_id"]}, clock, instance)
+    step.update(model_request_id=data["model_request_id"], model_outcome="not_adoptable",
+                usage=dict(data["usage"]), cost_status="unknown")
+    settle_step(state, {"work_id": data["work_id"], "step_id": step["step_ref"], "status": "used",
+                        "reason": data["reason"]}, clock)
+    return {"step": step["step_ref"], "model_request_id": step["model_request_id"],
+            "model_outcome": "not_adoptable", "usage": dict(step["usage"])}
+
+
+def reconcile_step(state, data, clock=None):
+    """Resolve a step whose model result was unknown, with a recorded reason."""
+    work = records(state)["works"].get(data["work_id"])
+    require(work is not None, "工作不存在或不属于此 AU")
+    step = next((item for item in work.get("steps") or [] if item["step_ref"] == data["step_id"]), None)
+    require(step is not None, "该工作没有此步进记录")
+    require(not step.get("command_id"), "自动调用须查询原模型请求，不能凭手工判断释放预约")
+    require(step["status"] == "unknown", "只有结果未知的步进需要核对")
+    step.update(status=data["status"], reason=data["reason"], settled_at=_stamp(clock))
+    return {key: step[key] for key in ("step_ref", "status", "reason")}
+
+
+def tool_target(state, data, instance=None):
     """Validate a tool call against the responsible member's live mandate."""
     records_value = records(state)
     work = records_value["works"].get(data["work_id"])
@@ -404,7 +535,7 @@ def tool_target(state, data):
     require(mandate["active"] and data["tool"] in mandate["actions"], "工具不在该工作的有效授权范围内")
     require(work["materials_root"] is not None, "该工作尚未绑定授权资料目录")
     require(len(work.get("tool_calls") or []) < MAX_TOOL_CALLS, "该工作的工具调用回执已达上限")
-    return work, mandate, active_attempt(work)
+    return work, mandate, active_attempt(work, instance)
 
 
 def record_tool_call(work, tool, arguments, detail, attempt_id, clock=None):
@@ -418,7 +549,19 @@ def record_tool_call(work, tool, arguments, detail, attempt_id, clock=None):
     return entry
 
 
-def projection(state):
+def usage_total(work):
+    """Sum the recorded usage of a work's steps; cost stays unknown, never a guess."""
+    total = {"input_tokens": 0, "output_tokens": 0}
+    for step in work.get("steps") or []:
+        usage = step.get("usage") or {}
+        for key in total:
+            value = usage.get(key)
+            if type(value) is int and value >= 0:
+                total[key] += value
+    return total
+
+
+def projection(state, instance=None):
     records_value = records(state)
     result = []
     for work in records_value["works"].values():
@@ -439,9 +582,15 @@ def projection(state):
                         "active": mandate["active"]},
             "attempt_ids": list(work["attempt_ids"]), "result_ids": list(work["result_ids"]),
             "tool_calls": [dict(call) for call in work.get("tool_calls") or []],
-            "attempts": [dict(attempt) for attempt in work.get("attempts") or []],
+            "attempts": [dict(attempt) | {
+                "host_instance": attempt.get("host_instance"),
+                "stale": attempt["status"] == "running" and attempt.get("host_instance") not in (None, instance),
+                "steps": sum(1 for step in work.get("steps") or [] if step["attempt_id"] == attempt["id"]),
+                "tool_calls": sum(1 for call in work.get("tool_calls") or [] if call["attempt_id"] == attempt["id"]),
+            } for attempt in work.get("attempts") or []],
             "steps": [dict(step) for step in work.get("steps") or []],
-            "budget": budget(work), "delivered_at": work.get("delivered_at"),
+            "budget": budget(work), "usage": usage_total(work), "cost_status": "unknown",
+            "delivered_at": work.get("delivered_at"),
             "delivered_result_id": work.get("delivered_result_id"),
             "results": [{key: value for key, value in item.items() if key != "content"}
                         for item in work.get("results") or []]})

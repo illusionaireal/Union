@@ -1,0 +1,28 @@
+{
+  "task": "U-067",
+  "slice": "S03",
+  "kind": "executable bounded acceptance harness (skipped by default)",
+  "checked_at": "2026-11-08T13:58:29+08:00",
+  "gate": {
+    "UNION_MODELD_CONFIG": "required",
+    "UNION_REAL_ACCEPTANCE": "must equal 1"
+  },
+  "limits": {
+    "max_calls": 2,
+    "max_output_tokens_per_call": 1024,
+    "materials": "synthetic only"
+  },
+  "real_model_calls": 0,
+  "not_tdd": "harness, not new behaviour; its RED appears on the first real run",
+  "logs": {
+    "skip.txt": [
+      "test_one_work_uses_at_most_two_calls_and_reports_usage_without_cost (tests.test_core_work_real.RealBoundedAcceptanceTests.test_one_work_uses_at_most_two_calls_and_reports_usage_without_cost) ... skipped 'real acceptance needs UNION_MODELD_CONFIG and UNION_REAL_ACCEPTANCE=1'",
+      "Ran 1 test in 0.000s",
+      "OK (skipped=1)"
+    ],
+    "regression.txt": [
+      "Ran 38 tests in 37.067s",
+      "OK (skipped=1)"
+    ]
+  }
+}

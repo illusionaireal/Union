@@ -1,0 +1,41 @@
+{
+  "task": "U-067",
+  "slice": "S03",
+  "step": "S03.2e host can wire the model channel through a factory",
+  "checked_at": "2026-11-08T07:14:06+08:00",
+  "branch": "dsh/s03-work-runtime (local, unpushed)",
+  "real_model_calls": 0,
+  "deployed": false,
+  "unverified": [
+    "factory-built channel never executed against a live modeld",
+    "Console does not auto-inject the factory yet (host wiring)"
+  ],
+  "own_defects_fixed": [
+    "new adapter tests were appended after if __name__ and never registered"
+  ],
+  "logs": {
+    "red-wiring.txt": [
+      "FAIL: test_a_factory_that_cannot_build_the_channel_refuses_without_a_step (tests.test_core_work.CoreWorkTests.test_a_factory_that_cannot_build_the_channel_refuses_without_a_step)",
+      "FAIL: test_the_host_can_wire_the_channel_through_a_factory (tests.test_core_work.CoreWorkTests.test_the_host_can_wire_the_channel_through_a_factory)",
+      "Ran 33 tests in 32.421s",
+      "FAILED (failures=2)"
+    ],
+    "green-wiring.txt": [
+      "Ran 38 tests in 32.015s",
+      "OK"
+    ],
+    "adapter-tests.txt": [
+      "Ran 7 tests in 0.035s",
+      "OK"
+    ],
+    "regression.txt": [
+      "Ran 137 tests in 77.922s",
+      "OK (skipped=3)"
+    ],
+    "management-check.txt": [
+      "ℹ skipped 0",
+      "ℹ todo 0",
+      "ℹ duration_ms 1662.1344"
+    ]
+  }
+}

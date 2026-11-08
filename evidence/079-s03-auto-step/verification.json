@@ -1,0 +1,36 @@
+{
+  "task": "U-067",
+  "slice": "S03",
+  "step": "S03.2e run_step: one automatic model turn with authorized tools",
+  "checked_at": "2026-11-08T06:41:11+08:00",
+  "branch": "rewrite/charter-v1 (local; task branch dsh/s03-work-runtime)",
+  "real_model_calls": 0,
+  "deployed": false,
+  "transport_port": "chat(package, messages, tools) -> (message, usage); injected via WorkService.transport",
+  "own_defects_fixed": [
+    "test file restructured (FakeTransport was inserted inside the case class)",
+    "reject_step had an always-true guard and a fake _token field",
+    "fake transport returned a dict instead of (message, usage)"
+  ],
+  "logs": {
+    "red-run-step.txt": [
+      "ERROR: test_run_step_stores_a_candidate_result_when_the_model_answers (tests.test_core_work.CoreWorkTests.test_run_step_stores_a_candidate_result_when_the_model_answers)",
+      "FAIL: test_run_step_executes_the_tool_the_model_asks_for_and_records_a_receipt (tests.test_core_work.CoreWorkTests.test_run_step_executes_the_tool_the_model_asks_for_and_records_a_receipt)",
+      "Ran 21 tests in 22.080s",
+      "FAILED (failures=1, errors=2)"
+    ],
+    "green-run-step.txt": [
+      "Ran 21 tests in 22.398s",
+      "OK"
+    ],
+    "regression-step.txt": [
+      "Ran 125 tests in 83.768s",
+      "OK (skipped=3)"
+    ],
+    "management-check.txt": [
+      "ℹ skipped 0",
+      "ℹ todo 0",
+      "ℹ duration_ms 1677.7624"
+    ]
+  }
+}

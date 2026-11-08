@@ -1,0 +1,17 @@
+test_run_step_refuses_after_the_model_connection_stops_being_the_adopted_default (tests.test_core_work.CoreWorkTests.test_run_step_refuses_after_the_model_connection_stops_being_the_adopted_default) ... FAIL
+
+======================================================================
+FAIL: test_run_step_refuses_after_the_model_connection_stops_being_the_adopted_default (tests.test_core_work.CoreWorkTests.test_run_step_refuses_after_the_model_connection_stops_being_the_adopted_default)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 884, in test_run_step_refuses_after_the_model_connection_stops_being_the_adopted_default
+    self.assertEqual(value["receipt"]["status"], "rejected", value)
+AssertionError: 'succeeded' != 'rejected'
+- succeeded
++ rejected
+ : {'receipt': {'actor_principal_id': '2ee429dc-b4af-465c-bc7b-c84e7bcb78a6', 'base_version': 10, 'cost_status': 'unknown', 'created_at': '2026-11-08T05:24:20.257722+00:00', 'effect': 'applied', 'id': 'bcb3d336-f1d8-4aa9-8500-a7568fc7e6ea', 'kind': 'run_step', 'message': '已执行一次自动模型步进', 'organization_id': 'org-5e05dacf8bff48ffac69022b284ea52b', 'result': True, 'status': 'succeeded', 'step': 'work-overview#s1', 'tool_calls': 0, 'usage': {}, 'version': 11}}
+
+----------------------------------------------------------------------
+Ran 1 test in 1.042s
+
+FAILED (failures=1)

@@ -1,0 +1,15 @@
+test_usage_is_visible_at_work_and_au_level (tests.test_core_work.CoreWorkTests.test_usage_is_visible_at_work_and_au_level) ... ERROR
+
+======================================================================
+ERROR: test_usage_is_visible_at_work_and_au_level (tests.test_core_work.CoreWorkTests.test_usage_is_visible_at_work_and_au_level)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 904, in test_usage_is_visible_at_work_and_au_level
+    self.assertEqual(work["usage"], {"input_tokens": 15, "output_tokens": 5})
+                     ~~~~^^^^^^^^^
+KeyError: 'usage'
+
+----------------------------------------------------------------------
+Ran 1 test in 1.095s
+
+FAILED (errors=1)

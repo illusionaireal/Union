@@ -1,0 +1,30 @@
+{
+  "kind": "verification tests (characterization) over a real loopback HTTP double",
+  "task": "U-067",
+  "slice": "S03",
+  "product_changes": 0,
+  "checked_at": "2026-11-08T07:30:51+08:00",
+  "branch": "dsh/s03-work-runtime (local, unpushed)",
+  "real_model_calls": 0,
+  "not_tdd": "tests describe existing adapter behaviour; no prior RED was possible",
+  "unverified": [
+    "real modeld event/result shapes",
+    "SSE event types",
+    "bounded real acceptance"
+  ],
+  "logs": {
+    "test-http.txt": [
+      "Ran 3 tests in 1.562s",
+      "OK"
+    ],
+    "regression.txt": [
+      "Ran 89 tests in 53.701s",
+      "OK"
+    ],
+    "management-check.txt": [
+      "ℹ skipped 0",
+      "ℹ todo 0",
+      "ℹ duration_ms 1658.314"
+    ]
+  }
+}

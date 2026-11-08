@@ -1,10 +1,13 @@
 """S03.1: one goal becomes an answerable AI work under effective local governance."""
 import copy
 import hashlib
+import os
+import tempfile
 import json
 import uuid
 from pathlib import Path
 
+from ai_union.errors import Rejected
 from tests.model_access_support import ModelAccessCase
 from tests.test_core_creation import creation
 
@@ -19,6 +22,19 @@ def work_data(**changes):
             "reason": "用户要求以授权资料形成第一份可阅读成果"}
     data.update(changes)
     return data
+
+
+class FakeTransport:
+    """Stands in for the host model channel; records what it was asked to run."""
+
+    def __init__(self, responses):
+        self.responses = list(responses)
+        self.calls = []
+
+    def chat(self, package, messages, tools):
+        self.calls.append({"package": package, "messages": messages, "tools": tools})
+        answer = self.responses.pop(0)
+        return answer if isinstance(answer, tuple) else (answer, {})
 
 
 class CoreWorkTests(ModelAccessCase):
@@ -524,3 +540,371 @@ class CoreWorkTests(ModelAccessCase):
         self.assertIn("已经完成", twice["receipt"]["message"])
         status, after, _ = self.invoke({"work_id": "work-overview", "tool": "list_documents", "arguments": {}})
         self.assertEqual(after["receipt"]["status"], "rejected", after)
+
+    def test_an_attempt_records_its_host_instance_and_reads_as_stale_after_a_restart(self):
+        self.work_with_listing()
+        attempt_id = self.start_attempt()
+        card = self.works()["works"][0]
+        recorded = card["attempts"][0]
+        self.assertEqual(recorded["host_instance"], self.app.instance)
+        self.assertIs(recorded["stale"], False)
+
+        previous = self.app.instance
+        self.app.instance = "service-restarted"
+        try:
+            card = self.works()["works"][0]
+            restarted = card["attempts"][0]
+            self.assertEqual(restarted["id"], attempt_id)
+            self.assertEqual(restarted["host_instance"], previous)
+            self.assertIs(restarted["stale"], True, "an attempt from a previous service instance is stale")
+            status, value, _ = self.invoke({"work_id": "work-overview", "tool": "list_documents", "arguments": {}})
+            self.assertEqual(value["receipt"]["status"], "rejected", value)
+            self.assertIn("实例", value["receipt"]["message"])
+            status, reserved, _ = self.reserve()
+            self.assertEqual(reserved["receipt"]["status"], "rejected", reserved)
+        finally:
+            self.app.instance = previous
+
+        self.work_command(self.au_id, "finish_attempt",
+                          {"work_id": "work-overview", "attempt_id": attempt_id, "outcome": "unknown",
+                           "reason": "服务重启后核对：该次执行没有结果"})
+        card = self.works()["works"][0]
+        self.assertEqual(card["attempts"][0]["status"], "unknown")
+        self.assertIs(card["attempts"][0]["stale"], False, "a settled attempt is no longer stale")
+
+    def test_each_attempt_reports_how_much_it_already_produced(self):
+        self.work_with_listing()
+        self.prepare_materials()
+        first = self.start_attempt()
+        self.reserve()
+        self.invoke({"work_id": "work-overview", "tool": "read_document", "arguments": {"path": "nested/a.md"}})
+        attempt = self.works()["works"][0]["attempts"][0]
+        self.assertEqual((attempt["steps"], attempt["tool_calls"]), (1, 1))
+
+        self.work_command(self.au_id, "finish_attempt",
+                          {"work_id": "work-overview", "attempt_id": first, "outcome": "failed",
+                           "reason": "服务重启后核对：该次执行没有产生可交付结果"})
+        second = self.start_attempt()
+        self.assertNotEqual(first, second)
+        card = self.works()["works"][0]
+        old, current = card["attempts"][0], card["attempts"][1]
+        self.assertEqual((old["steps"], old["tool_calls"]), (1, 1), "a settled attempt keeps its own counts")
+        self.assertEqual((current["steps"], current["tool_calls"]), (0, 0))
+
+    def with_transport(self, *responses):
+        self.app.work.transport = FakeTransport(list(responses))
+        return self.app.work.transport
+
+    def work_step(self, work_id="work-overview"):
+        return self.work_command(self.au_id, "run_step", {"work_id": work_id})
+
+    def test_run_step_executes_the_tool_the_model_asks_for_and_records_a_receipt(self):
+        self.work_with_listing()
+        self.prepare_materials()
+        self.start_attempt()
+        transport = self.with_transport(
+            {"content": None, "tool_calls": [{"id": "call-1", "type": "function",
+             "function": {"name": "read_document", "arguments": "{\"path\": \"nested/a.md\"}"}}]},
+            {},
+        )
+
+        status, value, _ = self.work_step()
+        self.assertEqual(status, 200, value)
+        self.assertEqual(value["receipt"]["status"], "succeeded", value)
+        self.assertEqual(value["receipt"]["tool_calls"], 1)
+        self.assertEqual(transport.calls[0]["package"]["work_id"], "work-overview")
+        self.assertTrue(any(tool["function"]["name"] == "read_document" for tool in transport.calls[0]["tools"]))
+
+        card = self.works()["works"][0]
+        self.assertEqual([c["tool"] for c in card["tool_calls"]], ["read_document"])
+        self.assertEqual(card["tool_calls"][0]["sha256"],
+                         hashlib.sha256("a 正文\n".encode("utf-8")).hexdigest())
+        self.assertEqual(card["steps"][0]["status"], "used")
+        self.assertEqual(card["steps"][0]["purpose"], "work_step")
+
+    def test_run_step_stores_a_candidate_result_when_the_model_answers(self):
+        self.work_with_listing()
+        self.prepare_materials()
+        self.start_attempt()
+        self.with_transport({"content": "# 概览\n- 依据 nested/a.md\n", "tool_calls": []}, {})
+
+        status, value, _ = self.work_step()
+        self.assertEqual(value["receipt"]["status"], "succeeded", value)
+        self.assertEqual(value["receipt"]["tool_calls"], 0)
+        card = self.works()["works"][0]
+        self.assertEqual(len(card["results"]), 1)
+        self.assertEqual(card["results"][0]["status"], "candidate")
+        self.assertEqual(card["results"][0]["sha256"],
+                         hashlib.sha256("# 概览\n- 依据 nested/a.md\n".encode("utf-8")).hexdigest())
+        self.assertEqual(card["steps"][0]["status"], "used")
+
+    def test_run_step_requires_a_configured_host_transport(self):
+        self.work_with_listing()
+        self.start_attempt()
+        self.app.work.transport = None
+        status, value, _ = self.work_step()
+        self.assertEqual(value["receipt"]["status"], "rejected", value)
+        self.assertIn("通道", value["receipt"]["message"])
+
+    def run_loop(self, work_id="work-overview"):
+        return self.work_command(self.au_id, "run_loop", {"work_id": work_id})
+
+    def test_run_loop_keeps_calling_the_model_until_it_answers(self):
+        self.work_with_listing()
+        self.prepare_materials()
+        self.start_attempt()
+        self.with_transport(
+            {"content": None, "tool_calls": [{"id": "c1", "type": "function",
+             "function": {"name": "read_document", "arguments": "{\"path\": \"nested/a.md\"}"}}]},
+            {"content": "# 概览\n- 依据 nested/a.md\n", "tool_calls": []},
+        )
+
+        status, value, _ = self.run_loop()
+        self.assertEqual(status, 200, value)
+        self.assertEqual(value["receipt"]["status"], "succeeded", value)
+        self.assertEqual(value["receipt"]["turns"], 2)
+        self.assertIs(value["receipt"]["result"], True)
+        card = self.works()["works"][0]
+        self.assertEqual([step["status"] for step in card["steps"]], ["used", "used"])
+        self.assertEqual(len(card["tool_calls"]), 1)
+        self.assertEqual(len(card["results"]), 1)
+
+    def test_run_loop_stops_at_the_turn_cap_when_the_model_never_answers(self):
+        self.work_with_listing()
+        self.prepare_materials()
+        self.start_attempt()
+        call = {"content": None, "tool_calls": [{"id": "c1", "type": "function",
+                "function": {"name": "list_documents", "arguments": "{}"}}]}
+        self.with_transport(call, call, call)
+
+        status, value, request = self.run_loop()
+        self.assertEqual(value["receipt"]["status"], "succeeded", value)
+        self.assertEqual(value["receipt"]["turns"], 3)
+        self.assertIs(value["receipt"]["result"], False)
+        card = self.works()["works"][0]
+        self.assertEqual(len(card["steps"]), 3)
+        self.assertEqual(len(card["results"]), 0)
+        replay_status, again, _ = self.request("/api/v1/work/commands", request)
+        self.assertEqual(replay_status, 200, again)
+        self.assertEqual(again["receipt"], value["receipt"], "the same loop request returns its original receipt")
+
+    def test_run_loop_requires_the_host_transport(self):
+        self.work_with_listing()
+        self.start_attempt()
+        self.app.work.transport = None
+        status, value, _ = self.run_loop()
+        self.assertEqual(value["receipt"]["status"], "rejected", value)
+        self.assertIn("通道", value["receipt"]["message"])
+
+    def test_run_step_records_model_usage_and_keeps_cost_unknown(self):
+        self.work_with_listing()
+        self.prepare_materials()
+        self.start_attempt()
+        self.with_transport(({"content": "# 概览\n", "tool_calls": []},
+                             {"input_tokens": 12, "output_tokens": 5}))
+
+        status, value, _ = self.work_step()
+        self.assertEqual(value["receipt"]["status"], "succeeded", value)
+        card = self.works()["works"][0]
+        step = card["steps"][0]
+        self.assertEqual(step["usage"], {"input_tokens": 12, "output_tokens": 5})
+        self.assertEqual(step["cost_status"], "unknown", "an unverified call never records a definite cost")
+
+    def test_run_loop_accumulates_usage_across_turns(self):
+        self.work_with_listing()
+        self.prepare_materials()
+        self.start_attempt()
+        call = ({"content": None, "tool_calls": [{"id": "c1", "type": "function",
+                 "function": {"name": "list_documents", "arguments": "{}"}}]}, {"input_tokens": 10, "output_tokens": 2})
+        answer = ({"content": "# 概览\n", "tool_calls": []}, {"input_tokens": 20, "output_tokens": 8})
+        self.with_transport(call, answer)
+
+        status, value, _ = self.run_loop()
+        self.assertEqual(value["receipt"]["status"], "succeeded", value)
+        self.assertEqual(value["receipt"]["usage"], {"input_tokens": 30, "output_tokens": 10})
+        self.assertEqual(value["receipt"]["cost_status"], "unknown")
+
+    def failing_transport(self, error=TimeoutError("provider did not answer")):
+        class Failing:
+            def chat(self, package, messages, tools):
+                raise error
+        self.app.work.transport = Failing()
+        return self.app.work.transport
+
+    def test_a_channel_failure_keeps_a_reserved_step_and_reports_unknown(self):
+        self.work_with_listing()
+        self.prepare_materials()
+        self.start_attempt()
+        self.failing_transport()
+
+        status, value, _ = self.work_step()
+        self.assertEqual(status, 200, value)
+        self.assertEqual(value["receipt"]["status"], "succeeded", value)
+        self.assertEqual(value["receipt"]["model_outcome"], "unknown")
+        self.assertIn("核对", value["receipt"]["message"])
+
+        card = self.works()["works"][0]
+        self.assertEqual([(s["status"], s["cost_status"]) for s in card["steps"]], [("unknown", "unknown")])
+        self.assertEqual(card["budget"], {"max_calls": 4, "reserved": 1, "used": 0},
+                         "an unconfirmed call keeps its reservation")
+
+        reconciled = self.work_command(self.au_id, "reconcile_step",
+                                       {"work_id": "work-overview", "step_id": card["steps"][0]["step_ref"],
+                                        "status": "released", "reason": "宿主确认供应商未收到请求"})
+        self.assertEqual(reconciled[1]["receipt"]["status"], "succeeded", reconciled[1])
+        card = self.works()["works"][0]
+        self.assertEqual(reconciled[1]["receipt"]["model_outcome"], "unknown")
+        self.assertEqual(card["steps"][0]["status"], "unknown", "an unsupported lookup cannot prove nonexecution")
+        self.assertEqual(card["budget"], {"max_calls": 4, "reserved": 1, "used": 0})
+
+    def test_run_loop_stops_when_a_turn_leaves_the_model_outcome_unknown(self):
+        self.work_with_listing()
+        self.prepare_materials()
+        self.start_attempt()
+        self.failing_transport()
+
+        status, value, _ = self.run_loop()
+        self.assertEqual(status, 200, value)
+        self.assertEqual(value["receipt"]["status"], "unknown", value)
+        self.assertEqual(value["receipt"]["model_outcome"], "unknown")
+        self.assertEqual(value["receipt"]["turns"], 0)
+        card = self.works()["works"][0]
+        self.assertEqual([s["status"] for s in card["steps"]], ["unknown"], "no second call after an unknown turn")
+        self.assertEqual(card["budget"], {"max_calls": 4, "reserved": 1, "used": 0})
+
+    def test_run_loop_cap_follows_the_remaining_call_budget(self):
+        self.work_with_listing()
+        self.prepare_materials()
+        self.work_command(self.au_id, "start_work", work_data(
+            work_id="work-tight", member_id="m-tight", binding_id="b-tight", mandate_id="ma-tight",
+            definition_id="d-tight", materials_root="project-docs", max_calls=2, tools=["list_documents"]))
+        self.start_attempt("work-tight")
+        call = {"content": None, "tool_calls": [{"id": "c1", "type": "function",
+                "function": {"name": "list_documents", "arguments": "{}"}}]}
+        self.with_transport(call, call, call)
+
+        status, value, _ = self.run_loop("work-tight")
+        self.assertEqual(value["receipt"]["status"], "succeeded", value)
+        self.assertEqual(value["receipt"]["turns"], 2, "the loop never exceeds the work call budget")
+        card = [w for w in self.works()["works"] if w["id"] == "work-tight"][0]
+        self.assertEqual(len(card["steps"]), 2)
+
+    def test_a_definite_channel_refusal_preserves_a_released_reservation(self):
+        self.work_with_listing()
+        self.prepare_materials()
+        self.start_attempt()
+
+        class Refusing:
+            def chat(self, package, messages, tools):
+                raise Rejected("模型服务拒绝本次请求")
+
+        self.app.work.transport = Refusing()
+        status, value, _ = self.work_step()
+        self.assertEqual(value["receipt"]["status"], "rejected", value)
+        self.assertIn("拒绝", value["receipt"]["message"])
+        card = self.works()["works"][0]
+        self.assertEqual([step["status"] for step in card["steps"]], ["released"],
+                         "a refusal releases the committed reservation without erasing its history")
+        self.assertEqual(card["budget"], {"max_calls": 4, "reserved": 0, "used": 0})
+
+    def test_the_host_can_wire_the_channel_through_a_factory(self):
+        self.work_with_listing()
+        self.prepare_materials()
+        self.start_attempt()
+        self.app.work.transport = None
+        seen = {}
+
+        def factory(au_id, connection):
+            seen["au_id"] = au_id
+            seen["connection"] = connection
+            return FakeTransport([({"content": "# 概览\n", "tool_calls": []}, {"input_tokens": 7, "output_tokens": 3})])
+
+        self.app.work.transport_factory = factory
+        status, value, _ = self.work_step()
+        self.assertEqual(status, 200, value)
+        self.assertEqual(value["receipt"]["status"], "succeeded", value)
+        self.assertEqual(seen["au_id"], self.au_id)
+        self.assertEqual(seen["connection"]["id"], "connection-a")
+        self.assertEqual(seen["connection"]["model"], "model-a")
+        self.assertEqual(self.works()["works"][0]["steps"][0]["usage"], {"input_tokens": 7, "output_tokens": 3})
+
+    def test_a_factory_that_cannot_build_the_channel_refuses_without_a_step(self):
+        self.work_with_listing()
+        self.prepare_materials()
+        self.start_attempt()
+        self.app.work.transport = None
+
+        def factory(au_id, connection):
+            raise Rejected("模型服务宿主配置尚未就绪")
+
+        self.app.work.transport_factory = factory
+        status, value, _ = self.work_step()
+        self.assertEqual(value["receipt"]["status"], "rejected", value)
+        self.assertIn("就绪", value["receipt"]["message"])
+        self.assertEqual(self.works()["works"][0]["steps"], [])
+
+    def test_no_channel_and_no_factory_still_refuses(self):
+        self.work_with_listing()
+        self.start_attempt()
+        self.app.work.transport = None
+        self.app.work.transport_factory = None
+        status, value, _ = self.work_step()
+        self.assertEqual(value["receipt"]["status"], "rejected", value)
+        self.assertIn("通道", value["receipt"]["message"])
+
+    def test_the_console_wires_the_channel_only_when_the_host_names_its_configuration(self):
+        from unittest.mock import patch
+        from ai_union.console import Console
+
+        with tempfile.TemporaryDirectory() as temporary:
+            with patch.dict(os.environ, {}, clear=False):
+                os.environ.pop("UNION_MODELD_CONFIG", None)
+                plain = Console(Path(temporary) / "plain", fixture=None, enable_api=False)
+                try:
+                    self.assertIsNone(plain.work.transport_factory,
+                                      "an unconfigured host never invents a model channel")
+                finally:
+                    plain.close()
+            with patch.dict(os.environ, {"UNION_MODELD_CONFIG": str(Path(temporary) / "modeld.json")}):
+                wired = Console(Path(temporary) / "wired", fixture=None, enable_api=False)
+                try:
+                    self.assertTrue(callable(wired.work.transport_factory))
+                finally:
+                    wired.close()
+
+    def test_run_step_refuses_after_the_model_connection_stops_being_the_adopted_default(self):
+        self.work_with_listing()
+        self.prepare_materials()
+        self.start_attempt()
+        self.adopt_default()
+        self.with_transport(({"content": "# 概览\n", "tool_calls": []}, {}))
+
+        self.model_success("set_connection", {"connection_id": "connection-a", "expected_revision": 1,
+                                              "enabled": False, "make_default": False})
+        status, value, _ = self.work_step()
+        self.assertEqual(status, 200, value)
+        self.assertEqual(value["receipt"]["status"], "rejected", value)
+        self.assertIn("连接", value["receipt"]["message"])
+        card = self.works()["works"][0]
+        self.assertEqual(card["steps"], [], "a refused step leaves no reserved call")
+        self.assertEqual(card["results"], [])
+
+    def test_usage_is_visible_at_work_and_au_level(self):
+        self.work_with_listing()
+        self.prepare_materials()
+        self.start_attempt()
+        self.with_transport(({"content": None, "tool_calls": [{"id": "c1", "type": "function",
+                             "function": {"name": "list_documents", "arguments": "{}"}}]},
+                             {"input_tokens": 6, "output_tokens": 1}),
+                            ({"content": "# 概览\n", "tool_calls": []},
+                             {"input_tokens": 9, "output_tokens": 4}))
+        status, value, _ = self.run_loop()
+        self.assertEqual(value["receipt"]["status"], "succeeded", value)
+
+        card = self.works()
+        work = card["works"][0]
+        self.assertEqual(work["usage"], {"input_tokens": 15, "output_tokens": 5})
+        self.assertEqual(work["cost_status"], "unknown")
+        self.assertEqual(card["usage"], {"input_tokens": 15, "output_tokens": 5},
+                         "the AU read reports the summed work usage")
+        self.assertEqual(card["cost_status"], "unknown")

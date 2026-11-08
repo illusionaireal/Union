@@ -35,5 +35,28 @@
   receipt there; it never calls a model. `result_content` serves a result body
   read-only and re-checks its digest on every read. Attempt lifecycle commands record
   ownership and call-budget facts in the same transaction and never start
-  execution or spend a call by themselves. No harness step and no second writer; verify
+  execution or spend a call by themselves. Automatic channel outcomes still use
+  this sole AU writer; verify
   tests/test_core_work.py with S01/S02/S05 regressions.
+
+- Automatic work turns use `work_context_store.py` within that same transaction
+  to retain private assistant/tool messages, native context and original tool
+  sources. Before redisclosure, recheck the current work scope, root binding and
+  snapshot digest. Never expose these private inputs in AU projections or
+  rebuild them by rereading files. Follow `s03-tool-context-contract.md` and
+  `tests/test_work_context.py`; dispatch intent now follows the contract below.
+
+- Completed modeld calls that lose authorization keep their original request
+  ID and usage as used steps; `record_channel_outcome` never adopts their
+  content or runs returned tools. Follow
+  `specs/053-union-rewrite/s03-model-observation-contract.md` and verify
+  `tests/test_work_observation.py` together with dispatch recovery tests.
+
+- `work_dispatch.py` records prepared/observed dispatch facts through the same
+  GovernanceStore transaction. Persist the original command digest, scoped
+  model request, responsibility versions and reservation before calling the
+  transport. Replays return the original receipt or unresolved intent; never
+  POST an unknown request again. Accounting survives revocation/session loss;
+  content/tool adoption separately checks current authority and host material
+  binding. Recovery queries the original request without adopting its body.
+  Follow `s03-dispatch-contract.md` and `tests/test_work_dispatch.py`.

@@ -1,0 +1,12 @@
+test_a_completed_request_returns_the_message_and_usage (tests.test_work_transport.ModeldWorkTransportTests.test_a_completed_request_returns_the_message_and_usage) ... ok
+test_a_definite_refusal_is_rejected_and_produces_no_step_fact (tests.test_work_transport.ModeldWorkTransportTests.test_a_definite_refusal_is_rejected_and_produces_no_step_fact) ... ok
+test_a_revoked_grant_cannot_be_used_to_accept_the_result (tests.test_work_transport.ModeldWorkTransportTests.test_a_revoked_grant_cannot_be_used_to_accept_the_result) ... ok
+test_a_server_side_failure_stays_unknown_instead_of_rejected (tests.test_work_transport.ModeldWorkTransportTests.test_a_server_side_failure_stays_unknown_instead_of_rejected) ... ok
+test_an_interrupted_request_is_not_silently_treated_as_a_result (tests.test_work_transport.ModeldWorkTransportTests.test_an_interrupted_request_is_not_silently_treated_as_a_result) ... ok
+test_the_host_factory_builds_a_channel_from_the_private_configuration (tests.test_work_transport.ModeldWorkTransportTests.test_the_host_factory_builds_a_channel_from_the_private_configuration) ... ok
+test_the_host_factory_refuses_a_work_without_a_connection (tests.test_work_transport.ModeldWorkTransportTests.test_the_host_factory_refuses_a_work_without_a_connection) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.035s
+
+OK

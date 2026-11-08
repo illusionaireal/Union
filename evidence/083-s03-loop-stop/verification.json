@@ -1,0 +1,30 @@
+{
+  "task": "U-067",
+  "slice": "S03",
+  "step": "S03.2e loop stops on an unknown turn and caps at the remaining budget",
+  "checked_at": "2026-11-08T06:57:04+08:00",
+  "branch": "rewrite/charter-v1 (local; task branch dsh/s03-work-runtime)",
+  "real_model_calls": 0,
+  "deployed": false,
+  "logs": {
+    "red-loop-stop.txt": [
+      "FAIL: test_run_loop_stops_when_a_turn_leaves_the_model_outcome_unknown (tests.test_core_work.CoreWorkTests.test_run_loop_stops_when_a_turn_leaves_the_model_outcome_unknown)",
+      "FAIL: test_run_loop_cap_follows_the_remaining_call_budget (tests.test_core_work.CoreWorkTests.test_run_loop_cap_follows_the_remaining_call_budget)",
+      "Ran 2 tests in 1.831s",
+      "FAILED (failures=2)"
+    ],
+    "green-loop-stop.txt": [
+      "Ran 29 tests in 28.690s",
+      "OK"
+    ],
+    "regression-loop-stop.txt": [
+      "Ran 126 tests in 74.406s",
+      "OK (skipped=3)"
+    ],
+    "management-check.txt": [
+      "ℹ skipped 0",
+      "ℹ todo 0",
+      "ℹ duration_ms 1652.2869"
+    ]
+  }
+}

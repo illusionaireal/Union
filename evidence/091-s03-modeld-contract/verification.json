@@ -1,0 +1,21 @@
+{
+  "task": "U-067",
+  "slice": "S03",
+  "kind": "source-level contract cross-check (no runtime)",
+  "checked_at": "2026-11-08T08:32:40+08:00",
+  "branch": "dsh/s03-work-runtime",
+  "real_model_calls": 0,
+  "verified": [
+    "POST /v1/requests and publicRequest fields",
+    "GET request/events paths and after cursor",
+    "events JSON shape",
+    "terminal states",
+    "result.message and usage field names",
+    "action_authorized semantics",
+    "restart marks in-flight requests interrupted"
+  ],
+  "unverified": [
+    "real inference round trip",
+    "host credentials and running modeld"
+  ]
+}

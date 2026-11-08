@@ -1,0 +1,15 @@
+test_each_attempt_reports_how_much_it_already_produced (tests.test_core_work.CoreWorkTests.test_each_attempt_reports_how_much_it_already_produced) ... ERROR
+
+======================================================================
+ERROR: test_each_attempt_reports_how_much_it_already_produced (tests.test_core_work.CoreWorkTests.test_each_attempt_reports_how_much_it_already_produced)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 566, in test_each_attempt_reports_how_much_it_already_produced
+    self.assertEqual((attempt["steps"], attempt["tool_calls"]), (1, 1))
+                      ~~~~~~~^^^^^^^^^
+KeyError: 'steps'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.987s
+
+FAILED (errors=1)

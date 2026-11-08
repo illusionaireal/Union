@@ -1,0 +1,38 @@
+{
+  "task": "U-067",
+  "actor": "codex-home/current-codex-session",
+  "online_member_id": null,
+  "independent_review": "pending",
+  "initial_probe_head": "1b00336fba787f93938f96b809691244a55efa8d",
+  "candidate_parent": "a1001e47dc7cfd909b75b3a9bde1b916c93e4d51",
+  "latest_author_head_checked": "02f8a7832f23e71a7bdbad4727914b566646f4a2",
+  "combined_tree_checked": "e8a8d6945ce180c35d662b8727a37ea5365c2392",
+  "tested_candidate_blobs": {
+    "ai_union/application/work.py": "5492854008f4bf72cf70a0015c84b354220e2d54",
+    "ai_union/domain/work.py": "d2571c6b0d56f3232393900e93ead645e5bffb53",
+    "ai_union/work_transport.py": "eeaa14937d31898a4f794230d4d073989c38071d",
+    "tests/test_work_observation.py": "b9a7c944abbec2f37b114d26ebc2540a4cd8f230",
+    "tests/test_work_transport.py": "4718ee6315de552487e2f8f7da003d6cb43ecb77"
+  },
+  "python_full": {
+    "tests": 652,
+    "skipped": 8,
+    "failures": 0,
+    "errors": 0,
+    "seconds": 415.462
+  },
+  "npm_check": "passed (206 frontend tests)",
+  "combined_affected": {
+    "tests": 51,
+    "failures": 0,
+    "errors": 0,
+    "seconds": 48.59
+  },
+  "original_review_after_fix": {
+    "reservation": "fail",
+    "tool_context": "fail",
+    "revoked_completion": "pass"
+  },
+  "real_model_calls": 0,
+  "scope": "controlled engineering candidate only; no merge, deployment adoption, migration or sustained business"
+}

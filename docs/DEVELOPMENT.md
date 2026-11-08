@@ -168,3 +168,21 @@ OpenRouter 凭据可使用环境设置中的 `openrouter_key`，普通免费模�
 ## 6. 可直接交给下一开发者的任务
 
 > 阅读 AGENTS.md、STATUS、HANDOFF、CONSOLE.md 与 005 前端工程、004 历史验收记录，核对工作区及当前实现。005、W2–W8 和观察模块的本地 fixture 范围已完成，不从原型重做。下一优先事项是有限真实执行器烟雾及 E1/E2：先核对执行器版本和实际登录、既有调用授权与额度；只有在明确有限范围及费用未知条件后才调用。使用独立组织，保留所有失败、费用不确定性和实际成果。缺少真实条件时如实记录，不把 fixture 验收当真实能力。Linux 已在 005 验证，另核对 Windows 迁移和远端 CI 结果。真实对外交付、反馈及部署继续按各自授权处理。
+
+## 2026-11-08：S03 自动执行的宿主模型通道（`UNION_MODELD_CONFIG`）
+
+V1 的自动执行（`POST /api/v1/work/commands` 的 `kind: run_step` / `kind: run_loop`）**默认没有模型通道**，调用会返回"宿主尚未配置模型执行通道"的拒绝。宿主需要显式接线：
+
+1. 准备宿主私有的 modeld 配置（回环 `origin` + `admin_token_file` / `worker_token_file`，令牌文件 32–256 字符、二者不同；非 Windows 需 0600 权限）；
+2. 启动工作台前设置环境变量 `UNION_MODELD_CONFIG=<该配置文件路径>`；
+3. 工作台启动时会把 `Console.work.transport_factory` 接成 `modeld_factory(该路径)`，`run_step` 才会真正发起模型请求。
+
+失败语义（与证据 085/082 对应）：
+
+- 配置缺失/格式非法 → 建立通道时抛 `Rejected` → 回执 **rejected**，**不留下步进、不占调用预算**；
+- 通道超时、5xx、`interrupted` → 回执 `succeeded` + **`model_outcome: unknown`**，并留下一条 `status: unknown` 的步进，**预算保持占用**；必须用 `kind: reconcile_step` 核对（`used`/`released`/`failed` + 依据）后才释放；
+- 4xx/422 明确拒绝、`action_authorized=false` → **rejected**，可重新发起。
+
+用量与费用：每次步进记录 `usage{input_tokens,output_tokens}` 与 `cost_status: unknown`；核心不估算金额、未知不写 0。真实有界验收仍在等待网络与宿主通道（≤2 次调用、每次 ≤1024 输出 tokens、仅合成公开测试资料）。
+
+离线验证：`tests.test_core_work`、`tests.test_work_transport`、`tests.test_work_transport_http`（真实回环 HTTP 替身）、`tests.test_core_work_http`（API→步进→通道→工具→候选成果端到端）。

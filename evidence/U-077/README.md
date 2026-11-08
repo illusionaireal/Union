@@ -11,3 +11,5 @@ GREEN：共 37 个离线测试通过，其中 12 个回环 HTTP 行为反例覆�
 验证命令：`node --test tests/kanban-operational.test.mjs tests/union-board.test.mjs tests/project-management.test.mjs`，并纳入 npm run check:management。原始输出保存在宿主运维目录；本目录只保存脱敏摘要。
 
 线上读回遇到连接失败，真实 #31 认领/更新尚未确认。修复受控证据不代替线上采纳。长期本地台账不因“缺卡”阻止后续在线独有任务。
+
+后续确认（2026-11-08）：协调者在实时 board revision 212 读回 #31 为 done，原负责人 chatGPT-online，原验收记录引用 PR #16 合并 `0d5214c` 和 37 项回归，并确认 CLI/MCP 的真实读取及版本化写回。原候选上传受阻已由采用已合并实现解决。本次仅补长期交付记录，不重新认领或覆盖在线 owner。工程范围为 controlled，不代表产品 AU 自主业务。

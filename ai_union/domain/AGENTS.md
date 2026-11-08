@@ -43,5 +43,19 @@
   resolved with a recorded reason. `reserve_step` / `settle_step` own the
   per-call budget: one reserved call per step, capped by the work plan,
   purpose and attempt recorded, `unknown` keeps its reservation and a
-  settled step can never be re-judged. No model call, storage or
-  dispatch; step S03.2+ extends the same owner.
+  settled step can never be re-judged. An attempt also records the host
+  service instance that owns it; after a restart the attempt reads as stale
+  and cannot act until it is settled through finish_attempt. No model call,
+  storage or dispatch; step S03.2+ extends the same owner.
+
+- Automatic step plans carry the current scope for private context integrity;
+  active bindings/Mandates constrain all advertised and executed tools. Result
+  sources include original tool receipts actually supplied to later turns.
+  Private messages/storage stay outside this pure owner. See the S03 tool
+  context contract and `tests/test_work_context.py`.
+
+- `record_unadoptable_step` records completed model inference as used, including
+  the original model request ID and observed token usage. Revocation denies
+  content/tool adoption; it does not erase executed calls. Unknown remains
+  reserved and used cannot be reconciled as released. Verify the scoped
+  contract and `tests/test_work_observation.py` with existing work regressions.

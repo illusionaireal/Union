@@ -1,0 +1,28 @@
+{
+  "task": "U-067",
+  "slice": "S03",
+  "step": "re-validate the model connection at the automatic step boundary",
+  "checked_at": "2026-11-08T13:27:22+08:00",
+  "branch": "dsh/s03-work-runtime",
+  "real_model_calls": 0,
+  "logs": {
+    "red-guard.txt": [
+      "FAIL: test_run_step_refuses_after_the_model_connection_stops_being_the_adopted_default (tests.test_core_work.CoreWorkTests.test_run_step_refuses_after_the_model_connection_stops_being_the_adopted_default)",
+      "Ran 1 test in 1.042s",
+      "FAILED (failures=1)"
+    ],
+    "green-guard.txt": [
+      "Ran 35 tests in 36.246s",
+      "OK"
+    ],
+    "regression.txt": [
+      "Ran 104 tests in 68.718s",
+      "OK"
+    ],
+    "management-check.txt": [
+      "ℹ skipped 0",
+      "ℹ todo 0",
+      "ℹ duration_ms 1735.8858"
+    ]
+  }
+}

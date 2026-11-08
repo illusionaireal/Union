@@ -1,0 +1,19 @@
+{
+  "kind": "post-merge verification in a temporary clone",
+  "task": "U-067",
+  "slice": "S03",
+  "checked_at": "2026-11-08T08:41:14+08:00",
+  "my_branch": "dsh/s03-work-runtime b102bfa",
+  "integration_base": "origin/rewrite/charter-v1 9fff477",
+  "merge_commit": "75e4453",
+  "conflicts": 0,
+  "merged_python_full": {
+    "tests": 662,
+    "skipped": 8,
+    "result": "OK"
+  },
+  "shared_worktree_touched": false,
+  "frontend_check_in_clone": "not run (no node_modules in the clone); earlier run on the same commit passed 206 tests + typecheck + build",
+  "real_model_calls": 0,
+  "deployed": false
+}

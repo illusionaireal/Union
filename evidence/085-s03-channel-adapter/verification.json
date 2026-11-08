@@ -1,0 +1,42 @@
+{
+  "task": "U-067",
+  "slice": "S03",
+  "step": "S03.2e modeld work channel adapter + definite-vs-unknown separation",
+  "checked_at": "2026-11-08T07:03:17+08:00",
+  "branch": "rewrite/charter-v1 (local; task branch dsh/s03-work-runtime)",
+  "real_model_calls": 0,
+  "deployed": false,
+  "unverified": [
+    "adapter never executed against a running modeld",
+    "event/result field shapes mirrored from ModelServiceTransport, not re-verified"
+  ],
+  "logs": {
+    "red-adapter.txt": [
+      "ERROR: test_work_transport (unittest.loader._FailedTest.test_work_transport)",
+      "Ran 1 test in 0.000s",
+      "FAILED (errors=1)"
+    ],
+    "test-adapter.txt": [
+      "Ran 5 tests in 0.000s",
+      "OK"
+    ],
+    "red-definite.txt": [
+      "FAIL: test_a_definite_channel_refusal_creates_no_step_fact (tests.test_core_work.CoreWorkTests.test_a_definite_channel_refusal_creates_no_step_fact)",
+      "Ran 1 test in 1.025s",
+      "FAILED (failures=1)"
+    ],
+    "green.txt": [
+      "Ran 35 tests in 31.153s",
+      "OK"
+    ],
+    "regression.txt": [
+      "Ran 132 tests in 80.076s",
+      "OK (skipped=3)"
+    ],
+    "management-check.txt": [
+      "ℹ skipped 0",
+      "ℹ todo 0",
+      "ℹ duration_ms 1701.3121"
+    ]
+  }
+}

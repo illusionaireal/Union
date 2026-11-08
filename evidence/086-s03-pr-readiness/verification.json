@@ -1,0 +1,31 @@
+{
+  "task": "U-067",
+  "slice": "S03",
+  "kind": "delivery readiness (unpushed branch)",
+  "checked_at": "2026-11-08T07:10:32+08:00",
+  "branch": "dsh/s03-work-runtime",
+  "fork_point": "origin/rewrite/charter-v1 8368967",
+  "commits": 19,
+  "files_changed": 69,
+  "python_full": {
+    "tests": 647,
+    "skipped": 8,
+    "result": "OK"
+  },
+  "real_model_calls": 0,
+  "deployed": false,
+  "blocked_on": [
+    "github https unreachable",
+    "kanban api unreachable",
+    "modeld channel not running / not wired"
+  ],
+  "updated_at": "2026-11-08T08:00:18+08:00",
+  "note": "S03 automatic chain code-complete; only the bounded real acceptance remains",
+  "extra_gates": {
+    "browser_workspace": 71,
+    "browser_core_creation": 30,
+    "startup_smoke": 5,
+    "adapter_http": 3,
+    "end_to_end_http": 1
+  }
+}
