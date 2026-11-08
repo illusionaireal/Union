@@ -1,0 +1,158 @@
+{
+  "review_actor": "codex-home single duty session",
+  "online_user_id": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+  "integration": "2ff90f1fe631e46fc71f9ba5487417415e0e4f63",
+  "withdrawn_candidate": "0f4abf5bad3e4fdb428cee6b2f350c201ce26b24",
+  "author_rebuild": "07b6f089e0a6267e2e4806a69b4af22ad491552c",
+  "real_model_calls": 0,
+  "product_changes": false,
+  "logs": {
+    "u086-cancel-0f4abf5-probes.log": {
+      "sha256": "2ecfbc68a17e9a9051390952f3dfbefdcfad626fdb76915dcedb9b8738047872",
+      "summary": [
+        "AssertionError: 'released' != 'unknown'",
+        "AssertionError: 2 != 1 : cancel reopened max_calls=1 and a second model request was dispatched",
+        "AssertionError: 'released' != 'unknown'",
+        "Ran 4 tests in 5.104s",
+        "FAILED (failures=3)"
+      ]
+    },
+    "u086-cancel-2ff90f1-probes.log": {
+      "sha256": "ef1bb0df3a8d0205fe93c8f5f68718006993786c43176e099c2f737fd86faf80",
+      "summary": [
+        "AssertionError: '不支持的核心工作命令' not found in '' : {'code': 'invalid_request', 'error': '不支持的核心工作命令'}",
+        "AssertionError: '不支持的核心工作命令' not found in '' : {'code': 'invalid_request', 'error': '不支持的核心工作命令'}",
+        "AssertionError: '不支持的核心工作命令' not found in '' : {'code': 'invalid_request', 'error': '不支持的核心工作命令'}",
+        "AssertionError: '不支持的核心工作命令' not found in '' : {'code': 'invalid_request', 'error': '不支持的核心工作命令'}",
+        "Ran 4 tests in 4.115s",
+        "FAILED (failures=4)"
+      ],
+      "classification": "Probe helper used message instead of error; not product RED"
+    },
+    "u086-cancel-0f4abf5-final-probes.log": {
+      "sha256": "22994991ce134f6bae08f773e75dc52941bef04e542bc5966d6f5214d1849ee1",
+      "summary": [
+        "AssertionError: 'released' != 'unknown'",
+        "AssertionError: 2 != 1 : cancel reopened max_calls=1 and a second model request was dispatched",
+        "AssertionError: 'released' != 'unknown'",
+        "Ran 4 tests in 4.686s",
+        "FAILED (failures=3)"
+      ]
+    },
+    "u086-cancel-2ff90f1-final-probes.log": {
+      "sha256": "18caffc834b03ad1b2da1d2dee3ce7aa131924524b5e9ed62b6453fbebedf9be",
+      "summary": [
+        "Ran 4 tests in 4.854s",
+        "OK"
+      ]
+    },
+    "u086-cancel-07b6f08-final-probes.log": {
+      "sha256": "582335dadb5d0fafc19ffb6cc87c4f1bfe3a4240025fd5949d078b3b7680a118",
+      "summary": [
+        "Ran 4 tests in 4.782s",
+        "OK"
+      ]
+    },
+    "u086-cancel-review-npm.log": {
+      "sha256": "39d2909b41470d2a93435969e6e281b13a086fe814d26cdafd2be35c9a105b64",
+      "exit_code": 0,
+      "summary": [
+        "npm check passed",
+        "37 management tests, 9 action tests, 315 frontend tests passed",
+        "typecheck and Vite build passed"
+      ]
+    },
+    "u086-cancel-310c7e1-probes.log": {
+      "sha256": "f32c2fda37d501c62f6edba44003588e8e369ddde7afa0d36fa6cbe321b46501",
+      "summary": [
+        "Ran 4 tests in 5.004s",
+        "OK"
+      ]
+    },
+    "u086-cancel-310c7e1-route-red.log": {
+      "sha256": "a227fa712c3a003ae29348bc6ae6708c4fa77db08fca1d09bda948cd5f3885a2",
+      "summary": [
+        "Ran 1 test in 1.214s",
+        "FAILED (failures=1)"
+      ],
+      "modeld_cancel_posts": 0,
+      "classification": "Existing automatic cancellation capability missing; not product regression"
+    },
+    "u086-cancel-2ff90f1-route-red.log": {
+      "sha256": "663e697ea39c0f6eb96157f7af6c826045a0644977669398d4a1aa910747fb66",
+      "summary": [
+        "Ran 1 test in 1.251s",
+        "FAILED (failures=1)"
+      ],
+      "modeld_cancel_posts": 0,
+      "classification": "Existing automatic cancellation capability missing; not product regression"
+    },
+    "u086-cancel-review-python-full.log": {
+      "sha256": "af7b9c1cf02d2e66de35bcba5885091216b108b735ccf3188edd5dafa88e5652",
+      "exit_code": 0,
+      "summary": [
+        "Ran 782 tests in 492.101s",
+        "OK (skipped=9)"
+      ]
+    }
+  },
+  "board_readback": {
+    "readback": 200,
+    "comment": 136,
+    "before_revision": 487,
+    "after_revision": 488,
+    "version": 5,
+    "owner_preserved": true,
+    "status_preserved": true
+  },
+  "source_sha256": {
+    "0f4abf5:ai_union/application/work.py": "16a6eec6d5c0b6a502afeb95df64adb8c1f1161c7c5059f1f86a585fd625f86b",
+    "0f4abf5:ai_union/domain/work.py": "9c66bac5526be2c91f68da23af420e1590d89dcf6fd51cf91bbad92f4b30f312",
+    "07b6f08:ai_union/application/work.py": "003f858a7ce83245c8ed4e715ab77bb3e80fbb40b8ef5b67efdf36c01559c67c",
+    "07b6f08:ai_union/domain/work.py": "a527c9fd3fbce9d159ea1310876c51f33da74afe4ea80600d77a869f924735a5",
+    "310c7e1:ai_union/application/work.py": "be02ab93590526c4f255ba767b9f02b8ab69ca37fd3b1bb571d215f5b59a5b50",
+    "310c7e1:ai_union/domain/work.py": "83f2d4e0e15fc5e84aa99921a245591277619d800b02cedf8b0d79b9ec4c21c3"
+  },
+  "probe_sha256": "2543e1d103bcb2043a127b12059eebd33e975dd55db7e84aac78da2096707f0e",
+  "integration_ci": {
+    "head": "2ff90f1fe631e46fc71f9ba5487417415e0e4f63",
+    "runs": [
+      {
+        "id": 42523639546,
+        "name": "fixed model service",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 42523639498,
+        "name": "frontend and historical checks",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 42523639501,
+        "name": "mechanism-tests",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "latest_candidate": "310c7e1cc4588f9d876453a1f1e978785ed3dc71",
+  "latest_parent": "f445446bbfd36fbfa4c5c2075f1abeacbbc8bbd4",
+  "latest_board_readback": {
+    "readback": 200,
+    "comment": 138,
+    "before_revision": 490,
+    "after_revision": 491,
+    "version": 6,
+    "owner_preserved": true,
+    "status_preserved": true
+  },
+  "functional_probe_sha256": "9868787668728637c8b5ed1332d9b366d04f6c10ad29d91eff46bfc09edcc075",
+  "toolchain": {
+    "python": "3.12.10",
+    "node": "24.19.0",
+    "python_utf8": true,
+    "python_io_encoding": "utf-8"
+  }
+}
