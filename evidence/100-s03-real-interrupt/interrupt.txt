@@ -1,0 +1,7 @@
+interrupt: {"receipt": {"status": "succeeded", "model_outcome": "unknown", "message": "模型通道结果未知；已保留该次调用预约等待核对，不自动重放：model_service_rejected", "step": "work-real#s1"}, "budget": {"max_calls": 1, "reserved": 1, "used": 0}, "steps": [{"status": "unknown", "reason": "模型通道结果未知；已保留该次调用预约等待核对，不自动重放：model_service_rejected"}], "usage": {"input_tokens": 0, "output_tokens": 0}}
+test_an_interrupted_call_keeps_an_unknown_reservation_until_reconciled (tests.test_core_work_real_interrupt.RealInterruptTests.test_an_interrupted_call_keeps_an_unknown_reservation_until_reconciled) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 8.952s
+
+OK

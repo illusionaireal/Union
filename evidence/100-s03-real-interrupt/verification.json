@@ -1,0 +1,26 @@
+{
+  "gate": "real interruption + reconcile",
+  "task": "U-067",
+  "slice": "S03",
+  "checked_at": "2026-11-08T14:49:07+08:00",
+  "model": "deepseek-v4.1-flash",
+  "calls_this_run": 1,
+  "real_calls_total": 2,
+  "authorized_calls": 2,
+  "observed": {
+    "model_outcome": "unknown",
+    "budget_before_reconcile": {
+      "reserved": 1,
+      "used": 0
+    },
+    "step_status": "unknown",
+    "after_reconcile": {
+      "reserved": 0,
+      "steps": [
+        "released"
+      ]
+    },
+    "replayed": false
+  },
+  "deployed": false
+}
