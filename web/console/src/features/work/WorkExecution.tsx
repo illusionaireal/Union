@@ -63,6 +63,7 @@ export function WorkExecution({
   const refs = useRef(references);
   const alive = useRef(true),
     busy = useRef(false),
+    cancelBusy = useRef(false),
     querying = useRef(false);
   const scopeRef = useRef(storageKey(scope));
   scopeRef.current = storageKey(scope);
@@ -140,7 +141,11 @@ export function WorkExecution({
   const kind: Kind = item.attempts.some((a) => a.status === 'running')
     ? 'run_loop'
     : 'start_attempt';
-  const reference = references.find((r) => !r.resolved) || references.find((r) => r.kind === kind);
+  const reference =
+    references.find((r) => r.kind !== 'cancel_step' && !r.resolved) ||
+    references.find((r) => r.kind === kind);
+  const cancelReference = references.find((r) => r.kind === 'cancel_step');
+  const recoveries = [reference, cancelReference].filter((r): r is Reference => Boolean(r));
   const eligible =
     canExecute &&
     item.mandate.active &&
@@ -151,7 +156,7 @@ export function WorkExecution({
     item.budget.used < item.budget.max_calls &&
     item.results.length === 0;
   async function send() {
-    if (busy.current || reference || !eligible) return;
+    if (busy.current || cancelBusy.current || recoveries.length || !eligible) return;
     busy.current = true;
     setSending(true);
     setNote('');
@@ -205,8 +210,8 @@ export function WorkExecution({
       if (current()) setSending(false);
     }
   }
-  async function lookup() {
-    if (!reference || querying.current) return;
+  async function lookup(reference: Reference) {
+    if (querying.current) return;
     querying.current = true;
     setChecking(true);
     try {
@@ -248,8 +253,9 @@ export function WorkExecution({
   const cancellable = item.steps.find((step) => step.status === 'reserved');
   const [cancelling, setCancelling] = useState(false);
   async function cancelLocal() {
-    if (busy.current || !cancellable || reference) return;
-    busy.current = true;
+    if (cancelBusy.current || !cancellable || refs.current.some((r) => r.kind === 'cancel_step'))
+      return;
+    cancelBusy.current = true;
     setCancelling(true);
     setNote('');
     try {
@@ -283,40 +289,51 @@ export function WorkExecution({
         kind: 'cancel_step',
         base_version: original.base_version,
         organization_id: scope.organizationId,
-        data: { work_id: scope.workId, step_id: step.step_ref,
-                reason: '页面级取消：操作者请求停止本次执行' },
+        data: {
+          work_id: scope.workId,
+          step_id: step.step_ref,
+          reason: '页面级取消：操作者请求停止本次执行',
+        },
       });
       if (current()) await accept(original, result.receipt);
     } catch (error) {
       failure(error);
     } finally {
-      busy.current = false;
+      cancelBusy.current = false;
       if (current()) setCancelling(false);
     }
   }
   return (
     <div className="work-execution" aria-label={'运行 ' + item.title}>
       {cancellable && (
-        <button type="button" disabled={cancelling} onClick={() => void cancelLocal()}>
+        <button
+          type="button"
+          disabled={cancelling || Boolean(cancelReference)}
+          onClick={() => void cancelLocal()}
+        >
           取消本次执行
         </button>
       )}
-      {reference ? (
-        <>
+      {recoveries.map((original) => (
+        <div
+          key={original.id}
+          role="group"
+          aria-label={original.kind === 'cancel_step' ? '原取消请求' : '原运行请求'}
+        >
+          <p>{original.kind === 'cancel_step' ? '取消请求' : '运行请求'}</p>
           <p>
-            {reference.resolved ? '本次操作已记录' : '原请求已保留；请查询，不要重复运行'} ·{' '}
-            {reference.id}
+            {original.resolved ? '本次操作已记录' : '原请求已保留；请查询，不要重复运行'} ·{' '}
+            {original.id}
           </p>
-          <button type="button" disabled={checking} onClick={() => void lookup()}>
+          <button type="button" disabled={checking} onClick={() => void lookup(original)}>
             查询原请求
           </button>
-        </>
-      ) : (
-        eligible && (
-          <button type="button" disabled={sending} onClick={() => void send()}>
-            {kind === 'run_loop' ? '运行 AI 工作' : '准备本轮执行'}
-          </button>
-        )
+        </div>
+      ))}
+      {recoveries.length === 0 && eligible && (
+        <button type="button" disabled={sending} onClick={() => void send()}>
+          {kind === 'run_loop' ? '运行 AI 工作' : '准备本轮执行'}
+        </button>
       )}
       {note && <p role="status">{note}</p>}
     </div>
