@@ -886,3 +886,23 @@ class CoreWorkTests(ModelAccessCase):
         card = self.works()["works"][0]
         self.assertEqual(card["steps"], [], "a refused step leaves no reserved call")
         self.assertEqual(card["results"], [])
+
+    def test_usage_is_visible_at_work_and_au_level(self):
+        self.work_with_listing()
+        self.prepare_materials()
+        self.start_attempt()
+        self.with_transport(({"content": None, "tool_calls": [{"id": "c1", "type": "function",
+                             "function": {"name": "list_documents", "arguments": "{}"}}]},
+                             {"input_tokens": 6, "output_tokens": 1}),
+                            ({"content": "# 概览\n", "tool_calls": []},
+                             {"input_tokens": 9, "output_tokens": 4}))
+        status, value, _ = self.run_loop()
+        self.assertEqual(value["receipt"]["status"], "succeeded", value)
+
+        card = self.works()
+        work = card["works"][0]
+        self.assertEqual(work["usage"], {"input_tokens": 15, "output_tokens": 5})
+        self.assertEqual(work["cost_status"], "unknown")
+        self.assertEqual(card["usage"], {"input_tokens": 15, "output_tokens": 5},
+                         "the AU read reports the summed work usage")
+        self.assertEqual(card["cost_status"], "unknown")

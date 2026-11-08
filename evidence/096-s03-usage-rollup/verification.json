@@ -1,0 +1,34 @@
+{
+  "task": "U-067",
+  "slice": "S03",
+  "step": "usage visible per work and per AU, cost stays unknown",
+  "checked_at": "2026-11-08T13:31:43+08:00",
+  "branch": "dsh/s03-work-runtime",
+  "real_model_calls": 0,
+  "additive_fields": [
+    "works[].usage",
+    "works[].cost_status",
+    "usage",
+    "cost_status"
+  ],
+  "logs": {
+    "red-rollup.txt": [
+      "ERROR: test_usage_is_visible_at_work_and_au_level (tests.test_core_work.CoreWorkTests.test_usage_is_visible_at_work_and_au_level)",
+      "Ran 1 test in 1.095s",
+      "FAILED (errors=1)"
+    ],
+    "green-rollup.txt": [
+      "Ran 36 tests in 37.053s",
+      "OK"
+    ],
+    "regression.txt": [
+      "Ran 99 tests in 60.925s",
+      "OK"
+    ],
+    "management-check.txt": [
+      "ℹ skipped 0",
+      "ℹ todo 0",
+      "ℹ duration_ms 1672.7965"
+    ]
+  }
+}

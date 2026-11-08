@@ -33,9 +33,13 @@ class WorkService:
         works = rules.projection(state, instance=self.app.instance)
         for item in works:
             item["materials"] = self.materials(item["materials_root"])
+        usage = {"input_tokens": 0, "output_tokens": 0}
+        for item in works:
+            for key in usage:
+                usage[key] += item["usage"][key]
         return {"protocol": rules.PROTOCOL, "organization_id": au_id, "version": state["version"],
                 "access": {"principal_id": principal, "can_start": can_start},
-                "works": works,
+                "works": works, "usage": usage, "cost_status": "unknown",
                 "capabilities": {"work_registration": True, "execution": "not_started",
                                  "autonomous_business": False}}
 

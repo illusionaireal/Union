@@ -522,6 +522,18 @@ def record_tool_call(work, tool, arguments, detail, attempt_id, clock=None):
     return entry
 
 
+def usage_total(work):
+    """Sum the recorded usage of a work's steps; cost stays unknown, never a guess."""
+    total = {"input_tokens": 0, "output_tokens": 0}
+    for step in work.get("steps") or []:
+        usage = step.get("usage") or {}
+        for key in total:
+            value = usage.get(key)
+            if type(value) is int and value >= 0:
+                total[key] += value
+    return total
+
+
 def projection(state, instance=None):
     records_value = records(state)
     result = []
@@ -550,7 +562,8 @@ def projection(state, instance=None):
                 "tool_calls": sum(1 for call in work.get("tool_calls") or [] if call["attempt_id"] == attempt["id"]),
             } for attempt in work.get("attempts") or []],
             "steps": [dict(step) for step in work.get("steps") or []],
-            "budget": budget(work), "delivered_at": work.get("delivered_at"),
+            "budget": budget(work), "usage": usage_total(work), "cost_status": "unknown",
+            "delivered_at": work.get("delivered_at"),
             "delivered_result_id": work.get("delivered_result_id"),
             "results": [{key: value for key, value in item.items() if key != "content"}
                         for item in work.get("results") or []]})
