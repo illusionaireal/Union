@@ -71,6 +71,14 @@ def main():
                     value = {"released": True}
                 elif command == "inspect":
                     value = inspect()
+                elif command in {"disable", "enable"}:
+                    connection = case.models()["connections"][0]
+                    enabled = command == "enable"
+                    case.model_success("set_connection", {
+                        "connection_id": connection["id"], "expected_revision": connection["revision"],
+                        "enabled": enabled, "make_default": enabled})
+                    status, value, _ = case.request("/api/v1/work?organization_id=" + case.au_id)
+                    assert status == 200 and value["access"]["can_start"] == enabled
                 elif command == "reopen":
                     assert finish.is_set()
                     assert not case.app.work.active_loops and not case.app.work.active_steps

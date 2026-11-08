@@ -1,0 +1,110 @@
+{
+  "actor": "codex-home single duty implementation and separate author-server review",
+  "online_user_id": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+  "card": 40,
+  "page_base": "5bec20f3c9d7ae9abf466a64c34cb70281a0e5f0",
+  "page_server_source": "813b3b55b88485872ea9f7e040b8b82dec891ef2",
+  "reviewed_author": "aa82962107225903643d3949f51d4b77258b33ca",
+  "integration": "31f6b60b99318db2246e8962d26600d4175ce7ef",
+  "board_scope_comment": 152,
+  "author_review_comment": 154,
+  "original_owner_retained": true,
+  "page_independent_review": "required from another engineering role",
+  "real_model_calls": 0,
+  "source_blobs": {
+    "web/console/src/features/work/WorkExecution.tsx": "5c5a1927b5d06c5a023d3ab6524736d6db550eda",
+    "web/console/src/features/work/cancel-recovery.test.tsx": "b04e1a268c77d31262746e5122c5b5972bac92fa",
+    "web/console/src/features/work/page-execution.test.tsx": "40aba354eabe59aec2857b7d0dafc5e59ed98ebb",
+    "scripts/u086-cancel-recovery-browser.cjs": "7cbf5ff0b8e395ffc5a564313f07b9c67addcbf1",
+    "scripts/u086_cancel_recovery_host.py": "d9727b912272bfa62a1882062bfa5d9f2209c5e9"
+  },
+  "original_probe_sha256": "b8c7f73b9da48a5e4108c50d96b808a77210a3ae962996233e2c20a5b36bf237",
+  "logs": {
+    "initial_dom_red": {
+      "sha256": "45f1210c78f9beedec1433feee713b6121dd2a7445139a581a51e7cdbdfe50fc",
+      "classification": "four product failures plus one prematurely specified read-count assertion; retained",
+      "summary": [
+        "Test Files  1 failed (1)",
+        "Tests  5 failed | 11 passed (16)"
+      ]
+    },
+    "dom_red": {
+      "sha256": "f38bde94f9d036f453d6487a3d4414f2c7045bfd3b8f72cd99de26c694ed8c50",
+      "classification": "7 meaningful product failures, 11 controls pass before product edits",
+      "summary": [
+        "Test Files  1 failed (1)",
+        "Tests  7 failed | 11 passed (18)"
+      ]
+    },
+    "initial_dom_green": {
+      "sha256": "fb81560e9467c20f4ab54cdecd35fa1d3a6e890ed631ced57adba04f3c784a08",
+      "classification": "36 pass; two tests asserted before query notification completed",
+      "summary": [
+        "Test Files  1 failed | 1 passed (2)",
+        "Tests  2 failed | 36 passed (38)"
+      ]
+    },
+    "dom_green": {
+      "sha256": "fe858d10ab37bf2c705a8e9e2da371b95e4cde7878c688109286b79a77f6366d",
+      "classification": "38 pass",
+      "summary": [
+        "Test Files  2 passed (2)",
+        "Tests  38 passed (38)"
+      ]
+    },
+    "npm": {
+      "sha256": "bcfd2ae6a871eef3a280c601df0ca2fb04867e96657e61fa58dbe134e3f43bfb",
+      "classification": "passed, 335 frontend / 37 management / 9 action checks",
+      "summary": [
+        "Test Files  28 passed (28)",
+        "Tests  335 passed (335)"
+      ]
+    },
+    "python": {
+      "sha256": "44968c1741bb4d40a829613963c6f50fa245009a314c5175ed11b0943aa45f81",
+      "classification": "full suite",
+      "summary": [
+        "Ran 784 tests in 503.070s",
+        "OK (skipped=9)"
+      ]
+    },
+    "browser": {
+      "sha256": "8f4ca564b159904210f0777b9939ca5b20e284919dffbccf10fb90ed082743c9",
+      "classification": "15 actual Chrome/Core HTTP/SQLite checks passed",
+      "summary": [
+        "U086 page recovery: 15 checks passed; command POST=2, fake=1, real=0; lost cancel=false"
+      ]
+    },
+    "browser_lost": {
+      "sha256": "6fc39311d12944aa1dd90ca77ce87d2ac1769ca17da5ce43fff07a30ecd20def",
+      "classification": "16 actual Chrome/Core HTTP/SQLite checks passed",
+      "summary": [
+        "U086 page recovery: 16 checks passed; command POST=2, fake=1, real=0; lost cancel=true"
+      ]
+    },
+    "author_delivery": {
+      "sha256": "673b04784559c70c91d1ade0614f67e5596ed87525b5776c5d28d06597778b4d",
+      "classification": "accurate aa82962: original six probes pass",
+      "summary": [
+        "Ran 6 tests in 6.830s",
+        "OK"
+      ]
+    },
+    "author_observation_initial": {
+      "sha256": "0bfc1ff9ad1c9bec08509103e556b033145742de46932f7b18b2520c3a3921bb",
+      "classification": "two product failures plus test SQLite cleanup error",
+      "summary": [
+        "Ran 2 tests in 3.133s",
+        "FAILED (failures=2, errors=1)"
+      ]
+    },
+    "author_observation": {
+      "sha256": "3286cbca90612018e8316d602e6d37e996a0af41128f9eac8977de2d5b526466",
+      "classification": "two product failures, zero errors",
+      "summary": [
+        "Ran 2 tests in 2.808s",
+        "FAILED (failures=2)"
+      ]
+    }
+  }
+}

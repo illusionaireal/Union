@@ -127,7 +127,7 @@ export function WorkExecution({
     }
     await client.invalidateQueries({ queryKey: ['core-work', scope.organizationId] });
   };
-  const failure = (error: unknown) => {
+  const failure = (error: unknown, originalId?: string) => {
     if (!current()) return;
     if (
       error instanceof ScopeLost ||
@@ -136,6 +136,7 @@ export function WorkExecution({
       onAccessLost();
       return;
     }
+    if (originalId && refs.current.some((r) => r.id === originalId && r.resolved)) return;
     setNote(errorText(error));
   };
   const kind: Kind = item.attempts.some((a) => a.status === 'running')
@@ -160,6 +161,7 @@ export function WorkExecution({
     busy.current = true;
     setSending(true);
     setNote('');
+    let dispatchedId: string | undefined;
     try {
       await liveSession();
       const read = await api.coreWork(scope.organizationId);
@@ -167,10 +169,14 @@ export function WorkExecution({
       if (
         read.protocol !== 'core.work.v1' ||
         read.organization_id !== scope.organizationId ||
-        read.access.principal_id !== scope.principalId ||
-        !read.access.can_start
+        read.access.principal_id !== scope.principalId
       )
         throw new ScopeLost('权限或身份已变化');
+      if (!read.access.can_start) {
+        await liveSession();
+        await client.invalidateQueries({ queryKey: ['core-work', scope.organizationId] });
+        throw new Error('当前不能执行新操作；已有工作和原请求仍可查询，请核对模型连接及当前授权。');
+      }
       const work = read.works.find((w) => w.id === scope.workId);
       if (
         !work ||
@@ -195,6 +201,7 @@ export function WorkExecution({
       };
       remember(original);
       requireCurrent();
+      dispatchedId = original.id;
       const result = await api.coreWorkCommand({
         id: original.id,
         kind,
@@ -204,7 +211,7 @@ export function WorkExecution({
       });
       if (current()) await accept(original, result.receipt);
     } catch (error) {
-      failure(error);
+      failure(error, dispatchedId);
     } finally {
       busy.current = false;
       if (current()) setSending(false);
@@ -243,7 +250,7 @@ export function WorkExecution({
           failure(accessError);
         }
       } else {
-        failure(error);
+        failure(error, reference.id);
       }
     } finally {
       querying.current = false;
@@ -253,11 +260,12 @@ export function WorkExecution({
   const cancellable = item.steps.find((step) => step.status === 'reserved');
   const [cancelling, setCancelling] = useState(false);
   async function cancelLocal() {
-    if (cancelBusy.current || !cancellable || refs.current.some((r) => r.kind === 'cancel_step'))
+    if (!canExecute || cancelBusy.current || !cancellable || refs.current.some((r) => r.kind === 'cancel_step'))
       return;
     cancelBusy.current = true;
     setCancelling(true);
     setNote('');
+    let dispatchedId: string | undefined;
     try {
       await liveSession();
       const read = await api.coreWork(scope.organizationId);
@@ -265,10 +273,14 @@ export function WorkExecution({
       if (
         read.protocol !== 'core.work.v1' ||
         read.organization_id !== scope.organizationId ||
-        read.access.principal_id !== scope.principalId ||
-        !read.access.can_start
+        read.access.principal_id !== scope.principalId
       )
         throw new ScopeLost('权限或身份已变化');
+      if (!read.access.can_start) {
+        await liveSession();
+        await client.invalidateQueries({ queryKey: ['core-work', scope.organizationId] });
+        throw new Error('当前不能执行新操作；已有工作和原请求仍可查询，请核对模型连接及当前授权。');
+      }
       const work = read.works.find((w) => w.id === scope.workId);
       const step = work?.steps.find((value) => value.step_ref === cancellable.step_ref);
       if (!work || !step || step.status !== 'reserved' || step.step_ref !== cancellable.step_ref) {
@@ -284,6 +296,7 @@ export function WorkExecution({
       };
       remember(original);
       requireCurrent();
+      dispatchedId = original.id;
       const result = await api.coreWorkCommand({
         id: original.id,
         kind: 'cancel_step',
@@ -297,7 +310,7 @@ export function WorkExecution({
       });
       if (current()) await accept(original, result.receipt);
     } catch (error) {
-      failure(error);
+      failure(error, dispatchedId);
     } finally {
       cancelBusy.current = false;
       if (current()) setCancelling(false);
@@ -305,7 +318,7 @@ export function WorkExecution({
   }
   return (
     <div className="work-execution" aria-label={'运行 ' + item.title}>
-      {cancellable && (
+      {cancellable && canExecute && (
         <button
           type="button"
           disabled={cancelling || Boolean(cancelReference)}
