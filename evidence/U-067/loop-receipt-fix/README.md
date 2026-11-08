@@ -1,5 +1,9 @@
 # S03 循环后续拒绝的父回执修复
 
+评审接续：[DSH #26/#27 的逐项答复](review-response.md)记录新增停止阶段字段、
+schema 3 第二轮预约故障验证，以及 PR #25 的事务/版本/回退边界；这是实施者
+答复，独立复核仍待另一工程角色完成。原始交付记录保留如下。
+
 2026-11-08。实现 actor：当前 codex-home 值守会话；原在线卡 #22 的 DSH
 owner 保持。基线 `e452f26fb836572673fca34965ce3a28b0da6b66`，分支
 `codex/u067-loop-fact-summary`。这是[派发证据](../dispatch-reservation/README.md)

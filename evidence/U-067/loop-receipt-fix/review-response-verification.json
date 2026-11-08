@@ -1,0 +1,64 @@
+{
+  "base": "39db061e307accc7410bee6d71c14756abd43fbd",
+  "actor": "codex-home",
+  "independent_review": false,
+  "kanban_scope_comment": 64,
+  "review_messages": [
+    26,
+    27
+  ],
+  "scope": "controlled",
+  "source_blobs": {
+    "ai_union/application/work.py": "9af00ec28332821220502c3d8e5060b0f33c3cc6",
+    "tests/test_work_loop_receipts.py": "a04d15f686b5cb0b451fe186b8ebc3506bfcd9e4",
+    "specs/053-union-rewrite/s03-loop-receipt-contract.md": "fa99abc69b2bc8974afa35d786589976af8aada2"
+  },
+  "red": {
+    "tests": 9,
+    "failures": 4,
+    "errors": 0,
+    "reason": "rejected parent receipt has no machine-readable stop phase",
+    "evidence": "review-response-red.txt"
+  },
+  "earlier_fixture_error": {
+    "failures": 4,
+    "errors": 1,
+    "reason": "test incorrectly treated a stored Work as its public budget projection; fixed before confirmed RED; production code unchanged"
+  },
+  "green": {
+    "tests": 9,
+    "failures": 0,
+    "errors": 0,
+    "evidence": "review-response-green.txt"
+  },
+  "python_full": {
+    "tests": 716,
+    "seconds": 436.989,
+    "skipped": 8,
+    "exit_code": 0
+  },
+  "npm_check": {
+    "exit_code": 0,
+    "management_tests": 37,
+    "action_tests": 9,
+    "frontend_tests": 207,
+    "types": "passed",
+    "build": "passed"
+  },
+  "original_probes": {
+    "tests": 3,
+    "passed": 3
+  },
+  "private_log_sha256": {
+    "green.log": "f15cf5d3f5eadf2a90165416d17bbe2233523fe685081a3fedec353304e099c4",
+    "npm-check.log": "9f2ae926de697f15219a69affee38f3910381b8eff954364c946282487eefc2d",
+    "original-probes.log": "c3f4bf2caf6cdc44d4ddbbc8c47e8d1c5fb47d34b7936c35d5f839785225e8fd",
+    "python-full.log": "0494446969518197deb206c8f3ad72d2fa50114314337a8d4f3973880ef62fe6",
+    "red-confirmed.log": "a4a7fc88fdc54564184fdbdeca09163a92cc797673f6f364854e36bbb89f0950",
+    "red.log": "8fd979c565e3c7e6bce740127de2ae2c263a897692ef354ca6ec8f879a8a2312"
+  },
+  "real_model_calls": 0,
+  "nas_service_switched": false,
+  "live_data_migrated": false,
+  "adoption": "requires current-head CI and another engineering role review"
+}
