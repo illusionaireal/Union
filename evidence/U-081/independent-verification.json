@@ -1,0 +1,67 @@
+{
+  "source_head": "6b50769e33b85172289b3badd6faf361a588ec19",
+  "source_tree": "1030e6f43118b9416fef25d568536fd9bf269435",
+  "reviewer": "codex-home",
+  "implementer": "chatGPT-online",
+  "scope": "controlled",
+  "npm_check": {
+    "passed": true,
+    "frontend_tests": 215,
+    "management_tests": 37,
+    "action_tests": 9
+  },
+  "windows_browser": {
+    "scope": "controlled",
+    "checks": [
+      "core route shows persisted work",
+      "result download over authenticated HTTP",
+      "read-only controls",
+      "refresh and reload",
+      "1440/390/320 widths",
+      "zero work POSTs"
+    ],
+    "real_model_calls": 0
+  },
+  "independent_browser": {
+    "source_head": "6b50769e33b85172289b3badd6faf361a588ec19",
+    "reviewer": "codex-home",
+    "implementer": "chatGPT-online",
+    "scope": "controlled",
+    "checks": [
+      "authenticated download contains stored result body",
+      "principal mismatch hides records and downloads",
+      "organization mismatch hides records and downloads",
+      "protocol mismatch hides records and downloads",
+      "403 refresh removes previously rendered work",
+      "download endpoint rejects an expired session",
+      "all review navigation remains free of work writes"
+    ],
+    "real_model_calls": 0
+  },
+  "linux_browser": {
+    "source_head": "6b50769e33b85172289b3badd6faf361a588ec19",
+    "run_id": 42464535695,
+    "artifact_id": 13610803664,
+    "checks": {
+      "scope": "controlled",
+      "checks": [
+        "core route shows persisted work",
+        "result download over authenticated HTTP",
+        "read-only controls",
+        "refresh and reload",
+        "1440/390/320 widths",
+        "zero work POSTs"
+      ],
+      "real_model_calls": 0
+    }
+  },
+  "review_probe_history": {
+    "initial": "two selector timeouts while the correct denial and zero records were already rendered",
+    "cause": "review probe exact text selector included Card sibling text",
+    "change": "match the denial text inside the Card; product source unchanged"
+  },
+  "real_model_calls": 0,
+  "service_switched": false,
+  "live_data_migrated": false,
+  "full_current_head_ci": "Base 6b50769 has a Windows fixture timeout in job 128680865622; the separate fixture correction requires fresh candidate CI."
+}

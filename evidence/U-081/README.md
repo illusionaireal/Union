@@ -4,6 +4,20 @@
 分支 `codex/u081-work-panel`，集成基线 `bbe8068335c32c04bdcf6d4fa20375245b912cf9`。
 本交付为受控工程候选，未部署、不调用真实模型，不关闭父卡的自动派发界面或真实验收。
 
+2026-11-08 独立复核补充：codex-home 已在精确候选 `6b50769e` 完成本机 Chrome
+6 项浏览器验收、另 7 项身份/下载反例，以及 npm check；Linux CI 同树浏览器步骤及
+artifact 已读回。见 [独立复核](independent-review.md) 与
+[结构化结果](independent-verification.json)。下方浏览器缺失描述保留为作者当时的历史；
+当前采用仍须核对当前 head 的全部 CI，不因单项成功提前合并。
+
+同日后续：原 head 的 Windows CI 在共享 HTTP 夹具建 AU 时触发 4 秒等待超时。
+按 #35 评论 #55 的分工，codex-home 在独立复核分支修正为 30 秒 socket 等待，
+不重发 POST，保留产品超时及身份/隐私断言。真实回环延迟 4.5 秒先 RED 后 GREEN；
+完整 Windows Python 707 项通过、8 跳过，npm check 通过。两次未取得最终总结的
+早期本地运行不计作通过。见 [夹具合同](http-fixture-contract.md) 和
+[验证结果](http-fixture-verification.json)。该夹具修复由 codex-home 实施，
+仍需另一工程角色复核及新 head CI，再与 PR #26 顺序集成；原 owner 保留。
+
 ## 结果与范围
 
 真实 Layout 在核心 `/tasks` 分支调用 GovernanceWorkspace，绕过原 Tasks 页面；
