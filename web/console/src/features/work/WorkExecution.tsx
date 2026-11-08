@@ -3,7 +3,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { api, errorText } from '../../api/client';
 import type { CoreWorkItem, Session } from '../../api/types';
 
-type Kind = 'start_attempt' | 'run_loop';
+type Kind = 'start_attempt' | 'run_loop' | 'cancel_step';
 type Scope = {
   principalId: string;
   serviceInstance: string;
@@ -24,7 +24,7 @@ function load(scope: Scope): Reference[] {
               Object.entries(scope).every(([k, v]) => r[k] === v) &&
               typeof r.id === 'string' &&
               r.id.length > 0 &&
-              ['start_attempt', 'run_loop'].includes(r.kind) &&
+              ['start_attempt', 'run_loop', 'cancel_step'].includes(r.kind) &&
               Number.isInteger(r.base_version) &&
               r.base_version >= 0 &&
               typeof r.resolved === 'boolean',
@@ -245,25 +245,48 @@ export function WorkExecution({
       if (current()) setChecking(false);
     }
   }
-  const cancellable = item.steps.find((step) => step.status === 'reserved' && !step.command_id);
+  const cancellable = item.steps.find((step) => step.status === 'reserved');
   const [cancelling, setCancelling] = useState(false);
   async function cancelLocal() {
-    if (busy.current || !cancellable) return;
+    if (busy.current || !cancellable || reference) return;
     busy.current = true;
     setCancelling(true);
     setNote('');
     try {
       await liveSession();
-      const result = await api.coreWorkCommand({
+      const read = await api.coreWork(scope.organizationId);
+      requireCurrent();
+      if (
+        read.protocol !== 'core.work.v1' ||
+        read.organization_id !== scope.organizationId ||
+        read.access.principal_id !== scope.principalId ||
+        !read.access.can_start
+      )
+        throw new ScopeLost('权限或身份已变化');
+      const work = read.works.find((w) => w.id === scope.workId);
+      const step = work?.steps.find((value) => value.step_ref === cancellable.step_ref);
+      if (!work || !step || step.status !== 'reserved' || step.step_ref !== cancellable.step_ref) {
+        await client.invalidateQueries({ queryKey: ['core-work', scope.organizationId] });
+        throw new Error('工作状态已变化，请核对刷新后的记录');
+      }
+      const original: Reference = {
+        ...scope,
         id: crypto.randomUUID(),
         kind: 'cancel_step',
-        base_version: item.version,
+        base_version: read.version,
+        resolved: false,
+      };
+      remember(original);
+      requireCurrent();
+      const result = await api.coreWorkCommand({
+        id: original.id,
+        kind: 'cancel_step',
+        base_version: original.base_version,
         organization_id: scope.organizationId,
-        data: { work_id: scope.workId, step_id: cancellable.step_ref,
-                reason: '页面级取消：操作者在派发前请求停止' },
+        data: { work_id: scope.workId, step_id: step.step_ref,
+                reason: '页面级取消：操作者请求停止本次执行' },
       });
-      if (current()) setNote(String(result.receipt?.message || '已记录本地取消；远端结果未知，预约已释放且费用保持未知'));
-      await client.invalidateQueries({ queryKey: ['core-work', scope.organizationId] });
+      if (current()) await accept(original, result.receipt);
     } catch (error) {
       failure(error);
     } finally {
