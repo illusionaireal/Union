@@ -440,9 +440,14 @@ def step_plan(state, charter, work_id, instance=None):
     messages = [{"role": "system", "content": definition["instruction"]},
                 {"role": "user", "content": "目标：" + work["goal"]
                  + "\n请先用电只读工具查看授权资料，再给出可直接交付的成果正文（Markdown）。"}]
-    connection = (state.get("model_access") or {}).get("connections", {}).get(definition["connection_id"])
+    models = state.get("model_access") or {}
+    connection = (models.get("connections") or {}).get(definition["connection_id"])
+    require(isinstance(connection, dict), "该工作引用的模型连接不存在；请重新配置")
+    require(bool(connection.get("enabled")), "该工作的模型连接已停用；请先启用或重新采用有效连接")
+    require(models.get("default_connection_id") == definition["connection_id"],
+            "须先采用该工作的模型连接为默认连接，才能继续执行")
     return {"work_id": work_id, "attempt_id": attempt["id"], "materials_root": work["materials_root"],
-            "connection": dict(connection) if isinstance(connection, dict) else None,
+            "connection": dict(connection),
             "messages": messages, "tools": [{"type": "function", "function": TOOL_SPECS[name]} for name in allowed],
             "package": {"kind": "work_step", "work_id": work_id, "attempt_id": attempt["id"],
                         "run_id": work_id + "#s" + str(len(work.get("steps") or []) + 1)}}

@@ -185,8 +185,14 @@ class WorkService:
                 state = CoreAUStore.read_in(cx, request["organization_id"], creation=intent)["au"]
                 rules.authorize(state, principal)
                 require(request["base_version"] == state["version"], "AU 版本已变化；请读取最新状态检查原输入")
-                plan = rules.step_plan(state, state["charter"], request["data"]["work_id"],
-                                       instance=self.app.instance)
+                try:
+                    plan = rules.step_plan(state, state["charter"], request["data"]["work_id"],
+                                           instance=self.app.instance)
+                except Rejected as error:
+                    plan = None
+                    refusal = str(error)
+            if plan is None:
+                return self.reject_step(directory, intent, request, principal, refusal)
         transport = getattr(self, "transport", None)
         if transport is None:
             factory = getattr(self, "transport_factory", None)

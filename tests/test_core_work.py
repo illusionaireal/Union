@@ -869,3 +869,20 @@ class CoreWorkTests(ModelAccessCase):
                     self.assertTrue(callable(wired.work.transport_factory))
                 finally:
                     wired.close()
+
+    def test_run_step_refuses_after_the_model_connection_stops_being_the_adopted_default(self):
+        self.work_with_listing()
+        self.prepare_materials()
+        self.start_attempt()
+        self.adopt_default()
+        self.with_transport(({"content": "# 概览\n", "tool_calls": []}, {}))
+
+        self.model_success("set_connection", {"connection_id": "connection-a", "expected_revision": 1,
+                                              "enabled": False, "make_default": False})
+        status, value, _ = self.work_step()
+        self.assertEqual(status, 200, value)
+        self.assertEqual(value["receipt"]["status"], "rejected", value)
+        self.assertIn("连接", value["receipt"]["message"])
+        card = self.works()["works"][0]
+        self.assertEqual(card["steps"], [], "a refused step leaves no reserved call")
+        self.assertEqual(card["results"], [])
