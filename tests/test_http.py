@@ -31,7 +31,9 @@ class HTTPTests(unittest.TestCase):
         headers = {"Origin": self.server.origin, "Content-Type": "application/json"} | (headers or {})
         if cookie:
             headers["Cookie"] = self.cookie
-        connection = http.client.HTTPConnection("127.0.0.1", self.server.server_port, timeout=4)
+        # Functional fixture calls include SQLite setup on shared CI hosts.
+        # Keep a bounded wait without retrying a potentially committed POST.
+        connection = http.client.HTTPConnection("127.0.0.1", self.server.server_port, timeout=30)
         try:
             connection.request(method, path, body=json.dumps(data) if data is not None else None, headers=headers)
             response = connection.getresponse()

@@ -4,6 +4,7 @@ import { Card, Empty, Json } from '../../components/ui';
 import { GovernanceButton } from './GovernanceProvider';
 import { ResponsibilityWorkspace } from './ResponsibilityWorkspace';
 import { titles } from './model';
+import { WorkPanel } from '../work/WorkPanel';
 
 const statuses = {
   prepared: '治理准备态',
@@ -23,7 +24,16 @@ export function GovernanceWorkspace({ read }: { read: GovernedAURead }) {
   const { pathname, search } = useLocation();
   const { au } = read;
   const governance = au.governance;
-  if (pathname === '/tasks') return <ResponsibilityWorkspace read={read} />;
+  if (pathname === '/tasks') return <>
+    <WorkPanel
+      key={`${read.access.service_instance}:${read.access.principal_id}:${au.id}`}
+      organizationId={au.id}
+      principalId={read.access.principal_id}
+      serviceInstance={read.access.service_instance}
+      readOnly
+    />
+    <ResponsibilityWorkspace read={read} />
+  </>;
   if (pathname === '/settings')
     return (
       <section className="governance-workspace" aria-label="章程与采用记录">
