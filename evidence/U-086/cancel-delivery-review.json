@@ -1,0 +1,168 @@
+{
+  "candidate": "abfa9ee2d9168ebaf260f1584c1c5c4ea16703b7",
+  "integration": "2ff90f1fe631e46fc71f9ba5487417415e0e4f63",
+  "review_actor": "codex-home single duty session",
+  "online_user_id": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+  "board_revision": 498,
+  "card": 40,
+  "card_version": 8,
+  "scope_comment": 143,
+  "product_changes": false,
+  "real_model_calls": 0,
+  "verified_sha256": {
+    "ai_union/application/work.py": "2e71d8cb5dddcaf55c7085e0065f1e8f56874443d78a9583c1db17b9ddfd283c",
+    "ai_union/domain/work.py": "9d0e3f11718d895a0ecf175fb6a0c24b4ba78795103dfda1a73563a0e9b46d7e",
+    "web/console/src/features/work/WorkExecution.tsx": "28a1df37ebd3426373a9461e5468534d08489738e56b113793048e8c75d9eda2",
+    "package-lock.json": "d9abd1026a9c1eb02d97b3b4a22ac124d90adcaada062ff9d2a85631f4c82c9f"
+  },
+  "logs": {
+    "initial": {
+      "sha256": "c5f0e07aba16ca6c2316193dda7229246e23684ff8843858fc21ed266aa6a264",
+      "passed": 0,
+      "failed": 6,
+      "summary": [
+        "Ran 6 tests in 6.678s",
+        "FAILED (failures=6)"
+      ],
+      "fixture_error": "One of six failures was a wrong receipt route (HTTP404), not product evidence. Corrected to the existing governance receipt GET; the other five behavioral failures were already observed."
+    },
+    "delivery": {
+      "sha256": "376a6fe92d065712c92cfaaf30877da6fe763d61d52d8f581444e481981517b7",
+      "passed": 0,
+      "failed": 6,
+      "summary": [
+        "Ran 6 tests in 6.960s",
+        "FAILED (failures=6)"
+      ]
+    },
+    "budget": {
+      "sha256": "7f6ff45c536b50a83b3b42a173912b442ca49bfb92cbab0bb695a9c5dc2ea3db",
+      "passed": 4,
+      "failed": 0,
+      "summary": [
+        "Ran 4 tests in 4.515s",
+        "OK"
+      ]
+    },
+    "route": {
+      "sha256": "410ba8095580c932d4b2b8d0cbf3bb17f59cec594a0ca80dae6edf146bf5efbb",
+      "passed": 1,
+      "failed": 0,
+      "summary": [
+        "Ran 1 test in 1.090s",
+        "OK"
+      ]
+    },
+    "page": {
+      "sha256": "9d997f9ca5b025b5f601c522f9505cacd6b5cb694b63d66d74db8d73071564b0",
+      "passed": 1,
+      "failed": 4,
+      "summary": [
+        "Test Files  1 failed (1)",
+        "Tests  4 failed | 1 passed (5)",
+        "Duration  4.43s (transform 144ms, setup 131ms, collect 336ms, tests 3.27s, environment 328ms, prepare 91ms)"
+      ]
+    },
+    "delivery_final": {
+      "sha256": "11c036936b2a8dc7e54fd371e526e3931b270813e21bff4b52db50ce8627ee96",
+      "passed": 0,
+      "failed": 6,
+      "summary": [
+        "Ran 6 tests in 6.762s",
+        "FAILED (failures=6)"
+      ],
+      "reason": "Verify final probe also requires HTTP503 at the injected commit failure boundary."
+    },
+    "latest_delivery": {
+      "sha256": "7b97ce3d5f7d746f281ff0104b09681988bce2d9c06e0baf3ecee6aac56f0408",
+      "passed": 0,
+      "failed": 6,
+      "summary": [
+        "Ran 6 tests in 7.059s",
+        "FAILED (failures=6)"
+      ]
+    },
+    "latest_budget": {
+      "sha256": "046ba0a904a49375548cc85e10a432d9711549c3f4c1be36a2e48e4c0760a321",
+      "passed": 4,
+      "failed": 0,
+      "summary": [
+        "Ran 4 tests in 4.761s",
+        "OK"
+      ]
+    },
+    "latest_route": {
+      "sha256": "f11568d6d8c7fb42ee70496dfd03b6c52a8b3e3d35e6b1bb1fe5f36e1b5e3fe5",
+      "passed": 1,
+      "failed": 0,
+      "summary": [
+        "Ran 1 test in 0.958s",
+        "OK"
+      ]
+    },
+    "latest_page_original": {
+      "sha256": "ae079549685d7411b5ca5eabfb7a5946fd0c558d22f3f3265acabb0cf332cbca",
+      "passed": 5,
+      "failed": 0,
+      "summary": [
+        "Test Files  1 passed (1)",
+        "Tests  5 passed (5)",
+        "Duration  1.44s (transform 147ms, setup 144ms, collect 340ms, tests 267ms, environment 331ms, prepare 75ms)"
+      ]
+    },
+    "latest_page_expanded": {
+      "sha256": "afa476b8797140da4acdf774767fdc670ec14b2e7759801a9579e65559320e58",
+      "passed": 5,
+      "failed": 2,
+      "summary": [
+        "Test Files  1 failed (1)",
+        "Tests  2 failed | 5 passed (7)",
+        "Duration  3.50s (transform 111ms, setup 119ms, collect 303ms, tests 2.41s, environment 316ms, prepare 75ms)"
+      ]
+    }
+  },
+  "validation": {
+    "npm_check": {
+      "status": "passed",
+      "sha256": "3b0dc9f0166204412ccfadddc908de7ea62f77a763a73c1c46f5f70aa3826656",
+      "summary": [
+        "Test Files  27 passed (27)",
+        "Tests  315 passed (315)"
+      ]
+    },
+    "source_checks": [
+      "Python AST",
+      "git diff --check",
+      "exact candidate source hashes",
+      "package lock matches installed dependencies"
+    ],
+    "prior_head_ci": {
+      "head": "e083a24a79138b5f0a4f55cdb2685c20c0d7fcf4",
+      "passed": 14,
+      "scope": "Prior evidence head only; new publication requires fresh current-head CI."
+    },
+    "python_full": {
+      "status": "passed",
+      "sha256": "09915e63b1ed9ab5391a28e00536af26e6b880d3d9749ab55eede0e4e5a8ff9d",
+      "summary": [
+        "Ran 782 tests in 499.962s",
+        "OK (skipped=9)"
+      ],
+      "scope": "Current integration product plus standalone evidence changes; candidate expected-RED probes run separately."
+    }
+  },
+  "latest_candidate": "22649f49000496ff6e298c6c4d1197975d45e14a",
+  "latest_verified_sha256": {
+    "ai_union/application/work.py": "2e71d8cb5dddcaf55c7085e0065f1e8f56874443d78a9583c1db17b9ddfd283c",
+    "ai_union/domain/work.py": "9d0e3f11718d895a0ecf175fb6a0c24b4ba78795103dfda1a73563a0e9b46d7e",
+    "web/console/src/features/work/WorkExecution.tsx": "76aad8bb388550687d9673cf24b53c1b5992453680b8e937b3dc9f8bf042ee33",
+    "package-lock.json": "d9abd1026a9c1eb02d97b3b4a22ac124d90adcaada062ff9d2a85631f4c82c9f"
+  },
+  "latest_readback": {
+    "revision": 500,
+    "card_version": 9,
+    "author_comment": 144,
+    "owner_preserved": true,
+    "status": "progress"
+  }
+}
