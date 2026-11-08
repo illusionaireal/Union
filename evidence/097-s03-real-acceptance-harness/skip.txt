@@ -1,0 +1,6 @@
+test_one_work_uses_at_most_two_calls_and_reports_usage_without_cost (tests.test_core_work_real.RealBoundedAcceptanceTests.test_one_work_uses_at_most_two_calls_and_reports_usage_without_cost) ... skipped 'real acceptance needs UNION_MODELD_CONFIG and UNION_REAL_ACCEPTANCE=1'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+OK (skipped=1)
