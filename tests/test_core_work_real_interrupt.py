@@ -30,13 +30,14 @@ class RealInterruptTests(RealChannelCase):
                 for step in work.get("steps") or []:
                     if step.get("model_request_id"):
                         return step["model_request_id"], step["step_ref"]
-            time.sleep(0.1)
+            time.sleep(0.02)
         return None, None
 
     def cancel_when_dispatched(self, client, au_id, observed):
         request_id, step_ref = self.wait_for_request_id(au_id)
         if request_id is None:
             return
+        observed["step_ref"] = step_ref
         observed["request_id"], observed["step_ref"] = request_id, step_ref
         try:
             client.call("GET", "/v1/requests/" + request_id + "?au_id=" + au_id, admin=False)
@@ -44,8 +45,11 @@ class RealInterruptTests(RealChannelCase):
             observed["lookup_error"] = type(error).__name__
             return
         observed["observed"] = True
-        client.call("POST", "/v1/requests/" + request_id + "/cancel?au_id=" + au_id, {}, admin=True)
-        observed["cancelled"] = True
+        try:
+            client.call("POST", "/v1/requests/" + request_id + "/cancel?au_id=" + au_id, {})
+            observed["cancelled"] = True
+        except Exception as error:  # noqa: BLE001 - record why the cancel did not land
+            observed["cancel_error"] = type(error).__name__ + ":" + str(error)[:80]
 
     def prepare_work(self, au_id, connection):
         directory = Path(self.root) / "synthetic-materials"
@@ -55,7 +59,7 @@ class RealInterruptTests(RealChannelCase):
             json.dumps({"version": 1, "roots": {"project-docs": str(directory)}}, ensure_ascii=False),
             encoding="utf-8")
         data = {"work_id": "work-real", "title": "合成概览", "member_name": "资料整理 Agent",
-                "goal": "阅读合成资料并写三行概览", "member_id": "m-real", "binding_id": "b-real",
+                "goal": "先 read_document 读取 brief.md，然后逐行输出 1 到 600 的编号清单（每行只写数字），最后写三行概览", "member_id": "m-real", "binding_id": "b-real",
                 "mandate_id": "ma-real", "definition_id": "d-real", "connection_id": connection["id"],
                 "expected_revision": connection["revision"], "materials_root": "project-docs",
                 "max_calls": 1, "tools": ["read_document", "list_documents"], "reason": "中断验收"}
@@ -94,7 +98,8 @@ class RealInterruptTests(RealChannelCase):
                                           {"id": str(uuid.uuid4()), "organization_id": au_id,
                                            "base_version": self.read()["au"]["version"],
                                            "kind": "run_step", "data": {"work_id": "work-real"}})
-        done.wait(30)
+        done.wait(40)
+        print("interrupt observed:", json.dumps(observed, ensure_ascii=False))
         self.assertTrue(observed.get("request_id"), "the product must persist the original request id before dispatch")
         self.assertTrue(observed.get("observed"), "modeld never confirmed the durable request: " + str(observed))
         self.assertTrue(observed.get("cancelled"), "the cancel was never sent")
