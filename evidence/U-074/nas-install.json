@@ -1,0 +1,19 @@
+{
+  "source_commit": "4b2d700e476298affb820dffcbc22138b9d7be81",
+  "release_id": "review-pr15-venv",
+  "files": 90,
+  "python": "3.13.5",
+  "bun": "1.4.2",
+  "real_model_calls": 0,
+  "existing_service_changed": false,
+  "isolated_linux_install": true,
+  "console_and_modeld_started": true,
+  "same_login_after_restart": true,
+  "immutable_package_verified": true,
+  "source_state": "working_tree",
+  "changed_sources": [
+    "scripts/release_package.py"
+  ],
+  "locked_dependency_install": "offline Linux wheels into isolated venv",
+  "original_service_replaced": false
+}

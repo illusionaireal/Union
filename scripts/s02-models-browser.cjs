@@ -302,6 +302,20 @@ async function stop(child, message) {
   await context.setOffline(false); await connected(page);
   check('Offline recovery retains non-secret input and does not auto-submit', await offlineDialog.locator('[name="name"]').inputValue() === '断网保留的输入' && (await stats()).inference_posts === postsBeforeIsolation);
   await page.keyboard.press('Escape');
+  progress('explicit Responses profile saves through core HTTP and actual modeld');
+  const responsesSaved = await modelCommand(page, '添加模型连接', { name: 'Responses 受控连接',
+    profile: 'openai_responses', base_url: modeldReady.provider_base_url, api_key: apiKey,
+    model: modeldReady.model_id, max_output_tokens: 256 });
+  await until(async () => (await modelRead(page, auId)).operations.some(op => op.id === responsesSaved.receipt.operation_id && op.status === 'succeeded'), 'Responses registration did not finish');
+  await refreshModels(page);
+  const responsesConnection = (await modelRead(page, auId)).connections.find(c => c.id === responsesSaved.command.data.connection_id);
+  check('Responses profile is explicitly saved by the actual core and modeld', responsesConnection.profile === 'openai_responses');
+  check('Saving Responses neither infers nor replaces the current default', !responsesConnection.is_default && (await stats()).inference_posts === postsBeforeIsolation);
+  const responsesCard = page.locator('.model-connections li').filter({ has: page.getByRole('heading', { name: 'Responses 受控连接', exact: true }) });
+  await responsesCard.getByRole('button', { name: '编辑连接', exact: true }).click();
+  const responsesDialog = page.locator('#model-command-dialog');
+  check('Editing keeps the native protocol but never refills its key', await responsesDialog.locator('[name="profile"]').inputValue() === 'openai_responses' && await responsesDialog.locator('[name="api_key"]').inputValue() === '');
+  await page.keyboard.press('Escape');
   await navigate(page, auId, 'overview');
   const otherAU = await createAU(page, 'S02 身份隔离对照');
   await navigate(page, auId, 'models');

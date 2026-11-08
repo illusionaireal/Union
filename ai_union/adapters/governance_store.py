@@ -112,6 +112,7 @@ class GovernanceStore:
             return None
         row = cx.execute("SELECT principal_id,payload,receipt FROM governance_commands WHERE id=?", (request["id"],)).fetchone()
         if row is None:
+            self.check_pending_identity(cx, request, principal)
             return None
         if row[0] != principal:
             raise CoreError("not_authorized")
@@ -119,7 +120,20 @@ class GovernanceStore:
             raise CoreError("id_conflict", "请求标识已用于不同参数；请查询原回执")
         return json.loads(row[2])
 
+    @staticmethod
+    def check_pending_identity(cx, request, principal):
+        state = json.loads(cx.execute("SELECT data FROM state WHERE id=1").fetchone()[0])
+        for work in (state.get("work_runtime") or {}).get("works", {}).values():
+            for step in [*work.get("steps", []), *work.get("loops", [])]:
+                if step.get("command_id") != request["id"]:
+                    continue
+                if step["principal_id"] != principal:
+                    raise CoreError("not_authorized")
+                if step["command_sha256"] != digest(request):
+                    raise CoreError("id_conflict", "请求标识已用于未决模型调用；请查询原记录")
+
     def save(self, cx, state, charter, request, receipt, prior_policy, *, changed):
+        self.check_pending_identity(cx, request, receipt["actor_principal_id"])
         if changed:
             rules.validate_state(state, origin_in(cx)[0], charter)
             responsibility.validate_state(state)

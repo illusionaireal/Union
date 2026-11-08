@@ -25,7 +25,7 @@
     "dev": "node scripts/start-console.mjs --watch",
     "management:render": "node scripts/project-management.mjs render",
     "management:status": "node scripts/project-management.mjs status",
-    "check:management": "node scripts/project-management.mjs check && node --test tests/project-management.test.mjs",
+    "check:management": "node scripts/project-management.mjs check && node --test tests/project-management.test.mjs tests/union-board.test.mjs tests/kanban-operational.test.mjs",
     "test:gateways": "node scripts/check_gateways.cjs",
     "test:model-access": "node scripts/check_model_access.cjs",
     "build:model-service": "node services/modeld/prepare.mjs",

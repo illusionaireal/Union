@@ -11,6 +11,7 @@ from ..domain import governance, work as rules
 from ..engine import identifier, now
 from ..errors import CoreError, Rejected, require
 from ..work_transport import UnadoptableWorkResult
+from . import work_dispatch as dispatch
 
 
 class WorkService:
@@ -19,6 +20,8 @@ class WorkService:
         self.store = app.governance.store
         self.transport = None
         self.transport_factory = None
+        self.active_steps = {}
+        self.active_loops = set()
 
     def read(self, token, au_id):
         try:
@@ -71,6 +74,14 @@ class WorkService:
                     and len(encoded(request)) <= 200000, "命令格式无效或过大")
         except (Rejected, TypeError, ValueError) as error:
             raise CoreError("invalid_request", str(error)) from error
+        if request["kind"] == "reconcile_step":
+            try:
+                rules.validate_input(request["kind"], request["data"])
+            except (Rejected, TypeError, ValueError) as error:
+                raise CoreError("invalid_request", str(error)) from error
+            automatic = self.reconcile_automatic(token, request, principal)
+            if automatic is not None:
+                return automatic
         with self.app.mutex, self.app.catalog() as accounts:
             require(self.app.identity.principal_in(accounts, token) == principal, "登录主体已变化")
             directory, intent = self.app.governance.locate(request["organization_id"])
@@ -173,6 +184,20 @@ class WorkService:
         raise CoreError("invalid_request", "此 AU 中没有该成果标识")
 
     def run_step(self, token, incoming):
+        if not isinstance(incoming, dict) or not all(isinstance(incoming.get(k), str) for k in ("id", "organization_id")):
+            return self._run_step(token, incoming)
+        key = (incoming["organization_id"], incoming["id"])
+        with self.app.mutex:
+            self.active_steps[key] = self.active_steps.get(key, 0) + 1
+        try:
+            return self._run_step(token, incoming)
+        finally:
+            with self.app.mutex:
+                self.active_steps[key] -= 1
+                if not self.active_steps[key]:
+                    del self.active_steps[key]
+
+    def _run_step(self, token, incoming):
         """One automatic model turn: decide outside the lock, apply inside one transaction."""
         principal = self.app.creation.principal(self.app.session(token))
         request = copy.deepcopy(incoming)
@@ -189,6 +214,12 @@ class WorkService:
             directory, intent = self.app.governance.locate(request["organization_id"])
             with self.store.transaction(directory) as cx:
                 state = CoreAUStore.read_in(cx, request["organization_id"], creation=intent)["au"]
+                previous = self.store.existing(cx, request, principal)
+                if previous is not None:
+                    return previous
+                original = dispatch.find(state, request, principal)
+                if original is not None:
+                    return dispatch.pending(request, principal, state, original)
                 rules.authorize(state, principal)
                 require(request["base_version"] == state["version"], "AU 版本已变化；请读取最新状态检查原输入")
                 try:
@@ -198,6 +229,13 @@ class WorkService:
                                            instance=self.app.instance)
                     work = rules.records(state)["works"][plan["work_id"]]
                     history, plan["sources"], bindings = WorkContextStore.load(cx, work, plan["context_scope"])
+                    plan["materials_binding"] = None
+                    if plan["materials_root"] is not None:
+                        try:
+                            root = documents.root_for(self.app.root, plan["materials_root"])
+                            plan["materials_binding"] = hashlib.sha256(str(root).encode("utf-8")).hexdigest()
+                        except Rejected:
+                            pass  # A first turn with no material history has nothing to redisclose.
                     if any(item["role"] == "tool" for item in history):
                         root = documents.root_for(self.app.root, plan["materials_root"])
                         binding = hashlib.sha256(str(root).encode("utf-8")).hexdigest()
@@ -224,19 +262,10 @@ class WorkService:
         if transport is None or not hasattr(transport, "chat"):
             return self.reject_step(directory, intent, request, principal, "宿主尚未配置模型执行通道；请先在宿主接入模型通道")
         try:
-            message, usage = transport.chat(copy.deepcopy(plan["package"]), copy.deepcopy(plan["messages"]),
-                                            copy.deepcopy(plan["tools"]))
-        except UnadoptableWorkResult as error:
-            return self.record_channel_outcome(directory, intent, request, principal, str(error), completed=error)
+            self.verify_material_binding(plan)
         except Rejected as error:
-            return self.reject_step(directory, intent, request, principal,
-                                    "模型通道拒绝本次请求；本轮未执行，未产生步进事实：" + str(error)[:280])
-        except Exception as error:  # noqa: BLE001 - an unconfirmed call keeps a reservation to reconcile
-            return self.record_channel_outcome(directory, intent, request, principal,
-                                     "模型通道结果未知；已保留该次调用预约等待核对，不自动重放：" + str(error)[:280])
-        calls = (message or {}).get("tool_calls") or []
-        if calls and plan["materials_root"] is None:
-            return self.reject_step(directory, intent, request, principal, "模型请求只读工具，但该工作未绑定授权资料目录")
+            return self.reject_step(directory, intent, request, principal, str(error))
+        # Building a channel does not dispatch. Commit intent before its first POST.
         with self.app.mutex, self.app.catalog() as accounts:
             require(self.app.identity.principal_in(accounts, token) == principal, "登录主体已变化")
             with self.store.transaction(directory) as cx:
@@ -244,7 +273,36 @@ class WorkService:
                 previous = self.store.existing(cx, request, principal)
                 if previous is not None:
                     return previous
+                original = dispatch.find(state, request, principal)
+                if original is not None:
+                    return dispatch.pending(request, principal, state, original)
                 rules.authorize(state, principal)
+                require(state["version"] == request["base_version"], "AU 版本已变化；请读取最新状态检查原输入")
+                rules.effective(state, {row[0] for row in accounts.execute("SELECT principal_id FROM owner_account")})
+                reservation = dispatch.prepare(self.store, cx, state, request, principal, plan, self.app.instance)
+        plan["package"]["run_id"] = reservation["model_request_id"]
+        try:
+            self.verify_material_binding(plan)
+        except Rejected as error:
+            return self.record_channel_outcome(directory, intent, request, principal,
+                                               "派发前资料授权变化；未调用模型：" + str(error), refused=True)
+        try:
+            message, usage = transport.chat(copy.deepcopy(plan["package"]), copy.deepcopy(plan["messages"]),
+                                            copy.deepcopy(plan["tools"]))
+        except UnadoptableWorkResult as error:
+            return self.record_channel_outcome(directory, intent, request, principal, str(error), completed=error)
+        except Rejected as error:
+            return self.record_channel_outcome(directory, intent, request, principal,
+                                    "模型通道明确拒绝；原预约已释放，本轮未执行：" + str(error)[:280], refused=True)
+        except Exception as error:  # noqa: BLE001 - an unconfirmed call keeps a reservation to reconcile
+            return self.record_channel_outcome(directory, intent, request, principal,
+                                     "模型通道结果未知；已保留该次调用预约等待核对，不自动重放：" + str(error)[:280])
+        with self.app.mutex, self.app.catalog() as accounts:
+            with self.store.transaction(directory) as cx:
+                state = CoreAUStore.read_in(cx, request["organization_id"], creation=intent)["au"]
+                previous = self.store.existing(cx, request, principal)
+                if previous is not None:
+                    return previous
                 self.store.ensure_commands(cx)
                 state = copy.deepcopy(state)
                 charter = state.pop("charter")
@@ -254,12 +312,20 @@ class WorkService:
                 changed = False
                 cx.execute("SAVEPOINT work_step")
                 try:
-                    require(request["base_version"] == state["version"], "AU 版本已变化；请读取最新状态检查原输入")
+                    self.verify_material_binding(plan)
+                    require(self.app.identity.principal_in(accounts, token) == principal, "登录主体已变化")
+                    rules.authorize(state, principal)
                     principals = {row[0] for row in accounts.execute("SELECT principal_id FROM owner_account")}
                     rules.effective(state, principals)
                     local = copy.deepcopy(state)
                     work = rules.records(local)["works"][request["data"]["work_id"]]
-                    current_plan = rules.step_plan(local, charter, work["id"], instance=self.app.instance)
+                    current_plan = rules.step_plan(local, charter, work["id"], instance=self.app.instance,
+                                                   reserved_step=reservation["step_ref"])
+                    require(current_plan["context_scope"] == reservation["context_scope"]
+                            and current_plan["connection"] == reservation["connection"]
+                            and current_plan["attempt_id"] == reservation["attempt_id"]
+                            and local["policy_version"] == reservation["policy_version"]
+                            and local["charter_version"] == reservation["charter_version"], "原调用的有效授权或执行版本已变化")
                     assistant, parsed_calls = self.model_turn(message, current_plan)
                     require(len(work.get("tool_calls") or []) + len(parsed_calls) <= rules.MAX_TOOL_CALLS,
                             "该工作的工具调用回执已达上限")
@@ -286,7 +352,8 @@ class WorkService:
                     payload = {"work_id": request["data"]["work_id"], "content": "" if parsed_calls else content,
                                "tool_calls": executed, "sources": plan["sources"],
                                "result_id": "result-" + request["id"].replace("-", "")[:12],
-                               "title": "自动成果：" + work["title"], "usage": usage if isinstance(usage, dict) else {}}
+                               "title": "自动成果：" + work["title"], "usage": usage if isinstance(usage, dict) else {},
+                               "step_id": reservation["step_ref"]}
                     receipt.update(rules.apply_step(local, charter, payload, principal, self.app.instance))
                     turn_messages = [assistant]
                     new_receipts = work.get("tool_calls", [])[-len(outputs):] if outputs else []
@@ -294,19 +361,33 @@ class WorkService:
                         turn_messages.append({"role": "tool", "name": call["function"]["name"],
                                               "tool_call_id": call["id"],
                                               "content": encoded(output | {"step_ref": tool_receipt["step_ref"]})})
-                    WorkContextStore.save(cx, work["steps"][-1], current_plan["context_scope"], turn_messages,
+                    original = dispatch.find(local, request, principal)
+                    WorkContextStore.save(cx, original, current_plan["context_scope"], turn_messages,
                                           [item["step_ref"] for item in new_receipts],
                                           hashlib.sha256(str(root).encode("utf-8")).hexdigest() if outputs else None)
-                    local["version"] = state["version"] + 1
                     state = local
                     changed = True
-                except Rejected as error:
+                except (Rejected, CoreError) as error:
                     cx.execute("ROLLBACK TO work_step")
-                    receipt.update(status="rejected", effect="none", message=str(error))
+                    original = dispatch.find(state, request, principal)
+                    dispatch.settle(original, "not_adoptable", str(error), usage if isinstance(usage, dict) else {})
+                    receipt.update(status="rejected", effect="evidence_only", model_outcome="not_adoptable",
+                                   message="调用已完成但结果不能采用：" + str(error),
+                                   usage=original["usage"], step=original["step_ref"],
+                                   model_request_id=original["model_request_id"], tool_calls=0, result=False,
+                                   cost_status="unknown")
+                    changed = True
                 cx.execute("RELEASE work_step")
+                dispatch.event(self.store, cx, state, charter, request, principal, "observed")
                 receipt["version"] = state["version"]
-                self.store.save(cx, state, charter, request, receipt, state["policy_version"], changed=changed)
+                self.store.save(cx, state, charter, request, receipt, state["policy_version"], changed=False)
         return receipt
+
+    def verify_material_binding(self, plan):
+        if plan.get("materials_binding") is not None:
+            root = documents.root_for(self.app.root, plan["materials_root"])
+            require(hashlib.sha256(str(root).encode("utf-8")).hexdigest() == plan["materials_binding"],
+                    "宿主资料目录绑定已变化；原上下文不能继续派发或采用")
 
     @staticmethod
     def model_turn(message, plan):
@@ -366,12 +447,35 @@ class WorkService:
                 if previous is not None:
                     return previous
                 current = CoreAUStore.read_in(cx, request["organization_id"], creation=intent)["au"]
+                rules.authorize(current, principal)
                 work = rules.records(current)["works"].get(request["data"]["work_id"])
                 require(work is not None, "工作不存在或不属于此 AU")
-                remaining = work["max_calls"] - rules.budget(work)["reserved"] - rules.budget(work)["used"]
-                require(remaining > 0, "该工作的调用上限已用尽")
-                turn_cap = min(3, remaining)
-        version = request["base_version"]
+                loop = next((item for item in work.get("loops", []) if item["command_id"] == request["id"]), None)
+                if loop is None:
+                    require(current["version"] == request["base_version"], "AU 版本已变化；请读取最新状态检查原输入")
+                    rules.effective(current, {r[0] for r in accounts.execute("SELECT principal_id FROM owner_account")})
+                    remaining = work["max_calls"] - rules.budget(work)["reserved"] - rules.budget(work)["used"]
+                    require(remaining > 0, "该工作的调用上限已用尽")
+                    loop = {"command_id": request["id"], "command_sha256": dispatch.request_digest(request),
+                            "principal_id": principal, "turn_cap": min(3, remaining),
+                            "first_version": current["version"] + 1}
+                    work.setdefault("loops", []).append(loop)
+                    charter = current.pop("charter")
+                    dispatch.event(self.store, cx, current, charter, request, principal, "loop_prepared")
+                key = (request["organization_id"], request["id"])
+                if key in self.active_loops:
+                    return dispatch.receipt(request, principal, current["version"], status="unknown", effect="none",
+                        model_outcome="unknown", turns=0, tool_calls=0, result=False,
+                        message="原循环仍在运行；此为中间状态，不重新派发或固化终态", cost_status="unknown")
+            self.active_loops.add(key)
+        try:
+            return self.drive_loop(token, request, principal, directory, intent, loop)
+        finally:
+            with self.app.mutex:
+                self.active_loops.discard(key)
+
+    def drive_loop(self, token, request, principal, directory, intent, loop):
+        version = loop["first_version"]
         turns = 0
         tool_calls = 0
         produced = False
@@ -379,12 +483,13 @@ class WorkService:
         status = "succeeded"
         model_outcome = None
         message = "自动循环结束：模型没有给出成果，已用满本轮轮次"
-        for index in range(turn_cap):
+        for index in range(loop["turn_cap"]):
             step_request = {"id": request["id"] + "-t" + str(index + 1),
                             "organization_id": request["organization_id"], "base_version": version,
                             "kind": "run_step", "data": dict(request["data"])}
             step = self.run_step(token, step_request)
-            if step.get("status") != "succeeded":
+            version = step.get("version", version)
+            if step.get("status") != "succeeded" and step.get("model_outcome") != "not_adoptable":
                 status = step.get("status", "rejected")
                 message = step.get("message", "自动循环被拒绝")
                 break
@@ -417,7 +522,66 @@ class WorkService:
             receipt["model_outcome"] = model_outcome
         return self.store_receipt(directory, intent, request, principal, receipt)
 
-    def record_channel_outcome(self, directory, intent, request, principal, message, *, completed=None):
+    def reconcile_automatic(self, token, request, principal):
+        """Observe the stored model request; never POST or adopt a recovered body."""
+        with self.app.mutex, self.app.catalog() as accounts:
+            require(self.app.identity.principal_in(accounts, token) == principal, "登录主体已变化")
+            directory, intent = self.app.governance.locate(request["organization_id"])
+            with self.store.transaction(directory) as cx:
+                state = CoreAUStore.read_in(cx, request["organization_id"], creation=intent)["au"]
+                previous = self.store.existing(cx, request, principal)
+                if previous is not None:
+                    return previous
+                rules.authorize(state, principal)
+                work = rules.records(state)["works"].get(request["data"]["work_id"], {})
+                step = next((s for s in work.get("steps", []) if s["step_ref"] == request["data"]["step_id"]), None)
+                if step is None or not step.get("command_id"):
+                    return None
+                original = copy.deepcopy(step)
+                refusal = None
+                if state["version"] != request["base_version"]:
+                    refusal = "AU 版本已变化；请读取最新状态检查原输入"
+                elif step["status"] not in ("reserved", "unknown"):
+                    refusal = "原模型调用已经结算，不能更改执行事实"
+                elif self.active_steps.get((request["organization_id"], step["command_id"]), 0):
+                    refusal = "原调用仍在执行；不能把本地核对当作远端取消"
+            if refusal:
+                return self.reject_step(directory, intent, request, principal, refusal)
+        usage = None
+        message = "原模型请求仍未确认；保留预约，不重新派发"
+        try:
+            channel = self.transport
+            if channel is None and self.transport_factory is not None:
+                channel = self.transport_factory(request["organization_id"], original["connection"])
+            require(channel is not None and hasattr(channel, "lookup"), "宿主通道不支持原请求查询")
+            usage = channel.lookup(original["model_request_id"])
+        except Exception:  # Absence/timeout/auth failure cannot prove no execution.
+            pass
+        with self.app.mutex:
+            with self.store.transaction(directory) as cx:
+                state = CoreAUStore.read_in(cx, request["organization_id"], creation=intent)["au"]
+                previous = self.store.existing(cx, request, principal)
+                if previous is not None:
+                    return previous
+                state = copy.deepcopy(state)
+                charter = state.pop("charter")
+                work = rules.records(state)["works"][request["data"]["work_id"]]
+                step = next(s for s in work["steps"] if s["step_ref"] == original["step_ref"])
+                require(step["model_request_id"] == original["model_request_id"], "原请求关联已变化")
+                if isinstance(usage, dict) and step["status"] in ("reserved", "unknown"):
+                    message = "原模型请求已确认完成；保留用量，不采用恢复的正文"
+                    dispatch.settle(step, "not_adoptable", message, usage)
+                    dispatch.event(self.store, cx, state, charter, request, principal, "reconciled")
+                value = dispatch.receipt(request, principal, state["version"], message=message,
+                    step={k: step.get(k) for k in ("step_ref", "status", "reason")},
+                    model_outcome="not_adoptable" if step["status"] == "used" else "unknown",
+                    model_request_id=step["model_request_id"], usage=step.get("usage", {}),
+                    tool_calls=0, result=False, cost_status="unknown")
+                self.store.ensure_commands(cx)
+                self.store.save(cx, state, charter, request, value, state["policy_version"], changed=False)
+        return value
+
+    def record_channel_outcome(self, directory, intent, request, principal, message, *, completed=None, refused=False):
         """Keep unknown calls reserved, and completed unadoptable calls used."""
         with self.app.mutex:
             with self.store.transaction(directory) as cx:
@@ -425,25 +589,24 @@ class WorkService:
                 previous = self.store.existing(cx, request, principal)
                 if previous is not None:
                     return previous
-                rules.authorize(state, principal)
                 self.store.ensure_commands(cx)
                 state = copy.deepcopy(state)
                 charter = state.pop("charter")
-                local = copy.deepcopy(state)
-                data = {"work_id": request["data"]["work_id"], "reason": message}
-                if completed is None:
-                    details = rules.fail_step(local, data, instance=self.app.instance)
-                    details = {"step": details["step"], "model_outcome": "unknown"}
-                else:
-                    details = rules.record_unadoptable_step(local, data | {
-                        "model_request_id": completed.request_id, "usage": completed.usage}, instance=self.app.instance)
-                local["version"] = state["version"] + 1
-                state = local
+                step = dispatch.find(state, request, principal)
+                require(step is not None, "缺少原调用预约")
+                outcome = "refused" if refused else "not_adoptable" if completed else "unknown"
+                if completed is not None and completed.request_id != step["model_request_id"]:
+                    outcome, completed = "unknown", None
+                dispatch.settle(step, outcome, message, completed.usage if completed else None)
+                details = {"step": step["step_ref"], "model_request_id": step["model_request_id"], "model_outcome": outcome}
+                if completed is not None:
+                    details["usage"] = dict(step["usage"])
+                dispatch.event(self.store, cx, state, charter, request, principal, "observed")
                 receipt = {key: request[key] for key in ("id", "organization_id", "base_version", "kind")} | {
-                    "actor_principal_id": principal, "created_at": now(), "status": "succeeded",
+                    "actor_principal_id": principal, "created_at": now(), "status": "rejected" if refused else "succeeded",
                     "effect": "applied", "message": message, **details,
                     "tool_calls": 0, "result": False, "version": state["version"], "cost_status": "unknown"}
-                self.store.save(cx, state, charter, request, receipt, state["policy_version"], changed=True)
+                self.store.save(cx, state, charter, request, receipt, state["policy_version"], changed=False)
         return receipt
 
     def store_receipt(self, directory, intent, request, principal, receipt):

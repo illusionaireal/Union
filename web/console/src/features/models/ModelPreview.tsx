@@ -28,8 +28,8 @@ export function ModelPreview({
           <div>
             <dt>接入方式</dt>
             <dd>
-              {data.profile === 'openai_compatible'
-                ? String(data.base_url)
+              {data.profile !== 'modeld_grant'
+                ? `${data.profile === 'openai_responses' ? 'OpenAI Responses API · ' : ''}${String(data.base_url)}`
                 : `已有 AU 授权 ${data.grant_ref} · v${data.grant_revision}`}
             </dd>
           </div>

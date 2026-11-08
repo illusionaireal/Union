@@ -2,19 +2,15 @@
 /**
  * UNION 开发工作台的 MCP server（stdio，零依赖）。
  *
- * 一份实现，Codex / OpenCode / Claude Code / Goose / DSH 共用；主账仍是
- * management/project.json，本进程只是它的结构化适配器，不持有任何状态。
+ * CLI 与 MCP 共用在线操作实现；本地 project.json 仅保存历史路线和交付证据。
  */
 import { createInterface } from 'node:readline';
 import { spawn } from 'node:child_process';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import {
-  boardView, claimState, claimTask, moveTask, readLedger, releaseTask, validateProject, mutateLedger,
-} from './project-management.mjs';
-import {
-  fetchHostedBoard, hostedBoardView, kanbanConfigured, patchHostedTask, commentHostedTask, findHostedTask, onlineStatus,
-} from './kanban-client.mjs';
+import { boardView, readLedger, validateProject } from './project-management.mjs';
+import { fetchHostedBoard, hostedBoardView } from './kanban-client.mjs';
+import { operateHosted } from './kanban-operations.mjs';
 
 const root = process.env.UNION_REPO_ROOT
   ? resolve(process.env.UNION_REPO_ROOT)
@@ -22,24 +18,10 @@ const root = process.env.UNION_REPO_ROOT
 const SERVER_INFO = { name: 'union-board', version: '0.1.0' };
 const log = (...parts) => process.stderr.write(`[union-board] ${parts.join(' ')}\n`);
 
-// 数据来源：kanban = 在线 UNION Kanban（用户 2026-11-06 指定），local = 本地 project.json。
-// 在线可用时默认走 kanban；离线或显式 UNION_BOARD_SOURCE=local 时退回本地主账。
-const SOURCE = process.env.UNION_BOARD_SOURCE ?? (kanbanConfigured() ? 'kanban' : 'local');
-const useHosted = () => SOURCE === 'kanban' && kanbanConfigured();
-
+const SOURCE = process.env.UNION_BOARD_SOURCE ?? 'kanban';
 async function boardSnapshot() {
-  if (useHosted()) return hostedBoardView(await fetchHostedBoard());
-  return { source: 'local', ...boardView(loadLedger()) };
-}
-
-/** 在线写入成功后，把同一事实镜像回本地主账；镜像失败不撤销在线结果，只如实报告。 */
-async function mirrorLocal(mutate) {
-  try {
-    await mutateLedger(root, mutate);
-    return 'ok';
-  } catch (error) {
-    return `未同步（${error.message}）`;
-  }
+  if (SOURCE === 'local') return { ...boardView(loadLedger()), source: 'local-history' };
+  return hostedBoardView(await fetchHostedBoard());
 }
 
 const ACTOR_DOC = '真实执行者身份，写清 harness 与模型/会话（例如 "codex/gpt-5"、"opencode/glm-4.6"），不要编造公司成员。';
@@ -71,13 +53,13 @@ const TOOLS = [
   },
   {
     name: 'union_card_claim',
-    description: '认领一张 ready 卡：写租约并进入进行中。租约有效期内别人不能认领；超过 lease_minutes 后可被接管。开工前必须先认领。',
+    description: '使用实际在线 user.id/version 认领 ready 卡；检查实时依赖、负责人和服务端 WIP。开工前认领，不按本地租约接管。',
     inputSchema: {
       type: 'object',
       properties: {
         id: TASK_ID,
         actor: { type: 'string', description: ACTOR_DOC },
-        lease_minutes: { type: 'number', description: '租约分钟数，默认 180' },
+        lease_minutes: { type: 'number', description: '兼容旧调用参数；在线所有权不会自动过期' },
       },
       required: ['id', 'actor'],
       additionalProperties: false,
@@ -110,7 +92,7 @@ const TOOLS = [
         reviewer: { type: 'string' },
         evidence: { type: 'array', items: { type: 'string' }, description: '仓库相对路径列表' },
         note: { type: 'string' },
-        force: { type: 'boolean', description: '越过租约或已开工退回等限制；必须同时提供 note 说明原因，强制流转会记入任务历史' },
+        force: { type: 'boolean', description: '兼容旧调用参数；不绕过在线所有权或已开工责任' },
       },
       required: ['id', 'status', 'actor'],
       additionalProperties: false,
@@ -145,15 +127,6 @@ function loadLedger() {
   const data = readLedger(root);
   return validateProject(data, root);
 }
-function card(task) {
-  const { id, title, status, priority, milestone, module, owner, role, dependencies, acceptance, blocker, started_at, updated_at, completion, claim } = task;
-  return { id, title, status, priority, milestone, module, owner, role, dependencies, acceptance, blocker, started_at, updated_at, completion: completion ?? null, claim: claim ?? null, claim_state: claimState(task) };
-}
-function summary(task) {
-  const lease = task.claim ? `，租约 ${task.claim.actor} 至 ${task.claim.lease_until}` : '';
-  return `${task.id} → ${task.status}；负责人 ${task.owner ?? '待认领'}${lease}。主账与 PROJECT.md/TASKS.md 已同步。`;
-}
-
 function runNpm(scriptArgs, timeoutMs = 600_000) {
   return new Promise(resolvePromise => {
     const command = process.platform === 'win32' ? 'npm.cmd' : 'npm';
@@ -199,72 +172,11 @@ async function call(name, args = {}) {
       if (!found) throw new Error(`unknown task ${args.id}`);
       return found;
     }
-    case 'union_card_claim': {
-      if (!useHosted()) return summary(await mutateLedger(root, data => claimTask(data, { id: args.id, actor: args.actor, leaseMinutes: args.lease_minutes ?? 180 })));
-      const board = await fetchHostedBoard();
-      const task = findHostedTask(board, args.id);
-      if (!task) throw new Error(`${args.id} 不在在线看板的活动卡里`);
-      const patched = await patchHostedTask(task.id, { status: 'progress', assignee: board.user.id }, task.version);
-      const mirror = await mirrorLocal(local => claimTask(local, { id: args.id, actor: args.actor, leaseMinutes: args.lease_minutes ?? 180 }));
-      return `已认领在线卡 #${task.id}（${args.id} → progress，assignee=${board.user.name}，version ${task.version}→${patched.task?.version ?? patched.version ?? '?'}）；本地主账镜像：${mirror}`;
-    }
-    case 'union_card_release': {
-      if (!useHosted()) return summary(await mutateLedger(root, data => releaseTask(data, { id: args.id, actor: args.actor, force: Boolean(args.force) })));
-      const board = await fetchHostedBoard();
-      const task = findHostedTask(board, args.id);
-      if (!task) throw new Error(`${args.id} 不在在线看板的活动卡里`);
-      await patchHostedTask(task.id, { status: 'ready', assignee: '' }, task.version);
-      const mirror = await mirrorLocal(local => releaseTask(local, { id: args.id, actor: args.actor, force: Boolean(args.force) }));
-      return `已释放在线卡 #${task.id}（${args.id} → ready，取消 assignee）；本地主账镜像：${mirror}`;
-    }
-    case 'union_card_move': {
-      if (!useHosted()) return summary(await mutateLedger(root, data => moveTask(data, {
-        id: args.id,
-        status: args.status,
-        actor: args.actor,
-        owner: args.owner,
-        force: Boolean(args.force),
-        note: args.note,
-        blocker: args.status === 'blocked' ? { reason: args.blocker_reason, action: args.blocker_action, owner: args.blocker_owner ?? null } : undefined,
-        completion: args.status === 'done' ? { scope: args.scope, reviewer: args.reviewer, evidence: args.evidence ?? [], note: args.note } : undefined,
-      })));
-      const board = await fetchHostedBoard();
-      const task = findHostedTask(board, args.id);
-      if (!task) throw new Error(`${args.id} 不在在线看板的活动卡里`);
-      const patch = { status: onlineStatus(args.status) };
-      if (args.status === 'blocked') patch.blocker = args.blocker_reason ?? '';
-      if (args.status === 'done') {
-        patch.evidence = args.note ?? '';
-        if (args.evidence?.length) patch.branch = task.branch ?? '';
-      }
-      const patched = await patchHostedTask(task.id, patch, task.version);
-      if (args.note) await commentHostedTask(task.id, args.note);
-      const mirror = await mirrorLocal(local => moveTask(local, {
-        id: args.id, status: args.status, actor: args.actor, owner: args.owner, force: Boolean(args.force), note: args.note,
-        blocker: args.status === 'blocked' ? { reason: args.blocker_reason, action: args.blocker_action, owner: args.blocker_owner ?? null } : undefined,
-        completion: args.status === 'done' ? { scope: args.scope, reviewer: args.reviewer, evidence: args.evidence ?? [], note: args.note } : undefined,
-      }));
-      return `在线卡 #${task.id} ${args.id} → ${patch.status}（version ${task.version}→${patched.task?.version ?? '?'}）；本地主账镜像：${mirror}`;
-    }
-    case 'union_card_record': {
-      if (!useHosted()) return summary(await mutateLedger(root, data => moveTask(data, {
-        id: args.id, status: 'done', actor: args.actor, force: Boolean(args.force), note: args.note,
-        completion: { scope: args.scope, reviewer: args.reviewer, evidence: args.evidence ?? [], note: args.note },
-      })));
-      const board = await fetchHostedBoard();
-      const task = findHostedTask(board, args.id);
-      if (!task) throw new Error(`${args.id} 不在在线看板的活动卡里`);
-      await patchHostedTask(task.id, {
-        status: 'done',
-        evidence: `${args.note ?? ''}${args.reviewer ? `\n验收：${args.reviewer}（${args.scope}）` : ''}`.trim(),
-      }, task.version);
-      if (args.note) await commentHostedTask(task.id, `${args.note}${args.reviewer ? `\n验收者：${args.reviewer}；范围：${args.scope}` : ''}`);
-      const mirror = await mirrorLocal(local => moveTask(local, {
-        id: args.id, status: 'done', actor: args.actor, force: Boolean(args.force), note: args.note,
-        completion: { scope: args.scope, reviewer: args.reviewer, evidence: args.evidence ?? [], note: args.note },
-      }));
-      return `在线卡 #${task.id} ${args.id} → done 并已留言；本地主账镜像：${mirror}`;
-    }
+    case 'union_card_claim':
+    case 'union_card_release':
+    case 'union_card_move':
+    case 'union_card_record':
+      return operateHosted(name.replace('union_card_', ''), args, root);
     case 'union_board_verify': {
       const result = args.full ? await runNpm(['check']) : await runNpm(['check:management']);
       if (!result.ok) throw new Error(`check failed:\n${result.output}`);

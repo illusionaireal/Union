@@ -89,9 +89,12 @@ function ConnectionFields({ draft }: { draft: ModelDraft }) {
           {draft.read.capabilities.profiles.includes('modeld_grant') && (
             <option value="modeld_grant">已授予本 AU 的模型服务授权</option>
           )}
+          {draft.read.capabilities.profiles.includes('openai_responses') && (
+            <option value="openai_responses">OpenAI Responses API</option>
+          )}
         </select>
       </label>
-      {profile === 'openai_compatible' ? (
+      {profile !== 'modeld_grant' ? (
         <>
           <Field
             name="base_url"
