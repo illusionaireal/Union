@@ -108,13 +108,16 @@ async function main() {
     assert.equal((await disabled.json()).receipt.status, 'succeeded');
     await page.getByRole('button', { name: '登记 AI 工作', exact: true }).click();
     try {
-      await page.getByText(/权限或身份已变化，请刷新当前权限后重开工作页。/).waitFor({ timeout: 5000 });
+      await page.getByText(/权限或身份已变化，请刷新当前权限后重开工作页。|当前不能登记新工作/).waitFor({ timeout: 5000 });
     } catch (error) {
       fs.mkdirSync('.union/u105-browser', { recursive: true });
       fs.writeFileSync('.union/u105-browser/controlled-failure.txt', await page.locator('body').innerText());
       throw error;
     }
     assert.equal(posts, 1);
+    assert.equal(await page.getByText('U105 页面目标', { exact: true }).count(), 1,
+      'loss of start eligibility must preserve the authorized work view');
+    assert.equal(await page.getByRole('button', { name: '刷新 AI 工作', exact: true }).count(), 1);
     await page.reload();
     await page.getByRole('button', { name: '查询登记原请求', exact: true }).click();
     await page.getByText(/^登记已记录 ·/).waitFor();
@@ -126,7 +129,8 @@ async function main() {
     fs.mkdirSync(output, { recursive: true });
     const checks = ['Core /tasks empty registration', 'storage failure prevents POST', 'HTTP transaction persists all responsibility bindings',
       'lost response then reload and original GET', 'no duplicate Work or automatic attempt', 'no form data in storage',
-      'three viewport widths', 'fresh permission loss prevents next POST', 'readable receipt without start permission', 'zero inference requests'];
+      'three viewport widths', 'fresh start eligibility loss prevents next POST', 'readable work remains visible without start eligibility',
+      'readable receipt without start permission', 'zero inference requests'];
     fs.writeFileSync(path.join(output, 'checks.json'), JSON.stringify({ scope: 'controlled', checks,
       work_posts: posts, work_id: work.id, command_id: original.id, model_requests: report.model_requests }, null, 2));
     console.log('U105 browser: ' + checks.length + ' passed; work POST=1; model requests=0');

@@ -160,7 +160,11 @@ export function useWorkCommand(scope: WorkScope, onAccessLost: () => void) {
     try {
       await liveSession();
       const read = await liveRead();
-      if (!read.access.can_start) throw new WorkScopeLost();
+      if (!read.access.can_start) {
+        await liveSession();
+        await refresh();
+        throw new Error('当前不能登记新工作；已有工作和原请求仍可查询，请核对模型连接及当前授权。');
+      }
       if (read.version !== baseVersion) throw new Error('配置或版本已变化，请刷新核对后提交');
       await preflight(read);
       requireCurrent();

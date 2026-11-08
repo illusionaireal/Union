@@ -175,7 +175,7 @@ it.each(['principal', 'service', 'authorization', 'connection', 'version', 'mode
     if (change === 'version') work.version++;
     if (change === 'model-scope') models.organization_id = 'au-2';
     fireEvent.click(button);
-    await screen.findByText(/权限或身份已变化|配置或版本已变化/);
+    await screen.findByText(/权限或身份已变化|配置或版本已变化|当前不能登记新工作/);
     expect(api.coreWorkCommand).not.toHaveBeenCalled();
     if (change === 'model-scope') expect(screen.queryByLabelText('目标')).toBeNull();
   },
@@ -198,6 +198,91 @@ it.each(['actor', 'work', 'version'])('mismatched %s receipt stays unresolved', 
   expect(screen.queryByRole('button', { name: '登记另一项工作' })).toBeNull();
   expect(screen.getByRole('button', { name: '查询登记原请求' })).toBeTruthy();
 });
+
+it('loss of registration eligibility preserves readable work and its original execution lookup', async () => {
+  work.works = [
+    {
+      id: 'existing-work',
+      title: '已有工作',
+      goal: '原工作继续负责',
+      status: 'pending',
+      version: 1,
+      max_calls: 2,
+      materials_root: 'docs',
+      created_at: '',
+      responsible: { member_id: 'm0', name: '原助手', binding_id: 'b0', duty: '交付' },
+      definition: {
+        id: 'd0',
+        version: 1,
+        connection_id: 'c1',
+        model: 'model',
+        tools: ['read_document'],
+      },
+      mandate: { id: 'ma0', version: 1, actions: ['read_document'], active: true },
+      attempt_ids: [],
+      result_ids: [],
+      attempts: [],
+      steps: [],
+      tool_calls: [],
+      results: [],
+      budget: { max_calls: 2, reserved: 1, used: 0 },
+      materials: { reference: 'docs', available: true, documents: 1 },
+    },
+  ];
+  const scope = {
+    principalId: 'p1',
+    serviceInstance: 's1',
+    organizationId: 'au-1',
+    workId: 'existing-work',
+  };
+  const original = {
+    ...scope,
+    id: 'existing-command',
+    kind: 'run_loop',
+    base_version: 3,
+    resolved: false,
+  };
+  sessionStorage.setItem(
+    'union-work-execution:' + JSON.stringify(scope),
+    JSON.stringify([original]),
+  );
+  vi.mocked(api.coreWorkReceipt).mockResolvedValue({
+    receipt: {
+      id: original.id,
+      kind: original.kind,
+      organization_id: 'au-1',
+      base_version: 3,
+      actor_principal_id: 'p1',
+      status: 'succeeded',
+      version: 4,
+      message: '原执行已核对',
+    },
+  });
+  mount();
+  const button = await fill();
+  work.access.can_start = false;
+  fireEvent.click(button);
+  await screen.findByText(/权限或身份已变化|当前不能登记新工作/);
+  expect(screen.getByText('已有工作')).toBeTruthy();
+  fireEvent.click(screen.getByRole('button', { name: '查询原请求' }));
+  await screen.findByText('原执行已核对');
+  expect(api.coreWorkReceipt).toHaveBeenCalledWith('au-1', original.id);
+  expect(api.coreWorkCommand).not.toHaveBeenCalled();
+  expect(screen.queryByRole('button', { name: '登记 AI 工作' })).toBeNull();
+});
+
+it.each([401, 403])(
+  'an actual AU read denial (%s) still clears registration and prevents POST',
+  async (status) => {
+    mount();
+    const button = await fill();
+    vi.mocked(api.coreWork).mockRejectedValue(new ApiError('not_authorized', status));
+    fireEvent.click(button);
+    await screen.findByText(/权限或身份已变化/);
+    expect(screen.queryByLabelText('目标')).toBeNull();
+    expect(api.coreWorkCommand).not.toHaveBeenCalled();
+  },
+);
 
 it('corrupt persisted identity prevents a replacement POST', async () => {
   sessionStorage.setItem(

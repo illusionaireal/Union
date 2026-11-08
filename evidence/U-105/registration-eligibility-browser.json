@@ -1,0 +1,20 @@
+{
+  "scope": "controlled",
+  "checks": [
+    "Core /tasks empty registration",
+    "storage failure prevents POST",
+    "HTTP transaction persists all responsibility bindings",
+    "lost response then reload and original GET",
+    "no duplicate Work or automatic attempt",
+    "no form data in storage",
+    "three viewport widths",
+    "fresh start eligibility loss prevents next POST",
+    "readable work remains visible without start eligibility",
+    "readable receipt without start permission",
+    "zero inference requests"
+  ],
+  "work_posts": 1,
+  "work_id": "work-bd82e42d-d3b2-455e-a1ef-fd9047bb5da6",
+  "command_id": "59c586d6-fa84-42cc-8fb5-718dbf534c00",
+  "model_requests": 0
+}
