@@ -1,0 +1,60 @@
+{
+  "base": "02f8a7832f23e71a7bdbad4727914b566646f4a2",
+  "branch": "codex/u067-tool-context",
+  "implementation_actor": "codex-home/current session",
+  "independent_review": "pending for tool-context changes",
+  "contract_initial_sha256": "ebf898914c6851b3764cb0d69cbaeffa9e3e988bcd4d43cac3357b8596a1e658",
+  "contract_refinements": [
+    "root binding digest before redisclosure",
+    "preserve private modeld native context"
+  ],
+  "scope": "controlled",
+  "real_model_calls": 0,
+  "python": "3.12.10",
+  "node": "24.19.0",
+  "new_tests": {
+    "count": 13,
+    "outcome": "OK",
+    "seconds": 13.836
+  },
+  "full_python": {
+    "count": 662,
+    "skipped": 8,
+    "outcome": "OK",
+    "seconds": 391.596
+  },
+  "npm_check": {
+    "outcome": "passed",
+    "frontend_files": 21,
+    "frontend_tests": 206
+  },
+  "combined_tests": {
+    "count": 64,
+    "outcome": "OK",
+    "seconds": 58.506,
+    "candidate_tree": "b61e340c08f8b36b2785b683cc9016cb31ba3951",
+    "observation_patch": "a1001e4..ab31480",
+    "original_probe_failures_remaining": 1
+  },
+  "coordinator_fixture_fix": "098a3b9a4f4593ab8015f41c6cce9518f58639ea",
+  "fixture_final_verification": "Windows 4 tests OK; coordinator Linux evidence is separate; candidate CI required",
+  "full_run_note": "Runtime sources unchanged. Two HTTP fixture chmod repairs separately verified during the full run.",
+  "board_initial_read": {
+    "http": 200,
+    "revision": 197,
+    "card": 22,
+    "version": 7,
+    "user_id": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+    "owner_preserved": "cafeef64-ac40-4062-97c1-ac82ece0a379"
+  },
+  "sha256": {
+    "ai_union/application/work.py": "4d175077d07d23fe82063a1a29d0f41e4656a866873e11fd45c4aae93e70230d",
+    "ai_union/domain/work.py": "0e572d2a1e85ab1faa3d6dd946dcd433fdb49f9456e8a5a691421d638d1cf60c",
+    "ai_union/adapters/work_context_store.py": "6a3bef87d3d8521eda28fd53d0b6fd99c8b05467fffaef1310500501b511e0ec",
+    "tests/test_work_context.py": "c7a97c4a4022cd97a80a8ce8d48d54f3c43a9023a792532333e754d08d8d00cd",
+    "tests/test_core_work.py": "7082ee3690ef49f928e15337078f7dc1d0f3a2a9ad205feefa66703af69e1bab",
+    "tests/test_core_work_http.py": "5b46c34d7523e8332d5b39265bbba34890974f1c82c8e3789f161b826092c69b",
+    "tests/test_work_transport_http.py": "ad26baaef56e1a133804c0d56dd91919590c32ff245eff5afde4558ab579b017",
+    "specs/053-union-rewrite/s03-tool-context-contract.md": "5c68447379ea5c919893f3aa80719a1533cb6204d0c820ce578c452bd77a05fe"
+  }
+}

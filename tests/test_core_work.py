@@ -776,7 +776,7 @@ class CoreWorkTests(ModelAccessCase):
         self.prepare_materials()
         self.work_command(self.au_id, "start_work", work_data(
             work_id="work-tight", member_id="m-tight", binding_id="b-tight", mandate_id="ma-tight",
-            definition_id="d-tight", materials_root="project-docs", max_calls=2))
+            definition_id="d-tight", materials_root="project-docs", max_calls=2, tools=["list_documents"]))
         self.start_attempt("work-tight")
         call = {"content": None, "tool_calls": [{"id": "c1", "type": "function",
                 "function": {"name": "list_documents", "arguments": "{}"}}]}

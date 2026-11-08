@@ -432,11 +432,15 @@ def step_plan(state, charter, work_id, instance=None):
     require(work["status"] in OPEN, "工作已结束，不能继续执行")
     attempt = active_attempt(work, instance)
     definition = records(state)["definitions"][work["definition_id"]]
+    binding = records(state)["bindings"][work["responsible_binding_id"]]
+    mandate = records(state)["mandates"][work["mandate_id"]]
+    require(binding["active"] and mandate["active"], "工作责任绑定或授权已失效")
     current = budget(work)
     require(current["reserved"] + current["used"] < work["max_calls"], "该工作的调用上限已用尽")
     allowed = [name for name in definition.get("tools") or [] if name in TOOL_SPECS]
     require(allowed, "该工作的 Agent 定义没有可用的只读工具")
     require(set(allowed) <= set(charter["allowed_tools"]), "工具不在当前有效章程允许的范围内")
+    require(set(allowed) <= set(mandate["actions"]), "工具不在该工作的有效授权范围内")
     messages = [{"role": "system", "content": definition["instruction"]},
                 {"role": "user", "content": "目标：" + work["goal"]
                  + "\n请先用电只读工具查看授权资料，再给出可直接交付的成果正文（Markdown）。"}]
@@ -448,6 +452,11 @@ def step_plan(state, charter, work_id, instance=None):
             "须先采用该工作的模型连接为默认连接，才能继续执行")
     return {"work_id": work_id, "attempt_id": attempt["id"], "materials_root": work["materials_root"],
             "connection": dict(connection),
+            "context_scope": {"au_id": state["id"], "work_id": work_id,
+                              "definition_id": definition["id"], "definition_version": definition["version"],
+                              "binding_id": binding["id"], "binding_version": binding["version"],
+                              "member_id": binding["member_id"], "mandate_id": mandate["id"],
+                              "mandate_version": mandate["version"], "materials_root": work["materials_root"]},
             "messages": messages, "tools": [{"type": "function", "function": TOOL_SPECS[name]} for name in allowed],
             "package": {"kind": "work_step", "work_id": work_id, "attempt_id": attempt["id"],
                         "run_id": work_id + "#s" + str(len(work.get("steps") or []) + 1)}}
@@ -471,7 +480,8 @@ def apply_step(state, charter, data, principal, instance, clock=None):
     if data["content"]:
         submit_result(state, {"work_id": data["work_id"], "result_id": data["result_id"],
                               "title": data["title"], "content": data["content"],
-                              "sources": [item["step_ref"] for item in recorded]}, principal, clock)
+                              "sources": list(dict.fromkeys(data.get("sources", [])
+                                         + [item["step_ref"] for item in recorded]))}, principal, clock)
     settle_step(state, {"work_id": data["work_id"], "step_id": step["step_ref"],
                         "status": "used", "reason": "模型步进已完成"}, clock)
     return {"step": step["step_ref"], "tool_calls": len(recorded), "result": bool(data["content"]),

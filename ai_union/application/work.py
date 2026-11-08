@@ -6,6 +6,7 @@ import json
 
 from ..adapters import documents
 from ..adapters.core_au_store import CoreAUStore, encoded
+from ..adapters.work_context_store import WorkContextStore
 from ..domain import governance, work as rules
 from ..engine import identifier, now
 from ..errors import CoreError, Rejected, require
@@ -190,8 +191,18 @@ class WorkService:
                 rules.authorize(state, principal)
                 require(request["base_version"] == state["version"], "AU 版本已变化；请读取最新状态检查原输入")
                 try:
+                    principals = {row[0] for row in accounts.execute("SELECT principal_id FROM owner_account")}
+                    rules.effective(state, principals)
                     plan = rules.step_plan(state, state["charter"], request["data"]["work_id"],
                                            instance=self.app.instance)
+                    work = rules.records(state)["works"][plan["work_id"]]
+                    history, plan["sources"], bindings = WorkContextStore.load(cx, work, plan["context_scope"])
+                    if any(item["role"] == "tool" for item in history):
+                        root = documents.root_for(self.app.root, plan["materials_root"])
+                        binding = hashlib.sha256(str(root).encode("utf-8")).hexdigest()
+                        require(bindings and all(item == binding for item in bindings),
+                                "宿主资料目录绑定已变化；原上下文不可继续派发")
+                    plan["messages"].extend(history)
                 except Rejected as error:
                     plan = None
                     refusal = str(error)
@@ -221,7 +232,6 @@ class WorkService:
             return self.unknown_step(directory, intent, request, principal,
                                      "模型通道结果未知；已保留该次调用预约等待核对，不自动重放：" + str(error)[:280])
         calls = (message or {}).get("tool_calls") or []
-        content = (message or {}).get("content") or ""
         if calls and plan["materials_root"] is None:
             return self.reject_step(directory, intent, request, principal, "模型请求只读工具，但该工作未绑定授权资料目录")
         with self.app.mutex, self.app.catalog() as accounts:
@@ -246,29 +256,44 @@ class WorkService:
                     rules.effective(state, principals)
                     local = copy.deepcopy(state)
                     work = rules.records(local)["works"][request["data"]["work_id"]]
+                    current_plan = rules.step_plan(local, charter, work["id"], instance=self.app.instance)
+                    assistant, parsed_calls = self.model_turn(message, current_plan)
+                    require(len(work.get("tool_calls") or []) + len(parsed_calls) <= rules.MAX_TOOL_CALLS,
+                            "该工作的工具调用回执已达上限")
+                    content = assistant["content"] or ""
                     executed = []
-                    for call in calls[:10]:
-                        function = call.get("function") or {}
-                        name = function.get("name")
-                        try:
-                            arguments = json.loads(function.get("arguments") or "{}")
-                        except ValueError as error:
-                            raise Rejected("模型工具参数不是合法 JSON；本轮未执行任何工具") from error
+                    outputs = []
+                    for call, arguments in parsed_calls:
+                        name = call["function"]["name"]
+                        rules.tool_target(local, {"work_id": work["id"], "tool": name}, self.app.instance)
                         if name == "list_documents":
                             root = documents.root_for(self.app.root, work["materials_root"])
+                            listed = documents.list_documents(root)
                             executed.append({"tool": name, "arguments": {},
-                                             "count": len(documents.list_documents(root))})
+                                             "count": len(listed)})
+                            outputs.append({"documents": listed, "count": len(listed)})
                         elif name == "read_document":
                             root = documents.root_for(self.app.root, work["materials_root"])
-                            _text, digest, size = documents.read_text(root, arguments.get("path"))
+                            text, digest, size = documents.read_text(root, arguments.get("path"))
                             executed.append({"tool": name, "arguments": {"path": arguments.get("path")},
                                              "sha256": digest, "bytes": size})
+                            outputs.append({"path": arguments["path"], "content": text, "sha256": digest, "bytes": size})
                         else:
                             raise Rejected("模型请求了本核心不支持的只读工具")
-                    payload = {"work_id": request["data"]["work_id"], "content": content, "tool_calls": executed,
+                    payload = {"work_id": request["data"]["work_id"], "content": "" if parsed_calls else content,
+                               "tool_calls": executed, "sources": plan["sources"],
                                "result_id": "result-" + request["id"].replace("-", "")[:12],
                                "title": "自动成果：" + work["title"], "usage": usage if isinstance(usage, dict) else {}}
                     receipt.update(rules.apply_step(local, charter, payload, principal, self.app.instance))
+                    turn_messages = [assistant]
+                    new_receipts = work.get("tool_calls", [])[-len(outputs):] if outputs else []
+                    for (call, _), output, tool_receipt in zip(parsed_calls, outputs, new_receipts):
+                        turn_messages.append({"role": "tool", "name": call["function"]["name"],
+                                              "tool_call_id": call["id"],
+                                              "content": encoded(output | {"step_ref": tool_receipt["step_ref"]})})
+                    WorkContextStore.save(cx, work["steps"][-1], current_plan["context_scope"], turn_messages,
+                                          [item["step_ref"] for item in new_receipts],
+                                          hashlib.sha256(str(root).encode("utf-8")).hexdigest() if outputs else None)
                     local["version"] = state["version"] + 1
                     state = local
                     changed = True
@@ -279,6 +304,44 @@ class WorkService:
                 receipt["version"] = state["version"]
                 self.store.save(cx, state, charter, request, receipt, state["policy_version"], changed=changed)
         return receipt
+
+    @staticmethod
+    def model_turn(message, plan):
+        """Validate the complete batch before a read; retain only protocol fields."""
+        require(isinstance(message, dict), "模型结果不是完整消息")
+        content = message.get("content")
+        require(content is None or isinstance(content, str), "模型正文须为文本")
+        calls = message.get("tool_calls") or []
+        require(isinstance(calls, list) and len(calls) <= 10, "模型工具批次须完整且至多 10 项")
+        allowed = {item["function"]["name"] for item in plan["tools"]}
+        normalized, parsed, ids = [], [], set()
+        for call in calls:
+            require(isinstance(call, dict) and isinstance(call.get("id"), str)
+                    and 0 < len(call["id"]) <= 256 and call["id"] not in ids
+                    and call.get("type") == "function", "模型工具调用标识缺失、重复或类型无效")
+            function = call.get("function")
+            require(isinstance(function, dict) and function.get("name") in allowed
+                    and isinstance(function.get("arguments"), str), "模型工具不在当前允许范围或参数无效")
+            try:
+                arguments = json.loads(function["arguments"])
+            except ValueError as error:
+                raise Rejected("模型工具参数不是合法 JSON") from error
+            keys = {"path"} if function["name"] == "read_document" else set()
+            require(isinstance(arguments, dict) and set(arguments) == keys, "模型工具参数不符合只读工具契约")
+            if keys:
+                require(isinstance(arguments["path"], str), "资料路径须为文本")
+            value = {"id": call["id"], "type": "function", "function": {
+                "name": function["name"], "arguments": function["arguments"]}}
+            ids.add(call["id"])
+            normalized.append(value)
+            parsed.append((value, arguments))
+        assistant = {"role": "assistant", "content": content, "tool_calls": normalized}
+        if message.get("_native") is not None:
+            require(isinstance(message["_native"], dict)
+                    and message["_native"].get("au_id") == plan["context_scope"]["au_id"],
+                    "模型原生上下文不属于当前 AU")
+            assistant["_native"] = copy.deepcopy(message["_native"])
+        return assistant, parsed
 
     def run_loop(self, token, incoming):
         """Drive automatic turns until the model answers or the turn cap is reached."""
