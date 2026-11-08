@@ -1,0 +1,58 @@
+{
+  "integration": "8ea2b4dc239d1c86f90177278378d8bf4299272b",
+  "candidate": "fe556aa420057a39243551f6d1faa14071fa4b76",
+  "candidate_parent": "7a7c85a9564b7ae6c28f881227cd18545f25728b",
+  "real_model_calls": 0,
+  "logs": {
+    "u086-fe556aa-new-probes.log": {
+      "sha256": "6ded554843bcdc5d2af4492b383c4339324700b399506f9eb79e725984b18f29"
+    },
+    "u086-current-new-probes.log": {
+      "sha256": "8927be23335b84d383716eadb29e1f60a5afda7e2b21ddd782b99f6ca2d54bee"
+    },
+    "u086-fe556aa-original-probes.log": {
+      "sha256": "cd6c26fe72b3afe7ebf69b2ff956676db10d61cfcb64e4733fc79467ad1933c2"
+    },
+    "u086-current-original-probes.log": {
+      "sha256": "3dde3e5c36f91b64bee9cb9ce2e85039e2e9f5e9211dab57397279b7b27a5b4e",
+      "summary": [
+        "Ran 3 tests in 2.831s"
+      ]
+    },
+    "u086-879d3f9-new-probes.log": {
+      "sha256": "37299947ca7b7c75e75edc703b529a9c993173bca166e53382f1852d20c41631",
+      "summary": [
+        "Ran 3 tests in 3.718s",
+        "FAILED (failures=3)"
+      ]
+    },
+    "u086-879d3f9-original-probes.log": {
+      "sha256": "bd8cfb2c6c4586290720ec172f4ad42118ced079d6ebaeffb0701f2e5019d701",
+      "summary": [
+        "Ran 3 tests in 2.870s",
+        "FAILED (failures=3)"
+      ]
+    },
+    "u086-review-npm.log": {
+      "sha256": "cefd89de023b7d87be3c216c4ebe3d0a72b0720ea3272279b26fef1d056341e7",
+      "summary": [
+        "Test Files  27 passed (27)",
+        "Tests  315 passed (315)"
+      ]
+    }
+  },
+  "source_sha256": {
+    "fe556aa:ai_union/application/work.py": "818fd4f680d23665691032f43ec568ae61401a864e422a69653391a498fa6d56",
+    "fe556aa:ai_union/domain/work.py": "095649145f75649dcfdbacf102ebeaa6684cda762e2c0f956019036df6302241",
+    "fe556aa:tests/test_core_work.py": "e5d45ac993da4e08d4e48873c8160c0c5b60e60867ac06d245944cd808284378",
+    "b9c24ff:scripts/exit22b_page.cjs": "c2d2baf3022f0cb3299c1bf092410c842aed48070b7a9bafec6a38607ecc2f11",
+    "b9c24ff:scripts/exit22b_host.py": "4648412b76322852355174c307271c6b37bf148293cf2fc3717aef782ce0153e"
+  },
+  "latest_candidate": "879d3f954313be7276ce246ab8d71bcb5dec1724",
+  "latest_parent": "fe556aa420057a39243551f6d1faa14071fa4b76",
+  "publication_readback": {
+    "http": 200,
+    "branch_22c": "879d3f954313be7276ce246ab8d71bcb5dec1724",
+    "branch_22b": "b9c24ffce77e74e0299a5528348fe57c6c327a11"
+  }
+}
