@@ -219,12 +219,13 @@ it.each(['principal_id', 'service_instance'] as const)(
     expect(screen.queryByText('迟到私有结果')).toBeNull();
   },
 );
-it('permission loss on fresh read prevents dispatch and an unknown reservation has no new run', async () => {
+it('loss of new-action eligibility prevents dispatch while retaining readable work; unknown cannot run', async () => {
   const view = mount();
   await screen.findByText('已登记概览');
   current.access.can_start = false;
   fireEvent.click(screen.getByRole('button', { name: '准备本轮执行' }));
-  await screen.findByText(/权限或身份已变化/);
+  await screen.findByText(/当前不能执行新操作/);
+  expect(screen.getByText('已登记概览')).toBeVisible();
   expect(api.coreWorkCommand).not.toHaveBeenCalled();
   view.unmount();
   current.access.can_start = true;

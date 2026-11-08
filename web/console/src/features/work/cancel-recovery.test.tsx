@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
-import { api } from '../../api/client';
+import { api, ApiError } from '../../api/client';
 import type { CoreWork, CoreWorkItem, Session } from '../../api/types';
 import { WorkPanel } from './WorkPanel';
 
@@ -253,4 +253,111 @@ it('does not replace an original cancel ID after reload or another click', async
   fireEvent.click(button);
   expect(api.coreWorkCommand).toHaveBeenCalledTimes(1);
   expect(JSON.stringify(sessionStorage)).toContain(original.id);
+});
+
+it('a readable reservation without new-action eligibility offers no new cancel', async () => {
+  reserved(true);
+  current.access.can_start = false;
+  mount();
+  await screen.findByText('已登记概览');
+  expect(screen.queryByRole('button', { name: '取消本次执行' })).toBeNull();
+  expect(api.coreWorkCommand).not.toHaveBeenCalled();
+});
+
+it('losing only new-action eligibility before cancel preserves the original run lookup', async () => {
+  reserved(true);
+  current.works[0].steps = [];
+  current.works[0].budget.reserved = 0;
+  vi.mocked(api.coreWorkCommand).mockImplementation(async () => {
+    reserved(true);
+    throw new Error('run response lost');
+  });
+  const view = mount();
+  fireEvent.click(await screen.findByRole('button', { name: '运行 AI 工作' }));
+  await screen.findByText('run response lost');
+  const original = vi.mocked(api.coreWorkCommand).mock.calls[0][0];
+  view.unmount();
+  mount();
+  const cancel = await screen.findByRole('button', { name: '取消本次执行' });
+  current.access.can_start = false;
+  await act(async () => { fireEvent.click(cancel); });
+  expect(screen.getByText('已登记概览')).toBeVisible();
+  const group = screen.getByRole('group', { name: '原运行请求' });
+  vi.mocked(api.coreWorkReceipt).mockResolvedValue({ receipt: receipt(original) });
+  fireEvent.click(within(group).getByRole('button', { name: '查询原请求' }));
+  await screen.findByText('原请求已完成');
+  expect(api.coreWorkReceipt).toHaveBeenCalledWith('au-1', original.id);
+  expect(api.coreWorkCommand).toHaveBeenCalledTimes(1);
+});
+
+it.each(['start_attempt', 'run_loop'])('%s preflight refuses a new action without hiding readable work', async (kind) => {
+  if (kind === 'run_loop') {
+    reserved(true);
+    current.works[0].steps = [];
+    current.works[0].budget.reserved = 0;
+  }
+  mount();
+  const button = await screen.findByRole('button', { name: kind === 'run_loop' ? '运行 AI 工作' : '准备本轮执行' });
+  current.access.can_start = false;
+  await act(async () => { fireEvent.click(button); });
+  expect(screen.getByText('已登记概览')).toBeVisible();
+  expect(api.coreWorkCommand).not.toHaveBeenCalled();
+  await waitFor(() => expect(screen.queryByRole('button', { name: /准备本轮执行|运行 AI 工作/ })).toBeNull());
+});
+
+it.each(['run_loop', 'cancel_step'])(
+  'a late %s POST transport failure cannot replace its independently confirmed receipt',
+  async (kind) => {
+    reserved(true);
+    if (kind === 'run_loop') {
+      current.works[0].steps = [];
+      current.works[0].budget.reserved = 0;
+    }
+    let fail!: (error: Error) => void;
+    vi.mocked(api.coreWorkCommand).mockImplementation(() => new Promise((_resolve, reject) => { fail = reject; }));
+    mount();
+    fireEvent.click(await screen.findByRole('button', { name: kind === 'run_loop' ? '运行 AI 工作' : '取消本次执行' }));
+    await waitFor(() => expect(api.coreWorkCommand).toHaveBeenCalledTimes(1));
+    const original = vi.mocked(api.coreWorkCommand).mock.calls[0][0];
+    vi.mocked(api.coreWorkReceipt).mockResolvedValue({ receipt: receipt(original) });
+    fireEvent.click(screen.getByRole('button', { name: '查询原请求' }));
+    await screen.findByText('原请求已完成');
+    await act(async () => { fail(new Error('late transport failure')); });
+    expect(screen.getByText('原请求已完成')).toBeVisible();
+    expect(screen.queryByText('late transport failure')).toBeNull();
+    expect(screen.getByText(/本次操作已记录/)).toBeVisible();
+    expect(api.coreWorkCommand).toHaveBeenCalledTimes(1);
+  },
+);
+
+it('a failed repeat GET preserves a confirmed cancel while actual access loss still clears it', async () => {
+  reserved(true);
+  mount();
+  fireEvent.click(await screen.findByRole('button', { name: '取消本次执行' }));
+  await screen.findByText('原请求已完成');
+  vi.mocked(api.coreWorkReceipt).mockRejectedValue(new Error('GET temporarily unavailable'));
+  fireEvent.click(screen.getByRole('button', { name: '查询原请求' }));
+  await waitFor(() => expect(screen.getByRole('button', { name: '查询原请求' })).toBeEnabled());
+  expect(screen.getByText('原请求已完成')).toBeVisible();
+  vi.mocked(api.coreWorkReceipt).mockRejectedValue(new ApiError('no session', 401, 'unauthorized'));
+  fireEvent.click(screen.getByRole('button', { name: '查询原请求' }));
+  await screen.findByText(/权限或身份已变化/);
+  expect(screen.queryByText('已登记概览')).toBeNull();
+  expect(api.coreWorkCommand).toHaveBeenCalledTimes(1);
+});
+
+it.each([401, 403])('a late POST %i still clears an independently confirmed cancel', async (status) => {
+  reserved(true);
+  let fail!: (error: Error) => void;
+  vi.mocked(api.coreWorkCommand).mockImplementation(() => new Promise((_resolve, reject) => { fail = reject; }));
+  mount();
+  fireEvent.click(await screen.findByRole('button', { name: '取消本次执行' }));
+  await waitFor(() => expect(api.coreWorkCommand).toHaveBeenCalledTimes(1));
+  const original = vi.mocked(api.coreWorkCommand).mock.calls[0][0];
+  vi.mocked(api.coreWorkReceipt).mockResolvedValue({ receipt: receipt(original) });
+  fireEvent.click(screen.getByRole('button', { name: '查询原请求' }));
+  await screen.findByText('原请求已完成');
+  await act(async () => { fail(new ApiError('access lost', status, 'unauthorized')); });
+  await screen.findByText(/权限或身份已变化/);
+  expect(screen.queryByText('原请求已完成')).toBeNull();
 });

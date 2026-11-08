@@ -33,7 +33,8 @@ async function main() {
     });
   }
   async function control(value) { host.stdin.write(value + '\n'); return next(); }
-  let browser;
+  let browser, releaseCancel;
+  const heldCancel = new Promise(resolve => { releaseCancel = resolve; });
   try {
     let ready = await next();
     browser = await chromium.launch({ headless: true,
@@ -58,7 +59,10 @@ async function main() {
         if (request.kind === 'cancel_step') {
           cancelPostReceipt = value.receipt;
           assert.equal(value.receipt.status, 'succeeded');
-          if (loseCancel) return await route.abort('failed');
+          if (loseCancel) {
+            await heldCancel; // Original GET confirms before the delayed POST fails.
+            return await route.abort('failed');
+          }
         }
         await route.fulfill({ response });
       } catch (error) { routeError = error; await route.abort('failed').catch(() => {}); }
@@ -80,6 +84,22 @@ async function main() {
     // An explicit read observes the original committed reservation while POST is pending.
     await page.getByRole('button', { name: '刷新 AI 工作', exact: true }).click();
     const cancel = page.getByRole('button', { name: '取消本次执行', exact: true });
+    await cancel.waitFor();
+    const disabled = await control('disable');
+    assert.equal(disabled.access.can_start, false);
+    assert.equal(disabled.works[0].steps[0].status, 'reserved');
+    // The rendered button is now stale; fresh eligibility must prevent POST without losing GET.
+    await cancel.click();
+    await page.getByText('当前不能执行新操作；已有工作和原请求仍可查询，请核对模型连接及当前授权。').waitFor();
+    const runGroup = page.getByRole('group', { name: '原运行请求', exact: true });
+    assert.ok((await runGroup.textContent()).includes(posts[0].id));
+    await runGroup.getByRole('button', { name: '查询原请求', exact: true }).click();
+    await page.waitForFunction(() => Array.from(document.querySelectorAll('button'))
+      .filter(b => b.textContent === '查询原请求').every(b => !b.disabled));
+    assert.equal(posts.length, 1, 'eligibility refusal and lookup cannot POST');
+    assert.equal((await control('inspect')).cancel_posts, 0);
+    await control('enable');
+    await page.getByRole('button', { name: '刷新 AI 工作', exact: true }).click();
     await cancel.click();
     await page.getByRole('group', { name: '原取消请求', exact: true }).waitFor();
     const cancelResponse = () => cancelPostReceipt || routeError;
@@ -88,6 +108,18 @@ async function main() {
     if (routeError) throw routeError;
     assert.ok(cancelPostReceipt, 'actual cancel POST must complete');
     assert.equal(cancelPostReceipt.cancel_accepted, true, 'the original endpoint must accept this fixture cancellation');
+    if (loseCancel) {
+      const group = page.getByRole('group', { name: '原取消请求', exact: true });
+      await group.getByRole('button', { name: '查询原请求', exact: true }).click();
+      await group.getByText(/本次操作已记录/).waitFor();
+      const confirmed = await page.getByRole('status').textContent();
+      const failed = page.waitForEvent('requestfailed', request => request.url().endsWith('/api/v1/work/commands') &&
+        request.postDataJSON().kind === 'cancel_step');
+      releaseCancel(); await failed;
+      await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+      assert.equal(await page.getByRole('status').textContent(), confirmed,
+        'late cancelled POST transport error must retain the confirmed original receipt');
+    }
     if (!loseCancel) await page.getByRole('group', { name: '原取消请求', exact: true })
       .getByText(/本次操作已记录/).waitFor();
     assert.deepEqual(posts.map(p => p.kind), ['run_loop', 'cancel_step']);
@@ -128,6 +160,16 @@ async function main() {
       await page.waitForFunction(() => Array.from(document.querySelectorAll('button'))
         .filter(b => b.textContent === '查询原请求').every(b => !b.disabled));
     }
+    const confirmedNote = await page.getByRole('status').textContent();
+    await page.route('**/api/v1/governance/receipts?**', route => route.abort('failed'));
+    const unavailable = page.waitForEvent('requestfailed', request => request.url().includes('/api/v1/governance/receipts?'));
+    await page.getByRole('group', { name: '原取消请求', exact: true }).getByRole('button').click();
+    await unavailable;
+    await page.waitForFunction(() => Array.from(document.querySelectorAll('button'))
+      .filter(b => b.textContent === '查询原请求').every(b => !b.disabled));
+    assert.equal(await page.getByRole('status').textContent(), confirmedNote,
+      'ordinary GET failure must retain a confirmed receipt');
+    await page.unroute('**/api/v1/governance/receipts?**');
     for (const width of [1440, 390, 320]) {
       await page.setViewportSize({ width, height: 900 });
       assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), 'overflow ' + width);
@@ -153,7 +195,11 @@ async function main() {
       'unknown retains one reservation', 'three viewport widths',
       'host restart preserves original cancellation receipt', 'new service scope excludes old browser references',
       'cancel POST and original GET contain the same complete accepted receipt',
-      'restarted original GET contains the same complete accepted receipt'];
+      'restarted original GET contains the same complete accepted receipt',
+      'real disabled default refuses stale cancel while preserving original run lookup',
+      'eligibility refusal and original lookup produce zero additional POSTs',
+      'ordinary GET failure retains confirmed cancellation'];
+    if (loseCancel) checks.push('confirmed original cancellation survives its late failed POST');
     const output = path.resolve(process.env.UNION_U086_EVIDENCE || '.union/u086-cancel-recovery');
     fs.mkdirSync(output, { recursive: true });
     fs.writeFileSync(path.join(output, 'checks.json'), JSON.stringify({ scope: 'controlled', checks,
@@ -165,6 +211,7 @@ async function main() {
     }, null, 2) + '\n');
     console.log(`U086 page recovery: ${checks.length} checks passed; command POST=2, fake=1, real=0; lost cancel=${loseCancel}`);
   } finally {
+    releaseCancel();
     if (!exited) host.stdin.write('finish\n');
     if (browser) await browser.close();
     host.stdin.end();
