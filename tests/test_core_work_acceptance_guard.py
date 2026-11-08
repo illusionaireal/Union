@@ -14,7 +14,7 @@ def work(calls=1, results=1, tools=None, usage=None, cost="unknown"):
         "budget": {"max_calls": 2, "reserved": 0, "used": calls},
         "usage": usage if usage is not None else {"input_tokens": 396, "output_tokens": 29},
         "cost_status": cost,
-        "tool_calls": tools if tools is not None else [{"tool": "list_documents", "count": 2}],
+        "tool_calls": tools if tools is not None else [{"tool": "read_document", "sha256": "b" * 64, "bytes": 21}],
         "results": [{"id": "result-%d" % index, "status": "candidate"} for index in range(results)],
     }
 
