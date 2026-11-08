@@ -1,0 +1,23 @@
+{
+  "cli_login_status": "not_logged_in",
+  "existing_provider_requires_openai_auth": false,
+  "actual_cli_ready_probe": "passed",
+  "real_bootstrap": {
+    "status": "handled",
+    "signal_kind": "partial",
+    "at": "2026-11-08T04:52:44.904992+00:00",
+    "exit_code": 0
+  },
+  "bootstrap_scope": "read-only Git HEAD check through the real configured CLI; no source, Git ref, NAS or board mutations",
+  "watch_tests": 14,
+  "product_go_calls_added": 0,
+  "python_full": {
+    "tests": 636,
+    "seconds": 349.708,
+    "skipped": 8,
+    "failures": 0
+  },
+  "npm_check": "passed",
+  "focused_tests": 18,
+  "watch_source_sha256": "2aff15995f540ea214353e84f536cd5b0e558b4894ea9c0287e4d2ab7dade402"
+}

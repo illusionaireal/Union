@@ -157,10 +157,14 @@ child.wait()
         port = None
         try:
             deadline = time.monotonic() + 10
-            while not ready.exists():
+            while True:
                 self.assertLess(time.monotonic(), deadline, "local worker did not start")
-                time.sleep(.01)
-            port = int(ready.read_text())
+                try:
+                    port = int(ready.read_text())
+                    break
+                except (FileNotFoundError, PermissionError):
+                    # The published ready path can temporarily reject reads on Windows.
+                    time.sleep(.01)
             ex.cancel(rid)
             self.assertEqual(ex.status(rid), "unknown")
             with self.assertRaises(ExecutionFailure) as caught:
