@@ -102,6 +102,28 @@ async function main() {
     await page.getByRole('button', { name: '刷新 AI 工作', exact: true }).click();
     await cancel.click();
     await page.getByRole('group', { name: '原取消请求', exact: true }).waitFor();
+    // The endpoint has received cancellation but its response is gated. The Core
+    // original GET must already expose the committed intent, not delivery.
+    const deliveryDeadline = Date.now() + 8000;
+    let awaitingDelivery;
+    do {
+      awaitingDelivery = await control('inspect');
+      if (awaitingDelivery.cancel_posts === 1) break;
+      await page.waitForTimeout(25);
+    } while (Date.now() < deliveryDeadline);
+    assert.equal(awaitingDelivery.cancel_posts, 1);
+    const cancelGroup = page.getByRole('group', { name: '原取消请求', exact: true });
+    const intentResponse = page.waitForResponse(r => r.url().includes('/api/v1/governance/receipts?') &&
+      new URL(r.url()).searchParams.get('id') === posts[1].id);
+    await cancelGroup.getByRole('button', { name: '查询原请求', exact: true }).click();
+    const intentHttp = await intentResponse;
+    assert.equal(intentHttp.status(), 200);
+    const originalIntent = (await intentHttp.json()).receipt;
+    assert.equal(originalIntent.cancel_accepted, null);
+    assert.equal(originalIntent.status, 'succeeded');
+    assert.equal(originalIntent.id, posts[1].id);
+    await page.getByRole('status').filter({ hasText: originalIntent.message }).waitFor();
+    await control('release-cancel');
     const cancelResponse = () => cancelPostReceipt || routeError;
     const deadline = Date.now() + 8000;
     while (!cancelResponse() && Date.now() < deadline) await page.waitForTimeout(50);
@@ -112,6 +134,7 @@ async function main() {
       const group = page.getByRole('group', { name: '原取消请求', exact: true });
       await group.getByRole('button', { name: '查询原请求', exact: true }).click();
       await group.getByText(/本次操作已记录/).waitFor();
+      await page.getByRole('status').filter({ hasText: cancelPostReceipt.message }).waitFor();
       const confirmed = await page.getByRole('status').textContent();
       const failed = page.waitForEvent('requestfailed', request => request.url().endsWith('/api/v1/work/commands') &&
         request.postDataJSON().kind === 'cancel_step');
@@ -122,6 +145,7 @@ async function main() {
     }
     if (!loseCancel) await page.getByRole('group', { name: '原取消请求', exact: true })
       .getByText(/本次操作已记录/).waitFor();
+    await page.getByRole('status').filter({ hasText: cancelPostReceipt.message }).waitFor();
     assert.deepEqual(posts.map(p => p.kind), ['run_loop', 'cancel_step']);
     const [run, cancelled] = posts;
     assert.notEqual(run.id, cancelled.id);
@@ -159,6 +183,7 @@ async function main() {
       // Receipt content adoption includes a subsequent session read.
       await page.waitForFunction(() => Array.from(document.querySelectorAll('button'))
         .filter(b => b.textContent === '查询原请求').every(b => !b.disabled));
+      await page.getByRole('status').filter({ hasText: value.message }).waitFor();
     }
     const confirmedNote = await page.getByRole('status').textContent();
     await page.route('**/api/v1/governance/receipts?**', route => route.abort('failed'));
@@ -198,7 +223,10 @@ async function main() {
       'restarted original GET contains the same complete accepted receipt',
       'real disabled default refuses stale cancel while preserving original run lookup',
       'eligibility refusal and original lookup produce zero additional POSTs',
-      'ordinary GET failure retains confirmed cancellation'];
+      'ordinary GET failure retains confirmed cancellation',
+      'original GET displays committed intent while cancellation delivery is gated',
+      'page advances original intent to durable delivery without another POST',
+      'reloaded run and cancel lookups display their actual receipt messages'];
     if (loseCancel) checks.push('confirmed original cancellation survives its late failed POST');
     const output = path.resolve(process.env.UNION_U086_EVIDENCE || '.union/u086-cancel-recovery');
     fs.mkdirSync(output, { recursive: true });
@@ -207,7 +235,7 @@ async function main() {
       cancellation_receipt: { post_cancel_accepted: cancelPostReceipt.cancel_accepted,
         stored_cancel_accepted: storedCancel.cancel_accepted,
         complete_receipt_equal: true,
-        note: 'Only receipt persistence is verified here; pre-delivery commit, unlocked I/O and response identity remain separate author-owned faults.' }
+        note: 'Gated delivery verifies original intent then observation in the page; reservation remains unknown. Other delivery boundaries have separate HTTP probes.' }
     }, null, 2) + '\n');
     console.log(`U086 page recovery: ${checks.length} checks passed; command POST=2, fake=1, real=0; lost cancel=${loseCancel}`);
   } finally {

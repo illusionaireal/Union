@@ -17,6 +17,7 @@ from tests.test_work_transport_http import ModeldDouble
 def main():
     case = WorkHttpChainTests()
     finish = threading.Event()
+    cancel_delivery = threading.Event()
     model_requests = []
     cancellations = []
 
@@ -32,6 +33,7 @@ def main():
                     "au_id": parse_qs(route.query)["au_id"][0]}
         assert model_requests and identity == {k: model_requests[0][k] for k in identity}
         cancellations.append(identity)
+        assert cancel_delivery.wait(20), "fixture cancel delivery gate was not released"
         return handler._send(200, identity | {"state": "cancel_requested"})
 
     def get(handler):
@@ -68,7 +70,11 @@ def main():
                 command = line.strip()
                 if command == "finish":
                     finish.set()
+                    cancel_delivery.set()
                     value = {"released": True}
+                elif command == "release-cancel":
+                    cancel_delivery.set()
+                    value = {"cancel_released": True}
                 elif command == "inspect":
                     value = inspect()
                 elif command in {"disable", "enable"}:
@@ -90,6 +96,7 @@ def main():
                 print(json.dumps(value), flush=True)
     finally:
         finish.set()
+        cancel_delivery.set()
         if hasattr(case, "double"):
             case.tearDown()
         case.doCleanups()

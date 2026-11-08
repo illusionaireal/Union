@@ -61,6 +61,7 @@ export function WorkExecution({
   const client = useQueryClient();
   const [references, setReferences] = useState(() => load(scope));
   const refs = useRef(references);
+  const confirmations = useRef(new Map<string, { resolved: boolean; delivered: boolean; message: string }>());
   const alive = useRef(true),
     busy = useRef(false),
     cancelBusy = useRef(false),
@@ -112,10 +113,17 @@ export function WorkExecution({
     )
       throw new Error('回执与原请求不匹配');
     await liveSession();
-    // A later POST response must not downgrade an independently confirmed original receipt.
-    if (!refs.current.some((x) => x.id === original.id && x.resolved)) {
-      const resolved = r.status !== 'unknown' && r.model_outcome !== 'unknown';
-      const next = refs.current.map((x) => (x.id === original.id ? { ...x, resolved } : x));
+    // Persisted resolution prevents replay; it is not a cached receipt body.
+    // A committed cancel intent can still gain its durable delivery observation.
+    const resolved = r.status !== 'unknown' && r.model_outcome !== 'unknown';
+    const delivered = original.kind === 'cancel_step' && typeof r.cancel_accepted === 'boolean';
+    const previous = confirmations.current.get(original.id);
+    if ((previous?.resolved && !resolved) || (previous?.delivered && !delivered)) {
+      setNote(previous.message);
+    } else {
+      const message = String(r.message || (resolved ? '原请求已记录' : '执行结果未知，请查询原请求'));
+      confirmations.current.set(original.id, { resolved, delivered, message });
+      const next = refs.current.map((x) => (x.id === original.id ? { ...x, resolved: x.resolved || resolved } : x));
       refs.current = next;
       setReferences(next);
       try {
@@ -123,7 +131,7 @@ export function WorkExecution({
       } catch {
         /* Original identity remains. */
       }
-      setNote(String(r.message || (resolved ? '原请求已记录' : '执行结果未知，请查询原请求')));
+      setNote(message);
     }
     await client.invalidateQueries({ queryKey: ['core-work', scope.organizationId] });
   };

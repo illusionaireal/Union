@@ -194,6 +194,80 @@ it('an accepted cancel retains its original lookup after reload', async () => {
   mount();
   fireEvent.click(await screen.findByRole('button', { name: '查询原请求' }));
   await waitFor(() => expect(api.coreWorkReceipt).toHaveBeenCalledWith('au-1', original.id));
+  await screen.findByText('原请求已完成');
+  expect(api.coreWorkCommand).toHaveBeenCalledTimes(1);
+});
+
+it.each([true, false])('an intent-only original GET can advance to delivery %s without another POST', async (accepted) => {
+  reserved(true);
+  let finish!: (value: { receipt: ReturnType<typeof receipt> }) => void;
+  vi.mocked(api.coreWorkCommand).mockImplementation(() => new Promise((resolve) => { finish = resolve; }));
+  mount();
+  fireEvent.click(await screen.findByRole('button', { name: '取消本次执行' }));
+  await waitFor(() => expect(api.coreWorkCommand).toHaveBeenCalledTimes(1));
+  const original = vi.mocked(api.coreWorkCommand).mock.calls[0][0];
+  const intent = { ...receipt(original), model_request_id: 'original-model-request',
+    cancel_accepted: null, message: '取消意图已提交；送达尚未核对' };
+  vi.mocked(api.coreWorkReceipt).mockResolvedValue({ receipt: intent });
+  fireEvent.click(screen.getByRole('button', { name: '查询原请求' }));
+  await screen.findByText(intent.message);
+  const observation = { cancel_accepted: accepted, message: accepted ? '已送达原请求' : '未确认送达原请求' };
+  const delivered = { ...intent, ...observation, delivery: observation };
+  await act(async () => { finish({ receipt: delivered }); });
+  await screen.findByText(observation.message);
+  // A delayed GET can still contain the earlier durable intent snapshot.
+  fireEvent.click(screen.getByRole('button', { name: '查询原请求' }));
+  await waitFor(() => expect(screen.getByRole('button', { name: '查询原请求' })).toBeEnabled());
+  expect(screen.getByText(observation.message)).toBeVisible();
+  expect(screen.queryByText(intent.message)).toBeNull();
+  expect(api.coreWorkCommand).toHaveBeenCalledTimes(1);
+  expect(JSON.stringify(sessionStorage)).not.toContain(observation.message);
+});
+
+it('a lost POST after intent lookup allows the original GET to reveal durable delivery', async () => {
+  reserved(true);
+  let fail!: (error: Error) => void;
+  vi.mocked(api.coreWorkCommand).mockImplementation(() => new Promise((_resolve, reject) => { fail = reject; }));
+  const view = mount();
+  fireEvent.click(await screen.findByRole('button', { name: '取消本次执行' }));
+  await waitFor(() => expect(api.coreWorkCommand).toHaveBeenCalledTimes(1));
+  const original = vi.mocked(api.coreWorkCommand).mock.calls[0][0];
+  const intent = { ...receipt(original), model_request_id: 'original-model-request',
+    cancel_accepted: null, message: '取消意图已提交；送达尚未核对' };
+  vi.mocked(api.coreWorkReceipt).mockResolvedValue({ receipt: intent });
+  fireEvent.click(screen.getByRole('button', { name: '查询原请求' }));
+  await screen.findByText(intent.message);
+  await act(async () => { fail(new Error('lost response')); });
+  const observation = { cancel_accepted: true, message: '已送达原请求' };
+  vi.mocked(api.coreWorkReceipt).mockResolvedValue({ receipt: { ...intent, ...observation, delivery: observation } });
+  fireEvent.click(screen.getByRole('button', { name: '查询原请求' }));
+  await screen.findByText(observation.message);
+  view.unmount();
+  mount();
+  fireEvent.click(await screen.findByRole('button', { name: '查询原请求' }));
+  await screen.findByText(observation.message);
+  expect(api.coreWorkCommand).toHaveBeenCalledTimes(1);
+});
+
+it('a completed run can be displayed after reload and cannot regress to unknown', async () => {
+  reserved(true);
+  current.works[0].steps = [];
+  current.works[0].budget.reserved = 0;
+  const view = mount();
+  fireEvent.click(await screen.findByRole('button', { name: '运行 AI 工作' }));
+  await screen.findByText('原请求已完成');
+  const original = vi.mocked(api.coreWorkCommand).mock.calls[0][0];
+  view.unmount();
+  mount();
+  vi.mocked(api.coreWorkReceipt).mockResolvedValue({ receipt: receipt(original) });
+  fireEvent.click(await screen.findByRole('button', { name: '查询原请求' }));
+  await screen.findByText('原请求已完成');
+  vi.mocked(api.coreWorkReceipt).mockResolvedValue({ receipt: { ...receipt(original),
+    status: 'unknown', message: 'old unknown snapshot' } });
+  fireEvent.click(screen.getByRole('button', { name: '查询原请求' }));
+  await waitFor(() => expect(screen.getByRole('button', { name: '查询原请求' })).toBeEnabled());
+  expect(screen.getByText('原请求已完成')).toBeVisible();
+  expect(screen.queryByText('old unknown snapshot')).toBeNull();
   expect(api.coreWorkCommand).toHaveBeenCalledTimes(1);
 });
 
