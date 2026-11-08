@@ -300,6 +300,14 @@ class ModelAPITests(unittest.TestCase):
         self.bind()
         self.provider.outputs = copy.deepcopy(FIXTURE)
         receipt = self.command("start", {"executor": "api", "max_steps": 8, "allow_unknown_cost": True})
+        # Six individually bounded HTTP requests plus durable receipts may exceed
+        # Console.join_jobs' production shutdown wait on a slower runner.
+        deadline = time.monotonic() + 30
+        with self.app.mutex:
+            jobs = list(self.app.jobs)
+        for job in jobs:
+            job.join(timeout=max(0, deadline - time.monotonic()))
+            self.assertFalse(job.is_alive(), "six-request fixture exceeded its observation bound")
         self.app.join_jobs()
         receipt = self.app.receipt(self.board, self.org, receipt["id"])
         self.assertEqual(receipt["status"], "succeeded")
