@@ -1913,6 +1913,13 @@
                     "from": "doing",
                     "to": "doing",
                     "note": "前台独立复核PR35/PR34组合，在67040f8复现can_start=false但仍可读时原请求查询入口消失；固定源码与实际Chrome均RED后最小修复。18 DOM、8实际浏览器、5 HTTP/重开及npm240前端通过，证据evidence/U-084/readable-lookup/README.md。新前台差异另需工程角色复核及最终组合CI；保留PR34/35原提交和父卡真实出口，不改在线owner/status。"
+                },
+                {
+                    "at": "2026-11-08T17:37:10.635Z",
+                    "actor": "codex-home / single duty Codex session",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "2026-11-09追加执行子卡#59/U-105（22-D，4–6h）、#60/U-106（22-E，2–4h），五父卡共23子项，原21创建历史保留；#39新增两项前置。#59在bb5795b上完成实际Core目标/责任/预算登记与原命令恢复候选，严格DOM RED→GREEN、4 HTTP/SQLite、10实际浏览器（工作POST1/模型请求0）通过，证据evidence/U-105/README.md和verification.json。独立身份/权限复核与当前head CI待采用；#60仍顺序等待，不扩真实资源授权。此条仅交付历史，父卡owner/status/WIP及真实验收不变，不作为在线调度依据。"
                 }
             ],
             "claim": {
