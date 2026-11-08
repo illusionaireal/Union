@@ -29,3 +29,12 @@
 
 - 预约的**释放/结算**路径未断言（[104](../104-s03-reconcile-semantics/README.md)：`reconcile_step` 返回 succeeded 但预约仍在，待后台/协调者明确语义后再补）；
 - 全程受控替身，无真实模型调用。
+
+## 全量复核（本分支，含本测试）
+
+```
+Ran 715 tests in 427.305s
+OK (skipped=10)
+```
+
+`python-full.txt` 为原始日志；分支 `dsh/s03-real-acceptance` 基于 `bbe8068`，只新增测试与证据，无产品代码改动。
