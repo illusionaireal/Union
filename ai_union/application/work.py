@@ -636,6 +636,12 @@ class WorkService:
                 previous = self.store.existing(cx, request, principal)
                 if previous is not None:
                     return previous
+                # A duplicate may commit intent while this invocation is still
+                # preparing its channel. Its dispatch owns the final receipt;
+                # a late preflight refusal cannot declare that call unexecuted.
+                original = dispatch.find(state, request, principal)
+                if original is not None:
+                    return dispatch.pending(request, principal, state, original)
                 self.store.ensure_commands(cx)
                 state = copy.deepcopy(state)
                 charter = state.pop("charter")

@@ -1,5 +1,6 @@
 # U-067 证据索引
 
+- [2026-11-08：同请求并发准备失败不能抢占原派发回执](preflight-receipt-race/README.md)：4 RED → 6 GREEN，迟到拒绝与真实调用事实分开；保留原预约、用量和重启幂等，待独立工程复核。
 - [2026-11-08：组合候选的 V1 HTTP 夹具超时修复](core-http-fixture/README.md)：真实延迟 RED/GREEN、原 POST 一次与显式短超时；不改变产品权限或 CI 门禁。
 - [2026-11-08：待审候选的组合验证](combined-integration/README.md)：PR #24/#25/#26/#27 顺序组合，schema 4 下成果与未知预约的真实浏览器验证；不是独立复核或真实模型验收。
 - [2026-11-08：后续准入拒绝仍保存父循环用量回执](loop-receipt-fix/README.md)：4 个真实 RED 后最小修复，保留已发生调用、未知预约及原请求恢复；真实验收另计。
