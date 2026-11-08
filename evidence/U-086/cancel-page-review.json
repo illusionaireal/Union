@@ -1,0 +1,42 @@
+{
+  "candidate": "a3bb2ccf71b6a4de5b42588176f71f43489d35de",
+  "integration": "2ff90f1fe631e46fc71f9ba5487417415e0e4f63",
+  "review_actor": "codex-home single duty session",
+  "online_user_id": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+  "board_revision": 494,
+  "card": 40,
+  "card_version": 7,
+  "product_changes": false,
+  "old_scope_receipt_rendered_in_dom": true,
+  "real_model_calls": 0,
+  "logs": {
+    "u086-a3bb2cc-dom-probes.log": {
+      "sha256": "106a45f08b543250a1c08e6b73b4c6048e3d3292da248374a20b80b495fac345",
+      "passed": 1,
+      "failed": 4,
+      "summary": [
+        "Test Files  1 failed (1)",
+        "Tests  4 failed | 1 passed (5)",
+        "Duration  4.45s (transform 151ms, setup 136ms, collect 348ms, tests 3.25s, environment 339ms, prepare 85ms)"
+      ]
+    },
+    "u086-a3bb2cc-cancel-boundary-probes.log": {
+      "sha256": "4e2581d98fe112a008fc760ec802990cd8fe993369691aa139335a903cdc52fa",
+      "passed": 4,
+      "failed": 0,
+      "summary": [
+        "Ran 4 tests in 5.250s",
+        "OK"
+      ]
+    },
+    "u086-a3bb2cc-cancel-route-probe.log": {
+      "sha256": "6c04013e32d87cdc23051d24e459499f0c4f88ce92f8a94333bd5235a1c236aa",
+      "passed": 0,
+      "failed": 1,
+      "summary": [
+        "Ran 1 test in 0.962s",
+        "FAILED (failures=1)"
+      ]
+    }
+  }
+}
