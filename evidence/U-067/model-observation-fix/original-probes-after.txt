@@ -1,0 +1,5 @@
+test_reservation_is_committed_before_external_dispatch (__main__.ReviewProbes.test_reservation_is_committed_before_external_dispatch) ... FAIL
+test_authorized_document_text_reaches_second_model_turn (__main__.ReviewProbes.test_authorized_document_text_reaches_second_model_turn) ... FAIL
+test_completed_then_revoked_request_retains_execution_fact (__main__.ReviewProbes.test_completed_then_revoked_request_retains_execution_fact) ... ok
+Ran 3 tests in 3.060s
+FAILED (failures=2)

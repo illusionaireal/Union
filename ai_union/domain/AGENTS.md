@@ -53,3 +53,9 @@
   sources include original tool receipts actually supplied to later turns.
   Private messages/storage stay outside this pure owner. See the S03 tool
   context contract and `tests/test_work_context.py`.
+
+- `record_unadoptable_step` records completed model inference as used, including
+  the original model request ID and observed token usage. Revocation denies
+  content/tool adoption; it does not erase executed calls. Unknown remains
+  reserved and used cannot be reconciled as released. Verify the scoped
+  contract and `tests/test_work_observation.py` with existing work regressions.

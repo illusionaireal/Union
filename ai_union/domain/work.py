@@ -497,6 +497,17 @@ def fail_step(state, data, instance=None, clock=None):
     return {"step": step["step_ref"], "status": "unknown"}
 
 
+def record_unadoptable_step(state, data, instance=None, clock=None):
+    """Record completed inference without adopting content or authorizing tools."""
+    step = reserve_step(state, {"work_id": data["work_id"]}, clock, instance)
+    step.update(model_request_id=data["model_request_id"], model_outcome="not_adoptable",
+                usage=dict(data["usage"]), cost_status="unknown")
+    settle_step(state, {"work_id": data["work_id"], "step_id": step["step_ref"], "status": "used",
+                        "reason": data["reason"]}, clock)
+    return {"step": step["step_ref"], "model_request_id": step["model_request_id"],
+            "model_outcome": "not_adoptable", "usage": dict(step["usage"])}
+
+
 def reconcile_step(state, data, clock=None):
     """Resolve a step whose model result was unknown, with a recorded reason."""
     work = records(state)["works"].get(data["work_id"])

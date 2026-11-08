@@ -1,0 +1,10 @@
+test_state_database_link_cannot_escape_the_validated_directory (tests.test_catalog_integrity.CatalogIntegrityTests.test_state_database_link_cannot_escape_the_validated_directory) ... skipped 'host cannot create a file symlink: 22'
+test_core_save_and_two_stage_tool_exchange_use_actual_modeld_sdk_contract (tests.test_core_model_http.CoreModelHTTPTests.test_core_save_and_two_stage_tool_exchange_use_actual_modeld_sdk_contract) ... skipped 'Set UNION_BUN to the pinned Bun for the actual SDK integration'
+test_built_candidate_declares_its_actual_model_schema (tests.test_core_model_release.CoreModelReleaseTests.test_built_candidate_declares_its_actual_model_schema) ... skipped 'Build both products before checking the package declaration'
+test_mode_only_drift_rejected (tests.test_dev_orchestrator.ControllerTests.test_mode_only_drift_rejected) ... skipped 'Linux executable bits required'
+test_same_repo_second_state_directory_cannot_take_cycle_lock (tests.test_dev_orchestrator.ControllerTests.test_same_repo_second_state_directory_cannot_take_cycle_lock) ... skipped 'Windows locking conflict raises OS error before POSIX path'
+test_attach_client_exit_requires_container_stop_evidence (tests.test_workspace.WorkspaceTests.test_attach_client_exit_requires_container_stop_evidence) ... skipped 'Linux-only container host'
+test_container_command_exposes_only_selected_workspace_without_network_or_secrets (tests.test_workspace.WorkspaceTests.test_container_command_exposes_only_selected_workspace_without_network_or_secrets) ... skipped 'Linux-only container host'
+test_killed_attach_client_is_unknown (tests.test_workspace.WorkspaceTests.test_killed_attach_client_is_unknown) ... skipped 'Linux-only container host'
+Ran 651 tests in 381.887s
+OK (skipped=8)
