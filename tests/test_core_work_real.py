@@ -42,9 +42,8 @@ def acceptance_problems(work, receipt, max_output):
         problems.append("费用必须如实记为 unknown")
     calls = work.get("tool_calls") or []
     reads = [call for call in calls if call.get("tool") == "read_document"]
-    lists = [call for call in calls if call.get("tool") == "list_documents"]
-    if not reads and not any(int(call.get("count") or 0) > 0 for call in lists):
-        problems.append("没有读取到任何资料")
+    if not reads:
+        problems.append("只列目录不算读取：必须有一次 read_document 证明模型真的读了资料正文")
     if any(not call.get("sha256") or not call.get("bytes") for call in reads):
         problems.append("读取资料的调用缺少摘要")
     if not (work.get("results") or []):
@@ -74,8 +73,12 @@ class RealChannelCase(ModelAccessCase):
         client = ModelServiceClient(CONFIG)
         accounts = client.call("GET", "/v1/accounts", admin=True).get("accounts") or []
         self.assertTrue(accounts, "宿主 modeld 没有可用账号；请先完成设备授权")
-        account = (os.environ.get("UNION_REAL_ACCOUNT")
-                   or (accounts[0].get("id") or accounts[0].get("account_ref")))
+        account = os.environ.get("UNION_REAL_ACCOUNT")
+        if not account:
+            self.skipTest("需要 UNION_REAL_ACCOUNT 明确指定账号；不得默认第一个账号")
+        known = {item.get("id") or item.get("account_ref") for item in accounts}
+        if account not in known:
+            self.skipTest("UNION_REAL_ACCOUNT 不在 modeld 的可用账号列表内")
         grant_id = "grant-" + uuid.uuid4().hex[:12]
         created = client.call("POST", "/v1/grants", {"id": grant_id, "au_id": au_id, "account_ref": account,
                                                      "model_ids": [MODEL]}, admin=True)
