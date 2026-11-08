@@ -146,3 +146,24 @@ node scripts/project-management.mjs record U-078 --actor "dsh/deepseek-v4.1-flas
 1. **开 PR**：`https://github.com/illusionaireal/Union/compare/rewrite/charter-v1...dsh/s03-work-runtime?expand=1`（本机无 `gh`，也无仓库 token，无法代开）。
 2. 审阅并合入；合并前建议先提交协调者自己的运行态统一改动（已确认与其 17 个未提交文件**零重叠**）。
 3. 看板 #22/#32 的状态同步需等 Cloudflare Worker 端可达后补。
+
+## 进一步定位：全局 gitconfig 里的按 URL 代理（2026-11-08 08:25）
+
+`git config --show-origin --get-regexp proxy` 显示：
+
+```
+file:C:/Users/Benedict/.gitconfig   http.https://github.com.proxy   http://127.0.0.1:7897
+```
+
+这解释了为什么清空 `*_PROXY` 环境变量后 git 仍打印 `Trying 127.0.0.1:7897` / `CONNECT: no ALPN negotiated`：git 对 `github.com` 单独配置了代理，而该代理的 TLS 已损坏。
+
+- **唯一一次成功推送**（`bdbc382..bb1b417`）发生在设置了 `NO_PROXY=github.com` 的那次调用——`NO_PROXY` 覆盖了按 URL 的代理配置。
+- 用 `git -c "http.https://github.com.proxy="` 强制直连后再试，得到 `Failed to connect to github.com:443 after 21085 ms`：直连 TCP 本身**间歇不可用**（同一时刻 `curl` 直连同一端点返回 HTTP 200），说明是进程级/路由级的不稳定，而非纯配置问题。
+
+**建议（需要用户或协调者执行，我不改用户全局 git 配置）**：
+
+1. 修复 `127.0.0.1:7897` 的代理，或从 `C:\Users\Benedict\.gitconfig` 移除/替换该 `http.https://github.com.proxy` 行；
+2. 或在每条命令上临时覆盖：`git -c "http.https://github.com.proxy=" push …` 并配合 `$env:NO_PROXY='github.com'`；
+3. 看板（Cloudflare Worker）另有一层不可达（`cloudflare.com` 可达、该 Worker 超时），需要单独排查。
+
+**当前远端状态**：`origin/dsh/s03-work-runtime` = `bb1b417`（20 个提交，含全部产品代码与证据）；本地另有 1 个仅文档提交 `abd9f35` 未推送。
