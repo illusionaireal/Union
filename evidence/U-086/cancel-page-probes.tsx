@@ -59,3 +59,43 @@ it('review control: browsing an unknown reservation does not send any command', 
   expect(api.coreWorkCommand).not.toHaveBeenCalled();
   expect(screen.queryByRole('button', { name: '取消本次执行' })).toBeNull();
 });
+
+it('review: a retained page run-loop request does not block cancelling its running step', async () => {
+  reserved(true);
+  current.works[0].steps = [];
+  current.works[0].budget.reserved = 0;
+  vi.mocked(api.coreWorkCommand).mockImplementation(async (r) => {
+    if (r.kind === 'run_loop') {
+      reserved(true);
+      current.works[0].steps[0].command_id = r.id;
+      throw new Error('running loop response lost');
+    }
+    return { receipt: receipt(r) };
+  });
+  const view = mount();
+  fireEvent.click(await screen.findByRole('button', { name: '运行 AI 工作' }));
+  await screen.findByText('running loop response lost');
+  expect(api.coreWorkCommand).toHaveBeenCalledTimes(1);
+  view.unmount();
+  mount();
+  fireEvent.click(await screen.findByRole('button', { name: '取消本次执行' }));
+  await waitFor(() => expect(api.coreWorkCommand).toHaveBeenCalledTimes(2));
+  expect(vi.mocked(api.coreWorkCommand).mock.calls.map(([r]) => r.kind)).toEqual([
+    'run_loop', 'cancel_step',
+  ]);
+});
+
+it('review: an accepted cancel retains its original lookup after reload', async () => {
+  reserved(true);
+  const view = mount();
+  fireEvent.click(await screen.findByRole('button', { name: '取消本次执行' }));
+  await screen.findByText('原请求已完成');
+  const original = vi.mocked(api.coreWorkCommand).mock.calls[0][0];
+  expect(original.kind).toBe('cancel_step');
+  vi.mocked(api.coreWorkReceipt).mockResolvedValue({ receipt: receipt(original) });
+  view.unmount();
+  mount();
+  fireEvent.click(await screen.findByRole('button', { name: '查询原请求' }));
+  await waitFor(() => expect(api.coreWorkReceipt).toHaveBeenCalledWith('au-1', original.id));
+  expect(api.coreWorkCommand).toHaveBeenCalledTimes(1);
+});
