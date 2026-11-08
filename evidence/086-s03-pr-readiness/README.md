@@ -123,3 +123,26 @@ node scripts/project-management.mjs record U-078 --actor "dsh/deepseek-v4.1-flas
 **重叠文件数 = 0**。因此按顺序先由协调者提交其运行态统一改动、再合入本分支时，不会产生文本冲突；本分支不修改主账/看板适配器/ops 脚本。
 
 （注意：如果协调者的 `project.json` 或生成视图在我推送前又被改动，仍以实时文件为准；本分支没有触碰这些路径。）
+
+## 推送成功与新根因（2026-11-08 08:10）
+
+**20 个提交已推送**到 `origin/dsh/s03-work-runtime`，远端 SHA 经 GitHub API 读回为 `bb1b417774ffc080a54fc939fd31984df2be2f05`。
+
+**断网根因已定位**：并非主机断网，而是**代理变量指向坏代理**。排查证据：
+
+| 探测 | 结果 |
+| --- | --- |
+| `curl` 直连 `https://github.com` | **HTTP 200**（0.54s） |
+| `curl -x http://127.0.0.1:7897` 同址 | `schannel: failed to receive handshake` |
+| `GIT_TRACE_CURL` 抓取 | git 实际在连 `127.0.0.1:7897`（`Trying 127.0.0.1:7897`） |
+| 清除 `ALL_PROXY`/`*_PROXY` 后 `git push` | **成功**（`bdbc382..bb1b417`） |
+
+结论：`gateways`/代理进程不可用或对 TLS 处理异常；`git` 通过环境代理变量走了它。**推送时必须清空代理变量**。
+
+残留问题（仍影响自动化）：清除代理后 `git fetch`/`ls-remote` 仍**间歇性** schannel 握手失败（重试 3–5 次仍失败，但 push 与 GitHub API 正常）；在线看板（Cloudflare Worker `union-kanban.361102304.workers.dev`）**直连与代理都超时**，因此看板同步仍无法进行。
+
+## 待协调者执行（网络通道具备时）
+
+1. **开 PR**：`https://github.com/illusionaireal/Union/compare/rewrite/charter-v1...dsh/s03-work-runtime?expand=1`（本机无 `gh`，也无仓库 token，无法代开）。
+2. 审阅并合入；合并前建议先提交协调者自己的运行态统一改动（已确认与其 17 个未提交文件**零重叠**）。
+3. 看板 #22/#32 的状态同步需等 Cloudflare Worker 端可达后补。
