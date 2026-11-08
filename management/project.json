@@ -1934,6 +1934,20 @@
                     "from": "doing",
                     "to": "doing",
                     "note": "U-106/#60从3e1071b实施实际Core原AI成果采用/交付与原请求恢复候选。独立治理资格、kind/Work/result隔离、原loop完成证据关闭原attempt、范围下载与迟到读取保护经过RED→GREEN；72相关HTTP/Python、16实际Chrome（fake2/real0）、npm315/37/9通过，证据evidence/U-106/README.md和verification.json，契约specs/053-union-rewrite/s03-result-delivery-contract.md。完整Python/当前head CI和前台独立权限/身份复核分别取证，尚未采用；父#22原owner/真实出口不变。本条只追加交付历史，不作为在线调度依据。"
+                },
+                {
+                    "at": "2026-11-08T19:31:00.395Z",
+                    "actor": "codex-home/foreground-independent-review",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "PR38已通过最终14项CI并合入3e1071bc22139233ad512bc40c824168cb53b8b9；合并tree与受测b443415一致。773 Python/9跳过、npm294前端；独立工程复核与前台测试观察修复证据evidence/U-105/foreground-review.md。在线看板#59已读回done，本条仅交付历史。"
+                },
+                {
+                    "at": "2026-11-08T19:31:00.396Z",
+                    "actor": "codex-home/foreground-independent-review",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "前台独立复核产品702fd8718d817a61f8e57fdeef05c73b4ef01571：原loop无法交付、明确拒绝无法再次操作两个缺陷已各自RED→GREEN；20 HTTP/SQLite、86相关DOM、23实际Chrome通过，782 Python/9跳过和npm315前端日志核对。证据evidence/U-106/foreground-review.md/json与独立探针。产品实施者为此前值守、前台为独立复核，在线member相同而actor分别记录。仅受控工程候选；最终CI/合并及#60在线验收另记，#39/#40/父#22真实出口保留。"
                 }
             ],
             "claim": {
