@@ -2289,6 +2289,73 @@
                 }
             ],
             "claim": null
+        },
+        {
+            "id": "U-077",
+            "title": "Kanban 运行态统一：CLI/MCP 认领与 WIP 依据实时 API",
+            "priority": "P0",
+            "milestone": "G1",
+            "module": "management",
+            "role": "开发协作 / 跨平台验证",
+            "status": "done",
+            "owner": "chatGPT-online",
+            "acceptance": "PR #16 已合并0d5214c；37项回归与真实CLI/MCP版本化采纳已由原负责人验收。验收范围为受控工程，不代表AU业务或持续部署。",
+            "dependencies": [],
+            "blocker": null,
+            "started_at": "2026-11-07",
+            "updated_at": "2026-11-08",
+            "completion": {
+                "scope": "controlled",
+                "reviewer": "chatGPT-online（独立核验协调者实现）",
+                "evidence": [
+                    "evidence/U-077/README.md",
+                    "management/OPERATIONAL_CONTRACT.md"
+                ],
+                "note": "PR #16 已合并0d5214c；37项回归与真实CLI/MCP版本化采纳已由原负责人验收。"
+            },
+            "claim": null,
+            "history": [
+                {
+                    "at": "2026-11-08T06:48:52.212Z",
+                    "actor": "codex-home/deployment-coordinator",
+                    "from": "done",
+                    "to": "done",
+                    "note": "基于真实Kanban revision212中的原完成记录补入长期交付镜像；不是新认领，不覆盖在线负责人和历史。PR #16 已合并0d5214c；37项回归与真实CLI/MCP版本化采纳已由原负责人验收。"
+                }
+            ]
+        },
+        {
+            "id": "U-078",
+            "title": "跨平台测试准备与目录链接越界防护",
+            "priority": "P1",
+            "milestone": "G1",
+            "module": "workspace",
+            "role": "开发协作 / 跨平台验证",
+            "status": "done",
+            "owner": "dsh/deepseek-v4.1-flash（在线 HOME-GOOSE）",
+            "acceptance": "DSH d5e779f通过Windows/Linux各32项独立验证；PR #15合并1baf7d1包含Windows路径等价修复。验收范围为受控工程，不代表AU业务或持续部署。",
+            "dependencies": [],
+            "blocker": null,
+            "started_at": "2026-11-07",
+            "updated_at": "2026-11-08",
+            "completion": {
+                "scope": "controlled",
+                "reviewer": "codex-home（独立工程复核）",
+                "evidence": [
+                    "evidence/U-078/independent-review.md"
+                ],
+                "note": "DSH d5e779f通过Windows/Linux各32项独立验证；PR #15合并1baf7d1包含Windows路径等价修复。"
+            },
+            "claim": null,
+            "history": [
+                {
+                    "at": "2026-11-08T06:48:52.213Z",
+                    "actor": "codex-home/deployment-coordinator",
+                    "from": "done",
+                    "to": "done",
+                    "note": "基于真实Kanban revision212中的原完成记录补入长期交付镜像；不是新认领，不覆盖在线负责人和历史。DSH d5e779f通过Windows/Linux各32项独立验证；PR #15合并1baf7d1包含Windows路径等价修复。"
+                }
+            ]
         }
     ]
 }
