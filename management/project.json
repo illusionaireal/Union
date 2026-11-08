@@ -1948,6 +1948,13 @@
                     "from": "doing",
                     "to": "doing",
                     "note": "前台独立复核产品702fd8718d817a61f8e57fdeef05c73b4ef01571：原loop无法交付、明确拒绝无法再次操作两个缺陷已各自RED→GREEN；20 HTTP/SQLite、86相关DOM、23实际Chrome通过，782 Python/9跳过和npm315前端日志核对。证据evidence/U-106/foreground-review.md/json与独立探针。产品实施者为此前值守、前台为独立复核，在线member相同而actor分别记录。仅受控工程候选；最终CI/合并及#60在线验收另记，#39/#40/父#22真实出口保留。"
+                },
+                {
+                    "at": "2026-11-08T19:47:59.152Z",
+                    "actor": "codex-home/foreground-release-coordinator",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "U106/PR39最终采用：准确head13195dd41517934ce75b5b8ba9ec308b8ad13964全14CI成功，已合入22a5a0da2299a7b6f002be90574220be34133308，tree36defb2ad4adaf49b4e5eeff00d807691ecb27d0相同。782 Python/9跳过、npm315前端；独立工程review5819335235和20 HTTP/86 DOM/23实际Chrome通过。证据evidence/U-106/foreground-review.md/json，实际合并回执https://github.com/illusionaireal/Union/pull/39#issuecomment-6726232752。#60受控工程完成；#39/#40及父#22真实出口保留，零新增真实调用。"
                 }
             ],
             "claim": {
@@ -2259,7 +2266,7 @@
             ],
             "blocker": null,
             "started_at": null,
-            "updated_at": "2026-11-06",
+            "updated_at": "2026-11-09",
             "completion": null,
             "history": [
                 {
@@ -2268,6 +2275,13 @@
                     "from": "backlog",
                     "to": "backlog",
                     "note": "按用户“每张卡看不懂、内容太抽象”的反馈，改为具体功能、操作和完成演示。原技术验收完整保留在 specs/053-union-rewrite/tasks.md#u-074-development；范围、状态、owner、依赖、claim和既有验收记录不变，不执行未来卡。"
+                },
+                {
+                    "at": "2026-11-08T19:47:59.152Z",
+                    "actor": "codex-home/foreground-release-coordinator",
+                    "from": "backlog",
+                    "to": "backlog",
+                    "note": "U107/#61固定PR38部署已完成真实只读预检及候选准备，尚未上线。源码3e1071b的94文件committed包SHA256 4ef76df3985d5828de3e512bf7dc902bf86614c621e0ee4fa6bc60cc5cdfbfcf，NAS隔离环境59固定依赖实际导入/Bun1.4.2/包完整性通过；原服务与TLS入口正常。原身份auth0/catalog0被候选要求auth2/catalog1的真实门禁拒绝，快照字节未变。20文件/3SQLite在线只读快照保留，非跨库停服恢复点。已向用户提出限定身份迁移确认；#61保留codex-home和blocked WIP。证据evidence/U-107/README.md、preflight.json；新密钥/迁移/真实调用/生产切换均0，父#27持续验收保持。"
                 }
             ]
         },

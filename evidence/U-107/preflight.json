@@ -1,0 +1,112 @@
+{
+  "scope": "prepared release plus actual NAS read-only and isolated package validation; not live activation",
+  "actor": "foreground coordinating engineering session",
+  "online_member": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+  "candidate": {
+    "package_sha256": "4ef76df3985d5828de3e512bf7dc902bf86614c621e0ee4fa6bc60cc5cdfbfcf",
+    "release_id": "pr38-3e1071b",
+    "git_baseline": "3e1071bc22139233ad512bc40c824168cb53b8b9",
+    "source_state": "committed",
+    "changed_sources": [],
+    "file_count": 94,
+    "actual_schema": {
+      "auth": 0,
+      "catalog": 0
+    },
+    "required_schema": {
+      "auth": 2,
+      "catalog": 1
+    },
+    "candidate_real_guard_rejected": true,
+    "reason": "Candidate auth/catalog schema is incompatible; explicitly upgrade or select compatible code, never erase newer state",
+    "snapshot_database_unchanged": true,
+    "migration_performed": false
+  },
+  "backup": {
+    "sha256": "25e7801a06a2b4ae6fba43f501ae962c3e11221e6696e53b532fb787a13cecb2",
+    "bytes": 32520,
+    "files": 20,
+    "sqlite_snapshots": 3,
+    "live_mutations": 0,
+    "cross_database_consistency": false,
+    "restoration_not_executed": true
+  },
+  "entry": [
+    {
+      "route": "/",
+      "status": 200,
+      "sha256": "4d938c1571d931cb4ad25a922b446ed363c1303f53290fcd2ac514042bbb8d64"
+    },
+    {
+      "route": "/api/auth/status",
+      "status": 200,
+      "sha256": "e6d3ea84af0bab58655bf62a4d1287db06d507243af2f73c008873ec30868d8a",
+      "keys": [
+        "account",
+        "authenticated",
+        "can_setup",
+        "configured"
+      ],
+      "configured": true,
+      "authenticated": false
+    }
+  ],
+  "runtime_dependency_check": {
+    "required": 59,
+    "current_matches": 0,
+    "isolated_pinned_imports_passed": 59,
+    "bun": "1.4.2",
+    "real_model_calls": 0,
+    "keys_created": 0,
+    "migration_performed": false
+  },
+  "original_records": {
+    "organizations": 1,
+    "works": 3,
+    "work_statuses": {
+      "pending": 3
+    },
+    "runs": {
+      "delivered": 3
+    },
+    "commands": {
+      "succeeded": 4,
+      "rejected": 1
+    },
+    "sessions": {
+      "completed": 1
+    },
+    "sqlite_quick_checks": 3
+  },
+  "current_blocker": "Explicit approval for this one stopped-service auth0/catalog0 to auth2/catalog1 identity upgrade is pending. Old production service remains running. No deployment or migration is implied by isolated package checks.",
+  "log_hashes": {
+    "u107-build-console.log": {
+      "sha256": "d5c86ad1eae35a63ba62e02a7eae8c049873c41cee99634db454993c2db05ea2",
+      "bytes": 839
+    },
+    "u107-build-modeld.log": {
+      "sha256": "f18f56ef62e0125770c594a0d7aff7537c7a50bc163be806b06557154a9b2980",
+      "bytes": 750
+    },
+    "u107-build-modeld-pinned.log": {
+      "sha256": "4e0e6bc1296c058f49f145e34af9cae5b6e1869109b5c70ad4832e065277b301",
+      "bytes": 789
+    },
+    "u107-build-modeld-final.log": {
+      "sha256": "2bdfd131b1a47f14f8dd16cad43a849c26935c73a958763c0f11f37412d2fbab",
+      "bytes": 491
+    },
+    "u107-pack.log": {
+      "sha256": "2594633a5151edc0eecc84a77189673fc8bf5760f1bdb4e68374d1f7aa226de3",
+      "bytes": 134
+    },
+    "u107-package-verify.log": {
+      "sha256": "2594633a5151edc0eecc84a77189673fc8bf5760f1bdb4e68374d1f7aa226de3",
+      "bytes": 134
+    },
+    "u107-linux-package-check.log": {
+      "sha256": "244baae4ab27a9d744998d29b7fdb2aa5d464f01de44e88c7b4b1a04ad3ea97a",
+      "bytes": 2042
+    }
+  }
+}
