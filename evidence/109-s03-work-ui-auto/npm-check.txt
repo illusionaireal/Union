@@ -1,0 +1,202 @@
+
+> union@0.0.0 check
+> npm run check:management && npm run check:plan && npm test && npm run check:console
+
+
+> union@0.0.0 check:management
+> node scripts/project-management.mjs check && node --test tests/project-management.test.mjs tests/union-board.test.mjs tests/kanban-operational.test.mjs
+
+Management check: 15 modules, 8 milestones, 78 tasks; PASS
+✔ CLI claims online-only card with real user/version without reading damaged local mirror (163.8976ms)
+✔ CLI refuses a foreign assignee and unmet dependencies before PATCH (265.7763ms)
+✔ MCP uses the same owner protection and does not steal a card (127.1305ms)
+✔ 409 produces one PATCH, reads back the card and preserves mirror (184.3326ms)
+✔ completion without real evidence is refused before changing online status (92.1192ms)
+✔ configured live WIP includes blocked work and refuses a further claim (139.4663ms)
+✔ lost PATCH response and HTTP 202 are read back without replay (313.5033ms)
+✔ successful CLI and MCP records preserve complete evidence without a second write (270.5574ms)
+✔ own started claim is idempotent and cannot release or force-hide started work (388.9345ms)
+✔ missing credentials never fall back to a local operational write (81.3371ms)
+✔ status reads online despite damaged historical ledger and exposes absent WIP configuration (122.2119ms)
+✔ picker resumes only current user, does not select foreign work or backlog, and counts blocked WIP (136.143ms)
+✔ rejects missing owners at start and unfinished dependencies, but permits honest unassigned backlog (5.7073ms)
+✔ completion requires scope, reviewer and existing evidence, and does not promote milestones (2.0986ms)
+✔ rejects duplicate IDs, unknown references and dependency cycles (2.27ms)
+✔ blocked work needs an unblock action; already-started blocked work counts toward WIP (2.9571ms)
+✔ rejects evidence outside repository, invalid scope and malformed dates (1.9919ms)
+✔ deterministic generated views reject stale output and preserve surrounding narrative (31.8444ms)
+✔ flow summary keeps empty live evidence distinct from completion counts (1.3364ms)
+✔ milestone acceptance and task scope cannot be asserted without their review metadata (2.8246ms)
+✔ claim writes a lease and enters doing, and blocks a second harness until the lease expires (7.0928ms)
+✔ claim refuses cards that are not ready and refuses to exceed the WIP limit (3.6539ms)
+✔ claim requires a real actor and refuses unknown cards (2.5215ms)
+✔ release only gives back an unstarted claim and clears the lease (2.4874ms)
+✔ done needs scope, reviewer, note and real evidence; completion clears the lease (2.5272ms)
+✔ a non-holder cannot move a card, and force cannot smuggle a foreign lease silently (2.306ms)
+✔ blocked needs a reason and an unblock action, and started work cannot hide back in ready (3.0921ms)
+✔ board view exposes columns, the ready queue and lease state (12.1374ms)
+✔ serializeLedger keeps the ledger byte format (4 spaces, CRLF, trailing newline) (3.3874ms)
+✔ the ledger lock refuses a second writer, then recovers after the holder finishes (131.302ms)
+✔ mutateLedger writes the ledger and rebuilds both generated views in one locked step (24.6763ms)
+✔ a rejected mutation leaves the ledger untouched (5.8488ms)
+✔ a doing card with no live lease can be claimed, but a live lease still blocks it (2.4973ms)
+✔ a view failure cannot leave a half-written ledger behind (4.7544ms)
+✔ a forced transition must record why and keeps the reason in the task history (2.1898ms)
+✔ a failed view write keeps the ledger unchanged, so the state stays recoverable (6.8522ms)
+✔ the MCP server refuses local operational writes even with force (96.8255ms)
+ℹ tests 37
+ℹ suites 0
+ℹ pass 37
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2419.6275
+
+> union@0.0.0 check:plan
+> node scripts/check-plan.mjs
+
+{"baseline":"UNION-B1","tasks":82,"dependencies":181,"cycles":0,"missingDependencies":0,"baselineFiles":5,"githubTasks":8}
+
+> union@0.0.0 test
+> node --test tests/*.test.ts
+
+✔ retry uses the same reservation; changed request is rejected (106.7991ms)
+✔ unauthorized model actions and tenant/currency changes leave budget untouched (65.2652ms)
+✔ only positive safe integer amounts and bounded keys are accepted (61.4886ms)
+✔ eight competing processes cannot exceed a 100-minor-unit hard budget (290.8622ms)
+✔ process crash after external success recovers by lookup without repeating the effect (214.7818ms)
+✔ crash before external call retains reservation when lookup is inconclusive (221.1569ms)
+✔ definitive failure releases reservation exactly once (90.4122ms)
+✔ settling below maximum releases the difference and invalid receipt rolls back (90.1677ms)
+✔ same key across test tenants remains independent (137.8311ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1439.0955
+
+> union@0.0.0 check:console
+> npm run typecheck --workspace @union/console && npm run test --workspace @union/console && npm run build:console
+
+
+> @union/console@0.1.0 typecheck
+> tsc --noEmit
+
+
+> @union/console@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 D:/SynologyDrive/project/Union/web/console
+
+ ✓ src/api/client.test.ts (3 tests) 15ms
+ ✓ src/features/commands/receipts.test.ts (5 tests) 13ms
+ ✓ src/app/url-state.test.tsx (1 test) 119ms
+ ✓ src/features/work/ResultList.test.tsx (2 tests) 108ms
+stderr | src/features/work/WorkPanel.test.tsx > V1 work panel > reports an unknown execution and the last tool receipt instead of success
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: ["core-models","au-1"]
+
+stderr | src/features/work/WorkPanel.test.tsx > V1 work panel > explains the empty state when no V1 work exists
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: ["core-models","au-1"]
+
+ ✓ src/pages/Tasks.test.tsx (1 test) 119ms
+stderr | src/features/work/WorkPanel.test.tsx > V1 work panel > shows an adopted result with its digest and source count
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: ["core-models","au-1"]
+
+ ✓ src/pages/ModelServiceConnections.test.tsx (2 tests) 268ms
+stderr | src/features/work/WorkPanel.test.tsx > V1 work panel > starts an execution and adopts a candidate result through the API
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: ["core-models","au-1"]
+
+ ✓ src/pages/Gateways.test.tsx (3 tests) 400ms
+ ✓ src/app/workspace.test.tsx (4 tests) 596ms
+stderr | src/features/work/WorkPanel.test.tsx > V1 work panel > submits a candidate result with the selected sources
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: ["core-models","au-1"]
+
+ ✓ src/pages/RuntimeObservation.test.tsx (11 tests) 382ms
+ ✓ src/features/commands/fields.test.tsx (9 tests) 544ms
+stderr | src/features/work/WorkPanel.test.tsx > V1 work panel > closes a running attempt with an explicit outcome
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: ["core-models","au-1"]
+
+ ✓ src/app/governance-workspace.test.tsx (11 tests) 704ms
+stderr | src/features/work/WorkPanel.test.tsx > V1 work panel > completes a work with its adopted result
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: ["core-models","au-1"]
+
+stderr | src/features/work/WorkPanel.test.tsx > V1 work panel > hides the completion button while an execution is still running
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: ["core-models","au-1"]
+
+ ✓ src/pages/SubscriptionConnections.test.tsx (8 tests) 642ms
+stderr | src/features/work/WorkPanel.test.tsx > runs the automatic loop from the work panel when an execution is active
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: ["core-models","au-1"]
+
+stderr | src/features/work/WorkPanel.test.tsx > offers original-request reconciliation when a step outcome is unknown
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: ["core-models","au-1"]
+
+ ✓ src/features/work/WorkPanel.test.tsx (12 tests) 753ms
+ ✓ src/pages/Identity.test.tsx (14 tests) 1074ms
+ ✓ src/features/commands/core-creation.test.tsx (7 tests) 1887ms
+   ✓ core creation through the workspace > keeps explicit legacy company creation reachable after reopening a prepared AU  523ms
+   ✓ core creation through the workspace > opens the saved prepared AU through V1 and shows bound governance without legacy snapshot calls  370ms
+ ✓ src/features/commands/core-boundaries.test.tsx (10 tests) 2556ms
+   ✓ lets a core participant prepare its own AU while withholding legacy operations and showing its stable identity  433ms
+   ✓ core creation identity and receipt boundaries > adopts a delayed creation result only for its original principal (changed=false)  310ms
+ ✓ src/features/models/ModelsIdentity.test.tsx (11 tests) 3150ms
+   ✓ model identity, scope and input lifetime > keeps draft fields and keyboard focus through refresh and same-principal renewal  594ms
+   ✓ model identity, scope and input lifetime > retains draft while offline and never queues a command for reconnection  362ms
+   ✓ model identity, scope and input lifetime > ignores an earlier successful read arriving after a newer permission denial  364ms
+ ✓ src/features/models/ModelsRecovery.test.tsx (10 tests) 3617ms
+   ✓ model original-request recovery > never replays a lost save and only queries the original receipt  829ms
+   ✓ model original-request recovery > treats a concrete validation error as rejected input instead of unknown  353ms
+   ✓ model original-request recovery > keeps an unmatched response unknown without displaying another AU receipt  371ms
+   ✓ model original-request recovery > reconciles a saved unknown operation explicitly without resubmitting credentials  314ms
+   ✓ model original-request recovery > keeps other connections usable when one verification is unknown  423ms
+   ✓ model original-request recovery > allows the current governor to request local stop while governance is unavailable  342ms
+   ✓ model original-request recovery > lets an unavailable current governor disable a connection while enable and default stay unavailable  372ms
+ ✓ src/features/models/Models.test.tsx (14 tests) 4486ms
+   ✓ core model access user journey > opens the core models route and navigation for a normal core governor  465ms
+   ✓ core model access user journey > saves without inference or adoption, clears the key and keeps only request identities  473ms
+   ✓ core model access user journey > grants bounded resources, reads a selected document twice and adopts independently  1060ms
+   ✓ core model access user journey > can adopt an enabled untested connection without purchasing a check  343ms
+   ✓ core model access user journey > keeps normal inputs after a persisted domain rejection and allows a new preview  311ms
+ ✓ src/features/models/ModelsDiagnostics.test.tsx (17 tests) 4554ms
+   ✓ model check eligibility after version changes or local stop > keeps an unstopped unknown check on the same revision blocking another check  445ms
+   ✓ model check eligibility after version changes or local stop > rechecks an unfinished current-version check that appears before preview  395ms
+   ✓ model check eligibility after version changes or local stop > allows an explicit new bounded check after an updated connection version  473ms
+   ✓ model check eligibility after version changes or local stop > allows an explicit new bounded check after a requested local stop  449ms
+   ✓ model diagnostics and observed usage > keeps worker_start_failed on explicit original-check reconciliation  405ms
+   ✓ model diagnostics and observed usage > keeps original_request_missing on explicit original-check reconciliation  373ms
+   ✓ model diagnostics and observed usage > keeps provider_result_unconfirmed on explicit original-check reconciliation  374ms
+ ✓ src/features/governance/Governance.test.tsx (53 tests) 10633ms
+   ✓ governance user journey > keeps account-level AU creation available from a governed overview page without governing commands  428ms
+   ✓ governance command recovery boundaries > keeps an unknown action local and lets a different work proceed with its own request  372ms
+
+ Test Files  21 passed (21)
+      Tests  208 passed (208)
+   Start at  22:58:58
+   Duration  15.47s (transform 4.99s, setup 9.98s, collect 23.75s, tests 36.62s, environment 31.10s, prepare 5.62s)
+
+
+> union@0.0.0 build:console
+> npm run build --workspace @union/console
+
+
+> @union/console@0.1.0 build
+> tsc --noEmit && vite build
+
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 2046 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.74 kB │ gzip:   0.51 kB
+dist/assets/index-DyiaVZUg.css   49.96 kB │ gzip:  11.02 kB
+dist/assets/index-DctMMLBJ.js   533.77 kB │ gzip: 164.43 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 4.08s
