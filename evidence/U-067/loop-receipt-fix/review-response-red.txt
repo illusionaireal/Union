@@ -1,0 +1,52 @@
+test_version_change_between_turns_returns_facts_and_replays_after_restart (tests.test_work_loop_receipts.WorkLoopReceiptTests.test_version_change_between_turns_returns_facts_and_replays_after_restart) ... FAIL
+test_logout_between_turns_preserves_parent_receipt_without_new_dispatch (tests.test_work_loop_receipts.WorkLoopReceiptTests.test_logout_between_turns_preserves_parent_receipt_without_new_dispatch) ... FAIL
+test_governor_handover_between_turns_keeps_original_issuer_receipt (tests.test_work_loop_receipts.WorkLoopReceiptTests.test_governor_handover_between_turns_keeps_original_issuer_receipt) ... FAIL
+test_first_turn_admission_refusal_does_not_invent_a_completed_call (tests.test_work_loop_receipts.WorkLoopReceiptTests.test_first_turn_admission_refusal_does_not_invent_a_completed_call) ... FAIL
+test_late_invariant_rejection_cannot_be_reported_as_not_dispatched (tests.test_work_loop_receipts.WorkLoopReceiptTests.test_late_invariant_rejection_cannot_be_reported_as_not_dispatched) ... ok
+test_integrity_failure_cannot_be_reported_as_admission_refusal (tests.test_work_loop_receipts.WorkLoopReceiptTests.test_integrity_failure_cannot_be_reported_as_admission_refusal) ... ok
+test_storage_failure_cannot_be_reported_as_admission_refusal (tests.test_work_loop_receipts.WorkLoopReceiptTests.test_storage_failure_cannot_be_reported_as_admission_refusal) ... ok
+test_completed_loop_does_not_claim_an_admission_stop (tests.test_work_loop_receipts.WorkLoopReceiptTests.test_completed_loop_does_not_claim_an_admission_stop) ... ok
+test_schema_three_second_turn_reservation_is_not_a_pre_dispatch_refusal (tests.test_work_loop_receipts.WorkLoopReceiptTests.test_schema_three_second_turn_reservation_is_not_a_pre_dispatch_refusal) ... ok
+
+======================================================================
+FAIL: test_version_change_between_turns_returns_facts_and_replays_after_restart (tests.test_work_loop_receipts.WorkLoopReceiptTests.test_version_change_between_turns_returns_facts_and_replays_after_restart)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "[checkout]\tests\test_work_loop_receipts.py", line 58, in test_version_change_between_turns_returns_facts_and_replays_after_restart
+    self.assert_completed_facts(receipt)
+  File "[checkout]\tests\test_work_loop_receipts.py", line 41, in assert_completed_facts
+    self.assertEqual(receipt.get("phase"), "loop-stopped")
+AssertionError: None != 'loop-stopped'
+
+======================================================================
+FAIL: test_logout_between_turns_preserves_parent_receipt_without_new_dispatch (tests.test_work_loop_receipts.WorkLoopReceiptTests.test_logout_between_turns_preserves_parent_receipt_without_new_dispatch)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "[checkout]\tests\test_work_loop_receipts.py", line 69, in test_logout_between_turns_preserves_parent_receipt_without_new_dispatch
+    self.assert_completed_facts(receipt)
+  File "[checkout]\tests\test_work_loop_receipts.py", line 41, in assert_completed_facts
+    self.assertEqual(receipt.get("phase"), "loop-stopped")
+AssertionError: None != 'loop-stopped'
+
+======================================================================
+FAIL: test_governor_handover_between_turns_keeps_original_issuer_receipt (tests.test_work_loop_receipts.WorkLoopReceiptTests.test_governor_handover_between_turns_keeps_original_issuer_receipt)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "[checkout]\tests\test_work_loop_receipts.py", line 86, in test_governor_handover_between_turns_keeps_original_issuer_receipt
+    self.assert_completed_facts(receipt)
+  File "[checkout]\tests\test_work_loop_receipts.py", line 41, in assert_completed_facts
+    self.assertEqual(receipt.get("phase"), "loop-stopped")
+AssertionError: None != 'loop-stopped'
+
+======================================================================
+FAIL: test_first_turn_admission_refusal_does_not_invent_a_completed_call (tests.test_work_loop_receipts.WorkLoopReceiptTests.test_first_turn_admission_refusal_does_not_invent_a_completed_call)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "[checkout]\tests\test_work_loop_receipts.py", line 107, in test_first_turn_admission_refusal_does_not_invent_a_completed_call
+    self.assertEqual(receipt.get("phase"), "loop-stopped")
+AssertionError: None != 'loop-stopped'
+
+----------------------------------------------------------------------
+Ran 9 tests in 8.558s
+
+FAILED (failures=4)
