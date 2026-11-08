@@ -46,7 +46,7 @@ npm run check:console
 
 日志：`npm-check.txt`、`browser-workspace.txt`。浏览器验收在工作面板上跑通既有用户流程，说明新增的自动执行/核对按钮没有破坏原有交互。
 
-## 重要：本分支只含证据，UI 代码在单独分支（2026-11-08 23:45）
+## UI 已在最新 WorkPanel 上重放（2026-11-08 23:45→23:40 更新）
 
 `work-ui-auto` 分支上的 UI 提交 `9bce6d3` 基于旧版 `WorkPanel.tsx`；PR #26（U-081）重写了该文件，直接 cherry-pick 会冲突。因此本证据分支（`dsh/s03-final-evidence`）**只含证据**，UI 需在最新 `WorkPanel.tsx` 上重放：
 
@@ -55,3 +55,19 @@ npm run check:console
 - 两个测试用例文本见 `ui-tests.txt`（自动执行触发 run_loop；unknown 显示提示并触发 reconcile_step）。
 
 重放后需跑 `npm run check:console`（预期 21 文件 / 208 测试）与 `npm run test:workspace`（71 项）。
+
+## 重放结果（2026-11-08 23:40）
+
+在 PR #26 重写后的 `WorkPanel.tsx` 上重放同一改动（组件 `AutoRunActions` + 渲染 + 两个测试），验证：
+
+```
+npm run check:console
+ Test Files  22 passed (22)
+      Tests  222 passed (222)     ← 集成基线 220 + 本改动 2
+ ✓ built in 3.69s
+
+npm run test:workspace
+{"passed":71,"real_model_calls":0}
+```
+
+日志：`console-check-replayed.txt`、`browser-workspace-replayed.txt`。原“需重放”的说明保留为历史。

@@ -204,3 +204,34 @@ it('starts an execution and adopts a candidate result through the API', async ()
     expect(screen.queryByText('完成工作')).toBeNull();
   });
 });
+
+it('runs the automatic loop from the work panel when an execution is active', async () => {
+  read({
+    ...base,
+    works: [item({
+      attempts: [{ id: 'a1', seq: 1, status: 'running', outcome: null, started_at: '2026-11-07T00:00:00Z', ended_at: null }],
+      attempt_ids: ['a1'],
+    })],
+  });
+  fireEvent.click(await screen.findByRole('button', { name: /自动执行/ }));
+  expect(coreWork.coreWorkCommand).toHaveBeenCalledWith(expect.objectContaining({
+    kind: 'run_loop', data: { work_id: 'work-overview' },
+  }));
+});
+
+it('offers original-request reconciliation when a step outcome is unknown', async () => {
+  read({
+    ...base,
+    works: [item({
+      attempts: [{ id: 'a1', seq: 1, status: 'unknown', outcome: 'unknown', started_at: '2026-11-07T00:00:00Z', ended_at: null }],
+      attempt_ids: ['a1'],
+      steps: [{ seq: 1, step_ref: 'work-overview#s1', attempt_id: 'a1', purpose: 'work_step', status: 'unknown', at: '2026-11-07T00:00:00Z' }],
+    })],
+  });
+  expect(await screen.findByText(/存在未确认的原模型请求/)).toBeInTheDocument();
+  fireEvent.click(screen.getByRole('button', { name: '核对原请求' }));
+  expect(coreWork.coreWorkCommand).toHaveBeenCalledWith(expect.objectContaining({
+    kind: 'reconcile_step',
+    data: expect.objectContaining({ work_id: 'work-overview', step_id: 'work-overview#s1', status: 'used' }),
+  }));
+});
