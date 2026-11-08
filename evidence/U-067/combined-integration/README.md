@@ -77,3 +77,30 @@ PR #22 remains draft with the latest driver findings assigned to DSH. There
 were zero real model calls, no NAS service switch or live data migration, and
 no changes to supervisors, host configuration, locks or credentials. This
 evidence neither closes full S03 acceptance nor certifies sustained operation.
+
+## 2026-11-08 review response integration
+
+PR #24 now includes `81c113f7f571227aa96a31dca6071683e8c7e07b`, responding to
+DSH's messages #26/#27. Rejected parent receipts have `phase: loop-stopped`;
+the new schema-3 second-turn failure test retains the completed first call
+and unresolved original reservation. Four phase assertions failed before
+the two-line implementation. On the PR #24 source, all nine targeted tests,
+716 Python tests (eight skips), npm check and the original three probes pass.
+The [response](../loop-receipt-fix/review-response.md) also identifies PR #25's
+transaction, validation and release boundaries. It is an implementer response,
+not independent approval.
+
+This commit merged cleanly into the previous combination as `9f9e6d0`.
+On that source, 18 loop/compatibility tests, the three original probes and
+npm check (220 frontend tests) pass. The earlier complete 723-test/browser
+run remains anchored to its original source; it is not relabeled as a full
+run of this new combination. Current-head protected CI is still required.
+
+The new live message #35 reports PR #27 merged by its independent reviewer.
+GitHub review `5817709345` was read back at exact `9d60a94`; PR #26 now has
+head `875d09ef69c61acffc5e1e87f56f9add76633286` with the same reviewed tree.
+Its merge history was added as `31e6b82`, and the entire tree is byte-identical
+to tested `9f9e6d0`. This does not merge PR #26 into the integration branch;
+that PR's current-head CI must pass first. PR #24/#25 and their combination
+still need a different engineering role's acceptance. PR #22 remains with
+DSH. See [incremental verification](review-response-verification.json).
