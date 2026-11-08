@@ -1,0 +1,23 @@
+{
+  "base": "57c529732abc607a51db35208ae206c7cf84b9ed",
+  "product_source_changed": false,
+  "slow_receipt_red": {
+    "failed": 1,
+    "errors": 0
+  },
+  "slow_receipt_green": {
+    "passed": 1
+  },
+  "model_api_suite": {
+    "passed": 27
+  },
+  "log_sha256": {
+    "coordinator-job-128794315356.log": "66863b1916cc2ed2ed9f72170bd9ffd5a230fd2a2143d943a93989c24f8d6a7c",
+    "coordinator-job-128794299847.log": "ff40e6bb45a89cd72e761a6c170bf157360832c7f94cd7f00f8717c75b8a719c",
+    "u097-deadline-slow-receipt-red.log": "8b7a3297f0fb6b61f17a1def7826848de1ed7a99f27b61a9bf4878b8f7c4d321",
+    "u097-deadline-slow-receipt-green.log": "e4aba9c6ae6b25047bc1ef27e827977f0280cf73cae6b040b3dabdf08a1cfe70",
+    "u097-deadline-module-green.log": "bf6bb4837913706ba747db086ac771ea2e9807a3ff3ad42bb99556cc1ca76173",
+    "u084-combined-57c5297-python.log": "cf18c18076b99c4571f8a80410aa8c772c3557403065e24ad5888f3c6d9f03b9",
+    "u084-combined-57c5297-npm.log": "2635d498569fd4de43187a4c6a33081095917224f5a02ca5c6e819f5b6883a0a"
+  }
+}

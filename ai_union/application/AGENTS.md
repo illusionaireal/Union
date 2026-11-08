@@ -24,6 +24,11 @@
   only to modeld; persisted commands contain a private digest, never the key.
   Verify tests/test_core_models.py and the S02 contract, preserving S01/S05.
 
+- `model_events.py` projects only saved S02 text events for the current governor.
+  It rechecks session/AU/connection after the original modeld grant GET, never
+  dispatches, reconciles or writes. Native context and tool arguments stay private.
+  Follow `s09-model-observation-contract.md` and `tests/test_core_model_events.py`.
+
 - `work.py` starts S03 V1 work inside the same GovernanceStore transaction and
   returns the original receipt for a repeated request. It revalidates the
   logged-in principal, locates the actual AU, requires the active governor and

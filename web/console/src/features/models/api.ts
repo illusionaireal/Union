@@ -1,7 +1,11 @@
 import { request } from '../../api/client';
-import type { ModelRead, ModelReceipt, ModelRequest } from './types';
+import type { ModelEvents, ModelRead, ModelReceipt, ModelRequest } from './types';
 
 export const modelsApi = {
+  events: (organizationId: string, checkId: string, attemptId: string, after: number, signal?: AbortSignal) =>
+    request<ModelEvents>('/api/v1/models/events?' + new URLSearchParams({
+      organization_id: organizationId, check_id: checkId, attempt_id: attemptId, after: String(after),
+    }), { signal }),
   read: (organizationId: string, signal?: AbortSignal) =>
     request<ModelRead>(
       '/api/v1/models?' + new URLSearchParams({ organization_id: organizationId }),

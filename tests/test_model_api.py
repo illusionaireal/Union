@@ -34,6 +34,10 @@ class Provider(BaseHTTPRequestHandler):
     def do_POST(self):
         body = json.loads(self.rfile.read(int(self.headers["Content-Length"])))
         self.server.requests.append({"body": body, "authorization": self.headers.get("Authorization"), "path": self.path})
+        if getattr(self.server, "response_release", None) is not None:
+            self.server.request_received.set()
+            self.server.response_release.wait(15)
+            return
         if self.server.delay:
             time.sleep(self.server.delay)
         self.send_response(self.server.code)
@@ -328,11 +332,36 @@ class ModelAPITests(unittest.TestCase):
 
     def test_whole_request_deadline_preserves_unknown_without_retry(self):
         self.configure(self.config | {"timeout_seconds": 1})
-        self.provider.delay = 2
-        start = time.monotonic()
-        self.assertEqual(self.probe()["status"], "unknown")
-        self.assertLess(time.monotonic() - start, 1.8)
-        time.sleep(0.1)
+        self.provider.request_received = threading.Event()
+        self.provider.response_release = threading.Event()
+        completed = threading.Event()
+        receipts, errors = [], []
+
+        def probe():
+            try:
+                receipts.append(self.probe())
+            except BaseException as error:
+                errors.append(error)
+            finally:
+                completed.set()
+
+        worker = threading.Thread(target=probe, daemon=True)
+        worker.start()
+        try:
+            self.assertTrue(self.provider.request_received.wait(10), "original request was not sent")
+            # The provider cannot answer or close its connection until cleanup.
+            # Receipt persistence/reading is not part of the transport deadline.
+            self.assertTrue(completed.wait(10), "local deadline did not finish the request")
+            self.assertFalse(self.provider.response_release.is_set())
+            if errors:
+                raise errors[0]
+            self.assertEqual(receipts[0]["status"], "unknown")
+            self.assertEqual(self.e.status()["budget"]["calls_reserved"], 1)
+            self.assertEqual(self.probe()["status"], "rejected")
+        finally:
+            self.provider.response_release.set()
+            worker.join(10)
+        self.assertFalse(worker.is_alive())
         self.assertEqual(len(self.provider.requests), 1)
         self.assertFalse((self.e.root / "executions" / self.e.runs()[0]["id"] / "result.json").exists())
 

@@ -8,8 +8,9 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
-    # Includes SDK installation and the full cross-platform mechanism suite.
-    timeout-minutes: 15
+    # Includes SDK installation, the growing full suite and the fresh CLI loop.
+    # Windows reached the former 15-minute job cap; this is not a product timeout.
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

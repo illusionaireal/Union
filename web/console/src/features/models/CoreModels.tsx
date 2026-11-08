@@ -10,6 +10,7 @@ import { useModels } from './useModels';
 import { ModelCommandForm } from './ModelCommandForm';
 import { ModelRecovery } from './ModelReceiptView';
 import { ProfileScope } from './ProfileScope';
+import { ModelStream } from './ModelStream';
 import {
   CheckRecords,
   ConnectionRecords,
@@ -176,6 +177,7 @@ function ModelWorkspace({ scope }: { scope: GovernanceScope }) {
           <ConnectionRecords controller={controller} open={open} />
           <OperationRecords controller={controller} open={open} />
           <CheckRecords controller={controller} open={open} />
+          <ModelStream controller={controller} />
         </>
       )}
       {draft && draftAllowed && sameScope(draft.scope, workspace.session, workspace.orgId) && (

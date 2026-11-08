@@ -339,6 +339,7 @@ export interface CoreWorkBudget {
 }
 
 export interface CoreWorkAttempt {
+  stale?: boolean;
   id: string;
   seq: number;
   status: 'running' | 'unknown' | 'closed';

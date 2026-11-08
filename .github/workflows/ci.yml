@@ -50,6 +50,23 @@ jobs:
       - run: node scripts/u081-work-read-browser.cjs
         env:
           UNION_PYTHON: python3
+      - run: node scripts/u084-work-execution-browser.cjs
+        env:
+          UNION_PYTHON: python3
+      - run: node scripts/u084-work-execution-browser.cjs
+        env:
+          UNION_PYTHON: python3
+          UNION_U084_PENDING_RECEIPT: '1'
+          UNION_U084_READ_ONLY_RECEIPT: '1'
+          UNION_U084_EVIDENCE: .union/u084-pending-receipt
+      - run: node scripts/u097-model-events-browser.cjs
+        env:
+          UNION_PYTHON: python3
+      - run: node scripts/u097-model-events-browser.cjs
+        env:
+          UNION_PYTHON: python3
+          UNION_U097_CONNECTION_REVOKE: '1'
+          UNION_U097_EVIDENCE: .union/u097-connection-access-browser
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -58,3 +75,7 @@ jobs:
             .union/frontend-browser-evidence
             .union/novel-browser-evidence
             .union/u081-work-read-browser
+            .union/u084-page-execution
+            .union/u084-pending-receipt
+            .union/u097-model-events-browser
+            .union/u097-connection-access-browser

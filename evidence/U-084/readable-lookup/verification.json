@@ -1,0 +1,33 @@
+{
+  "date": "2026-11-09",
+  "source_base": "67040f827763a17bc0e630966a57846a7d4f00ca",
+  "actor": "foreground coordinator in resumed thread; distinct from scheduled implementation",
+  "online_member_id": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+  "dom_original": 15,
+  "dom_red": {
+    "failed": 1,
+    "skipped": 15
+  },
+  "dom_fixed": 18,
+  "http_transport_reopen": 5,
+  "browser_fixed": 8,
+  "npm_fixed": {
+    "passed": true,
+    "frontend": 240
+  },
+  "initial_browser_harness_failure": "A fixture setup POST omitted Origin and was correctly rejected 403; corrected before actual browser RED.",
+  "browser_red": "On the unchanged compiled PR35 UI, actual connection disable leaves can_start=false and work readable; reload removes the original lookup.",
+  "independent_review": "required for the new foreground two-file production delta; concrete review request on PR35 comment6724165089 / Kanban message55",
+  "log_sha256": {
+    "pr35-independent-dom.log": "30808b253023a9ab61cbaba784854486ed65cda1526d9cf822de6c704091d0bb",
+    "pr35-independent-http.log": "5887a18d1cc0e3f6854cd4ce56ece0b1fd0dc6ebc881e1d2870fa250be1ba6ca",
+    "pr35-independent-permission-red.log": "8ddaa7f5163de3e24e69ed061450d3e10d521337dd54f9169098739187dbc9bd",
+    "pr35-independent-permission-green.log": "536d280487d70afc9f7de631e8ce14411e7509a25e2b659c86bea46a4d1a94e7",
+    "pr35-independent-browser-red.log": "a7343c0b4855331ed7f52657dc920cf77f1eb0f869b09aa63a599a612fd16792",
+    "pr35-independent-browser-real-red.log": "9043629aba6352282beeec1f67e58f5064ef1129688fe3ae7c4e3f4e8fd52843",
+    "pr35-independent-browser-green.log": "ad5132ee8abc8c37c9175b9a6fa54aa72907ab3920f15c842bda42914fa39a27",
+    "pr35-independent-fixed-npm.log": "a3e289b0ef0f044bb4d213a7f551df6192266e00d9493dfc329c412a14250f06"
+  },
+  "combined_validation": "Required on the final published combined source; recorded on its PR without mutating the tested tree.",
+  "real_model_calls": 0
+}

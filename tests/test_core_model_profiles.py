@@ -23,7 +23,8 @@ class ProfileScopeTests(ModelAccessCase):
         self.assertEqual(scope["openai_compatible"]["capabilities"]["text_answer"]["status"], "verified_real")
         self.assertEqual(scope["openai_compatible"]["capabilities"]["text_answer"]["evidence"],
                          "evidence/058-s02-model-tools/README.md")
-        self.assertEqual(scope["openai_compatible"]["capabilities"]["streaming"]["status"], "unsupported")
+        self.assertEqual(scope["openai_compatible"]["capabilities"]["streaming"]["status"], "controlled")
+        self.assertIn("原请求", scope["openai_compatible"]["capabilities"]["streaming"]["note"])
         self.assertTrue(scope["openai_compatible"]["capabilities"]["streaming"]["note"].strip())
         self.assertEqual(scope["modeld_grant"]["capabilities"]["tool_roundtrip"]["status"], "controlled")
 

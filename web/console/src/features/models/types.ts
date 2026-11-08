@@ -70,6 +70,25 @@ export interface ModelAttempt {
   usage: ModelUsage;
   diagnostic?: ModelDiagnostic | null;
 }
+export type ModelEvent = { seq: number } & (
+  { type: 'text_delta'; text: string } | { type: 'tool_call_complete'; name: 'read_document' }
+);
+export interface ModelEvents {
+  protocol: 'core.model-events.v1';
+  organization_id: string;
+  check_id: string;
+  attempt_id: string;
+  access: { principal_id: string; service_instance: string };
+  version: number;
+  source: 'persisted_modeld_events';
+  state: string;
+  events: ModelEvent[];
+  cursor: number;
+  last_seq: number;
+  has_more: boolean;
+  events_complete: boolean;
+  truncated: boolean;
+}
 export interface ModelCheck {
   id: string;
   principal_id: string;
