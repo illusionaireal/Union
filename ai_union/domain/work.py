@@ -25,6 +25,7 @@ FIELDS = {
     "run_step": {"work_id"},
     "run_loop": {"work_id"},
     "reconcile_step": {"work_id", "step_id", "status", "reason"},
+    "cancel_step": {"work_id", "step_id", "reason"},
     "finish_attempt": {"work_id", "attempt_id", "outcome", "reason"},
 }
 TOOLS = {"read_document", "list_documents", "produce_artifact"}
@@ -63,6 +64,12 @@ def validate_input(kind, data):
         require(isinstance(data["sources"], list) and len(data["sources"]) <= 20
                 and all(isinstance(item, str) and len(item) <= 100 for item in data["sources"]),
                 "成果来源必须是明确的执行或工具回执引用列表")
+        return
+    if kind == "cancel_step":
+        require(reference(data["work_id"]), "工作标识必须是 bounded 引用标识")
+        require(isinstance(data["step_id"], str) and data["step_id"].startswith(data["work_id"] + "#s")
+                and len(data["step_id"]) <= 100, "步进标识无效")
+        text(data["reason"], "取消依据", 10000)
         return
     if kind == "reconcile_step":
         require(reference(data["work_id"]), "工作标识必须是 bounded 引用标识")
@@ -511,6 +518,20 @@ def record_unadoptable_step(state, data, instance=None, clock=None):
                         "reason": data["reason"]}, clock)
     return {"step": step["step_ref"], "model_request_id": step["model_request_id"],
             "model_outcome": "not_adoptable", "usage": dict(step["usage"])}
+
+
+def cancel_step(state, data, clock=None):
+    """Record a local cancellation of an undispatched reservation: release it, keep the
+    cost unknown. This never proves a remote outcome; unknown steps stay reconcilable
+    only through the original request."""
+    work = records(state)["works"].get(data["work_id"])
+    require(work is not None, "工作不存在或不属于此 AU")
+    step = next((item for item in work.get("steps") or [] if item["step_ref"] == data["step_id"]), None)
+    require(step is not None, "该工作没有此步进记录")
+    require(step["status"] == "reserved", "只有未派发的预约可以本地取消；未知结果须按原请求核对")
+    require(step.get("command_id") is None, "已派发的自动调用不在此取消；请按原模型请求核对")
+    step.update(status="released", reason=data["reason"], settled_at=_stamp(clock), cost_status="unknown")
+    return {key: step[key] for key in ("step_ref", "status", "reason", "cost_status")}
 
 
 def reconcile_step(state, data, clock=None):

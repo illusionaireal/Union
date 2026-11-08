@@ -344,6 +344,46 @@ class CoreWorkTests(ModelAccessCase):
         return self.work_command(self.au_id, "settle_step",
                                  {"work_id": work_id, "step_id": step_id, "status": status, "reason": reason})
 
+    def test_cancel_step_releases_a_reserved_step_before_dispatch_with_unknown_cost(self):
+        """22-C local cancel surface: cancelling an undispatched reservation releases it,
+        keeps the cost unknown, and records that this never proves a remote outcome."""
+        self.work_with_listing()
+        self.prepare_materials()
+        self.start_attempt()
+        reserved = self.reserve()
+        self.assertEqual(reserved[1]["receipt"]["status"], "succeeded", reserved[1])
+        card = self.works()["works"][0]
+        step = card["steps"][0]
+        self.assertEqual(step["status"], "reserved")
+        self.assertEqual(card["budget"], {"max_calls": 4, "reserved": 1, "used": 0})
+
+        cancelled = self.work_command(self.au_id, "cancel_step",
+                                      {"work_id": "work-overview", "step_id": step["step_ref"],
+                                       "reason": "页面级取消：操作者在派发前请求停止"})
+        self.assertEqual(cancelled[1]["receipt"]["status"], "succeeded", cancelled[1])
+        card = self.works()["works"][0]
+        self.assertEqual(card["steps"][0]["status"], "released")
+        self.assertEqual(card["steps"][0]["cost_status"], "unknown",
+                         "a local cancellation never proves the remote outcome")
+        self.assertEqual(card["steps"][0]["reason"], "页面级取消：操作者在派发前请求停止")
+        self.assertEqual(card["budget"], {"max_calls": 4, "reserved": 0, "used": 0})
+
+        # Unknown steps stay outside this surface: they must be resolved through the
+        # original-request reconciliation, never by a local cancel.
+        self.failing_transport()
+        status, value, _ = self.work_step()
+        self.assertEqual(value["receipt"]["model_outcome"], "unknown", value)
+        card = self.works()["works"][0]
+        unknown = next(s for s in card["steps"] if s["status"] == "unknown")
+        refused = self.work_command(self.au_id, "cancel_step",
+                                    {"work_id": "work-overview", "step_id": unknown["step_ref"],
+                                     "reason": "不应被本地取消"})
+        self.assertEqual(refused[1]["receipt"]["status"], "rejected", refused)
+        card = self.works()["works"][0]
+        self.assertEqual(next(s for s in card["steps"] if s["step_ref"] == unknown["step_ref"])["status"],
+                         "unknown", "an unknown reservation is only reconciled by the original request")
+        self.assertEqual(card["budget"]["reserved"], 1)
+
     def test_reserve_step_counts_one_call_per_execution_with_purpose_and_attempt(self):
         self.work_with_listing()
         attempt_id = self.start_attempt()

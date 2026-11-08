@@ -126,6 +126,9 @@ class WorkService:
                     elif request["kind"] == "reconcile_step":
                         receipt["step"] = rules.reconcile_step(local, request["data"])
                         receipt["message"] = "已按核对结果处理该次未知步进"
+                    elif request["kind"] == "cancel_step":
+                        receipt["step"] = rules.cancel_step(local, request["data"])
+                        receipt["message"] = "已记录本地取消；远端结果未知，预约已释放且费用保持未知"
                     elif request["kind"] == "reserve_step":
                         receipt["step"] = rules.reserve_step(local, request["data"], instance=self.app.instance)
                         receipt["message"] = "已为该次执行预约一次调用；尚未调用模型"
