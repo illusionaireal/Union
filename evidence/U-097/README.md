@@ -65,3 +65,6 @@ Python与Chrome路径通过 UNION_PYTHON/UNION_CHROMIUM_PATH 提供。
 主动恢复；collector未保存的远端输出仍未知，页内过长内容明确截断。正文不是
 正式成果，工具名称不是实际工具执行证明。零新增真实推理、NAS服务切换或迁移。
 PR34/35仍由其原评审路径处理，不把本候选当作那两份PR已经采用。
+
+2026-11-09：[Windows CI 后续与组合采用边界](ci-deadline-followup.md)
+保留原失败，说明事件门控超时验证与 PR37 最终采用路径。
