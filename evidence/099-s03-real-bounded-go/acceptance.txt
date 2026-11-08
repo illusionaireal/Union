@@ -1,0 +1,7 @@
+real acceptance: {"model": "deepseek-v4.1-flash", "receipt": {"status": "succeeded", "message": "自动循环结束：已产出候选成果", "turns": 1, "tool_calls": 1, "result": true, "usage": {"input_tokens": 396, "output_tokens": 29}, "cost_status": "unknown"}, "budget": {"max_calls": 2, "reserved": 0, "used": 1}, "usage": {"input_tokens": 396, "output_tokens": 29}, "cost_status": "unknown", "tool_calls": [{"tool": "list_documents", "sha256": null, "bytes": null}], "results": [{"id": "result-7e8c6e189a14", "status": "candidate"}]}
+test_one_work_uses_at_most_two_calls_and_reports_usage_without_cost (tests.test_core_work_real.RealBoundedAcceptanceTests.test_one_work_uses_at_most_two_calls_and_reports_usage_without_cost) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 2.928s
+
+OK

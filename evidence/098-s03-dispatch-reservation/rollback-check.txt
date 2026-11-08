@@ -1,0 +1,72 @@
+...Exception in thread Thread-97 (first):
+Traceback (most recent call last):
+  File "C:\Users\Benedict\AppData\Local\Programs\Python\Python312\Lib\threading.py", line 1075, in _bootstrap_inner
+    self.run()
+  File "C:\Users\Benedict\AppData\Local\Programs\Python\Python312\Lib\threading.py", line 1012, in run
+    self._target(*self._args, **self._kwargs)
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 954, in first
+    results["first"] = self.work_step()
+                       ^^^^^^^^^^^^^^^^
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 600, in work_step
+    return self.work_command(self.au_id, "run_step", {"work_id": work_id})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 51, in work_command
+    status, value, _ = self.request("/api/v1/work/commands", request, token)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SynologyDrive\project\Union\tests\test_core_creation.py", line 60, in request
+    response = client.getresponse()
+               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Benedict\AppData\Local\Programs\Python\Python312\Lib\http\client.py", line 1430, in getresponse
+    response.begin()
+  File "C:\Users\Benedict\AppData\Local\Programs\Python\Python312\Lib\http\client.py", line 331, in begin
+    version, status, reason = self._read_status()
+                              ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Benedict\AppData\Local\Programs\Python\Python312\Lib\http\client.py", line 292, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Benedict\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 720, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+TimeoutError: timed out
+E............................F.....
+======================================================================
+ERROR: test_a_second_step_cannot_dispatch_while_the_first_call_is_in_flight (tests.test_core_work.CoreWorkTests.test_a_second_step_cannot_dispatch_while_the_first_call_is_in_flight)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 959, in test_a_second_step_cannot_dispatch_while_the_first_call_is_in_flight
+    status, value, _ = self.work_step()
+                       ^^^^^^^^^^^^^^^^
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 600, in work_step
+    return self.work_command(self.au_id, "run_step", {"work_id": work_id})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 51, in work_command
+    status, value, _ = self.request("/api/v1/work/commands", request, token)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SynologyDrive\project\Union\tests\test_core_creation.py", line 60, in request
+    response = client.getresponse()
+               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Benedict\AppData\Local\Programs\Python\Python312\Lib\http\client.py", line 1430, in getresponse
+    response.begin()
+  File "C:\Users\Benedict\AppData\Local\Programs\Python\Python312\Lib\http\client.py", line 331, in begin
+    version, status, reason = self._read_status()
+                              ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Benedict\AppData\Local\Programs\Python\Python312\Lib\http\client.py", line 292, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Benedict\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 720, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+TimeoutError: timed out
+
+======================================================================
+FAIL: test_the_reservation_is_persisted_before_the_model_is_called (tests.test_core_work.CoreWorkTests.test_the_reservation_is_persisted_before_the_model_is_called)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 927, in test_the_reservation_is_persisted_before_the_model_is_called
+    self.assertEqual(observed["budget"]["reserved"], 1, "the call is reserved while it is being dispatched")
+AssertionError: 0 != 1 : the call is reserved while it is being dispatched
+
+----------------------------------------------------------------------
+Ran 38 tests in 42.258s
+
+FAILED (failures=1, errors=1)

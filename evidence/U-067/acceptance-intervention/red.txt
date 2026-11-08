@@ -1,0 +1,143 @@
+test_cancel_response_must_confirm_original_request_and_remain_separate_from_remote_cancellation (tests.test_work_acceptance_intervention.AcceptanceInterventionTests.test_cancel_response_must_confirm_original_request_and_remain_separate_from_remote_cancellation) ... FAIL
+test_complete_linked_exchange_is_accepted (tests.test_work_acceptance_intervention.AcceptanceInterventionTests.test_complete_linked_exchange_is_accepted) ... ok
+test_explicit_wrong_provider_never_gets_a_grant (tests.test_work_acceptance_intervention.AcceptanceInterventionTests.test_explicit_wrong_provider_never_gets_a_grant) ... FAIL
+test_mismatched_or_completed_lookup_is_not_cancelled (tests.test_work_acceptance_intervention.AcceptanceInterventionTests.test_mismatched_or_completed_lookup_is_not_cancelled) ... FAIL
+test_missing_or_forged_context_download_and_source_are_rejected (tests.test_work_acceptance_intervention.AcceptanceInterventionTests.test_missing_or_forged_context_download_and_source_are_rejected) ... 
+  test_missing_or_forged_context_download_and_source_are_rejected (tests.test_work_acceptance_intervention.AcceptanceInterventionTests.test_missing_or_forged_context_download_and_source_are_rejected) (fault='no_context') ... FAIL
+  test_missing_or_forged_context_download_and_source_are_rejected (tests.test_work_acceptance_intervention.AcceptanceInterventionTests.test_missing_or_forged_context_download_and_source_are_rejected) (fault='wrong_tool_id') ... FAIL
+  test_missing_or_forged_context_download_and_source_are_rejected (tests.test_work_acceptance_intervention.AcceptanceInterventionTests.test_missing_or_forged_context_download_and_source_are_rejected) (fault='wrong_body') ... FAIL
+  test_missing_or_forged_context_download_and_source_are_rejected (tests.test_work_acceptance_intervention.AcceptanceInterventionTests.test_missing_or_forged_context_download_and_source_are_rejected) (fault='wrong_download') ... FAIL
+  test_missing_or_forged_context_download_and_source_are_rejected (tests.test_work_acceptance_intervention.AcceptanceInterventionTests.test_missing_or_forged_context_download_and_source_are_rejected) (fault='wrong_scope') ... FAIL
+  test_missing_or_forged_context_download_and_source_are_rejected (tests.test_work_acceptance_intervention.AcceptanceInterventionTests.test_missing_or_forged_context_download_and_source_are_rejected) (fault='wrong_source') ... FAIL
+test_one_turn_digest_candidate_is_not_a_completed_exchange (tests.test_work_acceptance_intervention.AcceptanceInterventionTests.test_one_turn_digest_candidate_is_not_a_completed_exchange) ... FAIL
+test_per_call_limit_and_original_request_ids_are_checked (tests.test_work_acceptance_intervention.AcceptanceInterventionTests.test_per_call_limit_and_original_request_ids_are_checked) ... 
+  test_per_call_limit_and_original_request_ids_are_checked (tests.test_work_acceptance_intervention.AcceptanceInterventionTests.test_per_call_limit_and_original_request_ids_are_checked) (fault='over_limit') ... FAIL
+  test_per_call_limit_and_original_request_ids_are_checked (tests.test_work_acceptance_intervention.AcceptanceInterventionTests.test_per_call_limit_and_original_request_ids_are_checked) (fault='duplicate_id') ... FAIL
+  test_per_call_limit_and_original_request_ids_are_checked (tests.test_work_acceptance_intervention.AcceptanceInterventionTests.test_per_call_limit_and_original_request_ids_are_checked) (fault='wrong_step') ... FAIL
+  test_per_call_limit_and_original_request_ids_are_checked (tests.test_work_acceptance_intervention.AcceptanceInterventionTests.test_per_call_limit_and_original_request_ids_are_checked) (fault='wrong_usage') ... FAIL
+test_request_discovery_excludes_other_work_attempt_and_command (tests.test_work_acceptance_intervention.AcceptanceInterventionTests.test_request_discovery_excludes_other_work_attempt_and_command) ... ok
+
+======================================================================
+FAIL: test_cancel_response_must_confirm_original_request_and_remain_separate_from_remote_cancellation (tests.test_work_acceptance_intervention.AcceptanceInterventionTests.test_cancel_response_must_confirm_original_request_and_remain_separate_from_remote_cancellation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "[checkout]\tests\test_work_acceptance_intervention.py", line 123, in test_cancel_response_must_confirm_original_request_and_remain_separate_from_remote_cancellation
+    self.assertFalse(observed.get("cancelled"))
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_explicit_wrong_provider_never_gets_a_grant (tests.test_work_acceptance_intervention.AcceptanceInterventionTests.test_explicit_wrong_provider_never_gets_a_grant)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "[checkout]\tests\test_work_acceptance_intervention.py", line 94, in test_explicit_wrong_provider_never_gets_a_grant
+    with self.assertRaises((AssertionError, unittest.SkipTest)):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: (<class 'AssertionError'>, <class 'unittest.case.SkipTest'>) not raised
+
+======================================================================
+FAIL: test_mismatched_or_completed_lookup_is_not_cancelled (tests.test_work_acceptance_intervention.AcceptanceInterventionTests.test_mismatched_or_completed_lookup_is_not_cancelled)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "[checkout]\tests\test_work_acceptance_intervention.py", line 115, in test_mismatched_or_completed_lookup_is_not_cancelled
+    self.assertEqual(client.posts, [])
+AssertionError: Lists differ: [('/v1/requests/target/cancel?au_id=au-1', {})] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+('/v1/requests/target/cancel?au_id=au-1', {})
+
+- [('/v1/requests/target/cancel?au_id=au-1', {})]
++ []
+
+======================================================================
+FAIL: test_missing_or_forged_context_download_and_source_are_rejected (tests.test_work_acceptance_intervention.AcceptanceInterventionTests.test_missing_or_forged_context_download_and_source_are_rejected) (fault='no_context')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "[checkout]\tests\test_work_acceptance_intervention.py", line 78, in test_missing_or_forged_context_download_and_source_are_rejected
+    self.assertTrue(bounded.acceptance_problems(work, receipt, 1024), fault)
+AssertionError: [] is not true : no_context
+
+======================================================================
+FAIL: test_missing_or_forged_context_download_and_source_are_rejected (tests.test_work_acceptance_intervention.AcceptanceInterventionTests.test_missing_or_forged_context_download_and_source_are_rejected) (fault='wrong_tool_id')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "[checkout]\tests\test_work_acceptance_intervention.py", line 78, in test_missing_or_forged_context_download_and_source_are_rejected
+    self.assertTrue(bounded.acceptance_problems(work, receipt, 1024), fault)
+AssertionError: [] is not true : wrong_tool_id
+
+======================================================================
+FAIL: test_missing_or_forged_context_download_and_source_are_rejected (tests.test_work_acceptance_intervention.AcceptanceInterventionTests.test_missing_or_forged_context_download_and_source_are_rejected) (fault='wrong_body')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "[checkout]\tests\test_work_acceptance_intervention.py", line 78, in test_missing_or_forged_context_download_and_source_are_rejected
+    self.assertTrue(bounded.acceptance_problems(work, receipt, 1024), fault)
+AssertionError: [] is not true : wrong_body
+
+======================================================================
+FAIL: test_missing_or_forged_context_download_and_source_are_rejected (tests.test_work_acceptance_intervention.AcceptanceInterventionTests.test_missing_or_forged_context_download_and_source_are_rejected) (fault='wrong_download')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "[checkout]\tests\test_work_acceptance_intervention.py", line 78, in test_missing_or_forged_context_download_and_source_are_rejected
+    self.assertTrue(bounded.acceptance_problems(work, receipt, 1024), fault)
+AssertionError: [] is not true : wrong_download
+
+======================================================================
+FAIL: test_missing_or_forged_context_download_and_source_are_rejected (tests.test_work_acceptance_intervention.AcceptanceInterventionTests.test_missing_or_forged_context_download_and_source_are_rejected) (fault='wrong_scope')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "[checkout]\tests\test_work_acceptance_intervention.py", line 78, in test_missing_or_forged_context_download_and_source_are_rejected
+    self.assertTrue(bounded.acceptance_problems(work, receipt, 1024), fault)
+AssertionError: [] is not true : wrong_scope
+
+======================================================================
+FAIL: test_missing_or_forged_context_download_and_source_are_rejected (tests.test_work_acceptance_intervention.AcceptanceInterventionTests.test_missing_or_forged_context_download_and_source_are_rejected) (fault='wrong_source')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "[checkout]\tests\test_work_acceptance_intervention.py", line 78, in test_missing_or_forged_context_download_and_source_are_rejected
+    self.assertTrue(bounded.acceptance_problems(work, receipt, 1024), fault)
+AssertionError: [] is not true : wrong_source
+
+======================================================================
+FAIL: test_one_turn_digest_candidate_is_not_a_completed_exchange (tests.test_work_acceptance_intervention.AcceptanceInterventionTests.test_one_turn_digest_candidate_is_not_a_completed_exchange)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "[checkout]\tests\test_work_acceptance_intervention.py", line 65, in test_one_turn_digest_candidate_is_not_a_completed_exchange
+    self.assertTrue(bounded.acceptance_problems(work, receipt, 1024))
+AssertionError: [] is not true
+
+======================================================================
+FAIL: test_per_call_limit_and_original_request_ids_are_checked (tests.test_work_acceptance_intervention.AcceptanceInterventionTests.test_per_call_limit_and_original_request_ids_are_checked) (fault='over_limit')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "[checkout]\tests\test_work_acceptance_intervention.py", line 88, in test_per_call_limit_and_original_request_ids_are_checked
+    self.assertTrue(bounded.acceptance_problems(work, receipt, 1024), fault)
+AssertionError: [] is not true : over_limit
+
+======================================================================
+FAIL: test_per_call_limit_and_original_request_ids_are_checked (tests.test_work_acceptance_intervention.AcceptanceInterventionTests.test_per_call_limit_and_original_request_ids_are_checked) (fault='duplicate_id')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "[checkout]\tests\test_work_acceptance_intervention.py", line 88, in test_per_call_limit_and_original_request_ids_are_checked
+    self.assertTrue(bounded.acceptance_problems(work, receipt, 1024), fault)
+AssertionError: [] is not true : duplicate_id
+
+======================================================================
+FAIL: test_per_call_limit_and_original_request_ids_are_checked (tests.test_work_acceptance_intervention.AcceptanceInterventionTests.test_per_call_limit_and_original_request_ids_are_checked) (fault='wrong_step')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "[checkout]\tests\test_work_acceptance_intervention.py", line 88, in test_per_call_limit_and_original_request_ids_are_checked
+    self.assertTrue(bounded.acceptance_problems(work, receipt, 1024), fault)
+AssertionError: [] is not true : wrong_step
+
+======================================================================
+FAIL: test_per_call_limit_and_original_request_ids_are_checked (tests.test_work_acceptance_intervention.AcceptanceInterventionTests.test_per_call_limit_and_original_request_ids_are_checked) (fault='wrong_usage')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "[checkout]\tests\test_work_acceptance_intervention.py", line 88, in test_per_call_limit_and_original_request_ids_are_checked
+    self.assertTrue(bounded.acceptance_problems(work, receipt, 1024), fault)
+AssertionError: [] is not true : wrong_usage
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.004s
+
+FAILED (failures=14)

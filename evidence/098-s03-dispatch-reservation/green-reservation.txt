@@ -1,0 +1,35 @@
+...Exception in thread Thread-97 (first):
+Traceback (most recent call last):
+  File "C:\Users\Benedict\AppData\Local\Programs\Python\Python312\Lib\threading.py", line 1075, in _bootstrap_inner
+    self.run()
+  File "C:\Users\Benedict\AppData\Local\Programs\Python\Python312\Lib\threading.py", line 1012, in run
+    self._target(*self._args, **self._kwargs)
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 957, in first
+    results["first"] = self.work_step()
+                       ^^^^^^^^^^^^^^^^
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 601, in work_step
+    return self.work_command(self.au_id, "run_step", {"work_id": work_id})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SynologyDrive\project\Union\tests\test_core_work.py", line 52, in work_command
+    status, value, _ = self.request("/api/v1/work/commands", request, token)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SynologyDrive\project\Union\tests\test_core_creation.py", line 60, in request
+    response = client.getresponse()
+               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Benedict\AppData\Local\Programs\Python\Python312\Lib\http\client.py", line 1430, in getresponse
+    response.begin()
+  File "C:\Users\Benedict\AppData\Local\Programs\Python\Python312\Lib\http\client.py", line 331, in begin
+    version, status, reason = self._read_status()
+                              ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Benedict\AppData\Local\Programs\Python\Python312\Lib\http\client.py", line 292, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Benedict\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 720, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+TimeoutError: timed out
+x............................x.....
+----------------------------------------------------------------------
+Ran 38 tests in 42.132s
+
+OK (expected failures=2)

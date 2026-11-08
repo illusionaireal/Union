@@ -908,3 +908,44 @@ class CoreWorkTests(ModelAccessCase):
         self.assertEqual(card["usage"], {"input_tokens": 15, "output_tokens": 5},
                          "the AU read reports the summed work usage")
         self.assertEqual(card["cost_status"], "unknown")
+
+    def test_restart_blocks_silent_resume_and_only_the_original_request_is_looked_up(self):
+        """Restart recovery invariants; the release path itself is pending review (#29)."""
+        self.work_with_listing()
+        self.prepare_materials()
+        first_attempt = self.start_attempt()
+        transport = self.failing_transport()
+        transport.calls = []
+        original_id = "restart-probe-" + uuid.uuid4().hex[:8]
+        status, value, original_request = self.work_command(
+            self.au_id, "run_step", {"work_id": "work-overview"}, request_id=original_id)
+        self.assertEqual(value["receipt"].get("model_outcome"), "unknown", value)
+        self.assertEqual(self.works()["works"][0]["budget"]["reserved"], 1)
+
+        self.stop()
+        self.start()
+        card = self.works()["works"][0]
+        self.assertTrue(next(item for item in card["attempts"] if item["id"] == first_attempt)["stale"], card)
+        status, refused, _ = self.work_step()
+        self.assertEqual(refused["receipt"]["status"], "rejected", refused)
+        self.assertIn("执行", refused["receipt"]["message"])
+
+        self.work_command(self.au_id, "finish_attempt",
+                          {"work_id": "work-overview", "attempt_id": first_attempt,
+                           "outcome": "unknown", "reason": "宿主重启，原执行未知"})
+        status, blocked, _ = self.work_command(self.au_id, "start_attempt", {"work_id": "work-overview"})
+        self.assertEqual(blocked["receipt"]["status"], "rejected", blocked)
+        self.work_command(self.au_id, "finish_attempt",
+                          {"work_id": "work-overview", "attempt_id": first_attempt,
+                           "outcome": "stopped", "reason": "原请求待核对，结束旧执行"})
+        self.start_attempt()
+
+        status, refused_new, _ = self.work_step()
+        self.assertEqual(refused_new["receipt"]["status"], "rejected", refused_new)
+        self.assertIn("未决模型请求", refused_new["receipt"]["message"])
+
+        status, pending, _ = self.request("/api/v1/work/commands", original_request)
+        pending_receipt = pending.get("receipt", pending)
+        self.assertEqual(pending_receipt.get("model_outcome"), "unknown", pending)
+        self.assertEqual(len(getattr(transport, "calls", [])), 0,
+                         "neither the refused call nor the lookup may dispatch again")
