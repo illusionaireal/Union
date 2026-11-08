@@ -120,6 +120,27 @@ def run_command(*args, **kwargs):
     return subprocess.run(*args, **kwargs)
 
 
+def attention_cards(tasks, at, period_seconds):
+    """A fresh online observation can become due without a new board revision."""
+    if type(period_seconds) is not int or period_seconds < 300:
+        raise ValueError("blocked_review_seconds must be an integer of at least 300")
+    clock = datetime.fromisoformat(at.replace("Z", "+00:00"))
+    due = []
+    for task in tasks:
+        if task.get("archived") or task.get("status") not in ("progress", "review", "blocked"):
+            continue
+        try:
+            updated = datetime.fromisoformat(task["updated_at"].replace("Z", "+00:00"))
+            if updated.tzinfo is None:
+                continue
+            period = int((clock - updated).total_seconds() // period_seconds)
+        except (KeyError, TypeError, ValueError, AttributeError):
+            continue
+        if period >= 1:
+            due.append({key: task.get(key) for key in ("id", "status", "assignee", "updated_at")} | {"period": period})
+    return sorted(due, key=lambda item: item["id"])
+
+
 def collect(config):
     env_error = None
     try:
@@ -144,6 +165,7 @@ def collect(config):
         board = get(board_url + "/board", env["UNION_KANBAN_KEY"])
         messages = get(board_url + "/messages?limit=50", env["UNION_KANBAN_KEY"])
         return {"board_revision": board["revision"], "latest_message_id": messages.get("latest_id"),
+                "attention": attention_cards(board["tasks"], now(), config.get("blocked_review_seconds", 14400)),
                 "messages": [{"id": m["id"], "deleted": bool(m.get("deleted_at"))} for m in messages["messages"]],
                 "cards": [{k: t.get(k) for k in ("id", "version", "status", "assignee")}
                           for t in board["tasks"] if not t["archived"]]}

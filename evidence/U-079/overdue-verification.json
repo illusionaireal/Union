@@ -1,0 +1,16 @@
+{
+  "scope": "controlled overdue-review signal",
+  "red": {
+    "tests": 17,
+    "failures": 2,
+    "log_sha256": "0261b473dee4471ac270a83d7fbfc273f55995603ae7d24e5bf7518f7e82fb14"
+  },
+  "green": {
+    "tests": 17,
+    "passed": true,
+    "log_sha256": "132008a93560f9cab81c9987911da6c891009f68e03739d985c278a2492151dd"
+  },
+  "default_review_seconds": 14400,
+  "poll_seconds": 300,
+  "real_model_calls_in_tests": 0
+}
