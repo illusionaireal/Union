@@ -534,6 +534,22 @@ def cancel_step(state, data, clock=None):
     return {key: step[key] for key in ("step_ref", "status", "reason", "cost_status")}
 
 
+def cancel_intent(state, data, clock=None):
+    """Record a cancel request for an in-flight automatic call. The step stays
+    reserved/unknown and its budget occupancy unchanged: acceptance of the local
+    cancel intent never proves the remote outcome, and settlement still goes
+    through the original-request reconciliation."""
+    work = records(state)["works"].get(data["work_id"])
+    require(work is not None, "工作不存在或不属于此 AU")
+    step = next((item for item in work.get("steps") or [] if item["step_ref"] == data["step_id"]), None)
+    require(step is not None, "该工作没有此步进记录")
+    require(step.get("command_id"), "该步进没有自动调用；本地取消走预约释放")
+    require(step["status"] == "reserved", "该步已结算；执行事实按原模型请求核对")
+    step["cancel_requested_at"] = _stamp(clock)
+    step["cancel_requested_by"] = data["reason"][:200]
+    return {key: step[key] for key in ("step_ref", "status", "model_request_id", "cancel_requested_at")}
+
+
 def reconcile_step(state, data, clock=None):
     """Resolve a step whose model result was unknown, with a recorded reason."""
     work = records(state)["works"].get(data["work_id"])

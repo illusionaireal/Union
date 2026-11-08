@@ -127,8 +127,18 @@ class WorkService:
                         receipt["step"] = rules.reconcile_step(local, request["data"])
                         receipt["message"] = "已按核对结果处理该次未知步进"
                     elif request["kind"] == "cancel_step":
-                        receipt["step"] = rules.cancel_step(local, request["data"])
-                        receipt["message"] = "已记录本地取消；远端结果未知，预约已释放且费用保持未知"
+                        step = next(
+                            (s for s in rules.records(local)["works"].get(request["data"]["work_id"], {})
+                             .get("steps") or [] if s["step_ref"] == request["data"]["step_id"]), None)
+                        if step is not None and step.get("command_id"):
+                            receipt["step"] = rules.cancel_intent(local, request["data"])
+                            receipt["message"] = "取消受理已记录；原线端请求取消须送达 modeld，执行事实仍按原请求核对"
+                            receipt["model_request_id"] = step["model_request_id"]
+                            receipt["cancel_accepted"] = False
+                            line_end = step["model_request_id"]
+                        else:
+                            receipt["step"] = rules.cancel_step(local, request["data"])
+                            receipt["message"] = "已记录本地取消；远端结果未知，预约已释放且费用保持未知"
                     elif request["kind"] == "reserve_step":
                         receipt["step"] = rules.reserve_step(local, request["data"], instance=self.app.instance)
                         receipt["message"] = "已为该次执行预约一次调用；尚未调用模型"
@@ -154,6 +164,22 @@ class WorkService:
                 cx.execute("RELEASE work_command")
                 receipt["version"] = state["version"]
                 self.store.save(cx, state, charter, request, receipt, state["policy_version"], changed=changed)
+                if receipt.get("cancel_accepted") is False and receipt.get("model_request_id"):
+                    channel = getattr(self, "transport", None)
+                    if channel is None and self.transport_factory is not None:
+                        try:
+                            channel = self.transport_factory(request["organization_id"], step.get("connection") or {})
+                        except Exception:  # noqa: BLE001 - delivery failure cannot change AU facts
+                            channel = None
+                    if channel is not None and hasattr(channel, "client"):
+                        from urllib.parse import urlencode
+                        try:
+                            channel.client.call("POST", "/v1/requests/" + receipt["model_request_id"]
+                                                + "/cancel?" + urlencode({"au_id": request["organization_id"]}), {})
+                            receipt["cancel_accepted"] = True
+                            receipt["message"] = "取消受理已送达原线端请求；执行事实仍按原请求核对，预约保留"
+                        except Exception:  # noqa: BLE001 - a refused cancel keeps the original facts
+                            receipt["cancel_accepted"] = False
         return receipt
 
     def close_completed_result_attempt(self, cx, state, data):

@@ -1,0 +1,7 @@
+test_an_inflight_automatic_step_cancels_its_original_model_request (__main__.CancelRouteProbe.test_an_inflight_automatic_step_cancels_its_original_model_request) ... automatic cancel HTTP=200 receipt=succeeded modeld_cancel_posts=1
+ok
+
+----------------------------------------------------------------------
+Ran 1 test in 1.002s
+
+OK
