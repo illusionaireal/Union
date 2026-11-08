@@ -1878,6 +1878,13 @@
                     "from": "doing",
                     "to": "doing",
                     "note": "PR #20 撤权记账与 PR #21 工具上下文已分别合并49ca06d/90d8b1f；派发预约、原请求核对与循环恢复候选c5df280完成22项故障测试及独立工程复核。证据 evidence/U-067/dispatch-reservation/README.md。当前与集成分支组合验收；保留原负责人、状态和真实任务出口。"
+                },
+                {
+                    "at": "2026-11-08T08:18:45.126Z",
+                    "actor": "codex-home/current-codex-session",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "已按GitHub读回PR #17合并bbe8068；沿在线#22评论#47交付自动派发版本兼容候选，分支codex/u067-dispatch-compatibility。schema 4与原预约同事务，新发布器拒绝不兼容旧候选并覆盖历史schema 3自动记录；证据evidence/U-067/dispatch-compatibility/README.md。原3探针及PR #24@39db061组合受控检查通过，当前head CI和另一工程角色复核仍是采用条件；0真实调用、无NAS切换或业务数据迁移。仅追加交付历史，原owner/status和真实验收不变。"
                 }
             ],
             "claim": {

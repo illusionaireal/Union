@@ -131,9 +131,17 @@ def pack(root, output, release_id):
     keys = declarations[0].keys
     require(all(isinstance(key, ast.Constant) and isinstance(key.value, str) for key in keys), 'Invalid model profile names')
     profiles = sorted(key.value for key in keys)
+    schema_source = ast.parse(source_bytes['ai_union/domain/governance.py'])
+    declarations = [node.value for node in schema_source.body if isinstance(node, ast.Assign)
+                    and any(isinstance(target, ast.Name) and target.id == 'SUPPORTED_SCHEMAS' for target in node.targets)]
+    require(len(declarations) == 1, 'Source must declare its supported AU schemas before packaging')
+    governed_schemas = ast.literal_eval(declarations[0])
+    require(isinstance(governed_schemas, tuple) and governed_schemas
+            and all(type(value) is int and value >= 2 for value in governed_schemas)
+            and len(set(governed_schemas)) == len(governed_schemas), 'Invalid source AU schema declaration')
     manifest = {'schema_version': 1, 'release_id': release_id, 'git_baseline': baseline,
                 'core_schemas': {'auth': 2, 'catalog': 1},
-                'core_au_schemas': [1, 2, 3],
+                'core_au_schemas': [1, *governed_schemas],
                 'core_model_profiles': profiles,
                 'modeld_schemas': [0, 1],
                 'source_state': 'working_tree' if changed else 'committed', 'changed_sources': changed,
@@ -351,6 +359,11 @@ def check_au_schemas(database, manifest, root):
             state = CoreAUStore().read(directory, entry['id'], creation=intent)['au']
             require(state['schema_version'] in manifest.get('core_au_schemas', []),
                     'Candidate does not declare support for the persisted AU schema; keep compatible code and original history')
+            works = state.get('work_runtime', {}).get('works', {}).values()
+            has_dispatch = any(work.get('loops') or any(step.get('command_id') for step in work.get('steps', []))
+                               for work in works)
+            require(not has_dispatch or 4 in manifest.get('core_au_schemas', []),
+                    'Candidate cannot preserve durable work dispatches; keep compatible code and original reservations')
             models = state.get('model_access', {})
             used_profiles = {c['profile'] for c in models.get('connections', {}).values()}
             used_profiles.update(o['config']['profile'] for o in models.get('operations', {}).values())

@@ -1,0 +1,10 @@
+{
+  "schema_before": 3,
+  "schema_after": 4,
+  "reloaded_same_au": true,
+  "governance_visible": true,
+  "automatic_work_visible_before": false,
+  "automatic_work_visible_after": false,
+  "original_reservation": "reserved",
+  "real_model_calls": 0
+}

@@ -45,7 +45,7 @@ def read_in(cx, state, origin):
     rules.validate_state(state, origin, charter)
     responsibility.validate_state(state)
     work_rules.validate_state(state)
-    if state["schema_version"] == 3:
+    if state["schema_version"] in (3, 4):
         from .model_access_store import ModelAccessStore
         ModelAccessStore.validate(cx, state)
     records = commands_in(cx, state["id"])

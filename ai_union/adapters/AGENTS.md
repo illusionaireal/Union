@@ -53,3 +53,9 @@
   occupy the ID of a model call that has not yet returned. Internal dispatch
   events and final public receipts commit through this same writer, with their
   respective actual base versions; original public receipts stay immutable.
+
+- S03 automatic dispatch/loop intent explicitly marks schema 4 in that same
+  transaction. Schema 4 retains governance and private model validation; reads
+  never migrate schema-3 history. Release selection checks durable dispatch
+  semantics even for earlier schema-3 intents. Follow the dispatch compatibility
+  contract and `tests/test_work_dispatch_compatibility.py`.

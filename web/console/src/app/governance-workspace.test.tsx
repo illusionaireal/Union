@@ -68,6 +68,27 @@ beforeEach(() => {
 });
 
 describe('current governance access projection', () => {
+  it('keeps the authorized AU readable after dispatch advances its schema', async () => {
+    const read = vi.spyOn(api, 'coreAU').mockResolvedValue({
+      ...governed,
+      au: { ...governed.au, schema_version: 3 },
+    } as unknown as CoreAURead);
+    mount();
+    await waitFor(() =>
+      expect(screen.getByTestId('core-name')).toHaveTextContent('有明确责任的 AU'),
+    );
+    read.mockResolvedValue({
+      ...governed,
+      au: { ...governed.au, schema_version: 4, name: '执行后的同一 AU' },
+    } as unknown as CoreAURead);
+    fireEvent.click(screen.getByRole('button', { name: '刷新当前权限' }));
+    await waitFor(() =>
+      expect(screen.getByTestId('core-name')).toHaveTextContent('执行后的同一 AU'),
+    );
+    expect(screen.getByRole('button', { name: '操作' })).toBeEnabled();
+    expect(screen.getByTestId('principal')).toHaveTextContent(successor);
+  });
+
   it.each(['principal_id', 'service_instance', 'organization_scope'] as const)(
     'does not resurrect a cached AU after observing a changed %s',
     async (field) => {
@@ -173,11 +194,14 @@ describe('current governance access projection', () => {
     expect(screen.getByRole('button', { name: '操作' })).toBeEnabled();
   });
 
-  it.each(['principal_id', 'service_instance'] as const)(
-    'withholds a schema 2 projection bound to another %s',
-    async (field) => {
+  it.each([2, 3, 4].flatMap(schema =>
+    ['principal_id', 'service_instance'].map(field => [schema, field] as const),
+  ))(
+    'withholds a schema %i projection bound to another %s',
+    async (schema, field) => {
       vi.spyOn(api, 'coreAU').mockResolvedValue({
         ...governed,
+        au: { ...governed.au, schema_version: schema },
         access: {
           principal_id: successor,
           service_instance: session.service_instance,

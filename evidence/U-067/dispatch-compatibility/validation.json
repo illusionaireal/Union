@@ -1,0 +1,41 @@
+{
+  "base": "bbe8068335c32c04bdcf6d4fa20375245b912cf9",
+  "implementation_actor": "codex-home/current-codex-session",
+  "independent_review": "pending",
+  "real_model_calls": 0,
+  "python": {
+    "tests": 716,
+    "skipped": 10,
+    "failures": 0,
+    "errors": 0
+  },
+  "pr24_combination": {
+    "head": "39db061e307accc7410bee6d71c14756abd43fbd",
+    "tests": 55,
+    "skipped": 1,
+    "failures": 0,
+    "errors": 0
+  },
+  "original_probes": {
+    "candidate_passed": 3,
+    "pr24_combination_passed": 3
+  },
+  "npm_check": "passed",
+  "frontend_tests": 212,
+  "controlled_log_sha256": {
+    "red.log": "bf3e83a4e4ca1cd30d533682ddd1337e172d9706565e9f504f6c9b84287f7eab",
+    "green-first.log": "6971bc49a5458f1ac0768e785a46385af431710af15d312d96cf57a584ee054e",
+    "package-red.log": "702037c69607dcb1ed63ec4a1a2ae823e3d5392d57614af68f4b4c0eeca27c1a",
+    "combined-pr24.log": "aba826fe7223ebdd16e8e59bae5b24ebfee953175e240d46de955f987ed7fe12",
+    "combined-original-three.log": "5c356df3b5495667c0ddbc317a2ba656379a4231c6fecce1152e5ce3cf7f090b",
+    "python-full-complete.log": "2ad864481f292e7184326b1821392f9411750b6d2d99258a630e7bca50db6dfc",
+    "frontend-schema-red.log": "1fc3557bcf002d36e7ec39a53ecc5cb16fab2de414030603f88e6c9842e8c7cc",
+    "npm-with-frontend.log": "793c9ae54a31cefb9d6237e552030eab562aaf798a7ea8f829381b84ce0a8aff"
+  },
+  "limitations": [
+    "Independent engineering review and current-head CI required",
+    "Full modeld build/package not available locally",
+    "Core tasks route does not mount the S03 WorkPanel on schema 3 or 4",
+    "No real business acceptance, NAS switch, or live-data migration"
+  ]
+}

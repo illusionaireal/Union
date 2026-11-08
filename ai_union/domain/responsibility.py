@@ -106,7 +106,7 @@ def check_attempt(state, charter, attempt, clock, principals):
 
 def apply(state, charter, kind, data, principal, clock, principals):
     """Mutate a transaction-local copy; only late evidence returns a refusal."""
-    require(state["schema_version"] in (2, 3), "须先采用可执行的本地治理程序")
+    require(state["schema_version"] in governance.SUPPORTED_SCHEMAS, "须先采用可执行的本地治理程序")
     if kind == "submit_local_result":
         attempt = state["attempts"].get(data["attempt_id"])
         if attempt is None or attempt["principal_id"] != principal:
