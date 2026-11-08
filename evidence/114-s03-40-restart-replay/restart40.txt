@@ -1,0 +1,7 @@
+RESTART40: {"observed": {"request_id": "work-0ce6ae0b3ff37006ae2a25a02353d8f0013246496079167adcad7b18c992b4f9", "cancel_reply": {"state": "streaming", "cancel_requested": true}, "final": {"state": "interrupted", "au_id": "org-2094731a55384522bc992bae923d5241", "cancel_requested": true}, "before_restart": {"steps": 1, "budget": {"max_calls": 1, "reserved": 1, "used": 0}, "model_request_id": "work-0ce6ae0b3ff37006ae2a25a02353d8f0013246496079167adcad7b18c992b4f9"}, "after_replay": {"steps": 1, "steps_status": ["unknown"], "budget": {"max_calls": 1, "reserved": 1, "used": 0}, "model_request_id": "work-0ce6ae0b3ff37006ae2a25a02353d8f0013246496079167adcad7b18c992b4f9"}}, "first_receipt": {"status": "succeeded", "model_outcome": "unknown", "message": "模型通道结果未知；已保留该次调用预约等待核对，不自动重放：work_step_interrupted", "step": "work-40#s1"}, "replay_receipt": {"status": "succeeded", "model_outcome": "unknown", "message": "模型通道结果未知；已保留该次调用预约等待核对，不自动重放：work_step_interrupted", "step": "work-40#s1"}}
+test_restart_replay_keeps_one_dispatch_and_keeps_the_reservation (tests.test_40_restart_replay.RestartReplay40.test_restart_replay_keeps_one_dispatch_and_keeps_the_reservation) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 9.842s
+
+OK
