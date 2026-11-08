@@ -50,6 +50,9 @@ jobs:
       - run: node scripts/u081-work-read-browser.cjs
         env:
           UNION_PYTHON: python3
+      - run: node scripts/u084-work-execution-browser.cjs
+        env:
+          UNION_PYTHON: python3
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -58,3 +61,4 @@ jobs:
             .union/frontend-browser-evidence
             .union/novel-browser-evidence
             .union/u081-work-read-browser
+            .union/u084-page-execution

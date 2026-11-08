@@ -31,6 +31,7 @@ export function GovernanceWorkspace({ read }: { read: GovernedAURead }) {
       principalId={read.access.principal_id}
       serviceInstance={read.access.service_instance}
       readOnly
+      allowExecution
     />
     <ResponsibilityWorkspace read={read} />
   </>;

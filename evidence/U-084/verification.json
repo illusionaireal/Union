@@ -1,0 +1,53 @@
+{
+  "card": "#38 / U-084",
+  "parent": "#22 / U-067",
+  "scope": "controlled candidate",
+  "actor": "Codex / GPT-6",
+  "member_id": "54f3ed9e-817b-482a-90c1-d46bfc01728c",
+  "base_commit": "86f283a6955a22e8b721c18e8aac4683c1d72fd8",
+  "checks": {
+    "initial_red": {
+      "log_sha256": "6e128cb3c34764cbd11199286df87a9b56f4a032ec58efd5dbed49ac460500f1",
+      "summary": [
+        "Test Files  1 failed (1)",
+        "Tests  4 failed (4)"
+      ]
+    },
+    "stale_red": {
+      "log_sha256": "d1e635a840df40315ec9994cc3ddfd23d3ff09594d63f2ba78b07a073e3c0497",
+      "summary": [
+        "Test Files  1 failed (1)",
+        "Tests  1 failed | 8 passed (9)"
+      ]
+    },
+    "npm_check": {
+      "log_sha256": "b1397bf4e10af794508d3cb925a1ffb7f3d2b355a4bf6c81a06e715153cc17fc",
+      "summary": [
+        "Test Files  24 passed (24)",
+        "Tests  231 passed (231)"
+      ]
+    },
+    "http_restart": {
+      "log_sha256": "434bfbb0ef82a7c30e9d0ca448593082afecfafed5f74cbca3128859669e21ec",
+      "summary": [
+        "Ran 1 test in 1.194s",
+        "OK"
+      ]
+    },
+    "initial_full": {
+      "log_sha256": "1ad190aa98b195d49dce0c363798b1f906befb806f929178f9b1a86dea95cd5a",
+      "summary": [
+        "Ran 754 tests in 284.923s",
+        "OK (skipped=3)"
+      ]
+    }
+  },
+  "current_full_regression": "running separately after addition of new HTTP test; final result and exact-head CI will be recorded on card",
+  "browser_local": "attempted; Chromium executable missing, no browser assertions executed",
+  "browser_ci": "new workflow step; exact commit result required",
+  "independent_review": "required before adoption",
+  "real_model_calls": 0,
+  "production_deployment": false,
+  "history_mirror": "unchanged; online source used for claim/dependencies/WIP",
+  "preexisting_vendor_change": "preserved and excluded"
+}

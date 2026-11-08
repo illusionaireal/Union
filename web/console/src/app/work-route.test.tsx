@@ -118,6 +118,15 @@ afterEach(() => {
 });
 
 describe('AI work on the actual core tasks route', () => {
+  it('exposes explicit automatic preparation on the actual core route without manual bookkeeping', async () => {
+    const pending = work();
+    pending.works[0] = {...pending.works[0],status:'pending',results:[],result_ids:[],budget:{max_calls:2,reserved:0,used:0}};
+    vi.mocked(api.coreWork).mockResolvedValue(pending);
+    mount();
+    expect(await screen.findByRole('button',{name:'准备本轮执行'})).toBeEnabled();
+    expect(screen.queryByRole('button',{name:'预约一次调用'})).toBeNull();
+    expect(api.coreWorkCommand).not.toHaveBeenCalled();
+  });
   it('shows persisted AI work and downloads without opening manual write controls', async () => {
     mount();
     expect(await screen.findByText('已保存的项目概览')).toBeTruthy();

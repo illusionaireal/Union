@@ -4,6 +4,7 @@ import { api, errorText } from '../../api/client';
 import { useQuery as useModelsQuery } from '@tanstack/react-query';
 import type { CoreWorkItem } from '../../api/types';
 import { Card } from '../../components/ui';
+import { WorkExecution } from './WorkExecution';
 
 function money(item: CoreWorkItem) {
   const { max_calls: max, reserved, used } = item.budget;
@@ -183,14 +184,16 @@ function AttemptActions({ item, send, busy }: { item: CoreWorkItem; send: (kind:
   );
 }
 
-export function WorkPanel({ organizationId, readOnly = false, principalId, serviceInstance }: {
+export function WorkPanel({ organizationId, readOnly = false, principalId, serviceInstance, allowExecution = false }: {
   organizationId: string;
   readOnly?: boolean;
   principalId?: string;
   serviceInstance?: string;
+  allowExecution?: boolean;
 }) {
   const client = useQueryClient();
   const [busy, setBusy] = useState(false);
+  const [accessLost, setAccessLost] = useState(false);
   const [note, setNote] = useState<{ status: string; message?: string } | null>(null);
   const { data, isPending, isFetching, error, refetch } = useQuery({
     queryKey: ['core-work', organizationId, principalId, serviceInstance],
@@ -219,6 +222,7 @@ export function WorkPanel({ organizationId, readOnly = false, principalId, servi
   };
   const refreshAction = readOnly ? <button type="button" className="button secondary compact"
     disabled={isFetching} onClick={() => void refetch()}>刷新 AI 工作</button> : undefined;
+  if (accessLost) return <Card title="AI 工作（V1）">权限或身份已变化，请刷新当前权限后重开工作页。</Card>;
   if (isPending) return <Card title="AI 工作（V1）">正在读取…</Card>;
   if (error || !data) return <Card title="AI 工作（V1）" action={refreshAction}>读取失败，可刷新重试。</Card>;
   if (readOnly && (data.protocol !== 'core.work.v1' || data.organization_id !== organizationId
@@ -235,7 +239,7 @@ export function WorkPanel({ organizationId, readOnly = false, principalId, servi
   }
   return (
     <Card title="AI 工作（V1）" action={refreshAction}>
-      {readOnly && <p className="form-note">查看已保存的执行记录与成果；本页暂不提供运行操作。</p>}
+      {readOnly && <p className="form-note">{allowExecution ? '运行已登记的工作；准备本轮执行不调用模型，运行会使用已授权的模型与调用预算。' : '查看已保存的执行记录与成果；本页暂不提供运行操作。'}</p>}
       {!readOnly && data.access.can_start && <StartWorkForm organizationId={organizationId} send={send} busy={busy} />}
       <ul className="work-panel" aria-label="V1 工作列表">
         {data.works.map((item) => (
@@ -269,6 +273,10 @@ export function WorkPanel({ organizationId, readOnly = false, principalId, servi
                 </dd>
               </div>
             </dl>
+            {readOnly && allowExecution && principalId && serviceInstance && data.access.can_start &&
+              <WorkExecution key={`${serviceInstance}:${principalId}:${organizationId}:${item.id}`}
+                item={item} scope={{principalId,serviceInstance,organizationId,workId:item.id}}
+                onAccessLost={() => setAccessLost(true)} />}
             {!readOnly && <div className="work-actions">
               <button type="button" disabled={busy} onClick={() => send('start_attempt', { work_id: item.id })}>
                 开始执行
