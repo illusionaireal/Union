@@ -36,3 +36,12 @@ npm run check:console
 - 未运行真实模型调用（本轮 0 次）；本项是 UI 接入，真实出口仍见 [108](../108-s03-real-exits/README.md) 的 22-B/22-C 失败记录；
 - 未做浏览器级验收（`npm run test:workspace` 需要构建产物与 Chromium；如需我可补跑）；
 - 未提交后端改动，未触碰他人文件。
+
+## 追加验证（22:57）
+
+| 检查 | 结果 |
+| --- | --- |
+| `npm run check`（管理/计划/node 测试/console） | **退出 0**：208 前端测试通过、构建成功 |
+| `npm run test:workspace`（真实 Chromium 浏览器验收） | **71 项通过**，`real_model_calls: 0` |
+
+日志：`npm-check.txt`、`browser-workspace.txt`。浏览器验收在工作面板上跑通既有用户流程，说明新增的自动执行/核对按钮没有破坏原有交互。

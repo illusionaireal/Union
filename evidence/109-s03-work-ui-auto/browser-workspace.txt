@@ -1,0 +1,5 @@
+
+> union@0.0.0 test:workspace
+> node scripts/check_workspace.cjs
+
+{"passed":71,"real_model_calls":0,"evidence":"C:\\Users\\Benedict\\AppData\\Local\\Temp\\ws-109"}
