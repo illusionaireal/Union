@@ -183,6 +183,41 @@ function AttemptActions({ item, send, busy }: { item: CoreWorkItem; send: (kind:
   );
 }
 
+
+function AutoRunActions({ item, send, busy }: { item: CoreWorkItem; send: (kind: string, payload: Record<string, unknown>) => void; busy: boolean }) {
+  const running = item.attempts.some((attempt) => attempt.status === 'running');
+  const unknown = item.steps.filter((step) => step.status === 'unknown');
+  if (!running && unknown.length === 0) return null;
+  return (
+    <span className="auto-run-actions">
+      {unknown.length > 0 && (
+        <>
+          <span role="note">存在未确认的原模型请求：{unknown[0].step_ref}，核对完成后才会记账为已用。</span>
+          <button
+            type="button"
+            disabled={busy}
+            onClick={() =>
+              send('reconcile_step', {
+                work_id: item.id,
+                step_id: unknown[0].step_ref,
+                status: 'used',
+                reason: '界面核对原请求：确认完成后按已用记账',
+              })
+            }
+          >
+            核对原请求
+          </button>
+        </>
+      )}
+      {running && (
+        <button type="button" disabled={busy} onClick={() => send('run_loop', { work_id: item.id })}>
+          自动执行（连续，最多 3 步）
+        </button>
+      )}
+    </span>
+  );
+}
+
 export function WorkPanel({ organizationId }: { organizationId: string }) {
   const client = useQueryClient();
   const [busy, setBusy] = useState(false);
@@ -264,6 +299,7 @@ export function WorkPanel({ organizationId }: { organizationId: string }) {
                 预约一次调用
               </button>
               <AttemptActions item={item} send={send} busy={busy} />
+              <AutoRunActions item={item} send={send} busy={busy} />
               {(() => {
                 const adopted = item.results.find((value) => value.status === 'adopted');
                 const running = item.attempts.some((attempt) => attempt.status === 'running');

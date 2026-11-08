@@ -1,0 +1,123 @@
+
+> union@0.0.0 check:console
+> npm run typecheck --workspace @union/console && npm run test --workspace @union/console && npm run build:console
+
+
+> @union/console@0.1.0 typecheck
+> tsc --noEmit
+
+
+> @union/console@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 D:/SynologyDrive/project/Union/web/console
+
+ ✓ src/api/client.test.ts (3 tests) 14ms
+ ✓ src/features/commands/receipts.test.ts (5 tests) 12ms
+ ✓ src/app/url-state.test.tsx (1 test) 128ms
+ ✓ src/features/commands/fields.test.tsx (9 tests) 420ms
+ ✓ src/pages/RuntimeObservation.test.tsx (11 tests) 297ms
+ ✓ src/features/work/ResultList.test.tsx (2 tests) 121ms
+stderr | src/features/work/WorkPanel.test.tsx > V1 work panel > reports an unknown execution and the last tool receipt instead of success
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: ["core-models","au-1"]
+
+stderr | src/features/work/WorkPanel.test.tsx > V1 work panel > explains the empty state when no V1 work exists
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: ["core-models","au-1"]
+
+stderr | src/features/work/WorkPanel.test.tsx > V1 work panel > shows an adopted result with its digest and source count
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: ["core-models","au-1"]
+
+ ✓ src/pages/Tasks.test.tsx (1 test) 137ms
+stderr | src/features/work/WorkPanel.test.tsx > V1 work panel > starts an execution and adopts a candidate result through the API
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: ["core-models","au-1"]
+
+ ✓ src/pages/ModelServiceConnections.test.tsx (2 tests) 265ms
+stderr | src/features/work/WorkPanel.test.tsx > V1 work panel > submits a candidate result with the selected sources
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: ["core-models","au-1"]
+
+ ✓ src/pages/Gateways.test.tsx (3 tests) 380ms
+stderr | src/features/work/WorkPanel.test.tsx > V1 work panel > closes a running attempt with an explicit outcome
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: ["core-models","au-1"]
+
+ ✓ src/app/workspace.test.tsx (4 tests) 580ms
+stderr | src/features/work/WorkPanel.test.tsx > V1 work panel > completes a work with its adopted result
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: ["core-models","au-1"]
+
+ ✓ src/app/governance-workspace.test.tsx (11 tests) 664ms
+stderr | src/features/work/WorkPanel.test.tsx > V1 work panel > hides the completion button while an execution is still running
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: ["core-models","au-1"]
+
+ ✓ src/pages/SubscriptionConnections.test.tsx (8 tests) 599ms
+stderr | src/features/work/WorkPanel.test.tsx > runs the automatic loop from the work panel when an execution is active
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: ["core-models","au-1"]
+
+stderr | src/features/work/WorkPanel.test.tsx > offers original-request reconciliation when a step outcome is unknown
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: ["core-models","au-1"]
+
+ ✓ src/features/work/WorkPanel.test.tsx (12 tests) 702ms
+ ✓ src/pages/Identity.test.tsx (14 tests) 1017ms
+ ✓ src/features/commands/core-creation.test.tsx (7 tests) 1906ms
+   ✓ core creation through the workspace > keeps explicit legacy company creation reachable after reopening a prepared AU  535ms
+   ✓ core creation through the workspace > opens the saved prepared AU through V1 and shows bound governance without legacy snapshot calls  350ms
+ ✓ src/features/commands/core-boundaries.test.tsx (10 tests) 2523ms
+   ✓ lets a core participant prepare its own AU while withholding legacy operations and showing its stable identity  422ms
+   ✓ core creation identity and receipt boundaries > adopts a delayed creation result only for its original principal (changed=false)  310ms
+ ✓ src/features/models/ModelsIdentity.test.tsx (11 tests) 3091ms
+   ✓ model identity, scope and input lifetime > keeps draft fields and keyboard focus through refresh and same-principal renewal  556ms
+   ✓ model identity, scope and input lifetime > retains draft while offline and never queues a command for reconnection  337ms
+   ✓ model identity, scope and input lifetime > ignores an earlier successful read arriving after a newer permission denial  362ms
+   ✓ model identity, scope and input lifetime > does not expose a late command result to a different principal  322ms
+ ✓ src/features/models/ModelsRecovery.test.tsx (10 tests) 3707ms
+   ✓ model original-request recovery > never replays a lost save and only queries the original receipt  801ms
+   ✓ model original-request recovery > treats a concrete validation error as rejected input instead of unknown  381ms
+   ✓ model original-request recovery > keeps an unmatched response unknown without displaying another AU receipt  376ms
+   ✓ model original-request recovery > reconciles a saved unknown operation explicitly without resubmitting credentials  327ms
+   ✓ model original-request recovery > keeps other connections usable when one verification is unknown  405ms
+   ✓ model original-request recovery > allows the current governor to request local stop while governance is unavailable  394ms
+   ✓ model original-request recovery > lets an unavailable current governor disable a connection while enable and default stay unavailable  400ms
+ ✓ src/features/models/ModelsDiagnostics.test.tsx (17 tests) 4552ms
+   ✓ model check eligibility after version changes or local stop > keeps an unstopped unknown check on the same revision blocking another check  463ms
+   ✓ model check eligibility after version changes or local stop > rechecks an unfinished current-version check that appears before preview  371ms
+   ✓ model check eligibility after version changes or local stop > allows an explicit new bounded check after an updated connection version  510ms
+   ✓ model check eligibility after version changes or local stop > allows an explicit new bounded check after a requested local stop  452ms
+   ✓ model diagnostics and observed usage > keeps worker_start_failed on explicit original-check reconciliation  389ms
+   ✓ model diagnostics and observed usage > keeps original_request_missing on explicit original-check reconciliation  374ms
+   ✓ model diagnostics and observed usage > keeps provider_result_unconfirmed on explicit original-check reconciliation  369ms
+ ✓ src/features/models/Models.test.tsx (14 tests) 4659ms
+   ✓ core model access user journey > opens the core models route and navigation for a normal core governor  455ms
+   ✓ core model access user journey > saves without inference or adoption, clears the key and keeps only request identities  474ms
+   ✓ core model access user journey > grants bounded resources, reads a selected document twice and adopts independently  1297ms
+   ✓ core model access user journey > can adopt an enabled untested connection without purchasing a check  343ms
+   ✓ core model access user journey > uses only an explicitly supplied modeld grant, without listing host accounts  318ms
+ ✓ src/features/governance/Governance.test.tsx (53 tests) 10602ms
+   ✓ governance user journey > keeps account-level AU creation available from a governed overview page without governing commands  430ms
+   ✓ governance command recovery boundaries > keeps an unknown action local and lets a different work proceed with its own request  390ms
+
+ Test Files  21 passed (21)
+      Tests  208 passed (208)
+   Start at  22:54:10
+   Duration  30.31s (transform 5.37s, setup 85.88s, collect 37.31s, tests 36.38s, environment 238.61s, prepare 14.70s)
+
+
+> union@0.0.0 build:console
+> npm run build --workspace @union/console
+
+
+> @union/console@0.1.0 build
+> tsc --noEmit && vite build
+
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 2046 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.74 kB │ gzip:   0.51 kB
+dist/assets/index-DyiaVZUg.css   49.96 kB │ gzip:  11.02 kB
+dist/assets/index-DctMMLBJ.js   533.77 kB │ gzip: 164.43 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 8.10s
