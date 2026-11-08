@@ -1855,7 +1855,7 @@
             "owner": "dsh/deepseek-v4.1-flash/DESKTOP-SA4MRG7",
             "blocker": null,
             "started_at": "2026-11-06",
-            "updated_at": "2026-11-07",
+            "updated_at": "2026-11-08",
             "completion": null,
             "history": [
                 {
@@ -1871,6 +1871,13 @@
                     "from": "doing",
                     "to": "doing",
                     "note": "PR #17 @1b00336 的完成后 modeld 撤权事实保留协助候选；契约、RED/GREEN 与限定验收见 evidence/U-067/model-observation-fix/README.md。无在线认领或 owner/status 更新，未完成预约事务/工具正文/真实业务出口；待另一工程角色复核。"
+                },
+                {
+                    "at": "2026-11-08T06:46:20.154Z",
+                    "actor": "codex-home/deployment-coordinator",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "PR #20 撤权记账与 PR #21 工具上下文已分别合并49ca06d/90d8b1f；派发预约、原请求核对与循环恢复候选c5df280完成22项故障测试及独立工程复核。证据 evidence/U-067/dispatch-reservation/README.md。当前与集成分支组合验收；保留原负责人、状态和真实任务出口。"
                 }
             ],
             "claim": {
@@ -2176,6 +2183,13 @@
                     "from": "backlog",
                     "to": "backlog",
                     "note": "按用户“每张卡看不懂、内容太抽象”的反馈，改为具体功能、操作和完成演示。原技术验收完整保留在 specs/053-union-rewrite/tasks.md#u-075-development；范围、状态、owner、依赖、claim和既有验收记录不变，不执行未来卡。"
+                },
+                {
+                    "at": "2026-11-07T18:53:06Z",
+                    "actor": "chatGPT-online",
+                    "from": "ready",
+                    "to": "ready",
+                    "note": "S09.2 Responses 直接配置工程候选：specs/053-union-rewrite/s09-responses-contract.md；evidence/u075-responses-profile-2026-11-08/README.md。受控工程、协议绑定/恢复及候选兼容检查已交付，真实供应商与中断恢复仍待有界授权；不关闭 U-075。本条只同步长期实现证据，实时负责人、状态、依赖和 WIP 以 Kanban #28 为准，不从此镜像反向覆盖看板。"
                 }
             ],
             "claim": null
@@ -2249,15 +2263,22 @@
             "priority": "P1",
             "milestone": "G0",
             "module": "console",
-            "status": "review",
+            "status": "done",
             "owner": "codex/deployment-coordinator/01a1b7fe-81cb-7ec0-8459-d85fd97a9ba7",
             "role": "浏览器CI集成维护",
             "acceptance": "原A01失败可核对；新的空态与授权边界断言通过；完整浏览器检查及相关远端CI如实记录，不减少既有用例，不标记未运行项通过。",
             "dependencies": [],
             "blocker": null,
-            "started_at": "2026-11-08",
-            "updated_at": "2026-11-08",
-            "completion": null,
+            "started_at": "2026-11-07",
+            "updated_at": "2026-11-07",
+            "completion": {
+                "scope": "controlled",
+                "reviewer": "Codex（脚本实施者自检；GitHub实际浏览器作业）",
+                "evidence": [
+                    "evidence/076-browser-ci-contract/README.md"
+                ],
+                "note": "8368967已推送，当前提交GitHub console-browser成功，保留全部原步骤；本地Chrome工作台63/小说16项。共用Python路径fixture失败由U-078承接。开始日期校正为在线UTC日期，事实发生在北京时间11月8日。"
+            },
             "history": [
                 {
                     "at": "2026-11-07T22:12:27.771Z",
@@ -2266,7 +2287,8 @@
                     "to": "review",
                     "note": "在线#34独立认领后完成实际浏览器RED/GREEN；63+16项通过。仅验收脚本，保留全部CI范围；远端当前提交检查待记录。原有任务与负责人不变。"
                 }
-            ]
+            ],
+            "claim": null
         }
     ]
 }

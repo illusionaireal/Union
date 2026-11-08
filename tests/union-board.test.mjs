@@ -243,7 +243,7 @@ test('a failed view write keeps the ledger unchanged, so the state stays recover
   assert.equal(readFileSync(join(root, 'management/project.json'), 'utf8'), before, '主账必须最后写，写失败时仍是旧值');
 });
 
-test('the MCP server passes note through, so a forced record can explain itself', async t => {
+test('the MCP server refuses local operational writes even with force', async t => {
   const { root, data } = fixture(t);
   Object.assign(data.tasks[0], {
     status: 'doing', owner: 'codex', started_at: '2026-11-04',
@@ -267,10 +267,10 @@ test('the MCP server passes note through, so a forced record can explain itself'
   const lines = await runMcpServer(root, requests);
   const response = lines.find(line => line.id === 2);
   assert.ok(response, 'MCP 必须有应答');
-  assert.notEqual(response.result.isError, true, `不应报错：${JSON.stringify(response.result?.content?.[0]?.text)}`);
-  assert.match(response.result.content[0].text, /U-001/);
-  assert.equal(readLedger(root).tasks[0].status, 'done');
-  assert.equal(readLedger(root).tasks[0].history.at(-1).note, 'codex 失联，接手完成');
+  assert.equal(response.result.isError, true);
+  assert.match(response.result.content[0].text, /local history is read-only/);
+  assert.equal(readLedger(root).tasks[0].status, 'doing');
+
 });
 
 function runMcpServer(root, requests) {

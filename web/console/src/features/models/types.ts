@@ -11,7 +11,7 @@ export const modelKinds = [
   'cancel_model_check',
 ] as const;
 export type ModelKind = (typeof modelKinds)[number];
-export type ModelProfile = 'openai_compatible' | 'modeld_grant';
+export type ModelProfile = 'openai_compatible' | 'modeld_grant' | 'openai_responses';
 export type CapabilityStatus = 'verified_real' | 'controlled' | 'unsupported';
 export type ProfileCapability =
   | 'text_answer'
@@ -116,7 +116,7 @@ export interface ModelRead {
   capabilities: {
     profiles: ModelProfile[];
     tools: string[];
-    profile_scope: Record<ModelProfile, ProfileScope>;
+    profile_scope: Record<string, ProfileScope>;
     autonomous_business: false;
   };
   connections: CoreConnection[];

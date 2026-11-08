@@ -1,0 +1,30 @@
+{
+  "at": "2026-11-07T23:29:57.384660+00:00",
+  "last_complete_success": "2026-11-07T22:19:30.096581+00:00",
+  "status": "failed",
+  "sources": {
+    "board": {
+      "status": "failed",
+      "error": "URLError",
+      "at": "2026-11-07T23:30:18.501195+00:00"
+    },
+    "github": {
+      "status": "ok",
+      "error": null,
+      "at": "2026-11-07T23:30:21.773968+00:00"
+    },
+    "nas": {
+      "status": "ok",
+      "error": null,
+      "at": "2026-11-07T23:30:21.986640+00:00"
+    }
+  },
+  "nas": {
+    "exit_code": 0,
+    "health": "running false 0"
+  },
+  "open_prs": [
+    17,
+    14
+  ]
+}

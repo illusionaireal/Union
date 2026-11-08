@@ -48,6 +48,20 @@ PROFILES = {
             "cancel_and_query": _claim("controlled", "取消、原请求查询与 unknown 保留已受控验证。", RECOVERY_EVIDENCE),
         },
     },
+    "openai_responses": {
+        "title": "OpenAI Responses API（自填密钥）",
+        "auth": "api_key",
+        "private_fields": ("base_url", "api_key_sha256"),
+        "registration_options": {"wire_api": "responses"},
+        "capabilities": {
+            "text_answer": _claim("controlled", "通过 Responses 单次内核接入；尚未完成此连接方式的真实供应商验收。", "tests/test_core_responses_profile.py"),
+            "tool_roundtrip": _claim("controlled", "所选资料工具、原生上下文续传和两阶段回答经过受控验证。", "services/modeld/test/responses.test.ts"),
+            "usage_reporting": _claim("controlled", "每次调用独立记录 token，未返回金额时保持未知。", "tests/test_core_responses_profile.py"),
+            "streaming": _claim("unsupported", "底层读取原生事件流，当前页面不提供边生成边显示。"),
+            "long_job_new_input": _claim("unsupported", "尚未实现执行期间追加输入。"),
+            "cancel_and_query": _claim("controlled", "复用原请求取消和 unknown 核对，不保证远端已取消；真实中断恢复待验收。", RECOVERY_EVIDENCE),
+        },
+    },
 }
 
 
@@ -62,6 +76,11 @@ def private_fields(profile):
 
 def requires_api_key(profile):
     return PROFILES.get(profile, {}).get("auth") == "api_key"
+
+
+def registration_options(profile):
+    """Explicit protocol routing; legacy Chat registrations retain their original payload."""
+    return dict(PROFILES[profile].get("registration_options", {}))
 
 
 def scope():

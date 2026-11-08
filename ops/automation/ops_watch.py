@@ -63,6 +63,14 @@ def lock(path):
                     fcntl.flock(stream, fcntl.LOCK_UN)
 
 
+class PartialCollectionError(Exception):
+    """Some independent sources were observed, but no complete snapshot exists."""
+
+    def __init__(self, observations):
+        super().__init__("incomplete source observations")
+        self.observations = observations
+
+
 def poll(root, read_snapshot):
     root = Path(root)
     with lock(root / "poll.lock") as held:
@@ -76,6 +84,9 @@ def poll(root, read_snapshot):
             state.update(status="ok", last_success=now(), fingerprint=digest,
                          snapshot=snapshot, error=None,
                          pending=digest != state.get("acknowledged_fingerprint"))
+            state.pop("observations", None)
+        except PartialCollectionError as error:
+            state.update(status="failed", error=type(error).__name__, observations=error.observations)
         except Exception as error:
             # Error text may contain a private URL or request credentials.
             state.update(status="failed", error=type(error).__name__)
@@ -83,14 +94,17 @@ def poll(root, read_snapshot):
         return state
 
 
-def acknowledge(root, fingerprint):
+def acknowledge(root, fingerprint, *, partial=False):
     root = Path(root)
     with lock(root / "poll.lock") as held:
         if not held:
             return False
         state = read_json(root / "status.json")
-        state["acknowledged_fingerprint"] = fingerprint
-        state["pending"] = fingerprint != state.get("fingerprint")
+        if partial:
+            state["acknowledged_partial_fingerprint"] = fingerprint
+        else:
+            state["acknowledged_fingerprint"] = fingerprint
+            state["pending"] = fingerprint != state.get("fingerprint")
         write_json(root / "status.json", state)
         return True
 
@@ -107,9 +121,14 @@ def run_command(*args, **kwargs):
 
 
 def collect(config):
-    env = environment(config["env_file"])
-    opener = urllib.request.build_opener(urllib.request.ProxyHandler({
-        "http": env.get("HTTP_PROXY", ""), "https": env.get("HTTPS_PROXY", "")}))
+    env_error = None
+    try:
+        env = environment(config["env_file"])
+    except (OSError, ValueError, KeyError) as error:
+        env, env_error = {}, error
+    proxies = {scheme: env[key] for scheme, key in (("http", "HTTP_PROXY"), ("https", "HTTPS_PROXY"))
+               if env.get(key)}
+    opener = urllib.request.build_opener(urllib.request.ProxyHandler(proxies))
 
     def get(url, token):
         request = urllib.request.Request(url, headers={
@@ -118,37 +137,75 @@ def collect(config):
         with opener.open(request, timeout=25) as response:
             return json.load(response)
 
-    board_url = env["UNION_KANBAN_URL"].rstrip("/") + "/api"
-    board = get(board_url + "/board", env["UNION_KANBAN_KEY"])
-    messages = get(board_url + "/messages?limit=50", env["UNION_KANBAN_KEY"])
-    credential = run_command(["git", "credential", "fill"],
-        input="protocol=https\nhost=github.com\n\n", text=True, capture_output=True,
-        timeout=15, check=True, env={**os.environ, "GIT_TERMINAL_PROMPT": "0", "GCM_INTERACTIVE": "never"})
-    token = dict(line.split("=", 1) for line in credential.stdout.splitlines() if "=" in line)["password"]
-    github = "https://api.github.com/repos/" + config["github_repository"]
-    prs = get(github + "/pulls?state=open&per_page=100", token)
-    changes = []
-    for pr in prs:
-        checks = get(github + "/commits/" + pr["head"]["sha"] + "/check-runs?per_page=100", token)
-        changes.append({"number": pr["number"], "sha": pr["head"]["sha"], "base": pr["base"]["ref"],
-                        "draft": pr["draft"], "updated_at": pr["updated_at"],
-                        "checks": sorted((c["name"], c["status"], c["conclusion"] or "") for c in checks["check_runs"])})
-    runs = get(github + "/actions/runs?branch=rewrite%2Fcharter-v1&per_page=6", token)
-    health = run_command(["ssh", "-p", str(config["ssh_port"]), "-o", "BatchMode=yes",
-        "-o", "StrictHostKeyChecking=yes", "-o", "ConnectTimeout=8", config["ssh_target"],
-        config["health_command"]], text=True, capture_output=True, timeout=20)
-    return {"board_revision": board["revision"], "latest_message_id": messages.get("latest_id"),
-            "messages": [{"id": m["id"], "deleted": bool(m.get("deleted_at"))} for m in messages["messages"]],
-            "cards": [{k: t.get(k) for k in ("id", "version", "status", "assignee")} for t in board["tasks"] if not t["archived"]],
-            "prs": changes,
-            "runs": [{k: r.get(k) for k in ("id", "head_sha", "status", "conclusion")} for r in runs["workflow_runs"]],
-            "nas": {"exit_code": health.returncode,
-                    "health": health.stdout.strip() if health.returncode == 0 else "ssh_or_probe_failed"}}
+    def read_board():
+        if env_error is not None:
+            raise env_error
+        board_url = env["UNION_KANBAN_URL"].rstrip("/") + "/api"
+        board = get(board_url + "/board", env["UNION_KANBAN_KEY"])
+        messages = get(board_url + "/messages?limit=50", env["UNION_KANBAN_KEY"])
+        return {"board_revision": board["revision"], "latest_message_id": messages.get("latest_id"),
+                "messages": [{"id": m["id"], "deleted": bool(m.get("deleted_at"))} for m in messages["messages"]],
+                "cards": [{k: t.get(k) for k in ("id", "version", "status", "assignee")}
+                          for t in board["tasks"] if not t["archived"]]}
+
+    def read_github():
+        credential = run_command(["git", "credential", "fill"],
+            input="protocol=https\nhost=github.com\n\n", text=True, capture_output=True,
+            timeout=15, check=True, env={**os.environ, "GIT_TERMINAL_PROMPT": "0", "GCM_INTERACTIVE": "never"})
+        token = dict(line.split("=", 1) for line in credential.stdout.splitlines() if "=" in line)["password"]
+        github = "https://api.github.com/repos/" + config["github_repository"]
+        prs = get(github + "/pulls?state=open&per_page=100", token)
+        changes = []
+        for pr in prs:
+            checks = get(github + "/commits/" + pr["head"]["sha"] + "/check-runs?per_page=100", token)
+            changes.append({"number": pr["number"], "sha": pr["head"]["sha"], "base": pr["base"]["ref"],
+                            "draft": pr["draft"], "updated_at": pr["updated_at"],
+                            "checks": sorted((c["name"], c["status"], c["conclusion"] or "") for c in checks["check_runs"])})
+        runs = get(github + "/actions/runs?branch=rewrite%2Fcharter-v1&per_page=6", token)
+        return {"prs": changes,
+                "runs": [{k: r.get(k) for k in ("id", "head_sha", "status", "conclusion")}
+                         for r in runs["workflow_runs"]]}
+
+    def read_nas():
+        health = run_command(["ssh", "-p", str(config["ssh_port"]), "-o", "BatchMode=yes",
+            "-o", "StrictHostKeyChecking=yes", "-o", "ConnectTimeout=8", config["ssh_target"],
+            config["health_command"]], text=True, capture_output=True, timeout=20)
+        return {"nas": {"exit_code": health.returncode,
+                        "health": health.stdout.strip() if health.returncode == 0 else "ssh_or_probe_failed"}}
+
+    snapshot, observations = {}, {}
+    for name, read in (("board", read_board), ("github", read_github), ("nas", read_nas)):
+        try:
+            value = read()
+            observations[name] = {"status": "ok", "at": now(), "data": value}
+            snapshot.update(value)
+        except Exception as error:
+            # Keep sources independent; exception messages can contain private URLs or credentials.
+            observations[name] = {"status": "failed", "at": now(), "error": type(error).__name__}
+    if any(value["status"] == "failed" for value in observations.values()):
+        raise PartialCollectionError(observations)
+    return snapshot
+
+
+def execution_signal(state):
+    if state.get("status") == "ok" and state.get("fingerprint"):
+        return {"kind": "complete", "fingerprint": state["fingerprint"], "pending": state.get("pending", False)}
+    if state.get("status") != "failed" or state.get("error") != "PartialCollectionError":
+        return None
+    observations = state.get("observations") or {}
+    if not any(item.get("status") == "ok" for item in observations.values()):
+        return None
+    facts = {name: {key: value for key, value in item.items() if key != "at"}
+             for name, item in observations.items()}
+    fingerprint = hashlib.sha256(json.dumps(facts, sort_keys=True).encode()).hexdigest()
+    return {"kind": "partial", "fingerprint": fingerprint,
+            "pending": fingerprint != state.get("acknowledged_partial_fingerprint")}
 
 
 def run_agent(config, state, run=run_command):
     root = Path(config["state_dir"])
-    if state.get("status") != "ok" or not state.get("pending"):
+    signal = execution_signal(state)
+    if signal is None or not signal["pending"]:
         return "idle"
     if not config.get("agent_enabled", False):
         write_json(root / "agent.json", {"status": "disabled", "at": now()})
@@ -156,10 +213,10 @@ def run_agent(config, state, run=run_command):
     with lock(root / "agent.lock") as held:
         if not held:
             return "busy"
-        login = run([config["codex"], "login", "status"], capture_output=True, timeout=20)
-        if login.returncode:
-            write_json(root / "agent.json", {"status": "login_required", "at": now()})
-            return "login_required"
+        # A completed worker may have acknowledged this input while this caller waited for the lock.
+        signal = execution_signal(read_json(root / "status.json") or state)
+        if signal is None or not signal["pending"]:
+            return "idle"
         stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
         output = root / (stamp + "-result.json")
         schema = root / "result-schema.json"
@@ -167,7 +224,12 @@ def run_agent(config, state, run=run_command):
             "status": {"type": "string", "enum": ["handled", "follow_up"]},
             "summary": {"type": "string"}}, "required": ["status", "summary"], "additionalProperties": False})
         prompt = Path(config["prompt_file"]).read_text(encoding="utf-8")
-        write_json(root / "agent.json", {"status": "running", "at": now(), "run": stamp})
+        if signal["kind"] == "partial":
+            prompt = ("Watch mode: partial. Read the current status.json observations. Continue independently "
+                      "authorized work supported by fresh successful sources. Failed sources are unavailable, "
+                      "not current facts; Kanban mutations still require a fresh successful board read.\n\n" + prompt)
+        record = {"run": stamp, "signal_kind": signal["kind"], "fingerprint": signal["fingerprint"]}
+        write_json(root / "agent.json", record | {"status": "running", "at": now()})
         # stdin keeps the prompt out of the process command line. No fixed job timeout.
         with (root / (stamp + ".log")).open("w", encoding="utf-8") as log:
             result = run([config["codex"], "exec", "-C", config["repository"],
@@ -180,9 +242,9 @@ def run_agent(config, state, run=run_command):
             response = {}
         handled = result.returncode == 0 and response.get("status") == "handled"
         if handled:
-            acknowledge(root, state["fingerprint"])
+            acknowledge(root, signal["fingerprint"], partial=signal["kind"] == "partial")
         status = "handled" if handled else "follow_up"
-        write_json(root / "agent.json", {"status": status, "at": now(), "run": stamp, "exit_code": result.returncode})
+        write_json(root / "agent.json", record | {"status": status, "at": now(), "exit_code": result.returncode})
         return status
 
 

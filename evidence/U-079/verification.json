@@ -1,0 +1,16 @@
+{
+  "python_full": {
+    "tests": 632,
+    "skipped": 8,
+    "failures": 0,
+    "seconds": 356.791,
+    "scope": "source-isolation implementation before the final no-proxy correction"
+  },
+  "final_watch_tests": {
+    "tests": 11,
+    "failures": 0,
+    "includes_real_loopback_http": true
+  },
+  "npm_check": "passed",
+  "real_model_calls": 0
+}

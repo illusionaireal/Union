@@ -36,7 +36,12 @@ class CoreModelReleaseTests(ModelAccessCase):
                          and (REPOSITORY / "web/console/dist/index.html").is_file(), "Build both products before checking the package declaration")
     def test_built_candidate_declares_its_actual_model_schema(self):
         self.saved()
-        manifest = release.pack(REPOSITORY, self.root / "model-schema.zip", "model-schema-test")
+        from ai_union.domain import model_profiles
+        # A packer may run outside its --root; its loaded modules must not declare
+        # capabilities that differ from the exact source being packaged.
+        with patch.object(model_profiles, "PROFILES", {"modeld_grant": {}}):
+            manifest = release.pack(REPOSITORY, self.root / "model-schema.zip", "model-schema-test")
         self.assertIn(3, manifest["core_au_schemas"])
         self.assertEqual(manifest["modeld_schemas"], [0, 1])
+        self.assertIn("openai_responses", manifest["core_model_profiles"])
         release.check_core_schemas(manifest, {"console_state": self.root})

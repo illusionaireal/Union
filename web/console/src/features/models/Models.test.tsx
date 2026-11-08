@@ -23,6 +23,32 @@ afterEach(() => {
 });
 
 describe('core model access user journey', () => {
+  it('selects Responses explicitly, previews its protocol and clears the submitted key', async () => {
+    state.read.capabilities.profiles.push('openai_responses');
+    Object.assign(state.read.capabilities.profile_scope, { openai_responses: {
+      ...state.read.capabilities.profile_scope.modeld_grant,
+      title: 'OpenAI Responses API（自填密钥）', auth: 'api_key',
+    } });
+    mount();
+    await open('添加模型连接');
+    fireEvent.change(screen.getByLabelText('接入方式'), { target: { value: 'openai_responses' } });
+    fill('连接名称', 'Responses 连接');
+    fill('API 根地址', 'https://responses.example.test/v1');
+    fill('API Key', 'test-responses-not-a-real-secret');
+    fill('模型标识', 'responses-model');
+    fireEvent.click(screen.getByRole('button', { name: '预览影响' }));
+    expect(await screen.findByText('OpenAI Responses API · https://responses.example.test/v1')).toBeVisible();
+    fireEvent.click(screen.getByRole('button', { name: '确认提交' }));
+    await waitFor(() => expect(state.commands).toHaveLength(1));
+    expect(state.commands[0].data).toMatchObject({ profile: 'openai_responses',
+      base_url: 'https://responses.example.test/v1', api_key: 'test-responses-not-a-real-secret' });
+    expect(screen.getByLabelText('API Key')).toHaveValue('');
+    expect(sessionStorage.getItem('union-model-requests')).not.toContain('test-responses-not-a-real-secret');
+    await closeResult();
+    expect(await screen.findByRole('heading', { name: 'Responses 连接' })).toBeVisible();
+    expect(screen.getByText('responses-model · OpenAI Responses API · 连接 v1')).toBeVisible();
+    expect(state.commands.map(c => c.kind)).toEqual(['save_connection']);
+  });
   it('opens the core models route and navigation for a normal core governor', async () => {
     mount();
     expect(await screen.findByRole('button', { name: '添加模型连接' })).toBeEnabled();
