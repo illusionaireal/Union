@@ -56,7 +56,7 @@ def authorize(state, principal):
 
 def active(state, principal, clock, principals):
     authorize(state, principal)
-    require(state["schema_version"] in (2, 3), "须先采用 S05 本地治理")
+    require(state["schema_version"] in governance.SUPPORTED_SCHEMAS, "须先采用 S05 本地治理")
     require(governance.effective_status(state, clock) == "active", "须先激活或恢复有效的本地治理")
     governance.validate_live_targets(state, principals)
 

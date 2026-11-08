@@ -1,0 +1,27 @@
+{
+  "date": "2026-11-08",
+  "scope": "controlled",
+  "task": "U-067",
+  "actor": "codex-home current duty session",
+  "online_user_id": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+  "preserved_owner_id": "cafeef64-ac40-4062-97c1-ac82ece0a379",
+  "scope_comment_id": 45,
+  "reviewed_input": "e452f26fb836572673fca34965ce3a28b0da6b66",
+  "delivery_base": "bbe8068335c32c04bdcf6d4fa20375245b912cf9",
+  "input_and_delivery_base_same_tree": true,
+  "branch": "codex/u067-loop-fact-summary",
+  "red": {"tests": 7, "failures": 4, "errors": 0, "seconds": 6.718},
+  "green": {"tests": 7, "failures": 0, "errors": 0, "seconds": 7.299},
+  "original_independent_probes": {"tests": 3, "failures": 0, "errors": 0, "seconds": 3.249},
+  "python_full": {"tests": 714, "skipped": 9, "failures": 0, "errors": 0, "seconds": 427.807},
+  "npm_check": {"passed": true, "management_tests": 37, "action_safety_tests": 9, "frontend_files": 21, "frontend_tests": 207, "typecheck": true, "build": true},
+  "sha256": {
+    "ai_union/application/work.py": "aae7ac0fdf123b40ba235eafacb3c15b3ab6a2969dded0406f1b8447bf5e3f28",
+    "tests/test_work_loop_receipts.py": "87f208cde5eb57bb4f16c7fbe6b5a7689690c7760e456a573342614d86f36d91"
+  },
+  "real_model_calls_added": 0,
+  "business_service_switched": false,
+  "real_data_migrated": false,
+  "independent_engineering_review": "required before adoption; not performed by this implementation session",
+  "current_head_ci": "required before adoption; see candidate PR"
+}

@@ -45,6 +45,9 @@ def pending(request, principal, state, step):
 def event(store, cx, state, charter, original, principal, phase):
     """An internal event uses the current version; the public receipt stays immutable."""
     before = state["version"]
+    # Old schema-3 code can manually release automatic reservations. Mark the
+    # required semantics in the same commit as the first dispatch/loop intent.
+    state["schema_version"] = 4
     state["version"] += 1
     request = {"id": "dispatch-" + str(uuid.uuid4()), "organization_id": state["id"],
                "base_version": before, "kind": "work_dispatch_" + phase,

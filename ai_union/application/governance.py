@@ -27,7 +27,7 @@ class GovernanceService:
         state = value["au"]
         if not rules.reader_role(state, principal):
             raise CoreError("not_authorized")
-        if state["schema_version"] in (2, 3):
+        if state["schema_version"] in rules.SUPPORTED_SCHEMAS:
             clock = time.time()
             status = rules.effective_status(state, clock)
             gaps = []

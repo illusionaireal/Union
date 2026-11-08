@@ -1,0 +1,43 @@
+{
+  "actor": "codex-home",
+  "scope": "controlled",
+  "independent_review_of_own_code": false,
+  "tested_source": "9f9e6d03ed542ae9ac80b5e538a453817f487487",
+  "reconciled_source": "31e6b82757b73cecc53a331388d11f93ac2f4bb2",
+  "source_tree": "f5a93bf6f4f076aeb64e4365018bef9707540c1b",
+  "tree_unchanged_after_pr27_history_merge": true,
+  "updated_pr24": "81c113f7f571227aa96a31dca6071683e8c7e07b",
+  "current_pr26": "875d09ef69c61acffc5e1e87f56f9add76633286",
+  "pr27_independent_review": 5817709345,
+  "targeted_tests": {
+    "tests": 18,
+    "passed": 18,
+    "skipped": 0
+  },
+  "original_probes": {
+    "tests": 3,
+    "passed": 3
+  },
+  "npm_check": {
+    "exit_code": 0,
+    "frontend_tests": 220,
+    "management_tests": 37,
+    "action_tests": 9,
+    "types": "passed",
+    "build": "passed"
+  },
+  "complete_python_run_for_updated_pr24": {
+    "tests": 716,
+    "skipped": 8,
+    "passed": true
+  },
+  "complete_python_run_for_combination": "requires current-head CI; earlier 723-test result is not relabeled",
+  "private_log_sha256": {
+    "combined-affected.log": "a79e5529e392ed59f669d445b8d12763c397897b9fb04752843fd49a3a28e545",
+    "combined-npm.log": "2a22f32577419a684b88a686195db40d24364fdc8004457c1437854c2b943c73",
+    "combined-original-probes.log": "657bb6aabc1dbade552d7c201385793839922f7fe2560558186bbfde5e949b97"
+  },
+  "real_model_calls": 0,
+  "nas_service_switched": false,
+  "live_data_migrated": false
+}
