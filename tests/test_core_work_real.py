@@ -22,6 +22,36 @@ MAX_OUTPUT = min(int(os.environ.get("UNION_REAL_MAX_OUTPUT", "1024")), 1024)
 SKIP = (not CONFIG) or os.environ.get("UNION_REAL_ACCEPTANCE") != "1"
 
 
+
+def acceptance_problems(work, receipt, max_output):
+    """Reject acceptance evidence that does not prove a real exchange (review finding on #22)."""
+    problems = []
+    if receipt.get("status") != "succeeded":
+        problems.append("回执不是成功状态")
+    if int(receipt.get("turns") or 0) < 1:
+        problems.append("没有任何模型回合")
+    used = int((work.get("budget") or {}).get("used") or 0)
+    if used < 1:
+        problems.append("没有发生任何模型调用")
+    usage = work.get("usage") or {}
+    if int(usage.get("input_tokens") or 0) <= 0 or int(usage.get("output_tokens") or 0) <= 0:
+        problems.append("用量为 0，不能证明真实交换")
+    if int(usage.get("output_tokens") or 0) > max_output * max(used, 1):
+        problems.append("输出 tokens 超过授权上限")
+    if (work.get("cost_status") or "") != "unknown":
+        problems.append("费用必须如实记为 unknown")
+    calls = work.get("tool_calls") or []
+    reads = [call for call in calls if call.get("tool") == "read_document"]
+    lists = [call for call in calls if call.get("tool") == "list_documents"]
+    if not reads and not any(int(call.get("count") or 0) > 0 for call in lists):
+        problems.append("没有读取到任何资料")
+    if any(not call.get("sha256") or not call.get("bytes") for call in reads):
+        problems.append("读取资料的调用缺少摘要")
+    if not (work.get("results") or []):
+        problems.append("没有产出任何成果")
+    return problems
+
+
 class RealChannelCase(ModelAccessCase):
     """Host wiring shared by the gated real tests; never carries its own test methods."""
     def setUp(self):
@@ -102,9 +132,10 @@ class RealBoundedAcceptanceTests(RealChannelCase):
         card = self.request("/api/v1/work?organization_id=" + au_id)[1]
         work = [item for item in card["works"] if item["id"] == "work-real"][0]
         used = work["budget"]["used"]
+        problems = acceptance_problems(work, looped["receipt"], MAX_OUTPUT)
+        print("acceptance problems:", json.dumps(problems, ensure_ascii=False))
+        self.assertEqual(problems, [], "acceptance evidence must prove a real exchange")
         self.assertLessEqual(used, 2, work["budget"])
-        self.assertLessEqual(work["usage"]["output_tokens"], 2 * MAX_OUTPUT, work["usage"])
-        self.assertEqual(work["cost_status"], "unknown")
         print("real acceptance:", json.dumps({
             "model": MODEL, "receipt": {key: looped["receipt"].get(key) for key in
                                         ("status", "message", "turns", "tool_calls", "result", "usage", "cost_status")},
