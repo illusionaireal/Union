@@ -94,14 +94,17 @@ def poll(root, read_snapshot):
         return state
 
 
-def acknowledge(root, fingerprint):
+def acknowledge(root, fingerprint, *, partial=False):
     root = Path(root)
     with lock(root / "poll.lock") as held:
         if not held:
             return False
         state = read_json(root / "status.json")
-        state["acknowledged_fingerprint"] = fingerprint
-        state["pending"] = fingerprint != state.get("fingerprint")
+        if partial:
+            state["acknowledged_partial_fingerprint"] = fingerprint
+        else:
+            state["acknowledged_fingerprint"] = fingerprint
+            state["pending"] = fingerprint != state.get("fingerprint")
         write_json(root / "status.json", state)
         return True
 
@@ -184,9 +187,25 @@ def collect(config):
     return snapshot
 
 
+def execution_signal(state):
+    if state.get("status") == "ok" and state.get("fingerprint"):
+        return {"kind": "complete", "fingerprint": state["fingerprint"], "pending": state.get("pending", False)}
+    if state.get("status") != "failed" or state.get("error") != "PartialCollectionError":
+        return None
+    observations = state.get("observations") or {}
+    if not any(item.get("status") == "ok" for item in observations.values()):
+        return None
+    facts = {name: {key: value for key, value in item.items() if key != "at"}
+             for name, item in observations.items()}
+    fingerprint = hashlib.sha256(json.dumps(facts, sort_keys=True).encode()).hexdigest()
+    return {"kind": "partial", "fingerprint": fingerprint,
+            "pending": fingerprint != state.get("acknowledged_partial_fingerprint")}
+
+
 def run_agent(config, state, run=run_command):
     root = Path(config["state_dir"])
-    if state.get("status") != "ok" or not state.get("pending"):
+    signal = execution_signal(state)
+    if signal is None or not signal["pending"]:
         return "idle"
     if not config.get("agent_enabled", False):
         write_json(root / "agent.json", {"status": "disabled", "at": now()})
@@ -194,10 +213,10 @@ def run_agent(config, state, run=run_command):
     with lock(root / "agent.lock") as held:
         if not held:
             return "busy"
-        login = run([config["codex"], "login", "status"], capture_output=True, timeout=20)
-        if login.returncode:
-            write_json(root / "agent.json", {"status": "login_required", "at": now()})
-            return "login_required"
+        # A completed worker may have acknowledged this input while this caller waited for the lock.
+        signal = execution_signal(read_json(root / "status.json") or state)
+        if signal is None or not signal["pending"]:
+            return "idle"
         stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
         output = root / (stamp + "-result.json")
         schema = root / "result-schema.json"
@@ -205,7 +224,12 @@ def run_agent(config, state, run=run_command):
             "status": {"type": "string", "enum": ["handled", "follow_up"]},
             "summary": {"type": "string"}}, "required": ["status", "summary"], "additionalProperties": False})
         prompt = Path(config["prompt_file"]).read_text(encoding="utf-8")
-        write_json(root / "agent.json", {"status": "running", "at": now(), "run": stamp})
+        if signal["kind"] == "partial":
+            prompt = ("Watch mode: partial. Read the current status.json observations. Continue independently "
+                      "authorized work supported by fresh successful sources. Failed sources are unavailable, "
+                      "not current facts; Kanban mutations still require a fresh successful board read.\n\n" + prompt)
+        record = {"run": stamp, "signal_kind": signal["kind"], "fingerprint": signal["fingerprint"]}
+        write_json(root / "agent.json", record | {"status": "running", "at": now()})
         # stdin keeps the prompt out of the process command line. No fixed job timeout.
         with (root / (stamp + ".log")).open("w", encoding="utf-8") as log:
             result = run([config["codex"], "exec", "-C", config["repository"],
@@ -218,9 +242,9 @@ def run_agent(config, state, run=run_command):
             response = {}
         handled = result.returncode == 0 and response.get("status") == "handled"
         if handled:
-            acknowledge(root, state["fingerprint"])
+            acknowledge(root, signal["fingerprint"], partial=signal["kind"] == "partial")
         status = "handled" if handled else "follow_up"
-        write_json(root / "agent.json", {"status": status, "at": now(), "run": stamp, "exit_code": result.returncode})
+        write_json(root / "agent.json", record | {"status": status, "at": now(), "exit_code": result.returncode})
         return status
 
 

@@ -161,17 +161,29 @@ class OpsWatchTests(unittest.TestCase):
         watch.acknowledge(self.root, good["fingerprint"])
         self.assertTrue(watch.poll(self.root, lambda: {"health": "exited"})["pending"])
 
-    def test_missing_login_does_not_clear_pending_work(self):
+    def agent_config(self):
+        prompt = self.root / "prompt.txt"
+        prompt.write_text("Handle authorized deployment work; inspect original outcomes before retrying.")
+        return {"state_dir": str(self.root), "agent_enabled": True, "codex": "codex",
+                "repository": str(self.root), "prompt_file": str(prompt)}
+
+    def successful_exec(self, calls):
+        def run(args, **kwargs):
+            calls.append((args, kwargs))
+            if "login" in args:
+                return SimpleNamespace(returncode=1)
+            Path(args[args.index("-o") + 1]).write_text(json.dumps({"status": "handled", "summary": "checked"}))
+            return SimpleNamespace(returncode=0)
+        return run
+
+    def test_configured_provider_runs_without_a_separate_cli_login(self):
         state = watch.poll(self.root, lambda: {"revision": 1})
         calls = []
-        def logged_out(args, **kwargs):
-            calls.append(args)
-            return SimpleNamespace(returncode=1)
-        status = watch.run_agent({"state_dir": str(self.root), "agent_enabled": True,
-                                  "codex": "codex"}, state, run=logged_out)
-        self.assertEqual(status, "login_required")
-        self.assertEqual(calls, [["codex", "login", "status"]])
-        self.assertTrue(watch.read_json(self.root / "status.json")["pending"])
+        status = watch.run_agent(self.agent_config(), state, run=self.successful_exec(calls))
+        self.assertEqual(status, "handled")
+        self.assertEqual(len(calls), 1)
+        self.assertIn("exec", calls[0][0])
+        self.assertFalse(watch.read_json(self.root / "status.json")["pending"])
 
     def test_failed_agent_keeps_pending_for_original_result_reconciliation(self):
         state = watch.poll(self.root, lambda: {"revision": 1})
@@ -185,8 +197,58 @@ class OpsWatchTests(unittest.TestCase):
             "codex": "codex", "repository": str(self.root), "prompt_file": str(prompt)},
             state, run=failed_exec)
         self.assertEqual(status, "follow_up")
-        self.assertEqual(len(calls), 2)
+        self.assertEqual(len(calls), 1)
         self.assertTrue(watch.read_json(self.root / "status.json")["pending"])
+
+    def partial(self, revision=1, all_failed=False):
+        def read():
+            raise watch.PartialCollectionError({
+                "board": {"status": "failed", "at": watch.now(), "error": "TimeoutError"},
+                "github": ({"status": "failed", "at": watch.now(), "error": "TimeoutError"} if all_failed else
+                           {"status": "ok", "at": watch.now(), "data": {"revision": revision}}),
+            })
+        return watch.poll(self.root, read)
+
+    def test_partial_success_runs_once_without_consuming_complete_pending(self):
+        complete = watch.poll(self.root, lambda: {"revision": 7})
+        calls = []
+        config = self.agent_config()
+        self.assertEqual(watch.run_agent(config, self.partial(), run=self.successful_exec(calls)), "handled")
+        actual = watch.read_json(self.root / "status.json")
+        for key in ("last_success", "fingerprint", "pending", "snapshot"):
+            self.assertEqual(actual[key], complete[key])
+        self.assertIn("partial", calls[0][1]["input"])
+        self.assertEqual(watch.run_agent(config, self.partial(), run=self.successful_exec(calls)), "idle")
+        self.assertEqual(len(calls), 1, "timestamp-only changes do not start another agent")
+        self.assertEqual(watch.run_agent(config, self.partial(2), run=self.successful_exec(calls)), "handled")
+        self.assertEqual(len(calls), 2)
+
+    def test_partial_acknowledgment_cannot_consume_a_newer_partial_observation(self):
+        config = self.agent_config()
+        calls = []
+        execute = self.successful_exec(calls)
+
+        def newer_during_execution(args, **kwargs):
+            self.partial(2)
+            return execute(args, **kwargs)
+
+        self.assertEqual(watch.run_agent(config, self.partial(1), run=newer_during_execution), "handled")
+        self.assertEqual(watch.run_agent(config, self.partial(2), run=execute), "handled")
+        self.assertEqual(len(calls), 2)
+
+    def test_all_failed_or_stale_observations_do_not_start_an_agent(self):
+        config = self.agent_config()
+        calls = []
+        run = self.successful_exec(calls)
+        self.assertEqual(watch.run_agent(config, self.partial(all_failed=True), run=run), "idle")
+        self.partial()
+
+        def fail():
+            raise RuntimeError("collection could not start")
+
+        stale = watch.poll(self.root, fail)
+        self.assertEqual(watch.run_agent(config, stale, run=run), "idle")
+        self.assertEqual(calls, [])
 
 
 if __name__ == "__main__":
