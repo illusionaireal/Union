@@ -1,0 +1,34 @@
+{
+  "baseline_head": "6b50769e33b85172289b3badd6faf361a588ec19",
+  "failed_ci_job": 128680865622,
+  "scope": "controlled",
+  "implementer": "codex-home",
+  "red": {
+    "source": "original HTTPTests helper loaded from the exact baseline commit",
+    "injected_response_delay_seconds": 4.5,
+    "exit_code": 1,
+    "error": "TimeoutError",
+    "product_code_modified": false
+  },
+  "green": {
+    "socket_timeout_seconds": 30,
+    "injected_response_delay_seconds": 4.5,
+    "exit_code": 0,
+    "original_request_count": 1,
+    "original_receipt": "succeeded"
+  },
+  "npm_check": "passed",
+  "python_full": {
+    "passed": true,
+    "tests": 707,
+    "skipped": 8,
+    "seconds": 427.405,
+    "exit_code": 0,
+    "completed_on": "2026-11-08",
+    "earlier_attempts": "Two interrupted local runs had no final unittest summary; neither is counted as a pass."
+  },
+  "candidate_ci": "Required after publication; not yet claimed passed",
+  "real_model_calls": 0,
+  "service_switched": false,
+  "live_data_migrated": false
+}
