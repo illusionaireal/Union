@@ -32,6 +32,7 @@ export function GovernanceWorkspace({ read }: { read: GovernedAURead }) {
       serviceInstance={read.access.service_instance}
       readOnly
       allowExecution
+      allowRegistration
     />
     <ResponsibilityWorkspace read={read} />
   </>;

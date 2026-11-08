@@ -1,0 +1,13 @@
+{
+  "scope": "controlled",
+  "checks": [
+    "committed POST held while original GET confirms",
+    "other authenticated principal denied AU read",
+    "late POST acceptance clears previous work and result",
+    "original command identity retained",
+    "original Work persists without duplicate POST",
+    "zero inference requests"
+  ],
+  "work_posts": 1,
+  "model_requests": 0
+}

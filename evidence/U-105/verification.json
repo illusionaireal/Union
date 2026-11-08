@@ -1,0 +1,76 @@
+{
+  "scope": "controlled candidate; independent review and current-head CI pending",
+  "base": "bb5795b50bd7e00627178319ecd3756cd7c804b7",
+  "actor": "codex-home / single duty Codex session",
+  "online_member": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+  "real_model_requests": 0,
+  "dom": {
+    "initial_red": 15,
+    "boundary_red": 1,
+    "reload_red": 1,
+    "late_post_red": 1,
+    "final_registration_passed": 24
+  },
+  "http": {
+    "passed": 4,
+    "real_http_sqlite": true,
+    "model_requests": 0
+  },
+  "browser": {
+    "passed": 10,
+    "work_posts": 1,
+    "model_requests": 0
+  },
+  "npm": {
+    "status": "passed",
+    "frontend_tests": 285,
+    "management_tests": 37,
+    "action_safety_tests": 9
+  },
+  "python": {
+    "status": "passed",
+    "tests": 773,
+    "seconds": 509.332,
+    "skipped": 9,
+    "failures": 0
+  },
+  "source_sha256": {
+    "web/console/src/features/work/WorkPanel.tsx": "47ba8648186949d08a0a8285ac5ae930fc1a3a1c99a0a0beaef0fb9b658783be",
+    "web/console/src/features/work/CoreWorkRegistration.tsx": "8fc3ef777d087fb9b7e1036917e3823e1421af84ace61a7f2060df24817a38ab",
+    "web/console/src/features/work/useWorkCommand.ts": "fe2ecf64b9e9280dfe2059ae63a6327525d156fa8cc3d0808ce7ea366122e6b1",
+    "web/console/src/features/work/registration.test.tsx": "e6a3ca7849029f3d41f334438cff755fc744d27cb5582e51b87a71ad71733c06",
+    "web/console/src/features/governance/GovernanceWorkspace.tsx": "7d13ce91486374943757bc42ff5d34038e634c0dd53bfebe62eca8d47a1015af",
+    "web/console/src/app/work-route.test.tsx": "09b0fd4377749111fe7b0135861c66114a9ccc7acb9871c8348f49dfcc393312",
+    "tests/test_core_work_registration.py": "b85613b122fe6b0195e4fe9164de43fd509466159358ab671efcc938f698205c",
+    "scripts/u105-work-registration-browser.cjs": "35c7ece64a4b3ec073e7b68c86c43f699de5e8f754a7298b26e477c1111fd2d8",
+    "scripts/u105_work_registration_host.py": "39f085c12bdd7dea12121315c429891e7dcc3f56ccc60485c319419785311066",
+    "scripts/u081-work-read-browser.cjs": "0956967041ea09c19c95987889286d46d7d82666e35ed8c2ff3ac292ff8d1ef2"
+  },
+  "local_log_sha256": {
+    "dom-red.log": "aad231368ba736fccd866d943633f99f427ada31d836214d6a3a635335716f1e",
+    "dom-green.log": "d810fa37cb5895699a7dd9d89fc8fee0500bec4e19c5e1f123d9622f1425f48b",
+    "dom-boundary-red.log": "32b6e04bcba0f2393feb6c22ebf5bc21ea7fb221f7f42e8dc1886e62f89f7efa",
+    "resolved-red.log": "4425fb4a721f213c36f1f9e685fc8f26878e7ae398754a560531ad85acdb701e",
+    "late-post-red.log": "16ec89aa6ddd59f9ef28c5057e4e2ec23aeb4c1caa4b9128ef9349a3bfac69fd",
+    "http.log": "a77b5e36e258aaea2bf156b2d8622bf7503af7bc64ec3ed2f4fd90be762d9da3",
+    "npm-release.log": "26e158158bec66d352f923282174379ee9c62af4d64f756223fe66262d4c3b25",
+    "browser-release.log": "c6de1de7abdd06ae5195667c77ab4eef1ed6af81f204549f47ac8f149d0d6f15",
+    "management-final.log": "5f1d0968115d772c29a33ab4caff4da6108e53b64d59982de263ef569445e018",
+    "python-full.log": "2e2ceb80f3ea2f4ef91b9080ad9bd2868791892df43c545e6777eb1d8630893f",
+    "u081-red.log": "2beb630c211c94761a5386863d7001fcea3f6824f16069f2b749c51c1f8a7457",
+    "u081-green.log": "0e3404b8f7d5db8c31a4ce654755912c9e589513957ff4522ce9a2606cb07000"
+  },
+  "source_hash_encoding": "UTF-8 file bytes with CRLF normalized to LF, matching Git blobs",
+  "ci_followup": {
+    "failed_head": "640e61315e30865b1c1ac4d9867b22fbe33d43a6",
+    "failed_jobs": [
+      128809208839,
+      128809050096
+    ],
+    "cause": "U081 browser expected registration control count 0; U105 intentionally enables registration. Actual Chrome reproduced 1 != 0.",
+    "change": "Browser assertion now requires registration and explicitly forbids manual reservation/result/finish; zero work POSTs still required.",
+    "local_u081_browser_passed": 6,
+    "product_dom_python_unchanged": true,
+    "current_head_ci": "pending publication and readback"
+  }
+}

@@ -5,6 +5,7 @@ import { useQuery as useModelsQuery } from '@tanstack/react-query';
 import type { CoreWorkItem } from '../../api/types';
 import { Card } from '../../components/ui';
 import { WorkExecution } from './WorkExecution';
+import { CoreWorkRegistration } from './CoreWorkRegistration';
 
 function money(item: CoreWorkItem) {
   const { max_calls: max, reserved, used } = item.budget;
@@ -184,12 +185,13 @@ function AttemptActions({ item, send, busy }: { item: CoreWorkItem; send: (kind:
   );
 }
 
-export function WorkPanel({ organizationId, readOnly = false, principalId, serviceInstance, allowExecution = false }: {
+export function WorkPanel({ organizationId, readOnly = false, principalId, serviceInstance, allowExecution = false, allowRegistration = false }: {
   organizationId: string;
   readOnly?: boolean;
   principalId?: string;
   serviceInstance?: string;
   allowExecution?: boolean;
+  allowRegistration?: boolean;
 }) {
   const client = useQueryClient();
   const [busy, setBusy] = useState(false);
@@ -229,19 +231,16 @@ export function WorkPanel({ organizationId, readOnly = false, principalId, servi
     || data.access.principal_id !== principalId)) {
     return <Card title="AI 工作（V1）" action={refreshAction}>工作读取与当前身份或组织不匹配，请刷新后重试。</Card>;
   }
-  if (!data.works.length) {
-    return (
-      <Card title="AI 工作（V1）" action={refreshAction}>
-        {!readOnly && data.access.can_start && <StartWorkForm organizationId={organizationId} send={send} busy={busy} />}
-        <p>尚未登记 V1 工作。登记后这里会显示负责成员、有效授权、调用预算、执行尝试与工具回执。</p>
-      </Card>
-    );
-  }
   return (
     <Card title="AI 工作（V1）" action={refreshAction}>
+      {readOnly && allowRegistration && principalId && serviceInstance && <CoreWorkRegistration
+        key={`${serviceInstance}:${principalId}:${organizationId}:registration`}
+        scope={{principalId, serviceInstance, organizationId}} canStart={data.access.can_start}
+        onAccessLost={() => setAccessLost(true)} />}
       {readOnly && <p className="form-note">{allowExecution ? '运行已登记的工作；准备本轮执行不调用模型，运行会使用已授权的模型与调用预算。' : '查看已保存的执行记录与成果；本页暂不提供运行操作。'}</p>}
       {!readOnly && data.access.can_start && <StartWorkForm organizationId={organizationId} send={send} busy={busy} />}
-      <ul className="work-panel" aria-label="V1 工作列表">
+      {!data.works.length && <p>尚未登记 V1 工作。登记后这里会显示负责成员、有效授权、调用预算、执行尝试与工具回执。</p>}
+      {!!data.works.length && <ul className="work-panel" aria-label="V1 工作列表">
         {data.works.map((item) => (
           <li key={item.id} data-work={item.id}>
             <strong>{item.title}</strong>
@@ -316,7 +315,7 @@ export function WorkPanel({ organizationId, readOnly = false, principalId, servi
             {!readOnly && <ResultForm item={item} send={send} busy={busy} />}
           </li>
         ))}
-      </ul>
+      </ul>}
       {note && (
         <p role="status" className="form-note">
           {note.status === 'succeeded' ? '操作已记录：' + (note.message ?? '') : '操作未完成：' + (note.message ?? note.status)}

@@ -136,7 +136,7 @@ describe('AI work on the actual core tasks route', () => {
       'href',
       '/api/v1/work/results?organization_id=au-1&id=result-1',
     );
-    expect(screen.queryByText('登记新的 AI 工作')).toBeNull();
+    expect(screen.getByText('登记新的 AI 工作')).toBeTruthy();
     expect(screen.queryByRole('button', { name: '开始执行' })).toBeNull();
     expect(screen.queryByRole('button', { name: '预约一次调用' })).toBeNull();
     expect(screen.queryByText('提交候选成果')).toBeNull();

@@ -1,0 +1,64 @@
+{
+  "scope": "controlled candidate; independent identity/authorization review and new-head CI required",
+  "verified_at": "2026-11-08T18:04:46.873951+00:00",
+  "parent_head": "a727e8e369cf582aaa484f5887dfc75c1f6480df",
+  "integration_base": "bb5795b50bd7e00627178319ecd3756cd7c804b7",
+  "actor": "codex-home / single duty Codex session",
+  "online_member": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+  "card": 59,
+  "red": {
+    "dom_failed": 1,
+    "browser_failed": 1,
+    "cause": "can_start=false in registration preflight removes readable existing work and original execution lookup",
+    "production_unmodified_for_red": true
+  },
+  "green": {
+    "related_dom": 55,
+    "registration_dom": 27,
+    "browser": 11,
+    "browser_work_posts": 1,
+    "model_requests": 0,
+    "npm": {
+      "passed": true,
+      "frontend_tests": 288,
+      "management_tests": 37,
+      "action_safety_tests": 9
+    },
+    "python": {
+      "tests": 773,
+      "seconds": 505.181,
+      "skipped": 9,
+      "failures": 0,
+      "status": "passed",
+      "version": "3.12.10"
+    }
+  },
+  "validation_failure_preserved": {
+    "log": "readable-npm-check.log",
+    "cause": "New DOM test used unsupported exact option in Testing Library ByRoleOptions; removed option, exact string name matching retained. No product change for this correction."
+  },
+  "source_sha256": {
+    "web/console/src/features/work/useWorkCommand.ts": "5a3063d453660268a2250f1bc71cb1ac184c55c222202dc42617d64bf7b122fc",
+    "web/console/src/features/work/CoreWorkRegistration.tsx": "8fc3ef777d087fb9b7e1036917e3823e1421af84ace61a7f2060df24817a38ab",
+    "web/console/src/features/work/WorkPanel.tsx": "47ba8648186949d08a0a8285ac5ae930fc1a3a1c99a0a0beaef0fb9b658783be",
+    "web/console/src/features/work/registration.test.tsx": "490dbc80c6892e38055f094e4df49fe58c6a038667ae15647c53dbfb11b3c728",
+    "scripts/u105-work-registration-browser.cjs": "dec87af461e0ae1834d8fc0a26f1f874a479dc87c15c37288e1521aa9e2b3285",
+    "tests/test_core_work_registration.py": "b85613b122fe6b0195e4fe9164de43fd509466159358ab671efcc938f698205c",
+    "scripts/u105_work_registration_host.py": "39f085c12bdd7dea12121315c429891e7dcc3f56ccc60485c319419785311066"
+  },
+  "source_hash_encoding": "UTF-8 bytes with CRLF normalized to LF, matching Git blobs",
+  "python_tree": "6191f3f60e28355f83da180d72502f237dc02da8",
+  "python_tests_tree": "ce1f2bca1867173603735eed6a60cd6ab7a9bbee",
+  "local_log_sha256": {
+    "readable-registration-red.log": "ad7e6dc34412264b33858e430f635406d0a721a42a11836ef7904438029a92eb",
+    "readable-browser-red.log": "17cadecb230e1346016726a683653986f3131ec333deee152b4f1afdaa859d22",
+    "readable-registration-green.log": "f71655b6ac9a5c6495652e55cd0e659935df90952b320261d30eabc167f243a8",
+    "readable-browser-green.log": "85a33fd9beb4d4743bd42c4bcc3c56759413a9616e23be1b5a5a6f3734954be0",
+    "readable-npm-check.log": "a9b7fbad68bc9f581346ecdab4f882aba99b14b5bd6c0091879c59e0694909eb",
+    "readable-npm-check-green.log": "8e0b50de9893c8083313be6550c0444b4a4d0f6db5b3af44e645dcd4c99ecfff",
+    "readable-python-full.log": "2c28482ef62e88bd454c057b75dace7cb280cdd092aa0fce9703520b329161fc",
+    "readable-management-check.log": "b79f716f255383fd5957481c985a00f55578afb6daefb58f4bf003240e99c61b"
+  },
+  "real_model_requests": 0,
+  "adopted": false
+}

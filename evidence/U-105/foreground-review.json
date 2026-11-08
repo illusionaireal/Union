@@ -1,0 +1,80 @@
+{
+  "base": "948d8c31e8dc157014688ec0f2bf7ffda306cca8",
+  "production_delta": {
+    "base": "948d8c31e8dc157014688ec0f2bf7ffda306cca8",
+    "useWorkCommand_sha256": "28dc897027a144816a93955e7580d0bf4521dd1efb4829d53e8afb9f1c1f82bb",
+    "status": "published product source matched 0a86b6f; foreground edits are test/evidence only"
+  },
+  "http_original": 4,
+  "http_additional": 3,
+  "independent_dom_red": 4,
+  "dom_fixed": 49,
+  "separate_panel": 10,
+  "browser": 17,
+  "model_requests": 0,
+  "log_sha256": {
+    "u105-independent-http-948.log": "c351068a3cd5652abb5684290170fa83f8e4232b8849b44c534cc3ac5441f482",
+    "u105-independent-http-extra.log": "3ad2fbea1755ccd28454c8fe0d4f304f4f4b54374223715a4b1b3d01d3198b9e",
+    "u105-independent-dom-948.log": "fba48a21c21b193ba8989dc573d4ae5cfb15b67992816a20de85abb10b5c65a3",
+    "u105-independent-late-red.log": "59d7de87840b1d750219e0ba225e9f143b49ba070a82f8cc7463a0a134c9051c",
+    "u105-independent-late-green.log": "b33c6de3582c6df27d7b371a9f8434deeb9a207f494e61e98ce55fe39916fd4d",
+    "u105-independent-build.log": "7903e808f07abb567392a80bac149be21ab7c1c5054337c4fac82c477506188c",
+    "u105-independent-browser-registration.log": "85a33fd9beb4d4743bd42c4bcc3c56759413a9616e23be1b5a5a6f3734954be0",
+    "u105-independent-browser-access.log": "30654d7378cb1e57ddec13be2749a08632b93e2e1c4b76d6185288befca6f685"
+  },
+  "published_head": "0a86b6f270d88373b46ccd934ff00b38cd757dca",
+  "published_sources": {
+    "web/console/src/features/governance/GovernanceWorkspace.tsx": {
+      "matches": true,
+      "sha256": "7d13ce91486374943757bc42ff5d34038e634c0dd53bfebe62eca8d47a1015af"
+    },
+    "web/console/src/features/work/WorkPanel.tsx": {
+      "matches": true,
+      "sha256": "47ba8648186949d08a0a8285ac5ae930fc1a3a1c99a0a0beaef0fb9b658783be"
+    },
+    "web/console/src/features/work/CoreWorkRegistration.tsx": {
+      "matches": true,
+      "sha256": "8fc3ef777d087fb9b7e1036917e3823e1421af84ace61a7f2060df24817a38ab"
+    },
+    "web/console/src/features/work/useWorkCommand.ts": {
+      "matches": true,
+      "sha256": "28dc897027a144816a93955e7580d0bf4521dd1efb4829d53e8afb9f1c1f82bb"
+    },
+    "scripts/u105_work_registration_host.py": {
+      "matches": true,
+      "sha256": "95933bf93016aa91a9ba978a7b7dcd5a1b73646c836b844d05b484b7a0f6379c"
+    },
+    "scripts/u105-work-registration-browser.cjs": {
+      "matches": true,
+      "sha256": "dec87af461e0ae1834d8fc0a26f1f874a479dc87c15c37288e1521aa9e2b3285"
+    },
+    "scripts/u105-confirmed-access-browser.cjs": {
+      "matches": true,
+      "sha256": "3680aac64bafc9492cb7c86eef1b25b610c2181e685842de41250719787b0377"
+    }
+  },
+  "review": {
+    "review_id": 5819080040,
+    "head": "0a86b6f270d88373b46ccd934ff00b38cd757dca",
+    "http": 200
+  },
+  "ci_followup": {
+    "source_head": "948d8c31e8dc157014688ec0f2bf7ffda306cca8",
+    "slow_loop_red": {
+      "errors": 1
+    },
+    "slow_loop_green": {
+      "passed": 1
+    },
+    "model_api_suite": {
+      "passed": 27
+    },
+    "product_code_changed": false,
+    "log_sha256": {
+      "coordinator-job-128815352021.log": "17858c9464d378126d82d6fb0c30e7a0da2fc430fe9161c2da6e8c4ef34501b5",
+      "u105-six-round-observation-red.log": "3012a026bec19bd76a189f4a6a3a5dd2ee1863acb5eecc2deebef762df1546e2",
+      "u105-six-round-observation-green.log": "7491eabc6a77264f58e4f22a5a566d6d5bac81ddedbe1a26649222322493c9d2",
+      "u105-observation-model-api-green.log": "12a447fd7bcb122641baeff03bb14d1303e3b07eef5d0b7c17d75003ec2a6623"
+    }
+  }
+}

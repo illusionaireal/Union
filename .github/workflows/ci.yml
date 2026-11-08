@@ -67,6 +67,12 @@ jobs:
           UNION_PYTHON: python3
           UNION_U097_CONNECTION_REVOKE: '1'
           UNION_U097_EVIDENCE: .union/u097-connection-access-browser
+      - run: node scripts/u105-work-registration-browser.cjs
+        env:
+          UNION_PYTHON: python3
+      - run: node scripts/u105-confirmed-access-browser.cjs
+        env:
+          UNION_PYTHON: python3
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -79,3 +85,5 @@ jobs:
             .union/u084-pending-receipt
             .union/u097-model-events-browser
             .union/u097-connection-access-browser
+            .union/u105-browser
+            .union/u105-confirmed-access
