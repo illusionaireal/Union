@@ -1,5 +1,5 @@
-............................................................................s.........................................................................................................s..................s...................................................................s....s........................................................................................................................................................................................................----------------------------------------
-Exception occurred during processing of request from ('127.0.0.1', 61256)
+............................................................................s.........................................................................................................s..................s....................................................................s....s........................................................................................................................................................................................................----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 59454)
 Traceback (most recent call last):
   File "C:\Users\Benedict\AppData\Local\Programs\Python\Python312\Lib\socketserver.py", line 697, in process_request_thread
     self.finish_request(request, client_address)
@@ -17,29 +17,29 @@ Traceback (most recent call last):
     self._sock.sendall(b)
 ConnectionAbortedError: [WinError 10053] 你的主机中的软件中止了一个已建立的连接。
 ----------------------------------------
-.........................................................................................................................................................s.s.....s......
+............................................................................................................................................................s.s.....s......
 ----------------------------------------------------------------------
-Ran 643 tests in 362.312s
+Ran 647 tests in 363.611s
 
 OK (skipped=8)
-已重置 C:\Users\Benedict\AppData\Local\Temp\tmps4qrh3ub\console.sqlite3
-重置前备份: C:\Users\Benedict\AppData\Local\Temp\tmps4qrh3ub\console.sqlite3.bak-1794093602
+已重置 C:\Users\Benedict\AppData\Local\Temp\tmp2uyv2hyq\console.sqlite3
+重置前备份: C:\Users\Benedict\AppData\Local\Temp\tmp2uyv2hyq\console.sqlite3.bak-1794095700
 重启工作台后，任意第一个访问者都可以重新设置管理员账号。
-已重置 C:\Users\Benedict\AppData\Local\Temp\tmpurdx9lo2\console.sqlite3
-重置前备份: C:\Users\Benedict\AppData\Local\Temp\tmpurdx9lo2\console.sqlite3.bak-1794093692
+已重置 C:\Users\Benedict\AppData\Local\Temp\tmp3n687fnr\console.sqlite3
+重置前备份: C:\Users\Benedict\AppData\Local\Temp\tmp3n687fnr\console.sqlite3.bak-1794095790
 重启工作台后，任意第一个访问者都可以重新设置管理员账号。
-已重置 C:\Users\Benedict\AppData\Local\Temp\tmpab_by46a\console.sqlite3
-重置前备份: C:\Users\Benedict\AppData\Local\Temp\tmpab_by46a\console.sqlite3.bak-1794093771
+已重置 C:\Users\Benedict\AppData\Local\Temp\tmpmorf2jcs\console.sqlite3
+重置前备份: C:\Users\Benedict\AppData\Local\Temp\tmpmorf2jcs\console.sqlite3.bak-1794095869
 重启工作台后，任意第一个访问者都可以重新设置管理员账号。
-已重置 C:\Users\Benedict\AppData\Local\Temp\tmp4gii06yi\console.sqlite3
-重置前备份: C:\Users\Benedict\AppData\Local\Temp\tmp4gii06yi\console.sqlite3.bak-1794093779
+已重置 C:\Users\Benedict\AppData\Local\Temp\tmp98viz7k4\console.sqlite3
+重置前备份: C:\Users\Benedict\AppData\Local\Temp\tmp98viz7k4\console.sqlite3.bak-1794095877
 重启工作台后，任意第一个访问者都可以重新设置管理员账号。
-已重置 C:\Users\Benedict\AppData\Local\Temp\tmp1rxwp13e\console.sqlite3
-重置前备份: C:\Users\Benedict\AppData\Local\Temp\tmp1rxwp13e\console.sqlite3.bak-1794093783
+已重置 C:\Users\Benedict\AppData\Local\Temp\tmpxigq28fa\console.sqlite3
+重置前备份: C:\Users\Benedict\AppData\Local\Temp\tmpxigq28fa\console.sqlite3.bak-1794095881
 重启工作台后，任意第一个访问者都可以重新设置管理员账号。
-数据库: C:\Users\Benedict\AppData\Local\Temp\tmp0df2ghot\console.sqlite3
+数据库: C:\Users\Benedict\AppData\Local\Temp\tmphheyrg89\console.sqlite3
 将删除: {'owner_account': 1, 'login_sessions': 1, 'login_limit': 0, 'account_login_limit': 0}
 加 --yes 才会执行；执行前请先停止工作台服务。
-已重置 C:\Users\Benedict\AppData\Local\Temp\tmps2mo7mbq\console.sqlite3
-重置前备份: C:\Users\Benedict\AppData\Local\Temp\tmps2mo7mbq\console.sqlite3.bak-1794093868
+已重置 C:\Users\Benedict\AppData\Local\Temp\tmppyxyut8s\console.sqlite3
+重置前备份: C:\Users\Benedict\AppData\Local\Temp\tmppyxyut8s\console.sqlite3.bak-1794095966
 重启工作台后，任意第一个访问者都可以重新设置管理员账号。

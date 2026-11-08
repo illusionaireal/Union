@@ -1,5 +1,7 @@
 # 086：交付就绪清单（U-067 / S03 自动执行链，待网络恢复推送）
 
+> **2026-11-08 07:41 协调者更新，优先于下文历史就绪判断：** bdbc382 原 SHA 已由协调者发布为 [草稿 PR #17](https://github.com/illusionaireal/Union/pull/17)，不要重复建 PR；U-078 已随 PR #15 合并。离线独立复核有三个实际 RED：模型派发前没有持久化预约、工具正文未传给下一轮、已完成但撤权被记成未执行。见本地 [复核及可运行探针](../U-067/independent-review.md)。截至 dad454f，这三个核心实现文件没有变化，不能将“真实调用”称为唯一剩余缺口；请先修这三个工程问题。用户本轮 Go 的两次额度已由 U-075 用完，剩余 **0**，下文两次额度是历史授权，不能复用。真实调用 0 的 S03 记录仍保留。
+
 2026-11-08 07:04–07:35。网络自 06:44 起持续中断（GitHub HTTPS 握手失败、看板 `fetch failed`/`no offline fallback`），本地已积累 **9 个提交**。本文件是恢复网络后的**一步到位操作清单**，避免届时再摸索。
 
 ## 1. 分支与提交（本地，均已在任务分支上）
@@ -110,3 +112,6 @@ node scripts/project-management.mjs record U-078 --actor "dsh/deepseek-v4.1-flas
 | `node scripts/check_core_creation.cjs`（S01 创建/重开门槛） | **30 项通过** | `browser-core-creation.txt` |
 
 这两项此前记录于 S01/workspace 证据，本轮是在**含 15 个本地提交的当前树**上复跑，确认新增的自动执行与通道装配没有破坏既有用户流程（创建、重开、模型配置、工作页）。
+
+
+2026-11-08 07:41 协调者复验：已从固定提交 dad454f81e242883cdca98246cd9e53ea847bbd6 导出独立源码，重跑 evidence/U-067/independent-review-probes.py，结果仍为 3 tests / 3 failures / 0 errors（2.841 秒）。失败位置与首次复核相同；无真实模型调用。
