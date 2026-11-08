@@ -72,7 +72,7 @@ def acceptance_problems(work, receipt, max_output):
             continue
         for key in total:
             total[key] += measured[key]
-        if index >= len(steps) or steps[index].get("usage") != measured:
+        if index >= len(steps) or steps[index].get("usage") != {key: measured[key] for key in total}:
             problems.append("原步进与观察到的模型用量不一致")
     if total != usage:
         problems.append("逐次用量与汇总用量不一致")

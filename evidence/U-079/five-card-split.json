@@ -1,0 +1,348 @@
+{
+  "observed_revision": 351,
+  "created_count": 21,
+  "children": {
+    "22-A": {
+      "id": 38,
+      "uid": "U-084",
+      "title": "从页面实际运行 AI 工作并找回原请求 · U-084",
+      "status": "ready",
+      "version": 1,
+      "dependencies": [
+        20,
+        21,
+        24
+      ],
+      "parent": 22,
+      "readback_revision": 330
+    },
+    "22-B": {
+      "id": 39,
+      "uid": "U-085",
+      "title": "真实读取资料并交付可下载的第一份成果 · U-085",
+      "status": "backlog",
+      "version": 1,
+      "dependencies": [
+        38,
+        20,
+        21,
+        24
+      ],
+      "parent": 22,
+      "readback_revision": 330
+    },
+    "22-C": {
+      "id": 40,
+      "uid": "U-086",
+      "title": "真实中断后查询原请求并重开同一工作 · U-086",
+      "status": "backlog",
+      "version": 1,
+      "dependencies": [
+        20,
+        21,
+        24
+      ],
+      "parent": 22,
+      "readback_revision": 330
+    },
+    "23-A": {
+      "id": 41,
+      "uid": "U-087",
+      "title": "对指定成果版本提交可追踪的反馈 · U-087",
+      "status": "backlog",
+      "version": 1,
+      "dependencies": [
+        22
+      ],
+      "parent": 23,
+      "readback_revision": 330
+    },
+    "23-B": {
+      "id": 42,
+      "uid": "U-088",
+      "title": "采用反馈并实际产出可比较的第二版 · U-088",
+      "status": "backlog",
+      "version": 1,
+      "dependencies": [
+        22,
+        41
+      ],
+      "parent": 23,
+      "readback_revision": 330
+    },
+    "23-C": {
+      "id": 43,
+      "uid": "U-089",
+      "title": "纠正资料事实后只修订受影响的工作 · U-089",
+      "status": "backlog",
+      "version": 1,
+      "dependencies": [
+        22,
+        42
+      ],
+      "parent": 23,
+      "readback_revision": 331
+    },
+    "23-D": {
+      "id": 44,
+      "uid": "U-090",
+      "title": "真实反馈使第一版发生可核验的改变 · U-090",
+      "status": "backlog",
+      "version": 1,
+      "dependencies": [
+        22,
+        39,
+        42,
+        43
+      ],
+      "parent": 23,
+      "readback_revision": 332
+    },
+    "25-A": {
+      "id": 45,
+      "uid": "U-091",
+      "title": "一项模型卡住时独立工作仍可完成 · U-091",
+      "status": "backlog",
+      "version": 1,
+      "dependencies": [
+        22,
+        24
+      ],
+      "parent": 25,
+      "readback_revision": 333
+    },
+    "25-B": {
+      "id": 46,
+      "uid": "U-092",
+      "title": "重启后按原请求恢复责任和预约用量 · U-092",
+      "status": "backlog",
+      "version": 1,
+      "dependencies": [
+        22,
+        24
+      ],
+      "parent": 25,
+      "readback_revision": 334
+    },
+    "25-C": {
+      "id": 47,
+      "uid": "U-093",
+      "title": "长任务运行中接收并保留新的要求 · U-093",
+      "status": "backlog",
+      "version": 1,
+      "dependencies": [
+        22,
+        24,
+        46
+      ],
+      "parent": 25,
+      "readback_revision": 335
+    },
+    "25-D": {
+      "id": 48,
+      "uid": "U-094",
+      "title": "按明确条件唤醒等待中的原工作 · U-094",
+      "status": "backlog",
+      "version": 1,
+      "dependencies": [
+        22,
+        24,
+        46,
+        47
+      ],
+      "parent": 25,
+      "readback_revision": 336
+    },
+    "25-E": {
+      "id": 49,
+      "uid": "U-095",
+      "title": "由执行之外的监督者进行有限恢复 · U-095",
+      "status": "backlog",
+      "version": 1,
+      "dependencies": [
+        22,
+        24,
+        46,
+        48
+      ],
+      "parent": 25,
+      "readback_revision": 337
+    },
+    "25-F": {
+      "id": 50,
+      "uid": "U-096",
+      "title": "在真实故障与交接窗口验证持续责任 · U-096",
+      "status": "backlog",
+      "version": 1,
+      "dependencies": [
+        22,
+        24,
+        39,
+        40,
+        45,
+        46,
+        47,
+        48,
+        49
+      ],
+      "parent": 25,
+      "readback_revision": 338
+    },
+    "28-A": {
+      "id": 51,
+      "uid": "U-097",
+      "title": "在 V1 模型页看到原请求的生成过程 · U-097",
+      "status": "ready",
+      "version": 1,
+      "dependencies": [
+        21
+      ],
+      "parent": 28,
+      "readback_revision": 339
+    },
+    "28-B": {
+      "id": 52,
+      "uid": "U-098",
+      "title": "为 Responses 接入长任务续接和新输入 · U-098",
+      "status": "backlog",
+      "version": 1,
+      "dependencies": [
+        21,
+        46,
+        47
+      ],
+      "parent": 28,
+      "readback_revision": 340
+    },
+    "28-C": {
+      "id": 53,
+      "uid": "U-099",
+      "title": "用真实 Responses 服务完成资料工具往返 · U-099",
+      "status": "backlog",
+      "version": 1,
+      "dependencies": [
+        21
+      ],
+      "parent": 28,
+      "readback_revision": 341
+    },
+    "28-D": {
+      "id": 54,
+      "uid": "U-100",
+      "title": "核验 Responses 的真实取消和原请求恢复 · U-100",
+      "status": "backlog",
+      "version": 1,
+      "dependencies": [
+        21
+      ],
+      "parent": 28,
+      "readback_revision": 342
+    },
+    "30-A": {
+      "id": 55,
+      "uid": "U-101",
+      "title": "独立客户端通过公开接口创建并查询组织 · U-101",
+      "status": "backlog",
+      "version": 1,
+      "dependencies": [
+        20,
+        22
+      ],
+      "parent": 30,
+      "readback_revision": 343
+    },
+    "30-B": {
+      "id": 56,
+      "uid": "U-102",
+      "title": "独立客户端完成一种有权限的工作命令 · U-102",
+      "status": "backlog",
+      "version": 1,
+      "dependencies": [
+        20,
+        22,
+        55
+      ],
+      "parent": 30,
+      "readback_revision": 344
+    },
+    "30-C": {
+      "id": 57,
+      "uid": "U-103",
+      "title": "查明现有外部工具是否绕过公开接口 · U-103",
+      "status": "backlog",
+      "version": 1,
+      "dependencies": [
+        20,
+        22,
+        55
+      ],
+      "parent": 30,
+      "readback_revision": 345
+    },
+    "30-D": {
+      "id": 58,
+      "uid": "U-104",
+      "title": "核验核心在没有私有平台时仍可独立使用 · U-104",
+      "status": "backlog",
+      "version": 1,
+      "dependencies": [
+        20,
+        22,
+        55,
+        56,
+        57
+      ],
+      "parent": 30,
+      "readback_revision": 346
+    }
+  },
+  "parent_readbacks": [
+    {
+      "id": 22,
+      "readback_version": 16,
+      "owner": "cafeef64-ac40-4062-97c1-ac82ece0a379",
+      "status": "progress"
+    },
+    {
+      "id": 23,
+      "readback_version": 5,
+      "owner": null,
+      "status": "backlog"
+    },
+    {
+      "id": 25,
+      "readback_version": 6,
+      "owner": null,
+      "status": "backlog"
+    },
+    {
+      "id": 28,
+      "readback_version": 14,
+      "owner": "54f3ed9e-817b-482a-90c1-d46bfc01728c",
+      "status": "blocked"
+    },
+    {
+      "id": 30,
+      "readback_version": 6,
+      "owner": null,
+      "status": "backlog"
+    }
+  ],
+  "no_dependency_cycles": true,
+  "wip_count_before": 3,
+  "wip_count_after": 3,
+  "concurrent_change": {
+    "id": 37,
+    "before": "progress",
+    "after": "blocked",
+    "owner_preserved": true,
+    "changed_by_other_engineer": true,
+    "still_counts_as_wip": true
+  },
+  "unclaimed_children_at_observation": 21,
+  "ready_children_at_observation": [
+    38,
+    51
+  ],
+  "scope": "historical split/adoption evidence; runtime authority remains online Kanban"
+}

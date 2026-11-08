@@ -61,6 +61,21 @@ class AcceptanceInterventionTests(unittest.TestCase):
         work, receipt = complete_evidence()
         self.assertEqual(bounded.acceptance_problems(work, receipt, 1024), [])
 
+    def test_extra_provider_usage_fields_do_not_change_token_attribution(self):
+        work, receipt = complete_evidence()
+        work["steps"] = copy.deepcopy(work["steps"])
+        for call in work["_acceptance"]["calls"]:
+            call["usage"].update(cached_input_tokens=3, reasoning_tokens=0,
+                                 source="modeld", cost_minor=None, resolved_model="model-a")
+        self.assertEqual(bounded.acceptance_problems(work, receipt, 1024), [])
+
+    def test_step_token_mismatch_is_rejected_with_provider_metadata(self):
+        work, receipt = complete_evidence()
+        work["steps"] = copy.deepcopy(work["steps"])
+        work["_acceptance"]["calls"][0]["usage"].update(cached_input_tokens=3, source="modeld")
+        work["steps"][0]["usage"]["input_tokens"] += 1
+        self.assertTrue(any("原步进" in problem for problem in bounded.acceptance_problems(work, receipt, 1024)))
+
     def test_one_turn_digest_candidate_is_not_a_completed_exchange(self):
         work, receipt = complete_evidence()
         work.pop("_acceptance")
@@ -176,9 +191,9 @@ class AcceptanceInterventionTests(unittest.TestCase):
             count += 1
             if count == 1:
                 return {"content": None, "tool_calls": [{"id": "read-1", "type": "function", "function": {
-                    "name": "read_document", "arguments": '{"path":"brief.md"}'}}]}, {"input_tokens": 10, "output_tokens": 5}
+                    "name": "read_document", "arguments": '{"path":"brief.md"}'}}]}, {"input_tokens": 10, "output_tokens": 5, "cached_input_tokens": 3, "source": "modeld"}
             document = json.loads(next(m["content"] for m in messages if m["role"] == "tool"))
-            return {"content": document["content"], "tool_calls": []}, {"input_tokens": 20, "output_tokens": 7}
+            return {"content": document["content"], "tool_calls": []}, {"input_tokens": 20, "output_tokens": 7, "cost_minor": None, "source": "modeld"}
         try:
             ModelAccessCase.setUp(case)
             with patch.object(case, "grant", return_value=("grant-a", 1)), \
