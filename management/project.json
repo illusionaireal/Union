@@ -1864,6 +1864,13 @@
                     "from": "backlog",
                     "to": "backlog",
                     "note": "按用户“每张卡看不懂、内容太抽象”的反馈，改为具体功能、操作和完成演示。原技术验收完整保留在 specs/053-union-rewrite/tasks.md#u-067-development；范围、状态、owner、依赖、claim和既有验收记录不变，不执行未来卡。"
+                },
+                {
+                    "at": "2026-11-08T05:26:01.892Z",
+                    "actor": "codex-home/current-codex-session",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "PR #17 @1b00336 的完成后 modeld 撤权事实保留协助候选；契约、RED/GREEN 与限定验收见 evidence/U-067/model-observation-fix/README.md。无在线认领或 owner/status 更新，未完成预约事务/工具正文/真实业务出口；待另一工程角色复核。"
                 }
             ],
             "claim": {

@@ -3,7 +3,7 @@ import unittest
 
 from ai_union.errors import Rejected
 from ai_union.model_service import ServiceError
-from ai_union.work_transport import ModeldWorkTransport
+from ai_union.work_transport import ModeldWorkTransport, UnadoptableWorkResult
 
 CONNECTION = {"id": "connection-a", "revision": 2, "grant_ref": "grant-a", "grant_revision": 3,
               "model": "model-a", "max_output_tokens": 1024, "task_ms": 30000}
@@ -80,7 +80,7 @@ class ModeldWorkTransportTests(unittest.TestCase):
             return remote
 
         client.request = revoked
-        with self.assertRaises(Rejected):
+        with self.assertRaises(UnadoptableWorkResult):
             self.transport(client).chat(PACKAGE, [], [])
 
 

@@ -47,3 +47,9 @@
   service instance that owns it; after a restart the attempt reads as stale
   and cannot act until it is settled through finish_attempt. No model call,
   storage or dispatch; step S03.2+ extends the same owner.
+
+- `record_unadoptable_step` records completed model inference as used, including
+  the original model request ID and observed token usage. Revocation denies
+  content/tool adoption; it does not erase executed calls. Unknown remains
+  reserved and used cannot be reconciled as released. Verify the scoped
+  contract and `tests/test_work_observation.py` with existing work regressions.
