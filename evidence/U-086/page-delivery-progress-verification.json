@@ -199,7 +199,7 @@
   },
   "red_classification": "DOM 5 failing cases / 17 passing controls before product edit. Chrome verifies actual Core HTTP/SQLite; cancellation delivery is event-gated. Author exact 53ed829 gives 7 failing cases / 1 passing control with 8 subtest assertion failures; initial missing helper is a separate fixture error.",
   "independent_review": "Required from another engineering role for this session page and service implementation; no self-approval.",
-  "ci": "Only the final published PR43 head may be used for adoption; predecessor checks are historical.",
+  "ci": "The replacement draft targets rewrite/charter-v1. Its final published head requires current CI and independent review; old PR43 checks do not cover the new page.",
   "real_model_calls": 0,
   "migration": false,
   "production_switch": false,
@@ -215,5 +215,13 @@
   },
   "latest_author_input": "fcbc932910a73c241b4f10cdb70065f14dafa525",
   "latest_author_merge": "dfa5bfea1cc8e9b00eb1cc76f10a6b64e5218b1d",
-  "latest_author_merge_change": "Only the three evidence/126 files were added; all ten recorded source blobs remain identical to the tested combination. The existing GovernanceStore projection remains the only receipt projection path."
+  "latest_author_merge_change": "Only the three evidence/126 files were added; all ten recorded source blobs remain identical to the tested combination. The existing GovernanceStore projection remains the only receipt projection path.",
+  "latest_author_handoff_input": "c0c17878f9d1bc862346f75994ff1c4d93d3d54b",
+  "previous_pr43": {
+    "head": "19afff362ed8f84a0fbb7c4fa37b655c94a0fd63",
+    "merged": true,
+    "merge_commit": "f5f6c7db8563d606ed90c2799cb00aaf92c1790d",
+    "base": "dsh/u086-page-cancel",
+    "adopted_to_integration": false
+  }
 }
