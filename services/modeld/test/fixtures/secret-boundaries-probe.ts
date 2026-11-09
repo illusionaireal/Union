@@ -90,6 +90,18 @@ const provider = Bun.serve({ hostname: '127.0.0.1', port: 0, async fetch(request
   }
   chunks.push({ ...common, choices: [{ index: 0, delta: {}, finish_reason: finish }] });
   chunks.push({ ...common, choices: [], usage });
+  if (scenario === 'ordinary') {
+    // Exercise safe streaming across scheduler/network latency, including the
+    // final usage frame. This suite does not test a one-second service target.
+    let timer: ReturnType<typeof setTimeout>;
+    return new Response(new ReadableStream({ start(controller) {
+      controller.enqueue(new TextEncoder().encode(frame(chunks[0])));
+      timer = setTimeout(() => {
+        controller.enqueue(new TextEncoder().encode(chunks.slice(1).map(frame).join('') + 'data: [DONE]\n\n'));
+        controller.close();
+      }, 1200);
+    }, cancel() { clearTimeout(timer); } }), { headers: { 'content-type': 'text/event-stream' } });
+  }
   return new Response(chunks.map(frame).join('') + 'data: [DONE]\n\n', { headers: { 'content-type': 'text/event-stream' } });
 } });
 const allowed = new Set([provider.url.origin]);
@@ -163,7 +175,7 @@ try {
       messages: [{ role: 'user', content: 'ordinary safe prompt' }] as any[],
       tools: [{ type: 'function', function: { name: 'read_document', description: 'Read a fixture document',
         parameters: { type: 'object', properties: { document_id: { type: 'string' } }, required: ['document_id'] } } }] as any[],
-      generation: { maxOutputTokens: 30 }, deadlines: { first_event_ms: 1000, idle_ms: 1000, task_ms: 3000 } };
+      generation: { maxOutputTokens: 30 }, deadlines: { first_event_ms: 5000, idle_ms: 5000, task_ms: 15000 } };
     if (scenario === 'plain-input' || scenario === 'quoted-input') input.messages[0].content = key;
     if (scenario === 'quoted-native-input') input.messages.push({ role: 'assistant', content: '',
       _native: { au_id: input.au_id, account_ref: service.journal.grant(receipt.grant_ref).account_ref,
@@ -184,7 +196,8 @@ try {
       assert.equal((await api(`/v1/requests/${id}/cancel?au_id=${saved.au_id}`, 'POST')).status, 202);
     }
     let row: any;
-    for (let i = 0; i < 400; i++) {
+    const settleBy = performance.now() + 20000;
+    while (performance.now() < settleBy) {
       row = await (await api(`/v1/requests/${id}?au_id=${saved.au_id}`)).json();
       if (['completed', 'failed', 'interrupted'].includes(row.state)) break;
       await Bun.sleep(10);
