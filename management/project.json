@@ -2454,7 +2454,7 @@
             ],
             "blocker": null,
             "started_at": null,
-            "updated_at": "2026-11-09",
+            "updated_at": "2026-11-10",
             "completion": null,
             "history": [
                 {
@@ -2498,6 +2498,13 @@
                     "from": "ready",
                     "to": "ready",
                     "note": "前台独立复核PR36 ce10e34（包括终态连接变化清除）并记录review5818722576：5额外HTTP授权/会话/完整性反例、21 DOM、两浏览器场景12项通过。证据evidence/U-097/foreground-review.json、independent_probe.py；新headCI仍须通过，真实profile/持续验收不升级。原模型实现actor与前台reviewer分别记录。"
+                },
+                {
+                    "at": "2026-11-09T22:06:41.835Z",
+                    "actor": "codex-home/single-duty-independent-review-and-integration",
+                    "from": "ready",
+                    "to": "ready",
+                    "note": "U075/PR73取消历史读取独立采用：准确head a7c80cc649b44c439359f0b8f5ce5970dcc5ca6f 经独立工程review5833445067及14/14当前CI通过，合入 b4e435b78280cee94e9a5d17ed97923f999cc71f；受评/合并tree均063e65ffc1b0b2f5579a75e42f314f1d4f9ffa5c。当前治理/连接/实时grant和原请求校验保持，仅严格确认本地停止+远端interrupted/cancel_requested可读原历史；24已有HTTP/恢复/profile、7额外HTTP/SQLite、7实际Chrome与原父403 RED证据见evidence/U-075/go-deepseek-2026-11-10/duty-review/README.md。作者指定Go模型4次真实调用报告与本值守fake验证分列，本值守真实新增0；远端取消、中断用量/费用保持未知。当前在线#28 review与原owner、Responses #52/#53/#54及父验收保持；本地仅追加长期交付历史，不作在线调度或认领依据。"
                 }
             ],
             "claim": null

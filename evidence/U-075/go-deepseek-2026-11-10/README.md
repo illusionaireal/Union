@@ -78,3 +78,7 @@ check 保持 unknown，已派发 4 次占用均保留。已知 token 小计 1180
 `UNION_GO_ACCEPTANCE_STATE` / `UNION_CHROMIUM_PATH`。在该私有目录创建
 `stop-requested` 文件可正常停止本验收宿主。这些驱动使用现有产品入口；
 不是另一套演示页面、产品调度器或持续业务验收。
+
+## 2026-11-10 后续独立采用
+
+准确head `a7c80cc` 经独立工程复核及14/14当前CI后已合入 `b4e435b`，同树读回；[独立HTTP/Chrome探针及采用边界](duty-review/README.md)。上文待独立采用为交付时快照，原真实范围、未知和失败历史保持。
