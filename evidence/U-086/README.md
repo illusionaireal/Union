@@ -139,3 +139,10 @@ Work/attempt/command/model_request、当前授权、事件cursor、取消受理/
 PR48/PR49 are combined in a separate, not-yet-adopted candidate; both histories
 and the independent fixture review gate are preserved. See
 [the exact integration inputs](host-fixture-integration.md).
+
+## Original output before interruption (2026-11-09)
+
+The scoped [original-output gate repair](original-output-gate/README.md)
+retains DSH ownership and the real parent exits. It fixes optional/mismatched
+event acceptance with31 executable offline tests; it does not run the real
+driver or approve itself. Exact source, failures and validation are indexed.

@@ -36,3 +36,5 @@ Exact source/log hashes and full validation are recorded in validation.json.
 Page-visible real observation, same-run valid restart snapshots, remote call
 counts, billing and the complete #39/#40/#22 exits remain separate. This
 candidate does not authorize another real run to refresh historical evidence.
+
+Full prepared-source validation: 808 Python tests / 10 skipped /0 failures (505.590s); npm check with363 frontend,51 Node and37 management cases passed. Management render/check and syntax checks passed. Final evidence-only updates preserve the tested driver and test blobs. Current-head CI and another role review are still required before adoption.

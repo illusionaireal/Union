@@ -1990,6 +1990,13 @@
                     "from": "doing",
                     "to": "doing",
                     "note": "PR48检查接续/#40评论208：测试专用安全输出末帧延迟1.2秒，原夹具47 PASS/1 FAIL→仅调整有界等待后50项凭据/独立超时检查通过；modeld全89、npm343/37/9通过，完整验证与CI分别见evidence/U-086/secret-fixture-latency.md及secret-fixture-latency-validation.json。产品/CI/vendor未改，旧Windows失败保留且不把相同现象断言为唯一根因。8个准确VM控制证明两个评审器均捕获await后的拒绝，970144a下载重开仍接受另一result；可执行证据review-await-probes.py和review-await-validation.json。原owner/WIP和真实#22/#39/#40出口保留，真实调用0；本条仅交付历史，不作为在线认领或采用事实。"
+                },
+                {
+                    "at": "2026-11-09T06:27:29.940Z",
+                    "actor": "codex-home/single-duty-implementation",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "U086原输出验收门槛协助候选：基线作者75c7a946ea459861fa60d9831b3b1fedfa1376ed、在线评论238保持DSH/#40归属。真实未改断言31测试1通过30失败，修复31全通过；只修Core原响应身份/当前主体服务/原连接/游标分页及非空text_delta门槛，保存UTF-8文本摘要，不启动验收driver main。证据evidence/U-086/original-output-gate/README.md及validation.json。准确候选需当前CI和非实施工程角色复核后采用；本地历史不改在线owner/WIP，不关闭#22/#39/#40真实出口，新增真实模型调用/迁移/服务切换均0。"
                 }
             ],
             "claim": {
