@@ -356,6 +356,9 @@ function startHost() {
     try { body = await response.json(); } catch { body = null; }
     return { status: response.status, body };
   }, href);
+  const body = downloadFetch.body || {};
+  const meta = body.result || {};
+  const downloadedContent = body.content || '';
   check('download link present, HTTP 200, and body is the recorded result id: ' + (meta.id || 'none'),
         Boolean(href) && href.includes('/api/v1/work/results')
         && downloadFetch.status === 200 && meta.id === resultId);
