@@ -86,11 +86,22 @@ async function registerAndPrepare(page, auId, input) {
   const before = await read();
   assert.equal(before.works.length, 0, 'registration starts without a prepared Work');
   const commands = [];
+  const requests = [];
+  let settleRegistration;
+  const registrationEnded = new Promise(resolve => { settleRegistration = resolve; });
   const capture = request => {
-    if (request.method() === 'POST' && new URL(request.url()).pathname === '/api/v1/work/commands')
+    if (request.method() === 'POST' && new URL(request.url()).pathname === '/api/v1/work/commands') {
+      requests.push(request);
       commands.push(request.postDataJSON());
+    }
+  };
+  const finish = request => {
+    if (requests.includes(request) && request.postDataJSON()?.kind === 'start_work')
+      settleRegistration(request);
   };
   page.on('request', capture);
+  page.on('requestfinished', finish);
+  page.on('requestfailed', finish);
   try {
     await page.getByText('登记新的 AI 工作', {exact:true}).click();
     for (const [label, value] of [['工作标题',input.title],['目标',input.goal],
@@ -105,15 +116,22 @@ async function registerAndPrepare(page, auId, input) {
     ]);
     // A stored reference appears before dispatch; wait for this transmission,
     // including a lost response, before refreshing to query the original ID.
-    const postResponse = await registrationRequest.response();
-    if (postResponse) await postResponse.finished();
-    await page.getByRole('button', {name:'查询登记原请求',exact:true}).waitFor();
+    // response.finished() can remain pending when headers arrive but the body fails.
+    assert.equal(await registrationEnded, registrationRequest, 'original registration transmission ended');
     assert.equal(commands.length, 1, 'one page registration POST');
     const original = commands[0];
     assert.equal(original.kind, 'start_work');
     assert.equal(original.organization_id, auId);
     assert.ok(original.id && original.data?.work_id);
     assert.ok(Number.isSafeInteger(original.base_version) && original.base_version >= 0);
+    const postResponse = await registrationRequest.response();
+    let submittedReceipt;
+    if (postResponse) {
+      assert.equal(postResponse.status(), 200, 'registration POST HTTP');
+      if (!registrationRequest.failure())
+        submittedReceipt = validateReceipt({status:postResponse.status(), body:await postResponse.json()}, original, scope);
+    }
+    await page.getByRole('button', {name:'查询登记原请求',exact:true}).waitFor();
     // Reload deliberately discards the POST result. Recovery must use the stored ID.
     await page.reload();
     const [response] = await Promise.all([
@@ -125,6 +143,7 @@ async function registerAndPrepare(page, auId, input) {
       page.getByRole('button', {name:'查询登记原请求',exact:true}).click(),
     ]);
     const registration = validateReceipt({status:response.status(), body:await response.json()}, original, scope);
+    if (submittedReceipt) assert.deepEqual(registration, submittedReceipt, 'original POST and GET registration facts');
     await page.getByText(/^登记已记录 ·/).waitFor();
     validateRegistered(await read(), original, scope, input);
     assert.equal(commands.length, 1, 'reopen only queries the original registration');
@@ -148,7 +167,11 @@ async function registerAndPrepare(page, auId, input) {
     return {...scope, work_id:original.data.work_id, attempt_id:prepared.attempt.id,
       commands:commands.map(({id,kind,base_version}) => ({id,kind,base_version})),
       registration_version:registration.version, preparation_version:prepared.version};
-  } finally { page.off('request', capture); }
+  } finally {
+    page.off('request', capture);
+    page.off('requestfinished', finish);
+    page.off('requestfailed', finish);
+  }
 }
 
 module.exports = { registerAndPrepare, validateReceipt, validateRegistered };
