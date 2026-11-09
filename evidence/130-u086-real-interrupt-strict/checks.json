@@ -1,0 +1,28 @@
+{
+  "passed": 18,
+  "nonce": "UNION-EXIT22B-2aaf0e35",
+  "workId": "work-exit",
+  "checks": [
+    "private ticket page loads",
+    "can_start probe: {\"can_start\":true,\"conns\":[{\"id\":\"connection-a\",\"is_default\":true,\"enabled\":true}],\"protocol\":\"core.models.v1\"}",
+    "tasks page reachable",
+    "work registered and attempt started through the product API",
+    "in-flight automatic reservation visible",
+    "in-flight automatic reservation carries the line-end id: work-6ae1408d219cbdc08b622e348a3cf79bc7efbf30e6855ee997fee9805c1cb1b8",
+    "the cancelled request is this run's own in-flight request (distinct id, own attempt): work-6ae1408d219cbdc08b622e348a3cf79bc7efbf30e6855ee997fee9805c1cb1b8 / work-exit#a1",
+    "cancel accepted by the product: {\"actor_principal_id\":\"b9986826-d2d7-4e39-8708-17df0feab336\",\"base_version\":13,\"cancel_accepted\":true,\"cancel_connection\":{\"enabled\":true,\"grant_ref\":\"grant-240",
+    "cancel receipt identifies the same command/attempt/step/model request",
+    "delivery observation recorded: true",
+    "original GET returns the delivered cancel receipt (identity match)",
+    "the cancelled step settles",
+    "step settled as unknown (cost unknown)",
+    "an unknown settlement keeps the budget reserved",
+    "the settled step survives the rebuild as unknown",
+    "the settled step keeps its original identity across the rebuild",
+    "the settle reason persists",
+    "an unresolved step keeps its original reservation after the rebuild"
+  ],
+  "errors": [
+    "nav ok, models ok: [{\"enabled\":true,\"grant_ref\":\"grant-240875c9b53d\",\"grant_revision\":1,\"id\":\"conne"
+  ]
+}
