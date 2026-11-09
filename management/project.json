@@ -1,6 +1,6 @@
 {
     "schema_version": 1,
-    "updated_at": "2026-11-09",
+    "updated_at": "2026-11-10",
     "wip_limit": 8,
     "modules": [
         {
@@ -2413,7 +2413,7 @@
             ],
             "blocker": null,
             "started_at": null,
-            "updated_at": "2026-11-09",
+            "updated_at": "2026-11-10",
             "completion": null,
             "history": [
                 {
@@ -2429,6 +2429,13 @@
                     "from": "backlog",
                     "to": "backlog",
                     "note": "U107/#61固定PR38部署已完成真实只读预检及候选准备，尚未上线。源码3e1071b的94文件committed包SHA256 4ef76df3985d5828de3e512bf7dc902bf86614c621e0ee4fa6bc60cc5cdfbfcf，NAS隔离环境59固定依赖实际导入/Bun1.4.2/包完整性通过；原服务与TLS入口正常。原身份auth0/catalog0被候选要求auth2/catalog1的真实门禁拒绝，快照字节未变。20文件/3SQLite在线只读快照保留，非跨库停服恢复点。已向用户提出限定身份迁移确认；#61保留codex-home和blocked WIP。证据evidence/U-107/README.md、preflight.json；新密钥/迁移/真实调用/生产切换均0，父#27持续验收保持。"
+                },
+                {
+                    "at": "2026-11-09T21:22:23.580Z",
+                    "actor": "codex-home-coordinator / foreground deployment; member 89f4c1c1-329a-4b54-ad37-235cf061e9a8",
+                    "from": "backlog",
+                    "to": "backlog",
+                    "note": "U107/#61固定PR38@3e1071b已在原NAS HTTPS入口上线。用户明确授权本次auth0/catalog0→auth2/catalog1停服身份迁移，原账号密码/AU/创建回执及工作/请求保留，旧会话撤销。94包文件/59固定依赖及原入口JS/CSS实测一致；75文件停服备份已跨宿主复制核验；两个非身份库逻辑数据及24原私有文件保留，实际Chrome登录表单无JS错误/写请求。证据evidence/U-107/live-deployment-2026-11-10.md、live-deployment-2026-11-10.json。未代用户输入密码，modeld仍不可用，真实调用0；原stop137/备份权限失败保留。此为固定版本发布事实，父#27持续使用/业务验收和本地历史状态不升级；运行态仅以在线卡为准。"
                 }
             ]
         },
