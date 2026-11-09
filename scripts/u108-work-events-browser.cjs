@@ -39,6 +39,10 @@ async function main() {
     const step=original.steps[0];check('partial text precedes cancellation',step.status==='reserved'&&original.cancel_posts===0);
     check('only original step is observed',reads.length>0&&reads.every(x=>new URL(x).searchParams.get('step_ref')===step.step_ref));
     check('no native or tool argument disclosure',!(await page.content()).includes('private-'));
+    for (const width of [1440,390,320]) {
+      await page.setViewportSize({width,height:900});
+      check('expanded output fits '+width+'px',await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+    }
     const stored=await page.evaluate(()=>JSON.stringify(localStorage)+JSON.stringify(sessionStorage));
     check('output not stored in browser',!stored.includes('原工作部分正文'));
     await page.route('**/api/v1/work/events?**',route=>route.abort('failed'),{times:1});

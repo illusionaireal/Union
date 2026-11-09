@@ -54,6 +54,16 @@ The skipped real/modeld/release checks are not upgraded. Accurate-head CI/browse
 results and independent engineering review are recorded separately as they complete. The implementation cannot approve its
 own identity/permission boundary. This candidate is not yet adopted or complete.
 
+### First accurate-head CI feedback
+
+Head `8bcf5da` passed both Windows/Linux offline checks and the model-service
+workflow. The browser job `128972730793` failed the existing U081 regression
+with `overflow at 390px`; the new browser driver had not run yet. The long
+original-request option imposed an intrinsic select width. A scoped CSS repair
+bounds the selector and wraps displayed identities; no assertions were relaxed.
+The U108 actual-browser script now also checks expanded output at 1440/390/320px.
+Current-head CI must verify that repair; the first failure remains recorded.
+
 ## Reproduction
 
 ```sh

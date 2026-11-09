@@ -13,15 +13,16 @@
     "ai_union/application/work_events.py": "fa47ee074bfb1a4dd253512dfc15215ad1de87e160f01c586b292e2c1e151e43",
     "ai_union/application/work.py": "4b1dbb77efb79472149ea75b9b6b29715ede91a3aa97cfbf4c621ea1c83cd8a7",
     "ai_union/server.py": "a79396364d15564d1edcc7f304b3a7e577fd6cb84490b4e36486bdb980e1a9b3",
-    "web/console/src/features/work/WorkStream.tsx": "e382d0fe0ff301f08be38abdac05950b8dbf35d570a12b887439b5af6f59b2ca",
+    "web/console/src/features/work/WorkStream.tsx": "e37666385234dba7ee0f56cb45c4ef548faa95b4c725869c76976f8af133dbac",
     "web/console/src/features/work/WorkPanel.tsx": "ba0ac2fe5bf291139c2bcbe9a4d98e86b614ea1b1fd286a232e6ec4354045f35",
     "web/console/src/api/client.ts": "52dc06f313703b4113c6d7249503f9aabd7f248d22a4f72c90b2dfcae1fbf61d",
     "web/console/src/api/types.ts": "6c8a8c31347ddb20e5a22d6e0a501d6ca1d55b5f657169cb9565fe711eb22a4b",
     "tests/test_core_work_events.py": "4247e67c85f661ca7e77175b87e331bb116fce0807f285d2b1cfd0c8aaa0b763",
     "web/console/src/features/work/WorkStream.test.tsx": "4d1cc0d8e21404cbd7c6474e07a39aac0bace559640d5feb61ad2e74bc342a32",
     "scripts/u108_work_events_host.py": "e3161e9c9cc532f0c917105c9017056040c71482ca51ba82ffe5fcd41515a095",
-    "scripts/u108-work-events-browser.cjs": "27d7a536b9346bd7e5a99ece36689d488f4aa1a6451ae393393e66038004545e",
-    ".github/workflows/ci.yml": "f3bb249552fcce647a88c3db7a3f1e4e8ad60d57739cb84c51037ff74c807586"
+    "scripts/u108-work-events-browser.cjs": "ed9f9eb1819e546af1b5bb3b4ae7ff6da8a8b714b0677b00a194d4cf2c7bd3f2",
+    ".github/workflows/ci.yml": "f3bb249552fcce647a88c3db7a3f1e4e8ad60d57739cb84c51037ff74c807586",
+    "web/console/src/features/work/work-stream.css": "044ecf047184459675829e671257174e1e40765e0a7570967e73455ba4ec425f"
   },
   "log_sha256": {
     "u108-api-red.log": "9b3641eb79e491b23b1a416a243cdc179012299a5692827a6a5e069ab810cb64",
@@ -34,7 +35,8 @@
     "u108-python-full.log": "03339626845c06d2a96e773ef38775f219d425fa1d927e51df7ba6a8ea681020",
     "u108-npm-check-final.log": "e8fbba508954b1200966fc725cb9be2be9db65dacf3807576212e35dbfe42a78",
     "u108-browser-install.log": "28fadea03481d93e8bd78cee7832ff7e82c54da8a3516301a278826778c50eb0",
-    "u108-browser-shell-install.log": "12fc6d4931489d938297e4e3f04e693d659818c2d6f79390cbb1d1560cbcaa1f"
+    "u108-browser-shell-install.log": "12fc6d4931489d938297e4e3f04e693d659818c2d6f79390cbb1d1560cbcaa1f",
+    "u108-npm-layout.log": "63f9331e8b67786fb06992af7cfb6dc9587108a37081a0eac104cd9480b577ba"
   },
   "checks": {
     "http_red": {
@@ -64,10 +66,19 @@
     "dom_green": 14
   },
   "local_chromium": "missing executable; official downloads truncated/non-ZIP; no browser pass claimed",
-  "accurate_head_ci": "pending PR publication",
+  "accurate_head_ci": "new layout-repair head pending publication",
   "independent_identity_permission_review": "required; implementer cannot self-approve",
   "real_model_calls": 0,
   "fake_calls": "bounded loopback doubles in tests; one dispatch + one cancel in full smoke",
   "migration": false,
-  "production_switch": false
+  "production_switch": false,
+  "first_ci": {
+    "head": "8bcf5da08a91a6355343f7544e3289887de4d04d",
+    "frontend_run": 42559550954,
+    "browser_job": 128972730793,
+    "failure": "existing U081 browser: overflow at 390px; U108 browser not reached",
+    "offline_windows_linux": "success",
+    "model_service": "success",
+    "repair": "scoped selector width and identity wrapping; added expanded 1440/390/320 browser assertions; no relaxed checks"
+  }
 }

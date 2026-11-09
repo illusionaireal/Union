@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { api, ApiError } from '../../api/client';
 import type { CoreWorkEvents, CoreWorkItem, CoreWorkStep, WorkEventConnection } from '../../api/types';
+import './work-stream.css';
 
 type Scope = { principalId: string; serviceInstance: string; organizationId: string; workId: string };
 const connectionKeys = ['id', 'revision', 'profile', 'model', 'grant_ref', 'grant_revision', 'max_output_tokens', 'task_ms'] as const;
@@ -16,7 +17,7 @@ export function WorkStream({ item, scope }: { item: CoreWorkItem; scope: Scope }
   const options = item.steps.filter(step => step.command_id && step.model_request_id);
   const selected = selection ? options.find(step => step.step_ref === selection) : options.at(-1);
   if (!options.length && !expanded) return null;
-  return <section aria-label="工作原请求输出">
+  return <section className="work-stream" aria-label="工作原请求输出">
     <label>查看哪次工作调用
       <select aria-label="查看哪次工作调用" value={selected?.step_ref ?? ''} onChange={e => setSelection(e.target.value)}>
         {!selected && <option value="" disabled>原调用已不可用，请明确选择</option>}
