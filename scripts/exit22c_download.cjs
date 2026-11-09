@@ -411,18 +411,22 @@ function startHost() {
   host = running.child;
   await page.goto(running.origin);
   await page.getByText('已连接本机服务', { exact: true }).waitFor();
-  const after = await page.evaluate(async auId => {
-    const value = await (await fetch('/api/v1/work?organization_id=' + auId)).json();
-    return value;
+  const reopenedResponse = await page.evaluate(async auId => {
+    const response = await fetch('/api/v1/work?organization_id=' + auId);
+    return { status: response.status, body: await response.json() };
   }, createdReceipt.organization_id);
+  check('reopened work snapshot returned HTTP 200', reopenedResponse.status === 200);
+  const after = reopenedResponse.body;
+  check('reopened work snapshot belongs to the original AU',
+        Boolean(after) && after.protocol === 'core.work.v1'
+        && after.organization_id === createdReceipt.organization_id);
   const entry = (after.works || []).find(w => w.id === workId);
-  check('work still delivered after a console rebuild', entry && entry.status === 'delivered');
-  const adoptedAfter = (entry.results || []).find(r => r.status === 'adopted');
-  const anchored = entry.delivered_result_id
-    ? (entry.delivered_result_id === adoptedAfter.id && entry.delivered_result_id === resultId)
-    : (adoptedAfter.id === resultId);
-  check('the original adopted result survives the rebuild (original id): ' + (adoptedAfter && adoptedAfter.id),
-        Boolean(adoptedAfter) && anchored);
+  check('work still delivered after a console rebuild', Boolean(entry) && entry.status === 'delivered');
+  const originalResult = (entry.results || []).find(r => r.id === resultId);
+  check('the original adopted result and digest survive the rebuild',
+        Boolean(originalResult) && originalResult.status === 'adopted'
+        && originalResult.sha256 === recorded);
+  check('the rebuilt work remains delivered with the original result', entry.delivered_result_id === resultId);
   fs.writeFileSync(path.join(output, 'snapshot-after-restart.json'), JSON.stringify(after, null, 2));
   fs.writeFileSync(path.join(output, 'checks.json'),
     JSON.stringify({ passed: checks.length, nonce, workId, checks, errors }, null, 2));
