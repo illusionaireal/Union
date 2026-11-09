@@ -117,3 +117,11 @@ one original fake request and one cancellation; it never connects a real profile
 The full-loop HTTP smoke likewise used one fake dispatch. Real inference, live
 migration, key creation/rotation and business service switches are all **0**.
 Parent #40/#22 and real #39 acceptance remain open; other owners are unchanged.
+
+## 2026-11-09 current-head independent recheck
+
+The single codex-home review session independently rechecked `8928f04`: prior
+permission/cleanup blockers resolved, 28 unique DOM / 17 HTTP boundary cases,
+host lifecycle / two child-exit checks and installed Chrome20 pass. Exact-head
+CI remains the adoption gate; real parent exits remain open. Reproducible
+probes and source/log hashes: [permission recheck](permission-recheck/README.md).

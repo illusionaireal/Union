@@ -38,3 +38,5 @@ counts, billing and the complete #39/#40/#22 exits remain separate. This
 candidate does not authorize another real run to refresh historical evidence.
 
 Full prepared-source validation: 808 Python tests / 10 skipped /0 failures (505.590s); npm check with363 frontend,51 Node and37 management cases passed. Management render/check and syntax checks passed. Final evidence-only updates preserve the tested driver and test blobs. Current-head CI and another role review are still required before adoption.
+
+Pre-publication fetch found author c6862d8 incorporating PR55 evidence only. The candidate preserves that history and its own delivery note in a merge; executable blobs remain the tested ones. Management render/check passed again (37 cases); no full-suite rerun was needed for this documentation-only combination.

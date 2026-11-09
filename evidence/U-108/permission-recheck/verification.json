@@ -1,0 +1,64 @@
+{
+  "reviewed_head": "8928f04b36320c74a599a6c10b5f327cfeb9f5d0",
+  "tree": "9b3754d6295c0630d51c160f8656d7190694e41f",
+  "reviewer_actor": "single codex-home duty session, independent of cloud implementation",
+  "online_member_id": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+  "verdict": "permission/identity and fixture-cleanup changes approved; merge only after all current CI pass",
+  "source_equality": true,
+  "source_sha256": {
+    ".github/workflows/ci.yml": "7b78cdddc1b5d2436f86054fdae8fe0e08efa1ce15fd24606e0e900c8510c1bc",
+    "ai_union/application/AGENTS.md": "3bbd94a28849a3bb58d6e590d783772fbfa5596e91cd6b5ed378212a47cb9e52",
+    "ai_union/application/work.py": "90cb78c349399fb4f55ca81603ecf28977bc3973bf1fccee0682300fa3839434",
+    "ai_union/application/work_events.py": "5a4b44b4f99a33e1dc7d177d5abd29220d64845f0a49098247a4d364056bb090",
+    "ai_union/server.py": "be2e6a63372efd5eba2b54b46ce0126f8810188c67d5d8a6a4c52c59010ddabf",
+    "scripts/u108-work-events-browser.cjs": "16f2f5cd6c8c21897210091c9c0796f0194e1ab7faa5ab2f9d4ec74a2d600c1a",
+    "scripts/u108-work-events-browser.test.cjs": "3163b190da00c457518d4b200038d9c0993f46b29ca62078e25b460b3b59e0dd",
+    "scripts/u108_work_events_host.py": "8d44a5f79a390a48c5894d8007d5fefa940e7bec3d0abe868bf7407cb5b06b67",
+    "tests/test_core_work_events.py": "30c882eea73ebcfd4a4e01961c7f9e7b7a71f13ce422cb36613f17d04820bf59",
+    "tests/test_u108_browser_host.py": "77a0bcc17ba500c3701dcb7a29b3587650da1a677dc094b9bcae011aa2beb53c",
+    "web/console/src/api/client.ts": "60b89bfe827711d6673f4e5878ed9db9caef8f06c554728aae6e10d7974c66b9",
+    "web/console/src/api/types.ts": "0f2790c9542c5d73e3cf0e45dd53b9cb92ac566003affb4918c58c1d4cdbb93a",
+    "web/console/src/features/work/WorkPanel.tsx": "ba0ac2fe5bf291139c2bcbe9a4d98e86b614ea1b1fd286a232e6ec4354045f35",
+    "web/console/src/features/work/WorkStream.test.tsx": "d74e18bd38ea21f9d451d5eb83e1e7207d4d2cf154f640c9adfa764ad2896b3e",
+    "web/console/src/features/work/WorkStream.tsx": "64e24950800331ff1f1f81b5e8ecc47015a08c509620da09265900d5fd1d7fe6",
+    "web/console/src/features/work/work-stream.css": "044ecf047184459675829e671257174e1e40765e0a7570967e73455ba4ec425f"
+  },
+  "private_log_sha256": {
+    "dom": "87430e8761b44516496b9e014fa79bb767b1a9ba37985222c4ed466a5fc9bd63",
+    "http": "fb219f7ab7aacb2ae3facaa7a8767414fb855653f55e4468678cb37e3be570ee",
+    "build": "e3b28779a5f9b2c3d786444e25e278b34eb15e3e2b2ebb0e12844e86739347f3",
+    "extra-dom": "3e29df69651b6e53143548966b9fce2c57075880da19614e1a50e17f8fe43a7f",
+    "metadata-http": "ab6af413184a0e2a996419ff979ab89666e7e1e70d6642ccdf15208966d65844",
+    "child-exit": "4180217f9490e2cf5c2a822f46d968cfeb5904fb10241ff46a4332206ac89319",
+    "chrome": "fc48f4757788244a44ae9273fe5478fcce78e01c7018a63dfd5a4351363a1c03"
+  },
+  "checks": {
+    "author_dom": 20,
+    "original_independent_dom": 3,
+    "additional_independent_dom": 5,
+    "unique_independent_dom_total": 8,
+    "author_http_sqlite": 9,
+    "original_independent_http": 3,
+    "additional_metadata_http": 5,
+    "host_lifecycle": 1,
+    "node_child_exit": 2,
+    "installed_chrome": 20,
+    "chrome_fixture_exit": 0,
+    "console_typecheck_build": "passed"
+  },
+  "original_dom_fixture_change": "only authorization_only=false on normal projection; same negative assertions retained",
+  "local_full_python_npm": "not rerun by reviewer; exact-head CI required",
+  "initial_ci_read": {
+    "success": 12,
+    "in_progress": 2,
+    "pending_jobs": [
+      129002752713,
+      129002734093
+    ]
+  },
+  "real_model_calls": 0,
+  "browser_fake_requests": 1,
+  "browser_cancel_posts": 1,
+  "service_switch": false,
+  "migration": false
+}

@@ -43,6 +43,14 @@
     "output-gate-render.log": {
       "sha256": "0e34220545e52afa374590398a63becffd0e0bb78c5a5f56f04918f84bd5b98a",
       "bytes": 144
+    },
+    "output-gate-combined-render.log": {
+      "sha256": "0e34220545e52afa374590398a63becffd0e0bb78c5a5f56f04918f84bd5b98a",
+      "bytes": 144
+    },
+    "output-gate-combined-management.log": {
+      "sha256": "9fd948a1478bc180926ee10b8f4dd5384b268debd5d4b0db43ff60bf4393689a",
+      "bytes": 3784
     }
   },
   "tested_snapshot_source_sha256": {
@@ -81,5 +89,12 @@
     "correction": "expose the standard Node TextEncoder to the test VM"
   },
   "red_driver_sha256": "296efbd466f34862c7552ec69d40aa67b81c81355c6c9f9cee748f82f4bc9cea",
-  "red_test_sha256": "f98c5b273c0d680e5ce594e23dea3fec000a23a8a843e421de5de20bd56f5589"
+  "red_test_sha256": "f98c5b273c0d680e5ce594e23dea3fec000a23a8a843e421de5de20bd56f5589",
+  "concurrent_author_sync": {
+    "head": "c6862d88b519acdc9b67f6715f5110e2bba94585",
+    "scope": "PR55 U108 evidence/history only; product and driver blobs unchanged",
+    "both_history_entries_preserved": true,
+    "management_tests": 37,
+    "management_render": "passed; generated views unchanged"
+  }
 }
