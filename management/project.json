@@ -2081,6 +2081,13 @@
                     "from": "doing",
                     "to": "doing",
                     "note": "u086-observed-settlement-77b457c9：#40评论278限定验收修复；原请求已观察文本后仍接受released，原完整片段6控制PASS/2反例RED及实际Chrome1控制PASS/2反例RED后，仅收紧中断driver两处状态断言。unknown预约、used未知用量与其他未执行步骤释放保持；产品计量/事务未变。8 Node及3 Chrome/HTTP/SQLite通过，npm233 Node/363前端/37管理；完整Python及源码/日志hash见evidence/U-086/observed-settlement/validation.json。基于原作者77b457c9并保留fce8264a独立复核证据；本增量须独立复核及准确head CI，未关闭真实#22/#39/#40。DSH owner/WIP保持，真实推理/grant/迁移0，仅追加交付历史。"
+                },
+                {
+                    "at": "2026-11-09T14:23:50.209Z",
+                    "actor": "codex-home/single-duty-implementation",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "u086-budget-conservation-726dad42：#40评论281限定验收修复。两份一致但错误的预算快照可掩盖丢失/虚增used与unknown预约；冻结既有domain.work.budget合同后，两driver完整重开片段18反例及实际Chrome6反例RED→GREEN，246相关Node及7浏览器场景通过。只读helper逐快照核对步进计数、整数与上限；未知用量和未执行released保持。完整npm/Python及源码/日志hash见evidence/U-086/budget-conservation/validation.json。需准确head CI和非实施工程复核；原DSH owner/WIP与真实#22/#39/#40保持，真实推理/迁移0，仅追加交付历史。"
                 }
             ],
             "claim": {

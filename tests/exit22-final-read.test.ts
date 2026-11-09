@@ -21,7 +21,10 @@ const original = { protocol: 'core.work.v1', organization_id: 'au-original', ver
     results: [{ id: 'result-original', status: 'adopted', sha256: 'digest-original' }],
     steps: [{ step_ref: 'step-original', attempt_id: 'attempt-original', command_id: 'loop-original',
       model_request_id: 'model-original', status: 'unknown', usage: null, cost_status: 'unknown',
-      reason: 'interrupted', connection: { id: 'connection-original', revision: 1 } }] }] };
+      reason: 'interrupted', connection: { id: 'connection-original', revision: 1 } },
+      { step_ref: 'step-used', attempt_id: 'attempt-original', command_id: 'loop-completed',
+        model_request_id: 'model-completed', status: 'used', usage: null, cost_status: 'unknown',
+        reason: 'completed', connection: { id: 'connection-original', revision: 1 } }] }] };
 
 async function observe(change?: 'principal' | 'service' | 'expired') {
   let workReads = 0, restarted = false, authenticated = true;

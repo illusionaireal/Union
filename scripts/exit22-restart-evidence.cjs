@@ -48,7 +48,7 @@ function canonical(value) {
 function requests(work) {
   assert.ok(Array.isArray(work.steps) && work.steps.length > 0, 'original model requests exist');
   const steps = new Set(), ids = new Set();
-  return work.steps.map(step => {
+  const originals = work.steps.map(step => {
     for (const key of ['step_ref', 'attempt_id', 'command_id', 'model_request_id']) {
       assert.ok(typeof step[key] === 'string' && step[key].trim(), 'original request ' + key);
     }
@@ -64,6 +64,20 @@ function requests(work) {
     return Object.fromEntries(['step_ref', 'attempt_id', 'command_id', 'model_request_id',
       'status', 'usage', 'cost_status', 'reason', 'connection'].map(key => [key, step[key]]));
   }).sort((a, b) => a.step_ref.localeCompare(b.step_ref));
+  const budget = work.budget;
+  assert.ok(budget && Number.isSafeInteger(budget.max_calls) && budget.max_calls > 0,
+    'original budget has a positive integer call limit');
+  for (const key of ['used', 'reserved']) {
+    assert.ok(Number.isSafeInteger(budget[key]) && budget[key] >= 0,
+      'original budget has a nonnegative integer ' + key);
+  }
+  assert.equal(budget.used, originals.filter(step => step.status === 'used').length,
+    'original budget counts every used call');
+  assert.equal(budget.reserved, originals.filter(step => step.status === 'unknown').length,
+    'original budget retains every unknown reservation');
+  assert.ok(budget.used + budget.reserved <= budget.max_calls,
+    'original budget occupancy stays within its call limit');
+  return originals;
 }
 
 function compareSnapshots(before, after, auId, workId) {

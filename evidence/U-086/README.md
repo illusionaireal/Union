@@ -1,5 +1,10 @@
 # U-086 / #40：新候选与当前集成边界复核
 
+2026-11-09 两份一致但错误的预算快照不再通过重开验收；按全部used/unknown步进
+逐项计数，保留released和未知用量语义。严格RED与246相关Node、7实际Chrome
+场景见[预算守恒](budget-conservation/README.md)。仍需准确head CI与非实施复核，
+原DSH owner和真实父出口保持，真实模型0。
+
 2026-11-09 登记响应断体恢复：原助手在 start_work 已落盘、HTTP200头后正文
 中断时一直等待，并可忽略完整错误POST回执。两个完整登记片段实际Chrome/
 Core HTTP/SQLite先2正常通过/8反例失败，再10项通过，原16浏览器回归通过。

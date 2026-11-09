@@ -117,7 +117,7 @@ test('observed interrupt: unknown still requires its reservation', async () => {
   await assert.rejects(run({ reserved: 0 }), /unknown settlement keeps/);
 });
 test('observed interrupt: reopened original call cannot become released', async () => {
-  await assert.rejects(run({ afterStatus: 'released' }), /settled step survives the rebuild as released|restart preserves every original request fact/);
+  await assert.rejects(run({ afterStatus: 'released' }), /settled step survives the rebuild as released|restart preserves every original request fact|original budget retains every unknown reservation/);
 });
 test('observed interrupt: a different unexecuted released step does not invalidate the original call', async () => {
   const { files } = await run({ otherReleased: true });

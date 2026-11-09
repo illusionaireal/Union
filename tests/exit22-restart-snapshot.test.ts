@@ -132,6 +132,42 @@ for (const driver of ['exit22b_page.cjs', 'exit22c_download.cjs']) {
     });
   });
 
+  test(driver + ': consistent snapshots must still conserve every step occupancy', async t => {
+    const cases: [string, (body: any) => void][] = [
+      ['lost used call', b => { b.works[0].budget.used = 0; }],
+      ['invented used call', b => { b.works[0].budget.used = 2; }],
+      ['lost unknown reservation', b => { b.works[0].budget.reserved = 0; }],
+      ['invented reservation', b => { b.works[0].budget.reserved = 2; }],
+      ['missing counts', b => { b.works[0].budget = { max_calls: 3 }; }],
+      ['boolean count', b => { b.works[0].budget.used = true; }],
+      ['fractional limit', b => { b.works[0].budget.max_calls = 2.5; }],
+      ['negative count', b => { b.works[0].budget.used = -1; }],
+      ['occupancy exceeds limit', b => { b.works[0].budget.max_calls = 1; }],
+    ];
+    for (const [name, change] of cases) await t.test(name, async () => {
+      const before = structuredClone(original); change(before);
+      // An equal after snapshot cannot legitimize an invalid starting budget.
+      await assert.rejects(run({ before, after: before, snapshotOnly: true }), /budget/);
+      await assert.rejects(run({ before, after: before }), /budget/);
+      assert.throws(() => require('./exit22-restart-evidence.cjs').compareSnapshots(
+        before, before, 'au-original', 'work-original'), /budget/);
+    });
+  });
+
+  test(driver + ': multiple completed calls and released steps preserve exact occupancy', async () => {
+    const before = structuredClone(original);
+    before.works[0].steps.push({ ...structuredClone(before.works[0].steps[0]),
+      step_ref: 'step-3', model_request_id: 'model-3', usage: null });
+    before.works[0].steps.push({ ...structuredClone(before.works[0].steps[1]),
+      step_ref: 'step-4', model_request_id: 'never-executed', status: 'released' });
+    before.works[0].budget.used = 2;
+    const result = await run({ before, after: before });
+    const saved = result.files.get('restart-request-comparison.json');
+    assert.deepEqual(saved.budget, { max_calls: 3, used: 2, reserved: 1 });
+    assert.equal(saved.requests.length, 4);
+    assert.equal(saved.requests.find((r: any) => r.model_request_id === 'model-3').usage, null);
+  });
+
   test(driver + ': normal restart permits reordered steps and JSON keys', async () => {
     const after = structuredClone(original);
     after.works[0].steps.reverse();
