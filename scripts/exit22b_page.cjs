@@ -387,6 +387,8 @@ function startHost() {
     const text = value.events.filter(event => event.type === 'text_delta').map(event => event.text).join('');
     if (!text.trim()) return false;
     outputObservation = { protocol: value.protocol, source: value.source, organization_id: value.organization_id,
+      principal_id: observationSession.body.principal_id,
+      service_instance: observationSession.body.service_instance,
       work_id: workId, ...Object.fromEntries(originKeys.map(key => [key, value[key]])),
       cursor: value.cursor, text_bytes: new TextEncoder().encode(text).length,
       text_sha256: crypto.createHash('sha256').update(text, 'utf8').digest('hex') };
