@@ -1,0 +1,38 @@
+{
+  "author_base": "75c7a946ea459861fa60d9831b3b1fedfa1376ed",
+  "integration_read": "7fe50c213adcf2d826109b6fe272f31ee09bccf8",
+  "actor": "codex-home/single-duty-implementation",
+  "scope_comment": 238,
+  "real_model_calls": 0,
+  "driver_main_executions": 0,
+  "red": {
+    "tests": 31,
+    "pass": 1,
+    "fail": 30
+  },
+  "green": {
+    "tests": 31,
+    "pass": 31,
+    "fail": 0
+  },
+  "logs": {
+    "output-gate-red.log": {
+      "sha256": "1c2a63fc6918fcbdfe12292e43305f33cee973cfaafce5da9ed7e2e01ab53dcb",
+      "bytes": 22202
+    },
+    "output-gate-green-initial.log": {
+      "sha256": "7e9553b43571fa752637eb3d766c27d46f9f7e0f090ddc43b018113c887d72b8",
+      "bytes": 3738
+    },
+    "output-gate-green.log": {
+      "sha256": "19903a17601b557a0249bf15b49e3572e174751edb9011d98d56937d22b1bc9a",
+      "bytes": 1583
+    }
+  },
+  "source_sha256": {
+    "scripts/exit22b_page.cjs": "d50023e5b9020c38f250614082066ca78a6879ed07ca847611384d4eb5e6ff9c",
+    "tests/exit22b-original-output.test.ts": "1396ffbe9d3170af1154e9bb69f07558f4523eed74c35eddd17f5fc0a4c4306b",
+    "evidence/U-086/original-output-gate/contract.md": "074a0a7432518ded04c136e544149d2ad1e480942d64b4464ee43169a749cad5",
+    "evidence/U-086/original-output-gate/README.md": "c010c03839cd022482639e0fadceffaf86734972f4431303eb8db8bb1ddfcae8"
+  }
+}

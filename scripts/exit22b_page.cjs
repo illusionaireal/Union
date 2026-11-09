@@ -324,10 +324,7 @@ function startHost() {
   check('work registered and attempt started through the product API');
   const card = () => page.locator('ul.work-panel li').first();
   await card().getByRole('button', { name: /运行 AI 工作|自动执行/ }).click();
-  // Real-interrupt window: wait for the in-flight automatic reservation, and
-  // when the Core work-events surface exists (U108), observe the cancelled
-  // request's own events before cancelling; without it, the in-flight fact
-  // proven by the cancel POST remains the core-side evidence.
+  // Pin the in-flight automatic request, then require its own output before cancel.
   let inflight = null;
   await waitFor(async () => {
     const read = await coreWork();
@@ -335,36 +332,70 @@ function startHost() {
     inflight = (work.steps || []).find(s => s.status === 'reserved' && s.command_id && s.model_request_id);
     return Boolean(inflight);
   }, 'in-flight automatic reservation visible', 60000);
-  // When the Core work-events surface exists (U108), observe the cancelled
-  // request's own events before cancelling; without it, the in-flight fact
-  // proven by the cancel POST remains the core-side evidence.
-  const workEventsCapable = await page.evaluate(async config => {
-    const response = await fetch('/api/v1/work/events?organization_id=' + config.auId
-      + '&work_id=' + config.workId + '&step_ref=' + encodeURIComponent(config.stepRef) + '&after=0');
-    return response.status !== 404 && response.status !== 501 && response.ok;
-  }, { auId: createdReceipt.organization_id, workId, stepRef: inflight.step_ref });
-  let ownEvents = 0;
-  if (workEventsCapable) {
-    await waitFor(async () => {
-      const events = await page.evaluate(async config => {
-        const response = await fetch('/api/v1/work/events?organization_id=' + config.auId
-          + '&work_id=' + config.workId + '&step_ref=' + encodeURIComponent(config.stepRef) + '&after=0');
-        return response.ok ? (await response.json()).events || [] : [];
-      }, { auId: createdReceipt.organization_id, workId, stepRef: inflight.step_ref });
-      ownEvents = events.filter(e => e.request_id === inflight.model_request_id).length;
-      // Observation requires the cancelled request's own activity; any streamed
-      // event on this step counts, and matching request_id events are recorded
-      // for the identity cross-check.
-      return events.length > 0;
-    }, 'cancelled-request own events observed (Core surface)', 60000);
-  }
-  check('Core work-events surface present (U108): ' + workEventsCapable,
-        workEventsCapable === true || workEventsCapable === false);
-  check('cancelled-request events observed before cancel (own-matched: ' + ownEvents + ')',
-        !workEventsCapable || ownEvents >= 0);
+  // Original-output acceptance gate. Public events bind request identity in the
+  // response envelope; individual events intentionally omit request_id.
+  const readObservationSession = async () => page.evaluate(async () => {
+    const response = await fetch('/api/session');
+    return { status: response.status, body: await response.json() };
+  });
+  const observationSession = await readObservationSession();
+  const sessionMatches = value => value.status === 200 && value.body?.core_protocol === 'core.au.v1'
+    && Boolean(value.body.principal_id) && Boolean(value.body.service_instance)
+    && value.body.principal_id === observationSession.body.principal_id
+    && value.body.service_instance === observationSession.body.service_instance;
+  check('original output has a current authenticated Core session', sessionMatches(observationSession));
+  const connectionKeys = ['id', 'revision', 'profile', 'model', 'grant_ref', 'grant_revision', 'max_output_tokens', 'task_ms'];
+  const connectionIdentity = value => JSON.stringify(connectionKeys.map(key => value?.[key] ?? null));
+  const originKeys = ['step_ref', 'attempt_id', 'command_id', 'model_request_id'];
+  const sameOrigin = value => Boolean(value && inflight.connection)
+    && originKeys.every(key => Boolean(inflight[key]) && value[key] === inflight[key])
+    && connectionIdentity(value.connection) === connectionIdentity(inflight.connection);
+  const originalWork = await coreWork();
+  check('original output is bound to the current Core work snapshot',
+    originalWork.protocol === 'core.work.v1' && originalWork.organization_id === createdReceipt.organization_id
+    && originalWork.access?.principal_id === observationSession.body.principal_id
+    && sameOrigin(originalWork.works?.find(w => w.id === workId)?.steps?.find(s => s.step_ref === inflight.step_ref)));
+  let observationCursor = 0;
+  let outputObservation;
+  await waitFor(async () => {
+    const response = await page.evaluate(async config => {
+      const response = await fetch('/api/v1/work/events?organization_id=' + encodeURIComponent(config.auId)
+        + '&work_id=' + encodeURIComponent(config.workId) + '&step_ref=' + encodeURIComponent(config.stepRef)
+        + '&after=' + config.after);
+      return { status: response.status, body: await response.json() };
+    }, { auId: createdReceipt.organization_id, workId, stepRef: inflight.step_ref, after: observationCursor });
+    check('original output session remains current after the read', sessionMatches(await readObservationSession()));
+    const value = response.body;
+    check('original output response identifies the same request and current reader', response.status === 200
+      && value?.protocol === 'core.work-events.v1' && value.source === 'persisted_modeld_events'
+      && value.organization_id === createdReceipt.organization_id && value.work_id === workId && sameOrigin(value)
+      && value.access?.principal_id === observationSession.body.principal_id
+      && value.access?.service_instance === observationSession.body.service_instance
+      && Number.isSafeInteger(value.version) && value.version >= originalWork.version
+      && value.authorization_only === false);
+    check('original output cursor is monotonic and the page is bounded',
+      Number.isSafeInteger(value.cursor) && value.cursor >= observationCursor && value.last_seq === value.cursor
+      && typeof value.has_more === 'boolean' && (!value.has_more || value.cursor > observationCursor)
+      && Array.isArray(value.events) && value.events.length <= 500);
+    let lastSeq = observationCursor;
+    for (const event of value.events) {
+      check('original output events are ordered public text or tool observations', event
+        && Number.isSafeInteger(event.seq) && event.seq > lastSeq && event.seq <= value.cursor
+        && ((event.type === 'text_delta' && typeof event.text === 'string')
+          || (event.type === 'tool_call_complete' && event.name === 'read_document')));
+      lastSeq = event.seq;
+    }
+    observationCursor = value.cursor;
+    const text = value.events.filter(event => event.type === 'text_delta').map(event => event.text).join('');
+    if (!text.trim()) return false;
+    outputObservation = { protocol: value.protocol, source: value.source, organization_id: value.organization_id,
+      work_id: workId, ...Object.fromEntries(originKeys.map(key => [key, value[key]])),
+      cursor: value.cursor, text_bytes: new TextEncoder().encode(text).length,
+      text_sha256: crypto.createHash('sha256').update(text, 'utf8').digest('hex') };
+    return true;
+  }, 'original request text observed before cancel', 60000);
+  fs.writeFileSync(path.join(output, 'original-output-observation.json'), JSON.stringify(outputObservation, null, 2));
   check('in-flight automatic reservation carries the line-end id: ' + inflight.model_request_id);
-  check('cancelled-request own events observed before cancel (Core surface: ' + workEventsCapable + ')',
-        workEventsCapable === false ? true : workEventsCapable === true);
   check('the cancelled request is this run\'s own in-flight request (distinct id, own attempt): ' +
         inflight.model_request_id + ' / ' + inflight.attempt_id,
         Boolean(inflight.model_request_id) && Boolean(inflight.attempt_id));
