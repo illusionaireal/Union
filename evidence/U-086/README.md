@@ -183,3 +183,7 @@ driver or approve itself. Exact source, failures and validation are indexed.
 PR53 current-integration refresh: [conflict resolution and combined validation](host-fixture-current-integration.md).
 This candidate preserves both histories and current U108; host and fixture
 are independently reviewed, with final-head CI pending before rewrite adoption.
+
+Single preparation: [one original AU and grant per acceptance run](single-setup/README.md).
+Strict RED/GREEN and real Core/SQLite creation checks; no real inference or grant.
+Independent review and exact-head CI are still required before integration.

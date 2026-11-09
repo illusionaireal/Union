@@ -124,30 +124,6 @@ function startHost() {
   await page.goto(running.origin);
   await page.getByText('已连接本机服务', { exact: true }).waitFor();
 
-  // Create a V1 AU through the real creation command (the model-access host starts empty).
-  await page.evaluate(async () => {
-    const charter = {
-      text: "测试章程：有限的本地组织协作；无对外发布授权。",
-      allowed_operations: ["create_member", "create_position", "update_position", "assign", "set_policy",
-        "create_work", "handoff", "pause_work", "resume_work", "cancel_work", "update_work", "wait",
-        "set_strategy", "record_memory"],
-      allowed_tools: ["produce_artifact", "workspace_execute"],
-      reserved_matters: ["goal", "resources", "charter", "funding", "dissolution"],
-      board_can_amend: true,
-    };
-    const create = await fetch('/api/commands', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: crypto.randomUUID(), organization_id: null, base_version: null,
-        kind: 'create_v1',
-        data: { name: '22B 页面验收组织', goal: '完成一次页面级有界验收', board_name: 'Owner display',
-                charter, resources: { max_calls: 12, timeout_seconds: 30 } } }),
-    });
-    const value = await create.json();
-    if (!value.receipt || (value.receipt.status !== 'accepted' && value.receipt.status !== 'succeeded')) {
-      throw new Error('create_v1 failed: ' + JSON.stringify(value).slice(0, 300));
-    }
-    return value.receipt;
-  });
   let hostGrantRef = null;
   host.stdin.write(JSON.stringify({ op: 'prepare', au_id: createdReceipt.organization_id }) + '\n');
   await new Promise((resolve, reject) => {
@@ -247,16 +223,7 @@ function startHost() {
   });
   if (!cs.can_start) throw new Error('can_start false: ' + JSON.stringify(cs));
 
-  host.stdin.write(JSON.stringify({ op: 'prepare', au_id: createdReceipt.organization_id }) + '\n');
-  await new Promise((resolve, reject) => {
-    const timer = setTimeout(() => reject(new Error('prepare timeout')), 20000);
-    readline.createInterface({ input: host.stdout }).once('line', line => {
-      const value = JSON.parse(line);
-      clearTimeout(timer);
-      hostGrantRef = value.grant_ref || null;
-      value.prepared ? resolve() : reject(new Error('prepare failed: ' + JSON.stringify(value)));
-    });
-  });
+
 
 
 
