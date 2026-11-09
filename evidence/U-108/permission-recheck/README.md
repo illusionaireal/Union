@@ -77,3 +77,12 @@ environment variables. All providers are isolated loopback doubles; no real
 credentials, model inference, driver main for real acceptance, service switch
 or migration is used. This approval does not close #40/#39/#22 real exits or
 approve PR49's separately implemented fixture change.
+
+## Actual adoption
+
+PR50 was subsequently merged as `7fe50c213adcf2d826109b6fe272f31ee09bccf8`
+after all 14 current-head checks succeeded. Its tree equals the reviewed
+`8928f04` tree. Independent engineering review5822180218 and online
+revision699/#62 done (original owner retained) were read back.
+[Adoption receipt](adoption.json) records these later facts; the initial
+pending-CI observation above remains historical. Parent real exits stay open.
