@@ -38,8 +38,16 @@ do not split its authorization boundary across independently adopted layers.
   identical events deduplicated, conflicts/wrong IDs fail closed. Cursor passes
   private events too; full raw pages signal more pages. Display is explicitly
   bounded/truncated (64Ki chars/page, 256Ki chars/20k entries in browser).
+  Clarification after independent review 223/227: reaching any display limit
+  stops event-body loading only. Continue GET with `authorization_only=1` at
+  the same saved origin/cursor. It performs all current session/local/remote
+  checks without calling modeld events and returns an empty event projection
+  with `authorization_only=true`. Temporary failure permits metadata-only
+  retry; 401/403 still clears retained text. The ordinary response marks false.
 - One explicitly expanded original step is polled. Selection stays pinned
-  when later steps arrive or the original disappears; do not silently switch.
+  to the entire original identity, including connection scope, when later steps
+  arrive, the original disappears or the same step_ref changes source; do not
+  silently switch.
   Temporary read failure retains the same cursor and labels disconnected.
   Refresh/restart starts at zero using only GET, never replaying execution.
 - Validate current session before/after every response and all original scope

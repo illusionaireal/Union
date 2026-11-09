@@ -5,11 +5,28 @@ const { createInterface } = require('node:readline');
 const path = require('node:path');
 const fs = require('node:fs');
 const assert = require('node:assert/strict');
+
+async function finishFixture(child, completion, lines, timeout = 15000) {
+  if (child.exitCode === null && !child.killed) child.stdin.end('stop\n');
+  let timer;
+  try {
+    const outcome = await Promise.race([completion, new Promise(resolve => {
+      timer = setTimeout(() => resolve({timeout: true}), timeout);
+    })]);
+    if (outcome.timeout) { child.kill(); throw Error('fixture shutdown timed out'); }
+    assert.equal(outcome.code, 0, 'fixture shutdown failed: '+(outcome.signal || outcome.error || outcome.code));
+  } finally { clearTimeout(timer); lines.close(); }
+}
+
 async function main() {
   const child = spawn(process.env.UNION_PYTHON || 'python3', [path.join(__dirname, 'u108_work_events_host.py')],
     {cwd:path.join(__dirname,'..'), stdio:['pipe','pipe','inherit']});
   const queue=[], readers=[];
   const lines=createInterface({input:child.stdout}); let exited=false;
+  const completion=new Promise(resolve=>{
+    child.once('close',(code,signal)=>resolve({code,signal}));
+    child.once('error',error=>resolve({error}));
+  });
   lines.on('line',line=>{const data=JSON.parse(line), reader=readers.shift(); if(reader)reader.resolve(data);else queue.push(data)});
   child.once('exit',code=>{exited=true;readers.splice(0).forEach(r=>r.reject(Error('fixture exited '+code)))});
   const next=()=>queue.length?Promise.resolve(queue.shift()):exited?Promise.reject(Error('fixture exited')):
@@ -17,6 +34,7 @@ async function main() {
       readers.push({resolve:x=>{clearTimeout(timer);resolve(x)},reject:e=>{clearTimeout(timer);reject(e)}})});
   const control=async cmd=>{child.stdin.write(cmd+'\n');return next()};
   let browser; const checks=[];
+  const dest=process.env.UNION_U108_EVIDENCE||'.union/u108-work-events-browser';
   const check=(name,condition)=>{assert.ok(condition,name);checks.push(name)};
   try {
     let ready=await next();
@@ -58,6 +76,15 @@ async function main() {
     const wrong=await context.request.get(ready.origin+'/api/v1/work/events?'+new URLSearchParams({
       organization_id:ready.organization_id,work_id:'other-work',step_ref:step.step_ref,after:'0'}));
     check('cross-work observation refused',wrong.status()===403);
+    await control('truncate');
+    await page.getByRole('button',{name:'核对原工作输出权限',exact:true}).waitFor();
+    check('server truncation stops body loading explicitly',await page.getByText(/显示已截断，正文加载已停止/).isVisible());
+    const cappedReads=reads.length;
+    await control('revoke-read');
+    await page.getByText('权限或原请求身份已变化，工作输出已清除。',{exact:true}).waitFor();
+    check('truncated permission recheck uses metadata only',reads.slice(cappedReads).length>0&&
+      reads.slice(cappedReads).every(x=>new URL(x).searchParams.get('authorization_only')==='1'));
+    check('revocation clears the capped private text',await page.locator('.work-stream pre').count()===0);
     await page.getByRole('button',{name:'取消本次执行',exact:true}).click();
     await page.getByText('权限或原请求身份已变化，工作输出已清除。',{exact:true}).waitFor();
     let interrupted;const deadline=Date.now()+10000;
@@ -71,10 +98,13 @@ async function main() {
     const reopened=await control('inspect');
     check('restart keeps original unknown request and budget',JSON.stringify(reopened.steps)===JSON.stringify(interrupted.steps)&&reopened.budget.reserved===1);
     check('restart never redispatches',reopened.fake_model_posts===1&&commands.length===2);
-    const dest=process.env.UNION_U108_EVIDENCE||'.union/u108-work-events-browser';fs.mkdirSync(dest,{recursive:true});
-    fs.writeFileSync(path.join(dest,'checks.json'),JSON.stringify({passed:checks.length,checks,real_model_calls:0,fake_model_calls:1,cancel_posts:1},null,2));
+    fs.mkdirSync(dest,{recursive:true});
     await page.screenshot({path:path.join(dest,'restart.png'),fullPage:true});
-    console.log(JSON.stringify({passed:checks.length,real_model_calls:0,fake_model_calls:1,cancel_posts:1}));
-  } finally {await browser?.close();if(!exited)child.stdin.end('stop\n');lines.close();}
+  } finally {
+    try { await browser?.close(); } finally { await finishFixture(child,completion,lines); }
+  }
+  fs.writeFileSync(path.join(dest,'checks.json'),JSON.stringify({passed:checks.length,checks,real_model_calls:0,fake_model_calls:1,cancel_posts:1,fixture_exit:0},null,2));
+  console.log(JSON.stringify({passed:checks.length,real_model_calls:0,fake_model_calls:1,cancel_posts:1,fixture_exit:0}));
 }
-main().catch(e=>{console.error(e);process.exitCode=1});
+module.exports={finishFixture};
+if(require.main===module)main().catch(e=>{console.error(e);process.exitCode=1});

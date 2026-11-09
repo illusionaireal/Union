@@ -15,19 +15,19 @@ export function WorkStream({ item, scope }: { item: CoreWorkItem; scope: Scope }
   const [selection, setSelection] = useState('');
   const [expanded, setExpanded] = useState(false);
   const options = item.steps.filter(step => step.command_id && step.model_request_id);
-  const selected = selection ? options.find(step => step.step_ref === selection) : options.at(-1);
+  const selected = selection ? options.find(step => identity(step) === selection) : options.at(-1);
   if (!options.length && !expanded) return null;
   return <section className="work-stream" aria-label="工作原请求输出">
     <label>查看哪次工作调用
-      <select aria-label="查看哪次工作调用" value={selected?.step_ref ?? ''} onChange={e => setSelection(e.target.value)}>
+      <select aria-label="查看哪次工作调用" value={selected ? identity(selected) : ''} onChange={e => setSelection(e.target.value)}>
         {!selected && <option value="" disabled>原调用已不可用，请明确选择</option>}
-        {options.map(step => <option key={step.step_ref} value={step.step_ref}>
+        {options.map(step => <option key={identity(step)} value={identity(step)}>
           {step.step_ref} · {step.model_request_id}
         </option>)}
       </select>
     </label>
     <button type="button" onClick={() => {
-      if (!expanded && selected) setSelection(selected.step_ref);
+      if (!expanded && selected) setSelection(identity(selected));
       setExpanded(value => !value);
     }}>{expanded ? '收起工作输出' : '查看工作输出'}</button>
     {expanded && (selected?.can_observe && selected.connection
@@ -66,7 +66,10 @@ function Observation({ scope, step }: { scope: Scope; step: CoreWorkStep }) {
       setPending(true);
       try {
         await verify();
-        const result = await api.coreWorkEvents(scope.organizationId, scope.workId, step.step_ref, cursor.current, abort.signal);
+        const checkingOnly = limited.current;
+        const result = checkingOnly
+          ? await api.coreWorkEvents(scope.organizationId, scope.workId, step.step_ref, cursor.current, abort.signal, true)
+          : await api.coreWorkEvents(scope.organizationId, scope.workId, step.step_ref, cursor.current, abort.signal);
         await verify(); current();
         if (!result || result.protocol !== 'core.work-events.v1' || result.source !== 'persisted_modeld_events' ||
             result.organization_id !== scope.organizationId || result.work_id !== scope.workId ||
@@ -80,6 +83,7 @@ function Observation({ scope, step }: { scope: Scope; step: CoreWorkStep }) {
             !Number.isSafeInteger(result.cursor) || result.cursor < cursor.current ||
             !Number.isSafeInteger(result.last_seq) || result.last_seq < result.cursor ||
             !Array.isArray(result.events) || result.events.length > 500 ||
+            result.authorization_only !== checkingOnly || (checkingOnly && result.events.length !== 0) ||
             (result.has_more && result.cursor <= cursor.current)) throw incompatible();
         const next = new Map(history.current);
         let last = 0;
@@ -109,13 +113,16 @@ function Observation({ scope, step }: { scope: Scope; step: CoreWorkStep }) {
         setTools([...new Set([...bounded.values()].filter(e => e.type === 'tool_call_complete').map(e => e.name))]);
         setValue({ ...result, truncated: limited.current }); setNote('');
         // Terminal text retains permission checks too; no completion can prolong old authority.
-        if (!limited.current) timer = setTimeout(() => void poll(), result.has_more ? 100 :
+        timer = setTimeout(() => void poll(), limited.current ? 3000 : result.has_more ? 100 :
           ['completed', 'failed', 'interrupted'].includes(result.state) ? 3000 : 1000);
       } catch (failure) {
         if (abort.signal.aborted) return;
         if (failure instanceof ApiError && ([401, 403].includes(failure.status ?? 0) || failure.code === 'incompatible_state')) {
           clear(); setNote('权限或原请求身份已变化，工作输出已清除。');
-        } else setNote('观测已断开，保留最近记录；请稍后查询同一原请求。');
+        } else {
+          setNote('观测已断开，保留最近记录；请稍后查询同一原请求。');
+          if (limited.current) timer = setTimeout(() => void poll(), 3000);
+        }
       } finally { if (!abort.signal.aborted) setPending(false); }
     };
     void poll();
@@ -129,9 +136,9 @@ function Observation({ scope, step }: { scope: Scope; step: CoreWorkStep }) {
     {!!tools.length && <p>模型提出工具调用：{tools.join('、')}。实际执行以原工作回执为准。</p>}
     {value && !text && <p>尚无可显示的原请求文本，这不表示远端未执行。</p>}
     {value && <p>已读取事件序号 {value.cursor}。{!value.events_complete && '原事件观测可能不完整。'}
-      {value.truncated && '显示已截断，自动观测已停止。'}</p>}
-    <button type="button" disabled={pending || value?.truncated} onClick={() => setReload(n => n + 1)}>
-      查询原工作输出
+      {value.truncated && '显示已截断，正文加载已停止；仍定期核对读取权限。'}</p>}
+    <button type="button" disabled={pending} onClick={() => setReload(n => n + 1)}>
+      {value?.truncated ? '核对原工作输出权限' : '查询原工作输出'}
     </button>
   </section>;
 }

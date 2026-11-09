@@ -80,5 +80,45 @@
     "offline_windows_linux": "success",
     "model_service": "success",
     "repair": "scoped selector width and identity wrapping; added expanded 1440/390/320 browser assertions; no relaxed checks"
+  },
+  "layout_repair_ci": {
+    "head": "69af6a61e9f3f24182226239d242d26a912a94d1",
+    "workflows": {
+      "42560040005": "success",
+      "42560040008": "success",
+      "42560040010": "success"
+    },
+    "chrome_assertions": 17,
+    "independent_review": "changes required: truncated authority retention and incomplete fixture shutdown; PR50#pullrequestreview-5821590003 / PR51@bd6e2a1"
+  },
+  "review_correction": {
+    "base": "69af6a61e9f3f24182226239d242d26a912a94d1",
+    "changes": [
+      "metadata-only current authority recheck after all display caps",
+      "full original identity selection pin",
+      "registered fixture cleanup and checked child shutdown before pass artifact"
+    ],
+    "checks": {
+      "http": 9,
+      "dom": 20,
+      "host_cleanup": 1,
+      "node_child_exit_checks": 2,
+      "npm_frontend": 363,
+      "npm_management": 37,
+      "npm_actions": 9,
+      "types_and_build": "passed",
+      "python_full": "running at candidate publication; prior 800-test result is historical and not reused as corrected-head pass"
+    },
+    "real_model_calls": 0,
+    "accurate_head_ci": "pending publication",
+    "independent_review": "current corrected head recheck required"
+  },
+  "review_correction_log_hashes": {
+    "u108-permission-http.log": "e6a639b09dfea22cb6a47fdcfa19cbcfd264b2581175c66fa9ce0541f22dea8e",
+    "u108-caps-dom-green.log": "a1425c624a57c811718ad74bf709134a93315b15090a31b9be33d14690d70e2e",
+    "u108-cleanup-red.log": "a33c06ed3a3b398b4dc2d91adf4714893ad911a5f053c96c9539998952d7107e",
+    "u108-cleanup-green.log": "c6a57b428cfde405e9a38a16ba6daa30bf4d1f580ad29626004fb927092bc9cf",
+    "u108-driver-final.log": "97d916d062325637409830ea8e364e6463b2b9c5499ac7e0cf934469b47958d0",
+    "u108-final-npm.log": "2eb646e9422346c26f20b8d73f2ecc9bb4b251ab5308dfe58ea3b645f5579d4b"
   }
 }

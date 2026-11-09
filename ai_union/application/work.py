@@ -54,9 +54,9 @@ class WorkService:
                 "capabilities": {"work_registration": True, "execution": "not_started",
                                  "autonomous_business": False}}
 
-    def events(self, token, au_id, work_id, step_ref, after='0'):
+    def events(self, token, au_id, work_id, step_ref, after='0', authorization_only='0'):
         from .work_events import read_events
-        return read_events(self, token, au_id, work_id, step_ref, after)
+        return read_events(self, token, au_id, work_id, step_ref, after, authorization_only)
 
     def materials(self, reference):
         """Report host availability of the referenced read-only root; never reads content."""

@@ -20,7 +20,7 @@ function result(events = [{ seq: 1, type: 'text_delta', text: '原步进正文' 
     step_ref: step.step_ref, attempt_id: step.attempt_id, command_id: step.command_id,
     model_request_id: step.model_request_id, connection, access: { principal_id: 'p1', service_instance: 's1' },
     version: 5, source: 'persisted_modeld_events', state: 'completed', events, cursor: 1, last_seq: 1,
-    has_more: false, events_complete: true, truncated: false };
+    has_more: false, events_complete: true, truncated: false, authorization_only: false };
 }
 function mount() {
   return render(<QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false, gcTime: 0 } } })}>
@@ -116,10 +116,64 @@ it('does not silently select a later model request when the selected step disapp
   await screen.findByText('原调用或读取资格已变化，输出已清除。请核对原工作记录。');
   expect(api.coreWorkEvents).toHaveBeenCalledTimes(1);
 });
+it('does not silently replace the opened request when the same step reference changes origin', async () => {
+  mount(); fireEvent.click(await screen.findByRole('button', { name: '查看工作输出' }));
+  await screen.findByText('原步进正文');
+  work.works[0].steps[0].model_request_id = 'replacement-model';
+  vi.mocked(api.coreWorkEvents).mockResolvedValue({ ...result(), model_request_id: 'replacement-model',
+    events: [{seq: 1, type: 'text_delta', text: '替换请求私有正文'}] } as any);
+  fireEvent.click(screen.getByRole('button', { name: '刷新 AI 工作' }));
+  await screen.findByText('原调用或读取资格已变化，输出已清除。请核对原工作记录。');
+  expect(api.coreWorkEvents).toHaveBeenCalledTimes(1);
+  expect(screen.queryByText('替换请求私有正文')).toBeNull();
+});
 it('continues checking read permission after terminal output', async () => {
   mount(); fireEvent.click(await screen.findByRole('button', { name: '查看工作输出' }));
   await screen.findByText('原步进正文');
   vi.mocked(api.coreWorkEvents).mockRejectedValue(new ApiError('revoked',403,'not_authorized'));
   await screen.findByText('权限或原请求身份已变化，工作输出已清除。', {}, { timeout: 4500 });
   expect(screen.queryByText('原步进正文')).toBeNull();
+  expect(api.coreWorkEvents).toHaveBeenLastCalledWith('au1', 'w1', 'w1#s1', 1, expect.any(AbortSignal));
+});
+it.each(['text', 'events'])('rechecks authority after the browser aggregate %s cap', async cap => {
+  vi.mocked(api.coreWorkEvents).mockImplementation(async (_au, _work, _step, after = 0, _signal, authorizationOnly) => {
+    if (authorizationOnly) throw new ApiError('revoked', 403, 'not_authorized');
+    const cursor = after + (cap === 'text' ? 1 : 500);
+    return { ...result(), state: 'streaming', cursor, last_seq: cursor, has_more: true,
+      events: cap === 'text' ? [{seq: cursor, type: 'text_delta', text: 'x'.repeat(65536)}] :
+        Array.from({length: 500}, (_, index) => ({seq: after + index + 1, type: 'tool_call_complete', name: 'read_document'})),
+    } as any;
+  });
+  mount(); fireEvent.click(await screen.findByRole('button', { name: '查看工作输出' }));
+  await screen.findByRole('button', { name: '核对原工作输出权限' }, { timeout: 10000 });
+  if (cap === 'text') expect(document.querySelector('pre')?.textContent?.length).toBe(262144);
+  await screen.findByText('权限或原请求身份已变化，工作输出已清除。', {}, { timeout: 4500 });
+  expect(api.coreWorkEvents).toHaveBeenCalledTimes(cap === 'text' ? 6 : 42);
+  expect(api.coreWorkEvents).toHaveBeenLastCalledWith('au1', 'w1', 'w1#s1', cap === 'text' ? 5 : 20500, expect.any(AbortSignal), true);
+  expect(document.querySelector('pre')).toBeNull();
+  expect(screen.queryByText(/模型提出工具调用/)).toBeNull();
+  expect(api.coreWorkCommand).not.toHaveBeenCalled();
+}, 15000);
+it('keeps truncated body loading stopped through a temporary metadata read failure and recovery', async () => {
+  vi.mocked(api.coreWorkEvents).mockResolvedValueOnce({ ...result(), truncated: true } as any)
+    .mockRejectedValueOnce(new ApiError('unavailable', 503, 'storage_unavailable'))
+    .mockResolvedValue({ ...result(), events: [], authorization_only: true } as any);
+  mount(); fireEvent.click(await screen.findByRole('button', { name: '查看工作输出' }));
+  await screen.findByText('原步进正文');
+  await screen.findByText('观测已断开，保留最近记录；请稍后查询同一原请求。', {}, { timeout: 4500 });
+  expect(screen.getByText('原步进正文')).toBeVisible();
+  fireEvent.click(screen.getByRole('button', { name: '核对原工作输出权限' }));
+  await waitFor(() => expect(screen.queryByRole('alert')).toBeNull());
+  expect(screen.getByText('原步进正文')).toBeVisible();
+  expect(vi.mocked(api.coreWorkEvents).mock.calls.slice(1).every(call => call[3] === 1 && call[5] === true)).toBe(true);
+  expect(api.coreWorkCommand).not.toHaveBeenCalled();
+});
+it.each([401,403])('clears truncated output after a later %s instead of retaining it forever', async status => {
+  vi.mocked(api.coreWorkEvents).mockResolvedValueOnce({...result(),truncated:true} as any)
+    .mockRejectedValue(new ApiError('revoked',status,'not_authorized'));
+  mount(); fireEvent.click(await screen.findByRole('button', { name: '查看工作输出' }));
+  await screen.findByText('原步进正文');
+  await screen.findByText('权限或原请求身份已变化，工作输出已清除。', {}, { timeout: 4500 });
+  expect(screen.queryByText('原步进正文')).toBeNull();
+  expect(api.coreWorkEvents).toHaveBeenLastCalledWith('au1', 'w1', 'w1#s1', 1, expect.any(AbortSignal), true);
 });

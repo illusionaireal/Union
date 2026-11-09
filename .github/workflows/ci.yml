@@ -85,6 +85,7 @@ jobs:
           UNION_PYTHON: python3
           UNION_U086_LOSE_CANCEL: '1'
           UNION_U086_EVIDENCE: .union/u086-cancel-recovery-lost
+      - run: node --test scripts/u108-work-events-browser.test.cjs
       - run: node scripts/u108-work-events-browser.cjs
         env:
           UNION_PYTHON: python3

@@ -198,6 +198,20 @@ class WorkEventsTests(WorkHttpChainTests):
             self.raw_events = [self.event(request_id, seq, 'text_delta', {'text': 'private'})]
             self.assertEqual(self.observe()[0], 409)
 
+    def test_authority_only_recheck_reads_no_further_event_body_and_keeps_scope(self):
+        self.seeded()
+        before, event_reads = self.dump(), sum('/events?' in p for p in self.gets)
+        status, value, _ = self.observe(authorization_only='1')
+        self.assertEqual(status, 200, value)
+        self.assertEqual(value['events'], [])
+        self.assertTrue(value['authorization_only'])
+        self.assertEqual(sum('/events?' in p for p in self.gets), event_reads)
+        self.assertEqual(self.dump(), before)
+        self.provider.revoked = True
+        self.assertEqual(self.observe(authorization_only='1')[0], 403)
+        self.provider.revoked = False
+        self.assertEqual(self.observe(authorization_only='yes')[0], 400)
+
 
 def load_tests(loader, tests, pattern):
     return unittest.TestSuite(WorkEventsTests(name) for name in WorkEventsTests.__dict__ if name.startswith('test_'))

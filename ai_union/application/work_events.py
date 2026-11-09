@@ -66,7 +66,7 @@ def _grant(service, client, au_id, connection):
         raise CoreError('not_authorized') from error
 
 
-def read_events(service, token, au_id, work_id, step_ref, after='0'):
+def read_events(service, token, au_id, work_id, step_ref, after='0', authorization_only='0'):
     principal = service.app.creation.principal(service.app.session(token))
     try:
         identifier(au_id); identifier(work_id)
@@ -75,6 +75,7 @@ def read_events(service, token, au_id, work_id, step_ref, after='0'):
                 'invalid_cursor')
         cursor = int(after)
         require(cursor <= 9007199254740991, 'invalid_cursor')
+        require(authorization_only in ('0', '1'), 'invalid_authority_mode')
     except (Rejected, TypeError, ValueError) as error:
         raise CoreError('invalid_request', '须提供原工作、原步进和非负整数游标') from error
     try:
@@ -82,7 +83,9 @@ def read_events(service, token, au_id, work_id, step_ref, after='0'):
         client = service.app.models.backend()
         _grant(service, client, au_id, original['connection'])
         _remote(client, au_id, original)
-        page = client.events(original['model_request_id'], au_id, cursor)
+        # A display limit stops body loading, never the continuing read-authority check.
+        page = ({'events': []} if authorization_only == '1' else
+                client.events(original['model_request_id'], au_id, cursor))
         remote = _remote(client, au_id, original)
         _grant(service, client, au_id, original['connection'])
         version, current = _snapshot(service, token, au_id, work_id, step_ref, principal)
@@ -120,7 +123,7 @@ def read_events(service, token, au_id, work_id, step_ref, after='0'):
                 **original, 'version': version, 'access': {'principal_id': principal,
                 'service_instance': service.app.instance}, 'source': 'persisted_modeld_events',
                 'state': remote['state'], 'events': events, 'cursor': next_cursor, 'last_seq': next_cursor,
-                'has_more': has_more, 'events_complete': False,
+                'has_more': has_more, 'events_complete': False, 'authorization_only': authorization_only == '1',
                 'truncated': truncated}
     except CoreError:
         raise

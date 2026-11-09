@@ -13,7 +13,11 @@ from tests.test_work_transport_http import ModeldDouble
 
 def main():
     case = WorkEventsTests()
-    case.setUp()
+    try:
+        case.setUp()
+    except BaseException:
+        case.doCleanups()
+        raise
     cancellations = []
     old_post = ModeldDouble.do_POST
 
@@ -49,6 +53,13 @@ def main():
                 command = line.strip()
                 if command == 'stop': break
                 if command == 'inspect': value = inspect()
+                elif command == 'truncate':
+                    request_id = case.model_posts()[0][3]['id']
+                    case.raw_events = [case.event(request_id, 4, 'text_delta', {'text': 'x' * 65537})]
+                    value = {'truncated_fixture': True}
+                elif command == 'revoke-read':
+                    case.remote_authorized = False
+                    value = {'read_revoked': True}
                 elif command == 'reopen':
                     deadline = time.monotonic() + 15
                     while case.app.work.active_loops and time.monotonic() < deadline: time.sleep(.02)
@@ -60,7 +71,17 @@ def main():
                 print(json.dumps(value), flush=True)
     finally:
         case.remote_state = 'interrupted'
-        case.tearDown()
+        try:
+            deadline = time.monotonic() + 15
+            while case.app.work.active_loops and time.monotonic() < deadline: time.sleep(.02)
+            assert not case.app.work.active_loops, 'fixture execution did not stop'
+        finally:
+            try:
+                case.tearDown()
+            finally:
+                # setUp registered Console.close, lock release, patch and temp cleanup.
+                if not case.doCleanups():
+                    raise AssertionError('fixture registered cleanup failed')
 
 
 if __name__ == '__main__': main()

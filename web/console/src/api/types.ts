@@ -375,6 +375,7 @@ export interface CoreWorkEvents {
   events: Array<{seq: number} & ({type: 'text_delta'; text: string} |
     {type: 'tool_call_complete'; name: 'read_document'})>;
   has_more: boolean; events_complete: boolean; truncated: boolean;
+  authorization_only: boolean;
 }
 
 export interface CoreWorkToolCall {

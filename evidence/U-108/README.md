@@ -62,7 +62,45 @@ with `overflow at 390px`; the new browser driver had not run yet. The long
 original-request option imposed an intrinsic select width. A scoped CSS repair
 bounds the selector and wraps displayed identities; no assertions were relaxed.
 The U108 actual-browser script now also checks expanded output at 1440/390/320px.
-Current-head CI must verify that repair; the first failure remains recorded.
+That exact head `69af6a61e9f3f24182226239d242d26a912a94d1` subsequently passed
+all three workflows (42560040005/42560040008/42560040010), including all 17
+actual Chrome assertions at 1440/390/320px. The first failure remains recorded.
+
+### Independent review and corrections
+
+Independent engineering review [5821590003](https://github.com/illusionaireal/Union/pull/50#pullrequestreview-5821590003)
+found that display truncation stopped permission checks and disabled manual
+rechecking. Truncated private text survived a later 401/403. The review's
+reproducible probes remain in [PR51](https://github.com/illusionaireal/Union/pull/51)
+at `bd6e2a1`; they are not implementation approval. Its 8 HTTP, 3 independent
+scope/race probes and 17 Chrome assertions passed, separately from the failing
+permission cases. Review also found missing registered unittest cleanup and no
+parent-side check of browser-host shutdown.
+
+The correction separates body limits from current authority: at any cap the
+browser only requests the same origin/cursor with `authorization_only=1`.
+The server performs the same local/governor/connection/grant/request checks,
+skips event-body loading, and returns no events. 401/403 clears the retained
+body; a temporary failure permits another metadata-only query. Selection now
+pins the entire original identity, including the original connection, so a
+same-step_ref source replacement cannot be silently followed. The fixture runs
+its registered cleanup, and the Node driver waits for a successful child exit
+before writing a passing result.
+
+Observed RED and intermediate fixture-assertion corrections are retained in
+[review-fix-red.txt](review-fix-red.txt) and [cleanup-red.txt](cleanup-red.txt).
+Current controlled checks: 9 actual HTTP/SQLite, 20 DOM (server truncation,
+256Ki text/20k event caps, later 401/403, transient metadata failure/recovery,
+and original identity), 1 actual host lifecycle, and 2 real child-exit checks
+pass. `npm run check` passes 363 frontend / 37 management / 9 action tests,
+typecheck and build. Current local Chrome still reports a missing executable;
+no new local Chrome pass is claimed. The CI browser driver adds truncation ->
+metadata-only recheck -> revoked-body clearing to the original flow, while
+preserving one fake dispatch/cancellation and zero real model calls.
+
+The correction needs accurate-head CI and another engineering role's recheck;
+prior-head green checks do not approve this new source. Parent real exits remain
+unchanged.
 
 ## Reproduction
 
