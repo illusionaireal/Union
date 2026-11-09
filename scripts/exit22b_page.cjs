@@ -380,7 +380,6 @@ function startHost() {
     return { status: response.status, receipt: value.receipt || value };
   }, { auId: createdReceipt.organization_id, workId, stepRef: inflight.step_ref, cancelId: cancelCommandId });
   const cancelReceipt = cancelOutcome.receipt || {};
-  const cancelReceipt = cancelOutcome.receipt || {};
   check('cancel accepted by the product: ' + JSON.stringify(cancelOutcome.receipt).slice(0, 160),
         cancelOutcome.status === 200 && cancelReceipt.status === 'succeeded');
   const cancelStepRef = ((cancelOutcome.receipt.step || {}).step_ref) || '';
