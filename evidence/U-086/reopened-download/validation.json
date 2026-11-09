@@ -1,0 +1,110 @@
+{
+  "scope": "controlled",
+  "base": "57035fbe48b3845a811de2b94aa55c49af989704",
+  "node_red": {
+    "passed": 1,
+    "failed": 14
+  },
+  "node_related": {
+    "passed": 286,
+    "failed": 0
+  },
+  "chrome_red": {
+    "passed": 1,
+    "failed": 10
+  },
+  "chrome_green": {
+    "passed": 11,
+    "failed": 0,
+    "fake_calls": 2,
+    "real_calls": 0
+  },
+  "independent_review": "pending",
+  "current_head_ci": "pending",
+  "tested_source_base": "7f02d38cd892b6d75bcc41437dbb5afe3377f131",
+  "source_sha256": {
+    ".github/workflows/ci.yml": "62d5a6804160694f1f19afa6152f660218df259efe58c2e0afcf9b8d0ff8039f",
+    "scripts/exit22c_download.cjs": "006af09a802a3fcfeebdcda1260a104a93c1c7f65219af069d5a53523604d795",
+    "tests/exit22-final-read.test.ts": "6a9dee372c18835965fbd8e99a109ea7fa4f344dd77791ca0e28be7a967d1a88",
+    "tests/exit22-restart-snapshot.test.ts": "76aba7407dded50485e3c9adbe5f01630c686f87d3e2265061256352f1db6044",
+    "scripts/exit22-result-body-evidence.cjs": "a4de8cea471e2dcd344664a925a59b556f18443d45c889e50d8c3d21b345f0d1",
+    "tests/exit22-reopened-download.test.ts": "d965a93b28d63d9eeaecf40a624303be967c00602e4f38a02204fb6cb6fa3924",
+    "evidence/U-086/reopened-download/browser.cjs": "87db728eee2beb2f3b855d026468c08995ecc4a271a269015489a312db2ebd09"
+  },
+  "full_python": {
+    "tests": 808,
+    "skipped": 10,
+    "seconds": 509.106,
+    "failures": 0,
+    "errors": 0,
+    "bun": "1.4.2"
+  },
+  "full_npm": {
+    "passed": true,
+    "node": 295,
+    "frontend": 363,
+    "management": 37,
+    "typecheck": true,
+    "build": true
+  },
+  "parent_adoption": {
+    "merge_http": 200,
+    "receipt": {
+      "sha": "57035fbe48b3845a811de2b94aa55c49af989704",
+      "merged": true,
+      "message": "Pull Request successfully merged"
+    },
+    "head": "7f02d38cd892b6d75bcc41437dbb5afe3377f131",
+    "merged": true,
+    "merge_sha": "57035fbe48b3845a811de2b94aa55c49af989704",
+    "review": 5828308018,
+    "checks": 35,
+    "tree": "78748b4060585cd4ac437be3f1a4efde576edd59"
+  },
+  "preservation": {
+    "ordinary_head": "563882e6fee67a96bbd617808f06488f8a02d7c7",
+    "ordinary_index_unchanged": true,
+    "preexisting_files": 20,
+    "vendor_untouched": true
+  },
+  "fake_model_calls_dedicated_browser": 4,
+  "real_model_calls": 0,
+  "failures_retained": [
+    "Initial test extraction marker matched the success and error record; corrected before behavioral RED.",
+    "Six old Node controls had metadata-only fetch fixtures; now also serve real result DTO/body.",
+    "Initial npm launcher path absent; used installed npm CLI with the pinned Node. It was not a code failure.",
+    "Post-adoption Git fetch TLS/transport failed; exact REST commit hash and remote ref verified before reparenting."
+  ],
+  "logs": {
+    "red": {
+      "sha256": "4f9135be4712f0d71d198de435fc278fdbc48ebb84d97f36ccabcfc76f32378e"
+    },
+    "red-corrected": {
+      "sha256": "da76bcf36efc709d6ad4c390a8a6b81ccfe4f25f913630c3e5222a93bd6afc2a"
+    },
+    "green": {
+      "sha256": "5a8f1e5bea20a69f6312931636114bdf6604c0fe76164b8d3348fc80dd8f5527"
+    },
+    "related-first": {
+      "sha256": "b4c7a5d4419b147768d28043070b595045663ccbc24872d64350568b5fd15c80"
+    },
+    "related": {
+      "sha256": "2aa403900baf48b90fe961456258fc869454ad94c549bdefa9434e630250e6df"
+    },
+    "browser-red": {
+      "sha256": "f1f7d86d0d0be9e942b8a630a229e9621d8df44881a3598c8238a3850c82c52b"
+    },
+    "browser-green": {
+      "sha256": "8dc46d7caa7b29fc4caa13b5fa63d941999967cfa6574333d90984f817a1a5f0"
+    },
+    "npm-launch-failure": {
+      "sha256": "9de1597da159a9ddfdd02191b7552ee0a4abc345ef7dd8167f3e4e62e5959cea"
+    },
+    "npm-final": {
+      "sha256": "97d3a5f9e7e85b5303cc3520cefa95b773016643a01861c62c862b6ade05e3ad"
+    },
+    "python-final": {
+      "sha256": "d81733504345c441022ee35b97ec06a8cc93dded9205e97d25f2d6fbb205065e"
+    }
+  }
+}

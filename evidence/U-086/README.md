@@ -224,3 +224,12 @@ Independent review and current-head CI remain adoption gates.
 Observed call settlement: [reject released after original output](observed-settlement/README.md).
 Two acceptance assertions tightened after actual fragment and HTTP/browser RED.
 Unknown reservation and original facts remain; no product accounting changes or real inference.
+
+Reopened download: [read and verify the original body after restart](reopened-download/README.md).
+The actual acceptance tail now checks a scoped result GET, current identity,
+UTF-8 bytes and digest; metadata alone cannot claim the body survived.
+Controlled evidence only; the implementation does not independently approve itself.
+
+Material/source gate: [require the original document-read receipt before delivery](material-read/README.md).
+The original candidate must cite a persisted read of the actual synthetic bytes;
+nonce/digest checks alone no longer pass. Controlled checks do not close real exits.
