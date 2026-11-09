@@ -1,0 +1,35 @@
+FAIL: test_read_authority_grant_and_original_scope_fail_closed (tests.test_core_work_events.WorkEventsTests.test_read_authority_grant_and_original_scope_fail_closed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/4508c4bb8a45/union-u108/tests/test_core_work_events.py", line 101, in test_read_authority_grant_and_original_scope_fail_closed
+    self.assertEqual(self.observe(token=outsider)[0], 403)
+AssertionError: 404 != 403
+
+======================================================================
+FAIL: test_local_role_is_rechecked_after_remote_grant_get (tests.test_core_work_events.WorkEventsTests.test_local_role_is_rechecked_after_remote_grant_get)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/4508c4bb8a45/union-u108/tests/test_core_work_events.py", line 120, in test_local_role_is_rechecked_after_remote_grant_get
+    self.assertEqual(self.observe()[0], 403)
+AssertionError: 404 != 403
+
+======================================================================
+FAIL: test_remote_identity_and_event_conflicts_are_not_partial_success (tests.test_core_work_events.WorkEventsTests.test_remote_identity_and_event_conflicts_are_not_partial_success)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/4508c4bb8a45/union-u108/tests/test_core_work_events.py", line 126, in test_remote_identity_and_event_conflicts_are_not_partial_success
+    self.assertEqual(self.observe()[0], 409)
+AssertionError: 404 != 409
+
+======================================================================
+FAIL: test_pages_advance_over_private_events_and_do_not_reexecute (tests.test_core_work_events.WorkEventsTests.test_pages_advance_over_private_events_and_do_not_reexecute)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/4508c4bb8a45/union-u108/tests/test_core_work_events.py", line 143, in test_pages_advance_over_private_events_and_do_not_reexecute
+    self.assertEqual(status, 200, first)
+AssertionError: 404 != 200 : {'error': '接口不存在'}
+
+----------------------------------------------------------------------
+Ran 5 tests in 3.706s
+
+FAILED (failures=5)

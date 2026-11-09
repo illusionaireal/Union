@@ -7,6 +7,7 @@ import { Card } from '../../components/ui';
 import { WorkExecution } from './WorkExecution';
 import { CoreWorkRegistration } from './CoreWorkRegistration';
 import { CoreResultDelivery } from './CoreResultDelivery';
+import { WorkStream } from './WorkStream';
 
 function money(item: CoreWorkItem) {
   const { max_calls: max, reserved, used } = item.budget;
@@ -278,6 +279,9 @@ export function WorkPanel({ organizationId, readOnly = false, principalId, servi
               <CoreResultDelivery key={`${serviceInstance}:${principalId}:${organizationId}:${item.id}:results`}
                 scope={{principalId, serviceInstance, organizationId}} item={item} version={data.version}
                 canManage={data.access.can_manage_results === true} onAccessLost={() => setAccessLost(true)} />}
+            {readOnly && allowExecution && principalId && serviceInstance &&
+              <WorkStream key={`${serviceInstance}:${principalId}:${organizationId}:${item.id}:output`}
+                item={item} scope={{principalId, serviceInstance, organizationId, workId: item.id}} />}
             {readOnly && allowExecution && principalId && serviceInstance &&
               <WorkExecution key={`${serviceInstance}:${principalId}:${organizationId}:${item.id}`}
                 item={item} scope={{principalId,serviceInstance,organizationId,workId:item.id}}

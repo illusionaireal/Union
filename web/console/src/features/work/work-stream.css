@@ -1,0 +1,20 @@
+.work-stream {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+.work-stream label {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+.work-stream select {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+.work-stream pre {
+  max-width: 100%;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}

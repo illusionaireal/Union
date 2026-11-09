@@ -1,0 +1,19 @@
+U-108 independent review corrections; original tested head 69af6a6.
+Independent engineering review: PR50#pullrequestreview-5821590003, evidence PR51@bd6e2a1.
+Reviewer: nontruncated terminal control PASS; truncated 401 / 403 both FAIL after 10s.
+Implementer reproduced before changes: two truncated 401/403 DOM failures;
+one same-step_ref changed model_request_id DOM failure; one authority-only HTTP
+failure (old route returned event bodies). Those transient logs expired during
+resume; no unavailable-file hashes are invented here. Original reviewer evidence
+and original source are retained, and the added regression cases are committed.
+
+Lifecycle RED rerun this session against the unchanged host at 69af6a6:
+test_stop_closes_console_and_removes_temporary_roots ... FAIL
+AssertionError: False is not true at self.assertTrue(case.app.closed)
+Ran 1 test in 0.868s; FAILED (failures=1).
+Full exact output: cleanup-red.txt.
+
+Intermediate expanded DOM run: 19 PASS / 1 FAIL. The failing assertion was
+mistakenly added to the nontruncated terminal control (expected metadata mode
+there). It was moved to the truncated cases; product behavior was not changed
+to satisfy that mistaken assertion. Final expanded suite: 20 PASS.

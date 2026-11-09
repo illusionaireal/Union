@@ -37,8 +37,12 @@ class WorkService:
         can_manage_results = principal == governance.current(state) and value.get("governance_status") == "active"
         can_start = can_manage_results and default is not None and default["enabled"]
         works = rules.projection(state, instance=self.app.instance)
+        from .work_events import readable_connection
         for item in works:
             item["materials"] = self.materials(item["materials_root"])
+            for step in item['steps']:
+                step['can_observe'] = (governance.reader_role(state, principal) == 'governor'
+                                       and readable_connection(state, step))
         usage = {"input_tokens": 0, "output_tokens": 0}
         for item in works:
             for key in usage:
@@ -49,6 +53,10 @@ class WorkService:
                 "works": works, "usage": usage, "cost_status": "unknown",
                 "capabilities": {"work_registration": True, "execution": "not_started",
                                  "autonomous_business": False}}
+
+    def events(self, token, au_id, work_id, step_ref, after='0', authorization_only='0'):
+        from .work_events import read_events
+        return read_events(self, token, au_id, work_id, step_ref, after, authorization_only)
 
     def materials(self, reference):
         """Report host availability of the referenced read-only root; never reads content."""

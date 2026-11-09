@@ -72,3 +72,10 @@
   content/tool adoption separately checks current authority and host material
   binding. Recovery queries the original request without adopting its body.
   Follow `s03-dispatch-contract.md` and `tests/test_work_dispatch.py`.
+
+- `work_events.py` owns only the current governor's read projection of the
+  original Work step's modeld journal. Bind saved AU/Work/attempt/command/step/
+  request and connection/grant versions, recheck local and remote authority
+  around network reads, and keep those reads outside account/AU locks. No
+  grant creation, reconciliation, reservation writes or dispatch. Follow
+  `evidence/U-108/contract.md` and `tests/test_core_work_events.py`.
