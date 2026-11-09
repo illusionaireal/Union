@@ -352,21 +352,25 @@ function startHost() {
   }, { auId: createdReceipt.organization_id, workId, stepRef: inflight.step_ref, cancelId: cancelCommandId });
   check('cancel accepted by the product: ' + JSON.stringify(cancelOutcome.receipt).slice(0, 160),
         cancelOutcome.status === 200 && cancelOutcome.receipt.status === 'succeeded');
+  const cancelStepRef = ((cancelOutcome.receipt.step || {}).step_ref) || '';
+  const cancelModelRequest = cancelOutcome.receipt.model_request_id || '';
+  const cancelOrg = cancelOutcome.receipt.organization_id || '';
   check('cancel receipt identifies the same command/attempt/step/model request',
         cancelOutcome.receipt.id === cancelCommandId
-        && cancelOutcome.receipt.step.step_ref === inflight.step_ref
-        && cancelOutcome.receipt.model_request_id === inflight.model_request_id
-        && cancelOutcome.receipt.organization_id === createdReceipt.organization_id);
+        && cancelStepRef === inflight.step_ref
+        && cancelModelRequest === inflight.model_request_id
+        && cancelOrg === createdReceipt.organization_id);
   check('delivery observation recorded: ' + cancelOutcome.receipt.cancel_accepted,
         cancelOutcome.receipt.cancel_accepted === true);
+  // Same-run original GET is asserted after the settlement window opens.
   // Same-run original GET must return the same durable delivery fact.
   const cancelGet = await page.evaluate(async config => (await (await fetch(
     '/api/v1/governance/receipts?organization_id=' + config.auId + '&id=' + config.cancelId)).json()),
     { auId: createdReceipt.organization_id, cancelId: cancelCommandId });
-  check('original GET returns the delivered cancel receipt (identity match)',
-        cancelGet.receipt && cancelGet.receipt.id === cancelCommandId
-        && cancelGet.receipt.cancel_accepted === cancelOutcome.receipt.cancel_accepted
-        && cancelGet.receipt.model_request_id === inflight.model_request_id);
+  const deliveredAccepted = (cancelGet.receipt || {}).cancel_accepted === cancelOutcome.receipt.cancel_accepted
+    && (cancelGet.receipt || {}).model_request_id === inflight.model_request_id
+    && (cancelGet.receipt || {}).id === cancelCommandId;
+  check('original GET returns the delivered cancel receipt (identity match)', deliveredAccepted);
   // The settlement may be interrupted (unknown kept) or completed (used) depending
   // on the race with the real model; both must settle only via the original request.
   await waitFor(async () => {
@@ -406,14 +410,9 @@ function startHost() {
         && settledStep.model_request_id === inflight.model_request_id
         && settledStep.attempt_id === inflight.attempt_id);
   check('the settle reason persists', settledStep && Boolean(settledStep.reason));
-  if (settledStep.status === 'unknown') {
-    check('an unresolved step keeps its original reservation after the rebuild',
-          entry.budget.reserved === 1);
-  }
-  fs.writeFileSync(path.join(output, 'snapshot-after-restart.json'), JSON.stringify(after, null, 2));
-  fs.writeFileSync(path.join(output, 'checks.json'),
-    JSON.stringify({ passed: checks.length, nonce, workId, checks, errors }, null, 2));
-  console.log(JSON.stringify({ passed: checks.length, workId, nonce, errors }, null, 2));
+  const unresolved = settledStep.status === 'unknown';
+  check('an unresolved step keeps its original reservation after the rebuild',
+        !unresolved || entry.budget.reserved === 1);
 })().catch(error => {
   errors.push(String(error && error.stack || error));
   fs.writeFileSync(path.join(output, 'checks.json'), JSON.stringify({ failed: true, checks, errors }, null, 2));
