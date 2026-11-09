@@ -2095,6 +2095,13 @@
                     "from": "doing",
                     "to": "doing",
                     "note": "u086-result-provenance-6769130c：#40评论284范围内修复两driver重开漏验原成果事实。完整记录/唯一ID/交付引用按原快照比较，18反例RED→271相关Node和10实际Chrome场景通过，空成果中断与原未知预约保留；源码及完整验证见evidence/U-086/result-provenance/README.md和validation.json。仅验收helper/夹具，产品无变更；当前head CI和非实施角色复核后采用，DSH owner/WIP与真实父出口保持，真实模型0。本条仅交付历史，不作在线状态。"
+                },
+                {
+                    "at": "2026-11-09T15:44:22.102Z",
+                    "actor": "codex-home/single-duty-implementation",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "u086-reopened-download-7f02d38c：#40评论287限定验收修复；原重开只比较metadata，正文缺失/损坏/拒绝仍可通过。冻结合同后原driver完整尾段1控制PASS/14反例RED，Chrome/CoreHTTP/SQLite1控制PASS/10反例RED→全GREEN。只读原AU/Work/result正文GET，核对当前主体/service、完整metadata、UTF-8字节和摘要；产品/授权/事务不改。286相关Node通过，完整npm/Python及失败和源码hash见evidence/U-086/reopened-download/validation.json。原DSH owner/WIP、#60 done及真实父出口保持；真实调用0，准确head CI及非实施角色复核仍是采用条件。本条只追加交付历史，不是在线状态或采用事实。"
                 }
             ],
             "claim": {

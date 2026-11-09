@@ -397,6 +397,11 @@ function startHost() {
   require('./exit22-restart-evidence.cjs').compareSnapshots(after, authenticatedAfter, createdReceipt.organization_id, workId);
   const restartComparison = require('./exit22-restart-evidence.cjs').compareSnapshots(
     before, after, createdReceipt.organization_id, workId);
+  const reopenedBody = await require('./exit22-result-body-evidence.cjs').readResultBody(page, {
+    organization_id: createdReceipt.organization_id, work_id: workId,
+    principal_id: before.access.principal_id,
+  }, originalResult);
+  fs.writeFileSync(path.join(output, 'result-body-after-restart.json'), JSON.stringify(reopenedBody, null, 2));
   fs.writeFileSync(path.join(output, 'restart-request-comparison.json'), JSON.stringify(restartComparison, null, 2));
   fs.writeFileSync(path.join(output, 'snapshot-after-restart.json'), JSON.stringify(after, null, 2));
   fs.writeFileSync(path.join(output, 'checks.json'),

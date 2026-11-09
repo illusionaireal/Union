@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import test from 'node:test';
@@ -6,12 +7,14 @@ import vm from 'node:vm';
 
 const require = createRequire(new URL('../scripts/exit22b_page.cjs', import.meta.url));
 const session = { core_protocol: 'core.au.v1', principal_id: 'principal-original', service_instance: 'service-before' };
+const resultContent = 'Original result 正文';
+const resultDigest = createHash('sha256').update(resultContent, 'utf8').digest('hex');
 const original = {
   protocol: 'core.work.v1', organization_id: 'au-original', version: 20,
   access: { principal_id: session.principal_id },
   works: [{ id: 'work-original', status: 'delivered', delivered_result_id: 'result-original',
     budget: { max_calls: 3, used: 1, reserved: 1 },
-    results: [{ id: 'result-original', status: 'adopted', sha256: 'digest-original' }],
+    results: [{ id: 'result-original', status: 'adopted', sha256: resultDigest, bytes: Buffer.byteLength(resultContent,'utf8') }],
     steps: [
       { step_ref: 'step-1', attempt_id: 'attempt-original', command_id: 'loop-original',
         model_request_id: 'model-1', status: 'used', usage: { input_tokens: 438, output_tokens: 46 },
@@ -45,7 +48,7 @@ for (const driver of ['exit22b_page.cjs', 'exit22c_download.cjs']) {
       originalCancelReference: {}, cancelEvidenceBefore: { receipt: { id: 'cancel-original' } },
       assert, URLSearchParams,
       createdReceipt: { organization_id: 'au-original' }, workId: 'work-original',
-      resultId: 'result-original', recorded: 'digest-original', inflight: structuredClone(original.works[0].steps[1]),
+      resultId: 'result-original', recorded: resultDigest, inflight: structuredClone(original.works[0].steps[1]),
       output: '/synthetic', path: { join: (...parts: string[]) => parts.join('/') },
       fs: { writeFileSync: (name: string, text: string) => files.set(name.split('/').at(-1)!, JSON.parse(text)) },
       check: (name: string, value: unknown = true) => assert.ok(value, name),
@@ -66,6 +69,9 @@ for (const driver of ['exit22b_page.cjs', 'exit22c_download.cjs']) {
         }
         const parsed = new URL(url, 'http://synthetic.invalid');
         assert.equal(parsed.searchParams.get('organization_id'), 'au-original');
+        if (parsed.pathname === '/api/v1/work/results') return {status:200,json:async () => ({
+          protocol:original.protocol, organization_id:original.organization_id, work_id:'work-original',
+          result:structuredClone(original.works[0].results[0]),content:resultContent})};
         if (parsed.pathname === '/api/snapshot') return { status: 409, json: async () => ({ error: 'unsupported_capability' }) };
         assert.equal(parsed.pathname, '/api/v1/work');
         return { status: options.status ?? 200,
