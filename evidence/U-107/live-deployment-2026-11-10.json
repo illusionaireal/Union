@@ -1,0 +1,210 @@
+{
+  "date": "2026-11-10",
+  "scope": "real: fixed PR38 NAS deployment and identity-only migration; not model integration or sustained operation",
+  "actor": "foreground coordinating engineering session",
+  "online_member_id": "89f4c1c1-329a-4b54-ad37-235cf061e9a8",
+  "user_authorization": "Explicit approval in the current session for this one auth0/catalog0 to auth2/catalog1 stopped-service migration",
+  "checks": {
+    "prepared": {
+      "phase": "prepared",
+      "source": "3e1071bc22139233ad512bc40c824168cb53b8b9",
+      "files": 94,
+      "package_sha256": "4ef76df3985d5828de3e512bf7dc902bf86614c621e0ee4fa6bc60cc5cdfbfcf",
+      "entry_sha256": "0dedb42637f93c79ea31fd2699e032725b86d78e546f9f40696f7eae6c396c9b",
+      "pinned_python_dependencies": 59,
+      "bun": "1.4.2",
+      "production_data_mounted": false
+    },
+    "copycheck": {
+      "phase": "fresh-copy-migration-and-startup",
+      "accounts_preserved": 1,
+      "organizations_preserved": 1,
+      "creation_receipts_preserved": 1,
+      "old_sessions_revoked": 1,
+      "schema": {
+        "auth": 2,
+        "catalog": 1
+      },
+      "non_identity_files_checked": 19,
+      "startup_original_au_facts_unchanged": true,
+      "shutdown_change": "existing Console.close pauses dispatch; no schema or business changes",
+      "routes": [
+        {
+          "route": "/",
+          "status": 200,
+          "bytes": 741
+        },
+        {
+          "route": "/api/auth/status",
+          "status": 200,
+          "bytes": 81,
+          "configured": true
+        }
+      ],
+      "production_migrations": 0,
+      "real_model_calls": 0,
+      "source": "3e1071bc22139233ad512bc40c824168cb53b8b9"
+    },
+    "stopped": {
+      "at": "2026-11-09T21:10:50.473776+00:00",
+      "running": false,
+      "exit_code": 137
+    },
+    "stopped-backup": {
+      "phase": "stopped-backup",
+      "files": 75,
+      "bytes": 325514,
+      "sha256": "a7b4f1273c0d3184387ab0d4a61796255cfd9d44d6bc1503fc40896322f9cfce",
+      "checks": [
+        {
+          "table": "runs",
+          "states": {
+            "delivered": 3
+          }
+        },
+        {
+          "table": "agent_sessions",
+          "states": {
+            "completed": 1
+          }
+        }
+      ],
+      "service_stopped": true
+    },
+    "migration": {
+      "phase": "identity-upgraded",
+      "source": "3e1071bc22139233ad512bc40c824168cb53b8b9",
+      "from_schema": {
+        "auth": 0,
+        "catalog": 0
+      },
+      "schema": {
+        "auth": 2,
+        "catalog": 1
+      },
+      "accounts_preserved": 1,
+      "organizations_preserved": 1,
+      "creation_receipts_preserved": 1,
+      "old_sessions_revoked": 1,
+      "non_identity_files_preserved": 19,
+      "identity_backup_sha256": "f9fa88df24d22aa3eba0c26b45a78dcfe50d2954237bcccd84eb6725be1223c9",
+      "receipt_sha256": "3403175e0210cf20c025fce520cf0d7d657199755f9eee7d831c0f34946bf3f2",
+      "real_model_calls": 0
+    },
+    "started": {
+      "at": "2026-11-09T21:15:48.562611+00:00",
+      "running": true,
+      "revision": "3e1071bc22139233ad512bc40c824168cb53b8b9",
+      "restart_count": 0,
+      "oom": false
+    },
+    "live-verification": {
+      "source": "3e1071bc22139233ad512bc40c824168cb53b8b9",
+      "manifest_files": 94,
+      "schema": {
+        "auth": 2,
+        "catalog": 1
+      },
+      "preserved": {
+        "accounts": 1,
+        "organizations": 1,
+        "creations": 1
+      },
+      "old_sessions_revoked": true,
+      "original_non_identity_databases_unchanged": [
+        "checkpoints.sqlite3",
+        "state.sqlite3"
+      ],
+      "original_private_files_unchanged": 24,
+      "routes": [
+        {
+          "route": "/",
+          "status": 200,
+          "sha256": "4630b7a3722012b35a6a9ed3b304014531505b6f984a7451f26b03a2450ff7d2"
+        },
+        {
+          "route": "/api/auth/status",
+          "status": 200,
+          "sha256": "e6d3ea84af0bab58655bf62a4d1287db06d507243af2f73c008873ec30868d8a",
+          "configured": true
+        },
+        {
+          "route": "/assets/index-16-CwzOp.js",
+          "status": 200,
+          "sha256": "9caaed431dd680555f3579c54c09eb10f9e048b3b5092a05f40e03fa39176d0f"
+        },
+        {
+          "route": "/assets/index-DyiaVZUg.css",
+          "status": 200,
+          "sha256": "e1584cb41abd403e1faca05e350304af375339b33dd7eed1d7bf7bf003cc378c"
+        }
+      ],
+      "real_model_calls_added": 0,
+      "modeld_configured": false,
+      "password_login_performed": false
+    },
+    "verification-health": {
+      "running": true,
+      "restart_count": 0,
+      "oom": false,
+      "revision": "3e1071bc22139233ad512bc40c824168cb53b8b9"
+    },
+    "browser-check": {
+      "browser": "actual Chrome",
+      "login_page_rendered": true,
+      "password_field_visible": true,
+      "login_button_visible": true,
+      "javascript_errors": 0,
+      "write_requests": 0,
+      "password_submitted": false,
+      "tls": "Browser permits existing private certificate; independent HTTPS check validates the pinned certificate"
+    }
+  },
+  "limitations": [
+    "Normal password login was not submitted; existing salt/password/recovery hashes were compared unchanged, and actual Chrome rendered the login form.",
+    "modeld remains unconfigured; no new model request, model credential, AU governance adoption or business activation.",
+    "The existing container needed the Docker stop timeout and exited 137; all stored executions and commands were checked terminal both before and after stopping.",
+    "The first stopped backup could not read a root-only config as the application user. The partial archive was retained; a separate root-only complete backup succeeded without changing original permissions.",
+    "Initial private checks overconstrained raw SQLite equality after Console.close and used the wrong login-button label. Diagnostic results and failed logs remain private; corrected checks distinguish startup from normal shutdown pause.",
+    "The NAS kernel did not enforce the optional preparation-container PID limit; no such isolation guarantee is claimed."
+  ],
+  "private_log_hashes": {
+    "browser-error.private.log": "a0a6f24bf964c2960c16976b6a61d00391e27d3203bc516587308ed84b676fef",
+    "copycheck-first-stderr.private.log": "9fc2ac325a6dc125f7c803838d8b04e487734eccf9b040a54ca7e8da8eb79802",
+    "copycheck-first-stdout.private.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "copycheck-fourth-stderr.private.log": "15c55aefb15d09340355c925e16f807c89883310ee7036ec940a18c3336f9ee1",
+    "copycheck-second-stdout.private.log": "4bd7d91403c73b93952534b7599aa5123a4a01d9fad5101c31a1315d7163c336",
+    "copycheck-stderr.private.log": "c55aa197fe1bf8a9032eb7b5fbd7b9ac68789867e74c4917277cefdd09d7dc45",
+    "copycheck-stdout.private.log": "7d376a7c46803a7db4dd2d9c4142c02d6992d7b1ae0e783760e37003b45c5a00",
+    "copycheck-third-stdout.private.log": "7d376a7c46803a7db4dd2d9c4142c02d6992d7b1ae0e783760e37003b45c5a00",
+    "copycheck.private.log": "789346ca93cc3db166722f9b18c3a8671b67e92cb4a9b6a58dd4940232a4e62e",
+    "create-candidate-stderr.private.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "create-current-inspect-stderr.private.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "download-backup-stderr.private.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "live-endpoints-stderr.private.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "live-snapshot-stderr.private.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "live-verification-stderr.private.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "migration-stderr.private.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "migration-stopped-inspect-stderr.private.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "prepare-private.log": "4a5c4e256d48cfa2158b8c0310b1a41d2d265b403aed6639544b6297f3de9537",
+    "rename-new-stderr.private.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "rename-old-stderr.private.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "resume-current-inspect-stderr.private.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "start-candidate-stderr.private.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "start-old-inspect-stderr.private.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "started-inspect-stderr.private.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stop-current-inspect-stderr.private.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stop-original-stderr.private.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stopped-backup-root-stderr.private.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stopped-backup-stderr.private.log": "0affa54ca02642f79e818f4c32114de895d858cb7b1bea29fffa6b9a763ed27e",
+    "stopped-backup-stdout.private.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stopped-inspect-stderr.private.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "verification-health-stderr.private.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "delivery_checks": {
+    "npm_run_check": "passed on isolated checkout based on f2fb72c2b31b2e2c29ea385d8ea1da05506fee3f",
+    "log_sha256": "b9a2f1837099e1e256c051526ba53e34e3e6a9c2dbe4cf338464575e6e96285d",
+    "product_source_changed": false,
+    "python_validation": "Fixed PR38 code already passed its original full Python and current-head CI before release; this documentation-only delivery does not change that source."
+  }
+}
