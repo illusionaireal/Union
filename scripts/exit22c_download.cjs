@@ -345,13 +345,23 @@ function startHost() {
   }
   check('result content digest matches recorded sha256: ' + digest, true);
   check('result cites the synthetic nonce: ' + (content.includes(nonce) ? 'yes' : 'no'), content.includes(nonce));
+  const recordedFull = resultRead.result || resultRead;
+  const resultId = recordedFull.id;
+  const recordedTitle = recordedFull.title;
   const download = card().getByRole('link', { name: '下载' });
   const href = await download.getAttribute('href');
   check('download link present on the candidate result: ' + (href || '').slice(0, 90),
         Boolean(href) && href.includes('/api/v1/work/results'));
   const body = await page.evaluate(async href => (await (await fetch(href)).json()), href);
-  check('downloaded content carries the recorded result',
-        JSON.stringify(body).length > 0 && JSON.stringify(body).includes('result'));
+  const meta = body.result || {};
+  const downloadedContent = body.content || '';
+  check('downloaded body is the recorded result (same id): ' + (meta.id || 'none'),
+        meta.id === resultId);
+  const downloadedDigest = crypto.createHash('sha256')
+    .update(Buffer.from(downloadedContent, 'utf8')).digest('hex');
+  check('downloaded content sha256 matches the recorded digest: ' + downloadedDigest.slice(0, 16),
+        downloadedDigest === digest);
+  check('downloaded title is the recorded title', meta.title === recordedTitle);
   await page.evaluate(async config => {
     const version = async () => (await (await fetch('/api/v1/aus/' + config.auId)).json()).au.version;
     const work = async (kind, data) => {
