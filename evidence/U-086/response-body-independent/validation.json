@@ -1,0 +1,238 @@
+{
+  "date": "2026-11-09",
+  "source_head": "77b457c9e2d3d81f1e55004caf0b8d57bfc2496c",
+  "source_tree": "f972507aea3659791b543ea5f6c0c863960e5ff5",
+  "reviewer": "chatGPT-online / independent from implementer",
+  "scope": "independent synthetic Playwright event API; no HTTP/browser/model",
+  "outcomes": [
+    {
+      "kind": "cancel_step",
+      "source": "base",
+      "fault": "normal",
+      "outcome": "accepted",
+      "posts": 1,
+      "lookup": 1,
+      "listeners": []
+    },
+    {
+      "kind": "cancel_step",
+      "source": "base",
+      "fault": "body-lost",
+      "outcome": "BOUNDED_HANG",
+      "posts": 1,
+      "lookup": 0,
+      "listeners": [
+        [
+          "request",
+          1
+        ]
+      ]
+    },
+    {
+      "kind": "cancel_step",
+      "source": "base",
+      "fault": "denied-body-lost",
+      "outcome": "BOUNDED_HANG",
+      "posts": 1,
+      "lookup": 0,
+      "listeners": [
+        [
+          "request",
+          1
+        ]
+      ]
+    },
+    {
+      "kind": "cancel_step",
+      "source": "base",
+      "fault": "malformed",
+      "outcome": "complete malformed JSON",
+      "posts": 1,
+      "lookup": 0,
+      "listeners": []
+    },
+    {
+      "kind": "cancel_step",
+      "source": "base",
+      "fault": "wrong-receipt",
+      "outcome": "page cancel receipt id\n+ actual - expected\n\n+ 'wrong'\n- 'cancel_step-original'\n",
+      "posts": 1,
+      "lookup": 0,
+      "listeners": []
+    },
+    {
+      "kind": "cancel_step",
+      "source": "candidate",
+      "fault": "normal",
+      "outcome": "accepted",
+      "posts": 1,
+      "lookup": 1,
+      "listeners": []
+    },
+    {
+      "kind": "cancel_step",
+      "source": "candidate",
+      "fault": "body-lost",
+      "outcome": "accepted",
+      "posts": 1,
+      "lookup": 1,
+      "listeners": []
+    },
+    {
+      "kind": "cancel_step",
+      "source": "candidate",
+      "fault": "denied-body-lost",
+      "outcome": "page cancel receipt HTTP\n\n403 !== 200\n",
+      "posts": 1,
+      "lookup": 0,
+      "listeners": []
+    },
+    {
+      "kind": "cancel_step",
+      "source": "candidate",
+      "fault": "malformed",
+      "outcome": "complete malformed JSON",
+      "posts": 1,
+      "lookup": 0,
+      "listeners": []
+    },
+    {
+      "kind": "cancel_step",
+      "source": "candidate",
+      "fault": "wrong-receipt",
+      "outcome": "page cancel receipt id\n+ actual - expected\n\n+ 'wrong'\n- 'cancel_step-original'\n",
+      "posts": 1,
+      "lookup": 0,
+      "listeners": []
+    },
+    {
+      "kind": "start_work",
+      "source": "base",
+      "fault": "normal",
+      "outcome": "accepted",
+      "posts": 2,
+      "lookup": 1,
+      "listeners": []
+    },
+    {
+      "kind": "start_work",
+      "source": "base",
+      "fault": "body-lost",
+      "outcome": "BOUNDED_HANG",
+      "posts": 1,
+      "lookup": 0,
+      "listeners": [
+        [
+          "request",
+          1
+        ]
+      ]
+    },
+    {
+      "kind": "start_work",
+      "source": "base",
+      "fault": "denied-body-lost",
+      "outcome": "BOUNDED_HANG",
+      "posts": 1,
+      "lookup": 0,
+      "listeners": [
+        [
+          "request",
+          1
+        ]
+      ]
+    },
+    {
+      "kind": "start_work",
+      "source": "base",
+      "fault": "malformed",
+      "outcome": "accepted",
+      "posts": 2,
+      "lookup": 1,
+      "listeners": []
+    },
+    {
+      "kind": "start_work",
+      "source": "base",
+      "fault": "wrong-receipt",
+      "outcome": "accepted",
+      "posts": 2,
+      "lookup": 1,
+      "listeners": []
+    },
+    {
+      "kind": "start_work",
+      "source": "candidate",
+      "fault": "normal",
+      "outcome": "accepted",
+      "posts": 2,
+      "lookup": 1,
+      "listeners": []
+    },
+    {
+      "kind": "start_work",
+      "source": "candidate",
+      "fault": "body-lost",
+      "outcome": "accepted",
+      "posts": 2,
+      "lookup": 1,
+      "listeners": []
+    },
+    {
+      "kind": "start_work",
+      "source": "candidate",
+      "fault": "denied-body-lost",
+      "outcome": "registration POST HTTP\n\n403 !== 200\n",
+      "posts": 1,
+      "lookup": 0,
+      "listeners": []
+    },
+    {
+      "kind": "start_work",
+      "source": "candidate",
+      "fault": "malformed",
+      "outcome": "complete malformed JSON",
+      "posts": 1,
+      "lookup": 0,
+      "listeners": []
+    },
+    {
+      "kind": "start_work",
+      "source": "candidate",
+      "fault": "wrong-receipt",
+      "outcome": "original receipt id\n+ actual - expected\n\n+ 'wrong'\n- 'start_work-original'\n",
+      "posts": 1,
+      "lookup": 0,
+      "listeners": []
+    }
+  ],
+  "candidate_cases": 10,
+  "candidate_cases_passed": 10,
+  "local_node_tests": 225,
+  "local_node_failures": 0,
+  "remote_console_browser_jobs": {
+    "PR64": 129181538249,
+    "PR65": 129193704670
+  },
+  "remote_browser_cases": {
+    "PR64": 12,
+    "PR65": 22
+  },
+  "remaining_at_review": "PR65 Windows mechanism CI still running; complete real parent acceptance separate",
+  "local_browser": "launch missing executable; previous official download truncated; no successful local browser result",
+  "real_calls": 0,
+  "product_edits": 0,
+  "fixture_errors_not_product_red": [
+    "execFileSync options type",
+    "synthetic initial version mismatch",
+    "response wait stub ignored predicate"
+  ],
+  "sha256": {
+    "evidence/U-086/response-body-independent/transport-probe.cjs": "e9886fb72af6d3b8d112e86ae45e9c287016458483c2f8edeae0a7f318229fc7",
+    "evidence/U-086/response-body-independent/README.md": "8eb3eb87de20e47857242e7dcbd86c8a829b73f2f9a15bd6a2b166f13c136293",
+    ".union/review-77b457c/node.log": "88008af0891325c601ecbff4d7b215b6a0f67c9a63b3a86424652bfd67ff1d1f",
+    ".union/review-77b457c/final-transport.log": "8d85bee2beda1fea1ffa6d4600b085f74f0dac4ff9889f5ef4455312f91d53e7",
+    "scripts/exit22-page-cancel.cjs": "4476f62e31ea17a2f68983f661f59a8a023e4ac9f9f82e97bb128ebf706b5249",
+    "scripts/exit22-registration-evidence.cjs": "ecd70acf6b972236264dbdf199a77bc96dff44ed47cc5912c60724b4177ea2bc"
+  }
+}

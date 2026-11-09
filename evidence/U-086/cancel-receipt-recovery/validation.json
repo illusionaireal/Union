@@ -1,0 +1,95 @@
+{
+  "at": "2026-11-09T08:54:58.168681+00:00",
+  "actor": "codex-home/single-duty-implementation",
+  "online_member_id": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+  "owner_preserved": "cafeef64-ac40-4062-97c1-ac82ece0a379",
+  "original_request": "#40 original cancel GET and restart; scope comment251",
+  "base": "9d7fe98ea9e790d89f16f6a128af949ecda8ccb8",
+  "integration": "4aa020bf6e528d1d9bc6ab28c5aa8b63cc53fe5c",
+  "tested_source": "a8504005aadfa281e262557724baf2cc625bf95e",
+  "toolchain": {
+    "node": "24.19.0",
+    "python": "3.12.10"
+  },
+  "red": {
+    "original_source": "9d7fe98ea9e790d89f16f6a128af949ecda8ccb8",
+    "tests": 34,
+    "passed": 1,
+    "failed": 33
+  },
+  "green": {
+    "cancel_receipt_tests": 34,
+    "related_node_tests": 134,
+    "npm_frontend_tests": 363,
+    "npm_node_tests": 143,
+    "management_tests": 37,
+    "browser": "actual Chrome/Core HTTP/SQLite restart and original receipt; changed service allowed; wrong Work/attempt/principal, HTTP403 and substituted actor refused",
+    "browser_fake_inference": 1,
+    "browser_fake_cancel": 1,
+    "observation_posts": 0,
+    "real_model_calls": 0
+  },
+  "python": {
+    "tests": 808,
+    "seconds": 498.527,
+    "skipped": 11,
+    "failures": 0,
+    "skips": [
+      "test_state_database_link_cannot_escape_the_validated_directory (tests.test_catalog_integrity.CatalogIntegrityTests.test_state_database_link_cannot_escape_the_validated_directory) ... skipped 'host cannot create a file symlink: 22'",
+      "test_core_save_and_two_stage_tool_exchange_use_actual_modeld_sdk_contract (tests.test_core_model_http.CoreModelHTTPTests.test_core_save_and_two_stage_tool_exchange_use_actual_modeld_sdk_contract) ... skipped 'Set UNION_BUN to the pinned Bun for the actual SDK integration'",
+      "test_built_candidate_declares_its_actual_model_schema (tests.test_core_model_release.CoreModelReleaseTests.test_built_candidate_declares_its_actual_model_schema) ... skipped 'Build both products before checking the package declaration'",
+      "test_one_work_uses_at_most_two_calls_and_reports_usage_without_cost (tests.test_core_work_real.RealBoundedAcceptanceTests.test_one_work_uses_at_most_two_calls_and_reports_usage_without_cost) ... skipped 'real acceptance needs UNION_MODELD_CONFIG and UNION_REAL_BOUNDED_ACCEPTANCE=1 (up to two calls)'",
+      "test_an_interrupted_call_stays_unknown_and_a_manual_reconcile_cannot_release_it (tests.test_core_work_real_interrupt.RealInterruptTests.test_an_interrupted_call_stays_unknown_and_a_manual_reconcile_cannot_release_it) ... skipped 'real interruption needs UNION_MODELD_CONFIG and UNION_REAL_INTERRUPT_ACCEPTANCE=1 (up to one call)'",
+      "test_mode_only_drift_rejected (tests.test_dev_orchestrator.ControllerTests.test_mode_only_drift_rejected) ... skipped 'Linux executable bits required'",
+      "test_same_repo_second_state_directory_cannot_take_cycle_lock (tests.test_dev_orchestrator.ControllerTests.test_same_repo_second_state_directory_cannot_take_cycle_lock) ... skipped 'Windows locking conflict raises OS error before POSIX path'",
+      "test_built_candidate_declares_durable_dispatch_support (tests.test_work_dispatch_compatibility.WorkDispatchCompatibilityTests.test_built_candidate_declares_durable_dispatch_support) ... skipped 'Build modeld before checking its release declaration'",
+      "test_attach_client_exit_requires_container_stop_evidence (tests.test_workspace.WorkspaceTests.test_attach_client_exit_requires_container_stop_evidence) ... skipped 'Linux-only container host'",
+      "test_container_command_exposes_only_selected_workspace_without_network_or_secrets (tests.test_workspace.WorkspaceTests.test_container_command_exposes_only_selected_workspace_without_network_or_secrets) ... skipped 'Linux-only container host'",
+      "test_killed_attach_client_is_unknown (tests.test_workspace.WorkspaceTests.test_killed_attach_client_is_unknown) ... skipped 'Linux-only container host'"
+    ]
+  },
+  "checks": {
+    "python": {
+      "mode": "python",
+      "started_at": "2026-11-09T08:45:53.061638+00:00",
+      "seconds": 500.281,
+      "exit_codes": [
+        0
+      ],
+      "log_sha256": "74a8cda2102b842bbf934855c28b86bd626779b5cfea8ddd1efceb1a0c99072c"
+    },
+    "npm": {
+      "mode": "npm",
+      "started_at": "2026-11-09T08:45:53.067643+00:00",
+      "seconds": 43.547,
+      "exit_codes": [
+        0
+      ],
+      "log_sha256": "0e175fa86fd91aa88f5c1c4d3175466dbe2b6c70ee48b2943cd91ee02c2a00c5"
+    }
+  },
+  "source_sha256": {
+    "scripts/exit22b_page.cjs": "4a025216d3c85aabbd314d357aeab731fdab9a63b5e71fd4a58c0ad7804fda95",
+    "scripts/exit22-cancel-evidence.cjs": "dc1483f01991134eafaba9ef5b936e0d8b5c6a3a3236993c8b5c68b3faa9ae98",
+    "tests/exit22-cancel-receipt.test.ts": "8498e72cfa96c70cef69118c19378b4e3e2db8f2cb90b1768effb683fae30689",
+    "tests/exit22-restart-snapshot.test.ts": "ab559abed84d32076cd70f04b5124995293153adcaae5f8ee0311df23c5ed489",
+    "evidence/U-086/cancel-receipt-recovery/browser.cjs": "4c8123ca9d6012226ce567390f0084c166d6020263acfc19666aaea9375168a1",
+    "evidence/U-086/cancel-receipt-recovery/http-host.py": "148452fa588c1eba8325dbf8696eb93dda19782769a30a02695255d355bab688"
+  },
+  "private_log_sha256": {
+    "u086-cancel-receipt-red.log": "914bf5b507872500b22896e07b9e7f75e65c2336501f16154151c50412d2e4b8",
+    "u086-cancel-receipt-green.log": "ecc16644415c555d7079aab6c2805f2e6fcce7eb226199219bba4b7ae0dc4b08",
+    "u086-cancel-related-node.log": "3efd2b3525196e917a7c4d1303553b1fb653e1a37107533d7db0792b9d657c8f",
+    "u086-cancel-browser.log": "b826af5309d364b519f4121521c6b320c6b4a7b56503e8e5c6d308355fd55414",
+    "u086-cancel-npm.log": "0e175fa86fd91aa88f5c1c4d3175466dbe2b6c70ee48b2943cd91ee02c2a00c5",
+    "u086-cancel-python.log": "74a8cda2102b842bbf934855c28b86bd626779b5cfea8ddd1efceb1a0c99072c"
+  },
+  "limits": [
+    "implementation session is not an independent reviewer",
+    "current-head CI and another engineering role required before adoption",
+    "no real driver main or new model spending",
+    "historical evidence139 unchanged",
+    "page-visible real output and same-command replay/transport counts remain separate exits",
+    "no deployment, migration, supervisor, configuration or lock changes"
+  ]
+}

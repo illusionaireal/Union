@@ -1,0 +1,23 @@
+{
+  "passed": 13,
+  "nonce": "UNION-EXIT22B-011d432a",
+  "workId": "work-exit",
+  "checks": [
+    "private ticket page loads",
+    "can_start probe: {\"can_start\":true,\"conns\":[{\"id\":\"connection-a\",\"is_default\":true,\"enabled\":true}],\"protocol\":\"core.models.v1\"}",
+    "tasks page reachable",
+    "work registered and attempt started through the product API",
+    "in-flight automatic reservation visible",
+    "in-flight automatic reservation carries the line-end id: work-cd9ac3daeb94b5b49a993b1af5812324459aab64e36795cb48866e47bc6a3c3a",
+    "cancel accepted by the product: {\"actor_principal_id\":\"b92a8d7a-8af7-4544-8926-ee279b9c31db\",\"base_version\":13,\"cancel_accepted\":true,\"cancel_connection\":{\"enabled\":true,\"grant_ref\":\"grant-388",
+    "delivery observation recorded: true",
+    "the cancelled step settles",
+    "step settled as unknown (cost unknown)",
+    "an unknown settlement keeps the budget reserved",
+    "the settled step survives the rebuild as unknown",
+    "the settle reason persists"
+  ],
+  "errors": [
+    "nav ok, models ok: [{\"enabled\":true,\"grant_ref\":\"grant-388a10f8bca9\",\"grant_revision\":1,\"id\":\"conne"
+  ]
+}

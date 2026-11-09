@@ -1,0 +1,129 @@
+{
+  "date": "2026-11-09",
+  "scope": "controlled",
+  "base": "76807aec2221fb5bbdacb3009b3c2020f6f9275b",
+  "integration": "4aa020bf6e528d1d9bc6ab28c5aa8b63cc53fe5c",
+  "branch": "codex/u086-page-delivery-gate",
+  "actor": "current single codex-home duty implementation session",
+  "online_member_id": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+  "kanban_scope_comment": 263,
+  "files": {
+    "scripts/exit22c_download.cjs": {
+      "sha256": "51e999cfface8995acef47ca5e4d2738c93d33e3642cc3668aef3c434b0ff52b",
+      "git_blob": "0be0eea7a4e6914595a44640c63c1654d3cf5289"
+    },
+    "tests/exit22-page-delivery.test.ts": {
+      "sha256": "d2d748c014f9252eb5295a2712359ddfc274f953c762c10ffd14b8d58a586540",
+      "git_blob": "c35aa9a3ee6a44411051c1df455db20aed6d5a5b"
+    },
+    "evidence/U-086/page-delivery-gate/browser.cjs": {
+      "sha256": "fb7f69b6cf188da20709c18521dbe20646983d403487468a002553d27f7c279d",
+      "git_blob": "9b871b0268940759c1a8b7e30a317a32fdac265a"
+    },
+    "evidence/U-086/page-delivery-gate/contract.md": {
+      "sha256": "a597afbeb4fa2c27c54c70aca7f429f214e9e8e2f91d7b435789583624fb8f33",
+      "git_blob": "980999d09225e5ce4d42e6f67612d05ead655129"
+    }
+  },
+  "logs": {
+    "red": {
+      "sha256": "be5090763e86b5ae30e87bf8a501e0cfb55cf9befdae5c53be25251b11de4a4a",
+      "passed": 0,
+      "failed": 7
+    },
+    "green": {
+      "sha256": "8822ddb58cffbb40c8902187c11aa04aad49086c685e18d6dd14eb582eb3d518",
+      "passed": 7,
+      "failed": 0
+    },
+    "related": {
+      "sha256": "c156b518586c34cf59fc8353e686f5fa82e235c724c546a1519d426077d85a6c",
+      "passed": 149,
+      "failed": 0
+    },
+    "browser-red": {
+      "sha256": "2d35f2774e54c6421f817b15fc9d86a33f0db7e2e7cd57dd0e25d1ba08407370",
+      "classification": "fixture/source frontend assets not built; not behavioral RED"
+    },
+    "browser-red-built": {
+      "sha256": "3364a2f8fdbd21115ffee4ae5f297655b806291e56c7c28d5a5b9ca21909c4ba",
+      "classification": "normal behavior RED; missing-control fixture rejected by CSP; not two behavior failures"
+    },
+    "browser-behavior-red": {
+      "sha256": "24bce62c77816d014a20cf648f257eb57d16ed927a14112b221aa620d563152b",
+      "passed": 0,
+      "failed": 2
+    },
+    "browser-green": {
+      "sha256": "a4461093e03386e097b2f6324f25d5b5dd7b6ab55bfc3eabadc192c7ca75838f",
+      "passed": 2,
+      "failed": 0,
+      "normal_work_posts": 2,
+      "missing_controls_work_posts": 0
+    },
+    "npm": {
+      "sha256": "c3fa56784ee9462764952449af5e947ebe7b0cb75bb01414de3f493a179ef862",
+      "exit_code": 0,
+      "node": 158,
+      "frontend": 363,
+      "management": 37
+    },
+    "python": {
+      "sha256": "015f4f29755c790a0a27a88f71b4833a642a9b65db033391cd7d2f7b119c82db",
+      "exit_code": 0,
+      "tests": 808,
+      "seconds": 551.52,
+      "skipped": 10,
+      "failures": 0
+    },
+    "build": {
+      "sha256": "959e958fa9cfd912cf23f6daa8a9dd614a9f08a15b35d1344447670b9d59ad4f"
+    },
+    "render": {
+      "sha256": "0e34220545e52afa374590398a63becffd0e0bb78c5a5f56f04918f84bd5b98a"
+    },
+    "management": {
+      "sha256": "749c24b21f06b3c484cd8b2d6c546bded8ecee3840da8edb32a4277bb930646b",
+      "exit_code": 0,
+      "tests": 37
+    }
+  },
+  "toolchain": {
+    "node": "24.19.0",
+    "python": "3.12.10",
+    "bun": "1.4.2"
+  },
+  "browser_calls": {
+    "runs": 4,
+    "disposable_hosts": 8,
+    "fake_turns_per_host": 2,
+    "fake_turns": 16,
+    "real_calls": 0
+  },
+  "full_suite_real_acceptance": "both real bounded and interruption tests skipped; no real account grant used",
+  "skip_scope": "Windows/platform features, real authorization and unbuilt release packages remain separate; not release acceptance",
+  "preservation": {
+    "preexisting_files": 20,
+    "regular_index": "unchanged",
+    "product_source": "identical to base and integration",
+    "original_request_restart_checks": "unchanged"
+  },
+  "adoption": "pending another engineering role and current-head protected CI; no self-approval",
+  "remaining": [
+    "API work registration and duplicate preparation in full drivers",
+    "full original page/real output and historical139 evidence",
+    "remote dispatch count and resource authorization",
+    "parent #22 and real #39/#40 acceptance"
+  ],
+  "precommit_check": {
+    "rejected_unpublished_tree_commit": "92e779377e95b8a64a549971b40dc03bb9162b62",
+    "reason": "Windows CRLF in generated documentation/history rejected by diff --check",
+    "normalization_only": [
+      "management/project.json",
+      "evidence/U-086/page-delivery-gate/contract.md",
+      "evidence/U-086/page-delivery-gate/README.md",
+      "evidence/U-086/page-delivery-gate/validation.json"
+    ],
+    "behavior_source_changed": false
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "author_base": "75c7a946ea459861fa60d9831b3b1fedfa1376ed",
+  "integration_read": "7fe50c213adcf2d826109b6fe272f31ee09bccf8",
+  "actor": "codex-home/single-duty-implementation",
+  "scope_comment": 238,
+  "real_model_calls": 0,
+  "driver_main_executions": 0,
+  "red": {
+    "tests": 31,
+    "pass": 1,
+    "fail": 30
+  },
+  "green": {
+    "tests": 31,
+    "pass": 31,
+    "fail": 0
+  },
+  "logs": {
+    "output-gate-red.log": {
+      "sha256": "1c2a63fc6918fcbdfe12292e43305f33cee973cfaafce5da9ed7e2e01ab53dcb",
+      "bytes": 22202
+    },
+    "output-gate-green-initial.log": {
+      "sha256": "7e9553b43571fa752637eb3d766c27d46f9f7e0f090ddc43b018113c887d72b8",
+      "bytes": 3738
+    },
+    "output-gate-green.log": {
+      "sha256": "19903a17601b557a0249bf15b49e3572e174751edb9011d98d56937d22b1bc9a",
+      "bytes": 1583
+    },
+    "output-gate-python-full.log": {
+      "sha256": "39fb7a1e9cdab60d58ca312bd70b01f3efb0172f57d9409224cb05f32888dc9d",
+      "bytes": 146389
+    },
+    "output-gate-npm-full.log": {
+      "sha256": "0d3ce2aa1164fe2f3dd5945b1ce6ac415f51f6ea989396c07321111a87c4d30e",
+      "bytes": 15197
+    },
+    "output-gate-management.log": {
+      "sha256": "dcdedaee9cc3906aafc575ba0e0cb417370b5e0e1b2350ff7750df96a94b566b",
+      "bytes": 3784
+    },
+    "output-gate-render.log": {
+      "sha256": "0e34220545e52afa374590398a63becffd0e0bb78c5a5f56f04918f84bd5b98a",
+      "bytes": 144
+    },
+    "output-gate-combined-render.log": {
+      "sha256": "0e34220545e52afa374590398a63becffd0e0bb78c5a5f56f04918f84bd5b98a",
+      "bytes": 144
+    },
+    "output-gate-combined-management.log": {
+      "sha256": "9fd948a1478bc180926ee10b8f4dd5384b268debd5d4b0db43ff60bf4393689a",
+      "bytes": 3784
+    }
+  },
+  "tested_snapshot_source_sha256": {
+    "scripts/exit22b_page.cjs": "d50023e5b9020c38f250614082066ca78a6879ed07ca847611384d4eb5e6ff9c",
+    "tests/exit22b-original-output.test.ts": "1396ffbe9d3170af1154e9bb69f07558f4523eed74c35eddd17f5fc0a4c4306b",
+    "evidence/U-086/original-output-gate/contract.md": "074a0a7432518ded04c136e544149d2ad1e480942d64b4464ee43169a749cad5",
+    "evidence/U-086/original-output-gate/README.md": "c010c03839cd022482639e0fadceffaf86734972f4431303eb8db8bb1ddfcae8"
+  },
+  "source_hash_scope": "prepared source commit before final evidence-only updates; executable blobs unchanged",
+  "full_validation": {
+    "source_commit": "bbbe042bdf74462047eeae1260579511d5e49d13",
+    "python_tests": 808,
+    "python_seconds": 505.59,
+    "python_skipped": 10,
+    "python_failures": 0,
+    "npm_check": "passed",
+    "frontend_tests": 363,
+    "node_tests": 51,
+    "management_tests": 37,
+    "management_render": "passed; PROJECT/TASKS unchanged",
+    "driver_node_syntax": "passed",
+    "toolchain": {
+      "node": "24.19.0",
+      "python": "3.12.10",
+      "bun": "1.4.2"
+    },
+    "vendor": "upstream lock/commit/file hashes and exact recorded patch verified read-only",
+    "setup_note": "initial textual vendor diff comparison differed only in Git hash abbreviation; verified with explicit abbrev=7 before any full tests",
+    "adoption_gate": "current-head protected CI and a non-implementing engineering role review remain required"
+  },
+  "intermediate_vm_setup": {
+    "tests": 31,
+    "pass": 28,
+    "fail": 3,
+    "cause": "TextEncoder absent from synthetic VM globals; no product failure",
+    "correction": "expose the standard Node TextEncoder to the test VM"
+  },
+  "red_driver_sha256": "296efbd466f34862c7552ec69d40aa67b81c81355c6c9f9cee748f82f4bc9cea",
+  "red_test_sha256": "f98c5b273c0d680e5ce594e23dea3fec000a23a8a843e421de5de20bd56f5589",
+  "concurrent_author_sync": {
+    "head": "c6862d88b519acdc9b67f6715f5110e2bba94585",
+    "scope": "PR55 U108 evidence/history only; product and driver blobs unchanged",
+    "both_history_entries_preserved": true,
+    "management_tests": 37,
+    "management_render": "passed; generated views unchanged"
+  }
+}

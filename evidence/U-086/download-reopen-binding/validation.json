@@ -1,0 +1,92 @@
+{
+  "tested_commit": "82787b53f70e3d007a0c9269164606e5bee0f157",
+  "tested_tree": "c97791479b1b51811e737ff2901589c96eda5b12",
+  "author_baseline": "7f50feff31ab6c2275e160dcea518498155f540c",
+  "prior_unpublished_candidate": "b189a88af064a47809fb1c54f7b0385878420f8d",
+  "integration": "a401d2ba3469b48b3125b749c57c21b756536bbf",
+  "python": {
+    "candidate": "82787b53f70e3d007a0c9269164606e5bee0f157",
+    "tree": "c97791479b1b51811e737ff2901589c96eda5b12",
+    "started_at": "2026-11-09T04:44:09.364934+00:00",
+    "seconds": 493.344,
+    "exit_code": 0,
+    "log_sha256": "33cc88c8775ffccdd1232d4bcdfbec43ec8ed782af4378b5f6c3b8801d67613e",
+    "real_model_calls": 0,
+    "tests": 798,
+    "skipped": 10,
+    "failures": 0
+  },
+  "npm": {
+    "candidate": "82787b53f70e3d007a0c9269164606e5bee0f157",
+    "tree": "c97791479b1b51811e737ff2901589c96eda5b12",
+    "started_at": "2026-11-09T04:33:14.380467+00:00",
+    "seconds": 30.031,
+    "exit_code": 0,
+    "log_sha256": "e3c12d8747c4aedab0d54f7a175b495bbc55e1d4810a9fe4161a7146ae21bbd9",
+    "real_model_calls": 0,
+    "management_tests": 37,
+    "node_tests": 20,
+    "frontend_tests": 343,
+    "typecheck": "passed",
+    "build": "passed"
+  },
+  "probes": {
+    "baseline": {
+      "tests": 17,
+      "failing_tests": 11,
+      "false_acceptances": 8,
+      "valid_control_rejected": 1,
+      "unexpected_driver_type_errors": 2
+    },
+    "candidate": {
+      "tests": 17,
+      "failures": 0,
+      "errors": 0
+    }
+  },
+  "source_sha256": {
+    "scripts/exit22c_download.cjs": "d395d30d34ec7752b7f624bd3d74d6a3d9d215e2aea414fd4b6e762b4d1e83ec",
+    "tests/exit22c-reopen.test.ts": "de80a9111a2fd67701af78bcce1791aee9b35e74148dff235d4dd90d9694fc09",
+    "evidence/U-086/download-reopen-binding/probes.py": "66323c55d3ace22d84898289acce4909325c263300dbee50264bc495b98ef3ab"
+  },
+  "initial_environment_failure": {
+    "candidate": "82787b53f70e3d007a0c9269164606e5bee0f157",
+    "tree": "c97791479b1b51811e737ff2901589c96eda5b12",
+    "started_at": "2026-11-09T04:33:14.374467+00:00",
+    "seconds": 495.343,
+    "exit_code": 1,
+    "log_sha256": "c8528c4bba9decd9cbe9dc0de921c2c6bbbd671b343184decbbd60b8c469dcd5",
+    "real_model_calls": 0
+  },
+  "dependency_preparation": {
+    "gitlink": "805a42ffaa56b29a88baef87c7567f1ab9a40a8f",
+    "recorded_patch_matches_with_same_abbreviation": true,
+    "lock_files_verified": 3,
+    "action": "read-only junctions in validation snapshot; original vendor/index unchanged",
+    "initial_failure": "CoreModelHTTPTests setUp line53: JSONDecodeError before test behavior; exact source archive omitted vendor and modeld dependency links",
+    "initial_full_suite": {
+      "tests": 798,
+      "errors": 1,
+      "failures": 0,
+      "skipped": 10
+    }
+  },
+  "logs": "Private log hashes only; original records retained.",
+  "real_model_calls_added": 0,
+  "review": "Implementation session; another engineering role review and current-head CI required.",
+  "evidence_only_followup": "The following commit changes only evidence/index/newline normalization; executable test and driver bytes remain identical to tested_commit.",
+  "sdk_dependency_rechecks": [
+    {
+      "log_name": "sdk-startup-recheck.log",
+      "log_sha256": "8f5e9a090c7efaa5165df20093a568ec2aeb24116c41a09ccf5de6ff561a5d64",
+      "exit_code": 1
+    },
+    {
+      "log_name": "sdk-prepared-recheck.log",
+      "log_sha256": "e07ac07f62ea75be46c14775b0d191016233125c29a22e90d579e6ceb382a31d",
+      "exit_code": 0
+    }
+  ],
+  "current-red_log_sha256": "62b0b500f3d1b4c236d64ca4f8185866dcbc5373ffa4fb9d508dc1c01bcfa904",
+  "current-green_log_sha256": "94ed6bb8193ed451e70bb5af971197f372200aaf95cdb487635e21e62f805103"
+}

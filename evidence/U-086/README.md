@@ -1,5 +1,72 @@
 # U-086 / #40：新候选与当前集成边界复核
 
+2026-11-09 重开现在同时保留原成果来源、完整记录和交付引用，不能仅凭相同摘要
+掩盖成果事实变更。18个Node/9个实际HTTP浏览器反例RED→GREEN，见
+[原成果持久性](result-provenance/README.md)。仍须当前head CI和非实施复核，
+原owner/WIP与真实父出口保持，真实调用0。
+
+2026-11-09 两份一致但错误的预算快照不再通过重开验收；按全部used/unknown步进
+逐项计数，保留released和未知用量语义。严格RED与246相关Node、7实际Chrome
+场景见[预算守恒](budget-conservation/README.md)。仍需准确head CI与非实施复核，
+原DSH owner和真实父出口保持，真实模型0。
+
+2026-11-09 登记响应断体恢复：原助手在 start_work 已落盘、HTTP200头后正文
+中断时一直等待，并可忽略完整错误POST回执。两个完整登记片段实际Chrome/
+Core HTTP/SQLite先2正常通过/8反例失败，再10项通过，原16浏览器回归通过。
+保留页面原ID查询、已知403与完整错回执拒绝，零模型登记；见
+[合同与验证](registration-response-body/README.md)。候选继承PR64，须各自
+独立工程角色复核与准确head CI；原owner/WIP及真实父出口保持。
+
+2026-11-09 PR63接续：取消HTTP200响应头后正文断线会卡住验收driver；实际
+Chrome/Core HTTP/SQLite截断反例RED后，改为等待原请求成功或失败结束事件，
+再经原页面控件/原GET恢复。四项新故障场景及原八项浏览器通过，已知403与完整
+错回执仍拒绝，原owner/真实出口保留。见[合同与验证](cancel-response-body/README.md)。
+本增量仍需准确head CI及另一工程角色复核，不能沿用PR63旧head批准。
+
+2026-11-09 原请求页面取消验收补漏：中断driver改为原Work实际取消按钮，
+刷新后从原取消请求控件GET恢复，POST丢失不补发。三个实际Chrome/HTTP/SQLite
+原源RED→GREEN，八项浏览器和216相关Node边界通过；见
+[合同与验证](page-cancel-action/README.md)。基于PR62，不自批候选，不关闭
+DSH负责的真实出口；无新增真实推理。
+
+2026-11-09 原成果采用/交付页面验收补漏：移除driver直接API采用/交付和手工
+finish_attempt补救，实际操作同一Work/result的Core控件，严格核对原成果交付。
+7项原源RED→GREEN、实际Chrome/CoreHTTP/SQLite缺失控件反例成对验证；见
+[本轮合同与验证](page-delivery-gate/README.md)。仍待非实施角色复核/准确head CI，
+DSH owner及真实出口保持，无新增真实推理。
+
+2026-11-09 输出到取消恢复的主体传递补漏：当前作者abef544正常链路因
+outputObservation缺principal_id而拒绝原GET，独立片段测试未覆盖衔接。
+本次两行修复经原源4项RED→GREEN及实际Chrome/Core/SQLite成对验证；
+[合同、证据与保留边界](reader-binding/README.md)。DSH原owner/真实出口保持，
+本实施会话待另一工程角色复核/当前head CI，不自批、不新增真实推理。
+
+2026-11-09 最终下载会话核验组合：DSH修复1bd324a与PR58原取消恢复合并，
+新增常规CI三项竞态反例，旧源1PASS/3FAIL→组合4PASS。原相关134项、两组
+实际Chrome/HTTP/SQLite通过；双方实施与独立复核分开记录，见
+[组合及保留边界](final-read-combination/README.md)。真实调用0，原owner/真实出口保持。
+
+2026-11-09 原取消GET重开协助候选：原源34项1通过33失败，修复后34全通过，
+相关134 Node和实际Chrome/HTTP/SQLite原回执恢复通过；仅GET取证，fake1/cancel1/
+真实0。见[原取消回执恢复](cancel-receipt-recovery/README.md)。当前head CI与另一
+工程角色复核仍是采用条件，不据本断言修复关闭DSH负责的#40或真实父出口。
+
+2026-11-09 原Core快照恢复协助：两个验收driver改用固定原AU/Work的Core前后
+快照，核对完整原请求/用量/预约集合；40项原源反例3通过37失败，扩展相关100项
+与实际Chrome/HTTP/SQLite通过，真实调用0。见[合同、失败与验证](restart-snapshot/README.md)。
+这是待独立工程复核/当前CI的断言候选；DSH owner与139旧失败、真实出口保留。
+
+2026-11-09 download restart assistance: the original AU/Work/result, digest,
+delivery binding and HTTP status are now checked together. Latest author RED,
+17-probe GREEN and full validation are indexed in
+[the scoped repair](download-reopen-binding/README.md). This implementation
+awaits independent review/current CI; real acceptance and DSH ownership remain.
+
+2026-11-09 验收宿主协助：作者096815e的transport会替换产品保存的连接/grant，
+真实回环HTTP与Console重启反例已先RED，再复用产品factory修复。
+见[范围、验证与剩余出口](host-connection-integrity.md)。本会话是该修复实施者，
+须另一工程角色复核及准确head CI；不据此采用原127完整真实验收声明。
+
 2026-11-09 宿主最小集成候选：PR45准确`cfe0631`已获另一工程角色
 chatGPT-online的限定复核5821070358；本轮从实际`d209a0e`引入完全相同的
 宿主、测试与原证据，未导入作者driver或127–130真实记录。9项HTTP/重启
@@ -135,6 +202,25 @@ PR48/PR49 are combined in a separate, not-yet-adopted candidate; both histories
 and the independent fixture review gate are preserved. See
 [the exact integration inputs](host-fixture-integration.md).
 
+## Original output before interruption (2026-11-09)
+
+The scoped [original-output gate repair](original-output-gate/README.md)
+retains DSH ownership and the real parent exits. It fixes optional/mismatched
+event acceptance with31 executable offline tests; it does not run the real
+driver or approve itself. Exact source, failures and validation are indexed.
+
 PR53 current-integration refresh: [conflict resolution and combined validation](host-fixture-current-integration.md).
 This candidate preserves both histories and current U108; host and fixture
 are independently reviewed, with final-head CI pending before rewrite adoption.
+
+Single preparation: [one original AU and grant per acceptance run](single-setup/README.md).
+Strict RED/GREEN and real Core/SQLite creation checks; no real inference or grant.
+Independent review and exact-head CI are still required before integration.
+
+Core registration acceptance: [page entry and original command recovery](page-registration/README.md).
+Full driver prefixes run on disposable Core/SQLite; no model request or real grant.
+Independent review and current-head CI remain adoption gates.
+
+Observed call settlement: [reject released after original output](observed-settlement/README.md).
+Two acceptance assertions tightened after actual fragment and HTTP/browser RED.
+Unknown reservation and original facts remain; no product accounting changes or real inference.

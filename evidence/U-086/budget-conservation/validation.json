@@ -1,0 +1,115 @@
+{
+  "base": "726dad42ec109e7dee3648ada68eabe7cb16f6f1",
+  "integration": "4aa020bf6e528d1d9bc6ab28c5aa8b63cc53fe5c",
+  "board": {
+    "read_http": 200,
+    "revision": 825,
+    "scope_comment": 281,
+    "owner_preserved": true
+  },
+  "actor": "codex-home/single-duty-implementation",
+  "online_user_id": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+  "independent_review": "required; implementer does not self-approve",
+  "red": {
+    "node_total": 80,
+    "node_pass": 60,
+    "failing_leaf_cases": 18,
+    "failed_parent_tests": 2,
+    "browser_pass": 1,
+    "browser_fail": 6
+  },
+  "green": {
+    "related_node_tests": 246,
+    "related_node_pass": 246,
+    "browser_scenarios": 7,
+    "browser_pass": 7
+  },
+  "npm": {
+    "passed": true,
+    "node_tests": 255,
+    "frontend_tests": 363,
+    "management_tests": 37,
+    "typecheck": true,
+    "build": true
+  },
+  "full_python": {
+    "tests": 808,
+    "seconds": 514.231,
+    "skipped": 10,
+    "failures": 0,
+    "errors": 0,
+    "pinned_bun_explicit": "1.4.2"
+  },
+  "original_history_preserved": {
+    "browser_missing_executable": "environment failure before actual RED; two fixture fake calls occurred during setup",
+    "regression_fixture": "four final-read fixture failures lacked the completed step represented by used=1; one rejected-release expectation now fails earlier on budget mismatch",
+    "publication_line_endings": "Initial exact-commit diff check rejected CRLF introduced by the ledger serializer. No commit/ref/PR was published. Candidate ledger normalized to repository LF with parsed JSON unchanged; ordinary index/HEAD untouched."
+  },
+  "models": {
+    "real_calls": 0,
+    "controlled_browser_fake_calls": {
+      "initial_browser_environment_failure": 2,
+      "actual_red": 2,
+      "green": 2
+    },
+    "other_controlled_calls": "full Python uses its existing local doubles, including the pinned SDK loopback test; no real account configuration supplied"
+  },
+  "product_changes": false,
+  "working_copy": {
+    "files_preserved": 20,
+    "ordinary_index_and_head_preserved": true,
+    "vendor_preserved": true
+  },
+  "logs": {
+    "red": {
+      "sha256": "768cdad188dc16ad13387f7fd4e53913c5af38cbc463ebc5119c97dae4fbeb65"
+    },
+    "initial_browser_environment": {
+      "sha256": "c071761b8b4974d8c2ce6683a10dbba12851d720caa5db0d6b226014c216d694"
+    },
+    "browser_red": {
+      "sha256": "151505f3692dd4555f86f5436c860c8732aacca01191db12b6d47f1fa755b3e6"
+    },
+    "initial_regression": {
+      "sha256": "57096f743c9d6160d714017034abb439bd6eb27318620885fecfcfabba002ec8"
+    },
+    "green": {
+      "sha256": "b3ce679f000fcb806ad37135c301e90d00367f6a4d9341dd96b0418bacdeed72"
+    },
+    "browser_green": {
+      "sha256": "c8f735526d898eb75ce40b8f39235f96c5c6cb898837953f6342b5c19d069ef2"
+    },
+    "npm": {
+      "sha256": "c03bf806a4bd883d74b9fc4952eba32cb8d253276a1dd2e7288c3a2ebfe2a421"
+    },
+    "python": {
+      "sha256": "8782cad6e9c4c3ad0ec899e63435af8a58811788cd9eb16101d80f460e9d2b96"
+    },
+    "canonical_management": {
+      "sha256": "c95d530448ce12c8f7ff6f67d9f4b0f7842b345c49c2a7a716e26a0fbc3e9fac",
+      "passed": true,
+      "tests": 37
+    }
+  },
+  "source_sha256": {
+    "scripts/exit22-restart-evidence.cjs": "304e5788e73cb2d12b84fd5358c0825057c1c1c2dbd8bbf84cb9f1e3a52d9f5e",
+    "tests/exit22-restart-snapshot.test.ts": "e4e1a8ed19a09d094fe2f7798fa83508458827efeb469df7225f4da96d9d6a7b",
+    "tests/exit22-final-read.test.ts": "a38aaffab609ac48c63c1ae769e96003f00c7c43ba061dd21f6cdd50be4ff6f3",
+    "tests/exit22-observed-settlement.test.ts": "7c16afb62a3244d47bf7d7c8a6d6d1f76e9442a5c154e236f56ea4997706bde3",
+    "evidence/U-086/budget-conservation/browser.cjs": "4a17aa24788608ccbe93a31e9cb36f5335fe99a846c44cbfba637bd844872116",
+    ".github/workflows/ci.yml": "5c641df2c2c8f18bf6f89a765b0663964cfa5ee63f225d387173a174ffac70d7",
+    "evidence/U-086/budget-conservation/contract.md": "6970620c22fd7a6a328d1ff48be4ee623e3d54f984469b6154cc0f49514ab451"
+  },
+  "publication_preflight": {
+    "checked_at": "2026-11-09T14:43:07.721295+00:00",
+    "tracked_base_files": 2221,
+    "declared_existing_file_changes": 7,
+    "new_evidence_files": 4,
+    "all_previous_source_and_log_hashes_matched": true,
+    "predecessor_pr": 66,
+    "predecessor_head": "726dad42ec109e7dee3648ada68eabe7cb16f6f1",
+    "predecessor_independent_review": 5827411245,
+    "ordinary_checkout_preserved": true,
+    "current_budget_increment_review": "pending"
+  }
+}

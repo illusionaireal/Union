@@ -1,0 +1,8 @@
+{
+  "passed": 24,
+  "workId": "work-exit",
+  "nonce": "UNION-EXIT22B-39b73d8f",
+  "errors": [
+    "nav ok, models ok: [{\"enabled\":true,\"grant_ref\":\"grant-6656cac16897\",\"grant_revision\":1,\"id\":\"conne"
+  ]
+}

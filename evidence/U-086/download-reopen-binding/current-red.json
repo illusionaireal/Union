@@ -1,0 +1,149 @@
+{
+  "source_input": "7f50fef",
+  "source_path": "scripts/exit22c_download.cjs",
+  "source_sha256": "a3ffc57076dec9e9b28ea3b6d4d2df6310d6535a4cc095ed746e5eaffc8729be",
+  "block_sha256": "42f9f83da99c90ef487917dc3314c5170390f3bae15900f92898b55373f36ce5",
+  "block": "  const after = await page.evaluate(async auId => {\n    const value = await (await fetch('/api/v1/work?organization_id=' + auId)).json();\n    return value;\n  }, createdReceipt.organization_id);\n  const entry = (after.works || []).find(w => w.id === workId);\n  check('work still delivered after a console rebuild', entry && entry.status === 'delivered');\n  const adoptedAfter = (entry.results || []).find(r => r.status === 'adopted');\n  const anchored = entry.delivered_result_id\n    ? (entry.delivered_result_id === adoptedAfter.id && entry.delivered_result_id === resultId)\n    : (adoptedAfter.id === resultId);\n  check('the original adopted result survives the rebuild (original id): ' + (adoptedAfter && adoptedAfter.id),\n        Boolean(adoptedAfter) && anchored);\n",
+  "contains_settled_step": false,
+  "tests": 17,
+  "failures": 11,
+  "errors": 0,
+  "observations": {
+    "test_another_adopted_result_cannot_replace_original": {
+      "accepted": false,
+      "checks": [
+        "work still delivered after a console rebuild"
+      ],
+      "reads": 1
+    },
+    "test_delivery_must_bind_the_original_result": {
+      "accepted": false,
+      "checks": [
+        "work still delivered after a console rebuild"
+      ],
+      "reads": 1
+    },
+    "test_matching_body_with_http_403_is_not_success": {
+      "accepted": true,
+      "checks": [
+        "work still delivered after a console rebuild",
+        "the original adopted result survives the rebuild (original id): original-result"
+      ],
+      "reads": 1
+    },
+    "test_missing_au_is_not_proof": {
+      "accepted": true,
+      "checks": [
+        "work still delivered after a console rebuild",
+        "the original adopted result survives the rebuild (original id): original-result"
+      ],
+      "reads": 1
+    },
+    "test_missing_delivery_binding_is_not_proof": {
+      "accepted": true,
+      "checks": [
+        "work still delivered after a console rebuild",
+        "the original adopted result survives the rebuild (original id): original-result"
+      ],
+      "reads": 1
+    },
+    "test_missing_digest_is_not_proof": {
+      "accepted": true,
+      "checks": [
+        "work still delivered after a console rebuild",
+        "the original adopted result survives the rebuild (original id): original-result"
+      ],
+      "reads": 1
+    },
+    "test_missing_original_work_is_rejected": {
+      "runtime_error": "TypeError",
+      "checks": [
+        "work still delivered after a console rebuild"
+      ],
+      "reads": 1
+    },
+    "test_missing_protocol_is_not_proof": {
+      "accepted": true,
+      "checks": [
+        "work still delivered after a console rebuild",
+        "the original adopted result survives the rebuild (original id): original-result"
+      ],
+      "reads": 1
+    },
+    "test_original_delivered_result_survives": {
+      "accepted": true,
+      "checks": [
+        "work still delivered after a console rebuild",
+        "the original adopted result survives the rebuild (original id): original-result"
+      ],
+      "reads": 1
+    },
+    "test_original_digest_must_survive": {
+      "accepted": true,
+      "checks": [
+        "work still delivered after a console rebuild",
+        "the original adopted result survives the rebuild (original id): original-result"
+      ],
+      "reads": 1
+    },
+    "test_original_survives_beside_another_adopted_result": {
+      "accepted": false,
+      "checks": [
+        "work still delivered after a console rebuild"
+      ],
+      "reads": 1
+    },
+    "test_response_must_be_a_work_snapshot": {
+      "accepted": true,
+      "checks": [
+        "work still delivered after a console rebuild",
+        "the original adopted result survives the rebuild (original id): original-result"
+      ],
+      "reads": 1
+    },
+    "test_response_must_be_the_original_au": {
+      "accepted": true,
+      "checks": [
+        "work still delivered after a console rebuild",
+        "the original adopted result survives the rebuild (original id): original-result"
+      ],
+      "reads": 1
+    },
+    "test_unadopted_original_result_is_rejected": {
+      "runtime_error": "TypeError",
+      "checks": [
+        "work still delivered after a console rebuild"
+      ],
+      "reads": 1
+    },
+    "test_undelivered_work_is_rejected": {
+      "accepted": false,
+      "checks": [],
+      "reads": 1
+    },
+    "async_success": {
+      "accepted": true,
+      "checks": [
+        "success"
+      ],
+      "reads": 0
+    },
+    "async_runtime_error": {
+      "runtime_error": "ReferenceError",
+      "checks": [],
+      "reads": 0
+    },
+    "sync": {
+      "accepted": false,
+      "checks": [],
+      "reads": 0
+    },
+    "async": {
+      "accepted": false,
+      "checks": [],
+      "reads": 0
+    }
+  },
+  "real_model_calls": 0,
+  "scope": "exact restart block; synthetic HTTP observations only"
+}

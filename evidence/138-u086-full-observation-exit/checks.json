@@ -1,0 +1,34 @@
+{
+  "passed": 24,
+  "nonce": "UNION-EXIT22B-39b73d8f",
+  "workId": "work-exit",
+  "checks": [
+    "private ticket page loads",
+    "can_start probe: {\"can_start\":true,\"conns\":[{\"id\":\"connection-a\",\"is_default\":true,\"enabled\":true}],\"protocol\":\"core.models.v1\"}",
+    "tasks page reachable",
+    "work registered and attempt started through the product API",
+    "in-flight automatic reservation visible",
+    "cancelled-request own events observed (Core surface)",
+    "Core work-events surface present (U108): true",
+    "cancelled-request events observed before cancel (own-matched: 0)",
+    "in-flight automatic reservation carries the line-end id: work-705fccc3f09c4fe1d940a7f1ef1087e5561efc9f58f8591fb93cf159f665a0ca",
+    "cancelled-request own events observed before cancel (Core surface: true)",
+    "the cancelled request is this run's own in-flight request (distinct id, own attempt): work-705fccc3f09c4fe1d940a7f1ef1087e5561efc9f58f8591fb93cf159f665a0ca / work-exit#a1",
+    "cancel accepted by the product: {\"actor_principal_id\":\"5a3bb55b-5b60-49aa-a226-ddde5ad60924\",\"base_version\":13,\"cancel_accepted\":true,\"cancel_connection\":{\"enabled\":true,\"grant_ref\":\"grant-665",
+    "cancel receipt identifies the same command/attempt/step/model request",
+    "delivery observation recorded: true",
+    "cancel receipt id matches the submitted cancel command",
+    "original GET returns the delivered cancel receipt (identity match)",
+    "the cancelled step settles",
+    "step settled as unknown (cost unknown)",
+    "an unknown settlement keeps the budget reserved",
+    "an adopted result survives the rebuild and matches the delivered id: undefined",
+    "the settled step survives the rebuild as unknown",
+    "the settled step keeps its original identity across the rebuild",
+    "the settle reason persists",
+    "an unresolved step keeps its original reservation after the rebuild"
+  ],
+  "errors": [
+    "nav ok, models ok: [{\"enabled\":true,\"grant_ref\":\"grant-6656cac16897\",\"grant_revision\":1,\"id\":\"conne"
+  ]
+}

@@ -1,0 +1,135 @@
+{
+  "actor": "codex-home/single-duty-review-integration",
+  "scope_comment": 256,
+  "card_owner_preserved": "DSH",
+  "integration": "4aa020bf6e528d1d9bc6ab28c5aa8b63cc53fe5c",
+  "author_fix": "1bd324a2ed32229f0673cccf14705cb784a9bb4d",
+  "pr58_reviewed_head": "b293c6266f1a337ff58b64a8a62ee94b348656da",
+  "combined_tree_before_new_regression": "820172cffab07ed714acec6634f0431ca28b9a15",
+  "independent_roles": {
+    "original_final_read_review": "chatGPT-online/review5823560248",
+    "author_final_read_implementation": "DSH/1bd324a",
+    "final_read_reviewer": "codex-home/current session, not author of 1bd324a",
+    "cancel_implementation": "codex-home/pr58",
+    "cancel_reviewer": "DSH/online message101, GET200 read at revision764"
+  },
+  "source_blobs": {
+    "scripts/exit22c_download.cjs": "815c0b42f7d3c8dcf0a011b80d012683ca87b7c3",
+    "tests/exit22c-reopen.test.ts": "bd74cc7a969a5e51ff4b349c991fdf8224f736f7",
+    "scripts/exit22b_page.cjs": "90d5ad18076555b8afc1d5d94d203e2284502f19",
+    "scripts/exit22-cancel-evidence.cjs": "684fbffe5ec096d3498b67459feef4b4ae242237",
+    "scripts/exit22-restart-evidence.cjs": "d909e96e757500090c33a0a6d4ce4ccdea01943f"
+  },
+  "new_test_sha256": "b36d477b294d8abbe99150b2894a5b513c05d2a0f7529fa21d43d607758d5e78",
+  "red": {
+    "source": "9d7fe98ea9e790d89f16f6a128af949ecda8ccb8",
+    "tests": 4,
+    "pass": 1,
+    "assertion_failures": 3,
+    "runtime_errors": 0
+  },
+  "green": {
+    "tests": 4,
+    "pass": 4,
+    "failures": 0
+  },
+  "original_review_probe_on_author": {
+    "pass": 7,
+    "failures": 0,
+    "note": "Historical probe emits a literal old head; actual input is the exact author archive, verified by source hashes."
+  },
+  "original_related_tests_on_author": 100,
+  "original_related_tests_on_combination": 134,
+  "historical_probe_combination_incompatibility": {
+    "pass": 6,
+    "failures": 1,
+    "error": "ReferenceError: originalCancelReference is not defined",
+    "meaning": "Old interrupt VM omits the new PR58 reference; preserved separately, not a product RED. New permanent tests target actual download code; PR58 has its own full fixture."
+  },
+  "browser": {
+    "restart": "Chrome/Core HTTP/SQLite; two fake turns; new service allowed; wrong Work and HTTP403 rejected; GET-only",
+    "cancel": "Chrome/Core HTTP/SQLite; one fake inference, one fake cancel; original receipt before/after; wrong Work/attempt/principal, HTTP403, substituted receipt rejected; observation POST0"
+  },
+  "real_model_calls": 0,
+  "deployment_switches": 0,
+  "migrations": 0,
+  "logs": {
+    "duty-final-read-author-probes.json": {
+      "sha256": "04cabd111e03a69ce9632b962c2ea74601c548349f3dd89f3b9272d966eccff8",
+      "bytes": 5665
+    },
+    "duty-final-read-author-node.log": {
+      "sha256": "0309e9ff81469644f5e98358bf1e8339d1aadc72e9a3227d9264fa160431a3d8",
+      "bytes": 5525
+    },
+    "duty-final-read-combined-probes.json": {
+      "sha256": "d50e876ca03bc8511f34545e34c0ba542b869e100de346c21aa7e7b444c09554",
+      "bytes": 5716
+    },
+    "duty-final-read-combined-node.log": {
+      "sha256": "abe2b13f6dd2b4059d63d736452912551cb73f83247643b8293243521e4646f9",
+      "bytes": 7272
+    },
+    "duty-final-read-red.log": {
+      "sha256": "1f02b7b9cf2bbfa0627d10f1898a36e553988a64247efaeb969ced73ec24d7ea",
+      "bytes": 3687
+    },
+    "duty-final-read-green.log": {
+      "sha256": "1959fbcc9aa07256c54d5b185ed8230ce7a124f2309c3b5f059d5bb36b8b18e9",
+      "bytes": 479
+    },
+    "duty-final-read-restart-chrome.log": {
+      "sha256": "6cba2ec38708decf81feac0f5466ac4a106727a9ef000d941a53e5ad94203f02",
+      "bytes": 172
+    },
+    "duty-final-read-cancel-chrome.log": {
+      "sha256": "b826af5309d364b519f4121521c6b320c6b4a7b56503e8e5c6d308355fd55414",
+      "bytes": 206
+    },
+    "duty-final-read-npm.log": {
+      "sha256": "7bf56bfc4f408bdff787e556421777e9db665b87778c7555aeb021e24f05c25e",
+      "bytes": 21152
+    },
+    "duty-final-read-python.log": {
+      "sha256": "4840a0ff6d5258b1be14b5aa4906623d955bbe6fe28048c74064577bcc05103a",
+      "bytes": 146459
+    },
+    "duty-final-read-render.log": {
+      "sha256": "0e34220545e52afa374590398a63becffd0e0bb78c5a5f56f04918f84bd5b98a",
+      "bytes": 144
+    },
+    "duty-final-read-management.log": {
+      "sha256": "16ec28897125b410a75ed09244842024ae4bc78c67b7ce20911fb24a7321cadb",
+      "bytes": 3790
+    },
+    "duty-final-read-management-consistency.log": {
+      "sha256": "77516ff4bc528616873a96b5a972e2fba5f58c7781b55e36a4569c9aa16cccf8",
+      "bytes": 60
+    }
+  },
+  "full_validation": {
+    "python": {
+      "tests": 808,
+      "seconds": 499.854,
+      "skipped": 11,
+      "failures": 0
+    },
+    "npm_check": "passed",
+    "frontend_tests": 363,
+    "node_tests": 147,
+    "management_tests": 37,
+    "management_render": "passed; PROJECT/TASKS byte-unchanged",
+    "toolchain": {
+      "node": "24.19.0",
+      "python": "3.12.10",
+      "dependencies": "existing pinned installation; lockfile byte-identical"
+    },
+    "note": "Final evidence/index additions do not change the tested executable blobs. Current-head protected CI remains required."
+  },
+  "preservation": {
+    "regular_git_index": "unchanged",
+    "preexisting_worktree_status": "unchanged after excluding only two new task paths",
+    "product_source": "ai_union/web/services equal integration 4aa020b",
+    "supervisor_config_agent_lock": "not modified"
+  }
+}

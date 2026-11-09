@@ -1,0 +1,126 @@
+{
+  "date": "2026-11-09",
+  "scope": "controlled",
+  "base": "77b457c9e2d3d81f1e55004caf0b8d57bfc2496c",
+  "parent": "c1ff90b80485e0300dc6b07b01a97179b663c9ab",
+  "integration": "4aa020bf6e528d1d9bc6ab28c5aa8b63cc53fe5c",
+  "branch": "codex/u086-observed-settlement",
+  "scope_comment": 278,
+  "actor": "single codex-home duty implementer",
+  "online_member_id": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+  "source_sha256": {
+    "scripts/exit22b_page.cjs": "22f027ba4a098801cba35881ed1237b502873444e33e936834ff561cb82991a8",
+    "tests/exit22-observed-settlement.test.ts": "aa7ca965a17f7bcd9f6834c20aa53475ec092dfd66cd4c5ac3a82637976b14e5",
+    ".github/workflows/ci.yml": "c04646fa85ce361956c24937ae60aab3c7c63e6d33fb4501b46b25fa011b286a",
+    "evidence/U-086/observed-settlement/browser.cjs": "2b1cdedc3910902c85d47349b1dbef2046d6232e09415f219fd55d7ed5ebe98d",
+    "evidence/U-086/observed-settlement/contract.md": "2f319e6dc0962cc203e8aced082eceec00b4f70fd040b0faa0e5fdaecf3a0b80"
+  },
+  "logs": {
+    "red-initial": {
+      "sha256": "fc54bed449294fa66f8bffb16e9dd5b987411e834da909af12e1bfd82dfe5bf8"
+    },
+    "red": {
+      "sha256": "b267738320a1c010537161993d215c63577ec8b67e3961dbd1c9db2b9aaffe3b"
+    },
+    "green": {
+      "sha256": "c86a4c5c43883ad18567b0d19d4a476e5ce838cd27fe4f72ab930a1fd6f796cc"
+    },
+    "browser-red": {
+      "sha256": "696104ac4c2851fe80684f95b42112c137ea0fd8a1dadc7f06dfab411790e070"
+    },
+    "browser-red-bounded": {
+      "sha256": "3c8b0f02ded21bee8e7635521ceecc75a2deb445ab46cf9f0adc8a67e0803e34"
+    },
+    "browser-red-final": {
+      "sha256": "0afbc9e0eda63dee35aea862e7bf951cb40cbbb3a3995132c61e4e998f8df341"
+    },
+    "browser-green": {
+      "sha256": "7cd03f8f7f384cb693ee6c08d967eb7466a87581aa0bfa534b947dc9140e10b6"
+    },
+    "browser-final": {
+      "sha256": "bfd0f4efdd5d27f4d394584439d36ede2ca3468768f736dafd62e04a47317fe7"
+    },
+    "build": {
+      "sha256": "489aa36ca424fb2054e7cdc0429ec93a57f0339361a9c8da01227ab0289d8c67"
+    },
+    "npm": {
+      "sha256": "e6ad3ff5aa4be6e6e8d98d7e61879b474fa7146b66c017db0c49df0bc0eff3cc"
+    },
+    "management": {
+      "sha256": "662a291da0aa1a1bdf00491221f9d2b04b7680da33c82f8e2ab2ca3c59fc3511"
+    },
+    "render": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "python": {
+      "sha256": "688988acb6685fac826c91ab41b043682ba1ff5fb9e13ab0a23e869c1b294dec"
+    },
+    "canonical-browser": {
+      "sha256": "bfd0f4efdd5d27f4d394584439d36ede2ca3468768f736dafd62e04a47317fe7"
+    },
+    "canonical-npm": {
+      "sha256": "a42efa62836035455fc86b4065b09e726d34b28300fe04074d44f55e4d888267"
+    }
+  },
+  "node": {
+    "red_pass": 6,
+    "red_fail": 2,
+    "green_pass": 8,
+    "initial_fixture_errors": "cursor expectation and diagnostic matching corrected before final RED; original driver unchanged"
+  },
+  "chrome": {
+    "red_controls_pass": 1,
+    "red_false_positives": 2,
+    "green_pass": 3,
+    "final_pass": 3,
+    "all_dedicated_runs": 6,
+    "fake_calls_all_dedicated_runs": 18,
+    "fake_cancels_all_dedicated_runs": 18,
+    "real_calls": 0,
+    "fixture_history": [
+      "older single-step fixture omits usage; targeted settlement and rebuilt-state checks use actual raw steps/budget instead of generic full-loop snapshot validator",
+      "stale attempt projection changes on restart; compare persistent steps and budget, not process liveness"
+    ],
+    "coverage": "actual Core HTTP/SQLite settlement and rebuilt-state assertions; current original cancel GET; zero evidence POSTs; no real output timing claim"
+  },
+  "npm": {
+    "passed": true,
+    "node_tests": 233,
+    "frontend_tests": 363,
+    "management_tests": 37,
+    "types_and_build": true,
+    "canonical_lf_passed": true
+  },
+  "upstream_pr65": {
+    "head": "77b457c9e2d3d81f1e55004caf0b8d57bfc2496c",
+    "merge": "3b19f8c3123d49f69331d7f286bee92924322aad",
+    "base": "codex/u086-cancel-response-body",
+    "checks_passed": 21,
+    "independent_review": 5826784677,
+    "rewrite_adoption": false
+  },
+  "adoption": "new increment awaits its own independent engineering review and exact-head CI",
+  "preserved": {
+    "preexisting_files": 20,
+    "ordinary_index": true,
+    "ordinary_head": true,
+    "dirty_vendor": true,
+    "original_owner_and_real_exits": true
+  },
+  "full_python": {
+    "tests": 808,
+    "seconds": 513.067,
+    "skipped": 10,
+    "failures": 0,
+    "errors": 0,
+    "pinned_bun_explicit": "1.4.2"
+  },
+  "pre_lf_source_sha256": {
+    "scripts/exit22b_page.cjs": "2366f2dd88ad33339fbdf55d51174a7b425babe54d06c9aea342084bee86ca03",
+    "tests/exit22-observed-settlement.test.ts": "306ddaa8e02776633a61ae8484910f12b40887bc8da2ced7ec54c43a074eeb67",
+    ".github/workflows/ci.yml": "861b5f78b2b47376066bfa422b68655a539a01acf53e64a87615de724db7292d",
+    "evidence/U-086/observed-settlement/browser.cjs": "0d7d5e520ddb0df01d639046f2ef8e01ed6aa1e7d2cc819a6e16345f3fc7833d",
+    "evidence/U-086/observed-settlement/contract.md": "a94f32f06c9d338a82bfb2b0d6b90ae122444722da1c9f7a743721f45bccedf4"
+  },
+  "formatting_history": "Pre-commit diff --check rejected Windows CRLF in owned generated files. Normalized only owned files to required LF before committing; canonical npm/browser rechecked. Python/product bytes unchanged."
+}

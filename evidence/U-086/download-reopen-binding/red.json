@@ -1,0 +1,153 @@
+{
+  "source_input": "9d1435b",
+  "source_path": "scripts/exit22c_download.cjs",
+  "source_sha256": "fca3bd619a4a8fe4e62802c327325822a4d8ffde72a11c92b8e17f9a166f34dd",
+  "block_sha256": "5f9a4e00b8ede5869621e45d016db0665a0cb6d82b585425b2bbbc07eaa9ab76",
+  "block": "  const after = await page.evaluate(async auId => {\n    const value = await (await fetch('/api/v1/work?organization_id=' + auId)).json();\n    return value;\n  }, createdReceipt.organization_id);\n  const entry = (after.works || []).find(w => w.id === workId);\n  check('work still delivered after a console rebuild', entry && entry.status === 'delivered');\n  check('adopted result survives the rebuild', entry && (entry.results || []).some(r => r.status === 'adopted'));\n",
+  "contains_settled_step": false,
+  "tests": 17,
+  "failures": 11,
+  "errors": 0,
+  "observations": {
+    "test_another_adopted_result_cannot_replace_original": {
+      "accepted": true,
+      "checks": [
+        "work still delivered after a console rebuild",
+        "adopted result survives the rebuild"
+      ],
+      "reads": 1
+    },
+    "test_delivery_must_bind_the_original_result": {
+      "accepted": true,
+      "checks": [
+        "work still delivered after a console rebuild",
+        "adopted result survives the rebuild"
+      ],
+      "reads": 1
+    },
+    "test_matching_body_with_http_403_is_not_success": {
+      "accepted": true,
+      "checks": [
+        "work still delivered after a console rebuild",
+        "adopted result survives the rebuild"
+      ],
+      "reads": 1
+    },
+    "test_missing_au_is_not_proof": {
+      "accepted": true,
+      "checks": [
+        "work still delivered after a console rebuild",
+        "adopted result survives the rebuild"
+      ],
+      "reads": 1
+    },
+    "test_missing_delivery_binding_is_not_proof": {
+      "accepted": true,
+      "checks": [
+        "work still delivered after a console rebuild",
+        "adopted result survives the rebuild"
+      ],
+      "reads": 1
+    },
+    "test_missing_digest_is_not_proof": {
+      "accepted": true,
+      "checks": [
+        "work still delivered after a console rebuild",
+        "adopted result survives the rebuild"
+      ],
+      "reads": 1
+    },
+    "test_missing_original_work_is_rejected": {
+      "accepted": true,
+      "checks": [
+        "work still delivered after a console rebuild",
+        "adopted result survives the rebuild"
+      ],
+      "reads": 1
+    },
+    "test_missing_protocol_is_not_proof": {
+      "accepted": true,
+      "checks": [
+        "work still delivered after a console rebuild",
+        "adopted result survives the rebuild"
+      ],
+      "reads": 1
+    },
+    "test_original_delivered_result_survives": {
+      "accepted": true,
+      "checks": [
+        "work still delivered after a console rebuild",
+        "adopted result survives the rebuild"
+      ],
+      "reads": 1
+    },
+    "test_original_digest_must_survive": {
+      "accepted": true,
+      "checks": [
+        "work still delivered after a console rebuild",
+        "adopted result survives the rebuild"
+      ],
+      "reads": 1
+    },
+    "test_original_survives_beside_another_adopted_result": {
+      "accepted": true,
+      "checks": [
+        "work still delivered after a console rebuild",
+        "adopted result survives the rebuild"
+      ],
+      "reads": 1
+    },
+    "test_response_must_be_a_work_snapshot": {
+      "accepted": true,
+      "checks": [
+        "work still delivered after a console rebuild",
+        "adopted result survives the rebuild"
+      ],
+      "reads": 1
+    },
+    "test_response_must_be_the_original_au": {
+      "accepted": true,
+      "checks": [
+        "work still delivered after a console rebuild",
+        "adopted result survives the rebuild"
+      ],
+      "reads": 1
+    },
+    "test_unadopted_original_result_is_rejected": {
+      "accepted": false,
+      "checks": [
+        "work still delivered after a console rebuild"
+      ],
+      "reads": 1
+    },
+    "test_undelivered_work_is_rejected": {
+      "accepted": false,
+      "checks": [],
+      "reads": 1
+    },
+    "async_success": {
+      "accepted": true,
+      "checks": [
+        "success"
+      ],
+      "reads": 0
+    },
+    "async_runtime_error": {
+      "runtime_error": "ReferenceError",
+      "checks": [],
+      "reads": 0
+    },
+    "sync": {
+      "accepted": false,
+      "checks": [],
+      "reads": 0
+    },
+    "async": {
+      "accepted": false,
+      "checks": [],
+      "reads": 0
+    }
+  },
+  "real_model_calls": 0,
+  "scope": "exact restart block; synthetic HTTP observations only"
+}

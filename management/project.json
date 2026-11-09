@@ -1997,6 +1997,104 @@
                     "from": "doing",
                     "to": "doing",
                     "note": "U108/PR50当前受控采用：准确head 8928f04b36320c74a599a6c10b5f327cfeb9f5d0 经独立工程复核5822180218及14/14当前CI通过，合入 7fe50c213adcf2d826109b6fe272f31ee09bccf8，tree 9b3754d6295c0630d51c160f8656d7190694e41f 相同。原截断撤权/宿主清理阻塞修复通过28 DOM、17 HTTP/SQLite边界、host生命周期/2子进程退出、20实际Chrome（fake1/cancel1/real0）。证据evidence/U-108/permission-recheck/README.md、verification.json、adoption.json；旧PR51 RED保留。在线看板revision699将#62完整受控验收结为done并保留chatGPT-online原owner；本地只追加交付历史，不作为在线认领/状态源。#40/#39/#22真实出口、#28/#37/#61阻塞及责任保持，无新增真实推理/服务切换/迁移。"
+                },
+                {
+                    "at": "2026-11-09T06:27:29.940Z",
+                    "actor": "codex-home/single-duty-implementation",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "U086原输出验收门槛协助候选：基线作者75c7a946ea459861fa60d9831b3b1fedfa1376ed、在线评论238保持DSH/#40归属。真实未改断言31测试1通过30失败，修复31全通过；只修Core原响应身份/当前主体服务/原连接/游标分页及非空text_delta门槛，保存UTF-8文本摘要，不启动验收driver main。证据evidence/U-086/original-output-gate/README.md及validation.json。准确候选需当前CI和非实施工程角色复核后采用；本地历史不改在线owner/WIP，不关闭#22/#39/#40真实出口，新增真实模型调用/迁移/服务切换均0。"
+                },
+                {
+                    "at": "2026-11-09T08:22:19.926Z",
+                    "actor": "codex-home/single-duty-implementation",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "U086原Core快照恢复协助候选：作者7493451包含集成4aa020b；评论249保持DSH/#40 owner与WIP。两个driver固定原AU/Work读取Core前后快照，比较原请求集合/身份/预算/用量，unknown保留null，原请求身份数不冒充真实派发次数。严格RED40项3通过37失败，相关100 Node、11下载探针、实际Chrome/HTTP/SQLite两次fake原loop/重启通过，真实调用0；验证evidence/U-086/restart-snapshot/README.md及validation.json。需非实施工程复核与准确head CI；不关闭#22/#39/#40真实出口，不改历史139、不迁移或切换服务。"
+                },
+                {
+                    "at": "2026-11-09T08:45:52.605532Z",
+                    "actor": "codex-home/single-duty-implementation",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "U086原取消回执恢复协助候选：作者/PR57准确9d7fe98、集成4aa020b，fresh scope评论251保留DSH/#40责任与WIP。原driver的取消GET未核对HTTP/主体/原Work步骤且重启后未查询，原源34项1通过33失败；仅增加GET取证，34项及相关134 Node通过，实际Chrome/HTTP/SQLite一次fake推理+一次fake取消且观察零POST。证据evidence/U-086/cancel-receipt-recovery/README.md及validation.json；当前head CI和另一工程角色复核后才采用。本条仅交付历史，保留139与真实父出口，不迁移/切换/新增真实调用。"
+                },
+                {
+                    "at": "2026-11-09T09:24:38.508Z",
+                    "actor": "codex-home/single-duty-review-integration",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "u086-final-read-combination-1bd324a：#40评论256范围内组合作者1bd324a最终GET会话修复与PR58 b293c626原取消恢复；作者修复由当前非实施会话独立7探针复验，PR58由DSH在线消息101独立复核，分别保持准确源码blob。新增常规CI最后GET的主体/服务/失效竞态，原9d7fe98为1PASS/3FAIL→组合4PASS；134原相关Node、两组实际Chrome/HTTP/SQLite通过，真实调用0。完整验证与旧VM兼容错误分别见evidence/U-086/final-read-combination/README.md及validation.json。当前head CI后才能采用，本条仅交付历史，保持DSH owner/#40 progress/WIP和#22/#39/#40真实出口，不作为在线认领、迁移或真实运行证据。"
+                },
+                {
+                    "at": "2026-11-09T10:37:10.698Z",
+                    "actor": "codex-home/single-duty-implementation",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "U086/#40评论260的输出到原取消恢复衔接补漏：作者abef544的outputObservation遗漏principal_id，正常输出后原GET必然拒绝。原源串联四项RED→两行身份传递GREEN，142相关Node、实际Chrome/CoreHTTP/SQLite原源RED与候选恢复通过，npm151Node/363前端/37管理。证据evidence/U-086/reader-binding/README.md和validation.json；当前head CI与另一工程角色复核后才能采用。本地仅追加交付历史，不动DSH在线owner/progress/WIP或真实出口，不新增真实推理/部署/迁移。"
+                },
+                {
+                    "at": "2026-11-09T11:00:31.378Z",
+                    "actor": "codex-home/single-duty-implementation",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "u086-page-delivery-gate-76807aec：#40评论263限定的验收驱动补漏，原API采用/交付和手工finish_attempt掩盖Core页面缺失；改为原Work/result的真实控件，要求adopted且delivered及原result/摘要/来源一致。原7 Node及2实际Chrome场景RED→GREEN，149相关Node通过；缺失控件零写入、正常恰好2页面POST。合同/环境与夹具失败分类/全量记录见evidence/U-086/page-delivery-gate/README.md和validation.json。另一工程角色复核及准确head CI后才能采用；本地仅交付历史，不替代在线任务状态。DSH owner/progress/WIP及#22/#39/#40真实出口保持，无新增真实推理、迁移、NAS切换或监督/锁变更。"
+                },
+                {
+                    "at": "2026-11-09T11:22:21.208Z",
+                    "actor": "codex-home/single-duty-implementation",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "u086-single-setup-9195e25：#40评论265范围内移除两个验收driver重复create_v1/prepare，避免未追踪第二AU和第二grant，保留首次原身份与采用连接。原源完整准备片段8测试4PASS/4FAIL→8GREEN，两个实际Chrome/Core HTTP/SQLite创建反例RED→GREEN，刷新只保留原AU且零推理。契约、源码与全量证据evidence/U-086/single-setup/README.md及validation.json；当前准确head CI与非实施工程角色复核后才采用。DSH owner/progress/WIP、父#22及#39/#40真实出口保持；不清理历史资源、不新增真实grant/推理/迁移或监督锁变更。本条仅交付历史，不作为在线状态。"
+                },
+                {
+                    "at": "2026-11-09T11:45:54.068Z",
+                    "actor": "codex-home/single-duty-implementation",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "u086-page-registration-9d39cbf7：#40评论269范围内把两个验收driver的API目标登记/预开attempt改为实际Core表单、刷新查询原登记及原Work页面准备。动态Work/责任/预算/原连接/原回执绑定；完整原片段实际Chrome/HTTP/SQLite六项行为RED→GREEN，额外身份/回执反例及全量见evidence/U-086/page-registration/README.md和validation.json。PR61原单次准备候选保留，产品源码未改；准确head CI与非实施工程角色复核后采用。DSH owner/progress/WIP、#22/#39/#40真实出口不变；原取消API链路、历史139及真实资源仍待核验。零真实推理/grant/部署/迁移；仅交付历史，不作为在线状态。"
+                },
+                {
+                    "at": "2026-11-09T12:19:39.865Z",
+                    "actor": "codex-home/single-duty-implementation",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "u086-page-cancel-action-e6a8b868：#40评论271限定修复中断driver直接API取消假阳性，改用原Work实际Core取消与刷新后原ID查询，响应丢失不补发。三个实际Chrome/HTTP/SQLite原源RED→GREEN，八浏览器及216相关Node通过；合同、完整验证和源码hash见evidence/U-086/page-cancel-action/README.md与validation.json。PR62页面登记与原输出/回执/重开/未知预约保持；产品源码无变化。当前head CI及非实施角色复核后采用，DSH owner/progress/WIP和#22/#39/#40真实出口不变。零真实推理/grant/部署/迁移；仅交付历史，不作在线状态。"
+                },
+                {
+                    "at": "2026-11-09T13:01:02.359Z",
+                    "actor": "codex-home/single-duty-implementation",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "u086-cancel-response-body-b446caf2：#40评论274限定验收helper修复。原取消HTTP200头后正文中断，Playwright finished仅等待成功事件导致原GET恢复挂起；新增真实Chrome/Core HTTP/SQLite有界RED后改为原请求finished/failed事件并保留已知403与完整错回执拒绝。四新场景及原八浏览器、npm225 Node/363前端/37管理通过；完整Python与环境失败分类见evidence/U-086/cancel-response-body/README.md和validation.json。产品及共享事务未改；准确head CI/另一工程角色复核后采用。DSH owner/progress/WIP与真实#22/#39/#40保持；真实推理/grant/迁移0。只追加交付历史，不作为在线任务状态。"
+                },
+                {
+                    "at": "2026-11-09T13:31:58.781Z",
+                    "actor": "codex-home/single-duty-implementation",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "u086-registration-response-body-bef1e54：#40评论276限定登记验收helper修复。原start_work落盘后200头/正文中断一直等待，完整错误POST可被后续GET掩盖；冻结合同后两个driver完整登记片段实际Chrome/CoreHTTP/SQLite 2正常PASS/8反例RED→10GREEN，原16浏览器回归通过。原请求finished/failed后只经页面GET恢复，完整回执/当前身份核验，已知403与完整错误拒绝且不准备。npm225 Node/363前端/37管理、显式锁定Bun SDK检查通过；Python全量与日志/源码hash见evidence/U-086/registration-response-body/。基于PR64保留取消修复，两增量分别需非实施角色复核/准确head CI后采用。DSH owner/progress/WIP和真实#22/#39/#40保持；注册探针模型0、真实推理/grant/迁移0；仅追加交付历史，不作在线状态。"
+                },
+                {
+                    "at": "2026-11-09T13:59:36.766Z",
+                    "actor": "codex-home/single-duty-implementation",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "u086-observed-settlement-77b457c9：#40评论278限定验收修复；原请求已观察文本后仍接受released，原完整片段6控制PASS/2反例RED及实际Chrome1控制PASS/2反例RED后，仅收紧中断driver两处状态断言。unknown预约、used未知用量与其他未执行步骤释放保持；产品计量/事务未变。8 Node及3 Chrome/HTTP/SQLite通过，npm233 Node/363前端/37管理；完整Python及源码/日志hash见evidence/U-086/observed-settlement/validation.json。基于原作者77b457c9并保留fce8264a独立复核证据；本增量须独立复核及准确head CI，未关闭真实#22/#39/#40。DSH owner/WIP保持，真实推理/grant/迁移0，仅追加交付历史。"
+                },
+                {
+                    "at": "2026-11-09T14:23:50.209Z",
+                    "actor": "codex-home/single-duty-implementation",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "u086-budget-conservation-726dad42：#40评论281限定验收修复。两份一致但错误的预算快照可掩盖丢失/虚增used与unknown预约；冻结既有domain.work.budget合同后，两driver完整重开片段18反例及实际Chrome6反例RED→GREEN，246相关Node及7浏览器场景通过。只读helper逐快照核对步进计数、整数与上限；未知用量和未执行released保持。完整npm/Python及源码/日志hash见evidence/U-086/budget-conservation/validation.json。需准确head CI和非实施工程复核；原DSH owner/WIP与真实#22/#39/#40保持，真实推理/迁移0，仅追加交付历史。"
+                },
+                {
+                    "at": "2026-11-09T14:58:20.706Z",
+                    "actor": "codex-home/single-duty-implementation",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "u086-result-provenance-6769130c：#40评论284范围内修复两driver重开漏验原成果事实。完整记录/唯一ID/交付引用按原快照比较，18反例RED→271相关Node和10实际Chrome场景通过，空成果中断与原未知预约保留；源码及完整验证见evidence/U-086/result-provenance/README.md和validation.json。仅验收helper/夹具，产品无变更；当前head CI和非实施角色复核后采用，DSH owner/WIP与真实父出口保持，真实模型0。本条仅交付历史，不作在线状态。"
                 }
             ],
             "claim": {

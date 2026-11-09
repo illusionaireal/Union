@@ -1,0 +1,118 @@
+{
+  "date": "2026-11-09",
+  "scope": "controlled",
+  "base": "b446caf2a6507f283836e9009984d49f8c93541d",
+  "integration": "4aa020bf6e528d1d9bc6ab28c5aa8b63cc53fe5c",
+  "branch": "codex/u086-cancel-response-body",
+  "actor": "single codex-home duty implementation session",
+  "online_member_id": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+  "scope_comment": 274,
+  "logs": {
+    "red": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "classification": "unbounded diagnostic terminated; excluded from completed tests"
+    },
+    "red-bounded": {
+      "sha256": "f7c5d0cab60aa4794260bdd4619211f44550bb6b2e8fbee017cd756ce1234f66",
+      "classification": "unchanged baseline behavior RED"
+    },
+    "green": {
+      "sha256": "1ef0f7a0dcee7b74126c825c730f26ab3210cd313bb1b81b7e76118ef3892fd6",
+      "classification": "four actual Chrome/HTTP/SQLite cases pass"
+    },
+    "regression": {
+      "sha256": "de9cadf14eb7e94814473a9834b77f0d51f74762058cf37772aa1c76a3041079",
+      "classification": "eight original PR63 browser cases pass"
+    },
+    "npm": {
+      "sha256": "aa269731c33755d00e303c1732bce21bb795cfe2aa16103b1a24c73d6b8e5394",
+      "classification": "225 Node / 363 frontend / 37 management plus typecheck/build passed"
+    },
+    "python": {
+      "sha256": "2fe72554314d189eacb5dd24202cd0a67fe2f71e2b89c8c03319824dcfabf427",
+      "classification": "808 tests / 10 skipped / SDK environment error; retained"
+    },
+    "sdk-fixed": {
+      "sha256": "139bbc006a1e0f4f19d382386b6c52f36ee48f1cdaf526152d73e08ca6b9bc16",
+      "classification": "diagnostic missing consistent module graph; retained"
+    },
+    "sdk-consistent": {
+      "sha256": "9b13c8de0249988140db20e602788ea2f8dedde4408493ab3a9a41aca772a759",
+      "classification": "actual SDK HTTP case passes with consistent pinned modules"
+    },
+    "management": {
+      "sha256": "52689a9a4433b1e22ad52ece04dc8f3f35c5e003784e30f5512b64787277fc45",
+      "classification": "passed"
+    },
+    "render": {
+      "sha256": "0e34220545e52afa374590398a63becffd0e0bb78c5a5f56f04918f84bd5b98a",
+      "classification": "passed"
+    },
+    "prepublish-fetch": {
+      "sha256": "e86195f1348b41072461700e63d067ed3eb23639af39e3cbfc5d7ff3cfa79c02",
+      "classification": "passed"
+    },
+    "python-final": {
+      "sha256": "f2784a96ee24335a76a72e63f76cc59791bbbec072ad3d7f40891735f1fb2b9d",
+      "classification": "808 tests / 10 skipped / no errors or failures; 518.997 seconds"
+    }
+  },
+  "source_sha256": {
+    "scripts/exit22-page-cancel.cjs": "4476f62e31ea17a2f68983f661f59a8a023e4ac9f9f82e97bb128ebf706b5249",
+    ".github/workflows/ci.yml": "3c468073216d5d8fb5e00db3234f4c0b767759f2063f1f7110d520dae34ddc1d",
+    "evidence/U-086/cancel-response-body/contract.md": "146b6ab982325c3ae22fab93f63cebaa529debf13529ba008d7b1b2de32b9d01",
+    "evidence/U-086/cancel-response-body/browser.cjs": "72cf11e87000c32e5ecf7a10fcb58e52af6154cb9987474abb7d3fb814b5b45b",
+    "evidence/U-086/cancel-response-body/http-host.py": "7135983c9832ff51b2c231b41424e3df5dfb82e231ba8406c3f128fcd8e2e99c"
+  },
+  "baseline_helper_sha256": "15afeaef468d3958217cf20cfaf529211a9f61d3f007ccb1b2150381bd600292",
+  "browser": {
+    "bounded_baseline_failures": 1,
+    "new_scenarios_passed": 4,
+    "original_scenarios_passed": 8,
+    "green_fake_model_calls": 12,
+    "green_fake_cancels": 10,
+    "real_model_calls": 0,
+    "unbounded_diagnostic": "terminated own test Node after observing pending success-only completion; not counted as completed validation"
+  },
+  "npm": {
+    "node": 225,
+    "frontend": 363,
+    "management": 37,
+    "status": "passed"
+  },
+  "python": {
+    "status": "passed",
+    "initial": {
+      "tests": 808,
+      "seconds": 519.571,
+      "errors": 1,
+      "skipped": 10
+    },
+    "bun": "1.4.2 explicitly configured",
+    "sdk": "same pinned upstream and patch bytes; existing consistent source/dependency paths; no SDK source change",
+    "tests": 808,
+    "skipped": 10,
+    "errors": 0,
+    "failures": 0,
+    "seconds": 518.997
+  },
+  "nas": {
+    "health_exit": 0,
+    "state": "running",
+    "oom": false,
+    "restarts": 0,
+    "switched": false
+  },
+  "preserved": {
+    "product_source": true,
+    "normal_index": true,
+    "preexisting_files": 20,
+    "owner": "DSH",
+    "real_parent_exits_unchanged": true
+  },
+  "adoption": {
+    "independent_review": "required for this new increment",
+    "ci": "required at published head",
+    "integrated": false
+  }
+}

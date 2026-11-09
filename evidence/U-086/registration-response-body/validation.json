@@ -1,0 +1,120 @@
+{
+  "date": "2026-11-09",
+  "scope": "controlled",
+  "base": "bef1e54fca6f02a347c6954a9a13a2aa9b53cfc7",
+  "integration": "4aa020bf6e528d1d9bc6ab28c5aa8b63cc53fe5c",
+  "branch": "codex/u086-registration-response-body",
+  "actor": "single codex-home duty implementer",
+  "online_member_id": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+  "scope_comment": 276,
+  "baseline_helper_blob": "add995d4f2b3319a8d6529c89d1457d4749490a2",
+  "source_sha256": {
+    "scripts/exit22-registration-evidence.cjs": "ecd70acf6b972236264dbdf199a77bc96dff44ed47cc5912c60724b4177ea2bc",
+    ".github/workflows/ci.yml": "dcadaf79f3c7cb27ef7a2b69ad77a055585ba2243dd204f441cd2ba079b6fcaf",
+    "evidence/U-086/registration-response-body/browser.cjs": "674bfc0505e889abc722e4136ffc91335f622afcbc9ac4b465574499eaeeba4b",
+    "evidence/U-086/registration-response-body/http-host.py": "72d81e5278e0b3ab69ea794f5875788fbbc43c24f923fe152a5a1d5a265044d5",
+    "evidence/U-086/registration-response-body/contract.md": "91ca771d59d83d28dc719073f6787b68cdb48df6b9c39fc2669a99a6f2078335"
+  },
+  "runs": {
+    "build": {
+      "kind": "build",
+      "started_at": "2026-11-09T13:24:19.970649+00:00",
+      "exit_code": 0,
+      "seconds": 8.313,
+      "log_sha256": "336afbd0f18e4285f83388ed1bb8c7d5fca762d06e88215677e66c22ac86c0ef"
+    },
+    "red": {
+      "kind": "red",
+      "started_at": "2026-11-09T13:24:44.886401+00:00",
+      "exit_code": 1,
+      "seconds": 82.797,
+      "log_sha256": "bbb9b13e0615303f212a44b8793f9c64d7a07a491db09e17c8668766885f6f90"
+    },
+    "green": {
+      "kind": "green",
+      "started_at": "2026-11-09T13:26:30.711382+00:00",
+      "exit_code": 0,
+      "seconds": 26.625,
+      "log_sha256": "e60916b14dbfd8a83dc513710f53b3491860ad2130591146553e58e7af1c9560"
+    },
+    "green-final": {
+      "kind": "green-final",
+      "started_at": "2026-11-09T13:30:23.855759+00:00",
+      "exit_code": 0,
+      "seconds": 27.344,
+      "log_sha256": "e60916b14dbfd8a83dc513710f53b3491860ad2130591146553e58e7af1c9560"
+    },
+    "regression": {
+      "kind": "regression",
+      "started_at": "2026-11-09T13:27:33.379088+00:00",
+      "exit_code": 0,
+      "seconds": 98.61,
+      "log_sha256": "ea45d846be3a149f4f88042b84768414f9d5c369629fea7773c4eee7cb6edbda"
+    },
+    "sdk": {
+      "kind": "sdk",
+      "started_at": "2026-11-09T13:30:23.869791+00:00",
+      "exit_code": 0,
+      "seconds": 3.297,
+      "log_sha256": "b85049aa176c7620599eb7591b39e29ed45adfbeb967d4af548e52c716e7cf4e"
+    },
+    "npm": {
+      "kind": "npm",
+      "started_at": "2026-11-09T13:28:59.876435+00:00",
+      "exit_code": 0,
+      "seconds": 45.437,
+      "log_sha256": "627ef5b1778e386e4c1513a4e2d18cf510a1b6f228191bba13f578e6bf7df3d7"
+    },
+    "python": {
+      "kind": "python",
+      "started_at": "2026-11-09T13:27:33.392095+00:00",
+      "exit_code": 0,
+      "seconds": 518.625,
+      "log_sha256": "e13edfb8e088c45408089290c729f516aeb4ae2029bf5421beb0f83a9753b693"
+    },
+    "render": {
+      "kind": "render",
+      "started_at": "2026-11-09T13:32:21.149780+00:00",
+      "exit_code": 0,
+      "seconds": 0.219,
+      "log_sha256": "1597142f17fb1696d793c7621f8490d036dcc0e50b9a30ebbfd5c9c0c10f2f2b"
+    },
+    "management": {
+      "kind": "management",
+      "started_at": "2026-11-09T13:32:21.439004+00:00",
+      "exit_code": 0,
+      "seconds": 1.875,
+      "log_sha256": "1c56b0b1962a50859bea7dbfbc6ff5295b15ed04c8642959b7065ea10c822016"
+    }
+  },
+  "browser": {
+    "red_controls_passed": 2,
+    "red_cases_failed": 8,
+    "new_cases_passed": 10,
+    "original_cases_passed": 16,
+    "registration_model_calls": 0,
+    "real_model_calls": 0
+  },
+  "sdk": {
+    "tests": 1,
+    "passed": 1,
+    "loopback_model_requests": 2,
+    "real_model_calls": 0,
+    "bun": "1.4.2"
+  },
+  "full_python": {
+    "tests": 808,
+    "seconds": 516.325,
+    "skipped": 11,
+    "errors": 0,
+    "failures": 0,
+    "sdk": "explicit SDK test run separately with Bun 1.4.2; passed"
+  },
+  "adoption": "pending another engineering role review and exact-head CI; no self-approval",
+  "preserved": {
+    "preexisting_files": 20,
+    "normal_index": true,
+    "vendor_dirty": true,
+    "original_owner_and_real_exits": true
+  }
+}

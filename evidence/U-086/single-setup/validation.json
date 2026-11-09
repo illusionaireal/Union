@@ -1,0 +1,130 @@
+{
+  "date": "2026-11-09",
+  "scope": "controlled",
+  "base": "9195e25142014cb33ceb1c2ed4304839e8cf5725",
+  "branch": "codex/u086-single-setup",
+  "actor": "current single codex-home duty implementation session",
+  "online_member_id": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+  "scope_comment": 265,
+  "files": {
+    "scripts/exit22b_page.cjs": {
+      "sha256": "74561321fd1a2130939d0eba1fcbb41373f0a183f01f2cbbe18abcbc0bf26d70",
+      "git_blob": "7eab01b7237c3d111409ad059384dbdc68570075"
+    },
+    "scripts/exit22c_download.cjs": {
+      "sha256": "1a83a525e1c7ae32d00361e31d4effc70bda7f620d84bc899db522a2e41fc38d",
+      "git_blob": "15e35320ed239da77470d2855b0b8ea5f18de653"
+    },
+    "tests/exit22-single-setup.test.ts": {
+      "sha256": "ab92a889851992a572050d49eb2bac72c2cc0f3e2ec43ad388e78b6ab4cb6e13",
+      "git_blob": "7551e4c3a20a00c7d1f82175815a19cd39f437f5"
+    },
+    "evidence/U-086/README.md": {
+      "sha256": "80e9674173e392baf8af799d19ac56b8db946e10aeb11f6853d6aac10130e05f",
+      "git_blob": "980f21d88a6cff66a86649e0cafe3ada0ec3729e"
+    },
+    "management/project.json": {
+      "sha256": "54d48cdb1833c622cdef3f44d5d6f1ae77b442785271158a32ef790537c19ee6",
+      "git_blob": "9d446706aef663d18f6150d0f80ac7042c66914f"
+    },
+    "evidence/U-086/single-setup/contract.md": {
+      "sha256": "5d8b5be0f9f4392a0a3fdd6cbbbb87b71aa6fe77327f4f1c197b8bf5aea2e055",
+      "git_blob": "3930e23bc7f964fcecdc8e599408008a2397ab41"
+    },
+    "evidence/U-086/single-setup/browser.cjs": {
+      "sha256": "d49fcbdefaee7f65bc854c969179996e61e5455e2d1127726e3174a7d675860e",
+      "git_blob": "71fee26223413cf20a19e76b53aa2ee6619f509a"
+    },
+    "evidence/U-086/single-setup/host.py": {
+      "sha256": "2492c7e054e4426418b6abb0743d071bb5242dc4e0a9a9323190176df7143258",
+      "git_blob": "383aeff08e096b26bc914b8c018bc25cdf0182d5"
+    }
+  },
+  "logs": {
+    "red": {
+      "sha256": "1a86296d017a9955e3912b76bfa7aa80012853ec11e1bd18c5fae3fe49c0ccea",
+      "passed": 4,
+      "failed": 4
+    },
+    "green": {
+      "sha256": "23a8612682a5acf46d1017ee8ecaf5019fe2e043162951bf0a11c69dfbd1385a",
+      "passed": 8,
+      "failed": 0
+    },
+    "browser-red": {
+      "sha256": "cc498c2618eced590e9f047a078a4f9c540278e8ba5e6a1a25c7c6376d4bbdc4",
+      "passed": 0,
+      "failed": 2
+    },
+    "browser-green": {
+      "sha256": "3690888964c09b519d9e8baed807cf7b12a83025b50150ffaf1cfe183a332bdf",
+      "passed": 2,
+      "failed": 0
+    },
+    "build": {
+      "sha256": "241a6466eb039c3d041d416f47f5c5c89b9a4252242ca43f9726bc14d0e1bab8"
+    },
+    "npm": {
+      "sha256": "5df1d7bfd3f470467386def80da448c79633195cf9d4ddc7d9c8973b0305610b",
+      "exit_code": 0,
+      "node": 166,
+      "frontend": 363,
+      "management": 37
+    },
+    "python": {
+      "sha256": "d3ce396e0d48e63050bdb263198f99a799f1aab060e413f6628ab61dbe8e6b6a",
+      "exit_code": 0,
+      "tests": 808,
+      "seconds": 524.979,
+      "skipped": 11
+    },
+    "render": {
+      "sha256": "0e34220545e52afa374590398a63becffd0e0bb78c5a5f56f04918f84bd5b98a"
+    },
+    "sdk": {
+      "sha256": "8e7fc6b45ed4d7407c3f8d34561842e41070a01e77f565887f4994fcfc25ae3e",
+      "exit_code": 0,
+      "tests": 1,
+      "skipped": 0,
+      "reason": "Full invocation omitted UNION_BUN; run the skipped SDK integration explicitly with pinned Bun. No suite failure was hidden."
+    },
+    "management": {
+      "sha256": "7bfd135ae1f543cbb0827451d16e48d8aa1800b8d098962e53c251ba3e500725",
+      "exit_code": 0,
+      "tests": 37
+    }
+  },
+  "toolchain": {
+    "node": "24.19.0",
+    "python": "3.12.10",
+    "bun": "1.4.2"
+  },
+  "browser_scope": {
+    "runs": 2,
+    "disposable_hosts": 4,
+    "baseline_created_aus_per_driver": 2,
+    "candidate_created_aus_per_driver": 1,
+    "fake_model_calls": 0,
+    "real_model_calls": 0,
+    "modeld_grants": 0
+  },
+  "grant_scope": "entire driver preparation prefix with explicit in-memory host double; no real grant or modeld request",
+  "preservation": {
+    "preexisting_files": 20,
+    "regular_index": "unchanged",
+    "product_source": "unchanged",
+    "execution_cancel_delivery_and_restart_blocks": "unchanged",
+    "existing_resources": "not removed or migrated"
+  },
+  "adoption": "pending another engineering role and exact-head protected CI",
+  "precommit_tooling": {
+    "rejected_tree": "a8004da694fb1e68db2c3166f7b20b2cdfe76cbc",
+    "reason": "Generated validation JSON used Windows CRLF; normalize documentation before commit. Earlier ls-tree text parser corrected to NUL records for non-ASCII paths. No behavior changes or test failures."
+  },
+  "remaining": [
+    "Core page goal registration",
+    "full real page chain and historical139",
+    "original remote dispatch counts",
+    "new explicit real resource authorization"
+  ]
+}

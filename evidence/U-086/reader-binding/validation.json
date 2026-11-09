@@ -1,0 +1,92 @@
+{
+  "at": "2026-11-09T10:42:25.800496+00:00",
+  "source_base": "abef54404dfd2b440bd602082013e7adda21bb58",
+  "implementation_driver_commit": "63663b78c208b23d3cd4c5dc9311b082d3e829be",
+  "branch": "codex/u086-observed-reader-recovery",
+  "actor": "codex-home/single-duty-implementation",
+  "online_user_id": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+  "original_owner_id": "cafeef64-ac40-4062-97c1-ac82ece0a379",
+  "scope_comment": 260,
+  "toolchain": {
+    "node": "24.19.0",
+    "python": "3.12.10",
+    "bun": "1.4.2"
+  },
+  "source_sha256": {
+    "scripts/exit22b_page.cjs": "2f6dff4de66f83091e27c59c58828315c51e3f1e9bd9d5cebe543aa68db5865c",
+    "tests/exit22-output-cancel-chain.test.ts": "35a2991ae0c92bd7959ae85bfcf741f7cc18feb95326322dc2dd9fe6b1e96843",
+    "evidence/U-086/reader-binding/contract.md": "d85c9b7d247584111bb7333f2f80b5c7c2d11a71389354126409fa1754e190f8",
+    "evidence/U-086/reader-binding/browser.cjs": "ac0e52bc8ea1893baf7a70078355448fdc57f4a3511c177a17d5263613691005",
+    "evidence/U-086/reader-binding/http-host.py": "91b24669db3af4479bee88ef981f59d296fc01367e78644f5b84a5d129b436c6",
+    "scripts/exit22-cancel-evidence.cjs": "dc1483f01991134eafaba9ef5b936e0d8b5c6a3a3236993c8b5c68b3faa9ae98",
+    "scripts/exit22-restart-evidence.cjs": "3e5139c9e2c945eedde4bd89920e4e3d3f4f654e7a43b43a9f4017019383a38e",
+    "evidence/U-086/reader-binding/README.md": "cb4ca9b60eab59295e5a8c191739851d04d5e9850a89fb6cbcaa9d358d30381d"
+  },
+  "logs": {
+    "red": {
+      "sha256": "3d14895b4b3c7ca2c5d51d33c2750290870e1e58d048e8e20853ac2ef12cb1c9",
+      "result": "4 failures; valid composition rejected for missing original principal; paired cases blocked before their intended boundary"
+    },
+    "green": {
+      "sha256": "a704441e8ea8bca664254c6f6befc9ef28e5aeaafebd22e4250b8014b4a1a6e9",
+      "result": "4 pass"
+    },
+    "related": {
+      "sha256": "d3c87cf837d407cfcfcb27be89c233270e298c1f17931bc6282a467ae617bb4f",
+      "result": "142 pass"
+    },
+    "npm": {
+      "sha256": "54cd8adb360ff7242cbbe6ce3bfd6e8dc598d9e5aa8e955d0a794b9dcedfad8b",
+      "result": "151 Node / 363 frontend / 37 management plus types/build pass"
+    },
+    "python": {
+      "sha256": "29566f14176e3135be7de016acdd068a59531197812b104b32cf9e45239891f0",
+      "result": "808 tests / 10 skips / 0 failures; 505.661s"
+    },
+    "fixture-marker-error": {
+      "sha256": "bbf6680034c3a7278e6166f83bcd92fea31b36326abe0b39580304df64b88e73",
+      "result": "test extraction setup error, not behavioral RED"
+    },
+    "browser-red": {
+      "sha256": "06bd923bbc2cd9005b2ffcdb36cef34f3f4c487cf56a11b5db93f35bfbcb36ce",
+      "result": "exact original source fails on missing principal, fixture exits cleanly"
+    },
+    "browser": {
+      "sha256": "135054905544110b02b1f8295489b158fbe60e586e4509dd82ea0d8607a03603",
+      "result": "candidate passes, fake inference1/cancel1/real0"
+    },
+    "browser-final": {
+      "sha256": "135054905544110b02b1f8295489b158fbe60e586e4509dd82ea0d8607a03603",
+      "result": "LF-normalized candidate passes, fake inference1/cancel1/real0"
+    },
+    "render": {
+      "sha256": "0e34220545e52afa374590398a63becffd0e0bb78c5a5f56f04918f84bd5b98a",
+      "result": "pass"
+    },
+    "management": {
+      "sha256": "dd1ad355c0d74368a997cd853aace330237de0f48188c374617ac28113dc5680",
+      "result": "37 pass"
+    }
+  },
+  "browser_runs": {
+    "candidate_runs": 3,
+    "unchanged_original_runs": 1,
+    "fake_inferences_total": 4,
+    "fake_cancellations_total": 4,
+    "observation_posts": 0,
+    "real_model_calls": 0,
+    "scope": "retrospective seeded cancellation plus real Core HTTP/SQLite reader binding, not live-output timing"
+  },
+  "acceptance": {
+    "independent_review": "required; implementation session does not self-approve",
+    "current_head_ci": "required after publication",
+    "real_parent_acceptance": "incomplete",
+    "deployment_switches": 0,
+    "migrations": 0
+  },
+  "preservation": {
+    "ordinary_index_unchanged": true,
+    "preexisting_dirty_bytes_unchanged": true,
+    "historical_failures_preserved": true
+  }
+}
