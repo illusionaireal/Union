@@ -404,7 +404,7 @@ function startHost() {
   const entry = (after.works || []).find(w => w.id === workId);
   const adoptedAfter = (entry.results || []).find(r => r.status === 'adopted');
   check('the adopted result survives the rebuild (original id): ' + (adoptedAfter && adoptedAfter.id),
-        Boolean(adoptedAfter));
+        Boolean(adoptedAfter) && adoptedAfter.id === resultId);
   const settledStep = (entry.steps || []).find(s2 => s2.step_ref === inflight.step_ref);
   check('the settled step survives the rebuild as ' + (settledStep && settledStep.status),
         settledStep && ['unknown', 'used', 'released'].includes(settledStep.status));
