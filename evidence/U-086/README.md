@@ -152,3 +152,7 @@ The scoped [original-output gate repair](original-output-gate/README.md)
 retains DSH ownership and the real parent exits. It fixes optional/mismatched
 event acceptance with31 executable offline tests; it does not run the real
 driver or approve itself. Exact source, failures and validation are indexed.
+
+PR53 current-integration refresh: [conflict resolution and combined validation](host-fixture-current-integration.md).
+This candidate preserves both histories and current U108; host and fixture
+are independently reviewed, with final-head CI pending before rewrite adoption.
