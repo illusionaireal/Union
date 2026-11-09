@@ -1,0 +1,81 @@
+{
+  "head": "a7c80cc649b44c439359f0b8f5ce5970dcc5ca6f",
+  "tree": "063e65ffc1b0b2f5579a75e42f314f1d4f9ffa5c",
+  "review_actor": "codex-home/current-deployment-integration-duty",
+  "implementation_actor": "Codex/developer/session-01a1c217-f4aa-78e3-830b-173a7b72e707",
+  "distinct_implementation_session": true,
+  "source_hash_claims_match": {
+    "ai_union/application/model_events.py": true,
+    "ai_union/domain/model_profiles.py": true,
+    "tests/test_core_model_events.py": true,
+    "tests/test_core_model_profiles.py": true
+  },
+  "regression_http": {
+    "passed": 24
+  },
+  "independent_http": {
+    "passed": 7
+  },
+  "unchanged_parent_positive_probe": {
+    "failed": 1,
+    "observed": "403 instead of 200",
+    "head": "e42fd823f40bc609cac560a590994487276a4d90"
+  },
+  "independent_chrome": {
+    "passed": 7,
+    "fake_requests": 1,
+    "browser_posts": 0
+  },
+  "real_calls_added": 0,
+  "reported_real_evidence_review": "Public report and drivers inspected; no independent private original database/log readback or new real inference",
+  "log_sha256": {
+    "duty-pr73-http-regression.private.log": "c468bc0cf919d05c5bfdef6fdb7870b51cd1aa496cec7a6bd219c738fcf30131",
+    "duty-pr73-independent-http.private.log": "c08a2413aa3be20915f87aaa46d0a6c6df3cabcdbac900480e5a6d56a815a8f4",
+    "duty-pr73-parent-red.private.log": "60eb17679cb439149624cea431b94c231c2c1658b407cff568b2028a7d74dc91",
+    "duty-pr73-independent-browser.json": "71ae2e0b7cf6fe423edc2839883ce1150fa60d57b55a2409e61b044a3f0e5c4f",
+    "duty_pr73_independent_probe.py": "69d7098375bf8e789c3b4d3b02d56f056530d273f6fb1da441277f4cf8bfb5de",
+    "duty_pr73_browser_probe.cjs": "16240c4a76882c830b0caf3f9c434280e1db7ad945560368223e8db1f0aa262b",
+    "duty_pr73_browser_host.py": "a7c7a7899994136f2a61e7dfa5e3d7faa790149134f9be0a6359abe3bd9414bd"
+  },
+  "created_at": "2026-11-09T22:01:22.370633+00:00",
+  "adoption": {
+    "pr": 73,
+    "head": "a7c80cc649b44c439359f0b8f5ce5970dcc5ca6f",
+    "merge": "b4e435b78280cee94e9a5d17ed97923f999cc71f",
+    "merge_tree": "063e65ffc1b0b2f5579a75e42f314f1d4f9ffa5c",
+    "same_reviewed_tree": true,
+    "review_id": 5833445067,
+    "merged_at": "2026-11-09T22:03:58Z",
+    "readback_http": 200
+  },
+  "review_url": "https://github.com/illusionaireal/Union/pull/73#pullrequestreview-5833445067",
+  "premerge_checks": {
+    "total": 14,
+    "success": 14,
+    "failed": 0
+  },
+  "public_probe_files": {
+    "browser_host.py": "13b21b1b44e0379687f58d24f9650e7c77b27656f03c9a5854e8260d29f5b30b",
+    "browser_probe.cjs": "5fbb701ad3721807c42db521a667205cab3de771b56243e87502b99c56a4a91e",
+    "http_probe.py": "022489b67989f22415d8daf6b1f6efb91eb14fc155776862d40f3eaa239f9612"
+  },
+  "portable_probe_validation": {
+    "http_passed": 7,
+    "chrome_passed": 7,
+    "chrome_fake_requests": 1,
+    "real_calls": 0,
+    "npm_check_passed": true,
+    "management_tests": 37,
+    "logs_sha256": {
+      "duty-pr73-public-probes-http.private.log": "0409846113ce7355ee80f7f285b83185a0f3f9eb8f56e8fd6bbc60105141a280",
+      "duty-pr73-public-probes-browser.private.log": "3fd2105d32bc428f4892029d9a325f6a0eae147acad48b235efcb884e5c0bbd9",
+      "duty-pr73-evidence-npm.private.log": "d093a16f03f1330ae3c0ed31cc56d9fe18432d727095b571b22284681f532113",
+      "duty-pr73-adoption-management.private.log": "53b5310b6425a451865d70a2708513a35a3baba8a69e49e871d52950b30d7c61"
+    }
+  },
+  "delivery_format_correction": {
+    "precommit_check": "CRLF serializer output initially rejected as trailing whitespace; normalized to existing Git LF bytes",
+    "semantic_scope_verified": "Only U-075 appended history and updated_at; all other ledger values unchanged",
+    "product_defect": false
+  }
+}
