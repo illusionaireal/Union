@@ -1976,6 +1976,13 @@
                     "from": "doing",
                     "to": "doing",
                     "note": "U086/#40原运行恢复补漏候选：在PR44输入c6c13f2观察4 DOM/实际Chrome RED；关闭attempt后优先保留原run_loop，避免旧准备ID替换或查询消失。46相关DOM、U106实际Chrome19及原U086 Chrome18/19通过，npm343前端/37管理/9动作通过。冻结合同、失败历史和完整验证见evidence/U-086/closed-attempt-recovery.md及验证JSON。该页面增量仍待准确head CI和另一工程角色复核，原DSH owner/WIP和真实父卡出口保持。仅交付历史，不作为在线运行态依据；真实调用0。"
+                },
+                {
+                    "at": "2026-11-09T03:07:00.282Z",
+                    "actor": "codex-home/single-duty-integration",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "host-integration-cfe0631-20261109：依据在线#40评论199/203与另一工程角色chatGPT-online复核5821070358，将准确cfe0631的宿主连接修复、6项测试和原证据最小引入当前rewrite候选；5引入文件与受评源字节一致，产品transport相同。原有9项实际回环HTTP/临时Console重启验证及新全量检查见evidence/U-086/host-integration.md、host-integration-validation.json。原Python未完成日志保留，当前head CI仍单独核对；不采用作者driver/127–131真实记录。原DSH owner及#40/#22真实验收、blocked WIP保持，真实调用/迁移/服务切换0。本条仅追加交付历史，不作为在线运行态或已采用声明。"
                 }
             ],
             "claim": {

@@ -1,0 +1,94 @@
+{
+  "scope": "U-086 minimal integration of independently reviewed acceptance host",
+  "actor": "single codex-home duty integrator",
+  "online_member": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+  "scope_comment": 203,
+  "original_owner_preserved": "cafeef64-ac40-4062-97c1-ac82ece0a379",
+  "base": "d209a0e073f2770f59787a02ca7a5ceb2f523ece",
+  "integration_after_review_pr": "a401d2ba3469b48b3125b749c57c21b756536bbf",
+  "independent_review": {
+    "role": "chatGPT-online",
+    "head": "cfe0631c78c76075146b439e2dd2c4d2e4cc1c6e",
+    "review_id": 5821070358,
+    "scope": "host connection wiring only; review not performed by this integrator"
+  },
+  "source": {
+    "scripts/exit22b_host.py": {
+      "sha256": "8c1cf74afff52bc43aab7513d6dc0537e5be58eb38050de7c53675d7f9b50e08",
+      "reviewed_bytes_identical": true
+    },
+    "tests/test_exit22b_host.py": {
+      "sha256": "52fe881552aaab252a2adccec0593a59b93a04b51655b2589ff2b4a99810a598",
+      "reviewed_bytes_identical": true
+    },
+    "evidence/U-086/host-connection-contract.md": {
+      "sha256": "313cf28b44783f5b2ea7660cf005855aa34d8eb441e052307ed4f22bd4a787e0",
+      "reviewed_bytes_identical": true
+    },
+    "evidence/U-086/host-connection-integrity.md": {
+      "sha256": "702187874445b8745af3c3ac9f76367823ab1133de61dd2028c64330c640eb81",
+      "reviewed_bytes_identical": true
+    },
+    "evidence/U-086/host-connection-verification.json": {
+      "sha256": "00c6d075d2cb8ccc53aec419a33b404bfa969937aacff0b61957dee43b1cd25d",
+      "reviewed_bytes_identical": true
+    },
+    "ai_union/work_transport.py": {
+      "sha256": "dd163f5ee604adcb1328e0ba8ff160942544e1757cee5335105f1bc5702e66ab",
+      "reviewed_bytes_identical": true
+    }
+  },
+  "checks": {
+    "focused": {
+      "tests": 9,
+      "seconds": 5.73,
+      "exit_code": 0,
+      "log_sha256": "6c32b48e2e6494b5adba736fc9d4fdf682050ab847d411632dfa0405cf704ef8"
+    },
+    "python": {
+      "started_at": "2026-11-09T02:57:36.222906+00:00",
+      "exit_code": 0,
+      "seconds": 494.718,
+      "log_sha256": "f6f1177478a10d11aea6ad9fec74ff7c246daee7f8f52f5e2138981ca71072c8",
+      "base": "d209a0e073f2770f59787a02ca7a5ceb2f523ece",
+      "tests": 798,
+      "skipped": 9,
+      "failures": 0,
+      "errors": 0
+    },
+    "npm": {
+      "started_at": "2026-11-09T02:58:31.867076+00:00",
+      "exit_code": 0,
+      "seconds": 28.078,
+      "log_sha256": "2eb5a8734b88c23b7718757fdd5cdca1148cb201f0063784ed71ba0e0e28a373",
+      "base": "d209a0e073f2770f59787a02ca7a5ceb2f523ece",
+      "frontend": 343,
+      "management": 37,
+      "action": 9
+    }
+  },
+  "incomplete_prior_python": {
+    "classification": "incomplete; no passing result claimed",
+    "log_sha256": "807820e95bd367ce48b6ac63e22400e3df87698b79c12b4537a9c99899c85164"
+  },
+  "npm_launcher_error": "A nonexistent npm executable prevented initial launch; no tests ran. Corrected to the existing npm CLI with pinned Node.",
+  "pr47_adoption": {
+    "number": 47,
+    "head": "5948de760cda22f73ad08207452ea3954c8337be",
+    "merge": "a401d2ba3469b48b3125b749c57c21b756536bbf",
+    "tree": "353c73b6c70d149f6a1d880a54f903784b418d6c",
+    "checks": 14,
+    "all_success": true,
+    "merged": true
+  },
+  "candidate_ci": "pending exact published head",
+  "real_model_calls_added": 0,
+  "real_acceptance_driver_executed": false,
+  "nas_business_service_switched": false,
+  "migration": false,
+  "limits": [
+    "No author driver or evidence/127-131 imported.",
+    "Original real #22/#39/#40 exits and owner/WIP remain unchanged.",
+    "PR47 changes only six review-evidence files; full-test code inputs unchanged."
+  ]
+}
