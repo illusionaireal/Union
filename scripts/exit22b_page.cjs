@@ -333,27 +333,32 @@ function startHost() {
     const read = await coreWork();
     const work = (read.works || []).find(w => w.id === workId);
     inflight = (work.steps || []).find(s => s.status === 'reserved' && s.command_id && s.model_request_id);
-    if (!inflight) return false;
-    const probe = await page.evaluate(async config => {
-      const response = await fetch('/api/v1/work/events?organization_id=' + config.auId
-        + '&work_id=' + config.workId + '&step_ref=' + encodeURIComponent(config.stepRef) + '&after=0');
-      if (response.status === 404 || response.status === 501) return { capable: false, own: 0 };
-      if (!response.ok) return { capable: null, own: 0 };
-      const events = (await response.json()).events || [];
-      return { capable: true,
-               own: events.filter(e => e.request_id === inflight.model_request_id).length };
-    }, { auId: createdReceipt.organization_id, workId, stepRef: inflight.step_ref });
-    if (probe.capable === null) return false;
-    workEventsCapable = probe.capable;
-    return probe.capable ? probe.own > 0 : true;
+    return Boolean(inflight);
   }, 'in-flight automatic reservation visible', 60000);
-  const workEventsCapable = (await page.evaluate(async config => {
+  // When the Core work-events surface exists (U108), observe the cancelled
+  // request's own events before cancelling; without it, the in-flight fact
+  // proven by the cancel POST remains the core-side evidence.
+  const workEventsCapable = await page.evaluate(async config => {
     const response = await fetch('/api/v1/work/events?organization_id=' + config.auId
       + '&work_id=' + config.workId + '&step_ref=' + encodeURIComponent(config.stepRef) + '&after=0');
-    return response.status !== 404 && response.status !== 501;
-  }, { auId: createdReceipt.organization_id, workId, stepRef: inflight.step_ref })) || false;
+    return response.status !== 404 && response.status !== 501 && response.ok;
+  }, { auId: createdReceipt.organization_id, workId, stepRef: inflight.step_ref });
+  let ownEvents = 0;
+  if (workEventsCapable) {
+    await waitFor(async () => {
+      const events = await page.evaluate(async config => {
+        const response = await fetch('/api/v1/work/events?organization_id=' + config.auId
+          + '&work_id=' + config.workId + '&step_ref=' + encodeURIComponent(config.stepRef) + '&after=0');
+        return response.ok ? (await response.json()).events || [] : [];
+      }, { auId: createdReceipt.organization_id, workId, stepRef: inflight.step_ref });
+      ownEvents = events.filter(e => e.request_id === inflight.model_request_id).length;
+      return ownEvents > 0;
+    }, 'cancelled-request own events observed (Core surface)', 60000);
+  }
   check('Core work-events surface present (U108): ' + workEventsCapable,
         workEventsCapable === true || workEventsCapable === false);
+  check('cancelled-request own events observed before cancel: ' + ownEvents,
+        !workEventsCapable || ownEvents > 0);
   check('in-flight automatic reservation carries the line-end id: ' + inflight.model_request_id);
   check('cancelled-request own events observed before cancel (Core surface: ' + workEventsCapable + ')',
         workEventsCapable === false ? true : workEventsCapable === true);
