@@ -1,0 +1,43 @@
+{
+  "review_scope": "independent saved-evidence review only",
+  "review_source_commit": "c6b35f020bfae6e6d2f49a3aba64968f3036d11b",
+  "integration": "902b429529f82aad6acc63c6fe4e69c4739ced17",
+  "product_and_standard_tests_identical_to_integration": true,
+  "python": {
+    "command": "python -m unittest discover -v",
+    "exit": 0,
+    "tests": 792,
+    "skipped": 9,
+    "failures": 0,
+    "seconds": 491.522
+  },
+  "npm": {
+    "command": "npm run check",
+    "exit": 0,
+    "frontend_tests": 343,
+    "management_tests": 37,
+    "action_tests": 9
+  },
+  "management_render": {
+    "tasks": 80,
+    "result": "pass",
+    "generated_diff": false
+  },
+  "latest_author": {
+    "head": "d3823e8f76db3eda5216b836af0decdeaec05d02",
+    "driver_and_four_evidence_hashes_equal": true,
+    "tests": 6,
+    "counterexample_failures": 3,
+    "passing_controls": 3,
+    "runtime_errors": 0,
+    "probe_exit": 1
+  },
+  "log_sha256": {
+    "initial_probes": "02ce4347caa8852d5cd8a1ea3c3d23c5d409fe617ae2fbeefc364062af46c6e1",
+    "latest_author_probes": "4c13472f97e825c4a8ab55e86242aab83a2b7d48c398ebfa73bbc29f9c723c20",
+    "python": "6bfedf3f63d5fe3be5438c1375a8196e9f0362352585062299292967d8b869bf",
+    "npm": "03e85bcaedba68b2d46854dc5c2ce07cff340e225bb9c4635b7b6f86833a1bb2"
+  },
+  "real_model_calls_added": 0,
+  "independent_host_adoption_review": "still required; this review does not approve PR45"
+}

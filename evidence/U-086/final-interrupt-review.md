@@ -21,7 +21,7 @@ Six tests: **three failures, three passing controls, zero execution errors**.
 
 During review, the author merged the host repair into
 `d3823e8f76db3eda5216b836af0decdeaec05d02`. Fetch and GitHub both confirmed that
-head. Its driver and all five inspected evidence inputs have the same SHA256s;
+head. Its driver and all four inspected evidence inputs have the same SHA256s;
 running the six probes on that exact new head again gives three failures, three
 controls passing and zero errors. PR45 was automatically marked merged into the
 author branch. Integration remains `902b429`; this is not reviewed adoption into
@@ -85,6 +85,14 @@ python evidence/U-086/final-interrupt-review-probes.py 1e490d074d0b4e91291860d74
 Expected exit is **1**, with the three named counterexample failures. A parser,
 missing Git object or runtime error is not a valid reproduction. The historical
 driver remains unmodified, so this review does not manufacture a GREEN result.
+
+The review branch's ordinary checks pass: Python **792 tests, 9 skipped, zero
+failures** (491.522 seconds); npm check **343 frontend, 37 management, 9 action
+tests**, types and build. Management render leaves generated files unchanged.
+Product and standard-test bytes equal integration `902b429`; this suite does not
+include the author's unadopted host/driver changes. [Validation and private-log
+hashes](final-interrupt-validation.json) separate these passing repository checks
+from the three intentionally retained acceptance-probe failures.
 
 DSH retains the driver repairs and evidence/127–128. Correct the assertions and
 claims offline, then obtain any available missing records by the original IDs;
