@@ -1983,6 +1983,13 @@
                     "from": "doing",
                     "to": "doing",
                     "note": "host-integration-cfe0631-20261109：依据在线#40评论199/203与另一工程角色chatGPT-online复核5821070358，将准确cfe0631的宿主连接修复、6项测试和原证据最小引入当前rewrite候选；5引入文件与受评源字节一致，产品transport相同。原有9项实际回环HTTP/临时Console重启验证及新全量检查见evidence/U-086/host-integration.md、host-integration-validation.json。原Python未完成日志保留，当前head CI仍单独核对；不采用作者driver/127–131真实记录。原DSH owner及#40/#22真实验收、blocked WIP保持，真实调用/迁移/服务切换0。本条仅追加交付历史，不作为在线运行态或已采用声明。"
+                },
+                {
+                    "at": "2026-11-09T03:23:00Z",
+                    "actor": "codex-home/single-duty-fixture-repair",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "PR48检查接续/#40评论208：测试专用安全输出末帧延迟1.2秒，原夹具47 PASS/1 FAIL→仅调整有界等待后50项凭据/独立超时检查通过；modeld全89、npm343/37/9通过，完整验证与CI分别见evidence/U-086/secret-fixture-latency.md及secret-fixture-latency-validation.json。产品/CI/vendor未改，旧Windows失败保留且不把相同现象断言为唯一根因。8个准确VM控制证明两个评审器均捕获await后的拒绝，970144a下载重开仍接受另一result；可执行证据review-await-probes.py和review-await-validation.json。原owner/WIP和真实#22/#39/#40出口保留，真实调用0；本条仅交付历史，不作为在线认领或采用事实。"
                 }
             ],
             "claim": {
