@@ -417,7 +417,12 @@ function startHost() {
   }, createdReceipt.organization_id);
   const entry = (after.works || []).find(w => w.id === workId);
   check('work still delivered after a console rebuild', entry && entry.status === 'delivered');
-  check('adopted result survives the rebuild', entry && (entry.results || []).some(r => r.status === 'adopted'));
+  const adoptedAfter = (entry.results || []).find(r => r.status === 'adopted');
+  const anchored = entry.delivered_result_id
+    ? (entry.delivered_result_id === adoptedAfter.id && entry.delivered_result_id === resultId)
+    : (adoptedAfter.id === resultId);
+  check('the original adopted result survives the rebuild (original id): ' + (adoptedAfter && adoptedAfter.id),
+        Boolean(adoptedAfter) && anchored);
   fs.writeFileSync(path.join(output, 'snapshot-after-restart.json'), JSON.stringify(after, null, 2));
   fs.writeFileSync(path.join(output, 'checks.json'),
     JSON.stringify({ passed: checks.length, nonce, workId, checks, errors }, null, 2));
