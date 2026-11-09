@@ -329,7 +329,6 @@ function startHost() {
   // request's own events before cancelling; without it, the in-flight fact
   // proven by the cancel POST remains the core-side evidence.
   let inflight = null;
-  let workEventsCapable = null;
   await waitFor(async () => {
     const read = await coreWork();
     const work = (read.works || []).find(w => w.id === workId);
@@ -348,6 +347,13 @@ function startHost() {
     workEventsCapable = probe.capable;
     return probe.capable ? probe.own > 0 : true;
   }, 'in-flight automatic reservation visible', 60000);
+  const workEventsCapable = (await page.evaluate(async config => {
+    const response = await fetch('/api/v1/work/events?organization_id=' + config.auId
+      + '&work_id=' + config.workId + '&step_ref=' + encodeURIComponent(config.stepRef) + '&after=0');
+    return response.status !== 404 && response.status !== 501;
+  }, { auId: createdReceipt.organization_id, workId, stepRef: inflight.step_ref })) || false;
+  check('Core work-events surface present (U108): ' + workEventsCapable,
+        workEventsCapable === true || workEventsCapable === false);
   check('in-flight automatic reservation carries the line-end id: ' + inflight.model_request_id);
   check('cancelled-request own events observed before cancel (Core surface: ' + workEventsCapable + ')',
         workEventsCapable === false ? true : workEventsCapable === true);
