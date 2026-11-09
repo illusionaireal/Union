@@ -2025,6 +2025,13 @@
                     "from": "doing",
                     "to": "doing",
                     "note": "u086-final-read-combination-1bd324a：#40评论256范围内组合作者1bd324a最终GET会话修复与PR58 b293c626原取消恢复；作者修复由当前非实施会话独立7探针复验，PR58由DSH在线消息101独立复核，分别保持准确源码blob。新增常规CI最后GET的主体/服务/失效竞态，原9d7fe98为1PASS/3FAIL→组合4PASS；134原相关Node、两组实际Chrome/HTTP/SQLite通过，真实调用0。完整验证与旧VM兼容错误分别见evidence/U-086/final-read-combination/README.md及validation.json。当前head CI后才能采用，本条仅交付历史，保持DSH owner/#40 progress/WIP和#22/#39/#40真实出口，不作为在线认领、迁移或真实运行证据。"
+                },
+                {
+                    "at": "2026-11-09T10:37:10.698Z",
+                    "actor": "codex-home/single-duty-implementation",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "U086/#40评论260的输出到原取消恢复衔接补漏：作者abef544的outputObservation遗漏principal_id，正常输出后原GET必然拒绝。原源串联四项RED→两行身份传递GREEN，142相关Node、实际Chrome/CoreHTTP/SQLite原源RED与候选恢复通过，npm151Node/363前端/37管理。证据evidence/U-086/reader-binding/README.md和validation.json；当前head CI与另一工程角色复核后才能采用。本地仅追加交付历史，不动DSH在线owner/progress/WIP或真实出口，不新增真实推理/部署/迁移。"
                 }
             ],
             "claim": {

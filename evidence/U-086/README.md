@@ -1,5 +1,11 @@
 # U-086 / #40：新候选与当前集成边界复核
 
+2026-11-09 输出到取消恢复的主体传递补漏：当前作者abef544正常链路因
+outputObservation缺principal_id而拒绝原GET，独立片段测试未覆盖衔接。
+本次两行修复经原源4项RED→GREEN及实际Chrome/Core/SQLite成对验证；
+[合同、证据与保留边界](reader-binding/README.md)。DSH原owner/真实出口保持，
+本实施会话待另一工程角色复核/当前head CI，不自批、不新增真实推理。
+
 2026-11-09 最终下载会话核验组合：DSH修复1bd324a与PR58原取消恢复合并，
 新增常规CI三项竞态反例，旧源1PASS/3FAIL→组合4PASS。原相关134项、两组
 实际Chrome/HTTP/SQLite通过；双方实施与独立复核分开记录，见
