@@ -1,0 +1,84 @@
+{
+  "reviewer": "chatGPT-online / independent of codex-home fixture implementation",
+  "online_member": "54f3ed9e-817b-482a-90c1-d46bfc01728c",
+  "scope": "#40 collaboration requested in comments240/team96; no task claim/owner/status change; 1–2h bounded fixture/composition review",
+  "base": "a401d2ba3469b48b3125b749c57c21b756536bbf",
+  "pr49": "563882e6fee67a96bbd617808f06488f8a02d7c7",
+  "pr53": "23ad59e4335a14d30d02fa19ce3f3cd7ee5393a2",
+  "stream_checks": {
+    "fixture": "563882e6fee67a96bbd617808f06488f8a02d7c7",
+    "combination": "23ad59e4335a14d30d02fa19ce3f3cd7ee5393a2",
+    "node": "v24.22.1",
+    "source_sha256": "7f3d0a9630d24dc8724865b43fe3afa0dade45afd2a0ff3132d6fb40c5b6c6d1",
+    "passed": 7,
+    "checks": [
+      "bounded fixture deadlines retained",
+      "safe first chunk arrives before delayed finish",
+      "old 1000ms idle cannot accept the delayed finish",
+      "exact fixture delays final frame at least 1.1s",
+      "5000ms permits original finish and usage intact",
+      "stream closes without another frame",
+      "cancel clears the exact outstanding timer"
+    ],
+    "scope": "Exact ordinary ReadableStream fragment only; no Bun/kernel execution, sockets or real model calls"
+  },
+  "host_http": {
+    "tests": 9,
+    "failures": 0,
+    "seconds": 5.144,
+    "source": "23ad59e4335a14d30d02fa19ce3f3cd7ee5393a2"
+  },
+  "management": {
+    "tests": 37,
+    "failures": 0,
+    "source": "23ad59e4335a14d30d02fa19ce3f3cd7ee5393a2"
+  },
+  "unchanged_source_sha256": {
+    "services/modeld/src/kernel.ts": "cac040511eed9ec6cd025f569d59ca0014d9aa9e80abf9c3f4b271dd7d1f5aa4",
+    "services/modeld/src/server.ts": "7d7d86b7811b0bdec5d5777eca665589e59924b559e7d5eaa91fccd7abd107b0",
+    "services/modeld/test/secret-boundaries.test.ts": "3ea8f10eb42b8e02e63514e5789c9a2e40318710c5a4383f76ab2fcab6d03596",
+    "services/modeld/test/kernel.test.ts": "8c91f204026ce4a8d3b329c7a30becb919b125006847b79a32a7f0fa6cf36bcb",
+    "services/modeld/test/fixtures/kernel-probe.ts": "8dbb44eb72f8ab44fda322a249476a5feb1018830e17a959746e794ea87829ea",
+    "services/modeld/upstream.lock.json": "e00feaece9d94d823230204cf3d73f2bb9a9025d9078b456d7df32cc2a7d633f"
+  },
+  "fixture_same_in_both_candidates": true,
+  "previously_reviewed_host": "byte-identical to cfe0631",
+  "history": {
+    "original": 17,
+    "combined": 19,
+    "all_old_entries_retained": true
+  },
+  "ci": {
+    "pr49_all_pr_workflows": "success",
+    "pr53_all_pr_workflows": "success",
+    "pr49_windows_model_job": 128964315617,
+    "pr53_windows_model_job": 128986305142,
+    "windows_logs_each": "89 pass / 0 fail; ordinary safe output passes",
+    "pr49_ci_merge": "932084f merging 563882e into a401d2b",
+    "pr53_ci_merge": "a537e73 merging 23ad59e into a401d2b"
+  },
+  "current_target": {
+    "sha": "c9014a0322709c96692b6b014696d97da360ac99",
+    "read_only_merge_tree_exit": 1,
+    "conflict": "management/project.json",
+    "adoption_condition": "Coordinator preserves all concurrent U067/U108 histories, builds a new combined head on current rewrite and verifies that exact head CI before adoption"
+  },
+  "limits": [
+    "No local Bun executable; no local full Bun/kernel run claimed. Actual Bun/modeld evidence independently read from current component/composite GitHub CI logs.",
+    "Local Node is v24.22.1; the exact-fragment stream probe is not a claim of pinned Bun runtime verification.",
+    "Full Python/npm not repeated locally; 9 focused HTTP tests and 37 management tests are the actual independent local runs.",
+    "Initial Node TypeScript wrapper syntax error and wrong management test filename were review invocation failures, not product RED; corrected without changing candidate source.",
+    "Initial patch-path hash lookup used a nonexistent filename; no candidate defect inferred. Overall Git diff confirms fixture is the only changed modeld source path."
+  ],
+  "real_model_calls": 0,
+  "driver_main_executed": false,
+  "product_source_changed": false,
+  "log_sha256": {
+    "u086-independent-stream.log": "b7e6abd4aa69199141a3870d6f2950dd0eac63a5835c604f5acb0798fa37e3ff",
+    "u086-independent-stream-green.log": "b771c88774af43fc7df5a6c3af78de381d74a0579609104d0eb26e9c5a8b6bf4",
+    "u086-independent-host.log": "a00cf970ff664709f427d0537b0e77c71fe5d88de763dd214cedffb2d25c65ca",
+    "u086-independent-management.log": "71df71c0d323f6b28a320f44e78f8df6bc13a53fffab07eea1cc3df5f2f026d0",
+    "u086-independent-management-green.log": "1b7880ae4c62625e8abd692a340429a8f04ff1aab8cb9698e9e7e7a1aad06f5c",
+    "u086-composition-merge-tree.txt": "1861a708a5a03efd18ff368b759e1370ea696b9a49f5d03bc93c128a716aa113"
+  }
+}
