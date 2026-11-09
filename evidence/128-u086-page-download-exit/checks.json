@@ -1,0 +1,22 @@
+{
+  "passed": 12,
+  "nonce": "UNION-EXIT22B-4c4f2457",
+  "workId": "work-exit",
+  "checks": [
+    "private ticket page loads",
+    "can_start probe: {\"can_start\":true,\"conns\":[{\"id\":\"connection-a\",\"is_default\":true,\"enabled\":true}],\"protocol\":\"core.models.v1\"}",
+    "tasks page reachable",
+    "work registered and attempt started through the product API",
+    "candidate result produced by the real model",
+    "result content digest matches recorded sha256: 4db4452db27457db1109a369de54e2f1bcd7db3268f9e3b4d649573a987ecf17",
+    "result cites the synthetic nonce: yes",
+    "download link present on the candidate result: /api/v1/work/results?organization_id=org-03415062bf9d445bb50bffc21632c5b3&id=result-d06b7a",
+    "downloaded content carries the recorded result",
+    "result adopted and delivered",
+    "work still delivered after a console rebuild",
+    "adopted result survives the rebuild"
+  ],
+  "errors": [
+    "nav ok, models ok: [{\"enabled\":true,\"grant_ref\":\"grant-562800f33d5d\",\"grant_revision\":1,\"id\":\"conne"
+  ]
+}
