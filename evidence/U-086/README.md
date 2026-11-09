@@ -1,5 +1,10 @@
 # U-086 / #40：新候选与当前集成边界复核
 
+2026-11-09 验收宿主协助：作者096815e的transport会替换产品保存的连接/grant，
+真实回环HTTP与Console重启反例已先RED，再复用产品factory修复。
+见[范围、验证与剩余出口](host-connection-integrity.md)。本会话是该修复实施者，
+须另一工程角色复核及准确head CI；不据此采用原127完整真实验收声明。
+
 2026-11-09 原attempt关闭后恢复：PR44 `c6c13f2`在成果采用/交付后会隐藏原
 run_loop或显示旧准备ID；4项DOM及实际Chrome RED后修复，46相关DOM、
 U106 Chrome19与U086 Chrome18/19通过。见[补漏与完整验证](closed-attempt-recovery.md)。

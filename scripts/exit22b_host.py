@@ -1,27 +1,24 @@
-"""Page-level 22-B evidence host with a real Console and an explicit loopback modeld double.
+"""Page acceptance host using Console and the configured modeld service.
 
-The double is injected through the product's own transport factory so the page run uses the
-real HTTP boundaries; the connection row is prepared through the product API exactly as the
-page itself would do it. The double makes the modeld side deterministic while everything
-else (identity, governance, work, receipts, persistence) is the real product.
+The page adopts its connection through the product API. Transport wiring must preserve
+that exact connection, including its grant and revisions. Real runs need separate bounded
+authorization; importing this module does not start a server or invoke a model.
 """
 import json
 import os
 import sys
 import threading
 from pathlib import Path
-from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from ai_union.console import Console  # noqa: E402
 from ai_union.server import Server  # noqa: E402
-from tests.test_work_transport_http import ModeldDouble  # noqa: E402
+from ai_union.work_transport import modeld_factory  # noqa: E402
 
 
 class PageHost:
     def __init__(self, root):
         self.root = root
-        self.patch = patch("ai_union.model_service.ModelServiceClient", return_value=None)
         self.app = Console(root, fixture=None)
         self._wire()
         self.server = Server(self.app, 0)
@@ -30,28 +27,14 @@ class PageHost:
 
     def _wire(self):
         config = os.environ.get("UNION_MODELD_CONFIG")
-        model = os.environ.get("UNION_REAL_MODEL", "deepseek-v4.1-flash")
         account = os.environ.get("UNION_REAL_ACCOUNT")
         if not (config and account):
             return
 
-        def factory(au_id, connection):
-            from ai_union.model_service import ModelServiceClient
-            from ai_union.work_transport import ModeldWorkTransport
-            connection = dict(connection)
-            connection.setdefault("model", model)
-            connection.setdefault("max_output_tokens", 1024)
-            connection["id"] = "connection-a"
-            connection["revision"] = 1
-            connection["grant_ref"] = self.grant_ref
-            connection["grant_revision"] = 1
-            return ModeldWorkTransport(ModelServiceClient(config), au_id, connection,
-                                       sleep=lambda _: None, timeout_seconds=180)
-
-        self.app.work.transport_factory = factory
+        self.app.work.transport_factory = modeld_factory(config, timeout_seconds=180)
 
     def prepare(self, au_id):
-        """Register the connection and the grant through the product API surfaces."""
+        """Prepare an explicit grant; only the product API can adopt a connection."""
         from ai_union.model_service import ModelServiceClient
         client = ModelServiceClient(os.environ["UNION_MODELD_CONFIG"])
         accounts = client.call("GET", "/v1/accounts", admin=True).get("accounts") or []
