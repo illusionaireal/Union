@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import {createHash} from 'node:crypto';
+import {createRequire} from 'node:module';
 import vm from 'node:vm';
 import test from 'node:test';
 
@@ -17,9 +19,14 @@ type Options = { missingAdopt?: boolean; runningAttempt?: boolean; adoptedOnly?:
 async function run(options: Options = {}) {
   const calls: any[] = [], clicks: string[] = [], files = new Map();
   const listeners = new Set<(request: any) => void>();
-  const result = { id: 'result-original', status: 'candidate', sha256: 'a'.repeat(64), sources: ['brief.md'] };
+  const document='原资料🧪';
+  const result = { id: 'result-original', status: 'candidate', sha256: 'a'.repeat(64), sources: ['work-original#1'] };
   const work: any = { id: 'work-original', status: 'running', results: [result],
-    attempts: [{id: 'attempt-original', status: 'running'}], steps: [] };
+    attempts: [{id: 'attempt-original', status: 'running'}], attempt_ids:['attempt-original'],
+    steps: [{attempt_id:'attempt-original',status:'used',command_id:'command-model',model_request_id:'request-model'}],
+    tool_calls:[{step_ref:'work-original#1',tool:'read_document',attempt_id:'attempt-original',
+      arguments:{path:'brief.md'},sha256:createHash('sha256').update(document,'utf8').digest('hex'),
+      bytes:Buffer.byteLength(document,'utf8')}] };
   const snapshot = () => ({ protocol: 'core.work.v1', organization_id: 'au-original', version: 12,
     access: { principal_id: options.changedPrincipal && calls.length ? 'other' : 'principal-original' },
     works: [{id: 'work-other', status: 'delivered', results: []}, structuredClone(work)] });
@@ -41,6 +48,9 @@ async function run(options: Options = {}) {
     return {receipt: {status: 'succeeded'}};
   }
   const context: any = {
+    material:{path:'brief.md',sha256:createHash('sha256').update(document,'utf8').digest('hex'),
+      bytes:Buffer.byteLength(document,'utf8')},
+    require:createRequire(new URL('../scripts/exit22c_download.cjs',import.meta.url)),
     assert, URL, JSON, createdReceipt: { organization_id: 'au-original' },
     workId: work.id, resultId: result.id, recorded: result.sha256, recordedFull: structuredClone(result),
     output: '/synthetic', path: {join: (...parts: string[]) => parts.join('/')},
@@ -59,7 +69,7 @@ async function run(options: Options = {}) {
       return snapshot();
     }}),
   };
-  context.crypto = {randomUUID: () => 'api-command-' + calls.length};
+  context.crypto = {createHash, randomUUID: () => 'api-command-' + calls.length};
   context.page = {
     on: (event: string, listener: any) => {assert.equal(event, 'request'); listeners.add(listener);},
     off: (event: string, listener: any) => {assert.equal(event, 'request'); listeners.delete(listener);},
@@ -96,6 +106,11 @@ test('download acceptance uses both original Core result controls and records on
   assert.deepEqual(r.clicks, ['采用此成果', '交付此成果']);
   assert.deepEqual(r.calls.map(c => [c.kind,c.ui]), [['adopt_result',true], ['deliver_work',true]]);
   assert.equal(r.files.size, 1); assert.equal(r.listeners.size, 0);
+  const material=[...r.files.values()][0].material_read;
+  assert.equal(material.tool_receipt_id,'work-original#1');
+  assert.equal(material.path,'brief.md');
+  assert.equal(material.bytes,Buffer.byteLength('原资料🧪','utf8'));
+  assert.equal(Object.hasOwn(material,'content'),false,'material evidence contains no body');
 });
 test('missing adoption control cannot be bypassed with a successful direct API command', async () => {
   const r = await run({missingAdopt: true}); assert.ok(r.error);

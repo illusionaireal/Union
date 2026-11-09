@@ -60,6 +60,9 @@ function startHost() {
   fs.mkdirSync(materials, { recursive: true });
   const document = '# 合成资料\n\n本次页面级验收代号 ' + nonce + '。\n';
   fs.writeFileSync(path.join(materials, 'brief.md'), Buffer.from(document, 'utf8'));
+  const material = {path: 'brief.md',
+    sha256: crypto.createHash('sha256').update(document, 'utf8').digest('hex'),
+    bytes: Buffer.byteLength(document, 'utf8')};
   fs.writeFileSync(path.join(temp, 'document-roots.json'),
     JSON.stringify({ version: 1, roots: { 'project-docs': materials } }));
 
@@ -326,6 +329,8 @@ function startHost() {
   check('the downloaded original candidate is still current', candidates.length === 1
     && candidates[0].status === 'candidate' && candidates[0].sha256 === recorded
     && JSON.stringify(candidates[0].sources) === JSON.stringify(recordedFull.sources));
+  const materialRead = require('./exit22-material-evidence.cjs').verifyMaterialRead(
+    deliveryBefore, {organization_id: createdReceipt.organization_id, work_id: workId}, candidates[0], material);
   const resultControls = page.locator('[data-work=' + JSON.stringify(workId) + ']')
     .getByRole('region', { name: '成果 ' + resultId, exact: true });
   const pageCommands = [];
@@ -367,6 +372,7 @@ function startHost() {
   fs.writeFileSync(path.join(output, 'page-delivery-commands.json'), JSON.stringify({
     organization_id: createdReceipt.organization_id, work_id: workId, result_id: resultId,
     sha256: recorded, principal_id: deliveryBefore.access.principal_id,
+    material_read: materialRead,
     commands: pageCommands.map(({ id, kind }) => ({ id, kind })),
   }, null, 2));
   const before = await snapshot();

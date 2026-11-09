@@ -229,3 +229,7 @@ Reopened download: [read and verify the original body after restart](reopened-do
 The actual acceptance tail now checks a scoped result GET, current identity,
 UTF-8 bytes and digest; metadata alone cannot claim the body survived.
 Controlled evidence only; the implementation does not independently approve itself.
+
+Material/source gate: [require the original document-read receipt before delivery](material-read/README.md).
+The original candidate must cite a persisted read of the actual synthetic bytes;
+nonce/digest checks alone no longer pass. Controlled checks do not close real exits.
