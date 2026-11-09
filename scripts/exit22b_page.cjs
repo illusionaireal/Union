@@ -402,9 +402,9 @@ function startHost() {
     && (cancelGet.receipt || {}).model_request_id === inflight.model_request_id
     && (cancelGet.receipt || {}).id === cancelCommandId;
   check('original GET returns the delivered cancel receipt (identity match)', deliveredAccepted);
+  // The settlement may be interrupted (unknown kept) or completed (used) depending
   check('cancel receipt id matches the submitted cancel command',
         cancelOutcome.receipt.id === cancelCommandId);
-  // The settlement may be interrupted (unknown kept) or completed (used) depending
   // on the race with the real model; both must settle only via the original request.
   await waitFor(async () => {
     const read = await coreWork();
