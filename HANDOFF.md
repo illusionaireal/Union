@@ -1,5 +1,21 @@
 # 当前工程交接
 
+2026-11-09 U086/#40作者组合候选最终验证：作者分支`dsh/u086-page-cancel`已合并
+值守全部评审与页面恢复增量，最终head `fcbc932`。链：310c7e1（手工预约释放）→
+abfa9ee（自动在途取消意图+线端送达）→22649f4（页面取消并入原请求协议）→
+813b3b5（受理先定稿再持久化）→aa82962（送达观察独立持久化+receipts合并视图）→
+a8c7280（合并值守页面恢复67d1225）→53ed829（重放视图+观察完整性，9处existing
+同连接读）→f5f6c7d（采用值守快照级投影19afff3）→fcbc932（最终验证记录）。
+全部验证在fcbc932独立复跑：值守新单测8用例、作者持久性测试、五套探针
+（delivery 6/6、observation 2/2、cancel-route、cancel-boundary 4/4、
+candidate-boundary 3/3）、值守浏览器双模式（正常15/丢响应16 checks，均exit 0、
+零真实调用）、792 Python全量OK（11跳过）、npm check:console（335前端）与
+check:management（37管理）全绿。证据：[最终组合自查](evidence/126-u086-final-combination/README.md)
+及evidence/119–125逐合同RED→GREEN记录。按page-combination合同，采用仍需另一
+工程角色独立复核fcbc932+head CI；PR43(19afff3)已由值守关闭（内容经
+merge 19afff3..fcbc932 完整进入作者分支）。#40/父#22保持progress未关闭；
+真实模型调用、部署、迁移均为0。
+
 2026-11-09 U086/#40评审修复候选：本值守已在PR43协助分支组合作者a8c7280与
 页面915cc15（组合66c97a8），修复原取消POST重放丢送达事实和读取缺完整性校验。
 同一快照合并观察、绑定/结构校验及原观察不可覆盖经过实际RED→GREEN；见
