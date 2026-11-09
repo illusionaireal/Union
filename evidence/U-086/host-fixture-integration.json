@@ -1,0 +1,31 @@
+{
+  "integration": "a401d2ba3469b48b3125b749c57c21b756536bbf",
+  "inputs": {
+    "PR48": "23aeb36a78f51734488112d97f172a817c237128",
+    "PR49": "563882e6fee67a96bbd617808f06488f8a02d7c7"
+  },
+  "resolved_conflict": [
+    {
+      "path": "/tasks/66/history",
+      "preserved_entries": 17,
+      "appended_entries": 2
+    }
+  ],
+  "host_review": "https://github.com/illusionaireal/Union/pull/45#pullrequestreview-5821070358",
+  "fixture_review": "Still required from another engineering role; this session implemented PR49 and cannot self-approve.",
+  "scope": "Combine the reviewed host and exact fixture repair. No author drivers/real evidence, product changes, migration or service switch.",
+  "real_model_calls": 0,
+  "source_sha256": {
+    "scripts/exit22b_host.py": "8c1cf74afff52bc43aab7513d6dc0537e5be58eb38050de7c53675d7f9b50e08",
+    "tests/test_exit22b_host.py": "52fe881552aaab252a2adccec0593a59b93a04b51655b2589ff2b4a99810a598",
+    "services/modeld/test/fixtures/secret-boundaries-probe.ts": "7f3d0a9630d24dc8724865b43fe3afa0dade45afd2a0ff3132d6fb40c5b6c6d1"
+  },
+  "local_validation": {
+    "management_render": "PASS; generated views unchanged",
+    "management_check": "PASS",
+    "management_tests": 37,
+    "management_tests_exit": 0,
+    "private_log_sha256": "3b4b616b2bc2fbe8332efcd8bebbd91a790e85d291a285f39eae569a401792be",
+    "diff_check": "PASS"
+  }
+}
