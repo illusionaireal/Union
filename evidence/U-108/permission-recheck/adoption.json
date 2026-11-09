@@ -1,0 +1,19 @@
+{
+  "pr": 50,
+  "head": "8928f04b36320c74a599a6c10b5f327cfeb9f5d0",
+  "merge": "7fe50c213adcf2d826109b6fe272f31ee09bccf8",
+  "tree": "9b3754d6295c0630d51c160f8656d7190694e41f",
+  "exact_tested_tree_equal": true,
+  "review": 5822180218,
+  "all_14_head_checks": "success",
+  "real_model_calls": 0,
+  "production_switched": false,
+  "board_readback": {
+    "revision": 699,
+    "card": 62,
+    "status": "done",
+    "owner_retained": "54f3ed9e-817b-482a-90c1-d46bfc01728c",
+    "version": 6
+  },
+  "review_url": "https://github.com/illusionaireal/Union/pull/50#pullrequestreview-5822180218"
+}

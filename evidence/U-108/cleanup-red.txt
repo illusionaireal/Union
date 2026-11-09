@@ -1,0 +1,14 @@
+test_stop_closes_console_and_removes_temporary_roots (tests.test_u108_browser_host.BrowserHostLifecycleTests.test_stop_closes_console_and_removes_temporary_roots) ... FAIL
+
+======================================================================
+FAIL: test_stop_closes_console_and_removes_temporary_roots (tests.test_u108_browser_host.BrowserHostLifecycleTests.test_stop_closes_console_and_removes_temporary_roots)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/4508c4bb8a45/union-u108/tests/test_u108_browser_host.py", line 18, in test_stop_closes_console_and_removes_temporary_roots
+    self.assertTrue(case.app.closed)
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 1 test in 0.868s
+
+FAILED (failures=1)

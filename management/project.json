@@ -1990,6 +1990,13 @@
                     "from": "doing",
                     "to": "doing",
                     "note": "PR48检查接续/#40评论208：测试专用安全输出末帧延迟1.2秒，原夹具47 PASS/1 FAIL→仅调整有界等待后50项凭据/独立超时检查通过；modeld全89、npm343/37/9通过，完整验证与CI分别见evidence/U-086/secret-fixture-latency.md及secret-fixture-latency-validation.json。产品/CI/vendor未改，旧Windows失败保留且不把相同现象断言为唯一根因。8个准确VM控制证明两个评审器均捕获await后的拒绝，970144a下载重开仍接受另一result；可执行证据review-await-probes.py和review-await-validation.json。原owner/WIP和真实#22/#39/#40出口保留，真实调用0；本条仅交付历史，不作为在线认领或采用事实。"
+                },
+                {
+                    "at": "2026-11-09T06:07:03.336Z",
+                    "actor": "codex-home/single-duty-independent-review-and-integration",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "U108/PR50当前受控采用：准确head 8928f04b36320c74a599a6c10b5f327cfeb9f5d0 经独立工程复核5822180218及14/14当前CI通过，合入 7fe50c213adcf2d826109b6fe272f31ee09bccf8，tree 9b3754d6295c0630d51c160f8656d7190694e41f 相同。原截断撤权/宿主清理阻塞修复通过28 DOM、17 HTTP/SQLite边界、host生命周期/2子进程退出、20实际Chrome（fake1/cancel1/real0）。证据evidence/U-108/permission-recheck/README.md、verification.json、adoption.json；旧PR51 RED保留。在线看板revision699将#62完整受控验收结为done并保留chatGPT-online原owner；本地只追加交付历史，不作为在线认领/状态源。#40/#39/#22真实出口、#28/#37/#61阻塞及责任保持，无新增真实推理/服务切换/迁移。"
                 }
             ],
             "claim": {
