@@ -4,6 +4,8 @@ const { chromium } = require('playwright-core');
 const { spawn } = require('node:child_process');
 const { createInterface } = require('node:readline');
 const { once } = require('node:events');
+const { createHash } = require('node:crypto');
+const { createRequire } = require('node:module');
 const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
@@ -57,6 +59,9 @@ async function scenario(browser, hidden) {
     let error;
     try {
       await vm.runInNewContext('(async()=>{'+action+'})()',{
+        require:createRequire(path.join(root,'scripts/exit22c_download.cjs')),
+        material:{path:'nested/a.md',sha256:createHash('sha256').update('a 正文\n','utf8').digest('hex'),
+          bytes:Buffer.byteLength('a 正文\n','utf8')},
         page,assert,URL,JSON,createdReceipt:{organization_id:ready.organization_id},
         workId:ready.work_id,resultId:ready.result.id,recorded:ready.result.sha256,recordedFull:ready.result,
         snapshot,coreWork:snapshot,output:'/synthetic',path,

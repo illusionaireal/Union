@@ -1,0 +1,101 @@
+{
+  "scope": "controlled",
+  "actor": "single codex-home duty implementation",
+  "online_member_id": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+  "card": 40,
+  "scope_comment": 290,
+  "base": "2ba812f8018b23f7e6f2ba7d0d28c67be28b97a4",
+  "integration_at_start": "57035fbe48b3845a811de2b94aa55c49af989704",
+  "real_model_calls": 0,
+  "dedicated_browser_fake_calls": 14,
+  "node_red": {
+    "passed": 1,
+    "failed": 10
+  },
+  "node_green": {
+    "tests": 297,
+    "passed": 297
+  },
+  "browser_red": {
+    "passed": 1,
+    "failed": 9
+  },
+  "browser_green": {
+    "passed": 10,
+    "failed": 0
+  },
+  "page_controls": {
+    "passed": 2,
+    "fake_calls": 4
+  },
+  "reopened_body": {
+    "passed": 11,
+    "fake_calls": 2
+  },
+  "errors_retained": [
+    "initial and second Chrome runs: 9 passed / 1 legitimate original control rejected by legacy attempt_ids lookup",
+    "two Node fixture failures from overwritten crypto object, not product RED",
+    "first full Python SDK startup error: raw pinned dependency snapshot missed the recorded patch; subsequent diagnostic exposed workspace aliases loading a second copy; pinned patch and local alias rebinding corrected only this task snapshot"
+  ],
+  "full_python": {
+    "tests": 808,
+    "seconds": 516.201,
+    "skipped": 10,
+    "errors": 0,
+    "failures": 0,
+    "bun": "1.4.2"
+  },
+  "full_npm": {
+    "passed": true,
+    "node": 306,
+    "frontend": 363,
+    "management": 37
+  },
+  "source_sha256": {
+    ".github/workflows/ci.yml": "f3db30cd017f5142569504f9fb3049ecdab7cb9d9b2fc4af32c6f902a54dd474",
+    "evidence/U-086/page-delivery-gate/browser.cjs": "c77b37c44ef584c9eddf25a1f6779ce02909402f5aa4a65470aa9785a45c2e77",
+    "scripts/exit22c_download.cjs": "71c9f0956b4df8a4b4147b54ee1f036a037284bc023708cd37cdbb876457f62c",
+    "scripts/exit22-material-evidence.cjs": "f8a275dc3d68390e7759e7f7481b11b744061a9cf9da7d761b8480e7f594d4d5",
+    "tests/exit22-page-delivery.test.ts": "e1f06edc5590c03b8cc0c3cf46776f28c53931126705a7aee8a08740e8e556c9",
+    "tests/exit22-material-read.test.ts": "391af3a9d40178f3922bb956f53e7bcdb702b0771617af8338d113803e42f8c5",
+    "evidence/U-086/material-read/browser.cjs": "f0bc965a7b01369bd77bc99681d477f1aa1a3787f0266c95d3a749f359919861"
+  },
+  "log_sha256": {
+    "node_red": "1aa7a9bcc248908bc41a3efdba669b648338e93c238863cc6936608dd3e01986",
+    "node_fixture_error": "28bf7ebb8127f2bd9f12bc511ac3431ce8f446a2847bc024e22fdc71182a4575",
+    "node_exact_green": "64677f01cce6a239e0deb4f4707bc6087580e7575f5ec18dff5fe3c5608b6598",
+    "browser_initial_attempt_projection_error": "da8d9643a9e7190d73bb9bf66607c965cf50166001b96867f8cfed5f7fb3c5a5",
+    "browser_historical_red": "4c84bec674aa09ac52d4c48386f6ebfea9a75e689e94a75f7b653fcb7cd96578",
+    "browser_attempt_projection_error": "da8d9643a9e7190d73bb9bf66607c965cf50166001b96867f8cfed5f7fb3c5a5",
+    "browser_green": "dba948165aa1a8a18e9b623f6873ff8df17eb3212cbf4e87c071d136549eb15c",
+    "page_controls_green": "a4461093e03386e097b2f6324f25d5b5dd7b6ab55bfc3eabadc192c7ca75838f",
+    "reopened_body_green": "8dc46d7caa7b29fc4caa13b5fa63d941999967cfa6574333d90984f817a1a5f0",
+    "npm_initial": "f329c8e3531e9dc54775f9694c33af1e7f82ead6b35d462670528a0fbd117e48",
+    "npm_final": "d5afb2c2e03413db5c22363dcf09821015a716e01d87d271b6b383111ad9564b",
+    "python_environment_failure": "bc7ea0a8fee2efc7538784564c6dd44692bc4fe51daa4484c404dc938ab7874c",
+    "sdk_missing_patch": "e9a6c10b357d35ebb0a8e1b13fd3c8ca6193290f8b7d95b8bef02e2a0e80a738",
+    "sdk_alias_error": "2fda9a8794a6eb4db67d0a44bb92cf8e61f5193f796c04460e5e8ab87e7aaf31",
+    "sdk_fixed": "002cc2eaca3ace6542c9abcfb0c0a4511b55e3c4fc6d2905159f1d61f4771f4e",
+    "python_final": "f296a0caa28f3f5709c04930b7f4d0b2a20da60bee12b7f65d89d9bdbca7c5a1"
+  },
+  "adoption": {
+    "independent_review": "pending, implementation cannot self-approve",
+    "exact_head_ci": "pending publication",
+    "parent_PR70_review": "pending at last read",
+    "parent_PR70_exact_head_checks": "21/21 success; independent review still pending at final pre-publication read"
+  },
+  "preservation": {
+    "ordinary_head": "563882e6fee67a96bbd617808f06488f8a02d7c7",
+    "ordinary_index_unchanged": true,
+    "preexisting_files_untouched": true
+  },
+  "limitations": [
+    "A receipt/source link does not prove the second model complete input or real billing/business acceptance.",
+    "No deployment, grant creation, migration, new real inference or change to supervisor/config/locks."
+  ],
+  "first_full_python": {
+    "tests": 808,
+    "seconds": 518.656,
+    "result": "FAILED (errors=1, skipped=10)"
+  }
+}
