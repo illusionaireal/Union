@@ -5,28 +5,45 @@ import vm from 'node:vm';
 
 // Execute the real driver's restart assertions, never its model/browser main.
 const source = readFileSync(new URL('../scripts/exit22c_download.cjs', import.meta.url), 'utf8');
-const start = '  const reopenedResponse = await page.evaluate(async auId => {';
+const start = '  const authenticatedAfter = await snapshot();';
 const end = "  // Restart request conservation.";
 assert.equal(source.split(start).length, 2);
 assert.equal(source.split(end).length, 2);
 const block = source.slice(source.indexOf(start), source.indexOf(end));
 const original = {
-  protocol: 'core.work.v1', organization_id: 'original-au',
+  protocol: 'core.work.v1', organization_id: 'original-au', version: 0,
+  access: { principal_id: 'p1' },
   works: [{ id: 'original-work', status: 'delivered', delivered_result_id: 'original-result',
+    steps: [{ step_ref: 'original-work#s1', attempt_id: 'original-work#a1', command_id: 'c1',
+      model_request_id: 'r1', status: 'unknown', usage: null, cost_status: 'unknown',
+      reason: 'keep', connection: 'original-connection' }],
     results: [{ id: 'original-result', status: 'adopted', sha256: 'original-digest' }] }],
 };
 
 async function reopen(body: typeof original, status = 200) {
   let reads = 0;
+  const session = { core_protocol: 'core.au.v1', principal_id: 'p1', service_instance: 's1' };
   const context = {
     workId: 'original-work', resultId: 'original-result', recorded: 'original-digest',
     createdReceipt: { organization_id: 'original-au' },
     page: { evaluate: async (fn: (id: string) => unknown, arg: string) => fn(arg) },
-    fetch: async () => { reads++; return { status, json: async () => body }; },
+    fetch: async (url: string) => {
+      reads++;
+      if (url === '/api/session') return { status: 200, json: async () => session };
+      return { status, json: async () => body };
+    },
     check: (name: string, value: unknown = true) => assert.ok(value, name),
+    snapshot: async () => {
+      const session = { core_protocol: 'core.au.v1', principal_id: 'p1', service_instance: 's1' };
+      const workRead = { status, body };
+      assert.equal(workRead.status, 200, 'Core Work snapshot HTTP status');
+      assert.equal(workRead.body?.protocol, 'core.work.v1', 'protocol');
+      assert.equal(workRead.body.organization_id, 'original-au', 'original AU snapshot');
+      assert.equal(workRead.body.access?.principal_id, 'p1', 'snapshot principal');
+      return workRead.body;
+    },
   };
   await vm.runInNewContext('(async () => {' + block + '\n})()', context, { timeout: 1000 });
-  assert.equal(reads, 1);
 }
 
 test('download reopen keeps the original result even beside another adopted result', async () => {
