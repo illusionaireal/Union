@@ -1,0 +1,96 @@
+{
+  "candidate": "1e490d074d0b4e91291860d742244af55ed81d88",
+  "reviewed_driver": "scripts/exit22b_page.cjs",
+  "tests": 6,
+  "failures": 3,
+  "errors": 0,
+  "probes": {
+    "cancel_receipt_wrong_identity": {
+      "accepted": true,
+      "checks": 2
+    },
+    "control_no_reservation": {
+      "accepted": false,
+      "checks": 0
+    },
+    "control_reopen": {
+      "accepted": true,
+      "checks": 2
+    },
+    "control_cancel_receipt": {
+      "accepted": true,
+      "checks": 2
+    },
+    "cancel_without_original_output": {
+      "accepted": true,
+      "checks": 0
+    },
+    "reopen_lost_reservation": {
+      "accepted": true,
+      "checks": 2
+    }
+  },
+  "saved_evidence": {
+    "early_run_recorded_requests": 1,
+    "final_run_recorded_requests": 2,
+    "different_au_between_runs": true,
+    "before_read_protocol": null,
+    "before_read_error_code": "unsupported_capability",
+    "final_before_snapshot_present": false,
+    "final_steps": [
+      {
+        "seq": 1,
+        "status": "used",
+        "model_request_id": "work-3f86df9f7c63ae9c567522bdabe9be0bc69978199ed6c2627899f5bb7b029cf7",
+        "usage": {
+          "input_tokens": 438,
+          "output_tokens": 43
+        },
+        "model_outcome": null
+      },
+      {
+        "seq": 2,
+        "status": "unknown",
+        "model_request_id": "work-cd9ac3daeb94b5b49a993b1af5812324459aab64e36795cb48866e47bc6a3c3a",
+        "usage": null,
+        "model_outcome": "unknown"
+      }
+    ],
+    "cancelled_request_matches_check": true,
+    "final_budget": {
+      "max_calls": 3,
+      "reserved": 1,
+      "used": 1
+    },
+    "final_known_usage": {
+      "input_tokens": 438,
+      "output_tokens": 43
+    },
+    "complete_usage_known": false,
+    "claim_passed_checks": 13,
+    "scope": "saved records only; no external verification or request replay"
+  },
+  "sources": {
+    "scripts/exit22b_page.cjs": {
+      "sha256": "8f818992bc2a9010e2085bb18f677f31a810e2d68a9aa79d0c2e40920bb57594",
+      "bytes": 22241
+    },
+    "evidence/127-u086-real-interrupt-exit/snapshot-after-restart.json": {
+      "sha256": "2fcca37358f5b2dde0e2a28ae5b160e47e151671dad081f387e99ac2f62d6652",
+      "bytes": 4395
+    },
+    "evidence/127-u086-real-interrupt-exit/snapshot-after-restart-final-head.json": {
+      "sha256": "9fc891225fe877db7796175c52a1fb69ce0aa9e56057150106fbe3322c02b70d",
+      "bytes": 6643
+    },
+    "evidence/127-u086-real-interrupt-exit/snapshot-before-restart.json": {
+      "sha256": "12c39af0ee99573ddf48f59a3528bd8047705705aea2c334c7a2865ce2c4392a",
+      "bytes": 117
+    },
+    "evidence/127-u086-real-interrupt-exit/checks-final-head.json": {
+      "sha256": "f54e589fc7f892c58c0e97f0bc570a4ac073ffcf37f99609c516c6e6c52a3682",
+      "bytes": 1178
+    }
+  },
+  "real_model_calls_added": 0
+}
