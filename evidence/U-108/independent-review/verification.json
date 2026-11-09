@@ -1,0 +1,63 @@
+{
+  "reviewed_head": "69af6a61e9f3f24182226239d242d26a912a94d1",
+  "first_probe_head": "8bcf5da08a91a6355343f7544e3289887de4d04d",
+  "reviewer_actor": "single codex-home duty session; independent of U108 implementation",
+  "online_member_id": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+  "decision": "changes_requested",
+  "source_sha256": {
+    "ai_union/application/work_events.py": "fa47ee074bfb1a4dd253512dfc15215ad1de87e160f01c586b292e2c1e151e43",
+    "ai_union/application/work.py": "4b1dbb77efb79472149ea75b9b6b29715ede91a3aa97cfbf4c621ea1c83cd8a7",
+    "ai_union/server.py": "a79396364d15564d1edcc7f304b3a7e577fd6cb84490b4e36486bdb980e1a9b3",
+    "web/console/src/features/work/WorkStream.tsx": "e37666385234dba7ee0f56cb45c4ef548faa95b4c725869c76976f8af133dbac",
+    "web/console/src/features/work/work-stream.css": "044ecf047184459675829e671257174e1e40765e0a7570967e73455ba4ec425f",
+    "web/console/src/features/work/WorkPanel.tsx": "ba0ac2fe5bf291139c2bcbe9a4d98e86b614ea1b1fd286a232e6ec4354045f35",
+    "scripts/u108_work_events_host.py": "e3161e9c9cc532f0c917105c9017056040c71482ca51ba82ffe5fcd41515a095",
+    "scripts/u108-work-events-browser.cjs": "ed9f9eb1819e546af1b5bb3b4ae7ff6da8a8b714b0677b00a194d4cf2c7bd3f2",
+    "tests/test_core_work_events.py": "4247e67c85f661ca7e77175b87e331bb116fce0807f285d2b1cfd0c8aaa0b763"
+  },
+  "checks": {
+    "independent_dom": {
+      "passed": 1,
+      "failed": 2,
+      "errors": 0,
+      "heads": [
+        "8bcf5da",
+        "69af6a6"
+      ]
+    },
+    "existing_http": {
+      "passed": 8,
+      "failed": 0
+    },
+    "independent_http": {
+      "passed": 3,
+      "failed": 0
+    },
+    "actual_chrome": {
+      "passed": 17,
+      "failed": 0,
+      "parent_exit": 0,
+      "cleanup": "unittest addCleanup callbacks not executed; Windows console.lock PermissionError after checks; not a clean lifecycle pass"
+    }
+  },
+  "real_model_calls": 0,
+  "fake_model_calls": {
+    "existing_http": 8,
+    "independent_http": 3,
+    "chrome": 1
+  },
+  "private_log_sha256": {
+    "independent-dom-8bcf5da.log": "c2c30ea79a9f67e8802fb66bd4829f996a3205368c8250a80d8f51ef4123b8fa",
+    "independent-dom-69af6a6.log": "625ad4fcfcc498a0770a78cca7594cd83e9acf14b2ae2e24e15e6d4c1144900a",
+    "independent-http.log": "d262c0d882d7de5775993b48d0a4d6a1bc69364af1b5275cc44ffbec61f34924",
+    "independent-boundaries-69af6a6.log": "d39b96c4a9a1c5873f248dacb67bc0f0fcc197a0fdc09b66d6c14f5d9a9adb14",
+    "independent-chrome-69af6a6.log": "d0c7ee7be6e2ae6cec8153cbd8e738282cd068ed3c11a98dbbf9518697cd1006",
+    "independent-build-69af6a6.log": "d1a76848104f342f49e5cde79820673d698cc7988bcd168bc17e4a31afa37df9"
+  },
+  "limits": [
+    "Not full local Python/npm verification of the current head",
+    "Current-head CI and author fixes remain required",
+    "Initial snapshot-update command used the wrong cwd; corrected using an absolute source root before latest-head probes/build/Chrome",
+    "No product source or pre-existing dirty files modified; no real driver, migration or deployment"
+  ]
+}

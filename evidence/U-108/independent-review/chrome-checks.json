@@ -1,0 +1,25 @@
+{
+  "passed": 17,
+  "checks": [
+    "one original fake model dispatch",
+    "partial text precedes cancellation",
+    "only original step is observed",
+    "no native or tool argument disclosure",
+    "expanded output fits 1440px",
+    "expanded output fits 390px",
+    "expanded output fits 320px",
+    "output not stored in browser",
+    "disconnection retains original prefix",
+    "reconnect uses original cursor",
+    "reload does not repeat run command",
+    "cross-work observation refused",
+    "cancel targets only original model request",
+    "unknown reservation remains occupied",
+    "original step identities preserved",
+    "restart keeps original unknown request and budget",
+    "restart never redispatches"
+  ],
+  "real_model_calls": 0,
+  "fake_model_calls": 1,
+  "cancel_posts": 1
+}

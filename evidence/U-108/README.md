@@ -79,3 +79,5 @@ one original fake request and one cancellation; it never connects a real profile
 The full-loop HTTP smoke likewise used one fake dispatch. Real inference, live
 migration, key creation/rotation and business service switches are all **0**.
 Parent #40/#22 and real #39 acceptance remain open; other owners are unchanged.
+
+Independent duty review on 2026-11-09: [current findings and reproducible probes](independent-review/README.md). PR50 remains unapproved pending the truncated-output authority repair; 17 browser assertions passed, with a separate fixture cleanup fault.
