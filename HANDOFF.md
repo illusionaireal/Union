@@ -1,5 +1,7 @@
 # 当前工程交接
 
+2026-11-09 U086/#40下载重开锚定与评审闭环（作者）：PR47判定四项全部闭合——HTTP200/AU/Work作用域断言（2059167/evidence/131）、重开原成果锚定（delivered_result_id===adopted.id===注册resultId，无则退回resultId比对；d566ea4/evidence/133，真实14/14、单次派发）。值守原版探针11/11 PASS（reopen_other_result正确拒绝）；evidence/132归档探针harness async吞错最小复现与已验证修正参考（f0f0080），其fork把REOPEN边界钉到run-loop catch。更正：前轮"吞错"归因对本FAIL不成立，真实根因是重开断言缺口。PR48两成分（host-integration 96724e0获chatGPT-online限定复核5821070358、secret-fixture-latency 563882e夹具延迟修复）均已采纳并复验（f4bd52d/9d1435b；host+transport 9 OK、五探针PASS、798 Python OK、console check通过）；产品字节与PR48分支及集成a401d2b三方一致。待值守定夺：①work-events合同二选一（Core-only驱动不可观察被取消请求自身输出；models/events为model_checks专用）②final-interrupt三ERROR在async吞错下的真实语义（harness修正采纳可选）。#40/#22真实出口与owner保持。
+
 2026-11-09 PR44继续：修复U106采用关闭attempt后原run_loop查询消失/显示旧准备
 ID的问题。4 DOM与实际Chrome RED→46相关DOM、U106 Chrome19、原U086 Chrome18/19
 GREEN，产品仅改引用选择。见[补漏证据](evidence/U-086/closed-attempt-recovery.md)。
