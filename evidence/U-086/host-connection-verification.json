@@ -1,0 +1,78 @@
+{
+  "scope": "U-086 acceptance-host connection integrity only",
+  "implementation_actor": "single codex-home duty session",
+  "online_member_id": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+  "owner_preserved": "cafeef64-ac40-4062-97c1-ac82ece0a379",
+  "scope_comment": 182,
+  "branch": "codex/u086-host-connection-integrity",
+  "author_base": "096815e44936e1f62a7b680b0d7a5f2db247eb1b",
+  "integration": "902b429529f82aad6acc63c6fe4e69c4739ced17",
+  "concurrent_author_head": "1e490d074d0b4e91291860d742244af55ed81d88",
+  "concurrent_host_product_tests_unchanged": true,
+  "toolchain": {
+    "python": "3.12.10",
+    "node": "24.19.0"
+  },
+  "source": {
+    "scripts/exit22b_host.py": {
+      "sha256": "8c1cf74afff52bc43aab7513d6dc0537e5be58eb38050de7c53675d7f9b50e08",
+      "git_blob": "a572d103ba3d2a0f782bca42ac5482d29e1f3055"
+    },
+    "tests/test_exit22b_host.py": {
+      "sha256": "52fe881552aaab252a2adccec0593a59b93a04b51655b2589ff2b4a99810a598",
+      "git_blob": "6c7f2deddb40b9b10fe00da0852decd8b29534d9"
+    }
+  },
+  "checks": {
+    "fixture_error": {
+      "sha256": "27b79cbd88b529921da729c7476ff3f65ef1248e8096c8a3feabef1d807d3756",
+      "tests": 6,
+      "errors": 5,
+      "classification": "invalid synthetic token fixture, not product RED"
+    },
+    "red": {
+      "sha256": "45ba3be5987e58dfeb1a98f9be1d90b86ab39dd2ba51309a5c904888df6f2477",
+      "tests": 6,
+      "failing_methods": 4,
+      "assertion_failures_including_subtests": 10,
+      "controls_passed": 2,
+      "errors": 0,
+      "exit_code": 1
+    },
+    "green": {
+      "sha256": "8ea7da525d6017febb128844431c76b540bc4a423bfc238b0c145ab66cbbde05",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "seconds": 5.24,
+      "exit_code": 0
+    },
+    "python_full": {
+      "sha256": "43fa9006d4e5777100da2d37cc3a9ac6b7511585284b9c1d0990172c4b777bed",
+      "tests": 798,
+      "skipped": 9,
+      "failures": 0,
+      "errors": 0,
+      "seconds": 498.846,
+      "exit_code": 0
+    },
+    "npm_check": {
+      "sha256": "b030ab3f17b0c5aa010c814fa6faca7cdbbf63ba154bb1e4cf16b73d4508e1c4",
+      "frontend_tests": 343,
+      "management_tests": 37,
+      "action_tests": 9,
+      "exit_code": 0
+    }
+  },
+  "real_model_calls_added": 0,
+  "real_driver_main_executed": false,
+  "nas_service_switched": false,
+  "migration": false,
+  "independent_review": "required, not performed by implementer",
+  "ci": "pending exact candidate head",
+  "limits": [
+    "Only host wiring repaired; page assertions and evidence/127,128 are not accepted.",
+    "Loopback HTTP and Console restart are controlled evidence, not a real model or full page acceptance.",
+    "Concurrent author 1e490d0 adds real-run records; independent review remains pending."
+  ]
+}
