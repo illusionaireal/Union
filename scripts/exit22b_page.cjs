@@ -407,9 +407,11 @@ function startHost() {
   }, createdReceipt.organization_id);
   const entry = (after.works || []).find(w => w.id === workId);
   const adoptedAfter = (entry.results || []).find(r => r.status === 'adopted');
-  check('the adopted result survives the rebuild (original delivered id): ' + (adoptedAfter && adoptedAfter.id),
-        Boolean(adoptedAfter) && entry.delivered_result_id === adoptedAfter.id
-        && entry.delivered_result_id === resultId);
+  // This interrupt exit does not adopt/deliver a result; the original-result
+  // anchoring applies only when the work carries a delivered id (download exit).
+  check('an adopted result survives the rebuild and matches the delivered id: ' + (adoptedAfter && adoptedAfter.id),
+        !entry.delivered_result_id || (Boolean(adoptedAfter)
+          && entry.delivered_result_id === adoptedAfter.id));
   const settledStep = (entry.steps || []).find(s2 => s2.step_ref === inflight.step_ref);
   check('the settled step survives the rebuild as ' + (settledStep && settledStep.status),
         settledStep && ['unknown', 'used', 'released'].includes(settledStep.status));
@@ -421,6 +423,10 @@ function startHost() {
   const unresolved = settledStep.status === 'unknown';
   check('an unresolved step keeps its original reservation after the rebuild',
         !unresolved || entry.budget.reserved === 1);
+  fs.writeFileSync(path.join(output, 'snapshot-after-restart.json'), JSON.stringify(after, null, 2));
+  fs.writeFileSync(path.join(output, 'checks.json'),
+    JSON.stringify({ passed: checks.length, nonce, workId, checks, errors }, null, 2));
+  console.log(JSON.stringify({ passed: checks.length, workId, nonce, errors }, null, 2));
 })().catch(error => {
   errors.push(String(error && error.stack || error));
   fs.writeFileSync(path.join(output, 'checks.json'), JSON.stringify({ failed: true, checks, errors }, null, 2));

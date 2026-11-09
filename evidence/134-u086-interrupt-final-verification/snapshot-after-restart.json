@@ -1,0 +1,201 @@
+{
+  "access": {
+    "can_manage_results": true,
+    "can_start": true,
+    "principal_id": "0e9b9d18-966c-47db-a8d4-da4a30f8254c"
+  },
+  "capabilities": {
+    "autonomous_business": false,
+    "execution": "not_started",
+    "work_registration": true
+  },
+  "cost_status": "unknown",
+  "organization_id": "org-90b60618437d45439631d98c8663d388",
+  "protocol": "core.work.v1",
+  "usage": {
+    "input_tokens": 438,
+    "output_tokens": 40
+  },
+  "version": 15,
+  "works": [
+    {
+      "attempt_ids": [],
+      "attempts": [
+        {
+          "ended_at": null,
+          "host_instance": "service-408c28f583484b8b87db9f66e38e9762",
+          "id": "work-exit#a1",
+          "outcome": null,
+          "owner_principal_id": "0e9b9d18-966c-47db-a8d4-da4a30f8254c",
+          "reason": null,
+          "seq": 1,
+          "stale": true,
+          "started_at": "2026-11-09T04:03:16Z",
+          "status": "running",
+          "steps": 2,
+          "tool_calls": 1
+        }
+      ],
+      "budget": {
+        "max_calls": 3,
+        "reserved": 1,
+        "used": 1
+      },
+      "cost_status": "unknown",
+      "created_at": "2026-11-09T04:03:16Z",
+      "definition": {
+        "connection_id": "connection-a",
+        "id": "def-page",
+        "model": "deepseek-v4.1-flash",
+        "tools": [
+          "read_document",
+          "list_documents"
+        ],
+        "version": 1
+      },
+      "delivered_at": null,
+      "delivered_result_id": null,
+      "goal": "第一步必须调用 read_document 读取 brief.md 的完整正文；第二步用最终回答写三行中文概览，不要再调用任何工具。",
+      "id": "work-exit",
+      "mandate": {
+        "actions": [
+          "read_document",
+          "list_documents"
+        ],
+        "active": true,
+        "id": "ma-page",
+        "version": 1
+      },
+      "materials": {
+        "available": true,
+        "documents": 1,
+        "reference": "project-docs"
+      },
+      "materials_root": "project-docs",
+      "max_calls": 3,
+      "responsible": {
+        "binding_id": "binding-page",
+        "duty": "22B 页面验收",
+        "member_id": "member-page",
+        "name": "页面验收成员"
+      },
+      "result_ids": [],
+      "results": [],
+      "status": "pending",
+      "steps": [
+        {
+          "at": "2026-11-09T04:03:17Z",
+          "attempt_id": "work-exit#a1",
+          "charter_version": 2,
+          "command_id": "be367bba-6fdf-4405-b611-3011b6291b36-t1",
+          "command_sha256": "957956d125dd3f42687359359e5ccac33b533e759997c1e1b9499e06af1a6fb3",
+          "connection": {
+            "enabled": true,
+            "grant_ref": "grant-45dca659d88d",
+            "grant_revision": 1,
+            "id": "connection-a",
+            "last_check": null,
+            "max_output_tokens": 1024,
+            "model": "deepseek-v4.1-flash",
+            "name": "22B page acceptance",
+            "profile": "modeld_grant",
+            "revision": 1
+          },
+          "context_scope": {
+            "au_id": "org-90b60618437d45439631d98c8663d388",
+            "binding_id": "binding-page",
+            "binding_version": 1,
+            "definition_id": "def-page",
+            "definition_version": 1,
+            "mandate_id": "ma-page",
+            "mandate_version": 1,
+            "materials_root": "project-docs",
+            "member_id": "member-page",
+            "work_id": "work-exit"
+          },
+          "context_sha256": "2101481574c1761a444f48008487e843a7a1677255592f86eeaf9b10ed9b3a64",
+          "cost_status": "unknown",
+          "host_instance": "service-408c28f583484b8b87db9f66e38e9762",
+          "model_request_id": "work-fdcd86f881d4b837f8fa55bdfcec03c5259c6ee4a243b940010a43297976a6b6",
+          "policy_version": 2,
+          "principal_id": "0e9b9d18-966c-47db-a8d4-da4a30f8254c",
+          "purpose": "work_step",
+          "reason": "模型步进已完成",
+          "seq": 1,
+          "settled_at": "2026-11-09T04:03:18Z",
+          "status": "used",
+          "step_ref": "work-exit#s1",
+          "usage": {
+            "input_tokens": 438,
+            "output_tokens": 40
+          }
+        },
+        {
+          "at": "2026-11-09T04:03:18Z",
+          "attempt_id": "work-exit#a1",
+          "cancel_requested_at": "2026-11-09T04:03:19Z",
+          "cancel_requested_by": "真实中断验收：等待期请求停止",
+          "charter_version": 2,
+          "command_id": "be367bba-6fdf-4405-b611-3011b6291b36-t2",
+          "command_sha256": "6f82b2a78003f3050f558f58358ae839ae00c6b57f4e1a1088992606fe53a8cd",
+          "connection": {
+            "enabled": true,
+            "grant_ref": "grant-45dca659d88d",
+            "grant_revision": 1,
+            "id": "connection-a",
+            "last_check": null,
+            "max_output_tokens": 1024,
+            "model": "deepseek-v4.1-flash",
+            "name": "22B page acceptance",
+            "profile": "modeld_grant",
+            "revision": 1
+          },
+          "context_scope": {
+            "au_id": "org-90b60618437d45439631d98c8663d388",
+            "binding_id": "binding-page",
+            "binding_version": 1,
+            "definition_id": "def-page",
+            "definition_version": 1,
+            "mandate_id": "ma-page",
+            "mandate_version": 1,
+            "materials_root": "project-docs",
+            "member_id": "member-page",
+            "work_id": "work-exit"
+          },
+          "cost_status": "unknown",
+          "host_instance": "service-408c28f583484b8b87db9f66e38e9762",
+          "model_outcome": "unknown",
+          "model_request_id": "work-2ea7bef8ada7b48f770a2ce9fc2a4f1286125e36a688a3a23f8f5a20052016f4",
+          "policy_version": 2,
+          "principal_id": "0e9b9d18-966c-47db-a8d4-da4a30f8254c",
+          "purpose": "work_step",
+          "reason": "模型通道结果未知；已保留该次调用预约等待核对，不自动重放：work_step_interrupted",
+          "seq": 2,
+          "settled_at": "2026-11-09T04:03:19.278351+00:00",
+          "status": "unknown",
+          "step_ref": "work-exit#s2"
+        }
+      ],
+      "title": "22B 页面验收",
+      "tool_calls": [
+        {
+          "arguments": {
+            "path": "brief.md"
+          },
+          "at": "2026-11-09T04:03:18Z",
+          "attempt_id": "work-exit#a1",
+          "bytes": 70,
+          "seq": 1,
+          "sha256": "b41453d079bec3ccc9745f2d86f3105e418d8e8ac45a171e603ccd27048b7c57",
+          "step_ref": "work-exit#1",
+          "tool": "read_document"
+        }
+      ],
+      "usage": {
+        "input_tokens": 438,
+        "output_tokens": 40
+      },
+      "version": 1
+    }
+  ]
+}
