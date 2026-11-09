@@ -20,3 +20,7 @@ is claimed. The author download/interrupt drivers and historical real records
 are not imported into rewrite. No real model calls, deployment or migration.
 
 Inputs, byte-equality and conflict details: host-fixture-integration.json.
+
+2026-11-09 continuation: the current-integration conflict is resolved and a new
+combined local full run is recorded in [the refresh](host-fixture-current-integration.md).
+Independent fixture review5822469615 is now approved; final-head CI remains required.

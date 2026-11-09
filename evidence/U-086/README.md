@@ -134,3 +134,7 @@ Work/attempt/command/model_request、当前授权、事件cursor、取消受理/
 PR48/PR49 are combined in a separate, not-yet-adopted candidate; both histories
 and the independent fixture review gate are preserved. See
 [the exact integration inputs](host-fixture-integration.md).
+
+PR53 current-integration refresh: [conflict resolution and combined validation](host-fixture-current-integration.md).
+This candidate preserves both histories and current U108; host and fixture
+are independently reviewed, with final-head CI pending before rewrite adoption.

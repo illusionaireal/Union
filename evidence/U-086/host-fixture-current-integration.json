@@ -1,0 +1,59 @@
+{
+  "tested_commit": "07f25b0d532b0837c0582b2e0a1424d1e26ff31c",
+  "tested_tree": "b4545e3ac2c3318689790e799551155d219c2a75",
+  "prior_PR53_head": "23ad59e4335a14d30d02fa19ce3f3cd7ee5393a2",
+  "current_integration": "c9014a0322709c96692b6b014696d97da360ac99",
+  "conflict": {
+    "paths": [
+      "management/project.json"
+    ],
+    "resolution": "Retain all three appended U067 history entries in chronological order; preserve every original entry and all non-history fields."
+  },
+  "source_equality": {
+    "scripts/exit22b_host.py": "8c1cf74afff52bc43aab7513d6dc0537e5be58eb38050de7c53675d7f9b50e08",
+    "tests/test_exit22b_host.py": "52fe881552aaab252a2adccec0593a59b93a04b51655b2589ff2b4a99810a598",
+    "services/modeld/test/fixtures/secret-boundaries-probe.ts": "7f3d0a9630d24dc8724865b43fe3afa0dade45afd2a0ff3132d6fb40c5b6c6d1"
+  },
+  "current_product_subtrees": {
+    "ai_union": "0368468afe45cf16c791ab307fb98562db445f8a",
+    "web/console": "75180e9e1b5a56423656799f14709ddb95f98a55"
+  },
+  "validation": {
+    "python": {
+      "tests": 808,
+      "seconds": 503.57,
+      "skipped": 10,
+      "failures": 0,
+      "log_sha256": "e99973857340dc4df1370453190c796245fd0740c567f515069309864ca31bd5"
+    },
+    "npm": {
+      "frontend_tests": 363,
+      "management_tests": 37,
+      "node_tests": 9,
+      "typecheck_build": "passed",
+      "log_sha256": "08ea563cb551b099a912f202c0e65e231d32a30e363c22e5aee8214ce05f2dfc"
+    },
+    "management_render": "passed; canonical PROJECT/TASKS/ledger match prepared Git tree",
+    "dependency_integrity": "matching project lock, exact vendor HEAD and recorded patch, per-file hashes verified read-only",
+    "toolchain": {
+      "node": "24.19.0",
+      "python": "3.12.10",
+      "bun": "1.4.2"
+    }
+  },
+  "preparation_history": "An initial integrity assertion used an absent module filename; before validation it was replaced with equality of the entire ai_union and web/console subtrees. No product test failure or source change was inferred.",
+  "network_history": "A later HTTPS fetch failed; verified GitHub REST readback confirmed the unchanged integration and candidate refs. TLS and CI gates remain enabled.",
+  "workspace": "Existing dirty files, vendor content, active checkout HEAD and ordinary Git index untouched; a task-owned temporary index prepares this branch.",
+  "host_review": "https://github.com/illusionaireal/Union/pull/45#pullrequestreview-5821070358",
+  "fixture_review": {
+    "role": "chatGPT-online, non-implementing engineering reviewer",
+    "review": "https://github.com/illusionaireal/Union/pull/49#pullrequestreview-5822469615",
+    "head": "563882e6fee67a96bbd617808f06488f8a02d7c7",
+    "evidence_commit": "65ef68016366e9dc14146413a353bd0661a280a3",
+    "scope": "Fixture approved; independent 7 Node stream checks and 9 host HTTP/restart/37 management checks. Reviewer inspected exact Windows modeld CI (89 passed), did not claim a local Bun run. This duty implementer does not approve itself."
+  },
+  "adoption": "Candidate only; host and fixture independently reviewed, current final-head CI required before rewrite adoption.",
+  "real_model_calls_added": 0,
+  "production_switches": 0,
+  "migrations": 0
+}
