@@ -2053,6 +2053,13 @@
                     "from": "doing",
                     "to": "doing",
                     "note": "u086-page-registration-9d39cbf7：#40评论269范围内把两个验收driver的API目标登记/预开attempt改为实际Core表单、刷新查询原登记及原Work页面准备。动态Work/责任/预算/原连接/原回执绑定；完整原片段实际Chrome/HTTP/SQLite六项行为RED→GREEN，额外身份/回执反例及全量见evidence/U-086/page-registration/README.md和validation.json。PR61原单次准备候选保留，产品源码未改；准确head CI与非实施工程角色复核后采用。DSH owner/progress/WIP、#22/#39/#40真实出口不变；原取消API链路、历史139及真实资源仍待核验。零真实推理/grant/部署/迁移；仅交付历史，不作为在线状态。"
+                },
+                {
+                    "at": "2026-11-09T12:19:39.865Z",
+                    "actor": "codex-home/single-duty-implementation",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "u086-page-cancel-action-e6a8b868：#40评论271限定修复中断driver直接API取消假阳性，改用原Work实际Core取消与刷新后原ID查询，响应丢失不补发。三个实际Chrome/HTTP/SQLite原源RED→GREEN，八浏览器及216相关Node通过；合同、完整验证和源码hash见evidence/U-086/page-cancel-action/README.md与validation.json。PR62页面登记与原输出/回执/重开/未知预约保持；产品源码无变化。当前head CI及非实施角色复核后采用，DSH owner/progress/WIP和#22/#39/#40真实出口不变。零真实推理/grant/部署/迁移；仅交付历史，不作在线状态。"
                 }
             ],
             "claim": {

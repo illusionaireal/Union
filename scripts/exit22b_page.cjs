@@ -1,5 +1,5 @@
-// Page-level 22-B: register work via the page form, run the loop with the real model,
-// adopt/deliver through the page, then rebuild the console and verify persistence.
+// Page-level 22-C: register work through Core, observe its original model output,
+// cancel through the page, then rebuild and query the same durable requests.
 const { chromium } = require('playwright-core');
 const { spawn } = require('node:child_process');
 const readline = require('node:readline');
@@ -350,19 +350,12 @@ function startHost() {
         inflight.model_request_id + ' / ' + inflight.attempt_id,
         Boolean(inflight.model_request_id) && Boolean(inflight.attempt_id));
   // Cancel through the product command surface while the model call is running.
-  const cancelCommandId = crypto.randomUUID();
-  const cancelOutcome = await page.evaluate(async config => {
-    const version = async () => (await (await fetch('/api/v1/aus/' + config.auId)).json()).au.version;
-    const response = await fetch('/api/v1/work/commands', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: config.cancelId, organization_id: config.auId,
-        base_version: await version(), kind: 'cancel_step',
-        data: { work_id: config.workId, step_id: config.stepRef,
-                reason: '真实中断验收：等待期请求停止' } }),
-    });
-    const value = await response.json();
-    return { status: response.status, receipt: value.receipt || value };
-  }, { auId: createdReceipt.organization_id, workId, stepRef: inflight.step_ref, cancelId: cancelCommandId });
+  const pageCancellation = await require('./exit22-page-cancel.cjs').cancelFromPage(page, {
+    organization_id: createdReceipt.organization_id, work_id: workId, ...inflight,
+    principal_id: outputObservation.principal_id, service_instance: outputObservation.service_instance,
+  });
+  const cancelCommandId = pageCancellation.command.id;
+  const cancelOutcome = { status: 200, receipt: pageCancellation.receipt };
   check('cancel accepted by the product: ' + JSON.stringify(cancelOutcome.receipt).slice(0, 160),
         cancelOutcome.status === 200
         && (cancelOutcome.receipt || {}).status === 'succeeded');

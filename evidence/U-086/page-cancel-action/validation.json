@@ -1,0 +1,135 @@
+{
+  "date": "2026-11-09",
+  "scope": "controlled",
+  "base": "e6a8b86879f5712020d0f56cb1714d711754d95c",
+  "branch": "codex/u086-page-cancel-action",
+  "actor": "current single codex-home duty implementation session",
+  "online_member_id": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+  "scope_comment": 271,
+  "board_readback_revision": 809,
+  "logs": {
+    "red": {
+      "sha256": "ad3af39845d789cff04bc1ff7f717de192ef50248d7072f3c67118e3995e6498",
+      "classification": "probe syntax error, excluded from behavior RED"
+    },
+    "red-behavior": {
+      "sha256": "fb6ebeb56b48da45a094ff8f469e2ea6afde9fc7d294a50c561e2cafeb766eec",
+      "classification": "3 actual browser behavior failures on unchanged original driver"
+    },
+    "green-initial": {
+      "sha256": "53be0637fff18eb203a5452ceb860741729d659788c7b7e18dba15e371cb25d5",
+      "classification": "same 3 actual browser scenarios pass"
+    },
+    "browser-full": {
+      "sha256": "912c645c7d777f0f1a85de064a61cc62fdeb7bcbd95ad6543aed72e6d44ed45e",
+      "classification": "8 actual browser/HTTP/SQLite scenarios pass"
+    },
+    "node": {
+      "sha256": "57a885b9e88993e91f3a34622000b0f7339b02ef27b40ca288e2a464e937a1c9",
+      "classification": "216 related Node checks pass"
+    },
+    "npm": {
+      "sha256": "706f4602532615f4fe15e60148ccfcfc8de404414f27bdcc67b6c278f574336e",
+      "classification": "npm check: 225 Node, 363 frontend, 37 management; type/build pass"
+    },
+    "build": {
+      "sha256": "a4ccb0bc219a3e1f51080c5732e4d2a2388160f1bceeea9d5dee272994426ebc",
+      "classification": "React fixture build passes"
+    },
+    "final-fetch": {
+      "sha256": "0f5a39c5a98372c91db4fa1f19101e5984d655d8227bb8f6b16b0ae1b806fc05",
+      "classification": "Git HTTPS transport failure; REST readback used"
+    },
+    "diff-check": {
+      "sha256": "332aaf01f2ce4d28b70b391244a7852836c92bd3f9a577bdadfeeb0689d33e9e",
+      "classification": "prepublication generated CRLF normalization failure; corrected, not behavior RED"
+    },
+    "python-full": {
+      "sha256": "efddc993e0b133c7db961385ad73d0f18ac4fff56237beaabd3b390283c49cae",
+      "classification": "passed"
+    },
+    "management-final": {
+      "sha256": "9d55161e97f266aeaf207ff64e30d521009dfc76725840f92258511d833f89e3",
+      "classification": "passed"
+    }
+  },
+  "browser": {
+    "baseline_failed": 3,
+    "final_passed": 8,
+    "fake_model_calls_all_scenarios": 14,
+    "fake_cancels_all_scenarios": 11,
+    "real_model_calls": 0
+  },
+  "node": {
+    "new_boundaries": 31,
+    "related_passed": 216
+  },
+  "npm": {
+    "node_passed": 225,
+    "frontend_passed": 363,
+    "management_passed": 37,
+    "typecheck_build": "passed"
+  },
+  "python": {
+    "status": "passed",
+    "tests": 808,
+    "skipped": 10,
+    "failures": 0,
+    "seconds": 527.506,
+    "bun": "1.4.2 explicitly configured"
+  },
+  "preserved": {
+    "original_owner": "DSH",
+    "original_files": 20,
+    "normal_index": true,
+    "product_source": true,
+    "supervisor_and_host_configuration": true
+  },
+  "adoption": {
+    "independent_review": "required from another engineering role",
+    "exact_head_ci": "pending publication",
+    "real_parent_acceptance": "not complete"
+  },
+  "files": {
+    ".github/workflows/ci.yml": {
+      "sha256": "4ba0d9832a9fcac71906f51d77cbffe29f1f056fe39c796d8a7aa64c1ea10f78",
+      "git_blob": "aca3764492a5b7e6335ea79e2121210adca76559"
+    },
+    "scripts/exit22b_page.cjs": {
+      "sha256": "01d458f178117d6dc7816d420ceb9863c84d62f1e00d0f87de409dfa58d3c74d",
+      "git_blob": "21841f673b69bef763c48c8781be3b4b8d0f0ed0"
+    },
+    "scripts/exit22-page-cancel.cjs": {
+      "sha256": "15afeaef468d3958217cf20cfaf529211a9f61d3f007ccb1b2150381bd600292",
+      "git_blob": "be02018ae5a662a08aa0cabe2aaaef9ad1a77931"
+    },
+    "tests/exit22-page-cancel.test.ts": {
+      "sha256": "0ca2d2371bf314fc760f86ac8dcd3d32997804612bc079087f90d87ed832c111",
+      "git_blob": "be75e9f3aeb8866c0a376b81bd7d43db7c846ff5"
+    },
+    "evidence/U-086/README.md": {
+      "sha256": "8866095331cd7459e8b27daceaf054638cc45346d9ae62e0920634d18964501d",
+      "git_blob": "855faa05d8e04cd3cd38492dea8b6286234e9f9d"
+    },
+    "management/project.json": {
+      "sha256": "0ebc3d49aa06b7a256a11f8e4f0e0f74ed9e7e2d2135f548702f8f8a12fed417",
+      "git_blob": "949f7d7cdc03d244bcce52b55e027603f106132b"
+    },
+    "evidence/U-086/page-cancel-action/contract.md": {
+      "sha256": "3aaa90fbcd386488228e7584825dd181df121344f3decb4cd6be135690ef10eb",
+      "git_blob": "59707a7c98871d35184f7422af9fe80b2b585b3c"
+    },
+    "evidence/U-086/page-cancel-action/README.md": {
+      "sha256": "45b7d1eb42708d538310a9e65f3d0fe942f6369a694807e0f9eb0978366e8360",
+      "git_blob": "0412a5124a9724b7731c2c6672d3da9ae1e6aff8"
+    },
+    "evidence/U-086/page-cancel-action/http-host.py": {
+      "sha256": "42acb32267eab0dd2299d138acbf1042f3d61c975cd16ce2aa8761e79e3384e3",
+      "git_blob": "66b0f9d86e92e7695501fe56d4f2c664a089d514"
+    },
+    "evidence/U-086/page-cancel-action/browser.cjs": {
+      "sha256": "52522b034a29c0c87c0e43da060fd6b8e112a9afde340a73debb70108c05549d",
+      "git_blob": "4ec583fb09343db756aeac98e6f3eb318082e957"
+    }
+  }
+}
