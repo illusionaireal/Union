@@ -2074,6 +2074,13 @@
                     "from": "doing",
                     "to": "doing",
                     "note": "u086-registration-response-body-bef1e54：#40评论276限定登记验收helper修复。原start_work落盘后200头/正文中断一直等待，完整错误POST可被后续GET掩盖；冻结合同后两个driver完整登记片段实际Chrome/CoreHTTP/SQLite 2正常PASS/8反例RED→10GREEN，原16浏览器回归通过。原请求finished/failed后只经页面GET恢复，完整回执/当前身份核验，已知403与完整错误拒绝且不准备。npm225 Node/363前端/37管理、显式锁定Bun SDK检查通过；Python全量与日志/源码hash见evidence/U-086/registration-response-body/。基于PR64保留取消修复，两增量分别需非实施角色复核/准确head CI后采用。DSH owner/progress/WIP和真实#22/#39/#40保持；注册探针模型0、真实推理/grant/迁移0；仅追加交付历史，不作在线状态。"
+                },
+                {
+                    "at": "2026-11-09T13:59:36.766Z",
+                    "actor": "codex-home/single-duty-implementation",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "u086-observed-settlement-77b457c9：#40评论278限定验收修复；原请求已观察文本后仍接受released，原完整片段6控制PASS/2反例RED及实际Chrome1控制PASS/2反例RED后，仅收紧中断driver两处状态断言。unknown预约、used未知用量与其他未执行步骤释放保持；产品计量/事务未变。8 Node及3 Chrome/HTTP/SQLite通过，npm233 Node/363前端/37管理；完整Python及源码/日志hash见evidence/U-086/observed-settlement/validation.json。基于原作者77b457c9并保留fce8264a独立复核证据；本增量须独立复核及准确head CI，未关闭真实#22/#39/#40。DSH owner/WIP保持，真实推理/grant/迁移0，仅追加交付历史。"
                 }
             ],
             "claim": {

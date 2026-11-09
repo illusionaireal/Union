@@ -395,8 +395,9 @@ function startHost() {
   const settled = await coreWork();
   const work = (settled.works || []).find(w => w.id === workId);
   const step = (work.steps || []).find(s => s.step_ref === inflight.step_ref);
+  // This exact request already produced observed text; it cannot be unexecuted.
   check('step settled as ' + step.status + ' (cost ' + step.cost_status + ')',
-        ['unknown', 'used', 'released'].includes(step.status));
+        ['unknown', 'used'].includes(step.status));
   check('an unknown settlement keeps the budget reserved',
         step.status !== 'unknown' || work.budget.reserved === 1);
   // Persisted facts must survive a console rebuild on the same root.
@@ -420,7 +421,7 @@ function startHost() {
           && entry.delivered_result_id === adoptedAfter.id));
   const settledStep = (entry.steps || []).find(s2 => s2.step_ref === inflight.step_ref);
   check('the settled step survives the rebuild as ' + (settledStep && settledStep.status),
-        settledStep && ['unknown', 'used', 'released'].includes(settledStep.status));
+        settledStep && ['unknown', 'used'].includes(settledStep.status));
   check('the settled step keeps its original identity across the rebuild',
         settledStep && (typeof inflight === 'undefined' || !inflight
           || (settledStep.step_ref === inflight.step_ref

@@ -210,3 +210,7 @@ Independent review and exact-head CI are still required before integration.
 Core registration acceptance: [page entry and original command recovery](page-registration/README.md).
 Full driver prefixes run on disposable Core/SQLite; no model request or real grant.
 Independent review and current-head CI remain adoption gates.
+
+Observed call settlement: [reject released after original output](observed-settlement/README.md).
+Two acceptance assertions tightened after actual fragment and HTTP/browser RED.
+Unknown reservation and original facts remain; no product accounting changes or real inference.
