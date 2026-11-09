@@ -396,6 +396,9 @@ function startHost() {
   check('delivery observation recorded: ' + cancelOutcome.receipt.cancel_accepted,
         cancelOutcome.receipt.cancel_accepted === true);
   // Same-run original GET is asserted after the settlement window opens.
+  // The settlement may be interrupted (unknown kept) or completed (used) depending
+  check('cancel receipt id matches the submitted cancel command',
+        cancelOutcome.receipt.id === cancelCommandId);
   // Same-run original GET must return the same durable delivery fact.
   const cancelGet = await page.evaluate(async config => (await (await fetch(
     '/api/v1/governance/receipts?organization_id=' + config.auId + '&id=' + config.cancelId)).json()),
@@ -404,9 +407,6 @@ function startHost() {
     && (cancelGet.receipt || {}).model_request_id === inflight.model_request_id
     && (cancelGet.receipt || {}).id === cancelCommandId;
   check('original GET returns the delivered cancel receipt (identity match)', deliveredAccepted);
-  // The settlement may be interrupted (unknown kept) or completed (used) depending
-  check('cancel receipt id matches the submitted cancel command',
-        cancelOutcome.receipt.id === cancelCommandId);
   // on the race with the real model; both must settle only via the original request.
   await waitFor(async () => {
     const read = await coreWork();
