@@ -8,14 +8,32 @@ from .core_au_store import encoded
 from ..domain import governance as rules
 from ..domain import responsibility
 from ..domain import work as work_rules
-from ..errors import CoreError, require
+from ..errors import CoreError, Rejected, require
 
 EVENT_FIELDS = ("version", "command_id", "principal_id", "kind", "reason", "created_at", "prior_policy_version", "command_hash", "previous_hash", "hash", "snapshot")
 COMMAND_FIELDS = ("id", "principal_id", "payload", "receipt", "hash")
+DELIVERY_FIELDS = ("id", "principal_id", "observed", "hash")
 
 
 def digest(value):
     return hashlib.sha256(encoded(value).encode("utf-8")).hexdigest()
+
+
+def delivery_view(record, receipt):
+    require(record["hash"] == digest({key: value for key, value in record.items() if key != "hash"}),
+            "原取消送达观察完整性校验失败")
+    require(record["id"] == receipt["id"] and record["principal_id"] == receipt["actor_principal_id"]
+            and receipt["kind"] == "cancel_step" and receipt["status"] == "succeeded"
+            and receipt.get("model_request_id") and receipt.get("cancel_accepted") is None,
+            "原取消送达观察与命令或主体不一致")
+    try:
+        observation = json.loads(record["observed"])
+    except (ValueError, TypeError) as error:
+        raise Rejected("原取消送达观察格式无效") from error
+    require(isinstance(observation, dict) and set(observation) == {"cancel_accepted", "message"}
+            and type(observation["cancel_accepted"]) is bool and isinstance(observation["message"], str),
+            "原取消送达观察格式无效")
+    return receipt | observation | {"delivery": observation}
 
 
 def origin_in(cx):
@@ -99,6 +117,39 @@ class GovernanceStore:
             cx.execute("BEGIN IMMEDIATE")
             yield cx
 
+    def record_delivery(self, directory, request_id, principal, observation):
+        """A durable delivery observation for an already-committed cancel command.
+
+        The observation is its own fact (receipt hash over the observation), kept
+        out of the command row so the audited command/receipt stay immutable."""
+        with self.transaction(directory) as cx:
+            au_id = json.loads(cx.execute("SELECT data FROM state WHERE id=1").fetchone()[0])["id"]
+            command = commands_in(cx, au_id).get(request_id)
+            require(command is not None and command["principal_id"] == principal,
+                    "原取消命令不存在或身份不匹配")
+            receipt = command["value"]
+            record = {"id": request_id, "principal_id": principal,
+                      "observed": encoded(observation)}
+            record["hash"] = digest(record)
+            value = delivery_view(record, receipt)
+            cx.execute("CREATE TABLE IF NOT EXISTS delivery_observations(id TEXT PRIMARY KEY, principal_id TEXT NOT NULL, observed TEXT NOT NULL, hash TEXT NOT NULL)")
+            previous = self.delivery_receipt_in(cx, receipt)
+            if "delivery" in previous:
+                require(previous == value, "原取消送达观察已保存，不能覆盖")
+                return previous
+            cx.execute("INSERT INTO delivery_observations VALUES(?,?,?,?)",
+                       tuple(record[key] for key in DELIVERY_FIELDS))
+            return value
+
+    @staticmethod
+    def delivery_receipt_in(cx, receipt):
+        """Merge a verified observation in the caller's existing read snapshot."""
+        if cx.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='delivery_observations'").fetchone() is None:
+            return receipt
+        row = cx.execute("SELECT " + ",".join(DELIVERY_FIELDS) + " FROM delivery_observations WHERE id=?",
+                         (receipt["id"],)).fetchone()
+        return receipt if row is None else delivery_view(dict(zip(DELIVERY_FIELDS, row)), receipt)
+
     def initialize(self, cx):
         state = cx.execute("SELECT data FROM state WHERE id=1").fetchone()[0]
         charter = cx.execute("SELECT data FROM charters WHERE version=1").fetchone()[0]
@@ -118,7 +169,7 @@ class GovernanceStore:
             raise CoreError("not_authorized")
         if row[1] != encoded(request):
             raise CoreError("id_conflict", "请求标识已用于不同参数；请查询原回执")
-        return json.loads(row[2])
+        return self.delivery_receipt_in(cx, json.loads(row[2]))
 
     @staticmethod
     def check_pending_identity(cx, request, principal):
@@ -166,4 +217,4 @@ class GovernanceStore:
             row = cx.execute("SELECT principal_id,receipt FROM governance_commands WHERE id=?", (request_id,)).fetchone()
             if row is None or row[0] != principal:
                 raise CoreError("not_authorized")
-            return json.loads(row[1])
+            return self.delivery_receipt_in(cx, json.loads(row[1]))

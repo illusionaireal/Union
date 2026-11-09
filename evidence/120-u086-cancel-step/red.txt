@@ -1,0 +1,17 @@
+test_cancel_step_releases_a_reserved_step_before_dispatch_with_unknown_cost (tests.test_core_work.CoreWorkTests.test_cancel_step_releases_a_reserved_step_before_dispatch_with_unknown_cost)
+22-C local cancel surface: cancelling an undispatched reservation releases it, ... ERROR
+
+======================================================================
+ERROR: test_cancel_step_releases_a_reserved_step_before_dispatch_with_unknown_cost (tests.test_core_work.CoreWorkTests.test_cancel_step_releases_a_reserved_step_before_dispatch_with_unknown_cost)
+22-C local cancel surface: cancelling an undispatched reservation releases it,
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Benedict\AppData\Local\Temp\union-consolidate\tests\test_core_work.py", line 363, in test_cancel_step_releases_a_reserved_step_before_dispatch_with_unknown_cost
+    self.assertEqual(cancelled[1]["receipt"]["status"], "succeeded", cancelled[1])
+                     ~~~~~~~~~~~~^^^^^^^^^^^
+KeyError: 'receipt'
+
+----------------------------------------------------------------------
+Ran 1 test in 1.021s
+
+FAILED (errors=1)

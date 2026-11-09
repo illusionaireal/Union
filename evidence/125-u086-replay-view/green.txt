@@ -1,0 +1,9 @@
+test_original_post_replay_preserves_delivered_receipt_after_restart (__main__.DeliveryObservationProbes.test_original_post_replay_preserves_delivered_receipt_after_restart) ... {"transport": [{"intent": true, "receipt_count": 1, "writer_available": true}], "cancel_posts": 1, "post_http": 200, "post_accepted": true, "saved_intent": true}
+ok
+test_changed_observation_with_unchanged_hash_is_not_accepted (__main__.DeliveryObservationProbes.test_changed_observation_with_unchanged_hash_is_not_accepted) ... {"transport": [{"intent": true, "receipt_count": 1, "writer_available": true}], "cancel_posts": 1, "post_http": 200, "post_accepted": true, "saved_intent": true}
+ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 2.518s
+
+OK

@@ -126,6 +126,43 @@ it('prepares explicitly, then actually dispatches run_loop once using current ve
     data: { work_id: 'w1' },
   });
 });
+it('a reserved step can be cancelled from the page before dispatch', async () => {
+  current.works[0].attempts = [
+    { id: 'w1#a1', seq: 1, status: 'running', outcome: null, started_at: '', ended_at: null },
+  ];
+  current.works[0].steps = [
+    { seq: 1, step_ref: 'w1#s1', attempt_id: 'w1#a1', purpose: 'work_step', status: 'reserved',
+      command_id: null, at: '2026-11-09T00:00:00Z' },
+  ];
+  vi.mocked(api.coreWorkCommand).mockImplementation(async (r) => {
+    if (r.kind === 'cancel_step') {
+      current.version = 6;
+      current.works[0].steps = [];
+      current.works[0].budget.reserved = 0;
+    }
+    return { receipt: receipt(r) };
+  });
+  mount();
+  fireEvent.click(await screen.findByRole('button', { name: '取消本次执行' }));
+  await waitFor(() => expect(api.coreWorkCommand).toHaveBeenCalledTimes(1));
+  expect(vi.mocked(api.coreWorkCommand).mock.calls[0][0]).toMatchObject({
+    kind: 'cancel_step',
+    organization_id: 'au-1',
+    data: { work_id: 'w1', step_id: 'w1#s1' },
+  });
+});
+it('an unknown step has no page cancel button', async () => {
+  current.works[0].attempts = [
+    { id: 'w1#a1', seq: 1, status: 'running', outcome: null, started_at: '', ended_at: null },
+  ];
+  current.works[0].steps = [
+    { seq: 1, step_ref: 'w1#s1', attempt_id: 'w1#a1', purpose: 'work_step', status: 'unknown',
+      command_id: 'cmd-1', model_request_id: 'work-abc', at: '2026-11-09T00:00:00Z' },
+  ];
+  mount();
+  await screen.findByRole('button', { name: '查询原请求' }).catch(() => null);
+  expect(screen.queryByRole('button', { name: '取消本次执行' })).not.toBeInTheDocument();
+});
 it('lost response survives reload with only the original identity and queries without any replay', async () => {
   current.works[0].attempts = [
     { id: 'w1#a1', seq: 1, status: 'running', outcome: null, started_at: '', ended_at: null },
@@ -182,12 +219,13 @@ it.each(['principal_id', 'service_instance'] as const)(
     expect(screen.queryByText('迟到私有结果')).toBeNull();
   },
 );
-it('permission loss on fresh read prevents dispatch and an unknown reservation has no new run', async () => {
+it('loss of new-action eligibility prevents dispatch while retaining readable work; unknown cannot run', async () => {
   const view = mount();
   await screen.findByText('已登记概览');
   current.access.can_start = false;
   fireEvent.click(screen.getByRole('button', { name: '准备本轮执行' }));
-  await screen.findByText(/权限或身份已变化/);
+  await screen.findByText(/当前不能执行新操作/);
+  expect(screen.getByText('已登记概览')).toBeVisible();
   expect(api.coreWorkCommand).not.toHaveBeenCalled();
   view.unmount();
   current.access.can_start = true;

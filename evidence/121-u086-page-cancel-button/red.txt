@@ -1,0 +1,519 @@
+
+ RUN  v3.2.7 C:/Users/Benedict/AppData/Local/Temp/union-consolidate/web/console
+
+ DEPRECATED  'basic' reporter is deprecated and will be removed in Vitest v3.
+Remove 'basic' from 'reporters' option. To match 'basic' reporter 100%, use configuration:
+{
+  "test": {
+    "reporters": [
+      [
+        "default",
+        {
+          "summary": false
+        }
+      ]
+    ]
+  }
+}
+ ❯ src/features/work/page-execution.test.tsx (20 tests | 1 failed) 3144ms
+   ✓ a stale attempt from the previous host has no new dispatch control 87ms
+   ✓ prepares explicitly, then actually dispatches run_loop once using current version 69ms
+   × a reserved step can be cancelled from the page before dispatch 1015ms
+     → Unable to find role="button" and name "取消本次执行"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33mclass[39m=[32m"card "[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"card-heading"[39m
+      [36m>[39m
+        [36m<h2>[39m
+          [0mAI 工作（V1）[0m
+        [36m</h2>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"button secondary compact"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m刷新 AI 工作[0m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"form-note"[39m
+      [36m>[39m
+        [0m运行已登记的工作；准备本轮执行不调用模型，运行会使用已授权的模型与调用预算。[0m
+      [36m</p>[39m
+      [36m<ul[39m
+        [33maria-label[39m=[32m"V1 工作列表"[39m
+        [33mclass[39m=[32m"work-panel"[39m
+      [36m>[39m
+        [36m<li[39m
+          [33mdata-work[39m=[32m"w1"[39m
+        [36m>[39m
+          [36m<strong>[39m
+            [0m已登记概览[0m
+          [36m</strong>[39m
+          [36m<p>[39m
+            [0m私有目标不得存储[0m
+          [36m</p>[39m
+          [36m<dl>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m负责成员[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0mAgent[0m
+                [0m（[0m
+                [0m交付[0m
+                [0m）[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m有效授权[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0mread_document[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m调用预算[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m0 已用 · 0 已预约 · 上限 2[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m执行[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m执行中（w1#a1）[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m最近工具回执[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m尚无工具回执[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m成果[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m尚无候选成果[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m授权资料[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0mdocs · 可读 1 份[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+          [36m</dl>[39m
+          [36m<div[39m
+            [33maria-label[39m=[32m"运行 已登记概览"[39m
+            [33mclass[39m=[32m"work-execution"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0m运行 AI 工作[0m
+            [36m</button>[39m
+          [36m</div>[39m
+        [36m</li>[39m
+      [36m</ul>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33mclass[39m=[32m"card "[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"card-heading"[39m
+      [36m>[39m
+        [36m<h2>[39m
+          [0mAI 工作（V1）[0m
+        [36m</h2>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"button secondary compact"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m刷新 AI 工作[0m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"form-note"[39m
+      [36m>[39m
+        [0m运行已登记的工作；准备本轮执行不调用模型，运行会使用已授权的模型与调用预算。[0m
+      [36m</p>[39m
+      [36m<ul[39m
+        [33maria-label[39m=[32m"V1 工作列表"[39m
+        [33mclass[39m=[32m"work-panel"[39m
+      [36m>[39m
+        [36m<li[39m
+          [33mdata-work[39m=[32m"w1"[39m
+        [36m>[39m
+          [36m<strong>[39m
+            [0m已登记概览[0m
+          [36m</strong>[39m
+          [36m<p>[39m
+            [0m私有目标不得存储[0m
+          [36m</p>[39m
+          [36m<dl>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m负责成员[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0mAgent[0m
+                [0m（[0m
+                [0m交付[0m
+                [0m）[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m有效授权[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0mread_document[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m调用预算[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m0 已用 · 0 已预约 · 上限 2[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m执行[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m执行中（w1#a1）[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m最近工具回执[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m尚无工具回执[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m成果[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m尚无候选成果[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<dt>[39m
+                [0m授权资料[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0mdocs · 可读 1 份[0m
+              [36m</dd>[39m
+            [36m</div>[39m
+          [36m</dl>[39m
+          [36m<div[39m
+            [33maria-label[39m=[32m"运行 已登记概览"[39m
+            [33mclass[39m=[32m"work-execution"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0m运行 AI 工作[0m
+            [36m</button>[39m
+          [36m</div>[39m
+        [36m</li>[39m
+      [36m</ul>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+   ✓ an unknown step has no page cancel button  1006ms
+   ✓ lost response survives reload with only the original identity and queries without any replay 65ms
+   ✓ a missing or unknown original receipt keeps its ID and cannot dispatch a replacement 78ms
+   ✓ a changed cookie principal_id while the POST completes clears prior work and receipt content 44ms
+   ✓ a changed cookie service_instance while the POST completes clears prior work and receipt content 25ms
+   ✓ permission loss on fresh read prevents dispatch and an unknown reservation has no new run 69ms
+   ✓ double click stays single POST and a mismatched receipt never enables replacement dispatch 63ms
+   ✓ storage refusal prevents POST and cookie principal mismatch clears old work 76ms
+   ✓ a pending original receipt returns 403 without removing an independently authorized work or its lookup 74ms
+   ✓ a forbidden receipt still clears old work when the independent access check is denied 63ms
+   ✓ a forbidden receipt still clears old work when the independent access check is principal 63ms
+   ✓ a forbidden receipt still clears old work when the independent access check is organization 62ms
+   ✓ a forbidden receipt still clears old work when the independent access check is protocol 63ms
+   ✓ a forbidden receipt still clears old work when the independent access check is session 61ms
+   ✓ independent review: losing start permission preserves a readable original receipt lookup 56ms
+   ✓ an original reference survives reload without current start permission 74ms
+   ✓ read access alone never offers a new execution without an original reference 29ms
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/work/page-execution.test.tsx > a reserved step can be cancelled from the page before dispatch
+TestingLibraryElementError: Unable to find role="button" and name "取消本次执行"
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      class="card "
+    >
+      <div
+        class="card-heading"
+      >
+        <h2>
+          AI 工作（V1）
+        </h2>
+        <button
+          class="button secondary compact"
+          type="button"
+        >
+          刷新 AI 工作
+        </button>
+      </div>
+      <p
+        class="form-note"
+      >
+        运行已登记的工作；准备本轮执行不调用模型，运行会使用已授权的模型与调用预算。
+      </p>
+      <ul
+        aria-label="V1 工作列表"
+        class="work-panel"
+      >
+        <li
+          data-work="w1"
+        >
+          <strong>
+            已登记概览
+          </strong>
+          <p>
+            私有目标不得存储
+          </p>
+          <dl>
+            <div>
+              <dt>
+                负责成员
+              </dt>
+              <dd>
+                Agent
+                （
+                交付
+                ）
+              </dd>
+            </div>
+            <div>
+              <dt>
+                有效授权
+              </dt>
+              <dd>
+                read_document
+              </dd>
+            </div>
+            <div>
+              <dt>
+                调用预算
+              </dt>
+              <dd>
+                0 已用 · 0 已预约 · 上限 2
+              </dd>
+            </div>
+            <div>
+              <dt>
+                执行
+              </dt>
+              <dd>
+                执行中（w1#a1）
+              </dd>
+            </div>
+            <div>
+              <dt>
+                最近工具回执
+              </dt>
+              <dd>
+                尚无工具回执
+              </dd>
+            </div>
+            <div>
+              <dt>
+                成果
+              </dt>
+              <dd>
+                尚无候选成果
+              </dd>
+            </div>
+            <div>
+              <dt>
+                授权资料
+              </dt>
+              <dd>
+                docs · 可读 1 份
+              </dd>
+            </div>
+          </dl>
+          <div
+            aria-label="运行 已登记概览"
+            class="work-execution"
+          >
+            <button
+              type="button"
+            >
+              运行 AI 工作
+            </button>
+          </div>
+        </li>
+      </ul>
+    </section>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      class="card "
+    >
+      <div
+        class="card-heading"
+      >
+        <h2>
+          AI 工作（V1）
+        </h2>
+        <button
+          class="button secondary compact"
+          type="button"
+        >
+          刷新 AI 工作
+        </button>
+      </div>
+      <p
+        class="form-note"
+      >
+        运行已登记的工作；准备本轮执行不调用模型，运行会使用已授权的模型与调用预算。
+      </p>
+      <ul
+        aria-label="V1 工作列表"
+        class="work-panel"
+      >
+        <li
+          data-work="w1"
+        >
+          <strong>
+            已登记概览
+          </strong>
+          <p>
+            私有目标不得存储
+          </p>
+          <dl>
+            <div>
+              <dt>
+                负责成员
+              </dt>
+              <dd>
+                Agent
+                （
+                交付
+                ）
+              </dd>
+            </div>
+            <div>
+              <dt>
+                有效授权
+              </dt>
+              <dd>
+                read_document
+              </dd>
+            </div>
+            <div>
+              <dt>
+                调用预算
+              </dt>
+              <dd>
+                0 已用 · 0 已预约 · 上限 2
+              </dd>
+            </div>
+            <div>
+              <dt>
+                执行
+              </dt>
+              <dd>
+                执行中（w1#a1）
+              </dd>
+            </div>
+            <div>
+              <dt>
+                最近工具回执
+              </dt>
+              <dd>
+                尚无工具回执
+              </dd>
+            </div>
+            <div>
+              <dt>
+                成果
+              </dt>
+              <dd>
+                尚无候选成果
+              </dd>
+            </div>
+            <div>
+              <dt>
+                授权资料
+              </dt>
+              <dd>
+                docs · 可读 1 份
+              </dd>
+            </div>
+          </dl>
+          <div
+            aria-label="运行 已登记概览"
+            class="work-execution"
+          >
+            <button
+              type="button"
+            >
+              运行 AI 工作
+            </button>
+          </div>
+        </li>
+      </ul>
+    </section>
+  </div>
+</body>
+ ❯ waitForWrapper D:/SynologyDrive/project/Union/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ D:/SynologyDrive/project/Union/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/features/work/page-execution.test.tsx:146:32
+    144|   });
+    145|   mount();
+    146|   fireEvent.click(await screen.findByRole('button', { name: '取消本次执行' }…
+       |                                ^
+    147|   await waitFor(() => expect(api.coreWorkCommand).toHaveBeenCalledTime…
+    148|   expect(vi.mocked(api.coreWorkCommand).mock.calls[0][0]).toMatchObjec…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 19 passed (20)
+   Start at  05:25:45
+   Duration  4.40s (transform 166ms, setup 135ms, collect 357ms, tests 3.14s, environment 358ms, prepare 90ms)
+

@@ -1,0 +1,14 @@
+
+ RUN  v3.2.7 C:/Users/Benedict/AppData/Local/Temp/u086-export/web/console
+
+ ✓ src/features/work/independent-cancel-page.test.tsx > review: the actual automatic reservation has an original-request cancel entry 83ms
+ ✓ src/features/work/independent-cancel-page.test.tsx > review: a lost cancel response retains its original lookup after reload 47ms
+ ✓ src/features/work/independent-cancel-page.test.tsx > review: cancel completion after principal_id changes cannot disclose the old receipt 43ms
+ ✓ src/features/work/independent-cancel-page.test.tsx > review: cancel completion after service_instance changes cannot disclose the old receipt 47ms
+ ✓ src/features/work/independent-cancel-page.test.tsx > review control: browsing an unknown reservation does not send any command 32ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  05:52:46
+   Duration  1.46s (transform 128ms, setup 136ms, collect 315ms, tests 253ms, environment 365ms, prepare 81ms)
+

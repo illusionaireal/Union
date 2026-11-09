@@ -1,0 +1,144 @@
+{
+  "actor": "codex-home single duty implementation session",
+  "online_user_id": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+  "candidate_base": "22649f49000496ff6e298c6c4d1197975d45e14a",
+  "integration_base": "2ff90f1fe631e46fc71f9ba5487417415e0e4f63",
+  "card": 40,
+  "scope_comment": 146,
+  "owner_preserved": true,
+  "real_model_calls": 0,
+  "independent_review": "required; not supplied by implementing session",
+  "logs": {
+    "dom_red": {
+      "sha256": "2a0a4899ae7cc92270b4d6881ae5dce60e1ba00907e8aed7544eb8023761e1a7",
+      "classification": "4 meaningful product failures; 5 controls passed",
+      "summary": [
+        "Test Files  1 failed (1)",
+        "Tests  4 failed | 5 passed (9)"
+      ]
+    },
+    "dom_green": {
+      "sha256": "7502306fc793192cf1ecb357c83f1e1b4bb85e0f8352030c1b59bce334dfed5f",
+      "classification": "29 DOM checks passed",
+      "summary": [
+        "Test Files  2 passed (2)",
+        "Tests  29 passed (29)"
+      ]
+    },
+    "npm_type_error": {
+      "sha256": "e2ab7f0afd8e7cafcd52431e4f165626c7dba2429ee1eb8abff7367b4825cd05",
+      "classification": "test typing/import error; not product RED",
+      "summary": []
+    },
+    "npm_green": {
+      "sha256": "5941ae86f479510520fa48f44a5f2db7ce8d71cee4ddbcfbd95db8c36ad3bcef",
+      "classification": "npm check passed: 326 frontend, 37 management, 9 action",
+      "summary": [
+        "Test Files  28 passed (28)",
+        "Tests  326 passed (326)"
+      ]
+    },
+    "browser_initial": {
+      "sha256": "cc708be0ff096462850e9dec7b0787e29eb0a685b0cfd33e4c4e765ce1c22eb1",
+      "classification": "fixture observed before reservation committed; not product RED",
+      "summary": []
+    },
+    "browser_parent_id": {
+      "sha256": "98c211f989e2febd1b97b22d684608a0cabd16fecdb5e01c179678219cb8adda",
+      "classification": "fixture confused loop parent and turn command ID; not product RED",
+      "summary": []
+    },
+    "browser_first_green": {
+      "sha256": "dc3390b18bee67193db68e8622cf25ff603222244b76879b7465038c024310cd",
+      "classification": "10 checks passed; acceptance strengthened in final run",
+      "summary": [
+        "U086 page recovery: 10 checks passed; command POST=2, fake=1, real=0; lost cancel=false"
+      ]
+    },
+    "browser_accepted": {
+      "sha256": "dc3390b18bee67193db68e8622cf25ff603222244b76879b7465038c024310cd",
+      "classification": "10 checks passed; accepted cancellation original persists",
+      "summary": [
+        "U086 page recovery: 10 checks passed; command POST=2, fake=1, real=0; lost cancel=false"
+      ]
+    },
+    "browser_lost": {
+      "sha256": "a11b5ee85fd72012da77f8c0495b6226f2da03c0fa4e5c15075647db8120afb0",
+      "classification": "10 checks passed; lost cancellation response original persists",
+      "summary": [
+        "U086 page recovery: 10 checks passed; command POST=2, fake=1, real=0; lost cancel=true"
+      ]
+    },
+    "python_full": {
+      "sha256": "6a012145d922f8faca48601f1d971ad2f36d14c686b09fea8dde7a7a8e424119",
+      "classification": "full suite passed on candidate plus its own tests",
+      "summary": [
+        "Ran 783 tests in 506.283s",
+        "OK (skipped=9)"
+      ]
+    }
+  },
+  "browser_accepted": {
+    "scope": "controlled",
+    "checks": [
+      "page sends cancel while original run POST is pending",
+      "separate original IDs",
+      "actual HTTP cancel reaches original model request and AU",
+      "SQLite retains original run reservation",
+      "cancel cannot be posted twice",
+      "both original GETs survive reload",
+      "unknown retains one reservation",
+      "three viewport widths",
+      "host restart preserves original cancellation receipt",
+      "new service scope excludes old browser references"
+    ],
+    "lose_cancel_response": false,
+    "work_posts": 2,
+    "fake_model_calls": 1,
+    "cancel_posts": 1,
+    "real_model_calls": 0,
+    "known_server_gap": {
+      "post_cancel_accepted": true,
+      "stored_cancel_accepted": false,
+      "note": "Delivery observation consistency remains the author-owned server repair; not approved by this page test."
+    }
+  },
+  "browser_lost": {
+    "scope": "controlled",
+    "checks": [
+      "page sends cancel while original run POST is pending",
+      "separate original IDs",
+      "actual HTTP cancel reaches original model request and AU",
+      "SQLite retains original run reservation",
+      "cancel cannot be posted twice",
+      "both original GETs survive reload",
+      "unknown retains one reservation",
+      "three viewport widths",
+      "host restart preserves original cancellation receipt",
+      "new service scope excludes old browser references"
+    ],
+    "lose_cancel_response": true,
+    "work_posts": 2,
+    "fake_model_calls": 1,
+    "cancel_posts": 1,
+    "real_model_calls": 0,
+    "known_server_gap": {
+      "post_cancel_accepted": true,
+      "stored_cancel_accepted": false,
+      "note": "Delivery observation consistency remains the author-owned server repair; not approved by this page test."
+    }
+  },
+  "source_sha256": {
+    "web/console/src/features/work/WorkExecution.tsx": "9bab56eb67424b3339e71820bbf96977f970d991fd63e2a4b8d1db0e520529f0",
+    "web/console/src/features/work/cancel-recovery.test.tsx": "eff2593c10e48b13eeadc4bf2c2859746b632035d6b8e336b4a8f29e5a1eabce",
+    "scripts/u086-cancel-recovery-browser.cjs": "a12eb2aa52e045bafe3781af3da61f8f75243726224bc5fb4442f0dadc433843",
+    "scripts/u086_cancel_recovery_host.py": "f6d0f9a6672835b863aefed04b2b23e489514c31cf99a690ea619843e8424a12"
+  },
+  "server_identical_to_author_base": true,
+  "toolchain": {
+    "node": "24.19.0",
+    "python": "3.12.10",
+    "python_requirement": ">=3.11",
+    "browser": "actual installed Chrome via Playwright Core"
+  }
+}

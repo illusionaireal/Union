@@ -3,7 +3,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { api, errorText } from '../../api/client';
 import type { CoreWorkItem, Session } from '../../api/types';
 
-type Kind = 'start_attempt' | 'run_loop';
+type Kind = 'start_attempt' | 'run_loop' | 'cancel_step';
 type Scope = {
   principalId: string;
   serviceInstance: string;
@@ -24,7 +24,7 @@ function load(scope: Scope): Reference[] {
               Object.entries(scope).every(([k, v]) => r[k] === v) &&
               typeof r.id === 'string' &&
               r.id.length > 0 &&
-              ['start_attempt', 'run_loop'].includes(r.kind) &&
+              ['start_attempt', 'run_loop', 'cancel_step'].includes(r.kind) &&
               Number.isInteger(r.base_version) &&
               r.base_version >= 0 &&
               typeof r.resolved === 'boolean',
@@ -61,8 +61,10 @@ export function WorkExecution({
   const client = useQueryClient();
   const [references, setReferences] = useState(() => load(scope));
   const refs = useRef(references);
+  const confirmations = useRef(new Map<string, { resolved: boolean; delivered: boolean; message: string }>());
   const alive = useRef(true),
     busy = useRef(false),
+    cancelBusy = useRef(false),
     querying = useRef(false);
   const scopeRef = useRef(storageKey(scope));
   scopeRef.current = storageKey(scope);
@@ -111,10 +113,17 @@ export function WorkExecution({
     )
       throw new Error('回执与原请求不匹配');
     await liveSession();
-    // A later POST response must not downgrade an independently confirmed original receipt.
-    if (!refs.current.some((x) => x.id === original.id && x.resolved)) {
-      const resolved = r.status !== 'unknown' && r.model_outcome !== 'unknown';
-      const next = refs.current.map((x) => (x.id === original.id ? { ...x, resolved } : x));
+    // Persisted resolution prevents replay; it is not a cached receipt body.
+    // A committed cancel intent can still gain its durable delivery observation.
+    const resolved = r.status !== 'unknown' && r.model_outcome !== 'unknown';
+    const delivered = original.kind === 'cancel_step' && typeof r.cancel_accepted === 'boolean';
+    const previous = confirmations.current.get(original.id);
+    if ((previous?.resolved && !resolved) || (previous?.delivered && !delivered)) {
+      setNote(previous.message);
+    } else {
+      const message = String(r.message || (resolved ? '原请求已记录' : '执行结果未知，请查询原请求'));
+      confirmations.current.set(original.id, { resolved, delivered, message });
+      const next = refs.current.map((x) => (x.id === original.id ? { ...x, resolved: x.resolved || resolved } : x));
       refs.current = next;
       setReferences(next);
       try {
@@ -122,11 +131,11 @@ export function WorkExecution({
       } catch {
         /* Original identity remains. */
       }
-      setNote(String(r.message || (resolved ? '原请求已记录' : '执行结果未知，请查询原请求')));
+      setNote(message);
     }
     await client.invalidateQueries({ queryKey: ['core-work', scope.organizationId] });
   };
-  const failure = (error: unknown) => {
+  const failure = (error: unknown, originalId?: string) => {
     if (!current()) return;
     if (
       error instanceof ScopeLost ||
@@ -135,12 +144,19 @@ export function WorkExecution({
       onAccessLost();
       return;
     }
+    if (originalId && refs.current.some((r) => r.id === originalId && r.resolved)) return;
     setNote(errorText(error));
   };
   const kind: Kind = item.attempts.some((a) => a.status === 'running')
     ? 'run_loop'
     : 'start_attempt';
-  const reference = references.find((r) => !r.resolved) || references.find((r) => r.kind === kind);
+  const reference =
+    references.find((r) => r.kind !== 'cancel_step' && !r.resolved) ||
+    // Closing the attempt changes the next action, not the original run identity.
+    references.find((r) => r.kind === 'run_loop') ||
+    references.find((r) => r.kind === kind);
+  const cancelReference = references.find((r) => r.kind === 'cancel_step');
+  const recoveries = [reference, cancelReference].filter((r): r is Reference => Boolean(r));
   const eligible =
     canExecute &&
     item.mandate.active &&
@@ -151,10 +167,11 @@ export function WorkExecution({
     item.budget.used < item.budget.max_calls &&
     item.results.length === 0;
   async function send() {
-    if (busy.current || reference || !eligible) return;
+    if (busy.current || cancelBusy.current || recoveries.length || !eligible) return;
     busy.current = true;
     setSending(true);
     setNote('');
+    let dispatchedId: string | undefined;
     try {
       await liveSession();
       const read = await api.coreWork(scope.organizationId);
@@ -162,10 +179,14 @@ export function WorkExecution({
       if (
         read.protocol !== 'core.work.v1' ||
         read.organization_id !== scope.organizationId ||
-        read.access.principal_id !== scope.principalId ||
-        !read.access.can_start
+        read.access.principal_id !== scope.principalId
       )
         throw new ScopeLost('权限或身份已变化');
+      if (!read.access.can_start) {
+        await liveSession();
+        await client.invalidateQueries({ queryKey: ['core-work', scope.organizationId] });
+        throw new Error('当前不能执行新操作；已有工作和原请求仍可查询，请核对模型连接及当前授权。');
+      }
       const work = read.works.find((w) => w.id === scope.workId);
       if (
         !work ||
@@ -190,6 +211,7 @@ export function WorkExecution({
       };
       remember(original);
       requireCurrent();
+      dispatchedId = original.id;
       const result = await api.coreWorkCommand({
         id: original.id,
         kind,
@@ -199,14 +221,14 @@ export function WorkExecution({
       });
       if (current()) await accept(original, result.receipt);
     } catch (error) {
-      failure(error);
+      failure(error, dispatchedId);
     } finally {
       busy.current = false;
       if (current()) setSending(false);
     }
   }
-  async function lookup() {
-    if (!reference || querying.current) return;
+  async function lookup(reference: Reference) {
+    if (querying.current) return;
     querying.current = true;
     setChecking(true);
     try {
@@ -238,31 +260,103 @@ export function WorkExecution({
           failure(accessError);
         }
       } else {
-        failure(error);
+        failure(error, reference.id);
       }
     } finally {
       querying.current = false;
       if (current()) setChecking(false);
     }
   }
+  const cancellable = item.steps.find((step) => step.status === 'reserved');
+  const [cancelling, setCancelling] = useState(false);
+  async function cancelLocal() {
+    if (!canExecute || cancelBusy.current || !cancellable || refs.current.some((r) => r.kind === 'cancel_step'))
+      return;
+    cancelBusy.current = true;
+    setCancelling(true);
+    setNote('');
+    let dispatchedId: string | undefined;
+    try {
+      await liveSession();
+      const read = await api.coreWork(scope.organizationId);
+      requireCurrent();
+      if (
+        read.protocol !== 'core.work.v1' ||
+        read.organization_id !== scope.organizationId ||
+        read.access.principal_id !== scope.principalId
+      )
+        throw new ScopeLost('权限或身份已变化');
+      if (!read.access.can_start) {
+        await liveSession();
+        await client.invalidateQueries({ queryKey: ['core-work', scope.organizationId] });
+        throw new Error('当前不能执行新操作；已有工作和原请求仍可查询，请核对模型连接及当前授权。');
+      }
+      const work = read.works.find((w) => w.id === scope.workId);
+      const step = work?.steps.find((value) => value.step_ref === cancellable.step_ref);
+      if (!work || !step || step.status !== 'reserved' || step.step_ref !== cancellable.step_ref) {
+        await client.invalidateQueries({ queryKey: ['core-work', scope.organizationId] });
+        throw new Error('工作状态已变化，请核对刷新后的记录');
+      }
+      const original: Reference = {
+        ...scope,
+        id: crypto.randomUUID(),
+        kind: 'cancel_step',
+        base_version: read.version,
+        resolved: false,
+      };
+      remember(original);
+      requireCurrent();
+      dispatchedId = original.id;
+      const result = await api.coreWorkCommand({
+        id: original.id,
+        kind: 'cancel_step',
+        base_version: original.base_version,
+        organization_id: scope.organizationId,
+        data: {
+          work_id: scope.workId,
+          step_id: step.step_ref,
+          reason: '页面级取消：操作者请求停止本次执行',
+        },
+      });
+      if (current()) await accept(original, result.receipt);
+    } catch (error) {
+      failure(error, dispatchedId);
+    } finally {
+      cancelBusy.current = false;
+      if (current()) setCancelling(false);
+    }
+  }
   return (
     <div className="work-execution" aria-label={'运行 ' + item.title}>
-      {reference ? (
-        <>
+      {cancellable && canExecute && (
+        <button
+          type="button"
+          disabled={cancelling || Boolean(cancelReference)}
+          onClick={() => void cancelLocal()}
+        >
+          取消本次执行
+        </button>
+      )}
+      {recoveries.map((original) => (
+        <div
+          key={original.id}
+          role="group"
+          aria-label={original.kind === 'cancel_step' ? '原取消请求' : '原运行请求'}
+        >
+          <p>{original.kind === 'cancel_step' ? '取消请求' : '运行请求'}</p>
           <p>
-            {reference.resolved ? '本次操作已记录' : '原请求已保留；请查询，不要重复运行'} ·{' '}
-            {reference.id}
+            {original.resolved ? '本次操作已记录' : '原请求已保留；请查询，不要重复运行'} ·{' '}
+            {original.id}
           </p>
-          <button type="button" disabled={checking} onClick={() => void lookup()}>
+          <button type="button" disabled={checking} onClick={() => void lookup(original)}>
             查询原请求
           </button>
-        </>
-      ) : (
-        eligible && (
-          <button type="button" disabled={sending} onClick={() => void send()}>
-            {kind === 'run_loop' ? '运行 AI 工作' : '准备本轮执行'}
-          </button>
-        )
+        </div>
+      ))}
+      {recoveries.length === 0 && eligible && (
+        <button type="button" disabled={sending} onClick={() => void send()}>
+          {kind === 'run_loop' ? '运行 AI 工作' : '准备本轮执行'}
+        </button>
       )}
       {note && <p role="status">{note}</p>}
     </div>
