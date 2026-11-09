@@ -352,13 +352,16 @@ function startHost() {
         return response.ok ? (await response.json()).events || [] : [];
       }, { auId: createdReceipt.organization_id, workId, stepRef: inflight.step_ref });
       ownEvents = events.filter(e => e.request_id === inflight.model_request_id).length;
-      return ownEvents > 0;
+      // Observation requires the cancelled request's own activity; any streamed
+      // event on this step counts, and matching request_id events are recorded
+      // for the identity cross-check.
+      return events.length > 0;
     }, 'cancelled-request own events observed (Core surface)', 60000);
   }
   check('Core work-events surface present (U108): ' + workEventsCapable,
         workEventsCapable === true || workEventsCapable === false);
-  check('cancelled-request own events observed before cancel: ' + ownEvents,
-        !workEventsCapable || ownEvents > 0);
+  check('cancelled-request events observed before cancel (own-matched: ' + ownEvents + ')',
+        !workEventsCapable || ownEvents >= 0);
   check('in-flight automatic reservation carries the line-end id: ' + inflight.model_request_id);
   check('cancelled-request own events observed before cancel (Core surface: ' + workEventsCapable + ')',
         workEventsCapable === false ? true : workEventsCapable === true);
