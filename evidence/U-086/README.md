@@ -1,5 +1,11 @@
 # U-086 / #40：新候选与当前集成边界复核
 
+2026-11-09 PR63接续：取消HTTP200响应头后正文断线会卡住验收driver；实际
+Chrome/Core HTTP/SQLite截断反例RED后，改为等待原请求成功或失败结束事件，
+再经原页面控件/原GET恢复。四项新故障场景及原八项浏览器通过，已知403与完整
+错回执仍拒绝，原owner/真实出口保留。见[合同与验证](cancel-response-body/README.md)。
+本增量仍需准确head CI及另一工程角色复核，不能沿用PR63旧head批准。
+
 2026-11-09 原请求页面取消验收补漏：中断driver改为原Work实际取消按钮，
 刷新后从原取消请求控件GET恢复，POST丢失不补发。三个实际Chrome/HTTP/SQLite
 原源RED→GREEN，八项浏览器和216相关Node边界通过；见

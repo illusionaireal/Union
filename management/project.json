@@ -2060,6 +2060,13 @@
                     "from": "doing",
                     "to": "doing",
                     "note": "u086-page-cancel-action-e6a8b868：#40评论271限定修复中断driver直接API取消假阳性，改用原Work实际Core取消与刷新后原ID查询，响应丢失不补发。三个实际Chrome/HTTP/SQLite原源RED→GREEN，八浏览器及216相关Node通过；合同、完整验证和源码hash见evidence/U-086/page-cancel-action/README.md与validation.json。PR62页面登记与原输出/回执/重开/未知预约保持；产品源码无变化。当前head CI及非实施角色复核后采用，DSH owner/progress/WIP和#22/#39/#40真实出口不变。零真实推理/grant/部署/迁移；仅交付历史，不作在线状态。"
+                },
+                {
+                    "at": "2026-11-09T13:01:02.359Z",
+                    "actor": "codex-home/single-duty-implementation",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "u086-cancel-response-body-b446caf2：#40评论274限定验收helper修复。原取消HTTP200头后正文中断，Playwright finished仅等待成功事件导致原GET恢复挂起；新增真实Chrome/Core HTTP/SQLite有界RED后改为原请求finished/failed事件并保留已知403与完整错回执拒绝。四新场景及原八浏览器、npm225 Node/363前端/37管理通过；完整Python与环境失败分类见evidence/U-086/cancel-response-body/README.md和validation.json。产品及共享事务未改；准确head CI/另一工程角色复核后采用。DSH owner/progress/WIP与真实#22/#39/#40保持；真实推理/grant/迁移0。只追加交付历史，不作为在线任务状态。"
                 }
             ],
             "claim": {

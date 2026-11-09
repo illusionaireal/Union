@@ -66,10 +66,17 @@ async function cancelFromPage(page, reference) {
   await button.waitFor();
   assert.equal(await button.isEnabled(), true, 'original page cancel is enabled');
   const requests = [];
+  let settle;
+  const ended = new Promise(resolve => { settle = resolve; });
   const capture = r => {
     if (r.method() === 'POST' && new URL(r.url()).pathname === '/api/v1/work/commands') requests.push(r);
   };
+  const finish = r => {
+    if (requests.includes(r) && r.postDataJSON()?.kind === 'cancel_step') settle(r);
+  };
   page.on('request', capture);
+  page.on('requestfinished', finish);
+  page.on('requestfailed', finish);
   try {
     const [request] = await Promise.all([
       page.waitForRequest(r => r.method() === 'POST' && new URL(r.url()).pathname === '/api/v1/work/commands'
@@ -77,12 +84,16 @@ async function cancelFromPage(page, reference) {
     ]);
     const command = request.postDataJSON();
     validateCancelCommand(command, reference, before.work.version);
+    // Playwright's response.finished() may never resolve for a failed body.
+    // Observe either terminal request event, installed before the click.
+    assert.equal(await ended, request, 'original cancel transmission ended');
     // A lost response ends this transmission. Never issue a substitute cancel.
     const post = await request.response();
     let submittedReceipt;
     if (post) {
-      await post.finished();
-      submittedReceipt = validateCancelReceipt({status:post.status(), body:await post.json()}, command, reference);
+      assert.equal(post.status(), 200, 'page cancel receipt HTTP');
+      if (!request.failure())
+        submittedReceipt = validateCancelReceipt({status:post.status(), body:await post.json()}, command, reference);
     }
     const group = () => card.getByRole('group', {name:'原取消请求', exact:true});
     await group().waitFor();
@@ -105,7 +116,11 @@ async function cancelFromPage(page, reference) {
     await read();
     assert.equal(requests.length, 1, 'one page cancel POST; recovery performs only GET');
     return {command, receipt};
-  } finally { page.off('request', capture); }
+  } finally {
+    page.off('request', capture);
+    page.off('requestfinished', finish);
+    page.off('requestfailed', finish);
+  }
 }
 
 module.exports = {cancelFromPage, validateCancelCommand, validateCancelReceipt};
