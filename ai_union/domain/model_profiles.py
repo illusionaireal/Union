@@ -13,6 +13,7 @@ REAL_EVIDENCE = "evidence/058-s02-model-tools/README.md"
 CHECK_EVIDENCE = "tests/test_core_model_checks.py"
 RECOVERY_EVIDENCE = "tests/test_core_model_recovery.py"
 EVENT_EVIDENCE = "tests/test_core_model_events.py"
+GO_EVIDENCE = "evidence/U-075/go-deepseek-2026-11-10/README.md"
 
 
 def _claim(status, note, evidence=None):
@@ -31,9 +32,9 @@ PROFILES = {
             "text_answer": _claim("verified_real", "U-072 已用所选连接完成两次真实推理，回答已保存。", REAL_EVIDENCE),
             "tool_roundtrip": _claim("verified_real", "真实读取所选文本，经 read_document 回执继续回答。", REAL_EVIDENCE),
             "usage_reporting": _claim("verified_real", "真实响应记录输入/输出 token；供应商未返回金额时保留未知。", REAL_EVIDENCE),
-            "streaming": _claim("controlled", "V1页面可观测原请求已保存的部分文本，重连只查询原ID；共同投影已受控验证，此profile真实流式能力未验。", EVENT_EVIDENCE),
+            "streaming": _claim("verified_real", "已用 Go deepseek-v4.1-flash 验证生成中的原文本及重启后页面读取；其他服务/模型须分别验证。", GO_EVIDENCE),
             "long_job_new_input": _claim("unsupported", "长任务执行期间追加输入尚未实现；刷新后用原请求查询。"),
-            "cancel_and_query": _claim("controlled", "取消意图、原请求查询和 unknown 保留已受控验证，未做真实中断恢复。", REAL_EVIDENCE),
+            "cancel_and_query": _claim("verified_real", "已用 Go deepseek-v4.1-flash 验证本地停止、原请求查询及重启；未确认远端取消，中断用量/费用仍未知，占用保留。", GO_EVIDENCE),
         },
     },
     "modeld_grant": {

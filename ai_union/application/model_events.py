@@ -36,7 +36,12 @@ def _snapshot(service, token, au_id, check_id, attempt_id, principal, expected=N
             if remote is not None:
                 require(remote.get("id") == attempt_id and remote.get("au_id") == au_id
                         and remote.get("request_digest") == private["digest"], "event_identity_mismatch")
-                if remote.get("action_authorized") is False:
+                # modeld also denies action after cancellation. Current reader/grant
+                # checks above still apply; confirmed stop permits only saved text.
+                confirmed_stop = (check.get("stop_requested") is True
+                                  and remote.get("state") == "interrupted"
+                                  and remote.get("cancel_requested") is True)
+                if remote.get("action_authorized") is False and not confirmed_stop:
                     raise CoreError("not_authorized")
             attempt = next(a for a in check["attempts"] if a["id"] == attempt_id)
             return state["version"], attempt["state"], remote

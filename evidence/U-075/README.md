@@ -1,5 +1,9 @@
 # U-075：用户指定 OpenCode Go 的有界验收
 
+2026-11-10 新记录：[DeepSeek V4.1 Flash 真实往返、中断、重启和浏览器验收](go-deepseek-2026-11-10/README.md)。
+4次真实请求；保留未知用量/费用与原责任，修复中断原文本读取403。权限修复需独立
+采用，Responses 子卡未关闭。以下 2026-11-08 GLM 验收与原失败历史保持。
+
 2026-11-08，用户提供 Go 订阅接入授权。官方 Go 文档 https://opencode.ai/docs/go/ 列出该 API 端点和 glm-5.3-flash；只读 models HTTP 200 后通过既有核心身份/治理、modeld AU grant、两阶段资料检查完成 2 次推理、1 次真实 read_document。没有假模型或假资料回执。
 
 证据见 go-api-acceptance.json。输入 292/286，输出 38/83 tokens；每次输出上限 1024。费用金额与币种未提供，保留 unknown，不记为零。资料是本轮生成的公开合成部署清单；原资料/校验码不在首轮请求，只经工具读取进入第二轮，回答包含校验码。

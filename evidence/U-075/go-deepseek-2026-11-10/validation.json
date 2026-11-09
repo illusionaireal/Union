@@ -1,0 +1,332 @@
+{
+  "date": "2026-11-10",
+  "task": "U-075 / UNI-028",
+  "actor": "Codex/developer/session-01a1c217-f4aa-78e3-830b-173a7b72e707",
+  "online_member": {
+    "name": "codex-home",
+    "id": "c18f0d21-1d63-4e37-af3e-2dbb78d75995"
+  },
+  "source": {
+    "real_requests_core_commit": "f2fb72c2b31b2e2c29ea385d8ea1da05506fee3f",
+    "modeld_bundle_sha256": "a35814c276ddf24e1ce12625f7dde8f27a57092397416ea48e991a2f9e92dba8",
+    "opencode_commit": "805a42ffaa56b29a88baef87c7567f1ab9a40a8f",
+    "observation_fix_files": {
+      "ai_union/application/model_events.py": "9503599b752b33961eaa2aad31151ca62e3a6749aa5a23ccdde0bec3b1d29fad",
+      "ai_union/domain/model_profiles.py": "75751e07a12f1d061f47df6dd1ed892778f80b1430991b0cf8d2ecb22726672e",
+      "tests/test_core_model_events.py": "345ff0ef0815fe6deec0d7ed8734e2c20dcdc7dfcc32647d52e6b2ee3afb4e3b",
+      "tests/test_core_model_profiles.py": "cf44c8e9f01654317a9674813a26f1e6d3c4bfc45bf73325e8b96de57a72567f"
+    },
+    "integrated_documentation_base": "e42fd823f40bc609cac560a590994487276a4d90",
+    "integration_scope": "Only coordinator U-107 deployment evidence and generated ledger views changed after the real run; product source unchanged."
+  },
+  "provider": {
+    "service": "OpenCode Go",
+    "model": "deepseek-v4.1-flash",
+    "wire_api": "chat-completions",
+    "core_profile": "openai_compatible",
+    "authenticated_catalog_status": 200,
+    "responses_supported_by_selected_model": false
+  },
+  "authorization": {
+    "user_subscription_call_limit": null,
+    "isolated_au_call_grant": 6,
+    "max_output_tokens_per_call": 2048,
+    "material": "synthetic public text"
+  },
+  "scope": "bounded real integration, not sustained operation or deployment",
+  "request_count": 4,
+  "requests": [
+    {
+      "id": "model-507d9ffe6000508ca3e49a7e14253ff8",
+      "state": "completed",
+      "request_digest": "b263e71674036185cf46d3601b5c77e3ddab33d800458e6e9c8831e3a68b89b4"
+    },
+    {
+      "id": "model-260d3c47092c52ea9ec165b396717856",
+      "state": "completed",
+      "request_digest": "f54005ad38b5c0563c9c9a16379674a2252baff25c727ea058ff38425ae418c9"
+    },
+    {
+      "id": "model-b905cff193b95720879bdc9a714f4ad5",
+      "state": "completed",
+      "request_digest": "e191af6f85ec0c41d2fc4b20e99cf265775df592895e62391dc428d782176381"
+    },
+    {
+      "id": "model-49256668c6015a8dbd35513992b5220d",
+      "state": "interrupted",
+      "request_digest": "a2e0f70f9befe2360ef03012e5159c5b847a7bf6d5b229a3eb7acb38c3fc0f85"
+    }
+  ],
+  "checks": [
+    {
+      "label": "normal",
+      "check_id": "a3dd2d85-13f7-44ec-9f30-10db73b62bb8",
+      "status": "succeeded",
+      "responsibility": {
+        "work_id": "model-work-c7390489f7d75d05a463fa0bf8405a61",
+        "work_version": 1,
+        "member_id": "model-member-c7390489f7d75d05a463fa0bf8405a61",
+        "binding_id": "model-binding-c7390489f7d75d05a463fa0bf8405a61",
+        "binding_version": 1,
+        "mandate_id": "model-mandate-c7390489f7d75d05a463fa0bf8405a61",
+        "mandate_version": 1,
+        "agent_definition": {
+          "id": "core.model_check",
+          "instructions": "先调用 read_document 读取指定资料。收到工具结果后，给出简短资料概要并原样附上 challenge 校验码；不要调用其他工具。",
+          "scope": "two_inferences_one_read_only_tool",
+          "tools": [
+            "read_document"
+          ],
+          "version": 1
+        },
+        "versions": {
+          "charter_version": 2,
+          "goal_version": 1,
+          "policy_version": 2
+        },
+        "connection_revision": 1,
+        "grant_revision": 1,
+        "resource_revision": 1
+      },
+      "attempts": [
+        {
+          "id": "model-507d9ffe6000508ca3e49a7e14253ff8",
+          "stage": 0,
+          "usage": {
+            "input_tokens": 422,
+            "output_tokens": 71,
+            "reasoning_tokens": 0,
+            "cost_minor": null,
+            "currency": null,
+            "cost_status": "unknown",
+            "observed_through_seq": 23,
+            "basis": "result"
+          }
+        },
+        {
+          "id": "model-260d3c47092c52ea9ec165b396717856",
+          "stage": 1,
+          "usage": {
+            "input_tokens": 341,
+            "output_tokens": 168,
+            "reasoning_tokens": 14,
+            "cost_minor": null,
+            "currency": null,
+            "cost_status": "unknown",
+            "observed_through_seq": 132,
+            "basis": "result"
+          }
+        }
+      ]
+    },
+    {
+      "label": "interrupt",
+      "check_id": "58150366-196e-4cf3-a227-1f70e8b9106f",
+      "status": "unknown",
+      "responsibility": {
+        "work_id": "model-work-4f36ff4d3af052389935851b5c01d06c",
+        "work_version": 1,
+        "member_id": "model-member-c7390489f7d75d05a463fa0bf8405a61",
+        "binding_id": "model-binding-c7390489f7d75d05a463fa0bf8405a61",
+        "binding_version": 1,
+        "mandate_id": "model-mandate-4f36ff4d3af052389935851b5c01d06c",
+        "mandate_version": 1,
+        "agent_definition": {
+          "id": "core.model_check",
+          "instructions": "先调用 read_document 读取指定资料。收到工具结果后，给出简短资料概要并原样附上 challenge 校验码；不要调用其他工具。",
+          "scope": "two_inferences_one_read_only_tool",
+          "tools": [
+            "read_document"
+          ],
+          "version": 1
+        },
+        "versions": {
+          "charter_version": 2,
+          "goal_version": 1,
+          "policy_version": 2
+        },
+        "connection_revision": 1,
+        "grant_revision": 1,
+        "resource_revision": 1
+      },
+      "attempts": [
+        {
+          "id": "model-b905cff193b95720879bdc9a714f4ad5",
+          "stage": 0,
+          "usage": {
+            "input_tokens": 417,
+            "output_tokens": 91,
+            "reasoning_tokens": 29,
+            "cost_minor": null,
+            "currency": null,
+            "cost_status": "unknown",
+            "observed_through_seq": 47,
+            "basis": "result"
+          }
+        },
+        {
+          "id": "model-49256668c6015a8dbd35513992b5220d",
+          "stage": 1,
+          "usage": {
+            "input_tokens": null,
+            "output_tokens": null,
+            "reasoning_tokens": null,
+            "cost_minor": null,
+            "currency": null,
+            "cost_status": "unknown",
+            "observed_through_seq": 68,
+            "basis": "unknown"
+          }
+        }
+      ]
+    }
+  ],
+  "normal_verified": {
+    "material_sha256": "124716483ff7ea627036afcd44f195a8f075740b346d2f63c47af15bf96fd068",
+    "output_sha256": "5fc36daf77195437a9766f05e20066329bcdd2a87a8b28d8ae5e393041da3765",
+    "challenge_sha256": "fa1696a38749a8d386762561012042080195cc771f5eb0cfa01b353b08890459",
+    "first_request_excludes_material": true,
+    "tool_result_in_second_request": true,
+    "native_tool_context_preserved": true,
+    "original_tool_receipt": true
+  },
+  "before_cancel": {
+    "check_id": "58150366-196e-4cf3-a227-1f70e8b9106f",
+    "request_id": "model-49256668c6015a8dbd35513992b5220d",
+    "state": "streaming",
+    "cursor": 26,
+    "text_sha256": "91a4aaf5f1d310e3eb5b3d42e9fd617e860b17368410123cc8cefeda99433f3b",
+    "text_bytes": 57
+  },
+  "reopened": {
+    "principal_preserved": true,
+    "normal_output_preserved": true,
+    "requests_unchanged": true,
+    "request_count": 4,
+    "reserved_calls": 4,
+    "reconciled_status": "unknown"
+  },
+  "known_usage_subtotal": {
+    "input_tokens": 1180,
+    "output_tokens": 330,
+    "is_total": false,
+    "excluded_unknown_requests": 1,
+    "cost_minor": null,
+    "currency": null
+  },
+  "browser": {
+    "passed": true,
+    "checks": [
+      "Real selected-model reply is rendered byte-for-byte after restart",
+      "Both original checks remain visible",
+      "Actual selected model is named",
+      "Normal request usage comes from the real provider",
+      "Interrupted outcome remains explicitly unknown",
+      "Unknown interrupted usage is not shown as zero",
+      "Costs remain unknown",
+      "Normal saved stream reconstructs the original response",
+      "Cancelled original request retains the exact pre-cancel prefix",
+      "Repeat observation still names the same cancelled request",
+      "Live-input limitation remains disclosed",
+      "Real streaming evidence names only the selected Go model",
+      "Remote cancellation and usage uncertainty remain disclosed",
+      "Refresh preserves original successful reply",
+      "Browser observation issues no model or business commands",
+      "No browser runtime errors"
+    ],
+    "post_routes": [
+      "/api/auth/login"
+    ],
+    "errors": []
+  },
+  "independent_review": "pending coordinator/other engineering role",
+  "responses_children": "U-098/U-099/U-100 unfinished; not superseded",
+  "validation": {
+    "before_fix_full_python": {
+      "tests": 808,
+      "skipped": 8,
+      "failures": 0,
+      "seconds": 512.049
+    },
+    "red": {
+      "tests": 14,
+      "failures": 4,
+      "reason": "cancelled original text returns 403 instead of 200"
+    },
+    "targeted_green": {
+      "tests": 29,
+      "failures": 0,
+      "seconds": 33.395
+    },
+    "final_full_python": {
+      "tests": 812,
+      "seconds": 512.119,
+      "skipped": 9,
+      "failures": 0,
+      "skip_reasons": [
+        "'host cannot create a file symlink: 22'",
+        "'Set UNION_BUN to the pinned Bun for the actual SDK integration'",
+        "'real acceptance needs UNION_MODELD_CONFIG and UNION_REAL_BOUNDED_ACCEPTANCE=1 (up to two calls)'",
+        "'real interruption needs UNION_MODELD_CONFIG and UNION_REAL_INTERRUPT_ACCEPTANCE=1 (up to one call)'",
+        "'Linux executable bits required'",
+        "'Windows locking conflict raises OS error before POSIX path'",
+        "'Linux-only container host'",
+        "'Linux-only container host'",
+        "'Linux-only container host'"
+      ]
+    },
+    "final_npm": {
+      "passed": true,
+      "management_tests": 37,
+      "node_tests": 306,
+      "frontend_files": 29,
+      "frontend_tests": 363,
+      "typecheck": true,
+      "build": true
+    },
+    "final_profile_checks": {
+      "tests": 15,
+      "failures": 0,
+      "seconds": 14.574,
+      "scope": "supplement after the declarative capability update"
+    },
+    "browser_after_fix": 14,
+    "browser_after_capability_declarations": 16,
+    "final_full_python_scope": "Runtime fix included. Later evidence-only capability declarations checked separately by 15 profile/Responses/release tests and final browser.",
+    "sdk_supplement": {
+      "command": "UNION_BUN=<pinned Bun 1.4.2> python -m unittest tests.test_core_model_http -v",
+      "tests": 1,
+      "failures": 0,
+      "skipped": 0,
+      "seconds": 2.892
+    }
+  },
+  "private_artifact_hashes": {
+    "acceptance-private.json": "bc90d8c3c95b5afe88f0670994c97909ab87f080321353ff288543b7f74064ae",
+    "browser-checks.json": "a7d764a085cf937c39e50f0a2e04dbf2f50b28f60ac707c28399124dc624fa54",
+    "browser-failure-1794259695162-private.json": "a970f0eb2831fa7ad616494dcc7b82ab8a812dd42a2b746fe7d8d3abbcd0dbc6",
+    "browser-failure-1794259695162-private.png": "ca84871b8c1d6b185e69d550b43205073bc84e8a2e565261c62b42d28fb50881",
+    "browser-failure-private.json": "dcebf0167763fcf947ef82e7c6a313f3f72f0d8a7f5309abe64c929ac0cf5915",
+    "browser-failure-private.png": "a5802a6b2b0465b22330b204ad711cfd13ebba683ede019885aa9606d51ffb85",
+    "browser-private.png": "f1b48cb0f2779ae1505763177ee711a38edfef53599ad4fe59537be79a298393"
+  },
+  "failures_preserved": [
+    "prepare-001 HTTP encoding before AU/inference",
+    "browser login selector",
+    "browser cancelled history 403",
+    "serve lock still owned by task child process"
+  ],
+  "remote_cancellation_confirmed": false,
+  "unknown_reservations_released": false,
+  "new_requests_from_browser_or_reconciliation": 0,
+  "validation_log_sha256": {
+    "u075-events-green.log": "10ccc6eb5aeef5a4fcceed4ece3d84a61031c981cf4a860f4f011be4f4a88eb7",
+    "u075-events-red.log": "a5237b503231ceff456513e223cdfeb95520458ba8596e4ea6dffb3b010869f4",
+    "u075-npm-check.log": "2f18e47e815f95f53803ee26d778f06858fd87f9a49430d690938fbe24adfc3b",
+    "u075-npm-final.log": "43cdc064494a1eba48cc96b37b92a27e546307b7ffd725f7ea5b2decde9e460c",
+    "u075-profile-final.log": "4f0c231a7545dd17a7c87a63d00f0cd441140df9eabcd2236282d51229cad609",
+    "u075-python-full.log": "fa82fe865f994b61ab2d1b8fb3ae404b62437e8abbbb7d75b7455792cacb1bbf",
+    "u075-python-final.log": "914fc530cd4a2838f133383dc9bf446e5b463d063a29650b43ce17c2c40749ac",
+    "u075-sdk-final.log": "1b10840387f29835b52440d8eb78143cba6bd3ee04c38e80ad12360787768953"
+  }
+}

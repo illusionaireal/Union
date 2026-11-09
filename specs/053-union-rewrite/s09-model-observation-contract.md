@@ -16,7 +16,8 @@
   内容，已撤销或修订返回403。当前连接需启用且仍对应原 check 的连接版本。
   治理的历史读取资格与执行/采用资格分别处理；本查询从不采用结果或执行工具。
 - private attempt 必须属于本 check/AU，payload 摘要和已观察响应的
-  id/AU/request_digest 均匹配；已知 action_authorized=false 不披露正文。
+  id/AU/request_digest 均匹配；已知 action_authorized=false 默认不披露正文，
+  仅下述已确认本地取消的只读历史例外适用。
   缺失/他人记录统一403，不通过原ID猜测扩大读取。
 - `protocol=core.model-events.v1`；响应带 organization_id/check_id/attempt_id、
   access.principal_id/service_instance、version、state、source=persisted_modeld_events、
@@ -52,3 +53,19 @@
 本地角色与session并发变化、旧schema和隐私投影；实际Chrome + 本地HTTP与
 明确modeld替身验证部分输出和恢复。npm check、固定Python全量、当前head CI
 与另一工程角色权限复核均通过后才能采用。实施者不能自行声称独立复核。
+
+## 2026-11-10 U-075 真实中断验收后的编码前细化
+
+Go 实际请求在取消、原请求核对和重启后仍保存部分正文；modeld 的
+`action_authorized=false` 同时表示已中断不可执行和 grant 不可用，不能单凭
+此标记抹去当前授权治理者的历史读取资格。保留上面的全部身份、连接、当前
+grant/AU/model/revision 复核；只有原 check 的 `stop_requested is True`、
+原 remote 的 `state == interrupted` 且 `cancel_requested is True` 同时成立，
+才允许读取该原请求已保存的投影。缺失字段、失败、完成、未确认取消、撤权
+或改版仍拒绝。读取不改变 unknown、资源占用、结果采用、工具执行资格或任何
+数据库。旧记录不补写字段；撤销/丢失读取资格继续清除浏览器内容。
+
+此变更对应 A-01/A-03/A-04、D-04、R-05；只修改 model_events 所有者和原 HTTP
+回归，真实浏览器消费既有入口。先复现取消后403的 RED，再验证正常读取、
+当前权限撤销及并发交接、字段缺失/错配和零写入，最后用同四次真实请求
+复验浏览器。决定与采用边界见 ADR-0006 的同日细化；独立工程复核仍待。

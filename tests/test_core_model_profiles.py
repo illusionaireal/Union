@@ -23,9 +23,15 @@ class ProfileScopeTests(ModelAccessCase):
         self.assertEqual(scope["openai_compatible"]["capabilities"]["text_answer"]["status"], "verified_real")
         self.assertEqual(scope["openai_compatible"]["capabilities"]["text_answer"]["evidence"],
                          "evidence/058-s02-model-tools/README.md")
-        self.assertEqual(scope["openai_compatible"]["capabilities"]["streaming"]["status"], "controlled")
-        self.assertIn("原请求", scope["openai_compatible"]["capabilities"]["streaming"]["note"])
-        self.assertTrue(scope["openai_compatible"]["capabilities"]["streaming"]["note"].strip())
+        for capability in ("streaming", "cancel_and_query"):
+            claim = scope["openai_compatible"]["capabilities"][capability]
+            self.assertEqual(claim["status"], "verified_real")
+            self.assertIn("Go deepseek-v4.1-flash", claim["note"])
+            self.assertEqual(claim["evidence"], "evidence/U-075/go-deepseek-2026-11-10/README.md")
+            for other in ("modeld_grant", "openai_responses"):
+                self.assertEqual(scope[other]["capabilities"][capability]["status"], "controlled")
+        self.assertIn("未确认远端取消", scope["openai_compatible"]["capabilities"]["cancel_and_query"]["note"])
+        self.assertEqual(scope["openai_compatible"]["capabilities"]["long_job_new_input"]["status"], "unsupported")
         self.assertEqual(scope["modeld_grant"]["capabilities"]["tool_roundtrip"]["status"], "controlled")
 
     def test_no_profile_claims_more_than_recorded_evidence(self):
