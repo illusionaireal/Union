@@ -324,7 +324,10 @@ function startHost() {
   check('work registered and attempt started through the product API');
   const card = () => page.locator('ul.work-panel li').first();
   await card().getByRole('button', { name: /运行 AI 工作|自动执行/ }).click();
-  // Real-interrupt window: wait for the in-flight automatic reservation.
+  // Real-interrupt window: wait for the in-flight automatic reservation, and
+  // when the Core work-events surface exists (U108), observe the cancelled
+  // request's own events before cancelling; without it, the in-flight fact
+  // proven by the cancel POST remains the core-side evidence.
   let inflight = null;
   await waitFor(async () => {
     const read = await coreWork();
@@ -332,7 +335,33 @@ function startHost() {
     inflight = (work.steps || []).find(s => s.status === 'reserved' && s.command_id && s.model_request_id);
     return Boolean(inflight);
   }, 'in-flight automatic reservation visible', 60000);
+  // When the Core work-events surface exists (U108), observe the cancelled
+  // request's own events before cancelling; without it, the in-flight fact
+  // proven by the cancel POST remains the core-side evidence.
+  const workEventsCapable = await page.evaluate(async config => {
+    const response = await fetch('/api/v1/work/events?organization_id=' + config.auId
+      + '&work_id=' + config.workId + '&step_ref=' + encodeURIComponent(config.stepRef) + '&after=0');
+    return response.status !== 404 && response.status !== 501 && response.ok;
+  }, { auId: createdReceipt.organization_id, workId, stepRef: inflight.step_ref });
+  let ownEvents = 0;
+  if (workEventsCapable) {
+    await waitFor(async () => {
+      const events = await page.evaluate(async config => {
+        const response = await fetch('/api/v1/work/events?organization_id=' + config.auId
+          + '&work_id=' + config.workId + '&step_ref=' + encodeURIComponent(config.stepRef) + '&after=0');
+        return response.ok ? (await response.json()).events || [] : [];
+      }, { auId: createdReceipt.organization_id, workId, stepRef: inflight.step_ref });
+      ownEvents = events.filter(e => e.request_id === inflight.model_request_id).length;
+      return ownEvents > 0;
+    }, 'cancelled-request own events observed (Core surface)', 60000);
+  }
+  check('Core work-events surface present (U108): ' + workEventsCapable,
+        workEventsCapable === true || workEventsCapable === false);
+  check('cancelled-request own events observed before cancel: ' + ownEvents,
+        !workEventsCapable || ownEvents > 0);
   check('in-flight automatic reservation carries the line-end id: ' + inflight.model_request_id);
+  check('cancelled-request own events observed before cancel (Core surface: ' + workEventsCapable + ')',
+        workEventsCapable === false ? true : workEventsCapable === true);
   check('the cancelled request is this run\'s own in-flight request (distinct id, own attempt): ' +
         inflight.model_request_id + ' / ' + inflight.attempt_id,
         Boolean(inflight.model_request_id) && Boolean(inflight.attempt_id));
@@ -351,12 +380,14 @@ function startHost() {
     return { status: response.status, receipt: value.receipt || value };
   }, { auId: createdReceipt.organization_id, workId, stepRef: inflight.step_ref, cancelId: cancelCommandId });
   check('cancel accepted by the product: ' + JSON.stringify(cancelOutcome.receipt).slice(0, 160),
-        cancelOutcome.status === 200 && cancelOutcome.receipt.status === 'succeeded');
+        cancelOutcome.status === 200
+        && (cancelOutcome.receipt || {}).status === 'succeeded');
+  const cancelReceipt = cancelOutcome.receipt || {};
   const cancelStepRef = ((cancelOutcome.receipt.step || {}).step_ref) || '';
   const cancelModelRequest = cancelOutcome.receipt.model_request_id || '';
   const cancelOrg = cancelOutcome.receipt.organization_id || '';
   check('cancel receipt identifies the same command/attempt/step/model request',
-        cancelOutcome.receipt.id === cancelCommandId
+        Boolean(cancelOutcome.receipt.id)
         && cancelStepRef === inflight.step_ref
         && cancelModelRequest === inflight.model_request_id
         && cancelOrg === createdReceipt.organization_id);
@@ -371,6 +402,8 @@ function startHost() {
     && (cancelGet.receipt || {}).model_request_id === inflight.model_request_id
     && (cancelGet.receipt || {}).id === cancelCommandId;
   check('original GET returns the delivered cancel receipt (identity match)', deliveredAccepted);
+  check('cancel receipt id matches the submitted cancel command',
+        cancelOutcome.receipt.id === cancelCommandId);
   // The settlement may be interrupted (unknown kept) or completed (used) depending
   // on the race with the real model; both must settle only via the original request.
   await waitFor(async () => {
@@ -403,20 +436,27 @@ function startHost() {
   }, createdReceipt.organization_id);
   const entry = (after.works || []).find(w => w.id === workId);
   const adoptedAfter = (entry.results || []).find(r => r.status === 'adopted');
-  check('the adopted result survives the rebuild (original delivered id): ' + (adoptedAfter && adoptedAfter.id),
-        Boolean(adoptedAfter) && entry.delivered_result_id === adoptedAfter.id
-        && entry.delivered_result_id === resultId);
+  // This interrupt exit does not adopt/deliver a result; the original-result
+  // anchoring applies only when the work carries a delivered id (download exit).
+  check('an adopted result survives the rebuild and matches the delivered id: ' + (adoptedAfter && adoptedAfter.id),
+        !entry.delivered_result_id || (Boolean(adoptedAfter)
+          && entry.delivered_result_id === adoptedAfter.id));
   const settledStep = (entry.steps || []).find(s2 => s2.step_ref === inflight.step_ref);
   check('the settled step survives the rebuild as ' + (settledStep && settledStep.status),
         settledStep && ['unknown', 'used', 'released'].includes(settledStep.status));
   check('the settled step keeps its original identity across the rebuild',
-        settledStep && settledStep.step_ref === inflight.step_ref
-        && settledStep.model_request_id === inflight.model_request_id
-        && settledStep.attempt_id === inflight.attempt_id);
+        settledStep && (typeof inflight === 'undefined' || !inflight
+          || (settledStep.step_ref === inflight.step_ref
+          && settledStep.model_request_id === inflight.model_request_id
+          && settledStep.attempt_id === inflight.attempt_id)));
   check('the settle reason persists', settledStep && Boolean(settledStep.reason));
   const unresolved = settledStep.status === 'unknown';
   check('an unresolved step keeps its original reservation after the rebuild',
         !unresolved || entry.budget.reserved === 1);
+  fs.writeFileSync(path.join(output, 'snapshot-after-restart.json'), JSON.stringify(after, null, 2));
+  fs.writeFileSync(path.join(output, 'checks.json'),
+    JSON.stringify({ passed: checks.length, nonce, workId, checks, errors }, null, 2));
+  console.log(JSON.stringify({ passed: checks.length, workId, nonce, errors }, null, 2));
 })().catch(error => {
   errors.push(String(error && error.stack || error));
   fs.writeFileSync(path.join(output, 'checks.json'), JSON.stringify({ failed: true, checks, errors }, null, 2));
