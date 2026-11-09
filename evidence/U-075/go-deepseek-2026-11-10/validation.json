@@ -15,7 +15,9 @@
       "ai_union/domain/model_profiles.py": "75751e07a12f1d061f47df6dd1ed892778f80b1430991b0cf8d2ecb22726672e",
       "tests/test_core_model_events.py": "345ff0ef0815fe6deec0d7ed8734e2c20dcdc7dfcc32647d52e6b2ee3afb4e3b",
       "tests/test_core_model_profiles.py": "cf44c8e9f01654317a9674813a26f1e6d3c4bfc45bf73325e8b96de57a72567f"
-    }
+    },
+    "integrated_documentation_base": "e42fd823f40bc609cac560a590994487276a4d90",
+    "integration_scope": "Only coordinator U-107 deployment evidence and generated ledger views changed after the real run; product source unchanged."
   },
   "provider": {
     "service": "OpenCode Go",
@@ -290,7 +292,14 @@
     },
     "browser_after_fix": 14,
     "browser_after_capability_declarations": 16,
-    "final_full_python_scope": "Runtime fix included. Later evidence-only capability declarations checked separately by 15 profile/Responses/release tests and final browser."
+    "final_full_python_scope": "Runtime fix included. Later evidence-only capability declarations checked separately by 15 profile/Responses/release tests and final browser.",
+    "sdk_supplement": {
+      "command": "UNION_BUN=<pinned Bun 1.4.2> python -m unittest tests.test_core_model_http -v",
+      "tests": 1,
+      "failures": 0,
+      "skipped": 0,
+      "seconds": 2.892
+    }
   },
   "private_artifact_hashes": {
     "acceptance-private.json": "bc90d8c3c95b5afe88f0670994c97909ab87f080321353ff288543b7f74064ae",
@@ -317,6 +326,7 @@
     "u075-npm-final.log": "43cdc064494a1eba48cc96b37b92a27e546307b7ffd725f7ea5b2decde9e460c",
     "u075-profile-final.log": "4f0c231a7545dd17a7c87a63d00f0cd441140df9eabcd2236282d51229cad609",
     "u075-python-full.log": "fa82fe865f994b61ab2d1b8fb3ae404b62437e8abbbb7d75b7455792cacb1bbf",
-    "u075-python-final.log": "914fc530cd4a2838f133383dc9bf446e5b463d063a29650b43ce17c2c40749ac"
+    "u075-python-final.log": "914fc530cd4a2838f133383dc9bf446e5b463d063a29650b43ce17c2c40749ac",
+    "u075-sdk-final.log": "1b10840387f29835b52440d8eb78143cba6bd3ee04c38e80ad12360787768953"
   }
 }
