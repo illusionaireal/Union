@@ -1,5 +1,11 @@
 # U-086 / #40：新候选与当前集成边界复核
 
+2026-11-09 download restart assistance: the original AU/Work/result, digest,
+delivery binding and HTTP status are now checked together. Latest author RED,
+17-probe GREEN and full validation are indexed in
+[the scoped repair](download-reopen-binding/README.md). This implementation
+awaits independent review/current CI; real acceptance and DSH ownership remain.
+
 2026-11-09 验收宿主协助：作者096815e的transport会替换产品保存的连接/grant，
 真实回环HTTP与Console重启反例已先RED，再复用产品factory修复。
 见[范围、验证与剩余出口](host-connection-integrity.md)。本会话是该修复实施者，

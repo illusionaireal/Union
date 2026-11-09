@@ -1,0 +1,164 @@
+{
+  "source_input": "82787b5",
+  "source_path": "scripts/exit22c_download.cjs",
+  "source_sha256": "d395d30d34ec7752b7f624bd3d74d6a3d9d215e2aea414fd4b6e762b4d1e83ec",
+  "block_sha256": "c63c348dc985250a91819f3be9d8210e6a53e3d1f0f998e7aa0b447a3668995d",
+  "block": "  const reopenedResponse = await page.evaluate(async auId => {\n    const response = await fetch('/api/v1/work?organization_id=' + auId);\n    return { status: response.status, body: await response.json() };\n  }, createdReceipt.organization_id);\n  check('reopened work snapshot returned HTTP 200', reopenedResponse.status === 200);\n  const after = reopenedResponse.body;\n  check('reopened work snapshot belongs to the original AU',\n        Boolean(after) && after.protocol === 'core.work.v1'\n        && after.organization_id === createdReceipt.organization_id);\n  const entry = (after.works || []).find(w => w.id === workId);\n  check('work still delivered after a console rebuild', Boolean(entry) && entry.status === 'delivered');\n  const originalResult = (entry.results || []).find(r => r.id === resultId);\n  check('the original adopted result and digest survive the rebuild',\n        Boolean(originalResult) && originalResult.status === 'adopted'\n        && originalResult.sha256 === recorded);\n  check('the rebuilt work remains delivered with the original result', entry.delivered_result_id === resultId);\n",
+  "contains_settled_step": false,
+  "tests": 17,
+  "failures": 0,
+  "errors": 0,
+  "observations": {
+    "test_another_adopted_result_cannot_replace_original": {
+      "accepted": false,
+      "checks": [
+        "reopened work snapshot returned HTTP 200",
+        "reopened work snapshot belongs to the original AU",
+        "work still delivered after a console rebuild"
+      ],
+      "reads": 1
+    },
+    "test_delivery_must_bind_the_original_result": {
+      "accepted": false,
+      "checks": [
+        "reopened work snapshot returned HTTP 200",
+        "reopened work snapshot belongs to the original AU",
+        "work still delivered after a console rebuild",
+        "the original adopted result and digest survive the rebuild"
+      ],
+      "reads": 1
+    },
+    "test_matching_body_with_http_403_is_not_success": {
+      "accepted": false,
+      "checks": [],
+      "reads": 1
+    },
+    "test_missing_au_is_not_proof": {
+      "accepted": false,
+      "checks": [
+        "reopened work snapshot returned HTTP 200"
+      ],
+      "reads": 1
+    },
+    "test_missing_delivery_binding_is_not_proof": {
+      "accepted": false,
+      "checks": [
+        "reopened work snapshot returned HTTP 200",
+        "reopened work snapshot belongs to the original AU",
+        "work still delivered after a console rebuild",
+        "the original adopted result and digest survive the rebuild"
+      ],
+      "reads": 1
+    },
+    "test_missing_digest_is_not_proof": {
+      "accepted": false,
+      "checks": [
+        "reopened work snapshot returned HTTP 200",
+        "reopened work snapshot belongs to the original AU",
+        "work still delivered after a console rebuild"
+      ],
+      "reads": 1
+    },
+    "test_missing_original_work_is_rejected": {
+      "accepted": false,
+      "checks": [
+        "reopened work snapshot returned HTTP 200",
+        "reopened work snapshot belongs to the original AU"
+      ],
+      "reads": 1
+    },
+    "test_missing_protocol_is_not_proof": {
+      "accepted": false,
+      "checks": [
+        "reopened work snapshot returned HTTP 200"
+      ],
+      "reads": 1
+    },
+    "test_original_delivered_result_survives": {
+      "accepted": true,
+      "checks": [
+        "reopened work snapshot returned HTTP 200",
+        "reopened work snapshot belongs to the original AU",
+        "work still delivered after a console rebuild",
+        "the original adopted result and digest survive the rebuild",
+        "the rebuilt work remains delivered with the original result"
+      ],
+      "reads": 1
+    },
+    "test_original_digest_must_survive": {
+      "accepted": false,
+      "checks": [
+        "reopened work snapshot returned HTTP 200",
+        "reopened work snapshot belongs to the original AU",
+        "work still delivered after a console rebuild"
+      ],
+      "reads": 1
+    },
+    "test_original_survives_beside_another_adopted_result": {
+      "accepted": true,
+      "checks": [
+        "reopened work snapshot returned HTTP 200",
+        "reopened work snapshot belongs to the original AU",
+        "work still delivered after a console rebuild",
+        "the original adopted result and digest survive the rebuild",
+        "the rebuilt work remains delivered with the original result"
+      ],
+      "reads": 1
+    },
+    "test_response_must_be_a_work_snapshot": {
+      "accepted": false,
+      "checks": [
+        "reopened work snapshot returned HTTP 200"
+      ],
+      "reads": 1
+    },
+    "test_response_must_be_the_original_au": {
+      "accepted": false,
+      "checks": [
+        "reopened work snapshot returned HTTP 200"
+      ],
+      "reads": 1
+    },
+    "test_unadopted_original_result_is_rejected": {
+      "accepted": false,
+      "checks": [
+        "reopened work snapshot returned HTTP 200",
+        "reopened work snapshot belongs to the original AU",
+        "work still delivered after a console rebuild"
+      ],
+      "reads": 1
+    },
+    "test_undelivered_work_is_rejected": {
+      "accepted": false,
+      "checks": [
+        "reopened work snapshot returned HTTP 200",
+        "reopened work snapshot belongs to the original AU"
+      ],
+      "reads": 1
+    },
+    "async_success": {
+      "accepted": true,
+      "checks": [
+        "success"
+      ],
+      "reads": 0
+    },
+    "async_runtime_error": {
+      "runtime_error": "ReferenceError",
+      "checks": [],
+      "reads": 0
+    },
+    "sync": {
+      "accepted": false,
+      "checks": [],
+      "reads": 0
+    },
+    "async": {
+      "accepted": false,
+      "checks": [],
+      "reads": 0
+    }
+  },
+  "real_model_calls": 0,
+  "scope": "exact restart block; synthetic HTTP observations only"
+}
