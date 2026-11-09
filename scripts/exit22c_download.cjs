@@ -350,23 +350,17 @@ function startHost() {
   const recordedTitle = recordedFull.title;
   const download = card().getByRole('link', { name: '下载' });
   const href = await download.getAttribute('href');
-  check('download link present on the candidate result: ' + (href || '').slice(0, 90),
-        Boolean(href) && href.includes('/api/v1/work/results'));
   const downloadFetch = await page.evaluate(async href => {
     const response = await fetch(href);
     let body = null;
     try { body = await response.json(); } catch { body = null; }
     return { status: response.status, body };
   }, href);
-  check('downloaded HTTP status is 200 (403/other failures rejected)',
-        downloadFetch.status === 200);
-  const body = downloadFetch.body || {};
-  const meta = body.result || {};
-  const downloadedContent = body.content || '';
-  check('downloaded body is the recorded result (same id): ' + (meta.id || 'none'),
-        meta.id === resultId);
-  check('downloaded body belongs to the original AU', body.organization_id === createdReceipt.organization_id);
-  check('downloaded body belongs to the original work', body.work_id === workId);
+  check('download link present, HTTP 200, and body is the recorded result id: ' + (meta.id || 'none'),
+        Boolean(href) && href.includes('/api/v1/work/results')
+        && downloadFetch.status === 200 && meta.id === resultId);
+  check('downloaded body belongs to the original AU and work',
+        body.organization_id === createdReceipt.organization_id && body.work_id === workId);
   const downloadedDigest = crypto.createHash('sha256')
     .update(Buffer.from(downloadedContent, 'utf8')).digest('hex');
   check('downloaded content sha256 matches the recorded digest: ' + downloadedDigest.slice(0, 16),
