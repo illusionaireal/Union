@@ -1,0 +1,56 @@
+{
+  "scope": "independent download assertions/evidence review only",
+  "source_integration": "902b429529f82aad6acc63c6fe4e69c4739ced17",
+  "current_integration": "d209a0e073f2770f59787a02ca7a5ceb2f523ece",
+  "product_and_standard_tests_identical": true,
+  "original_candidate": "1d9ed8e9ddcaed949d38218186ede28d216dfb8f",
+  "latest_author": {
+    "head": "b917eab749ae599c806453a497ad1b87b7641355",
+    "all_five_inputs_identical": true,
+    "tests": 11,
+    "passed": 7,
+    "counterexample_failures": 4,
+    "runtime_errors": 0,
+    "expected_exit": 1
+  },
+  "python": {
+    "command": "python -m unittest discover -v",
+    "exit": 0,
+    "tests": 792,
+    "seconds": 491.741,
+    "skipped": 9,
+    "failures": 0
+  },
+  "npm": {
+    "command": "npm run check",
+    "exit": 0,
+    "frontend_tests": 343,
+    "management_tests": 37,
+    "action_tests": 9
+  },
+  "management_render": {
+    "exit": 0,
+    "generated_diff": false
+  },
+  "toolchain": {
+    "python": "3.12.10",
+    "node": "24.19.0"
+  },
+  "log_sha256": {
+    "initial_probes": "eb436272fa670d40519aa64e35b33a90c1375dd7d909ba0b3be7095733b8bb1d",
+    "final_probes": "d29145631fac504d110e25719b086c1f70e6ef1156f7098d8d415268351bbf9b",
+    "latest_author_probes": "fe3713678054cd09f0d3b8c5e91b1e7e7b42121a62b58fe51f3a0b1e89b23d37",
+    "python": "59585734381a85d1b01e410e21ac8d71845b2fa0a99f1e014dcdb521a4f1d072",
+    "npm": "fd00b70f1b06478e9860e05e263da47aec4f51e873d80f053e020cb92bd8651f",
+    "management_render": "0e34220545e52afa374590398a63becffd0e0bb78c5a5f56f04918f84bd5b98a"
+  },
+  "pr46_adoption": {
+    "head": "e91ae4e2e1cb0b74f581f42f2cbfb0cac9b8e1ff",
+    "checks": 14,
+    "all_success": true,
+    "merge": "d209a0e073f2770f59787a02ca7a5ceb2f523ece",
+    "matching_tree": "c5f71263c5cec5dd5ead05040140253a0ed0fe50"
+  },
+  "real_model_calls_added": 0,
+  "independent_host_review": "pending separately; claimed by chatGPT-online in comment 198"
+}

@@ -1,5 +1,11 @@
 # U-086 / #40：新候选与当前集成边界复核
 
+2026-11-09 作者严格下载候选 `bdbbb9b` / `1d9ed8e` 已独立复核：旧错误正文、
+空成果、错成果三个反例已修复；新11项离线检查7通过、4失败、0运行错误，
+仍缺下载HTTP/AU/Work与重启原成果核对。129实际保存2条请求、用量1032/898，
+before仍是legacy错误；见[准确范围与可运行探针](strict-download-review.md)。
+作者保留driver修复，原证据/owner/真实出口不变，本执行者真实调用0。
+
 2026-11-09 原attempt关闭后恢复：PR44 `c6c13f2`在成果采用/交付后会隐藏原
 run_loop或显示旧准备ID；4项DOM及实际Chrome RED后修复，46相关DOM、
 U106 Chrome19与U086 Chrome18/19通过。见[补漏与完整验证](closed-attempt-recovery.md)。
