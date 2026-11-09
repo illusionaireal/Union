@@ -187,3 +187,7 @@ are independently reviewed, with final-head CI pending before rewrite adoption.
 Single preparation: [one original AU and grant per acceptance run](single-setup/README.md).
 Strict RED/GREEN and real Core/SQLite creation checks; no real inference or grant.
 Independent review and exact-head CI are still required before integration.
+
+Core registration acceptance: [page entry and original command recovery](page-registration/README.md).
+Full driver prefixes run on disposable Core/SQLite; no model request or real grant.
+Independent review and current-head CI remain adoption gates.

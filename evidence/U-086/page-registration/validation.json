@@ -1,0 +1,265 @@
+{
+  "date": "2026-11-09",
+  "scope": "controlled",
+  "base": "9d39cbf712b1f2d422cfefb4b21069106343d4ac",
+  "branch": "codex/u086-page-registration",
+  "actor": "current single codex-home duty implementation session",
+  "online_member_id": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+  "scope_comment": 269,
+  "files": {
+    "scripts/exit22b_page.cjs": {
+      "sha256": "0061f193c78b7590f2c07fe876fdef66bb89bd62b2f7feb125e80d605bdcf20d",
+      "git_blob": "a9026bcde8e09ee6496f21c152beefd46a1bd254"
+    },
+    "scripts/exit22c_download.cjs": {
+      "sha256": "fd8409aca8f7c7485a78bd7a67b0491ae0303088488d0a0098fbd74b8a9a3aac",
+      "git_blob": "7bbb77187b39523770f29ef715d411b55f0da29b"
+    },
+    "scripts/exit22-registration-evidence.cjs": {
+      "sha256": "b00fd5c5d5ed54f2263c7904d68fa2f7aff739f336425bddab0cf9f0ca870675",
+      "git_blob": "add995d4f2b3319a8d6529c89d1457d4749490a2"
+    },
+    "tests/exit22-registration.test.ts": {
+      "sha256": "00805e5fc380b5fed72001a83fe8bc071375de6a7932ac8455a3be6b7a7e8bea",
+      "git_blob": "98471905741163ed2c6ce4daa5a8dab8409b9cc0"
+    },
+    "evidence/U-086/README.md": {
+      "sha256": "f2a320899905fcde1551d3b9175edf0314bda36ee48c907437f14154cbfdd866",
+      "git_blob": "23faf0aea20dabc2cfd4cfe4d8d1ae11d3977417"
+    },
+    "management/project.json": {
+      "sha256": "87e3dfd289b4b2327983852c8e3c7dc16826108068056aeaf885abc3264c6268",
+      "git_blob": "40d6a419b3c8151f9cb5261fcf28d27118f5c94f"
+    },
+    "evidence/U-086/page-registration/contract.md": {
+      "sha256": "2c3fcffa585b1da991e19330f908f5570d3515acb5f88ecb8a4ab996c7129128",
+      "git_blob": "1ece16279616b70a56d867e86365ff1b1646a70a"
+    },
+    "evidence/U-086/page-registration/README.md": {
+      "sha256": "d71efa18d5c71e939ac009e6bc72c55c4eb159acc809d43154a2dc7f4aa1b115",
+      "git_blob": "3c67cbba5824099c8e64602d2829e80b8d1880d1"
+    },
+    "evidence/U-086/page-registration/browser.cjs": {
+      "sha256": "3ba10f00e2996ada8875ae587c6d99d493302b188bb1d59c480ca6dd411ed43f",
+      "git_blob": "090fbccb6f6777e43dd9704ca2c728f27b212c06"
+    }
+  },
+  "logs": {
+    "browser-red": {
+      "sha256": "d30da8479b5fee3bcfd2ff4c80058e04dc7ab428a1cb5397ffb0ba8a3a51ed65",
+      "classification": "initial fixture build incomplete; excluded from behavior RED"
+    },
+    "build": {
+      "sha256": "edeae876813c05df477b4bb079fc574448192199f3d4b987f69aa63dc5189ab8"
+    },
+    "browser-red-built": {
+      "sha256": "4a2879b6ba0413edb625b6a026f80d7436659b29625733aca5286e7c3de0adf7",
+      "passed": 0,
+      "failed": 6
+    },
+    "browser-green": {
+      "sha256": "0f722b3ec65b7feaf5021c62dc17ff4e00c1b9f994501f5d85d57e89cda3ae97",
+      "passed": 6,
+      "failed": 0
+    },
+    "connection-red": {
+      "sha256": "0dafe2d4a76a4c849af8518fbc7419ac782735887090be683ba69adb3a0d5773",
+      "passed": 26,
+      "failed": 2
+    },
+    "node-green": {
+      "sha256": "231207162144fd05ca6451d3c2a7bae04edbc6f776c38f3551e884e13c209e7e",
+      "passed": 185,
+      "failed": 0
+    },
+    "browser-boundaries": {
+      "sha256": "6193d09946e31c57b00b4eb2a54d23349047d65afb9d7724bced11f6f1a7e51e",
+      "passed": 14,
+      "failed": 0
+    },
+    "delay-red": {
+      "sha256": "a46ee3fa0c8713901d81235dfb116186ef7d2293eb313eb4d7d586dc43daa3eb",
+      "behavior_red": 1,
+      "fixture_loading_failure": 1,
+      "reason": "First driver GET403 before delayed commit; second driver overlapped frontend rebuild and lacked ready banner. Only first is behavior RED."
+    },
+    "browser-final": {
+      "sha256": "26889667587e00dc9fd67110fb5c46b6b642de89556346ee5f8e19ed89bb5995",
+      "passed": 16,
+      "failed": 0,
+      "model_requests": 0
+    },
+    "render": {
+      "sha256": "0e34220545e52afa374590398a63becffd0e0bb78c5a5f56f04918f84bd5b98a"
+    },
+    "npm": {
+      "sha256": "1c66361b4ea26de852ae69ef378af13537efde716e67370f017642aba34be292"
+    },
+    "npm-final": {
+      "sha256": "428357ab0c91adedac7961d009d127af9153742f58bd1ef38c77aac5b7c7913f",
+      "exit_code": 0,
+      "node": 194,
+      "frontend": 363,
+      "management": 37
+    },
+    "python": {
+      "sha256": "f07bd1dbe1d5b271b73b0fc13d250fe3486b7eff5c63b364f2925e5f2a3af707",
+      "classification": "initial SDK fixture could not start: archive lacked existing pinned vendor dependency; not a code defect"
+    },
+    "sdk": {
+      "sha256": "e5d481ba432048f30c67659cdd7067ab550d31db2417e315233954a0613b7d0f",
+      "classification": "dependency diagnosis: service node_modules alone did not provide the omitted gitlink content"
+    },
+    "sdk-configured": {
+      "sha256": "564b2bf02e291861d40b6586252ad7fb29e880f9ed6c1cf675b0c7262c6dd75c",
+      "exit_code": 0,
+      "tests": 1,
+      "real_model_calls": 0
+    },
+    "python-final": {
+      "sha256": "667612452e7a58f0e61287c244d70e6f9827c4cff03087f8945b93d78df6beb0",
+      "exit_code": 0,
+      "tests": 808,
+      "seconds": 516.365,
+      "skipped": 10
+    }
+  },
+  "browser": {
+    "scope": "controlled",
+    "results": [
+      {
+        "driver": "exit22b_page.cjs",
+        "mode": "normal",
+        "passed": true,
+        "work_posts": 2,
+        "model_requests": 0
+      },
+      {
+        "driver": "exit22b_page.cjs",
+        "mode": "missing",
+        "passed": true,
+        "work_posts": 0,
+        "model_requests": 0
+      },
+      {
+        "driver": "exit22b_page.cjs",
+        "mode": "lost",
+        "passed": true,
+        "work_posts": 2,
+        "model_requests": 0
+      },
+      {
+        "driver": "exit22b_page.cjs",
+        "mode": "delayed",
+        "passed": true,
+        "work_posts": 2,
+        "model_requests": 0
+      },
+      {
+        "driver": "exit22b_page.cjs",
+        "mode": "receipt",
+        "passed": true,
+        "work_posts": 1,
+        "model_requests": 0
+      },
+      {
+        "driver": "exit22b_page.cjs",
+        "mode": "denied",
+        "passed": true,
+        "work_posts": 1,
+        "model_requests": 0
+      },
+      {
+        "driver": "exit22b_page.cjs",
+        "mode": "principal",
+        "passed": true,
+        "work_posts": 1,
+        "model_requests": 0
+      },
+      {
+        "driver": "exit22b_page.cjs",
+        "mode": "service",
+        "passed": true,
+        "work_posts": 1,
+        "model_requests": 0
+      },
+      {
+        "driver": "exit22c_download.cjs",
+        "mode": "normal",
+        "passed": true,
+        "work_posts": 2,
+        "model_requests": 0
+      },
+      {
+        "driver": "exit22c_download.cjs",
+        "mode": "missing",
+        "passed": true,
+        "work_posts": 0,
+        "model_requests": 0
+      },
+      {
+        "driver": "exit22c_download.cjs",
+        "mode": "lost",
+        "passed": true,
+        "work_posts": 2,
+        "model_requests": 0
+      },
+      {
+        "driver": "exit22c_download.cjs",
+        "mode": "delayed",
+        "passed": true,
+        "work_posts": 2,
+        "model_requests": 0
+      },
+      {
+        "driver": "exit22c_download.cjs",
+        "mode": "receipt",
+        "passed": true,
+        "work_posts": 1,
+        "model_requests": 0
+      },
+      {
+        "driver": "exit22c_download.cjs",
+        "mode": "denied",
+        "passed": true,
+        "work_posts": 1,
+        "model_requests": 0
+      },
+      {
+        "driver": "exit22c_download.cjs",
+        "mode": "principal",
+        "passed": true,
+        "work_posts": 1,
+        "model_requests": 0
+      },
+      {
+        "driver": "exit22c_download.cjs",
+        "mode": "service",
+        "passed": true,
+        "work_posts": 1,
+        "model_requests": 0
+      }
+    ]
+  },
+  "toolchain": {
+    "node": "24.19.0",
+    "python": "3.12.10",
+    "bun": "1.4.2"
+  },
+  "preservation": {
+    "preexisting_files": 20,
+    "ordinary_index": "unchanged",
+    "product_source": "unchanged",
+    "existing_author_history": "preserved",
+    "max_calls": 3,
+    "additional_real_inference": 0,
+    "new_real_grants": 0
+  },
+  "limitations": [
+    "candidate pending independent engineering review and current-head CI",
+    "API cancel is not page cancellation acceptance",
+    "historical139/full real evidence/remote dispatch counts remain unverified",
+    "no real resource authorization expanded",
+    "no NAS business switch or identity migration"
+  ]
+}

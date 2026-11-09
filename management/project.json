@@ -2046,6 +2046,13 @@
                     "from": "doing",
                     "to": "doing",
                     "note": "u086-single-setup-9195e25：#40评论265范围内移除两个验收driver重复create_v1/prepare，避免未追踪第二AU和第二grant，保留首次原身份与采用连接。原源完整准备片段8测试4PASS/4FAIL→8GREEN，两个实际Chrome/Core HTTP/SQLite创建反例RED→GREEN，刷新只保留原AU且零推理。契约、源码与全量证据evidence/U-086/single-setup/README.md及validation.json；当前准确head CI与非实施工程角色复核后才采用。DSH owner/progress/WIP、父#22及#39/#40真实出口保持；不清理历史资源、不新增真实grant/推理/迁移或监督锁变更。本条仅交付历史，不作为在线状态。"
+                },
+                {
+                    "at": "2026-11-09T11:45:54.068Z",
+                    "actor": "codex-home/single-duty-implementation",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "u086-page-registration-9d39cbf7：#40评论269范围内把两个验收driver的API目标登记/预开attempt改为实际Core表单、刷新查询原登记及原Work页面准备。动态Work/责任/预算/原连接/原回执绑定；完整原片段实际Chrome/HTTP/SQLite六项行为RED→GREEN，额外身份/回执反例及全量见evidence/U-086/page-registration/README.md和validation.json。PR61原单次准备候选保留，产品源码未改；准确head CI与非实施工程角色复核后采用。DSH owner/progress/WIP、#22/#39/#40真实出口不变；原取消API链路、历史139及真实资源仍待核验。零真实推理/grant/部署/迁移；仅交付历史，不作为在线状态。"
                 }
             ],
             "claim": {

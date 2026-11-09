@@ -18,7 +18,7 @@ function loadJson(name) {
 }
 const check = (name, value = true) => { assert.ok(value, name); checks.push(name); };
 let host, browser, page;
-const workId = 'work-exit';
+let workId;
 const nonce = 'UNION-EXIT22B-' + crypto.randomUUID().slice(0, 8);
 const goal = '第一步必须调用 read_document 读取 brief.md 的完整正文；第二步用最终回答写三行中文概览，不要再调用任何工具。';
 const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -255,39 +255,22 @@ function startHost() {
       }
       return value.receipt;
     };
-    const work = async (kind, data) => {
-      const response = await fetch('/api/v1/work/commands', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: crypto.randomUUID(), organization_id: config.auId,
-          base_version: await version(), kind, data }),
-      });
-      const value = await response.json();
-      if (!value.receipt || value.receipt.status !== 'succeeded') {
-        throw new Error(kind + ' failed: ' + JSON.stringify(value).slice(0, 300));
-      }
-      return value.receipt;
-    };
-    const read = await (await fetch('/api/v1/aus/' + config.auId)).json();
-    const principal = read.access.principal_id;
     await gov('amend_charter', { charter: { text: '测试章程：有限的本地组织协作与有界模型执行；无对外发布授权。',
       allowed_operations: ['create_work', 'handoff', 'pause_work', 'resume_work', 'cancel_work', 'update_work', 'wait'],
       allowed_tools: ['read_document', 'list_documents', 'produce_artifact'],
       reserved_matters: ['goal', 'resources', 'charter', 'funding', 'dissolution'],
       board_can_amend: true }, reason: '页面级 22-B 验收需要只读资料工具' });
-    await gov('appoint', { member_id: 'member-page', principal_id: principal,
-      name: '页面验收成员', binding_id: 'binding-page', duty: '完成页面级 22-B 验收' });
-    await work('start_work', { work_id: 'work-exit', title: '22B 页面验收',
-      goal: config.goal, member_name: '页面验收成员', member_id: 'member-page',
-      definition_id: 'def-page', binding_id: 'binding-page', mandate_id: 'ma-page',
-      connection_id: 'connection-a', expected_revision: 1,
-      materials_root: 'project-docs', max_calls: 3,
-      tools: ['read_document', 'list_documents'], reason: '页面级 22-B 验收' });
-    await work('start_attempt', { work_id: 'work-exit' });
   }, { auId: createdReceipt.organization_id, goal });
   await page.goto(running.origin + '/tasks');
   await page.getByText('已连接本机服务', { exact: true }).waitFor();
-  check('work registered and attempt started through the product API');
-  const card = () => page.locator('ul.work-panel li').first();
+  const registration = await require('./exit22-registration-evidence.cjs').registerAndPrepare(
+    page, createdReceipt.organization_id, { title: '22B 页面验收', goal,
+      member_name: '页面验收成员', materials_root: 'project-docs', max_calls: 3,
+      tools: ['read_document', 'list_documents'], connection_id: 'connection-a', expected_revision: 1 });
+  workId = registration.work_id;
+  fs.writeFileSync(path.join(output, 'page-registration-commands.json'), JSON.stringify(registration, null, 2));
+  check('original Work registered, recovered and prepared through the Core page');
+  const card = () => page.locator('[data-work=' + JSON.stringify(workId) + ']');
   await card().getByRole('button', { name: /运行 AI 工作|自动执行/ }).click();
   // Pin the in-flight automatic request, then require its own output before cancel.
   let inflight = null;
