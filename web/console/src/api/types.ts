@@ -356,7 +356,25 @@ export interface CoreWorkStep {
   status: 'reserved' | 'used' | 'released' | 'unknown';
   command_id?: string | null;
   model_request_id?: string;
+  can_observe?: boolean;
+  connection?: WorkEventConnection;
   at: string;
+}
+
+export interface WorkEventConnection {
+  id: string; revision: number; profile: string; model: string;
+  grant_ref: string; grant_revision: number; max_output_tokens: number; task_ms?: number | null;
+}
+
+export interface CoreWorkEvents {
+  protocol: 'core.work-events.v1'; organization_id: string; work_id: string;
+  step_ref: string; attempt_id: string; command_id: string; model_request_id: string;
+  connection: WorkEventConnection; version: number;
+  access: { principal_id: string; service_instance: string };
+  source: 'persisted_modeld_events'; state: string; cursor: number; last_seq: number;
+  events: Array<{seq: number} & ({type: 'text_delta'; text: string} |
+    {type: 'tool_call_complete'; name: 'read_document'})>;
+  has_more: boolean; events_complete: boolean; truncated: boolean;
 }
 
 export interface CoreWorkToolCall {

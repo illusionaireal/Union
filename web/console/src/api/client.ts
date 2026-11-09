@@ -4,6 +4,7 @@ import type {
   CommandKind,
   CoreAURead,
   CoreWork,
+  CoreWorkEvents,
   CoreModels,
   ModelConnection,
   Receipt,
@@ -59,6 +60,10 @@ export const api = {
     request<CoreAURead>('/api/v1/aus/' + encodeURIComponent(id), { signal }),
   coreWork: (id: string, signal?: AbortSignal) =>
     request<CoreWork>('/api/v1/work?organization_id=' + encodeURIComponent(id), { signal }),
+  coreWorkEvents: (organizationId: string, workId: string, stepRef: string, after: number, signal?: AbortSignal) =>
+    request<CoreWorkEvents>('/api/v1/work/events?' + new URLSearchParams({
+      organization_id: organizationId, work_id: workId, step_ref: stepRef, after: String(after),
+    }).toString(), { signal }),
   coreModels: (id: string, signal?: AbortSignal) =>
     request<CoreModels>('/api/v1/models?organization_id=' + encodeURIComponent(id), { signal }),
   coreWorkCommand: (body: Record<string, unknown>) =>
