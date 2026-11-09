@@ -1962,6 +1962,13 @@
                     "from": "doing",
                     "to": "doing",
                     "note": "U086/#40原取消恢复协助候选：作者a8c7280与页面915cc15合为66c97a8，修复原POST重放丢送达和读取未核验观察。GovernanceStore同一读取快照校验摘要/主体/命令/结构，观察不可覆盖，无观察保持unknown且不重发。严格HTTP/SQLite RED→9 GREEN，原6+2送达/恢复及S03三探针通过，npm335前端/37管理/9动作，两模式实际Chrome15/16（各fake1、real0）。证据evidence/U-086/delivery-recovery-fix.md及验证JSON保存完整检查和源码摘要；PR43仍是候选，需另一工程角色复核本值守页面/服务端与准确head CI。原owner/WIP、#40/父22真实出口及历史保持；本条仅交付历史，不作为在线调度或采用事实。"
+                },
+                {
+                    "at": "2026-11-08T23:52:13.462616Z",
+                    "actor": "codex-home/duty-page-delivery-progress",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "U086/#40页面恢复协助：原GET先读取消意图后可展示后续持久送达，刷新后重新显示原回执；5 DOM/实际Chrome RED→42相关DOM和两模式Chrome18/19通过，每模式fake1/cancel1、真实0。页面5a3617c与作者53ed829合为d93b3cf；作者准确源码7用例失败/1对照通过，保留125历史，服务端三个文件及原测试与19afff3一致。证据evidence/U-086/page-delivery-progress.md及验证JSON。PR43仍候选，须准确head CI和另一工程角色复核；原owner/WIP及父卡真实出口保持。本条仅交付历史，不用作在线调度或采用事实。"
                 }
             ],
             "claim": {
