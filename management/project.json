@@ -2011,6 +2011,13 @@
                     "from": "doing",
                     "to": "doing",
                     "note": "U086原Core快照恢复协助候选：作者7493451包含集成4aa020b；评论249保持DSH/#40 owner与WIP。两个driver固定原AU/Work读取Core前后快照，比较原请求集合/身份/预算/用量，unknown保留null，原请求身份数不冒充真实派发次数。严格RED40项3通过37失败，相关100 Node、11下载探针、实际Chrome/HTTP/SQLite两次fake原loop/重启通过，真实调用0；验证evidence/U-086/restart-snapshot/README.md及validation.json。需非实施工程复核与准确head CI；不关闭#22/#39/#40真实出口，不改历史139、不迁移或切换服务。"
+                },
+                {
+                    "at": "2026-11-09T08:45:52.605532Z",
+                    "actor": "codex-home/single-duty-implementation",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "U086原取消回执恢复协助候选：作者/PR57准确9d7fe98、集成4aa020b，fresh scope评论251保留DSH/#40责任与WIP。原driver的取消GET未核对HTTP/主体/原Work步骤且重启后未查询，原源34项1通过33失败；仅增加GET取证，34项及相关134 Node通过，实际Chrome/HTTP/SQLite一次fake推理+一次fake取消且观察零POST。证据evidence/U-086/cancel-receipt-recovery/README.md及validation.json；当前head CI和另一工程角色复核后才采用。本条仅交付历史，保留139与真实父出口，不迁移/切换/新增真实调用。"
                 }
             ],
             "claim": {

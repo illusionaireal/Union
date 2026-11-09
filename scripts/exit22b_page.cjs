@@ -432,13 +432,14 @@ function startHost() {
   check('cancel receipt id matches the submitted cancel command',
         cancelOutcome.receipt.id === cancelCommandId);
   // Same-run original GET must return the same durable delivery fact.
-  const cancelGet = await page.evaluate(async config => (await (await fetch(
-    '/api/v1/governance/receipts?organization_id=' + config.auId + '&id=' + config.cancelId)).json()),
-    { auId: createdReceipt.organization_id, cancelId: cancelCommandId });
-  const deliveredAccepted = (cancelGet.receipt || {}).cancel_accepted === cancelOutcome.receipt.cancel_accepted
-    && (cancelGet.receipt || {}).model_request_id === inflight.model_request_id
-    && (cancelGet.receipt || {}).id === cancelCommandId;
-  check('original GET returns the delivered cancel receipt (identity match)', deliveredAccepted);
+  const originalCancelReference = { organization_id: createdReceipt.organization_id, work_id: workId,
+    cancel_id: cancelCommandId, principal_id: outputObservation.principal_id,
+    ...Object.fromEntries(['step_ref', 'attempt_id', 'command_id', 'model_request_id', 'connection']
+      .map(key => [key, inflight[key]])) };
+  const cancelEvidenceBefore = await require('./exit22-cancel-evidence.cjs').readCancelEvidence(
+    page, originalCancelReference, cancelOutcome.receipt);
+  fs.writeFileSync(path.join(output, 'cancel-receipt-before-restart.json'), JSON.stringify(cancelEvidenceBefore, null, 2));
+  check('original GET returns the complete original delivered cancel receipt');
   // on the race with the real model; both must settle only via the original request.
   await waitFor(async () => {
     const read = await coreWork();
@@ -486,6 +487,10 @@ function startHost() {
         !unresolved || entry.budget.reserved === 1);
   const restartComparison = require('./exit22-restart-evidence.cjs').compareSnapshots(
     before, after, createdReceipt.organization_id, workId);
+  const cancelEvidenceAfter = await require('./exit22-cancel-evidence.cjs').readCancelEvidence(
+    page, originalCancelReference, cancelEvidenceBefore.receipt);
+  fs.writeFileSync(path.join(output, 'cancel-receipt-after-restart.json'), JSON.stringify(cancelEvidenceAfter, null, 2));
+  check('original cancel receipt survives restart under the original principal and Work');
   fs.writeFileSync(path.join(output, 'restart-request-comparison.json'), JSON.stringify(restartComparison, null, 2));
   fs.writeFileSync(path.join(output, 'snapshot-after-restart.json'), JSON.stringify(after, null, 2));
   fs.writeFileSync(path.join(output, 'checks.json'),

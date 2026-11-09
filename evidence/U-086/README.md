@@ -1,5 +1,10 @@
 # U-086 / #40：新候选与当前集成边界复核
 
+2026-11-09 原取消GET重开协助候选：原源34项1通过33失败，修复后34全通过，
+相关134 Node和实际Chrome/HTTP/SQLite原回执恢复通过；仅GET取证，fake1/cancel1/
+真实0。见[原取消回执恢复](cancel-receipt-recovery/README.md)。当前head CI与另一
+工程角色复核仍是采用条件，不据本断言修复关闭DSH负责的#40或真实父出口。
+
 2026-11-09 原Core快照恢复协助：两个验收driver改用固定原AU/Work的Core前后
 快照，核对完整原请求/用量/预约集合；40项原源反例3通过37失败，扩展相关100项
 与实际Chrome/HTTP/SQLite通过，真实调用0。见[合同、失败与验证](restart-snapshot/README.md)。

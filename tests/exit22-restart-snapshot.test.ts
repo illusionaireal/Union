@@ -38,7 +38,12 @@ for (const driver of ['exit22b_page.cjs', 'exit22c_download.cjs']) {
     let sessionReads = 0;
     const paths: string[] = [], files = new Map<string, any>();
     const context: any = {
-      require, assert, URLSearchParams,
+      // Cancel receipt recovery has its own adversarial driver/HTTP/browser suite.
+      // Keep this fixture focused on request/usage/budget snapshot preservation.
+      require: (name: string) => name === './exit22-cancel-evidence.cjs'
+        ? { readCancelEvidence: async () => ({ receipt: { id: 'cancel-original' } }) } : require(name),
+      originalCancelReference: {}, cancelEvidenceBefore: { receipt: { id: 'cancel-original' } },
+      assert, URLSearchParams,
       createdReceipt: { organization_id: 'au-original' }, workId: 'work-original',
       resultId: 'result-original', recorded: 'digest-original', inflight: structuredClone(original.works[0].steps[1]),
       output: '/synthetic', path: { join: (...parts: string[]) => parts.join('/') },
