@@ -2067,6 +2067,13 @@
                     "from": "doing",
                     "to": "doing",
                     "note": "u086-cancel-response-body-b446caf2：#40评论274限定验收helper修复。原取消HTTP200头后正文中断，Playwright finished仅等待成功事件导致原GET恢复挂起；新增真实Chrome/Core HTTP/SQLite有界RED后改为原请求finished/failed事件并保留已知403与完整错回执拒绝。四新场景及原八浏览器、npm225 Node/363前端/37管理通过；完整Python与环境失败分类见evidence/U-086/cancel-response-body/README.md和validation.json。产品及共享事务未改；准确head CI/另一工程角色复核后采用。DSH owner/progress/WIP与真实#22/#39/#40保持；真实推理/grant/迁移0。只追加交付历史，不作为在线任务状态。"
+                },
+                {
+                    "at": "2026-11-09T13:31:58.781Z",
+                    "actor": "codex-home/single-duty-implementation",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "u086-registration-response-body-bef1e54：#40评论276限定登记验收helper修复。原start_work落盘后200头/正文中断一直等待，完整错误POST可被后续GET掩盖；冻结合同后两个driver完整登记片段实际Chrome/CoreHTTP/SQLite 2正常PASS/8反例RED→10GREEN，原16浏览器回归通过。原请求finished/failed后只经页面GET恢复，完整回执/当前身份核验，已知403与完整错误拒绝且不准备。npm225 Node/363前端/37管理、显式锁定Bun SDK检查通过；Python全量与日志/源码hash见evidence/U-086/registration-response-body/。基于PR64保留取消修复，两增量分别需非实施角色复核/准确head CI后采用。DSH owner/progress/WIP和真实#22/#39/#40保持；注册探针模型0、真实推理/grant/迁移0；仅追加交付历史，不作在线状态。"
                 }
             ],
             "claim": {
