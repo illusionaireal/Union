@@ -1,5 +1,11 @@
 # U-086 / #40：新候选与当前集成边界复核
 
+2026-11-09 宿主最小集成候选：PR45准确`cfe0631`已获另一工程角色
+chatGPT-online的限定复核5821070358；本轮从实际`d209a0e`引入完全相同的
+宿主、测试与原证据，未导入作者driver或127–130真实记录。9项HTTP/重启
+回归通过；完整验证与当前CI分别记录，见[集成范围](host-integration.md)。
+原owner/真实出口保持，新增真实调用0。
+
 2026-11-09 作者严格下载候选 `bdbbb9b` / `1d9ed8e` 已独立复核：旧错误正文、
 空成果、错成果三个反例已修复；新11项离线检查7通过、4失败、0运行错误，
 仍缺下载HTTP/AU/Work与重启原成果核对。129实际保存2条请求、用量1032/898，
@@ -124,3 +130,11 @@ Work/attempt/command/model_request、当前授权、事件cursor、取消受理/
 相邻115证据已可只读定位，详见[U-085源码复核](../U-085/2026-11-09-source-review.md)。
 本轮模型真实调用0、生产切换0、迁移0。#61仍等既有明确迁移授权；#37仍等
 获准共享的源码，原owner和blocked WIP保持。
+
+PR48/PR49 are combined in a separate, not-yet-adopted candidate; both histories
+and the independent fixture review gate are preserved. See
+[the exact integration inputs](host-fixture-integration.md).
+
+PR53 current-integration refresh: [conflict resolution and combined validation](host-fixture-current-integration.md).
+This candidate preserves both histories and current U108; host and fixture
+are independently reviewed, with final-head CI pending before rewrite adoption.

@@ -1,0 +1,61 @@
+{
+  "review_commit": "a401d2ba3469b48b3125b749c57c21b756536bbf",
+  "author_commit": "970144ae2bde4a7aa7011bb47930a853633b6f4f",
+  "harness_controls": {
+    "strict-download:sync_rejection": {
+      "accepted": false,
+      "checks": 0,
+      "fetches": 0
+    },
+    "strict-download:awaited_rejection": {
+      "accepted": false,
+      "checks": 0,
+      "fetches": 0
+    },
+    "strict-download:awaited_success": {
+      "accepted": true,
+      "checks": 1,
+      "fetches": 0
+    },
+    "strict-download:runtime_error_is_separate": {
+      "runtime_error": "ReferenceError",
+      "exit": 2
+    },
+    "final-interrupt:sync_rejection": {
+      "accepted": false,
+      "checks": 0
+    },
+    "final-interrupt:awaited_rejection": {
+      "accepted": false,
+      "checks": 0
+    },
+    "final-interrupt:awaited_success": {
+      "accepted": true,
+      "checks": 1
+    },
+    "final-interrupt:runtime_error_is_separate": {
+      "runtime_error": "ReferenceError",
+      "exit": 2
+    }
+  },
+  "author_reopen_observations": {
+    "original-result": {
+      "accepted": true,
+      "checks": 2,
+      "fetches": 0
+    },
+    "other-result": {
+      "accepted": true,
+      "checks": 2,
+      "fetches": 0
+    }
+  },
+  "author_rejects_another_result": false,
+  "source_sha256": {
+    "a401d2ba3469b48b3125b749c57c21b756536bbf:evidence/U-086/strict-download-review-probes.py": "684c459fe975fdeb9b5e121ff21d441978c30a9240095595766d2b3719b4ab56",
+    "a401d2ba3469b48b3125b749c57c21b756536bbf:evidence/U-086/final-interrupt-review-probes.py": "71ebc8a0e5217ca7da84cda31d2aaba281d95ab696452d9b31bdc9dc5df4dab9",
+    "970144a:scripts/exit22c_download.cjs": "fca3bd619a4a8fe4e62802c327325822a4d8ffde72a11c92b8e17f9a166f34dd"
+  },
+  "real_model_calls": 0,
+  "scope": "VM control validation and exact extracted assertions; no driver main or browser"
+}
