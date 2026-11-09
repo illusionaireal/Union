@@ -1,0 +1,147 @@
+{
+  "candidate": "1d9ed8e9ddcaed949d38218186ede28d216dfb8f",
+  "tests": 11,
+  "failures": 4,
+  "errors": 0,
+  "probes": {
+    "reopen_other_result": {
+      "accepted": true,
+      "checks": 2,
+      "fetches": 0
+    },
+    "changed_content": {
+      "accepted": false,
+      "checks": 2,
+      "fetches": 1
+    },
+    "changed_title": {
+      "accepted": false,
+      "checks": 3,
+      "fetches": 1
+    },
+    "control_reopen_original": {
+      "accepted": true,
+      "checks": 2,
+      "fetches": 0
+    },
+    "control_original": {
+      "accepted": true,
+      "checks": 4,
+      "fetches": 1
+    },
+    "wrong_au": {
+      "accepted": true,
+      "checks": 4,
+      "fetches": 1
+    },
+    "wrong_work": {
+      "accepted": true,
+      "checks": 4,
+      "fetches": 1
+    },
+    "fixed_error_body": {
+      "accepted": false,
+      "checks": 1,
+      "fetches": 1
+    },
+    "fixed_null_result": {
+      "accepted": false,
+      "checks": 1,
+      "fetches": 1
+    },
+    "fixed_other_result": {
+      "accepted": false,
+      "checks": 1,
+      "fetches": 1
+    },
+    "http_403_matching_body": {
+      "accepted": true,
+      "checks": 4,
+      "fetches": 1
+    }
+  },
+  "saved_evidence": {
+    "claimed_checks": 14,
+    "check_names": 14,
+    "before_protocol": null,
+    "before_error": "unsupported_capability",
+    "after_protocol": "core.work.v1",
+    "work_status": "delivered",
+    "recorded_model_requests": 2,
+    "steps": [
+      {
+        "seq": 1,
+        "status": "used",
+        "model_request_id": "work-6a498ff0fca5df3e33586abd9007b254e8b9b6799b8c70be4981e90bbbd66d65",
+        "usage": {
+          "input_tokens": 438,
+          "output_tokens": 46
+        }
+      },
+      {
+        "seq": 2,
+        "status": "used",
+        "model_request_id": "work-3b6b706e9d80a8aa8c4e364b9a7bf0eb6aaf5661d5c73dd0bf72c1e6ed964207",
+        "usage": {
+          "input_tokens": 594,
+          "output_tokens": 852
+        }
+      }
+    ],
+    "budget": {
+      "max_calls": 3,
+      "reserved": 0,
+      "used": 2
+    },
+    "known_usage": {
+      "input_tokens": 1032,
+      "output_tokens": 898
+    },
+    "cost_status": "unknown",
+    "delivered_result_id": "result-daf418fa5050",
+    "tool_calls": [
+      {
+        "seq": 1,
+        "tool": "read_document",
+        "step_ref": "work-exit#1",
+        "sha256": "2d51dedc8bf7591946b3db0bebbc78f3e1471a3ed96a71e5589362777de3fa69",
+        "bytes": 70
+      }
+    ],
+    "results": [
+      {
+        "id": "result-daf418fa5050",
+        "status": "adopted",
+        "sha256": "8e2a9062b69ef980ace5db8891aad074eaf4b5646ded73bbea5d6d490ff1ae9a",
+        "bytes": 2484,
+        "sources": [
+          "work-exit#1"
+        ]
+      }
+    ],
+    "scope": "saved Core records; no independent remote dispatch or billing verification"
+  },
+  "sources": {
+    "scripts/exit22c_download.cjs": {
+      "sha256": "389a3e9a93cd9384a7967aaf3d38bb95dcbbfc9389c435629a154e56191d09ba",
+      "bytes": 23679
+    },
+    "evidence/129-u086-strict-download-exit/snapshot-before-restart.json": {
+      "sha256": "12c39af0ee99573ddf48f59a3528bd8047705705aea2c334c7a2865ce2c4392a",
+      "bytes": 117
+    },
+    "evidence/129-u086-strict-download-exit/snapshot-after-restart.json": {
+      "sha256": "7a0d1633d02bd39244dd7e6be4e8320143b045c5ac1002835520645e7b10c78b",
+      "bytes": 7357
+    },
+    "evidence/129-u086-strict-download-exit/checks.json": {
+      "sha256": "95ca92af6ecd1bfd5682fa55f9a3ae9a25e99b5c7f79bf50312254f0b1905e39",
+      "bytes": 1207
+    },
+    "evidence/129-u086-strict-download-exit/README.md": {
+      "sha256": "c21249dbfff9557dc87fb9bf4e485ddb774f2a1b5d3e5f576c64ec2036100e7f",
+      "bytes": 1355
+    }
+  },
+  "real_model_calls_added": 0
+}
