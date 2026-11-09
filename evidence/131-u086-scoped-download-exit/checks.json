@@ -1,0 +1,27 @@
+{
+  "passed": 17,
+  "nonce": "UNION-EXIT22B-714c584f",
+  "workId": "work-exit",
+  "checks": [
+    "private ticket page loads",
+    "can_start probe: {\"can_start\":true,\"conns\":[{\"id\":\"connection-a\",\"is_default\":true,\"enabled\":true}],\"protocol\":\"core.models.v1\"}",
+    "tasks page reachable",
+    "work registered and attempt started through the product API",
+    "candidate result produced by the real model",
+    "result content digest matches recorded sha256: 099e6adf3f0c061f1e478df37a2e450f800ae8564dd5682297549d739662978e",
+    "result cites the synthetic nonce: yes",
+    "download link present on the candidate result: /api/v1/work/results?organization_id=org-fc71502fe56d44209fc2b87b9f2a0401&id=result-f13da7",
+    "downloaded HTTP status is 200 (403/other failures rejected)",
+    "downloaded body is the recorded result (same id): result-f13da7fb637f",
+    "downloaded body belongs to the original AU",
+    "downloaded body belongs to the original work",
+    "downloaded content sha256 matches the recorded digest: 099e6adf3f0c061f",
+    "downloaded title is the recorded title",
+    "result adopted and delivered",
+    "work still delivered after a console rebuild",
+    "adopted result survives the rebuild"
+  ],
+  "errors": [
+    "nav ok, models ok: [{\"enabled\":true,\"grant_ref\":\"grant-84032b38a3e4\",\"grant_revision\":1,\"id\":\"conne"
+  ]
+}
