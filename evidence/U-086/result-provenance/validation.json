@@ -1,0 +1,109 @@
+{
+  "scope": "controlled",
+  "parent": "6769130c0355b6e5575db28643561dff53f39ad4",
+  "integration": "4aa020bf6e528d1d9bc6ab28c5aa8b63cc53fe5c",
+  "source_sha256": {
+    "scripts/exit22-restart-evidence.cjs": "d4e82760af1d7778c96b85fbf033e86c9c36009b87391ac30f6d11963f281215",
+    "tests/exit22-restart-snapshot.test.ts": "46971ec3210ba0e69187f078e1eed5b4c5ae6f4061e4b26cfb0f662715d947dd",
+    "tests/exit22-cancel-receipt.test.ts": "a3f0fe34df460c050720ac0dc0dd1246039dd430b55eca94d7f9190c4324631a",
+    "tests/exit22-observed-settlement.test.ts": "49b4bd7108b30bedcc7f5687ea6aa768e36a049b25f0d5c52d767b12ed46c327",
+    "tests/exit22-output-cancel-chain.test.ts": "73d2d42cbe22a96b96701e496f36ff9de1149d5773ee24e4653fdc87e73d445e",
+    ".github/workflows/ci.yml": "ab8a11e5155132c01912d3fa43f3327d3887ad9b4b13c3aa4df1429728705629",
+    "evidence/U-086/result-provenance/contract.md": "4fa4226458438c0e37104ad39e26fbd17cfdcec21e405ce228c449c9bad5a41d",
+    "evidence/U-086/result-provenance/browser.cjs": "853cab4e7596727a8c2eb5caabbe561b5390089cc1fa878051f9771ca90de4d1",
+    "evidence/U-086/result-provenance/http-host.py": "ab2185bf3ee327be2ed6a1e5d0e6479027a44073ad0cb85fd5a58f001a8c871d"
+  },
+  "node_related": {
+    "passed": 271,
+    "failed": 0
+  },
+  "browser": {
+    "passed": 10,
+    "negative_cases": 9,
+    "fake_calls_per_run": 2,
+    "real_model_calls": 0,
+    "observation_core_writes": 0
+  },
+  "logs": {
+    "red": {
+      "sha256": "5e99c9eb29f5ed2b81d8b28c0dfe6d06ac5ff524bc2f5c2c18b41ad8b6e35186"
+    },
+    "red-corrected": {
+      "sha256": "4a800e50221cf93eef4d3e3e55065b5d5655c6a588c6a87488e541962297beed"
+    },
+    "green-first": {
+      "sha256": "7618f11a66853b89818738936a7f6dd55ed67205b4042273e06d09c1c23644eb"
+    },
+    "green": {
+      "sha256": "e6e07931423f10725deaa449e8eddbeff0e5cb8bb08c86a1a9edc7aefe03d913"
+    },
+    "browser-red": {
+      "sha256": "c774480d80eeb7b7d8df9095279d6516931e8113205b533e2addd82b9b0dc6a1"
+    },
+    "browser-green": {
+      "sha256": "c843b5b615686dac05aba11d8eaa81798cc305ece6997308ccb67218fcdf6a73"
+    },
+    "npm": {
+      "sha256": "910f36e448acb4516c6dc95712d9572232b64e227dab537f72b295b9546ae2e5"
+    },
+    "existing-browser": {
+      "sha256": "560b36fd7bf6889aed7ff86ca33ceffbe62f08a5592d51e41e64657ff029845c"
+    },
+    "python": {
+      "sha256": "f67b9afbe1bba36751217fa099b3f0aeb6c5294cc5f6d376568be64288ab1654"
+    },
+    "python-corrected": {
+      "sha256": "24ed71d419d5e2c50c727943569230c0c15cf45030686b59e64c45abd8dc2de2"
+    },
+    "sdk-diagnostic": {
+      "sha256": "70b7e3fbe9d174c1cfc6205a02494aae9bdc308f6598534692a91206554cc697"
+    },
+    "sdk-green": {
+      "sha256": "4ae370c1297ba5709f52e72df48f586ccc2ca2f982ca97ecec86c485753b9835"
+    }
+  },
+  "independent_review": "pending",
+  "exact_head_ci": "pending",
+  "full_python": {
+    "tests": 808,
+    "seconds": 514.233,
+    "skipped": 10,
+    "failures": 0,
+    "errors": 0,
+    "explicit_sdk_bun": "1.4.2"
+  },
+  "full_npm": {
+    "passed": true,
+    "node_tests": 280,
+    "frontend_tests": 363,
+    "management_tests": 37,
+    "typecheck": true,
+    "build": true
+  },
+  "fake_calls_total_this_candidate": 7,
+  "fake_cancels_existing_regression": 3,
+  "existing_cancel_browser": {
+    "passed": 3,
+    "real_model_calls": 0
+  },
+  "base_blob_count_verified": 2225,
+  "dependency_verification": {
+    "upstream": "805a42ffaa56b29a88baef87c7567f1ab9a40a8f",
+    "unmodified_upstream_blobs_verified": 8831,
+    "patched_export_file_sha256": "4bc80d11c3a2b2b7f1febf264f81f3d2c2bfb38bf761c7d85e7ab8c63ade5565",
+    "lock_files_verified": true,
+    "omitted_nonruntime_upstream_files": 444,
+    "runtime_packages_missing": 0,
+    "scope": "Existing private export omits upstream tooling/docs; all present locked blobs matched, runtime packages complete. Root dirty vendor not modified or reused.",
+    "borrowed_frozen_dependency_installation": true,
+    "writes_to_original_vendor": 0,
+    "verification_history": "Initial exact diff check of the original dirty vendor rejected reuse. Independent Git-object comparison of donor found no changed files, with 444 omitted nonruntime files; these are recorded separately."
+  },
+  "initial_full_python": "One SDK setup error: effect/upstream missing from exported validation copy; dependencies restored, targeted SDK and full suite repeated. Original failure retained.",
+  "parent_ci_readback": {
+    "head": "6769130c0355b6e5575db28643561dff53f39ad4",
+    "success": 21,
+    "total": 21,
+    "independent_review_at_readback": "pending"
+  }
+}

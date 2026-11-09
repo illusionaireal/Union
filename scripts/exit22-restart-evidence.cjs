@@ -26,7 +26,9 @@ async function readSnapshot(page, auId, workId) {
   assert.equal(body.organization_id, auId, 'original AU snapshot');
   assert.equal(body.access?.principal_id, session.body.principal_id, 'snapshot principal');
   assert.ok(Number.isSafeInteger(body.version) && body.version >= 0, 'snapshot version');
-  requests(originalWork(body, workId));
+  const original = originalWork(body, workId);
+  requests(original);
+  results(original);
   return body;
 }
 
@@ -80,6 +82,20 @@ function requests(work) {
   return originals;
 }
 
+function results(work) {
+  assert.ok(Array.isArray(work.results), 'original result list');
+  const ids = new Set();
+  for (const result of work.results) {
+    assert.ok(result && typeof result.id === 'string' && result.id.trim(), 'original result identity');
+    assert.ok(!ids.has(result.id), 'unique original result identities');
+    ids.add(result.id);
+  }
+  if (work.delivered_result_id != null) {
+    assert.ok(ids.has(work.delivered_result_id), 'delivered result exists in the original list');
+  }
+  return [...work.results].sort((a, b) => a.id.localeCompare(b.id));
+}
+
 function compareSnapshots(before, after, auId, workId) {
   for (const snapshot of [before, after]) {
     assert.equal(snapshot?.protocol, 'core.work.v1');
@@ -90,12 +106,17 @@ function compareSnapshots(before, after, auId, workId) {
   const original = originalWork(before, workId), reopened = originalWork(after, workId);
   const prior = requests(original), current = requests(reopened);
   assert.deepEqual(canonical(current), canonical(prior), 'restart preserves every original request fact');
+  const priorResults = results(original), currentResults = results(reopened);
+  assert.deepEqual(canonical(currentResults), canonical(priorResults), 'restart preserves every original result fact');
+  assert.equal(reopened.delivered_result_id ?? null, original.delivered_result_id ?? null,
+    'restart preserves the original delivered result');
   assert.ok(original.budget && reopened.budget, 'original budget exists');
   assert.deepEqual(canonical(reopened.budget), canonical(original.budget), 'restart preserves original budget');
   return { protocol: 'acceptance.restart-requests.v1', organization_id: auId, work_id: workId,
     principal_id: before.access.principal_id, model_request_identity_count: prior.length,
     transport_dispatch_count: null, no_new_request_identity: true, requests: prior,
-    budget: original.budget };
+    budget: original.budget, result_identity_count: priorResults.length, results: priorResults,
+    delivered_result_id: original.delivered_result_id ?? null };
 }
 
 module.exports = { readSnapshot, compareSnapshots };

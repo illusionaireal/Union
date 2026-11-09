@@ -2088,6 +2088,13 @@
                     "from": "doing",
                     "to": "doing",
                     "note": "u086-budget-conservation-726dad42：#40评论281限定验收修复。两份一致但错误的预算快照可掩盖丢失/虚增used与unknown预约；冻结既有domain.work.budget合同后，两driver完整重开片段18反例及实际Chrome6反例RED→GREEN，246相关Node及7浏览器场景通过。只读helper逐快照核对步进计数、整数与上限；未知用量和未执行released保持。完整npm/Python及源码/日志hash见evidence/U-086/budget-conservation/validation.json。需准确head CI和非实施工程复核；原DSH owner/WIP与真实#22/#39/#40保持，真实推理/迁移0，仅追加交付历史。"
+                },
+                {
+                    "at": "2026-11-09T14:58:20.706Z",
+                    "actor": "codex-home/single-duty-implementation",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "u086-result-provenance-6769130c：#40评论284范围内修复两driver重开漏验原成果事实。完整记录/唯一ID/交付引用按原快照比较，18反例RED→271相关Node和10实际Chrome场景通过，空成果中断与原未知预约保留；源码及完整验证见evidence/U-086/result-provenance/README.md和validation.json。仅验收helper/夹具，产品无变更；当前head CI和非实施角色复核后采用，DSH owner/WIP与真实父出口保持，真实模型0。本条仅交付历史，不作在线状态。"
                 }
             ],
             "claim": {

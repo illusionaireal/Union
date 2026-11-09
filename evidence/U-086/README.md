@@ -1,5 +1,10 @@
 # U-086 / #40：新候选与当前集成边界复核
 
+2026-11-09 重开现在同时保留原成果来源、完整记录和交付引用，不能仅凭相同摘要
+掩盖成果事实变更。18个Node/9个实际HTTP浏览器反例RED→GREEN，见
+[原成果持久性](result-provenance/README.md)。仍须当前head CI和非实施复核，
+原owner/WIP与真实父出口保持，真实调用0。
+
 2026-11-09 两份一致但错误的预算快照不再通过重开验收；按全部used/unknown步进
 逐项计数，保留released和未知用量语义。严格RED与246相关Node、7实际Chrome
 场景见[预算守恒](budget-conservation/README.md)。仍需准确head CI与非实施复核，

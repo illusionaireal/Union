@@ -25,7 +25,7 @@ const receipt = { id: 'cancel-original', organization_id: 'au-original', kind: '
   model_request_id: inflight.model_request_id, cancel_connection: connection, cancel_accepted: true,
   message: 'delivered', delivery: { cancel_accepted: true, message: 'delivered' } };
 const work = { protocol: 'core.work.v1', organization_id: 'au-original', version: 12,
-  access: { principal_id: session.principal_id }, works: [{ id: 'work-original',
+  access: { principal_id: session.principal_id }, works: [{ id: 'work-original', results: [],
     steps: [{ ...inflight, status: 'unknown', usage: null, cost_status: 'unknown', reason: 'interrupted' }],
     budget: { max_calls: 1, used: 0, reserved: 1 } }] };
 

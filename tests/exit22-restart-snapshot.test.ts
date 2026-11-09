@@ -168,6 +168,46 @@ for (const driver of ['exit22b_page.cjs', 'exit22c_download.cjs']) {
     assert.equal(saved.requests.find((r: any) => r.model_request_id === 'model-3').usage, null);
   });
 
+  test(driver + ': restart preserves complete original result provenance', async t => {
+    const before = structuredClone(original);
+    Object.assign(before.works[0].results[0], { title: 'Original overview',
+      sources: ['step-1', 'tool-1'], bytes: 19 });
+    const cases: [string, (body: any) => void][] = [
+      ['changed source', b => { b.works[0].results[0].sources[0] = 'another-step'; }],
+      ['lost source', b => { b.works[0].results[0].sources = []; }],
+      ['changed title', b => { b.works[0].results[0].title = 'Another overview'; }],
+      ['changed result bytes', b => { b.works[0].results[0].bytes = 20; }],
+      ['extra result', b => { b.works[0].results.push({ ...b.works[0].results[0], id: 'unexpected-result' }); }],
+      ['duplicate original result', b => { b.works[0].results.push(structuredClone(b.works[0].results[0])); }],
+    ];
+    for (const [name, change] of cases) await t.test(name, async () => {
+      const after = structuredClone(before); change(after);
+      await assert.rejects(run({ before, after }), /result/i);
+    });
+  });
+
+  test(driver + ': malformed result lists cannot establish restart evidence', async t => {
+    for (const [name, change] of [
+      ['missing list', (b: any) => { delete b.works[0].results; }],
+      ['empty identity', (b: any) => { b.works[0].results[0].id = ''; }],
+      ['duplicate identity', (b: any) => { b.works[0].results.push(structuredClone(b.works[0].results[0])); }],
+    ] as const) await t.test(name, async () => {
+      const before = structuredClone(original); change(before);
+      await assert.rejects(run({ before, snapshotOnly: true }), /result/i);
+      assert.throws(() => require('./exit22-restart-evidence.cjs').compareSnapshots(
+        before, before, 'au-original', 'work-original'), /result/i);
+    });
+  });
+
+  test(driver + ': result order and JSON key order do not change provenance', async () => {
+    const before = structuredClone(original);
+    before.works[0].results.unshift({ id: 'another-original', status: 'candidate', sha256: 'other-digest' });
+    const after = structuredClone(before);
+    after.works[0].results.reverse();
+    after.works[0].results = after.works[0].results.map(r => Object.fromEntries(Object.entries(r).reverse()) as typeof r);
+    await run({ before, after });
+  });
+
   test(driver + ': normal restart permits reordered steps and JSON keys', async () => {
     const after = structuredClone(original);
     after.works[0].steps.reverse();
@@ -182,3 +222,16 @@ for (const driver of ['exit22b_page.cjs', 'exit22c_download.cjs']) {
     assert.equal(result.files.get('restart-request-comparison.json').requests[0].usage, null);
   });
 }
+
+// The interrupt exit may legitimately have no result at all.
+test('empty interrupt results survive a read-only restart', () => {
+  const before = structuredClone(original);
+  before.works[0].results = [];
+  before.works[0].delivered_result_id = null as any;
+  const after = structuredClone(before);
+  const summary = require('./exit22-restart-evidence.cjs').compareSnapshots(
+    before, after, 'au-original', 'work-original');
+  assert.deepEqual(summary.results, []);
+  assert.equal(summary.result_identity_count, 0);
+  assert.equal(summary.delivered_result_id, null);
+});
