@@ -350,8 +350,10 @@ function startHost() {
     const value = await response.json();
     return { status: response.status, receipt: value.receipt || value };
   }, { auId: createdReceipt.organization_id, workId, stepRef: inflight.step_ref, cancelId: cancelCommandId });
+  const cancelReceipt = cancelOutcome.receipt || {};
+  const cancelStatus = cancelOutcome.status;
   check('cancel accepted by the product: ' + JSON.stringify(cancelOutcome.receipt).slice(0, 160),
-        cancelOutcome.status === 200 && cancelOutcome.receipt.status === 'succeeded');
+        cancelStatus === 200 && cancelReceipt.status === 'succeeded');
   const cancelStepRef = ((cancelOutcome.receipt.step || {}).step_ref) || '';
   const cancelModelRequest = cancelOutcome.receipt.model_request_id || '';
   const cancelOrg = cancelOutcome.receipt.organization_id || '';
@@ -363,6 +365,8 @@ function startHost() {
   check('delivery observation recorded: ' + cancelOutcome.receipt.cancel_accepted,
         cancelOutcome.receipt.cancel_accepted === true);
   // Same-run original GET is asserted after the settlement window opens.
+  check('cancel receipt id matches the submitted cancel command',
+        cancelReceipt.id === cancelCommandId);
   // Same-run original GET must return the same durable delivery fact.
   const cancelGet = await page.evaluate(async config => (await (await fetch(
     '/api/v1/governance/receipts?organization_id=' + config.auId + '&id=' + config.cancelId)).json()),
