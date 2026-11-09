@@ -1,0 +1,18 @@
+     51|   await screen.findByText('原步进正文');
+     52|   vi.mocked(api.coreWorkEvents).mockRejectedValue(new ApiError('denied…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed (2)
+   Start at  11:42:19
+   Duration  3.04s (transform 147ms, setup 105ms, collect 317ms, tests 2.03s, environment 327ms, prepare 65ms)
+
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /workspace/scratch/4508c4bb8a45/union-u108/web/console
+npm error workspace @union/console@0.1.0
+npm error location /workspace/scratch/4508c4bb8a45/union-u108/web/console
+npm error command failed
+npm error command sh -c vitest run --run src/features/work/WorkStream.test.tsx
