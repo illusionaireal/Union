@@ -1,0 +1,95 @@
+{
+  "at": "2026-11-09T08:25:53.976903+00:00",
+  "scope": "controlled assertion repair; independent review and current CI pending",
+  "actor": "codex-home/single-duty-implementation",
+  "online_member_id": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+  "owner_preserved": "cafeef64-ac40-4062-97c1-ac82ece0a379",
+  "original_request": "#40 comments242/248; scope comment249",
+  "author_input": "7493451e385709083b035296d614352f02cd790c",
+  "integration": "4aa020bf6e528d1d9bc6ab28c5aa8b63cc53fe5c",
+  "tested_driver_and_node_source": "cafd4fde5068410e19abe1b5034317faadfdf57e",
+  "python": {
+    "tests": 808,
+    "skipped": 11,
+    "failures": 0,
+    "seconds": 505.493,
+    "exit_code": 0,
+    "skips": [
+      "test_state_database_link_cannot_escape_the_validated_directory (tests.test_catalog_integrity.CatalogIntegrityTests.test_state_database_link_cannot_escape_the_validated_directory) ... skipped 'host cannot create a file symlink: 22'",
+      "test_core_save_and_two_stage_tool_exchange_use_actual_modeld_sdk_contract (tests.test_core_model_http.CoreModelHTTPTests.test_core_save_and_two_stage_tool_exchange_use_actual_modeld_sdk_contract) ... skipped 'Set UNION_BUN to the pinned Bun for the actual SDK integration'",
+      "test_built_candidate_declares_its_actual_model_schema (tests.test_core_model_release.CoreModelReleaseTests.test_built_candidate_declares_its_actual_model_schema) ... skipped 'Build both products before checking the package declaration'",
+      "test_one_work_uses_at_most_two_calls_and_reports_usage_without_cost (tests.test_core_work_real.RealBoundedAcceptanceTests.test_one_work_uses_at_most_two_calls_and_reports_usage_without_cost) ... skipped 'real acceptance needs UNION_MODELD_CONFIG and UNION_REAL_BOUNDED_ACCEPTANCE=1 (up to two calls)'",
+      "test_an_interrupted_call_stays_unknown_and_a_manual_reconcile_cannot_release_it (tests.test_core_work_real_interrupt.RealInterruptTests.test_an_interrupted_call_stays_unknown_and_a_manual_reconcile_cannot_release_it) ... skipped 'real interruption needs UNION_MODELD_CONFIG and UNION_REAL_INTERRUPT_ACCEPTANCE=1 (up to one call)'",
+      "test_mode_only_drift_rejected (tests.test_dev_orchestrator.ControllerTests.test_mode_only_drift_rejected) ... skipped 'Linux executable bits required'",
+      "test_same_repo_second_state_directory_cannot_take_cycle_lock (tests.test_dev_orchestrator.ControllerTests.test_same_repo_second_state_directory_cannot_take_cycle_lock) ... skipped 'Windows locking conflict raises OS error before POSIX path'",
+      "test_built_candidate_declares_durable_dispatch_support (tests.test_work_dispatch_compatibility.WorkDispatchCompatibilityTests.test_built_candidate_declares_durable_dispatch_support) ... skipped 'Build modeld before checking its release declaration'",
+      "test_attach_client_exit_requires_container_stop_evidence (tests.test_workspace.WorkspaceTests.test_attach_client_exit_requires_container_stop_evidence) ... skipped 'Linux-only container host'",
+      "test_container_command_exposes_only_selected_workspace_without_network_or_secrets (tests.test_workspace.WorkspaceTests.test_container_command_exposes_only_selected_workspace_without_network_or_secrets) ... skipped 'Linux-only container host'",
+      "test_killed_attach_client_is_unknown (tests.test_workspace.WorkspaceTests.test_killed_attach_client_is_unknown) ... skipped 'Linux-only container host'"
+    ]
+  },
+  "npm": {
+    "exit_code": 0,
+    "frontend_tests": 363,
+    "node_tests": 109,
+    "management_tests": 37,
+    "typecheck": true,
+    "build": true
+  },
+  "red": {
+    "original_author": {
+      "tests": 40,
+      "passed": 3,
+      "failed": 37
+    },
+    "initial_overstrict_null_usage_candidate": {
+      "tests": 2,
+      "failed": 2
+    },
+    "historical_probe_fixture_missing_delivered_result_id": {
+      "tests": 11,
+      "failed": 1,
+      "runtime_errors": 0,
+      "classification": "review fixture defect; not product RED"
+    }
+  },
+  "green": {
+    "new_and_prior_related_node_tests": 100,
+    "download_probes": 11,
+    "browser": "Actual Chrome/Core HTTP/SQLite restart; two original requests and budget; changed service; HTTP403/wrong Work reject; GET-only and clean fixture exit",
+    "browser_fake_model_turns": 2,
+    "real_model_calls": 0
+  },
+  "source_sha256": {
+    "scripts/exit22b_page.cjs": "dfff34413e4e6607f94b289535ccfbfa6e8ca363e03ad4aa40d0915183f3884f",
+    "scripts/exit22c_download.cjs": "2842ba68e7dbc59e77f50cf1bae2deda001831f5dd097a33ed48f9948af7b7f1",
+    "scripts/exit22-restart-evidence.cjs": "3e5139c9e2c945eedde4bd89920e4e3d3f4f654e7a43b43a9f4017019383a38e",
+    "tests/exit22c-reopen.test.ts": "f93ef2d35f907eb885c9b11d504ada02c2385c39f277444efa049de81a1230b7",
+    "tests/exit22-restart-snapshot.test.ts": "9445f5b855d20cb40bc65901b003bffdf7e0e1ad5b90193431836bbf20ec2b54",
+    "evidence/U-086/strict-download-review-probes.py": "a613d2876c5cef89231d7a9c50f65dfbfdefb67c819e3fd0fcae48c4149f5076",
+    "evidence/U-086/restart-snapshot/contract.md": "35ffdbbc3728ae255fd717e4108c679df8fe4a5508e7d6e9b9006a9ddaa5ca91",
+    "evidence/U-086/restart-snapshot/http-host.py": "90295e6e3624c48c2d3859789ac12a282b007e52accca4eb81104cfed225e059",
+    "evidence/U-086/restart-snapshot/browser.cjs": "ee24d2714b2d27ec0af5e731b935c52ca3e7dace0eab76558cd6b17dde7a3243"
+  },
+  "private_log_sha256": {
+    "u086-restart-snapshot-red.log": "9ae4a8707cda5cfaeaf15d46dafad1e95d32e5619a8b5bb2450e5cc11600e5c5",
+    "u086-restart-unknown-usage-red.log": "0ecc968b594627d84c5fc47a264988132109deb7530943dcde72056c2c10e897",
+    "u086-restart-snapshot-green.log": "6991dc8d7821e4e31237c7add50b52ae729c5b0f9f724291e202dc3ff99967fb",
+    "u086-restart-snapshot-final-node.log": "05b7f712af188b85cfc8f880ef52a51cbcbc03048b0486819745d51640f44fa1",
+    "u086-restart-snapshot-final-npm.log": "8dcacb6b748e272e7af95b90758612eb6c5a433c2a34626fccf63d1f209e362e",
+    "u086-restart-snapshot-python.log": "544dce8715246c36b3152b18f6de4ace8bdf0a8af244689903256b30cc2e8128",
+    "u086-restart-snapshot-browser.log": "6cba2ec38708decf81feac0f5466ac4a106727a9ef000d941a53e5ad94203f02",
+    "u086-restart-download-probe.log": "e0bad8ba6c319c8561b19f739a0fa82bf042e26b0f0ae8a9e3727ad97f448a1e",
+    "u086-restart-download-probe-green.log": "700c3e50c6c0c0c0e3f958a41ca1c083b861d0954e5032a37b96c55a6b140f6d",
+    "u086-restart-management-final.log": "33102aded5950b3ae0d45e69830e2a77cf88315c9d1d20c4ef8bd51b0738df89"
+  },
+  "regular_index_sha256": "2f237cf5f7ecd05a21c932a2a0748ab6d17c6e8ee8243cd5f09b00c6c3e05a53",
+  "preexisting_worktree_preserved": true,
+  "historical_evidence139_unchanged": true,
+  "limits": [
+    "Missing original-output-observation.json from evidence139 remains unverified",
+    "Unsupported historical before snapshot cannot be backfilled",
+    "No real page-output or same-original-command replay/transport-count acceptance claim",
+    "No service switch, migration, model spending or supervisor/config/lock changes"
+  ]
+}

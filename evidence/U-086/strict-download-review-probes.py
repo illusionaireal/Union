@@ -109,6 +109,7 @@ def reopened(name, result_id):
         "createdReceipt": {"organization_id": "original-au"},
         "after": {"protocol": "core.work.v1", "organization_id": "original-au",
                   "works": [{"id": "original-work", "status": "delivered",
+                             "delivered_result_id": "original-result",
                              "results": [{"id": result_id, "status": "adopted",
                                           "sha256": DIGEST}]}]},
     })

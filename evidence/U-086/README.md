@@ -1,5 +1,10 @@
 # U-086 / #40：新候选与当前集成边界复核
 
+2026-11-09 原Core快照恢复协助：两个验收driver改用固定原AU/Work的Core前后
+快照，核对完整原请求/用量/预约集合；40项原源反例3通过37失败，扩展相关100项
+与实际Chrome/HTTP/SQLite通过，真实调用0。见[合同、失败与验证](restart-snapshot/README.md)。
+这是待独立工程复核/当前CI的断言候选；DSH owner与139旧失败、真实出口保留。
+
 2026-11-09 download restart assistance: the original AU/Work/result, digest,
 delivery binding and HTTP status are now checked together. Latest author RED,
 17-probe GREEN and full validation are indexed in

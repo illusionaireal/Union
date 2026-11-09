@@ -2004,6 +2004,13 @@
                     "from": "doing",
                     "to": "doing",
                     "note": "U086原输出验收门槛协助候选：基线作者75c7a946ea459861fa60d9831b3b1fedfa1376ed、在线评论238保持DSH/#40归属。真实未改断言31测试1通过30失败，修复31全通过；只修Core原响应身份/当前主体服务/原连接/游标分页及非空text_delta门槛，保存UTF-8文本摘要，不启动验收driver main。证据evidence/U-086/original-output-gate/README.md及validation.json。准确候选需当前CI和非实施工程角色复核后采用；本地历史不改在线owner/WIP，不关闭#22/#39/#40真实出口，新增真实模型调用/迁移/服务切换均0。"
+                },
+                {
+                    "at": "2026-11-09T08:22:19.926Z",
+                    "actor": "codex-home/single-duty-implementation",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "U086原Core快照恢复协助候选：作者7493451包含集成4aa020b；评论249保持DSH/#40 owner与WIP。两个driver固定原AU/Work读取Core前后快照，比较原请求集合/身份/预算/用量，unknown保留null，原请求身份数不冒充真实派发次数。严格RED40项3通过37失败，相关100 Node、11下载探针、实际Chrome/HTTP/SQLite两次fake原loop/重启通过，真实调用0；验证evidence/U-086/restart-snapshot/README.md及validation.json。需非实施工程复核与准确head CI；不关闭#22/#39/#40真实出口，不改历史139、不迁移或切换服务。"
                 }
             ],
             "claim": {
