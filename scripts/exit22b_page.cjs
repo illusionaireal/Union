@@ -18,15 +18,14 @@ function loadJson(name) {
 }
 const check = (name, value = true) => { assert.ok(value, name); checks.push(name); };
 let host, browser, page;
+const workId = 'work-exit';
 const nonce = 'UNION-EXIT22B-' + crypto.randomUUID().slice(0, 8);
 const goal = '第一步必须调用 read_document 读取 brief.md 的完整正文；第二步用最终回答写三行中文概览，不要再调用任何工具。';
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 async function snapshot() {
-  return page.evaluate(async () => {
-    const id = document.querySelector('#org-select').value;
-    return (await fetch('/api/snapshot?organization_id=' + id)).json();
-  });
+  return require('./exit22-restart-evidence.cjs').readSnapshot(
+    page, createdReceipt.organization_id, workId);
 }
 async function coreWork() {
   return page.evaluate(async () => {
@@ -275,7 +274,6 @@ function startHost() {
   errors.push('nav ok, models ok: ' + JSON.stringify(modelsProbe).slice(0, 80));
   await page.locator('[data-nav="tasks"]').click();
   await page.waitForTimeout(1000);
-  const workId = 'work-exit';
   await page.evaluate(async config => {
     const version = async () => (await (await fetch('/api/v1/aus/' + config.auId)).json()).au.version;
     const gov = async (kind, data) => {
@@ -466,10 +464,7 @@ function startHost() {
   host = running.child;
   await page.goto(running.origin);
   await page.getByText('已连接本机服务', { exact: true }).waitFor();
-  const after = await page.evaluate(async auId => {
-    const value = await (await fetch('/api/v1/work?organization_id=' + auId)).json();
-    return value;
-  }, createdReceipt.organization_id);
+  const after = await snapshot();
   const entry = (after.works || []).find(w => w.id === workId);
   const adoptedAfter = (entry.results || []).find(r => r.status === 'adopted');
   // This interrupt exit does not adopt/deliver a result; the original-result
@@ -489,6 +484,9 @@ function startHost() {
   const unresolved = settledStep.status === 'unknown';
   check('an unresolved step keeps its original reservation after the rebuild',
         !unresolved || entry.budget.reserved === 1);
+  const restartComparison = require('./exit22-restart-evidence.cjs').compareSnapshots(
+    before, after, createdReceipt.organization_id, workId);
+  fs.writeFileSync(path.join(output, 'restart-request-comparison.json'), JSON.stringify(restartComparison, null, 2));
   fs.writeFileSync(path.join(output, 'snapshot-after-restart.json'), JSON.stringify(after, null, 2));
   fs.writeFileSync(path.join(output, 'checks.json'),
     JSON.stringify({ passed: checks.length, nonce, workId, checks, errors }, null, 2));

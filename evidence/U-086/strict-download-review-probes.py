@@ -39,7 +39,8 @@ JS = source("scripts/exit22c_download.cjs")
 DOWNLOAD = between(JS, "  const recordedFull = resultRead.result || resultRead;",
                    "  await page.evaluate(async config => {")
 REOPEN = between(JS, "  const entry = (after.works || []).find(w => w.id === workId);",
-                 "  fs.writeFileSync(path.join(output, 'snapshot-after-restart.json')")
+                 "  // Restart request conservation." if "  // Restart request conservation." in JS
+                 else "  fs.writeFileSync(path.join(output, 'snapshot-after-restart.json')")
 CONTENT = "Original synthetic result — 合成资料\n"
 DIGEST = hashlib.sha256(CONTENT.encode("utf-8")).hexdigest()
 ORIGINAL = {

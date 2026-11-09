@@ -6,7 +6,7 @@ import vm from 'node:vm';
 // Execute the real driver's restart assertions, never its model/browser main.
 const source = readFileSync(new URL('../scripts/exit22c_download.cjs', import.meta.url), 'utf8');
 const start = '  const reopenedResponse = await page.evaluate(async auId => {';
-const end = "  fs.writeFileSync(path.join(output, 'snapshot-after-restart.json')";
+const end = "  // Restart request conservation.";
 assert.equal(source.split(start).length, 2);
 assert.equal(source.split(end).length, 2);
 const block = source.slice(source.indexOf(start), source.indexOf(end));
