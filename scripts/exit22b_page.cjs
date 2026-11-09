@@ -380,9 +380,9 @@ function startHost() {
     return { status: response.status, receipt: value.receipt || value };
   }, { auId: createdReceipt.organization_id, workId, stepRef: inflight.step_ref, cancelId: cancelCommandId });
   const cancelReceipt = cancelOutcome.receipt || {};
-  const cancelStatus = cancelOutcome.status;
+  const cancelReceipt = cancelOutcome.receipt || {};
   check('cancel accepted by the product: ' + JSON.stringify(cancelOutcome.receipt).slice(0, 160),
-        cancelStatus === 200 && cancelReceipt.status === 'succeeded');
+        cancelOutcome.status === 200 && cancelReceipt.status === 'succeeded');
   const cancelStepRef = ((cancelOutcome.receipt.step || {}).step_ref) || '';
   const cancelModelRequest = cancelOutcome.receipt.model_request_id || '';
   const cancelOrg = cancelOutcome.receipt.organization_id || '';
