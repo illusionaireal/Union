@@ -1,5 +1,10 @@
 # U-086 / #40：新候选与当前集成边界复核
 
+2026-11-09 原attempt关闭后恢复：PR44 `c6c13f2`在成果采用/交付后会隐藏原
+run_loop或显示旧准备ID；4项DOM及实际Chrome RED后修复，46相关DOM、
+U106 Chrome19与U086 Chrome18/19通过。见[补漏与完整验证](closed-attempt-recovery.md)。
+仍是受控候选，需新head CI及另一角色独立复核，原owner和真实出口保持。
+
 2026-11-09 页面递进恢复：原GET先确认取消意图后，页面现在能接纳后续送达
 观察并在刷新后展示原回执；5 DOM与实际Chrome RED后修复，42相关DOM及
 Chrome18/19通过。作者53ed829准确复核7用例失败；组合d93b3cf保留其历史，

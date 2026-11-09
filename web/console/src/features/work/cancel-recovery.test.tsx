@@ -271,6 +271,47 @@ it('a completed run can be displayed after reload and cannot regress to unknown'
   expect(api.coreWorkCommand).toHaveBeenCalledTimes(1);
 });
 
+it.each([
+  [true, 'active'], [true, 'delivered'], [false, 'active'], [false, 'delivered'],
+] as const)('closed attempt keeps the actual run lookup (prepare=%s, work=%s)', async (prepare, status) => {
+  if (!prepare) {
+    reserved(true);
+    current.works[0].steps = [];
+    current.works[0].budget.reserved = 0;
+  }
+  vi.mocked(api.coreWorkCommand).mockImplementation(async (r) => {
+    if (r.kind === 'start_attempt') {
+      reserved(true);
+      current.works[0].steps = [];
+      current.works[0].budget.reserved = 0;
+    }
+    return { receipt: receipt(r) };
+  });
+  const view = mount();
+  if (prepare) fireEvent.click(await screen.findByRole('button', { name: '准备本轮执行' }));
+  fireEvent.click(await screen.findByRole('button', { name: '运行 AI 工作' }));
+  await screen.findByText('原请求已完成');
+  const original = vi.mocked(api.coreWorkCommand).mock.calls.at(-1)![0];
+  expect(original.kind).toBe('run_loop');
+  current.works[0].attempts[0].status = 'closed';
+  current.works[0].attempts[0].outcome = 'stopped';
+  current.works[0].status = status;
+  current.access.can_start = false;
+  fireEvent.click(screen.getByRole('button', { name: '刷新 AI 工作' }));
+  await screen.findByText('本轮执行已结束');
+  expect(within(screen.getByRole('group', { name: '原运行请求' })).getByText(new RegExp(String(original.id)))).toBeVisible();
+  view.unmount();
+  mount();
+  vi.mocked(api.coreWorkReceipt).mockResolvedValue({ receipt: receipt(original) });
+  const recovered = await screen.findByRole('group', { name: '原运行请求' });
+  expect(within(recovered).getByText(new RegExp(String(original.id)))).toBeVisible();
+  fireEvent.click(within(recovered).getByRole('button', { name: '查询原请求' }));
+  await waitFor(() => expect(api.coreWorkReceipt).toHaveBeenCalledWith('au-1', original.id));
+  await screen.findByText('原请求已完成');
+  expect(api.coreWorkCommand).toHaveBeenCalledTimes(prepare ? 2 : 1);
+  expect(screen.queryByRole('button', { name: '准备本轮执行' })).toBeNull();
+});
+
 it('can cancel while the original page run POST is still pending and retain both lookups', async () => {
   reserved(true);
   current.works[0].steps = [];

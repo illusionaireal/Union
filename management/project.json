@@ -1969,6 +1969,13 @@
                     "from": "doing",
                     "to": "doing",
                     "note": "U086/#40页面恢复协助：原GET先读取消意图后可展示后续持久送达，刷新后重新显示原回执；5 DOM/实际Chrome RED→42相关DOM和两模式Chrome18/19通过，每模式fake1/cancel1、真实0。页面5a3617c与作者53ed829合为d93b3cf；作者准确源码7用例失败/1对照通过，保留125历史，服务端三个文件及原测试与19afff3一致。证据evidence/U-086/page-delivery-progress.md及验证JSON。PR43仍候选，须准确head CI和另一工程角色复核；原owner/WIP及父卡真实出口保持。本条仅交付历史，不用作在线调度或采用事实。"
+                },
+                {
+                    "at": "2026-11-09T00:22:02.243Z",
+                    "actor": "codex-home/duty-closed-attempt-recovery",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "U086/#40原运行恢复补漏候选：在PR44输入c6c13f2观察4 DOM/实际Chrome RED；关闭attempt后优先保留原run_loop，避免旧准备ID替换或查询消失。46相关DOM、U106实际Chrome19及原U086 Chrome18/19通过，npm343前端/37管理/9动作通过。冻结合同、失败历史和完整验证见evidence/U-086/closed-attempt-recovery.md及验证JSON。该页面增量仍待准确head CI和另一工程角色复核，原DSH owner/WIP和真实父卡出口保持。仅交付历史，不作为在线运行态依据；真实调用0。"
                 }
             ],
             "claim": {
