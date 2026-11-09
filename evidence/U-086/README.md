@@ -130,3 +130,7 @@ Work/attempt/command/model_request、当前授权、事件cursor、取消受理/
 相邻115证据已可只读定位，详见[U-085源码复核](../U-085/2026-11-09-source-review.md)。
 本轮模型真实调用0、生产切换0、迁移0。#61仍等既有明确迁移授权；#37仍等
 获准共享的源码，原owner和blocked WIP保持。
+
+PR48/PR49 are combined in a separate, not-yet-adopted candidate; both histories
+and the independent fixture review gate are preserved. See
+[the exact integration inputs](host-fixture-integration.md).
