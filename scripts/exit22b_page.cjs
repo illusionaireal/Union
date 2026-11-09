@@ -324,15 +324,33 @@ function startHost() {
   check('work registered and attempt started through the product API');
   const card = () => page.locator('ul.work-panel li').first();
   await card().getByRole('button', { name: /运行 AI 工作|自动执行/ }).click();
-  // Real-interrupt window: wait for the in-flight automatic reservation.
+  // Real-interrupt window: wait for the in-flight automatic reservation, and
+  // when the Core work-events surface exists (U108), observe the cancelled
+  // request's own events before cancelling; without it, the in-flight fact
+  // proven by the cancel POST remains the core-side evidence.
   let inflight = null;
+  let workEventsCapable = null;
   await waitFor(async () => {
     const read = await coreWork();
     const work = (read.works || []).find(w => w.id === workId);
     inflight = (work.steps || []).find(s => s.status === 'reserved' && s.command_id && s.model_request_id);
-    return Boolean(inflight);
+    if (!inflight) return false;
+    const probe = await page.evaluate(async config => {
+      const response = await fetch('/api/v1/work/events?organization_id=' + config.auId
+        + '&work_id=' + config.workId + '&step_ref=' + encodeURIComponent(config.stepRef) + '&after=0');
+      if (response.status === 404 || response.status === 501) return { capable: false, own: 0 };
+      if (!response.ok) return { capable: null, own: 0 };
+      const events = (await response.json()).events || [];
+      return { capable: true,
+               own: events.filter(e => e.request_id === inflight.model_request_id).length };
+    }, { auId: createdReceipt.organization_id, workId, stepRef: inflight.step_ref });
+    if (probe.capable === null) return false;
+    workEventsCapable = probe.capable;
+    return probe.capable ? probe.own > 0 : true;
   }, 'in-flight automatic reservation visible', 60000);
   check('in-flight automatic reservation carries the line-end id: ' + inflight.model_request_id);
+  check('cancelled-request own events observed before cancel (Core surface: ' + workEventsCapable + ')',
+        workEventsCapable === false ? true : workEventsCapable === true);
   check('the cancelled request is this run\'s own in-flight request (distinct id, own attempt): ' +
         inflight.model_request_id + ' / ' + inflight.attempt_id,
         Boolean(inflight.model_request_id) && Boolean(inflight.attempt_id));

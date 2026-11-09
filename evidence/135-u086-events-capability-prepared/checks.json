@@ -1,0 +1,31 @@
+{
+  "passed": 21,
+  "nonce": "UNION-EXIT22B-7960dae0",
+  "workId": "work-exit",
+  "checks": [
+    "private ticket page loads",
+    "can_start probe: {\"can_start\":true,\"conns\":[{\"id\":\"connection-a\",\"is_default\":true,\"enabled\":true}],\"protocol\":\"core.models.v1\"}",
+    "tasks page reachable",
+    "work registered and attempt started through the product API",
+    "in-flight automatic reservation visible",
+    "in-flight automatic reservation carries the line-end id: work-0a3a11d084ff80cca8a7809402b333a51789fd534dfb8b16f9f0a4e3d6f8f35a",
+    "cancelled-request own events observed before cancel (Core surface: false)",
+    "the cancelled request is this run's own in-flight request (distinct id, own attempt): work-0a3a11d084ff80cca8a7809402b333a51789fd534dfb8b16f9f0a4e3d6f8f35a / work-exit#a1",
+    "cancel accepted by the product: {\"actor_principal_id\":\"77434dca-4aaf-48f5-9d73-89ce75dde00b\",\"base_version\":11,\"cancel_accepted\":true,\"cancel_connection\":{\"enabled\":true,\"grant_ref\":\"grant-560",
+    "cancel receipt identifies the same command/attempt/step/model request",
+    "delivery observation recorded: true",
+    "cancel receipt id matches the submitted cancel command",
+    "original GET returns the delivered cancel receipt (identity match)",
+    "the cancelled step settles",
+    "step settled as used (cost unknown)",
+    "an unknown settlement keeps the budget reserved",
+    "an adopted result survives the rebuild and matches the delivered id: undefined",
+    "the settled step survives the rebuild as used",
+    "the settled step keeps its original identity across the rebuild",
+    "the settle reason persists",
+    "an unresolved step keeps its original reservation after the rebuild"
+  ],
+  "errors": [
+    "nav ok, models ok: [{\"enabled\":true,\"grant_ref\":\"grant-5604a4e84ed4\",\"grant_revision\":1,\"id\":\"conne"
+  ]
+}
