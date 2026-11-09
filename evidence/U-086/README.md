@@ -5,6 +5,11 @@
 见[范围、验证与剩余出口](host-connection-integrity.md)。本会话是该修复实施者，
 须另一工程角色复核及准确head CI；不据此采用原127完整真实验收声明。
 
+2026-11-09 最终真实中断记录 `1e490d0` 已独立核对：最终保存两条请求，
+已完成438/43与第二条unknown分开；三个新增离线反例显示取消前输出、
+取消回执身份和重启后预约断言仍缺失。见[准确证据与可运行探针](final-interrupt-review.md)。
+未改作者driver/原证据，未新增真实调用；#40与父#22完整真实出口保持。
+
 2026-11-09 原attempt关闭后恢复：PR44 `c6c13f2`在成果采用/交付后会隐藏原
 run_loop或显示旧准备ID；4项DOM及实际Chrome RED后修复，46相关DOM、
 U106 Chrome19与U086 Chrome18/19通过。见[补漏与完整验证](closed-attempt-recovery.md)。
