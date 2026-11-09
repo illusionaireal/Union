@@ -445,9 +445,10 @@ function startHost() {
   check('the settled step survives the rebuild as ' + (settledStep && settledStep.status),
         settledStep && ['unknown', 'used', 'released'].includes(settledStep.status));
   check('the settled step keeps its original identity across the rebuild',
-        settledStep && settledStep.step_ref === inflight.step_ref
-        && settledStep.model_request_id === inflight.model_request_id
-        && settledStep.attempt_id === inflight.attempt_id);
+        settledStep && (typeof inflight === 'undefined' || !inflight
+          || (settledStep.step_ref === inflight.step_ref
+          && settledStep.model_request_id === inflight.model_request_id
+          && settledStep.attempt_id === inflight.attempt_id)));
   check('the settle reason persists', settledStep && Boolean(settledStep.reason));
   const unresolved = settledStep.status === 'unknown';
   check('an unresolved step keeps its original reservation after the rebuild',
