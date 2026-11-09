@@ -26,6 +26,7 @@ Validation follows the [frozen contract](contract.md):
   stop/reopen, service changes, wrong Work/attempt/principal and HTTP403/substituted
   actor are rejected. One fake inference and one fake cancel; observations add
   zero POSTs. Fixture shutdown failure propagates to the result.
+- Full Python: **808 tests / 11 skipped / 0 failures** (498.527s). npm: **363 frontend / 143 Node / 37 management**, types/build pass.
 - Full checks, source hashes and private log hashes: [validation.json](validation.json).
 
 The new before/after receipt files demonstrate local intent and durable delivery,
