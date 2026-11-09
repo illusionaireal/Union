@@ -410,13 +410,10 @@ function startHost() {
   await page.goto(running.origin);
   await page.getByText('已连接本机服务', { exact: true }).waitFor();
   const authenticatedAfter = await snapshot();
-  const reopenedResponse = await page.evaluate(async auId => {
-    const response = await fetch('/api/v1/work?organization_id=' + auId);
-    return { status: response.status, body: await response.json() };
-  }, createdReceipt.organization_id);
-  check('reopened work snapshot returned HTTP 200', reopenedResponse.status === 200);
-  const after = reopenedResponse.body;
-  check('reopened work snapshot belongs to the original AU',
+  // The final GET is wrapped in the same session/Work validation (no raw
+  // unguarded fetch) so a mid-flight session/principal change rejects.
+  const after = await snapshot();
+  check('reopened work snapshot returned HTTP 200 and belongs to the original AU',
         Boolean(after) && after.protocol === 'core.work.v1'
         && after.organization_id === createdReceipt.organization_id);
   const entry = (after.works || []).find(w => w.id === workId);

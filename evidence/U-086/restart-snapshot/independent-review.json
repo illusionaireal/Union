@@ -1,0 +1,217 @@
+{
+  "head": "9d7fe98ea9e790d89f16f6a128af949ecda8ccb8",
+  "source_sha256": {
+    "exit22b_page.cjs": "dfff34413e4e6607f94b289535ccfbfa6e8ca363e03ad4aa40d0915183f3884f",
+    "exit22c_download.cjs": "2842ba68e7dbc59e77f50cf1bae2deda001831f5dd097a33ed48f9948af7b7f1"
+  },
+  "passed": 4,
+  "failed": 3,
+  "observations": [
+    {
+      "name": "stable-interrupt",
+      "expected_accept": true,
+      "accepted": true,
+      "error": null,
+      "error_type": null,
+      "workReads": 2,
+      "sessionReads": 4,
+      "current": {
+        "principal": "principal-original",
+        "service": "service-after",
+        "authenticated": true
+      },
+      "savedAfter": true,
+      "requests": [
+        "/api/session",
+        "/api/v1/work?organization_id=au-original",
+        "/api/session",
+        "/api/session",
+        "/api/v1/work?organization_id=au-original",
+        "/api/session"
+      ],
+      "pass": true
+    },
+    {
+      "name": "stable-download",
+      "expected_accept": true,
+      "accepted": true,
+      "error": null,
+      "error_type": null,
+      "workReads": 3,
+      "sessionReads": 4,
+      "current": {
+        "principal": "principal-original",
+        "service": "service-after",
+        "authenticated": true
+      },
+      "savedAfter": true,
+      "requests": [
+        "/api/session",
+        "/api/v1/work?organization_id=au-original",
+        "/api/session",
+        "/api/session",
+        "/api/v1/work?organization_id=au-original",
+        "/api/session",
+        "/api/v1/work?organization_id=au-original"
+      ],
+      "pass": true
+    },
+    {
+      "name": "guarded-interrupt-principal",
+      "expected_accept": false,
+      "accepted": false,
+      "error": "principal changed during snapshot\n+ actual - expected\n\n+ 'another-principal'\n- 'principal-original'\n",
+      "error_type": "AssertionError",
+      "workReads": 2,
+      "sessionReads": 4,
+      "current": {
+        "principal": "another-principal",
+        "service": "service-after",
+        "authenticated": true
+      },
+      "savedAfter": false,
+      "requests": [
+        "/api/session",
+        "/api/v1/work?organization_id=au-original",
+        "/api/session",
+        "/api/session",
+        "/api/v1/work?organization_id=au-original",
+        "/api/session"
+      ],
+      "pass": true
+    },
+    {
+      "name": "guarded-download-principal",
+      "expected_accept": false,
+      "accepted": false,
+      "error": "principal changed during snapshot\n+ actual - expected\n\n+ 'another-principal'\n- 'principal-original'\n",
+      "error_type": "AssertionError",
+      "workReads": 2,
+      "sessionReads": 4,
+      "current": {
+        "principal": "another-principal",
+        "service": "service-after",
+        "authenticated": true
+      },
+      "savedAfter": false,
+      "requests": [
+        "/api/session",
+        "/api/v1/work?organization_id=au-original",
+        "/api/session",
+        "/api/session",
+        "/api/v1/work?organization_id=au-original",
+        "/api/session"
+      ],
+      "pass": true
+    },
+    {
+      "name": "final-download-principal",
+      "expected_accept": false,
+      "accepted": true,
+      "error": null,
+      "error_type": null,
+      "workReads": 3,
+      "sessionReads": 4,
+      "current": {
+        "principal": "another-principal",
+        "service": "service-after",
+        "authenticated": true
+      },
+      "savedAfter": true,
+      "requests": [
+        "/api/session",
+        "/api/v1/work?organization_id=au-original",
+        "/api/session",
+        "/api/session",
+        "/api/v1/work?organization_id=au-original",
+        "/api/session",
+        "/api/v1/work?organization_id=au-original"
+      ],
+      "pass": false
+    },
+    {
+      "name": "final-download-service",
+      "expected_accept": false,
+      "accepted": true,
+      "error": null,
+      "error_type": null,
+      "workReads": 3,
+      "sessionReads": 4,
+      "current": {
+        "principal": "principal-original",
+        "service": "another-service",
+        "authenticated": true
+      },
+      "savedAfter": true,
+      "requests": [
+        "/api/session",
+        "/api/v1/work?organization_id=au-original",
+        "/api/session",
+        "/api/session",
+        "/api/v1/work?organization_id=au-original",
+        "/api/session",
+        "/api/v1/work?organization_id=au-original"
+      ],
+      "pass": false
+    },
+    {
+      "name": "final-download-expired",
+      "expected_accept": false,
+      "accepted": true,
+      "error": null,
+      "error_type": null,
+      "workReads": 3,
+      "sessionReads": 4,
+      "current": {
+        "principal": "principal-original",
+        "service": "service-after",
+        "authenticated": false
+      },
+      "savedAfter": true,
+      "requests": [
+        "/api/session",
+        "/api/v1/work?organization_id=au-original",
+        "/api/session",
+        "/api/session",
+        "/api/v1/work?organization_id=au-original",
+        "/api/session",
+        "/api/v1/work?organization_id=au-original"
+      ],
+      "pass": false
+    }
+  ],
+  "real_model_calls": 0,
+  "scope": "Exact source VM/session-race acceptance checks; no browser, HTTP server, driver main or product change",
+  "reviewer": "chatGPT-online; not the PR57 implementer",
+  "online_member": "54f3ed9e-817b-482a-90c1-d46bfc01728c",
+  "request": "#40 comment250; independent read-only evidence assistance, original DSH owner retained",
+  "decision": "changes required: the download final third Work GET bypasses current-session recheck",
+  "related_author_tests": {
+    "passed": 100,
+    "failed": 0,
+    "command": "node --test tests/exit22*.test.ts"
+  },
+  "ci": {
+    "head": "9d7fe98ea9e790d89f16f6a128af949ecda8ccb8",
+    "all_three_pr_workflows": "success",
+    "runs": [
+      42586114964,
+      42586115360,
+      42586114972
+    ]
+  },
+  "node_version": "v24.22.1",
+  "limits": [
+    "Only exact driver fragments with synthetic GETs executed; never driver main, modeld or a real model.",
+    "No new product security failure or actual private-data leak is asserted; this is an acceptance-evidence identity race.",
+    "The checked helper correctly rejects in-flight identity changes. The separate final GET in the download driver does not use it.",
+    "No local full Python/npm/Chrome run is claimed by this reviewer.",
+    "Initial extraction expected a globally unique checks.json marker; both normal/catch paths contain it. That reviewer setup error was corrected by bounding the first marker after the unique restart start, matching author extraction. It is not product RED."
+  ],
+  "log_sha256": {
+    "u086-pr57-author-node.log": "929e9f2231594f0d8aacc46ea6774496c95118247e19d2da64b2354bdb252c1b",
+    "u086-pr57-independent-final-read.log": "c4f746d40522d9cdb2eb9d30f7d8f4f6cc2ee816eac448af955cdc5872c32f0b",
+    "u086-pr57-independent-counterexample.log": "9951e0f06d261dec681fb5059452d0c2b51a8229301e6b96434b2e47779183d1",
+    "u086-pr57-independent-confirmed.log": "806470325b9e781b94bec339812717c6ba55c6453a90a0fc9ba97cb312f5dc04"
+  }
+}

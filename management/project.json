@@ -2018,6 +2018,13 @@
                     "from": "doing",
                     "to": "doing",
                     "note": "U086原取消回执恢复协助候选：作者/PR57准确9d7fe98、集成4aa020b，fresh scope评论251保留DSH/#40责任与WIP。原driver的取消GET未核对HTTP/主体/原Work步骤且重启后未查询，原源34项1通过33失败；仅增加GET取证，34项及相关134 Node通过，实际Chrome/HTTP/SQLite一次fake推理+一次fake取消且观察零POST。证据evidence/U-086/cancel-receipt-recovery/README.md及validation.json；当前head CI和另一工程角色复核后才采用。本条仅交付历史，保留139与真实父出口，不迁移/切换/新增真实调用。"
+                },
+                {
+                    "at": "2026-11-09T09:24:38.508Z",
+                    "actor": "codex-home/single-duty-review-integration",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "u086-final-read-combination-1bd324a：#40评论256范围内组合作者1bd324a最终GET会话修复与PR58 b293c626原取消恢复；作者修复由当前非实施会话独立7探针复验，PR58由DSH在线消息101独立复核，分别保持准确源码blob。新增常规CI最后GET的主体/服务/失效竞态，原9d7fe98为1PASS/3FAIL→组合4PASS；134原相关Node、两组实际Chrome/HTTP/SQLite通过，真实调用0。完整验证与旧VM兼容错误分别见evidence/U-086/final-read-combination/README.md及validation.json。当前head CI后才能采用，本条仅交付历史，保持DSH owner/#40 progress/WIP和#22/#39/#40真实出口，不作为在线认领、迁移或真实运行证据。"
                 }
             ],
             "claim": {
