@@ -1,5 +1,11 @@
 # U-086 / #40：新候选与当前集成边界复核
 
+2026-11-09 原成果采用/交付页面验收补漏：移除driver直接API采用/交付和手工
+finish_attempt补救，实际操作同一Work/result的Core控件，严格核对原成果交付。
+7项原源RED→GREEN、实际Chrome/CoreHTTP/SQLite缺失控件反例成对验证；见
+[本轮合同与验证](page-delivery-gate/README.md)。仍待非实施角色复核/准确head CI，
+DSH owner及真实出口保持，无新增真实推理。
+
 2026-11-09 输出到取消恢复的主体传递补漏：当前作者abef544正常链路因
 outputObservation缺principal_id而拒绝原GET，独立片段测试未覆盖衔接。
 本次两行修复经原源4项RED→GREEN及实际Chrome/Core/SQLite成对验证；

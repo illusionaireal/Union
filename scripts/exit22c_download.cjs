@@ -367,38 +367,58 @@ function startHost() {
   check('downloaded content sha256 matches the recorded digest: ' + downloadedDigest.slice(0, 16),
         downloadedDigest === digest);
   check('downloaded title is the recorded title', meta.title === recordedTitle);
-  await page.evaluate(async config => {
-    const version = async () => (await (await fetch('/api/v1/aus/' + config.auId)).json()).au.version;
-    const work = async (kind, data) => {
-      const response = await fetch('/api/v1/work/commands', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: crypto.randomUUID(), organization_id: config.auId,
-          base_version: await version(), kind, data }),
-      });
-      const value = await response.json();
-      if (!value.receipt || value.receipt.status !== 'succeeded') {
-        throw new Error(kind + ' failed: ' + JSON.stringify(value).slice(0, 300));
-      }
-      return value.receipt;
-    };
-    const read = await (await fetch('/api/v1/work?organization_id=' + config.auId)).json();
-    const w = (read.works || []).find(x => x.id === config.workId);
-    const result = (w.results || []).find(r => r.status === 'candidate') || (w.results || []).at(-1);
-    await work('adopt_result', { work_id: config.workId, result_id: result.id });
-    const fresh = await (await fetch('/api/v1/work?organization_id=' + config.auId)).json();
-    const fw = (fresh.works || []).find(x => x.id === config.workId);
-    const attempt = fw.attempts.at(-1);
-    if (attempt && attempt.status === 'running') {
-      await work('finish_attempt', { work_id: config.workId, attempt_id: attempt.id,
-        outcome: 'delivered', reason: '页面级验收完成交付' });
-    }
-    await work('deliver_work', { work_id: config.workId, result_id: result.id });
-  }, { auId: createdReceipt.organization_id, workId });
-  await waitFor(async () => {
-    const read = await coreWork();
-    const work = (read.works || []).find(w => w.id === workId);
-    return work && (work.status === 'delivered' || (work.results || []).some(r => r.status === 'adopted'));
-  }, 'result adopted and delivered', 60000);
+  // Exercise the actual Core result controls. A hidden/disabled control or an
+  // unfinished attempt must not be repaired with a direct API write.
+  const deliveryBefore = await snapshot();
+  const originalEntries = deliveryBefore.works.filter(w => w.id === workId);
+  check('exactly one original Work before page delivery', originalEntries.length === 1);
+  const candidates = originalEntries[0].results.filter(r => r.id === resultId);
+  check('the downloaded original candidate is still current', candidates.length === 1
+    && candidates[0].status === 'candidate' && candidates[0].sha256 === recorded
+    && JSON.stringify(candidates[0].sources) === JSON.stringify(recordedFull.sources));
+  const resultControls = page.locator('[data-work=' + JSON.stringify(workId) + ']')
+    .getByRole('region', { name: '成果 ' + resultId, exact: true });
+  const pageCommands = [];
+  const captureCommand = request => {
+    if (request.method() === 'POST' && new URL(request.url()).pathname === '/api/v1/work/commands')
+      pageCommands.push(request.postDataJSON());
+  };
+  page.on('request', captureCommand);
+  try {
+    await resultControls.getByRole('button', { name: '采用此成果', exact: true }).click();
+    // The UI only offers delivery after the original adoption is confirmed and
+    // the original attempt is closed by the existing product transaction.
+    await resultControls.getByRole('button', { name: '交付此成果', exact: true }).click();
+    await waitFor(async () => {
+      const read = await snapshot();
+      check('page delivery retains the original authenticated principal',
+        read.access.principal_id === deliveryBefore.access.principal_id);
+      const entries = read.works.filter(w => w.id === workId);
+      check('page delivery retains exactly one original Work', entries.length === 1);
+      const current = entries[0];
+      const results = current.results.filter(r => r.id === resultId);
+      check('page delivery retains the original result digest and sources', results.length === 1
+        && results[0].sha256 === recorded
+        && JSON.stringify(results[0].sources) === JSON.stringify(recordedFull.sources));
+      if (current.status !== 'delivered') return false;
+      check('page delivered the same adopted result', current.delivered_result_id === resultId
+        && results[0].status === 'adopted');
+      return true;
+    }, 'original result adopted and delivered through the Core page', 60000);
+  } finally {
+    page.off('request', captureCommand);
+  }
+  check('exactly the two original page commands were submitted', pageCommands.length === 2
+    && pageCommands[0].kind === 'adopt_result' && pageCommands[1].kind === 'deliver_work'
+    && pageCommands.every(command => typeof command.id === 'string' && command.id
+      && command.organization_id === createdReceipt.organization_id
+      && command.data?.work_id === workId && command.data?.result_id === resultId)
+    && pageCommands[0].id !== pageCommands[1].id);
+  fs.writeFileSync(path.join(output, 'page-delivery-commands.json'), JSON.stringify({
+    organization_id: createdReceipt.organization_id, work_id: workId, result_id: resultId,
+    sha256: recorded, principal_id: deliveryBefore.access.principal_id,
+    commands: pageCommands.map(({ id, kind }) => ({ id, kind })),
+  }, null, 2));
   const before = await snapshot();
   fs.writeFileSync(path.join(output, 'snapshot-before-restart.json'), JSON.stringify(before, null, 2));
 

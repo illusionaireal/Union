@@ -2032,6 +2032,13 @@
                     "from": "doing",
                     "to": "doing",
                     "note": "U086/#40评论260的输出到原取消恢复衔接补漏：作者abef544的outputObservation遗漏principal_id，正常输出后原GET必然拒绝。原源串联四项RED→两行身份传递GREEN，142相关Node、实际Chrome/CoreHTTP/SQLite原源RED与候选恢复通过，npm151Node/363前端/37管理。证据evidence/U-086/reader-binding/README.md和validation.json；当前head CI与另一工程角色复核后才能采用。本地仅追加交付历史，不动DSH在线owner/progress/WIP或真实出口，不新增真实推理/部署/迁移。"
+                },
+                {
+                    "at": "2026-11-09T11:00:31.378Z",
+                    "actor": "codex-home/single-duty-implementation",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "u086-page-delivery-gate-76807aec：#40评论263限定的验收驱动补漏，原API采用/交付和手工finish_attempt掩盖Core页面缺失；改为原Work/result的真实控件，要求adopted且delivered及原result/摘要/来源一致。原7 Node及2实际Chrome场景RED→GREEN，149相关Node通过；缺失控件零写入、正常恰好2页面POST。合同/环境与夹具失败分类/全量记录见evidence/U-086/page-delivery-gate/README.md和validation.json。另一工程角色复核及准确head CI后才能采用；本地仅交付历史，不替代在线任务状态。DSH owner/progress/WIP及#22/#39/#40真实出口保持，无新增真实推理、迁移、NAS切换或监督/锁变更。"
                 }
             ],
             "claim": {
