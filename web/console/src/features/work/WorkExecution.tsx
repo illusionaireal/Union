@@ -152,6 +152,8 @@ export function WorkExecution({
     : 'start_attempt';
   const reference =
     references.find((r) => r.kind !== 'cancel_step' && !r.resolved) ||
+    // Closing the attempt changes the next action, not the original run identity.
+    references.find((r) => r.kind === 'run_loop') ||
     references.find((r) => r.kind === kind);
   const cancelReference = references.find((r) => r.kind === 'cancel_step');
   const recoveries = [reference, cancelReference].filter((r): r is Reference => Boolean(r));

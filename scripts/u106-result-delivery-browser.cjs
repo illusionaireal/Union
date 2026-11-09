@@ -46,6 +46,29 @@ async function main() {
     });
     await page.goto(routeUrl);
     await page.getByRole('button', {name:'采用此成果',exact:true}).waitFor();
+    // Restore only the actual, already-committed fixture loop identity. No new run.
+    const session = await (await context.request.get(ready.origin + '/api/session')).json();
+    const loopUrl = ready.origin + '/api/v1/governance/receipts?organization_id=' + ready.organization_id + '&id=' + ready.loop_request.id;
+    const loopReceipt = (await (await context.request.get(loopUrl)).json()).receipt;
+    assert.equal(loopReceipt.id, ready.loop_request.id);
+    assert.equal(loopReceipt.status, 'succeeded');
+    const scope = {principalId:session.principal_id, serviceInstance:session.service_instance,
+      organizationId:ready.organization_id, workId:ready.work_id};
+    await page.evaluate(({scope, original}) => {
+      sessionStorage.setItem('union-work-execution:' + JSON.stringify(scope), JSON.stringify([
+        {...scope, id:original.id, kind:original.kind, base_version:original.base_version, resolved:true},
+      ]));
+    }, {scope, original:ready.loop_request});
+    await page.reload();
+    async function queryOriginalRun() {
+      const group = page.getByRole('group', {name:'原运行请求',exact:true});
+      assert.ok((await group.innerText()).includes(ready.loop_request.id));
+      const observed = page.waitForResponse(response => response.url() === loopUrl);
+      await group.getByRole('button', {name:'查询原请求',exact:true}).click();
+      assert.deepEqual((await (await observed).json()).receipt, loopReceipt);
+      await page.getByText(loopReceipt.message, {exact:true}).waitFor();
+    }
+    await queryOriginalRun();
     const before = await (await context.request.get(workUrl)).json();
     assert.equal(before.access.can_start, false);
     assert.equal(before.access.can_manage_results, true);
@@ -63,6 +86,7 @@ async function main() {
       await page.reload();
       await page.getByRole('button', {name:query,exact:true}).click();
       await page.getByText(message, {exact:true}).waitFor();
+      await queryOriginalRun();
     }
     assert.equal(originals.length, 2);
     await page.getByText('工作已交付', {exact:true}).waitFor();
@@ -102,7 +126,8 @@ async function main() {
       'delivery response lost after transaction', 'delivered state reload keeps both original GETs', 'exactly two action POSTs',
       'source/result/work/digest match', 'actual browser download matches HTTP', 'three viewport widths',
       'foreign principal clears prior content', 'original server receipts survive', 'manual body and finish controls hidden',
-      'two fake turns and zero real calls'];
+      'two fake turns and zero real calls', 'restored actual loop original GET before adoption',
+      'closed attempt preserves original run lookup', 'delivered work reload preserves original run lookup'];
     const output=path.resolve(process.env.UNION_U106_EVIDENCE || '.union/u106-browser');fs.mkdirSync(output,{recursive:true});
     fs.writeFileSync(path.join(output,'checks.json'),JSON.stringify({scope:'controlled',checks,work_posts:originals.length,
       command_ids:originals.map(r=>r.id),...report},null,2));

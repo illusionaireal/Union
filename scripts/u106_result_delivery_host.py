@@ -15,7 +15,8 @@ try:
     other, _ = case.participant("u106-outsider")
     print(json.dumps({"origin": case.server.origin, "organization_id": case.au_id,
                       "cookie_name": case.server.cookie_name, "token": case.token, "other_token": other,
-                      "work_id": "work-overview", "result": case.result}), flush=True)
+                      "work_id": "work-overview", "result": case.result,
+                      "loop_request": case.loop_request}), flush=True)
     sys.stdin.readline()
     assert len(case.channel.calls) == 2 and case.provider.requests == {}
     print(json.dumps({"fake_model_calls": 2, "real_model_calls": 0}), flush=True)
