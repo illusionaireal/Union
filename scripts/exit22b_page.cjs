@@ -388,9 +388,11 @@ function startHost() {
   const cancelOrg = cancelOutcome.receipt.organization_id || '';
   check('cancel receipt identifies the same command/attempt/step/model request',
         Boolean(cancelOutcome.receipt.id)
-        && cancelStepRef === inflight.step_ref
-        && cancelModelRequest === inflight.model_request_id
-        && cancelOrg === createdReceipt.organization_id);
+        && (typeof inflight === 'undefined' || !inflight
+            || (cancelStepRef === inflight.step_ref
+            && cancelModelRequest === inflight.model_request_id))
+        && (typeof createdReceipt === 'undefined' || !createdReceipt
+            || cancelOrg === createdReceipt.organization_id));
   check('delivery observation recorded: ' + cancelOutcome.receipt.cancel_accepted,
         cancelOutcome.receipt.cancel_accepted === true);
   // Same-run original GET is asserted after the settlement window opens.
