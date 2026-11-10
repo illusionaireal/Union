@@ -1,0 +1,120 @@
+{
+  "checked_at": "2026-11-10T21:29:55.649368+00:00",
+  "scope": "controlled candidate; independent authority review and exact-head CI pending",
+  "actor": "Codex integration implementer / 01a1c746-eb38-7711-ad90-290392a05d89",
+  "online_member_id": "89f4c1c1-329a-4b54-ad37-235cf061e9a8",
+  "run_id": "20261110T210435914401Z",
+  "base": "cb3fa500847f8dc3ce75488f85fd40d49e69082c",
+  "base_tree": "d826788a160a92f2a042b6b989e6a09356b5c619",
+  "source_files_sha256": {
+    "ai_union/server.py": "be2e6a63372efd5eba2b54b46ce0126f8810188c67d5d8a6a4c52c59010ddabf",
+    "ai_union/console.py": "e3e1a80785756c1735573af4ebc85e33e17437c4853e704ffbe3d1eb8cc354df",
+    "ai_union/identity.py": "aabaf2d035815a46f0fd09de5f08801764c9959109294c1f8edf25ec914c412b",
+    "ai_union/application/creation.py": "4ecc3f7c1bc7c6e45b89f1271b68e28e1353cda56863423c1a426973d8e72273",
+    "ai_union/adapters/creation_catalog.py": "13f28e48f5cdaca1629178e3d558183c922d1f359a3923ae47b2c84e2bf4d072",
+    "ai_union/adapters/core_au_store.py": "a53212d393f0b9c509a72441f267ed870164ef8cebe3e92c53fd94d718f3f4cc",
+    "ai_union/adapters/au_catalog.py": "e83df6ed1c9e0a5b84f916661625349ab8c87f65a24575d24c92b91a917d5380",
+    "ai_union/domain/creation.py": "c4247893789d3e5d8a6f4f59097321139c5aec4b33e893d251b0e1269de9a0c7",
+    "ai_union/application/governance.py": "61fe74eb98e3eb0294b2c271ef7427184d887cb2323c5db51035ba53e3a9810b",
+    "ai_union/adapters/governance_store.py": "11f1ad1b3fdf4ce5995d45910a2b6a345b15c2a004d7bedbe48ca990099ea60c",
+    "ai_union/errors.py": "03ad071360ff5fd1d44634ea13eee49066866a9bb4ee6c70e77f38b812976b28",
+    "specs/053-union-rewrite/s01-contract.md": "e6cb13dfb0a790c6e67fc9dd6726ae4e2ed966c726850d68292e79e6b9c8d567",
+    "services/modeld/upstream.lock.json": "e00feaece9d94d823230204cf3d73f2bb9a9025d9078b456d7df32cc2a7d633f"
+  },
+  "client_sha256": "c7147840d12aa51183bd2780e2947bef73976560f8cfa90cce80972d63676dcb",
+  "contract_sha256": "5fa994e4d53e53a9c510b05a4a24afac604348fb631ef44e6cfd9eab29fd11ed",
+  "first_focused_run": {
+    "tests": 7,
+    "failures": 0,
+    "errors": 0,
+    "exit_code": 0,
+    "note": "Existing product behavior GREEN. No production code changed to manufacture RED."
+  },
+  "npm_check": {
+    "exit_code": 0,
+    "phase": "Full npm check passed; delivery-history structural checks also passed after render.",
+    "management_tests": 37,
+    "node_test_counts": [
+      37,
+      306
+    ],
+    "frontend_tests": 363
+  },
+  "python_full": {
+    "status": "passed",
+    "exit_code": 0,
+    "tests": 824,
+    "seconds": 521.437,
+    "skipped": 8,
+    "failures": 0,
+    "errors": 0,
+    "new_public_client_tests": 7,
+    "actual_sdk_fixture_test_executed": true
+  },
+  "environment_preparation": {
+    "recorded_vendor_commit": "805a42ffaa56b29a88baef87c7567f1ab9a40a8f",
+    "initial_failures": [
+      "Initial alternate vendor path unavailable; used existing independent checkout source.",
+      "Git automatic 10-character index abbreviations differed from recorded 7-character patch headers; patch content identical.",
+      "Fresh Bun install failed on Windows long dependency symlink paths.",
+      "Short junction attempt failed frozen-lockfile verification; did not change lockfile."
+    ],
+    "resolution": "Read-only reuse of existing pinned vendor plus its exact recorded patch and installed dependencies; failed preparation tree retained privately.",
+    "reused_service_sources_compared": 9,
+    "reused_service_sources_mismatched": [],
+    "isolated_git_metadata": "Private submodule metadata/index created for the dependency junction; existing checkout index was not shared.",
+    "borrowed_vendor_recorded_patch_unchanged_after_full": true
+  },
+  "logs": {
+    "u101-focused-initial.log": {
+      "sha256": "5238e3cfa7dbee397f6842ad2663486453105226bfa971219d3a2c3642d7d2df",
+      "bytes": 1477
+    },
+    "npm-check-initial.log": {
+      "sha256": "cb13241da1b0dd4a318ef99972be4da3fa06c535690e17e29c800cf02762fa13",
+      "bytes": 31496
+    },
+    "modeld-prepare.log": {
+      "sha256": "276cc9eb7764ec15c8e0f71e39dd10165e6301540bc619a3688ee44f3aad0cb9",
+      "bytes": 780
+    },
+    "modeld-prepare-fixed.log": {
+      "sha256": "145de2b49a2c2213997426ed10df44d1a3d59a5e346ac7e55a443842f86f5b20",
+      "bytes": 2707
+    },
+    "modeld-prepare-short.log": {
+      "sha256": "fcc7e663c0122cbba2c86b98709de8ab500a06b30cf6ca30b9e1c7ddbbaca67d",
+      "bytes": 1186
+    },
+    "python-full.log": {
+      "sha256": "9eb5cebf4d7121f2f79bc8df5321160a04104334062c993f8e5f2f02a7b08b75",
+      "bytes": 149194
+    }
+  },
+  "real_model_calls": 0,
+  "deployment_or_live_migration": false,
+  "core_behavior_modified": false,
+  "private_table_audit_claimed": false,
+  "independent_review": {
+    "status": "pending",
+    "implementer_self_approval": false
+  },
+  "toolchain": {
+    "python": "3.12.10",
+    "node": "24.19.0",
+    "bun": "1.4.2"
+  },
+  "client_import_boundary": {
+    "stdlib_only": true,
+    "internal_core_or_test_helper_imports": 0,
+    "sqlite_imports": 0,
+    "separate_core_process": true
+  },
+  "candidate_structure": {
+    "owned_files": 6,
+    "local_evidence_links_checked": 6,
+    "missing_links": 0,
+    "private_config_value_hits": 0,
+    "core_behavior_diff_files": []
+  }
+}

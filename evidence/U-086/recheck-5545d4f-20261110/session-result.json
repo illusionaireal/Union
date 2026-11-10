@@ -1,0 +1,53 @@
+{
+  "candidate": "5545d4f8ab36f2b94900630a4b41e863cfaecbe3",
+  "source_manifest_sha256": "1e2ba98aa1193d97be72c489ead4111f9765ea60f3d1a875b787b2fa3d7bd02c",
+  "tests": 4,
+  "passed": 4,
+  "failures": [],
+  "errors": [],
+  "observations": [
+    {
+      "case": "healthy_control",
+      "http_status": 200,
+      "error_code": null,
+      "direct_exception_type": null,
+      "listed_profiles": [
+        "core_v1",
+        "legacy_v0"
+      ],
+      "catalog_and_state_unchanged": true
+    },
+    {
+      "case": "scope_control",
+      "http_status": 200,
+      "error_code": null,
+      "direct_exception_type": null,
+      "listed_profiles": [
+        "legacy_v0"
+      ],
+      "catalog_and_state_unchanged": true
+    },
+    {
+      "case": "legacy_profile_mismatch",
+      "http_status": 200,
+      "error_code": null,
+      "direct_exception_type": null,
+      "listed_profiles": [
+        "core_v1"
+      ],
+      "catalog_and_state_unchanged": true
+    },
+    {
+      "case": "core_locator_profile_mismatch",
+      "http_status": 200,
+      "error_code": null,
+      "direct_exception_type": null,
+      "listed_profiles": [
+        "core_v1"
+      ],
+      "catalog_and_state_unchanged": true
+    }
+  ],
+  "source_unchanged": true,
+  "real_model_calls": 0
+}

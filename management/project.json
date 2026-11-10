@@ -1,6 +1,6 @@
 {
     "schema_version": 1,
-    "updated_at": "2026-11-10",
+    "updated_at": "2026-11-11",
     "wip_limit": 8,
     "modules": [
         {
@@ -89,7 +89,7 @@
             "name": "工作台与观察 / 核心及可选平台",
             "implemented": "React 八页导航、本地多组织、模型配置、事件/工作/成果/回执、只读成员运行状态/会话/工作区摘要",
             "validation": "V1：checkpoint观察仅lstat、不打开原库；定向50/全量260与独立94项通过，独立长结论因额度中断",
-            "gap": "检查点存在性当前无true生产来源；跨来源非原子、热配置、真实续拍/崩溃/供应商迟到、真实恢复、浏览器与整体复核未过；公共账户/多租户未实现",
+            "gap": "用户已取消旧 AU/旧 UX 作为重构基线；U-110 完整体验契约与 U-111–U-115 新入口、资源就绪、完整工作、治理交接、旧前端退役待交付。现有页面增量不等于完整 V1 产品。",
             "evidence": [
                 "evidence/007-workspace-redesign/README.md",
                 "evidence/016-member-workspace/README.md",
@@ -104,7 +104,8 @@
                 "evidence/037-session-revisions/README.md",
                 "evidence/038-activity-boundaries/README.md",
                 "evidence/039-wal-observation/README.md",
-                "evidence/040-checkpoint-metadata/README.md"
+                "evidence/040-checkpoint-metadata/README.md",
+                "evidence/U-109/README.md"
             ]
         },
         {
@@ -2267,14 +2268,14 @@
             "status": "backlog",
             "owner": null,
             "role": "核心接口 / 平台接入 / 权限与契约复核",
-            "acceptance": "完成后：其他客户端或可选平台可以按权限创建组织、查询进度和提交命令，使用与核心工作台一致的规则。\n\n具体要做：\n\n1. 提供外部可调用的创建、查询和操作接口，并写清请求和返回内容。\n2. 让外部工具使用核心账号和组织权限；同样检查版本、重复请求并留下操作记录。\n3. 把已有平台调用改到这些接口，停止直接修改核心数据库或绕过内部权限。\n4. 保留核心独立使用能力，不要求普通用户先注册私有商业平台。\n\n怎么演示：用一个独立客户端创建组织、查询进度、发送一条有权执行的命令；再换成无权账号，确认同一操作被拒绝且有记录。\n\n2026-11-06 核对：未开始。它接通外部工具；安装后的独立使用由安装维护卡继续验收。\n\n开发与完整验收依据：[代码、接口和技术约束](specs/053-union-rewrite/tasks.md#u-071-development)。",
+            "acceptance": "完成后：其他客户端或可选平台可以按权限创建组织、查询进度和提交命令，使用与核心工作台一致的规则。\n\n具体要做：\n\n1. 提供外部可调用的创建、查询和操作接口，并写清请求和返回内容。\n2. 让外部工具使用核心账号和组织权限；同样检查版本、重复请求并留下操作记录。\n3. 把已有平台调用改到这些接口，停止直接修改核心数据库或绕过内部权限。\n4. 保留核心独立使用能力，不要求普通用户先注册私有商业平台。\n\n怎么演示：用一个独立客户端创建组织、查询进度、发送一条有权执行的命令；再换成无权账号，确认同一操作被拒绝且有记录。\n\n2026-11-06 核对：未开始。它接通外部工具；安装后的独立使用由安装维护卡继续验收。\n\n开发与完整验收依据：[代码、接口和技术约束](specs/053-union-rewrite/tasks.md#u-071-development)。\n\n2026-11-11：子卡U-103调用链审计见[evidence/U-103/README.md](evidence/U-103/README.md)；只记录源码核查，不关闭本卡完整独立客户端与公共契约验收。\n\n2026-11-11：U-101/#55独立HTTP客户端验收候选见[evidence/U-101/README.md](evidence/U-101/README.md)；通过公开接口验证创建/查询、身份隔离及原回执，不关闭本卡完整命令/独立使用验收，在线采用与独立复核另查Kanban。",
             "dependencies": [
                 "U-066",
                 "U-067"
             ],
             "blocker": null,
             "started_at": null,
-            "updated_at": "2026-11-08",
+            "updated_at": "2026-11-11",
             "completion": null,
             "history": [
                 {
@@ -2297,6 +2298,20 @@
                     "from": "backlog",
                     "to": "backlog",
                     "note": "用户继续后实际建立执行子卡#55–#58 / U-101–U-104；在线revision351逐张读回，父卡原owner/status/依赖保留。全部五卡合计21子卡，无依赖环；仅38/51依实际前置ready，其余backlog，未自动认领。证据docs/reviews/2026-11-08-task-granularity.md、evidence/U-079/five-card-split.json。本条是交付历史，不用于在线调度。"
+                },
+                {
+                    "at": "2026-11-10T20:20:00.000Z",
+                    "actor": "Codex coordinator audit / session 01a1c70f-f9aa-7891-b9d7-031153852447; online member 89f4c1c1-329a-4b54-ad37-235cf061e9a8",
+                    "from": "backlog",
+                    "to": "backlog",
+                    "note": "2026-11-11 U-103/#57只读调用链审计：固定f599608，166候选文件与28补充锚点；未检出当前仓库实际平台/V1私有表旁路，区分公开HTTP、核心服务装配、显式宿主维护、legacy与临时fixture。证据evidence/U-103/README.md、source-inventory.json及validation.json。给#55纠正现有创建/列表/原回执路由；不虚构迁移、不关闭U-071/#30或#58，工程/真实/持续分别验收。状态/owner/依赖只认实时Kanban，本条只索引交付历史。"
+                },
+                {
+                    "at": "2026-11-10T21:18:54.963209Z",
+                    "actor": "Codex integration implementer / session 01a1c746-eb38-7711-ad90-290392a05d89; online member 89f4c1c1-329a-4b54-ad37-235cf061e9a8",
+                    "from": "backlog",
+                    "to": "backlog",
+                    "note": "U-101/#55独立标准库客户端与分离Core进程受控验收候选：7项覆盖公开创建/列表/单项/原回执、普通账号隔离、伪造身份与版本拒绝、幂等冲突、丢弃响应后GET核对及重启。未改核心实现，不读取私有表、不新增模型/部署；证据evidence/U-101/README.md、contract.md、validation.json。父U-071/#30状态不变；本记录只索引交付候选，在线采用需准确CI和非实施身份/权限复核。 交付历史通过mutateLedger保存并生成视图；不镜像运行态认领。"
                 }
             ]
         },
@@ -2420,7 +2435,7 @@
             ],
             "blocker": null,
             "started_at": null,
-            "updated_at": "2026-11-10",
+            "updated_at": "2026-11-11",
             "completion": null,
             "history": [
                 {
@@ -2443,6 +2458,13 @@
                     "from": "backlog",
                     "to": "backlog",
                     "note": "U107/#61固定PR38@3e1071b已在原NAS HTTPS入口上线。用户明确授权本次auth0/catalog0→auth2/catalog1停服身份迁移，原账号密码/AU/创建回执及工作/请求保留，旧会话撤销。94包文件/59固定依赖及原入口JS/CSS实测一致；75文件停服备份已跨宿主复制核验；两个非身份库逻辑数据及24原私有文件保留，实际Chrome登录表单无JS错误/写请求。证据evidence/U-107/live-deployment-2026-11-10.md、live-deployment-2026-11-10.json。未代用户输入密码，modeld仍不可用，真实调用0；原stop137/备份权限失败保留。此为固定版本发布事实，父#27持续使用/业务验收和本地历史状态不升级；运行态仅以在线卡为准。"
+                },
+                {
+                    "at": "2026-11-10T16:02:05.900Z",
+                    "actor": "foreground Codex coordinator / member 89f4c1c1-329a-4b54-ad37-235cf061e9a8",
+                    "from": "backlog",
+                    "to": "backlog",
+                    "note": "U107/#61：用户委托控制电脑验收并明确授权原账号密码重置。原principal/角色与AU/工作/请求保留，部署版认证实现先备份及副本演练、再原子更新凭据；真实Chrome正常密码登录HTTP200，同一原AU、3项pending工作、0成果、3条delivered执行详情及5原回执可读。两非认证库与含WAL的停服完整备份逻辑一致，3库完整性正常，业务写入/模型调用/重启0。证据evidence/U-107/browser-acceptance-2026-11-11.md/json；这是用户委托的真实浏览器验收，非用户亲自操作，不关闭父#27持续使用。首次副本修订计数断言失败和检查适配历史保留。"
                 }
             ]
         },
@@ -2555,7 +2577,7 @@
             "status": "done",
             "owner": "codex/deployment-coordinator/01a1b7fe-81cb-7ec0-8459-d85fd97a9ba7",
             "role": "部署与集成值守",
-            "acceptance": "实际NAS密钥连接及服务状态有脱敏记录；5分钟计划任务可查询且至少两次实际轮询成功；重复启动互斥、读取失败不更新成功游标、无变化不调用模型；自动处理所需CLI登录不足时明确阻塞，不伪报自动修复；凭据/地址/私有日志不入库。提供关闭/恢复和故障处理说明，并同步长期交付证据。",
+            "acceptance": "实际NAS密钥连接及服务状态有脱敏记录；5分钟计划任务可查询且至少两次实际轮询成功；重复启动互斥、读取失败不更新成功游标、无变化不调用模型；自动处理所需CLI登录不足时明确阻塞，不伪报自动修复；凭据/地址/私有日志不入库。提供关闭/恢复和故障处理说明，并同步长期交付证据。\n\n2026-11-11：U-116/#70处理新CI的固定补丁SHA缩写误拒，见[evidence/U-116/README.md](evidence/U-116/README.md)。它是独立构建修复候选，不把U-101客户端或父卡验收升级为已通过。\n\n2026-11-11：U-117/#71修复当前U108浏览器驱动的原预约就绪检查；见[evidence/U-117/README.md](evidence/U-117/README.md)。限定受控CI支持，不推断历史117B或补造U086真实验收。",
             "dependencies": [],
             "blocker": null,
             "started_at": "2026-11-07",
@@ -2584,6 +2606,20 @@
                     "from": "done",
                     "to": "done",
                     "note": "PR31经17 watcher回归及当前14项CI合并e7b139f，已安装精确源；14:21:55Z三源成功，board299，NAS running/OOM=false/restart=0，attention实际标出#28，前台锁下agent busy。#33 v5读回采用，证据evidence/U-079/overdue-host-adoption.md。每五分钟轮询/四小时停滞重评已生效，0新增真实产品调用。"
+                },
+                {
+                    "at": "2026-11-10T21:45:51.606Z",
+                    "actor": "Codex CI implementer / 01a1c746-eb38-7711-ad90-290392a05d89; online member 89f4c1c1-329a-4b54-ad37-235cf061e9a8",
+                    "from": "done",
+                    "to": "done",
+                    "note": "U-116/#70从#55的真实CI阻塞拆出：固定Git完整diff显示的SHA缩写，额外源码仍拒绝；2项真实RED→4项GREEN，89项SDK和全新目录prepare/安装检查通过，完整检查/准确head CI另见evidence/U-116/validation.json。未改vendor pin/锁/补丁、运行时或监督。只追加长期交付证据，在线owner/WIP/采用保持Kanban权威。"
+                },
+                {
+                    "at": "2026-11-10T22:02:36.696492Z",
+                    "actor": "Codex duty CI implementer / 01a1c746-eb38-7711-ad90-290392a05d89; online member 89f4c1c1-329a-4b54-ad37-235cf061e9a8",
+                    "from": "done",
+                    "to": "done",
+                    "note": "U-117/#71从新CI浏览器失败独立拆分：原驱动同一超时RED保留；只读有界等待原命令已提交预约，再刷新页面。7就绪+2退出回归及21项实际Chrome断言通过。准确源/全量/CI见evidence/U-117/validation.json；未修改产品、监督或真实资源。只记长期交付证据，不用本地状态代替在线认领/采用。"
                 }
             ],
             "claim": null
@@ -2685,6 +2721,42 @@
                     "from": "done",
                     "to": "done",
                     "note": "基于真实Kanban revision212中的原完成记录补入长期交付镜像；不是新认领，不覆盖在线负责人和历史。DSH d5e779f通过Windows/Linux各32项独立验证；PR #15合并1baf7d1包含Windows路径等价修复。"
+                }
+            ]
+        },
+        {
+            "id": "U-109",
+            "title": "产品审计处置：退出旧 AU/旧 UX 基线并重排代码交付",
+            "priority": "P0",
+            "milestone": "G0",
+            "module": "management",
+            "status": "done",
+            "owner": "codex-home-coordinator（当前 Codex 协调会话）",
+            "role": "开发协调 / 产品验收纠偏",
+            "acceptance": "原 44 张活动卡逐项标注，新增 7 卡含 5 项代码修正，16 卡按实际契约调整依赖，旧发布 #61 归档；保留原负责人/已开工状态/证据。新 V1 产品设计与代码仍待各执行卡交付。",
+            "dependencies": [],
+            "blocker": null,
+            "started_at": "2026-11-11",
+            "updated_at": "2026-11-11",
+            "completion": {
+                "scope": "documentation",
+                "reviewer": "Codex 当前协调会话（实施者结构与读回自检，仅文档/任务处置）",
+                "evidence": [
+                    "docs/reviews/2026-11-11-kanban-charter-product-audit.md",
+                    "evidence/U-109/README.md",
+                    "evidence/U-109/assignment-specs.json",
+                    "evidence/U-109/readback.json"
+                ],
+                "note": "用户明确授权审计修正后，按实际在线身份和版本完成任务布置并逐项读回。此处只保存长期交付证据，不据本地状态认领；新前端、真实成果与持续运行未被标成完成。"
+            },
+            "claim": null,
+            "history": [
+                {
+                    "at": "2026-11-10T18:13:27.836Z",
+                    "actor": "Codex coordinator / product audit disposition",
+                    "from": "candidate",
+                    "to": "done",
+                    "note": "显式记录本次文档与协调交付；不是在线看板双向同步，不更改其他历史卡。"
                 }
             ]
         }

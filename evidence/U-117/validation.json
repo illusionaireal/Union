@@ -1,0 +1,136 @@
+{
+  "timestamp": "2026-11-10T22:02:36.689496+00:00",
+  "integration_base": "cb3fa500847f8dc3ce75488f85fd40d49e69082c",
+  "stacked_build_candidate": "2ccfb5b1390ffe9663a80d3d7eb0b5c92593aabb",
+  "actor": "Codex duty CI implementer / 01a1c746-eb38-7711-ad90-290392a05d89",
+  "online_member_id": "89f4c1c1-329a-4b54-ad37-235cf061e9a8",
+  "trigger": {
+    "pr": 87,
+    "head": "0e8a14467255f3dd20665c07cc506589c3598368",
+    "ci_jobs": [
+      130143448789,
+      130143043156
+    ],
+    "failure": "view-output button timeout after 10000 ms",
+    "local_unchanged_driver_reproduced": true
+  },
+  "diagnostic": {
+    "page_core_get": {
+      "version": 9,
+      "steps": 0,
+      "reserved": 0,
+      "attempt_status": "running"
+    },
+    "later_core_get": {
+      "same_work": true,
+      "steps": 1,
+      "status": "reserved",
+      "reserved": 1,
+      "fake_model_posts": 1
+    }
+  },
+  "contract_red": {
+    "exit_code": 1,
+    "failure": "same original 10000 ms output-button timeout"
+  },
+  "regression": {
+    "passed": 9,
+    "failed": 0,
+    "readiness": 7,
+    "existing_lifecycle": 2
+  },
+  "chrome": {
+    "passed": 21,
+    "checks": [
+      "one original fake model dispatch",
+      "partial text precedes cancellation",
+      "observed reservation belongs to original command",
+      "only original step is observed",
+      "no native or tool argument disclosure",
+      "expanded output fits 1440px",
+      "expanded output fits 390px",
+      "expanded output fits 320px",
+      "output not stored in browser",
+      "disconnection retains original prefix",
+      "reconnect uses original cursor",
+      "reload does not repeat run command",
+      "cross-work observation refused",
+      "server truncation stops body loading explicitly",
+      "truncated permission recheck uses metadata only",
+      "revocation clears the capped private text",
+      "cancel targets only original model request",
+      "unknown reservation remains occupied",
+      "original step identities preserved",
+      "restart keeps original unknown request and budget",
+      "restart never redispatches"
+    ],
+    "real_model_calls": 0,
+    "fake_model_calls": 1,
+    "cancel_posts": 1,
+    "fixture_exit": 0
+  },
+  "npm_check": {
+    "exit_code": 0,
+    "management": 37,
+    "node": 317,
+    "frontend": 363
+  },
+  "python_full": {
+    "exit_code": 0,
+    "tests": 817,
+    "seconds": 514.174,
+    "skipped": 8,
+    "failures": 0,
+    "errors": 0
+  },
+  "real_model_calls": 0,
+  "nas_deployment": false,
+  "product_code_changed": false,
+  "independent_review": "not claimed; implementer self-check",
+  "logs": {
+    "ci-job-130143448789.log": {
+      "bytes": 86796,
+      "sha256": "5949116b2a7f716f26b0a3930d232fe885cef69da09b99a99612f6621a5e804b"
+    },
+    "u108-system-chrome.log": {
+      "bytes": 423,
+      "sha256": "30e259ae0d0ca624c6702dd1bc038102068e1ace9145d8bfcd7ba4a0f2c50568"
+    },
+    "u108-current-diagnostic.json": {
+      "bytes": 5119,
+      "sha256": "2679567c27d7c2fc64829a8e5815e30c02d61ba9a008d59470b2b30a524fe034"
+    },
+    "u117-red-browser.log": {
+      "bytes": 423,
+      "sha256": "30e259ae0d0ca624c6702dd1bc038102068e1ace9145d8bfcd7ba4a0f2c50568"
+    },
+    "u117-green-tests.log": {
+      "bytes": 807,
+      "sha256": "cb436613d267cf02de130735673c4248f3900bdc08e5fca0c16f70b4a9f95fa0"
+    },
+    "u117-green-browser.log": {
+      "bytes": 91,
+      "sha256": "8643bacb7e4cf5acb06f23c1b3685df3b31afa1aa7e9e6be87048a07194f3843"
+    },
+    "u117-npm-check.log": {
+      "bytes": 32424,
+      "sha256": "88ff253bc8f585b3934ab60b5d05f1aa5701489aff963465fa82d0442f55c81b"
+    },
+    "u117-python-full.log": {
+      "bytes": 147820,
+      "sha256": "6578a19571024e8edf1d2d95b5e747d827bfe409af468ff9c24eb2e5bc196b14"
+    },
+    "u117-management-final.log": {
+      "bytes": 3776,
+      "sha256": "5d7520af7fdd85f27ca89c8481e1e3f692c89715e9c9441202e8ebd9eceb9cda"
+    }
+  },
+  "source_files_sha256": {
+    "scripts/u108-work-events-browser.cjs": "cad457e92ba1b86d80be73419e08d273ad086a87f0b1f3b3a43b994099ab5864",
+    "tests/u108-reservation-readiness.test.ts": "1654167e4ba51d25ad81b8c654a177356cd976720fab097a837a42d9267315a0"
+  },
+  "source_hash_encoding": "Git index blob bytes",
+  "integration_after_build_fix": "81a0b833fcb3f4318f35cc7a7b329d82a962248d",
+  "base_tree_matches_tested_build_candidate": true,
+  "checked_at": "2026-11-10T22:09:45.831029+00:00"
+}

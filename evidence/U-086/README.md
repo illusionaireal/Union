@@ -280,3 +280,11 @@ The original candidate must cite a persisted read of the actual synthetic bytes;
 nonce/digest checks alone no longer pass. Controlled checks do not close real exits.
 
 2026-11-10: [Independent recheck of revised session and replay candidates](recheck-1730a11-da316ed-20261110/README.md) verifies partial repairs and records the remaining contract and same-count diagnostic gaps. This is controlled review evidence, not candidate adoption.
+
+## 2026-11-10 session resolution repair recheck
+
+[Independent 5545d4f review](recheck-5545d4f-20261110/README.md): all four original HTTP probes pass; 36 session/integrity regressions ran with one platform skip. Damaged creation audit still rejects. Replay/cancellation findings and full real acceptance remain open; product candidate is not adopted.
+
+## 2026-11-10 replay and cancellation driver recheck
+
+[Independent 7dd23fc review](recheck-7dd23fc-20261110/README.md): all five original replay probes pass. Four cancellation call-site controls pass; two new durable-diagnostic probes still lose completed HTTP outcomes. Sixteen affected author checks pass. This is bounded evidence, not combined-product adoption or real acceptance.

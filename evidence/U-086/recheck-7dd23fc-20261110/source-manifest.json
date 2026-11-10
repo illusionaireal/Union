@@ -1,0 +1,26 @@
+{
+  "commit": "7dd23fc7b1bea4798a889d005849cae8ca27414a",
+  "files": {
+    "ai_union/adapters/au_catalog.py": "e83df6ed1c9e0a5b84f916661625349ab8c87f65a24575d24c92b91a917d5380",
+    "ai_union/adapters/creation_catalog.py": "13f28e48f5cdaca1629178e3d558183c922d1f359a3923ae47b2c84e2bf4d072",
+    "ai_union/application/creation.py": "98eab879d6a31cf815fe673909d1f2d738d8ec63c0c7994af849990bf13d701f",
+    "ai_union/console.py": "90568479aae53371c387c725db5519f054d0e1efb857095bee4b06dbe4bcd0e3",
+    "ai_union/engine.py": "2edee43c7d23867025587c605e3d71e1ef55ef0e95a7adf5e2e926dba18a7528",
+    "ai_union/errors.py": "03ad071360ff5fd1d44634ea13eee49066866a9bb4ee6c70e77f38b812976b28",
+    "evidence/U-086/replay-no-dispatch-observation.md": "e7956ce7b0861b01496f67b7975474f51444deccb687c067555752c961558c05",
+    "evidence/U-086/replay-observation-wiring.md": "f9db4f288762dbf55e39011c9d2a2b12198cf75b967bb8ec8f6dcb250202a416",
+    "scripts/exit22-cancel-evidence.cjs": "9b5de0846f2e3cbe5ce427a470859a100f7ce1068e9eb71ad40147834667e43a",
+    "scripts/exit22-evidence-failure.cjs": "d81003fdc872bd03fdae5a443c5ab16640273c7c2f6615bf3d6c196293c18d25",
+    "scripts/exit22-replay-observation.cjs": "cd1be60c6cd96a7c232198bcba23ff8532120716be64506c4d65e6dd192b76a1",
+    "scripts/exit22-restart-evidence.cjs": "37425add89aebc1531f8eb6c4a200984685f5483d6db85c8eea6ffa5b2bbffd3",
+    "scripts/exit22b_page.cjs": "3a1b06636fa1c94ce4c2bd0fbb606ddbf2cd52a718e76dceb3f83e64bcd7c330",
+    "tests/exit22-cancel-evidence.test.ts": "dc123ff6348b3c9f1e25e3346496c744cdff8a8338deedd71c1e604cad92d462",
+    "tests/exit22-evidence-failure.test.ts": "1599fd8feaaab42388fc7c23f44365e87670f553139a670cb17f9d679bc8457e",
+    "tests/exit22-replay-no-dispatch.test.ts": "7cfef653f03a7d457e2bf5b55b65af03e65c3a5899e2864f8708c3dd1974a831",
+    "tests/exit22-replay-observation.test.ts": "977d9ea1233b0ed9775cc076597e9fbeba7c98b8710ab81938ef70e500cc2dab",
+    "tests/support.py": "1eb954c08a5170f9f89234d7b7b68278bd1680e550f404c8e22aa3eb7b31417c",
+    "tests/test_core_creation.py": "af17b97a9870e29f4f6a0350b265bf204ebe46e50af4d04501c855b0c97b681a",
+    "tests/test_core_creation_failures.py": "c0ed96ed19346e9145e97740b8618234d7aa651b64e54ec7c4e14bb3b72b8657",
+    "tests/test_core_session_inconsistent_catalog.py": "002277f0b7c06e519632d405d011d4350a72f584c3a8af503136e39ab1e41956"
+  }
+}

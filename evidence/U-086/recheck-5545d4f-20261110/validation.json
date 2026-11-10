@@ -1,0 +1,84 @@
+{
+  "checked_at": "2026-11-10T15:17:56.885335+00:00",
+  "candidate_head": "5545d4f8ab36f2b94900630a4b41e863cfaecbe3",
+  "source_manifest_sha256": "1e2ba98aa1193d97be72c489ead4111f9765ea60f3d1a875b787b2fa3d7bd02c",
+  "bound_files": 21,
+  "source_unchanged": true,
+  "original_probe_sha256": "f1474026418034667e935b4735d0cfd99a694e3ee093687d45abfdcbd3cd99f6",
+  "original_probe_assertions_changed": false,
+  "scope_comment_id": 386,
+  "checks": [
+    {
+      "operation": "session-probes",
+      "exit_code": 0,
+      "elapsed_seconds": 4.36,
+      "log_sha256": "ffa0ab84027c33114a768e2708e44d5437051d28226c1d2ec4b436745e9d9a38",
+      "result_lines": [
+        "Ran 4 tests in 4.048s",
+        "OK"
+      ]
+    },
+    {
+      "operation": "session-integrity-controls",
+      "exit_code": 0,
+      "elapsed_seconds": 35.047,
+      "log_sha256": "171eff2e5d3b437978cd207a0ea5793921d1f5c4381b6851ff611affa62c7de0",
+      "result_lines": [
+        "Ran 36 tests in 34.685s",
+        "OK (skipped=1)"
+      ]
+    }
+  ],
+  "session_probes": {
+    "tests": 4,
+    "passed": 4,
+    "failures": [],
+    "errors": []
+  },
+  "regression_tests": {
+    "tests": 36,
+    "passed": 35,
+    "skipped": 1,
+    "failures": 0,
+    "errors": 0,
+    "skip_reasons": [
+      "test_state_database_link_cannot_escape_the_validated_directory (tests.test_catalog_integrity.CatalogIntegrityTests.test_state_database_link_cannot_escape_the_validated_directory) ... skipped 'host cannot create a file symlink: 22'"
+    ]
+  },
+  "unchanged_previous_inputs": [
+    "ai_union/adapters/au_catalog.py",
+    "ai_union/adapters/creation_catalog.py",
+    "ai_union/engine.py",
+    "ai_union/errors.py",
+    "evidence/U-086/replay-no-dispatch-observation.md",
+    "evidence/U-086/replay-observation-wiring.md",
+    "scripts/exit22-replay-observation.cjs",
+    "scripts/exit22-restart-evidence.cjs",
+    "scripts/exit22b_page.cjs",
+    "tests/exit22-replay-no-dispatch.test.ts",
+    "tests/exit22-replay-observation.test.ts",
+    "tests/support.py",
+    "tests/test_core_creation.py",
+    "tests/test_core_creation_failures.py",
+    "tests/test_core_session_inconsistent_catalog.py"
+  ],
+  "previous_replay_and_cancel_findings_retained": true,
+  "historical_behavior_replayed": false,
+  "full_product_suite_run": false,
+  "product_browser_run": false,
+  "product_adopted": false,
+  "real_model_calls": 0,
+  "actor": "Codex independent review session 01a1c602-13a4-78c3-b56a-154670a13d0a",
+  "online_member_id": "89f4c1c1-329a-4b54-ad37-235cf061e9a8",
+  "u092_source_check": {
+    "compared": 20,
+    "different": [],
+    "behavior_tests_run": false
+  },
+  "published_manifest_sha256": "f2f85447d94fb16c12f7e5b75c3a8dc2e93a301c9536b59e5af93c0ccf65fe95",
+  "publication_preflight": {
+    "initial_diff_check": "rejected CRLF whitespace before push",
+    "corrected": "publish LF bytes with explicit original execution binding",
+    "behavior_rerun": false
+  }
+}

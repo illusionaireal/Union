@@ -4,6 +4,7 @@ import { createHash } from 'node:crypto';
 import { createRequire } from 'node:module';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { assertRecordedUpstreamPatch } from './verify-upstream.mjs';
 const root = dirname(fileURLToPath(import.meta.url)), vendor = join(root, 'vendor/opencode');
 const lock = JSON.parse(readFileSync(join(root, 'upstream.lock.json'), 'utf8'));
 const bun = process.env.UNION_BUN || 'bun';
@@ -21,8 +22,7 @@ const patch = join(root, lock.patch);
 try { execFileSync('git', ['apply', '--reverse', '--check', patch], { cwd: vendor, stdio: 'ignore' }); }
 catch { run('git', ['apply', '--check', patch]); run('git', ['apply', patch]); }
 const expected = readFileSync(patch, 'utf8').replaceAll('\r\n','\n').trim();
-const actual = execFileSync('git', ['diff', '--no-ext-diff'], { cwd: vendor, encoding: 'utf8' }).replaceAll('\r\n','\n').trim();
-if (actual !== expected) throw new Error('Unrecorded upstream changes');
+assertRecordedUpstreamPatch(vendor, expected);
 run(bun, ['install', '--frozen-lockfile', '--ignore-scripts', '--filter', '@opencode/ai', '--filter', '@opencode/core']);
 const coreRequire = createRequire(join(vendor, 'packages/core/package.json'));
 const effectRoot = dirname(realpathSync(coreRequire.resolve('effect/package.json')));

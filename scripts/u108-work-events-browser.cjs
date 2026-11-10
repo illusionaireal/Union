@@ -6,6 +6,21 @@ const path = require('node:path');
 const fs = require('node:fs');
 const assert = require('node:assert/strict');
 
+async function waitForOriginalReservation(read, command, {timeout = 10000, interval = 50} = {}) {
+  assert.equal(command.kind, 'run_loop');
+  const deadline = Date.now() + timeout;
+  while (Date.now() < deadline) {
+    const value = await read(Math.max(1, deadline - Date.now()));
+    assert.equal(value.protocol, 'core.work.v1', 'reservation read protocol');
+    assert.equal(value.organization_id, command.organization_id, 'reservation read AU');
+    const work = value.works.find(item => item.id === command.data.work_id);
+    const step = work?.steps.find(item => item.command_id === command.id + '-t1');
+    if (step?.status === 'reserved' && work.budget.reserved === 1) return step;
+    await new Promise(resolve => setTimeout(resolve, Math.min(interval, Math.max(0, deadline - Date.now()))));
+  }
+  throw Error('original command reservation was not observed before deadline');
+}
+
 async function finishFixture(child, completion, lines, timeout = 15000) {
   if (child.exitCode === null && !child.killed) child.stdin.end('stop\n');
   let timer;
@@ -47,14 +62,24 @@ async function main() {
       if(r.url().includes('/api/v1/work/events'))reads.push(r.url())});
     const url=()=>ready.origin+'/tasks?organization='+encodeURIComponent(ready.organization_id);
     await page.goto(url());
+    const runRequest=page.waitForRequest(r=>new URL(r.url()).pathname==='/api/v1/work/commands'&&
+      r.method()==='POST'&&r.postDataJSON().kind==='run_loop');
     await page.getByRole('button',{name:'运行 AI 工作',exact:true}).click();
-    // The POST remains in flight; observe its committed reservation from a separate GET.
+    // The request group can precede the commit. Read only, using the original POST identity.
     await page.getByRole('group',{name:'原运行请求',exact:true}).waitFor();
+    const reservation=await waitForOriginalReservation(async timeout=>{
+      const response=await context.request.get(ready.origin+'/api/v1/work?'+
+        new URLSearchParams({organization_id:ready.organization_id}),{timeout});
+      assert.equal(response.status(),200,'reservation GET succeeds');
+      return response.json();
+    },(await runRequest).postDataJSON());
     await page.getByRole('button',{name:'刷新 AI 工作',exact:true}).click();
     await page.getByRole('button',{name:'查看工作输出',exact:true}).click();
     await page.getByText('原工作部分正文',{exact:true}).waitFor();
     const original=await control('inspect');check('one original fake model dispatch',original.fake_model_posts===1);
     const step=original.steps[0];check('partial text precedes cancellation',step.status==='reserved'&&original.cancel_posts===0);
+    check('observed reservation belongs to original command',
+      ['step_ref','command_id','attempt_id','model_request_id'].every(key=>step[key]===reservation[key]));
     check('only original step is observed',reads.length>0&&reads.every(x=>new URL(x).searchParams.get('step_ref')===step.step_ref));
     check('no native or tool argument disclosure',!(await page.content()).includes('private-'));
     for (const width of [1440,390,320]) {
@@ -106,5 +131,5 @@ async function main() {
   fs.writeFileSync(path.join(dest,'checks.json'),JSON.stringify({passed:checks.length,checks,real_model_calls:0,fake_model_calls:1,cancel_posts:1,fixture_exit:0},null,2));
   console.log(JSON.stringify({passed:checks.length,real_model_calls:0,fake_model_calls:1,cancel_posts:1,fixture_exit:0}));
 }
-module.exports={finishFixture};
+module.exports={finishFixture,waitForOriginalReservation};
 if(require.main===module)main().catch(e=>{console.error(e);process.exitCode=1});

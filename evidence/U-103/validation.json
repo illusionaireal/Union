@@ -1,0 +1,86 @@
+{
+  "scope": "documentation and source-call-chain audit; no product behavior change",
+  "source_commit": "f5996086d89c72bc16e363b1e8c69675504c1a69",
+  "actor": "Codex engineering audit / session 01a1c70f-f9aa-7891-b9d7-031153852447",
+  "online_member": {
+    "id": "89f4c1c1-329a-4b54-ad37-235cf061e9a8",
+    "name": "codex-home-coordinator"
+  },
+  "checked_at": "2026-11-10T20:30:15.429223+00:00",
+  "toolchain": {
+    "python": "3.12.10 (user-designated project interpreter)",
+    "node": "24.19.0",
+    "bun": "1.4.2"
+  },
+  "source_inventory": {
+    "candidate_files": 166,
+    "supplementary_anchors": 28,
+    "total_files": 194,
+    "sha256": "ca7c8c44119e944cd9e9f418e74d0738fbfcf168505a3ef491ca8dbed2d17d66"
+  },
+  "structural": {
+    "inventory_byte_identical": true,
+    "inventory_sha256": "ca7c8c44119e944cd9e9f418e74d0738fbfcf168505a3ef491ca8dbed2d17d66",
+    "links_checked": 7,
+    "python_script_compiles": true,
+    "sensitive_config_values_in_new_evidence": 0
+  },
+  "npm_check": {
+    "exit_code": 0,
+    "management_tests": 37,
+    "node_tests": 306,
+    "frontend_tests": 363,
+    "log_sha256": "f334911964948f30c2ca9b6791ec2657d144cb02ce4004d0460bde5db0173087"
+  },
+  "management_after_index": {
+    "exit_code": 0,
+    "tests": 37,
+    "log_sha256": "3d01d5090b580e396a769ac812935bdd78b78b1a9486f1129d134ced51495db9"
+  },
+  "python_initial": {
+    "exit_code": 1,
+    "tests": 817,
+    "errors": 1,
+    "skipped": 10,
+    "seconds": 516.805,
+    "error_test": "tests.test_core_model_http.CoreModelHTTPTests.test_core_save_and_two_stage_tool_exchange_use_actual_modeld_sdk_contract",
+    "failure": "SDK fixture returned no ready JSON while the isolated snapshot lacked its complete upstream patch/dependency preparation; JSONDecodeError before readiness. This is preserved setup-failure evidence, not a manufactured product RED.",
+    "log_sha256": "9dbf87b74ec1bda586ea930b351e659a28cb63e582c0af38c26df0480f4e557d"
+  },
+  "sdk_recheck": {
+    "exit_code": 0,
+    "tests": 1,
+    "seconds": 10.687,
+    "log_sha256": "b3be6b0b75cc3fd9a0f2fa774da8df5d6e2f761a39e7423d4c30cd065071d48c"
+  },
+  "python_confirmed": {
+    "exit_code": 0,
+    "tests": 817,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 10,
+    "seconds": 508.176,
+    "log_sha256": "136c9556ba92b5a50e3034ce1aeee6f908804e12a7cf152ba311b5f670277dd2"
+  },
+  "snapshot_preparation": {
+    "archive_sha256": "5bfbc31c389e40f4c3d616baea6c0df237c877f76586d3750d7569256642c54e",
+    "original_runtime_input_manifest_sha256": "132459147955fbfea47238f45fa1676a273cd611e18ab58b4137695ca1d02b03",
+    "tracked_core_sources_unchanged": true,
+    "vendor_commit": "805a42ffaa56b29a88baef87c7567f1ab9a40a8f",
+    "vendor_diff_matches_declared_patch": true,
+    "retained_setup_observations": [
+      "Windows archive text conversion required Git autocrlf alignment; tar symlink fallbacks were materialized as the normal Windows Git link placeholders.",
+      "Long dependency symlink names failed the initial isolated Bun install; a hoisted frozen-lockfile/ignore-scripts install succeeded.",
+      "Only snapshot-local files and Git configuration were prepared; the shared original vendor was not modified."
+    ]
+  },
+  "evidence_limits": [
+    "This is not an independent external-client black-box acceptance for U-101/U-102.",
+    "No privately deployed caller or private platform repository was inspected.",
+    "The 10 explicit skips remain skips; local build-dependent release cases are not claimed as executed.",
+    "Exact PR-head CI and adoption are separate from these local results."
+  ],
+  "real_model_calls": 0,
+  "deployments": 0,
+  "identity_migrations": 0
+}
