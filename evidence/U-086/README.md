@@ -2,6 +2,10 @@
 
 # U-086 / #40：新候选与当前集成边界复核
 
+2026-11-10 产品修复（待评审）：[一个不一致的 catalog 行不再让整个 `/api/session` 失败](session-409-skip-fix.md)。
+`console.py` 的 legacy 分支仅跳过 `unsupported_capability`/`incompatible_state`，其余 CoreError 照旧上抛；
+5 项新测试、全量 Python 822/11 跳过/0 失败、Node 320/320、管理 37/37。仅供协调者评审后采用。
+
 2026-11-10 `/api/session` 在 core_v1 AU 创建期间可能 409（前快照缺失根因假设）：
 [只读归因与建议](session-409-during-core-creation.md)。catalog 行仍记 legacy_v0 而目录已是
 core_v1 时，`session_info` 的 legacy 分支会被 `_catalog_engine` 拒绝、整个 `/api/session` 409；

@@ -183,7 +183,16 @@ class Console:
                         orgs.append({"id": state["id"], "name": state["name"], "profile": "core_v1"})
                 continue
             if session["organizations"] is None or item["id"] in session["organizations"]:
-                e = self.engine(token, item["id"])
+                # A catalogue row may still say legacy_v0 while the AU directory already
+                # resolves to core_v1 (creation/refresh window). One such row must not fail
+                # the whole session read; skip it like an unauthorised entry and keep the
+                # remaining Core errors visible.
+                try:
+                    e = self.engine(token, item["id"])
+                except CoreError as error:
+                    if error.code in ("unsupported_capability", "incompatible_state"):
+                        continue
+                    raise
                 with e.read_transaction() as cx:
                     state = e._state(cx)
                     orgs.append({"id": state["id"], "name": state["name"], "profile": "legacy_v0"})
