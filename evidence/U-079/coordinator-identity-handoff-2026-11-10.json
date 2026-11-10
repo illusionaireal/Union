@@ -1,0 +1,79 @@
+{
+  "observed_at": "2026-11-10T12:47:13.954676+00:00",
+  "scope": "host configuration and handoff; product source unchanged",
+  "contract_frozen_before_change": true,
+  "identity_before": [
+    {
+      "source": "existing_private_helper",
+      "http": 200,
+      "revision": 977,
+      "user_id": "cafeef64-ac40-4062-97c1-ac82ece0a379",
+      "name": "HOME-GOOSE"
+    },
+    {
+      "source": "selected_coordinator",
+      "http": 200,
+      "revision": 977,
+      "user_id": "89f4c1c1-329a-4b54-ad37-235cf061e9a8",
+      "name": "codex-home-coordinator"
+    }
+  ],
+  "identity_after": {
+    "http": 200,
+    "user_id": "89f4c1c1-329a-4b54-ad37-235cf061e9a8",
+    "name": "codex-home-coordinator",
+    "revision": 979
+  },
+  "sources_after": {
+    "kanban": "passed",
+    "github": "passed",
+    "nas": {
+      "exit_code": 0,
+      "health": "running false 0"
+    }
+  },
+  "adoption": {
+    "under_existing_agent_lock": true,
+    "lock_released": true,
+    "config_changed_fields": [
+      "env_file"
+    ],
+    "helper_uses_configured_file": true,
+    "previous_config_helper_prompt_backed_up": true,
+    "both_existing_credential_files_unchanged": true,
+    "supervisor_source_unchanged": true,
+    "scheduled_task_definition_unchanged": true,
+    "new_agent_or_schedule_created": false,
+    "account_role_or_card_owner_mutations": 0
+  },
+  "scheduled_execution": {
+    "run": "20261110T124251534241Z",
+    "status_at_observation": "running",
+    "new_handoff_read_in_existing_execution": true,
+    "independent_identity_comment": "pending at this observation; look up marker u079-coordinator-identity-adopted-20261110 on card 33"
+  },
+  "online_receipts": {
+    "configuration_comment": 358,
+    "configuration_comment_user_id": "89f4c1c1-329a-4b54-ad37-235cf061e9a8",
+    "u107_update": {
+      "http": 200,
+      "revision": 978,
+      "version": 12,
+      "status": "review",
+      "user_acceptance": "explicitly not yet performed"
+    }
+  },
+  "validation": {
+    "npm_check": {
+      "exit": 0,
+      "frontend_tests": 363,
+      "frontend_files": 29,
+      "log_sha256": "c1696a22a7641e2e347e4658c623a7636d26d590e7bf610a875d8cd3bc79ff0b"
+    },
+    "python_full": "running separately; final result recorded with delivery/CI",
+    "product_source_base": "4ffa617aeadd26eb75257b65b3428f10a444053c"
+  },
+  "product_real_model_calls": 0,
+  "business_deployments": 0,
+  "data_migrations": 0
+}
