@@ -381,8 +381,16 @@ function startHost() {
     cancel_id: cancelCommandId, principal_id: outputObservation.principal_id,
     ...Object.fromEntries(['step_ref', 'attempt_id', 'command_id', 'model_request_id', 'connection']
       .map(key => [key, inflight[key]])) };
-  const cancelEvidenceBefore = await require('./exit22-cancel-evidence.cjs').readCancelEvidence(
-    page, originalCancelReference, cancelOutcome.receipt);
+  let cancelEvidenceBefore;
+  try {
+    cancelEvidenceBefore = await require('./exit22-cancel-evidence.cjs').readCancelEvidence(
+      page, originalCancelReference, cancelOutcome.receipt);
+  } catch (error) {
+    // A failed cancel-evidence read must leave its own record, never only a stack.
+    require('./exit22-evidence-failure.cjs').recordEvidenceFailure({
+      fs, path, output, name: 'cancel-receipt-before-restart', workId, error });
+    throw error;
+  }
   fs.writeFileSync(path.join(output, 'cancel-receipt-before-restart.json'), JSON.stringify(cancelEvidenceBefore, null, 2));
   check('original GET returns the complete original delivered cancel receipt');
   // on the race with the real model; both must settle only via the original request.
@@ -446,8 +454,15 @@ function startHost() {
   }
   const restartComparison = require('./exit22-restart-evidence.cjs').compareSnapshots(
     before, after, createdReceipt.organization_id, workId);
-  const cancelEvidenceAfter = await require('./exit22-cancel-evidence.cjs').readCancelEvidence(
-    page, originalCancelReference, cancelEvidenceBefore.receipt);
+  let cancelEvidenceAfter;
+  try {
+    cancelEvidenceAfter = await require('./exit22-cancel-evidence.cjs').readCancelEvidence(
+      page, originalCancelReference, cancelEvidenceBefore.receipt);
+  } catch (error) {
+    require('./exit22-evidence-failure.cjs').recordEvidenceFailure({
+      fs, path, output, name: 'cancel-receipt-after-restart', workId, error });
+    throw error;
+  }
   fs.writeFileSync(path.join(output, 'cancel-receipt-after-restart.json'), JSON.stringify(cancelEvidenceAfter, null, 2));
   check('original cancel receipt survives restart under the original principal and Work');
   fs.writeFileSync(path.join(output, 'restart-request-comparison.json'), JSON.stringify(restartComparison, null, 2));
