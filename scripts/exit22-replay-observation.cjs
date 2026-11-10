@@ -30,4 +30,13 @@ function recordReplayObservation({ fs, path, output, before, after, workId, chec
   return observation;
 }
 
-module.exports = { recordReplayObservation };
+// A rejected strict comparison must be recorded as such: the persisted facts differ even
+// when counts (requests, results) are equal, and the dispatch count stays unknown.
+function recordReplayComparisonFailure({ fs, path, output, workId, error }) {
+  const reason = String((error && error.message) || error);
+  write(fs, path, output, { protocol: PROTOCOL, status: 'failed', work_id: workId,
+    persistent_differences: null, dispatch_count: null, reason });
+  return { status: 'failed', reason };
+}
+
+module.exports = { recordReplayObservation, recordReplayComparisonFailure };

@@ -433,8 +433,17 @@ function startHost() {
         !unresolved || entry.budget.reserved === 1);
   // Record the reopen observation BEFORE the strict comparison, so a rejected
   // comparison still leaves replay-observation.json behind for attribution.
-  require('./exit22-replay-observation.cjs').recordReplayObservation({
-    fs, path, output, before, after, workId, check });
+  const replayObservation = require('./exit22-replay-observation.cjs');
+  replayObservation.recordReplayObservation({ fs, path, output, before, after, workId, check });
+  // Counts can match while identities or result bytes differ. Probe the pure comparison
+  // first so a rejection is written to the record instead of leaving an 'unchanged' claim.
+  try {
+    require('./exit22-restart-evidence.cjs').compareSnapshots(
+      before, after, createdReceipt.organization_id, workId);
+  } catch (error) {
+    replayObservation.recordReplayComparisonFailure({ fs, path, output, workId, error });
+    throw error;
+  }
   const restartComparison = require('./exit22-restart-evidence.cjs').compareSnapshots(
     before, after, createdReceipt.organization_id, workId);
   const cancelEvidenceAfter = await require('./exit22-cancel-evidence.cjs').readCancelEvidence(

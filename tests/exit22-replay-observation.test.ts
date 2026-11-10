@@ -4,7 +4,7 @@ import test from 'node:test';
 
 // Records whether reopening the same work dispatched anything new. Read-only inputs.
 const requireHelper = createRequire(new URL('../scripts/exit22-replay-observation.cjs', import.meta.url));
-const { recordReplayObservation } = requireHelper('../scripts/exit22-replay-observation.cjs');
+const { recordReplayObservation, recordReplayComparisonFailure } = requireHelper('../scripts/exit22-replay-observation.cjs');
 
 function harness() {
   const files = new Map<string, any>();
@@ -65,4 +65,21 @@ test('a new dispatch after reopen writes a failed record and a failing check', (
   assert.match(record.reason, /model requests 1 -> 2/);
   assert.equal(checks.length, 1);
   assert.equal(checks[0].passed, false);
+});
+
+test('a rejected strict comparison replaces an unchanged record with the failure', () => {
+  const { deps, files } = harness();
+  recordReplayObservation({ ...deps, before: workBody(['work-original#a1'], ['model-1'], 0),
+    after: workBody(['work-original#a1'], ['model-1'], 0) });
+  assert.equal(files.get('replay-observation.json').status, 'unchanged');
+  // Same counts, different identities: the strict comparison rejects, so the record
+  // must show that rejection instead of an 'unchanged, differences 0' claim.
+  recordReplayComparisonFailure({ ...deps,
+    error: new Error('restart preserves every original request fact') });
+  const record = files.get('replay-observation.json');
+  assert.equal(record.status, 'failed');
+  assert.equal(record.persistent_differences, null);
+  assert.equal(record.dispatch_count, null);
+  assert.match(record.reason, /preserves every original request fact/);
+  assert.ok(!('new_dispatches' in record));
 });

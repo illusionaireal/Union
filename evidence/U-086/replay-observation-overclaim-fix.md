@@ -33,3 +33,14 @@
 - 仍未提供「原命令重放的实际派发计数」：该计数需要产品侧派发计数源，当前证据链没有；
   本轮的做法是**如实标记 unknown**，而不是把「状态未变」当作 0。
 - 第 5 项因此仍不成立；要成立需要一次有界真实运行并提供派发计数（或在产品侧提供计数源）。
+
+## 第二轮（回应值守留言 #142/#143 的新反例）
+
+值守新发现：请求 ID / 成果内容变化但**数量不变**时，strict 比较正确拒绝，但落盘仍是
+`unchanged`／差异 0。本轮修正：
+
+- 新增 `recordReplayComparisonFailure({fs,path,output,workId,error})`：写入
+  `status:'failed'`、`persistent_differences:null`、`dispatch_count:null` 与比较错误原因。
+- 驱动在 strict 比较**之前**先用纯函数探针比较一次（不重复副作用）：失败则落盘失败记录并
+  继续抛出；成功则照常执行原有 `const restartComparison = ...`（保留既有切片标记）。
+- 新测试 1 项；`exit22` **321/321**。
