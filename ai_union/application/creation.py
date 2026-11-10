@@ -4,11 +4,14 @@ import sqlite3
 
 from ..adapters.au_catalog import allocated_directory, resolve_directory
 from ..adapters.core_au_store import CoreAUStore
+from ..adapters.core_au_store import INCOMPATIBLE as AUDIT_INCOMPATIBLE
 from ..adapters.creation_catalog import CreationCatalog
 from ..adapters.legacy_au_store import LegacyAUStore
 from ..domain.creation import valid_principal
 from ..engine import encoded, identifier, now
 from ..errors import CoreError, Rejected, require
+
+RESOLUTION_INCOMPATIBLE = "AU 目录与目录记录无法一致解析；请保留原记录并在宿主核对"
 
 
 class CreationService:
@@ -68,9 +71,19 @@ class CreationService:
         except Rejected as error:
             raise CoreError("invalid_request", str(error)) from error
         entry, intent = self.catalog.located_entry(au_id)
+        # Keep the two failures distinguishable: a catalogue/directory resolution failure
+        # means the record cannot be located consistently (a session listing may skip it),
+        # while a stored-creation/audit mismatch must keep surfacing as an audit failure.
+        # CoreAUStore validates the stored creation *inside* resolve_directory, so the two
+        # are told apart by which store rejected the record.
         try:
             directory, profile = resolve_directory(self.app.root, entry, creation=intent)
             require(profile == "core_v1", "AU profile 不兼容")
+        except Rejected as error:
+            if str(error) == AUDIT_INCOMPATIBLE:
+                raise CoreError("incompatible_state", "AU 目录或治理记录不完整或不兼容；请保留原记录核对") from error
+            raise CoreError("incompatible_state", RESOLUTION_INCOMPATIBLE) from error
+        try:
             result = self.core.read(directory, au_id, creation=intent)
         except Rejected as error:
             raise CoreError("incompatible_state", "AU 目录或治理记录不完整或不兼容；请保留原记录核对") from error

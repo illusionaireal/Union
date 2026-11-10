@@ -11,7 +11,7 @@ from pathlib import Path
 
 from .activity import activity
 from .adapters.au_catalog import INCOMPATIBLE, resolve_directory
-from .application.creation import CreationService
+from .application.creation import CreationService, RESOLUTION_INCOMPATIBLE
 from .errors import CoreError
 from .engine import Engine, Rejected, encoded, identifier, model_name, now, require, text, uid, validate_charter, validate_resources
 from .executor import CodexExecutor, FixtureExecutor
@@ -177,11 +177,13 @@ class Console:
                     try:
                         state = self.creation.read(session, item["id"])["au"]
                     except CoreError as error:
-                        # A prepared core AU cannot be read as a live AU yet; skip that row
-                        # instead of failing the whole session. A damaged creation record
-                        # (incompatible_state) must still surface, so only this code and
-                        # not_authorized are skipped here.
-                        if error.code not in ("not_authorized", "unsupported_capability"):
+                        # A prepared core AU cannot be read as a live AU yet, and a catalogue
+                        # row whose directory no longer resolves must not fail the whole
+                        # session read. A stored-creation/audit mismatch keeps surfacing, so
+                        # only the resolution message is skipped here.
+                        skipped = (error.code in ("not_authorized", "unsupported_capability")
+                                   or str(error) == RESOLUTION_INCOMPATIBLE)
+                        if not skipped:
                             raise
                     else:
                         orgs.append({"id": state["id"], "name": state["name"], "profile": "core_v1"})
