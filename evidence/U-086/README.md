@@ -235,3 +235,5 @@ Controlled evidence only; the implementation does not independently approve itse
 Material/source gate: [require the original document-read receipt before delivery](material-read/README.md).
 The original candidate must cite a persisted read of the actual synthetic bytes;
 nonce/digest checks alone no longer pass. Controlled checks do not close real exits.
+
+2026-11-10: [Independent recheck of revised session and replay candidates](recheck-1730a11-da316ed-20261110/README.md) verifies partial repairs and records the remaining contract and same-count diagnostic gaps. This is controlled review evidence, not candidate adoption.
