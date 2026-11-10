@@ -1,0 +1,257 @@
+{
+  "task": "U-100",
+  "baseline": "04407dc0aac14792c7bb0c5343dab6375d9a78bb",
+  "modeld_sha256": "a35814c276ddf24e1ce12625f7dde8f27a57092397416ea48e991a2f9e92dba8",
+  "actor": "Codex developer session 01a1c217-f4aa-78e3-830b-173a7b72e707",
+  "online_member_id": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+  "authorization": {
+    "provider": "OpenCode Go",
+    "model": "gpt-6-luna",
+    "shared_with": "U-099",
+    "max_calls": 6,
+    "max_output_tokens": 2048
+  },
+  "protocol": {
+    "id": "3cdd6c35-4eb3-46bf-8503-b1134c8e4c35",
+    "profile": "openai_responses",
+    "wire_api": "responses",
+    "model_id": "gpt-6-luna",
+    "grant_revision": 1
+  },
+  "au_id": "org-3958a7a908a94adbb234cfad3c130a57",
+  "check_id": "85b23eea-5750-4d51-860e-fdb5600fa3c6",
+  "responsibility": {
+    "principal_id": "b35c160c-34c1-4c79-8777-671f7125c17e",
+    "member_id": "model-member-46973ee484855a698bc9cbc5506cfb80",
+    "binding_id": "model-binding-46973ee484855a698bc9cbc5506cfb80",
+    "binding_version": 1,
+    "work_id": "model-work-ef749eb2b5af508d9a4283265136c9e8",
+    "work_version": 1,
+    "mandate_id": "model-mandate-ef749eb2b5af508d9a4283265136c9e8",
+    "mandate_version": 1,
+    "agent_definition": {
+      "id": "core.model_check",
+      "instructions": "先调用 read_document 读取指定资料。收到工具结果后，给出简短资料概要并原样附上 challenge 校验码；不要调用其他工具。",
+      "scope": "two_inferences_one_read_only_tool",
+      "tools": [
+        "read_document"
+      ],
+      "version": 1
+    },
+    "versions": {
+      "charter_version": 2,
+      "goal_version": 1,
+      "policy_version": 2
+    },
+    "resource_revision": 1,
+    "connection_revision": 1,
+    "grant_revision": 1
+  },
+  "before_cancel": {
+    "check_id": "85b23eea-5750-4d51-860e-fdb5600fa3c6",
+    "request_id": "model-761ba0b8356b539dbdaa0f6bee91a9a8",
+    "state": "streaming",
+    "cursor": 51,
+    "text_sha256": "871914f286f1ddee5b3ab16a9a2505b9ccc1b50bb58bc13d09473fdd395e2535",
+    "text_bytes": 63
+  },
+  "modeld_after_cancel": {
+    "id": "model-761ba0b8356b539dbdaa0f6bee91a9a8",
+    "au_id": "org-3958a7a908a94adbb234cfad3c130a57",
+    "request_digest": "ca36be208bc006a9780af19180d401f70fed8348cbe18b3d589d906570c833c8",
+    "state": "interrupted",
+    "cancel_requested": true,
+    "action_authorized": false
+  },
+  "check_status": "unknown",
+  "stop_requested": true,
+  "waiting": {
+    "condition": "原模型请求有完整结果",
+    "object": "85b23eea-5750-4d51-860e-fdb5600fa3c6",
+    "responsible_member_id": "model-member-46973ee484855a698bc9cbc5506cfb80",
+    "scope": "execution"
+  },
+  "requests": [
+    {
+      "id": "model-24df9f9ac475531fa44decf3fb7ab785",
+      "stage": 0,
+      "state": "completed",
+      "usage": {
+        "input_tokens": 159,
+        "output_tokens": 41,
+        "reasoning_tokens": 0,
+        "cost_minor": null,
+        "currency": null,
+        "cost_status": "unknown"
+      }
+    },
+    {
+      "id": "model-761ba0b8356b539dbdaa0f6bee91a9a8",
+      "stage": 1,
+      "state": "interrupted",
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "reasoning_tokens": null,
+        "cost_minor": null,
+        "currency": null,
+        "cost_status": "unknown"
+      }
+    }
+  ],
+  "reopened": {
+    "principal_preserved": true,
+    "normal_output_preserved": true,
+    "requests_unchanged": true,
+    "request_count": 4,
+    "reserved_calls": 4,
+    "reconciled_status": "unknown"
+  },
+  "additional_restart_audit": {
+    "passed": true,
+    "responsibility_fields": [
+      "id",
+      "attempt_ids",
+      "principal_id",
+      "member_id",
+      "binding_id",
+      "binding_version",
+      "work_id",
+      "work_version",
+      "mandate_id",
+      "mandate_version",
+      "agent_definition",
+      "versions",
+      "resource_revision",
+      "connection_id",
+      "connection_revision",
+      "grant_ref",
+      "grant_revision"
+    ],
+    "usage_unchanged": true,
+    "observation_watermarks": {
+      "normal": [
+        {
+          "before": 75,
+          "after": 75
+        },
+        {
+          "before": 204,
+          "after": 204
+        }
+      ],
+      "interrupt": [
+        {
+          "before": 73,
+          "after": 73
+        },
+        {
+          "before": 105,
+          "after": 140
+        }
+      ]
+    },
+    "requests_unchanged": true,
+    "request_count": 4,
+    "reserved_calls": 4,
+    "prefix_preserved": true,
+    "saved_text_sha256": "aed27901f16ec11e9166ed6ab8132c9108444a3a99d43fff4b398213e8e02bf7",
+    "saved_text_bytes": 165
+  },
+  "browser": {
+    "passed": true,
+    "checks": [
+      "Real selected-model reply is rendered byte-for-byte after restart",
+      "Both original checks remain visible",
+      "Actual selected model is named",
+      "Normal request usage comes from the real provider",
+      "Interrupted outcome remains explicitly unknown",
+      "Unknown interrupted usage is not shown as zero",
+      "Costs remain unknown",
+      "Normal saved stream reconstructs the original response",
+      "Cancelled original request retains the exact pre-cancel prefix",
+      "Repeat observation still names the same cancelled request",
+      "Repeated query preserves the original pre-cancel prefix",
+      "Live-input limitation remains disclosed",
+      "Real streaming evidence names only the selected Go model",
+      "Remote cancellation and usage uncertainty remain disclosed",
+      "Refresh preserves original successful reply",
+      "Refresh preserves the unknown interrupted check",
+      "Refresh reconstructs the original pre-cancel prefix",
+      "Browser observation issues no model or business commands",
+      "No browser runtime errors"
+    ],
+    "post_routes": [
+      "/api/auth/login"
+    ],
+    "errors": []
+  },
+  "engineering_checks": {
+    "python_full": {
+      "passed": true,
+      "tests": 812,
+      "skipped": 8,
+      "seconds": 531.285,
+      "sdk_included": true,
+      "scope": "U-099 declarations before U-100 declaration update",
+      "log_sha256": "6f8f76ce4b7e14acc3ec25e313368ce4aea305e67b3470701d18fe63becc5909"
+    },
+    "final_profiles_and_sdk": {
+      "passed": true,
+      "tests": 14,
+      "seconds": 15.697,
+      "scope": "final U-099/U-100 declarations plus actual pinned modeld SDK",
+      "log_sha256": "7c4858129e3726d00b32ab6246bd9c4a4a9d8587a60dade31a0bf821047abbed"
+    },
+    "npm_check": {
+      "passed": true,
+      "management": 37,
+      "exit22": 306,
+      "frontend": 363,
+      "scope": "final U-099/U-100 declarations, evidence and checks",
+      "log_sha256": "a5c7760a565037a7c557aacd885700bac99aba64f1dc73472a26eac7fcd7a113"
+    },
+    "exact_commit_ci": "pending; see PR",
+    "npm_before_u100_declaration": {
+      "passed": true,
+      "management": 37,
+      "exit22": 306,
+      "frontend": 363,
+      "scope": "before U-100 declaration update; no frontend source changed",
+      "log_sha256": "d8ba9714cf853ffdf3e35c602d204743103b5753ce6eedcb1eb8da659a1d4e8c"
+    }
+  },
+  "source_sha256": {
+    "ai_union/domain/model_profiles.py": "ae17d548bce5e27f275f282f0a4549816c4a62dde91d1be7da6113053798d729",
+    "tests/test_core_model_profiles.py": "7b60b5d097fd004d16452b30bdd6e9ce481219e91c5b40554abb33da47d9aab6",
+    "tests/test_core_responses_profile.py": "69885b72a22bbe03d6a9c473fff4da0c2951d5f072cc8b49d60e10566b4c4bbf",
+    "evidence/U-099/acceptance.py": "a81df4c3faaaa2532ece83f71a370c4bbfd0d888082cd93df4224352c92f941b",
+    "evidence/U-099/browser.cjs": "6cbaf5b59a77f10f4ef2dc4266128af76224c54bddf224aa7a19b956b1e48089",
+    "evidence/U-100/browser.cjs": "e914f7e125ea1f9f7ec877b3c50c52f1a83aedba728c55db4977f04c123b5dda",
+    "evidence/U-100/verify.py": "6d95bb88813ee21c0313f8b166639b096d0723147ed3e324d515391844daef74"
+  },
+  "private_restart_audit_sha256": "bc07224c0a394992e698d508fe82e0b0caf8004dc23314734002c0b9b8e45847",
+  "failures_preserved": [
+    "Two read-only audit attempts initially compared observed_through_seq as if it were immutable usage. Actual only difference was 105 -> 140 on interrupted request. Final audit separately verifies monotonic cursor and unchanged usage, all identity/version fields."
+  ],
+  "real_calls_this_case": 2,
+  "real_calls_shared_batch": 4,
+  "new_calls_from_read_or_restart": 0,
+  "known_batch_tokens": {
+    "input": 608,
+    "output": 177,
+    "excludes_unknown_interrupted_request": true
+  },
+  "provider_native_cancel_verified": false,
+  "sustained_operation": false,
+  "workspace_source_sha256": {
+    "ai_union/domain/model_profiles.py": "ae17d548bce5e27f275f282f0a4549816c4a62dde91d1be7da6113053798d729",
+    "tests/test_core_model_profiles.py": "7b60b5d097fd004d16452b30bdd6e9ce481219e91c5b40554abb33da47d9aab6",
+    "tests/test_core_responses_profile.py": "69885b72a22bbe03d6a9c473fff4da0c2951d5f072cc8b49d60e10566b4c4bbf",
+    "evidence/U-099/acceptance.py": "a81df4c3faaaa2532ece83f71a370c4bbfd0d888082cd93df4224352c92f941b",
+    "evidence/U-099/browser.cjs": "6cbaf5b59a77f10f4ef2dc4266128af76224c54bddf224aa7a19b956b1e48089",
+    "evidence/U-100/browser.cjs": "90c8e1813199c41738e8c095ff5ba883b2e86cec52963c0748e00966da7d7db4",
+    "evidence/U-100/verify.py": "6d95bb88813ee21c0313f8b166639b096d0723147ed3e324d515391844daef74"
+  },
+  "source_hash_basis": "source_sha256 uses Git index LF blobs; workspace_source_sha256 preserves actual local test bytes"
+}

@@ -28,8 +28,11 @@ class ProfileScopeTests(ModelAccessCase):
             self.assertEqual(claim["status"], "verified_real")
             self.assertIn("Go deepseek-v4.1-flash", claim["note"])
             self.assertEqual(claim["evidence"], "evidence/U-075/go-deepseek-2026-11-10/README.md")
-            for other in ("modeld_grant", "openai_responses"):
-                self.assertEqual(scope[other]["capabilities"][capability]["status"], "controlled")
+            self.assertEqual(scope["modeld_grant"]["capabilities"][capability]["status"], "controlled")
+            responses = scope["openai_responses"]["capabilities"][capability]
+            self.assertEqual(responses["status"], "verified_real")
+            self.assertIn("Go GPT-6 Luna", responses["note"])
+            self.assertEqual(responses["evidence"], "evidence/U-100/README.md")
         self.assertIn("未确认远端取消", scope["openai_compatible"]["capabilities"]["cancel_and_query"]["note"])
         self.assertEqual(scope["openai_compatible"]["capabilities"]["long_job_new_input"]["status"], "unsupported")
         self.assertEqual(scope["modeld_grant"]["capabilities"]["tool_roundtrip"]["status"], "controlled")

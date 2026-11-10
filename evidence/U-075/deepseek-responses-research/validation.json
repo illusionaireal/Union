@@ -1,0 +1,107 @@
+{
+  "task": "U-075 protocol investigation",
+  "baseline": "04407dc0aac14792c7bb0c5343dab6375d9a78bb",
+  "modeld_sha256": "a35814c276ddf24e1ce12625f7dde8f27a57092397416ea48e991a2f9e92dba8",
+  "actor": "Codex developer session 01a1c217-f4aa-78e3-830b-173a7b72e707",
+  "online_member_id": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+  "authorization": {
+    "provider": "OpenCode Go",
+    "model": "deepseek-v4.1-flash",
+    "source": "user unlimited DeepSeek authorization; probe voluntarily bounded separately",
+    "probe_max_calls": 2,
+    "max_output_tokens": 2048,
+    "uses_luna_budget": false
+  },
+  "protocol": {
+    "id": "04f9ba43-4a2f-49b6-b273-5b46d52316f1",
+    "profile": "openai_responses",
+    "wire_api": "responses",
+    "model_id": "deepseek-v4.1-flash",
+    "grant_revision": 1
+  },
+  "au_id": "org-75b073d9d974407dbe94ae4345a92fa0",
+  "check_id": "c9a86556-bdce-403c-a4e3-76d93e7eceb0",
+  "responsibility": {
+    "principal_id": "b7c402e1-4fe3-44db-b163-d87b1f7d0576",
+    "member_id": "model-member-d04c6e43a28459c68a60fca1e7ed8813",
+    "binding_id": "model-binding-d04c6e43a28459c68a60fca1e7ed8813",
+    "binding_version": 1,
+    "work_id": "model-work-d04c6e43a28459c68a60fca1e7ed8813",
+    "work_version": 1,
+    "mandate_id": "model-mandate-d04c6e43a28459c68a60fca1e7ed8813",
+    "mandate_version": 1,
+    "agent_definition": {
+      "id": "core.model_check",
+      "instructions": "先调用 read_document 读取指定资料。收到工具结果后，给出简短资料概要并原样附上 challenge 校验码；不要调用其他工具。",
+      "scope": "two_inferences_one_read_only_tool",
+      "tools": [
+        "read_document"
+      ],
+      "version": 1
+    },
+    "versions": {
+      "charter_version": 2,
+      "goal_version": 1,
+      "policy_version": 2
+    },
+    "resource_revision": 1,
+    "connection_revision": 1,
+    "grant_revision": 1
+  },
+  "requests": [
+    {
+      "id": "model-2a899f47a90c56128c9ce949fcdbb206",
+      "stage": 0,
+      "state": "completed",
+      "usage": {
+        "input_tokens": 410,
+        "output_tokens": 64,
+        "reasoning_tokens": 0,
+        "cost_minor": null,
+        "currency": null,
+        "cost_status": "unknown"
+      }
+    },
+    {
+      "id": "model-6b9f05f516155147bde6157b318981d6",
+      "stage": 1,
+      "state": "completed",
+      "usage": {
+        "input_tokens": 330,
+        "output_tokens": 84,
+        "reasoning_tokens": 9,
+        "cost_minor": null,
+        "currency": null,
+        "cost_status": "unknown"
+      }
+    }
+  ],
+  "verified": {
+    "material_sha256": "b7cd1d19f3d8ad9e74f3ee70b7a4189151172860f9414d47d3ae79831e4c7213",
+    "output_sha256": "99198fcac4941853beba15d18bb2223a0e39e392104a4e60cd52073a26e9453e",
+    "challenge_sha256": "c934200c21dddb3c432dab5d9195c165d6ee4cecee51e7f3375e9a6744694517",
+    "first_request_excludes_material": true,
+    "tool_result_in_second_request": true,
+    "native_tool_context_preserved": true,
+    "original_tool_receipt": true,
+    "native_sha256": "70212c98ff1df12c9bd63508c08d0f6a64e9dbd69dbfe5a3e1fa9cc5ae361286",
+    "native_item_types": [
+      "tool-call"
+    ]
+  },
+  "reopened": {
+    "principal_preserved": true,
+    "normal_output_preserved": true,
+    "requests_unchanged": true,
+    "request_count": 2,
+    "reserved_calls": 2,
+    "reconciled_status": "not_applicable"
+  },
+  "private_driver_sha256": "60de4a0386be1369b7a479c688d64df8040c7adc8fcf2399c8411b3ad4fbae76",
+  "real_calls": 2,
+  "protocol_fallback": false,
+  "browser_tested": false,
+  "cancellation_tested": false,
+  "sustained_operation": false,
+  "conclusion": "Selected Go DeepSeek V4.1 Flash accepted Responses and completed real material/tool roundtrip; catalogue omission was insufficient evidence to claim unsupported."
+}

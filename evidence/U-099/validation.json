@@ -1,0 +1,197 @@
+{
+  "task": "U-099",
+  "baseline": "04407dc0aac14792c7bb0c5343dab6375d9a78bb",
+  "modeld_sha256": "a35814c276ddf24e1ce12625f7dde8f27a57092397416ea48e991a2f9e92dba8",
+  "actor": "Codex developer session 01a1c217-f4aa-78e3-830b-173a7b72e707",
+  "online_member_id": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+  "authorization": {
+    "provider": "OpenCode Go",
+    "model": "gpt-6-luna",
+    "shared_with": "U-100",
+    "max_calls": 6,
+    "max_output_tokens": 2048
+  },
+  "protocol": {
+    "id": "3cdd6c35-4eb3-46bf-8503-b1134c8e4c35",
+    "profile": "openai_responses",
+    "wire_api": "responses",
+    "model_id": "gpt-6-luna",
+    "grant_revision": 1
+  },
+  "check_id": "a2b47ee5-8909-43b5-832c-75a052786a5d",
+  "responsibility": {
+    "principal_id": "b35c160c-34c1-4c79-8777-671f7125c17e",
+    "member_id": "model-member-46973ee484855a698bc9cbc5506cfb80",
+    "binding_id": "model-binding-46973ee484855a698bc9cbc5506cfb80",
+    "binding_version": 1,
+    "work_id": "model-work-46973ee484855a698bc9cbc5506cfb80",
+    "work_version": 1,
+    "mandate_id": "model-mandate-46973ee484855a698bc9cbc5506cfb80",
+    "mandate_version": 1,
+    "agent_definition": {
+      "id": "core.model_check",
+      "instructions": "先调用 read_document 读取指定资料。收到工具结果后，给出简短资料概要并原样附上 challenge 校验码；不要调用其他工具。",
+      "scope": "two_inferences_one_read_only_tool",
+      "tools": [
+        "read_document"
+      ],
+      "version": 1
+    },
+    "versions": {
+      "charter_version": 2,
+      "goal_version": 1,
+      "policy_version": 2
+    },
+    "resource_revision": 1
+  },
+  "requests": [
+    {
+      "id": "model-25a8531d14745b4e83ec2fee334cc276",
+      "stage": 0,
+      "state": "completed",
+      "usage": {
+        "input_tokens": 160,
+        "output_tokens": 42,
+        "reasoning_tokens": 0,
+        "cost_minor": null,
+        "currency": null,
+        "cost_status": "unknown"
+      }
+    },
+    {
+      "id": "model-96d093dafe6a50cc88f922f61f6457c4",
+      "stage": 1,
+      "state": "completed",
+      "usage": {
+        "input_tokens": 289,
+        "output_tokens": 94,
+        "reasoning_tokens": 27,
+        "cost_minor": null,
+        "currency": null,
+        "cost_status": "unknown"
+      }
+    }
+  ],
+  "verified": {
+    "material_sha256": "03cd9c81b82c1517a3b3683ebb51cd7a899544ba8045c7c0fdca8a596370c83c",
+    "output_sha256": "41c9fa95b4e9820c4a9b8e1349a82136804b4931d1fc3a6b17f03716cbe1469a",
+    "challenge_sha256": "e38b2b2c3fe4284d105611ef6a3616ae5ba5c4f8aba70b023d2f25e4b4161e8b",
+    "first_request_excludes_material": true,
+    "tool_result_in_second_request": true,
+    "native_tool_context_preserved": true,
+    "original_tool_receipt": true,
+    "native_sha256": "b697ddd224bbaade5e9c1976a7734ede4de62a7528763087753258b07aecdb06",
+    "native_item_types": [
+      "tool-call"
+    ]
+  },
+  "reopened": {
+    "principal_preserved": true,
+    "normal_output_preserved": true,
+    "requests_unchanged": true,
+    "request_count": 2,
+    "reserved_calls": 2,
+    "reconciled_status": "not_applicable"
+  },
+  "browser_before_declaration": {
+    "passed": true,
+    "checks": [
+      "Original real Responses reply survives restart",
+      "Selected GPT-6 Luna connection is visible",
+      "Actual Responses profile is identified",
+      "Actual per-request usage is visible",
+      "Unknown monetary cost remains unknown",
+      "Original saved events reconstruct the actual answer",
+      "Repeated event read retains the original request identity",
+      "Refresh returns the same original answer",
+      "Browser has no model/business POST",
+      "No browser runtime errors"
+    ],
+    "post_routes": [
+      "/api/auth/login"
+    ],
+    "errors": []
+  },
+  "private_normal_snapshot_sha256": "348e5ca6854a235d95231dfab86eef208464d213165732172fa3d1a404e7dbf8",
+  "failures_preserved": [
+    "Initial browser probe looked for profile label in a check card; actual label is in connection list"
+  ],
+  "engineering_checks": {
+    "python_full": {
+      "passed": true,
+      "tests": 812,
+      "skipped": 8,
+      "seconds": 531.285,
+      "sdk_included": true,
+      "scope": "U-099 declarations before U-100 declaration update",
+      "log_sha256": "6f8f76ce4b7e14acc3ec25e313368ce4aea305e67b3470701d18fe63becc5909"
+    },
+    "final_profiles_and_sdk": {
+      "passed": true,
+      "tests": 14,
+      "seconds": 15.697,
+      "scope": "final U-099/U-100 declarations plus actual pinned modeld SDK",
+      "log_sha256": "7c4858129e3726d00b32ab6246bd9c4a4a9d8587a60dade31a0bf821047abbed"
+    },
+    "npm_check": {
+      "passed": true,
+      "management": 37,
+      "exit22": 306,
+      "frontend": 363,
+      "scope": "final U-099/U-100 declarations, evidence and checks",
+      "log_sha256": "a5c7760a565037a7c557aacd885700bac99aba64f1dc73472a26eac7fcd7a113"
+    },
+    "exact_commit_ci": "pending; see PR",
+    "npm_before_u100_declaration": {
+      "passed": true,
+      "management": 37,
+      "exit22": 306,
+      "frontend": 363,
+      "scope": "before U-100 declaration update; no frontend source changed",
+      "log_sha256": "d8ba9714cf853ffdf3e35c602d204743103b5753ce6eedcb1eb8da659a1d4e8c"
+    }
+  },
+  "real_calls": 2,
+  "new_calls_from_read_or_restart": 0,
+  "sustained_operation": false,
+  "browser_after_declaration": {
+    "passed": true,
+    "checks": [
+      "Original real Responses reply survives restart",
+      "Selected GPT-6 Luna connection is visible",
+      "Actual Responses profile is identified",
+      "Actual per-request usage is visible",
+      "Unknown monetary cost remains unknown",
+      "Original saved events reconstruct the actual answer",
+      "Repeated event read retains the original request identity",
+      "Real claim identifies only the tested Go model",
+      "Live input still disclosed as unsupported",
+      "Refresh returns the same original answer",
+      "Browser has no model/business POST",
+      "No browser runtime errors"
+    ],
+    "post_routes": [
+      "/api/auth/login"
+    ],
+    "errors": []
+  },
+  "source_sha256": {
+    "ai_union/domain/model_profiles.py": "ae17d548bce5e27f275f282f0a4549816c4a62dde91d1be7da6113053798d729",
+    "tests/test_core_model_profiles.py": "7b60b5d097fd004d16452b30bdd6e9ce481219e91c5b40554abb33da47d9aab6",
+    "tests/test_core_responses_profile.py": "69885b72a22bbe03d6a9c473fff4da0c2951d5f072cc8b49d60e10566b4c4bbf",
+    "evidence/U-099/acceptance.py": "a81df4c3faaaa2532ece83f71a370c4bbfd0d888082cd93df4224352c92f941b",
+    "evidence/U-099/browser.cjs": "6cbaf5b59a77f10f4ef2dc4266128af76224c54bddf224aa7a19b956b1e48089",
+    "evidence/U-100/browser.cjs": "e914f7e125ea1f9f7ec877b3c50c52f1a83aedba728c55db4977f04c123b5dda",
+    "evidence/U-100/verify.py": "6d95bb88813ee21c0313f8b166639b096d0723147ed3e324d515391844daef74"
+  },
+  "workspace_source_sha256": {
+    "ai_union/domain/model_profiles.py": "ae17d548bce5e27f275f282f0a4549816c4a62dde91d1be7da6113053798d729",
+    "tests/test_core_model_profiles.py": "7b60b5d097fd004d16452b30bdd6e9ce481219e91c5b40554abb33da47d9aab6",
+    "tests/test_core_responses_profile.py": "69885b72a22bbe03d6a9c473fff4da0c2951d5f072cc8b49d60e10566b4c4bbf",
+    "evidence/U-099/acceptance.py": "a81df4c3faaaa2532ece83f71a370c4bbfd0d888082cd93df4224352c92f941b",
+    "evidence/U-099/browser.cjs": "6cbaf5b59a77f10f4ef2dc4266128af76224c54bddf224aa7a19b956b1e48089",
+    "evidence/U-100/browser.cjs": "90c8e1813199c41738e8c095ff5ba883b2e86cec52963c0748e00966da7d7db4",
+    "evidence/U-100/verify.py": "6d95bb88813ee21c0313f8b166639b096d0723147ed3e324d515391844daef74"
+  },
+  "source_hash_basis": "source_sha256 uses Git index LF blobs; workspace_source_sha256 preserves actual local test bytes"
+}
