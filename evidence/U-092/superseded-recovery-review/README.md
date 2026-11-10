@@ -39,11 +39,24 @@ All hashes were rechecked in both author and isolated copies after probing.
 [Validation](validation.json) records the exact input, observations and log
 hash. This is a prepublication snapshot, not an approved product commit.
 
-Run with pinned Python against a candidate containing the author's fixture:
+Prerequisite: `63c4030` plus **all 20 unpublished author files**, matching the
+source map in [lifecycle validation](../duty-review-20261110/validation.json),
+including `tests/test_work_recovery.py`. The evidence-only PR76/77 and clean
+integration `faa5a4c` do not contain that implementation/fixture. A clean clone
+alone cannot reproduce the product failure; obtain the original snapshot
+from its owner, or an explicitly identified repaired candidate.
+
+Run the complete review package with pinned Python:
 
 ```text
 python -B evidence/U-092/superseded-recovery-review/probes.py <candidate-source-directory> <private-result.json>
 ```
+
+Missing/mismatched inputs now exit **2**, write an input diagnosis and run
+**zero** tests before any candidate import. The historical snapshot exits
+**1** with the original one behavioral failure. See the
+[revised-input procedure](../review-inputs/README.md) to bind a repaired
+candidate; passing these probes alone is not product approval.
 
 The original owner should reject or project an already superseded request
 before any preparation mutation. Preserve original command identity and

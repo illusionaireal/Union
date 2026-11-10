@@ -24,3 +24,11 @@ the previous review manifest before and after. Do not change product code,
 author files, production data, credentials, supervision, or task ownership.
 This is a 1–2 hour independent review increment; product repair and its full
 acceptance remain the original owner's responsibility.
+
+## Reproduction input clarification (2026-11-10)
+
+This historical review requires the unpublished 20-file author snapshot,
+including `tests/test_work_recovery.py`; clean integration `faa5a4c` contains
+only evidence. The [input contract](../review-inputs/contract.md) now checks
+the source map before imports and separates exit 2 input failure (zero tests)
+from exit 1 behavioral findings. Original product expectations above remain.
