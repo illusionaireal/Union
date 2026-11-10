@@ -2,6 +2,11 @@
 
 # U-086 / #40：新候选与当前集成边界复核
 
+2026-11-10 `/api/session` 在 core_v1 AU 创建期间可能 409（前快照缺失根因假设）：
+[只读归因与建议](session-409-during-core-creation.md)。catalog 行仍记 legacy_v0 而目录已是
+core_v1 时，`session_info` 的 legacy 分支会被 `_catalog_engine` 拒绝、整个 `/api/session` 409；
+重启后一致才成功——解释「前侧 117B、后侧 6643B」。未改产品代码，建议修法见文内。
+
 2026-11-10 把「重启后无新增派发」接进中断驱动（严格 TDD）：[合同·RED·GREEN](replay-observation-wiring.md)。
 新增 `scripts/exit22-replay-observation.cjs` 记录器（observed / unavailable / failed 三态，只在
 两侧可用时断言零派发），驱动在 `restartComparison` 之后落盘 `replay-observation.json`；
