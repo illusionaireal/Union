@@ -79,12 +79,18 @@ class ResponsesProfileTests(ModelAccessCase):
         self.assertTrue(self.models()["connections"][0]["is_default"])
         self.assertEqual(len(self.provider.requests), 2)
 
-    def test_scope_does_not_inherit_compatible_api_real_validation(self):
+    def test_scope_uses_its_own_selected_responses_real_evidence(self):
         claims = self.models()["capabilities"]["profile_scope"]["openai_responses"]["capabilities"]
-        self.assertEqual(claims["tool_roundtrip"]["status"], "controlled")
-        self.assertEqual(claims["streaming"]["status"], "controlled")
-        self.assertIn("真实", claims["streaming"]["note"])
-        self.assertFalse(any(c["status"] == "verified_real" for c in claims.values()))
+        for capability in ("text_answer", "tool_roundtrip", "usage_reporting"):
+            self.assertEqual(claims[capability]["status"], "verified_real")
+            self.assertEqual(claims[capability]["evidence"], "evidence/U-099/README.md")
+            self.assertIn("Go GPT-6 Luna", claims[capability]["note"])
+        for capability in ("streaming", "cancel_and_query"):
+            self.assertEqual(claims[capability]["status"], "verified_real")
+            self.assertEqual(claims[capability]["evidence"], "evidence/U-100/README.md")
+            self.assertIn("Go GPT-6 Luna", claims[capability]["note"])
+        self.assertIn("未确认提供方已取消", claims["cancel_and_query"]["note"])
+        self.assertEqual(claims["long_job_new_input"]["status"], "unsupported")
 
     def test_legacy_chat_registration_retains_its_original_request_shape(self):
         receipt, _ = self.saved(profile="openai_compatible")

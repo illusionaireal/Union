@@ -1,5 +1,10 @@
 # U-075：用户指定 OpenCode Go 的有界验收
 
+2026-11-10 Responses新增证据：[Go GPT-6 Luna资料工具往返](../U-099/README.md)、
+[真实生成后取消与原请求恢复](../U-100/README.md)，共享批次实际4/6次；以及
+[DeepSeek Responses协议实测与此前结论更正](deepseek-responses-research/README.md)，
+另用2次DeepSeek既有授权。#52通用续接/新输入仍未完成，父卡完整出口保留。
+
 2026-11-10 新记录：[DeepSeek V4.1 Flash 真实往返、中断、重启和浏览器验收](go-deepseek-2026-11-10/README.md)。
 4次真实请求；保留未知用量/费用与原责任，修复中断原文本读取403。权限修复需独立
 采用，Responses 子卡未关闭。以下 2026-11-08 GLM 验收与原失败历史保持。
