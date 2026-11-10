@@ -56,11 +56,15 @@
    creator 行）→ 部分通过；**5545d4f**（区分「目录解析失败」与「创建审计失败」，并附
    [真实 catalog/HTTP 回归](../../tests/test_core_session_real_catalog.py)）为当前候选。
    这些只覆盖「**记录不一致时读取不应整站失败**」的稳健性缺口，**不声称**修好 117 B 前快照；
-   第 4 项仍需一次有界真实运行取证。
+   第 4 项仍需一次有界真实运行取证。值守已独立复验 5545d4f（4/4 HTTP 探针通过），
+   我也用自己的隔离复跑核对了同一结果（[复跑记录](session-probe-independent-rerun.md)）。
 5. **重开/重放不派发新请求** —— 状态侧证据（重启后 attempts 数、`attempt_ids`、预约保持）成立；
    「以原命令重放时新增派发 = 0」的观测函数、三态记录器与**比较失败记录**
    （[观测](replay-no-dispatch-observation.md)、[接线](replay-observation-wiring.md)、
-   [过度声称修正](replay-observation-overclaim-fix.md)）已实现并接入驱动；
+   [过度声称修正](replay-observation-overclaim-fix.md)）已实现并接入驱动；值守对 `7dd23fc`
+   的 5 条重放探针**全通过**，取消侧失败归档经 P2 修复后
+   [已保留全部已观测路由结果](cancel-failure-route-outcomes.md)（含网络/JSON 中断用例），
+   记录与摘要均显式标注 `dispatch_count_unknown`；
    但真实运行要拿到显式派发计数仍需一次有界真实运行，本卡当前**未提供该计数**，故第 5 项不成立。
 6. **准确 head 的 CI 与关闭判定** —— 本会话未取得 CI 结论：本机无 `gh` CLI、无
    `GH_TOKEN`/`GITHUB_TOKEN`，未认证访问 GitHub API 返回 403 rate limit，且未读取
