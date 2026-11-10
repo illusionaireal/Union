@@ -19,6 +19,29 @@ function harness() {
   };
 }
 
+test('the failure record keeps every completed route outcome', () => {
+  // PR83 P2: the durable archive must not lose work/503 and receipt/404 while keeping
+  // the session/409 message, and it must record the successful current/200 read too.
+  const { deps, files } = harness();
+  const error: any = new Error('original cancel evidence session read failed: /api/session HTTP 409 unsupported_capability');
+  error.http = {
+    session: { route: '/api/session', status: 409 },
+    work: { route: '/api/v1/work', status: 503 },
+    receipt: { route: '/api/v1/governance/receipts', status: 404 },
+    current: { route: '/api/session', status: 200 },
+  };
+  error.route = '/api/session';
+  error.status = 409;
+  error.code = 'unsupported_capability';
+  recordEvidenceFailure({ ...deps, name: 'cancel-receipt-before-restart', error });
+  const record = files.get('cancel-receipt-before-restart-failure.json');
+  assert.deepEqual(record.http, error.http);
+  assert.equal(record.route, '/api/session');
+  assert.equal(record.failed_status, 409);
+  assert.equal(record.code, 'unsupported_capability');
+  assert.equal(record.dispatch_count, null);
+});
+
 test('a failed cancel-evidence read is written to its own failure record', () => {
   const { deps, files } = harness();
   recordEvidenceFailure({ ...deps, name: 'cancel-receipt-before-restart',

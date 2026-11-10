@@ -8,6 +8,12 @@ function recordEvidenceFailure({ fs, path, output, name, workId, error }) {
     work_id: workId ?? null,
     status: 'failed',
     reason,
+    // Completed route outcomes are preserved when the loader recorded them: routes,
+    // statuses and Core codes only, never response bodies or credentials.
+    http: (error && error.http) || null,
+    route: (error && error.route) || null,
+    failed_status: (error && error.status) ?? null,
+    code: (error && error.code) || null,
     dispatch_count: null,
     recorded_at: new Date().toISOString(),
   };

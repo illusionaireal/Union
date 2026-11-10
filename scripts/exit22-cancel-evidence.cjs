@@ -39,8 +39,15 @@ async function readCancelEvidence(page, reference, expectedReceipt) {
     const value = response[key] || {};
     if (value.status !== 200) {
       const code = (value.body && (value.body.code || value.body.error)) || '';
-      throw new Error('original cancel evidence ' + key + ' read failed: ' + route
+      const error = new Error('original cancel evidence ' + key + ' read failed: ' + route
         + ' HTTP ' + String(value.status) + (code ? ' ' + code : ''));
+      // Keep every completed route outcome on the error so a durable failure archive can
+      // record them; the map holds routes, statuses and Core codes only - never bodies.
+      error.http = http;
+      error.route = route;
+      error.status = value.status;
+      error.code = code || null;
+      throw error;
     }
   }
   const { session, current } = response;

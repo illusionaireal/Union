@@ -54,6 +54,26 @@ test('cancel evidence records the per-route HTTP outcome for attribution', async
   });
 });
 
+test('a rejected read preserves every completed route outcome on the error', async () => {
+  // The review (PR83) requires the durable failure archive to keep the outcomes that
+  // were already observed, not just the first failing message.
+  const mixed = payload({
+    session: { status: 409, body: { code: 'unsupported_capability' } },
+    work: { status: 503, body: { code: 'storage_unavailable' } },
+    receipt: { status: 404, body: { code: 'not_authorized' } },
+    current: { status: 200, body: { core_protocol: 'core.au.v1', principal_id: 'principal-original', service_instance: 'service-original' } },
+  });
+  await assert.rejects(() => readCancelEvidence(fakePage(mixed), reference, receipt), (error: any) => {
+    assert.deepEqual(error.http, {
+      session: { route: '/api/session', status: 409 },
+      work: { route: '/api/v1/work', status: 503 },
+      receipt: { route: '/api/v1/governance/receipts', status: 404 },
+      current: { route: '/api/session', status: 200 },
+    });
+    return true;
+  });
+});
+
 test('a rejected session read names the route, status and Core error code', async () => {
   const rejected = payload({
     session: { status: 409, body: { code: 'unsupported_capability', error: '此 AU 尚在准备态' } },

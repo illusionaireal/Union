@@ -2,6 +2,8 @@
 
 # U-086 / #40：新候选与当前集成边界复核
 
+2026-11-11 失败归档保留已观测路由结果（回应 PR83 P2）：[合同·RED·GREEN](cancel-failure-route-outcomes.md)。`readCancelEvidence` 失败时把 `http/route/status/code` 挂在 error 上，写入器写入 `<name>-failure.json`（仅路由与状态，无正文/凭据）；`exit22` 338/338。
+
 2026-11-10 产品修复（待评审）：[一个不一致的 catalog 行不再让整个 `/api/session` 失败](session-409-skip-fix.md)。
 `console.py` 的 legacy 分支仅跳过 `unsupported_capability`/`incompatible_state`，其余 CoreError 照旧上抛；
 5 项新测试、全量 Python 822/11 跳过/0 失败、Node 320/320、管理 37/37。仅供协调者评审后采用。
