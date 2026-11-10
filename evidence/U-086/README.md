@@ -1,5 +1,11 @@
 # U-086 / #40：新候选与当前集成边界复核
 
+2026-11-10 集成 head `faa5a4c` 全量回归：本机 `.venv` 运行 `python -m unittest discover -v`
+得 812 项全过（skipped 11，exit 0），同期 Node `exit22` 306/306；历史记录的环境性失败
+`test_binding_rejects_board_failure…`（WinError 1314）本次正常通过，未为它改动产品代码。
+见[全量回归记录](daily-full-python-faa5a4c.md)。该记录只覆盖本地自动化面，真实集成、
+用户验收、发布就绪与持续运行仍按 `docs/FORMAL_DEVELOPMENT.md` 分别另验；真实出口未关闭。
+
 2026-11-09 重开现在同时保留原成果来源、完整记录和交付引用，不能仅凭相同摘要
 掩盖成果事实变更。18个Node/9个实际HTTP浏览器反例RED→GREEN，见
 [原成果持久性](result-provenance/README.md)。仍须当前head CI和非实施复核，
