@@ -36,3 +36,15 @@ python -m unittest discover -v
 - 未执行真实模型调用、未部署、未迁移、未切换生产，也未写入其他人未提交的工作。
 - Node 侧 `npm test -- exit22`（306/306）在同期同一 head 上另行通过。两者合计构成本 head
   的自动化面证据；真实出口仍按 `docs/FORMAL_DEVELOPMENT.md` 分级分别陈述。
+
+## 追加：PR78 采用后的复跑（2026-11-10 20:14–20:23，分支 `408a4ab` 含集成 `7b018f3`）
+
+集成采用 PR78（U-092 评审输入修复）后在同一 checkout 复跑，确认无回归：
+
+- `python -m unittest discover` → **Ran 817 tests in 531.837s / OK (skipped=11) / exit 0**
+  （= 原 812 + PR78 新增 5；私有日志 sha256 `85f8a9de…`，未提交）
+- `npm test -- exit22` → **306/306 通过**
+- `npm run management:render` PASS（15 模块 / 8 里程碑 / 80 任务）；`check:management` 37/37
+
+本轮未执行真实模型调用，未部署或迁移；产品与标准测试字节等于集成 `7b018f3` 加本卡证据文档。
+
