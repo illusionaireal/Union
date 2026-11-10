@@ -28,12 +28,32 @@
    `resolve_directory(...)`；一旦**解析出的 profile 不是 `legacy_v0`**，`console.py:119` 直接
    `raise CoreError("unsupported_capability")`。
 
-## 根因假设
+## 根因假设（**未确认，附反证**）
 
 **catalog 行仍记 `legacy_v0`，而该 AU 的目录/状态已是 `core_v1`（准备态/创建中）** 时，
 `session_info` 的 legacy 分支会在 `engine()` 里被 `_catalog_engine` 拒绝，整个
 `/api/session` 返回 409 `unsupported_capability`。重启后 Console 重新读取目录与 catalog，
 两者一致，同一读取即成功——这正好解释「前侧 117 B、后侧 6643 B」。
+
+**2026-11-10 追加反证（本轮复核，降低确定性）**：
+
+1. `ai_union/adapters/au_catalog.py:114-115` 要求 `profile == entry["profile"]`，否则抛
+   `INCOMPATIBLE`（即 `incompatible_state`）。也就是说「catalog=legacy、目录=core_v1」
+   的真实不一致会先以 **`incompatible_state`** 结束，而不是 `unsupported_capability`。
+2. `session_info` 对 `profile != "legacy_v0"` 的条目直接 `continue`（`console.py:180` 附近），
+   因此它根本不会对 core 条目调用 `engine()` → 也就不应产生 `console.py:119` 的
+   `unsupported_capability`。
+3. 能抛出**默认文案**「此 AU 尚在准备态…」的位置只有三处：`console.py:119`（`_catalog_engine`）、
+   `adapters/au_catalog.py:70`（`check_legacy_runtime` 读到 `runtime_profile=core_v1`）、
+   `au_catalog.py:135`（`legacy_directory`）；`application/governance.py:23` 用的是另一段自定义文案。
+
+因此**更可能的路径**是：驱动/页面在「准备态 AU」上走了仍按 legacy 打开引擎的某条路径
+（`check_legacy_runtime` 或 `legacy_directory`），而不是 `session_info`。要确认究竟是哪条路由，
+需要一次带路由级 HTTP 记录的运行；本轮无法只靠静态代码唯一确定。
+
+**结论修订**：本文件原先把该 409 归因于 `session_info` 的说法**不成立或至少未证实**；
+它记录的是「一个不一致条目不应拖垮整个 session 读取」这一**稳健性缺口**（该缺口本身真实存在，
+且已由 [修复候选 9472a64](session-409-skip-fix.md) 覆盖），但**不能**声称为 117 B 前快照的根因。
 
 这属于**就绪/catalog 一致性问题**，不是权限问题，也不会因为重跑驱动而自动消失。
 

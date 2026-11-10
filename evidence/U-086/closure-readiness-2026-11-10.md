@@ -48,11 +48,12 @@
    不得补 0，也不得把「单次派发」写成「一次模型调用」。
 4. **同运行前后事实** —— 127/128/129/134/136/137/138/139 八个 `snapshot-before-restart.json`
    全部是 117 B 的 `unsupported_capability`，**前侧缺失且不可事后重建**；后侧（`reserved=1`、
-   unknown 以原身份存活）只能单侧成立。根因已定位到「catalog 行仍标 legacy_v0、目录已是
-   core_v1 时整次 `/api/session` 409」（[归因](session-409-during-core-creation.md)），并已提交
-   [修复候选 9472a64](session-409-skip-fix.md)（仅跳过这两类不一致错误码，其余照旧上抛；
-   5 项新测试、全量 Python 822/Node 320 全绿），**待协调者评审采用**。修复本身不产生前后快照：
-   第 4 项仍需一次有界真实运行才能取证。
+   unknown 以原身份存活）只能单侧成立。曾把根因记为「catalog 行 legacy_v0 与目录 core_v1
+   不一致导致整次 `/api/session` 409」，但本轮复核发现该不一致会先以 `incompatible_state`
+   结束、且 `session_info` 会跳过 core 条目，故**根因仍未证实**
+   （[归因与反证](session-409-during-core-creation.md)）。已交付的
+   [修复候选 9472a64](session-409-skip-fix.md) 只覆盖「单个不一致条目不应拖垮 session」这一
+   **稳健性缺口**，**不声称**修好了 117 B 前快照；第 4 项仍需一次有界真实运行取证。
 5. **重开/重放不派发新请求** —— 状态侧证据（重启后 attempts 数、`attempt_ids`、预约保持）成立；
    「以原命令重放时新增派发 = 0」的观测函数与三态记录器已实现并接入驱动
    （[观测](replay-no-dispatch-observation.md)、[接线](replay-observation-wiring.md)），
