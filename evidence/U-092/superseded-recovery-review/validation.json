@@ -1,0 +1,109 @@
+{
+  "checked_at": "2026-11-10T07:38:00.271208+00:00",
+  "scope": "independent negative review; no product change or adoption",
+  "candidate_base": "63c4030ec1c520824c00633e42b45019a3e9c533",
+  "source_manifest_sha256": "37b49c71de59f9cdad4ab0358a703df6deaa5f980336373a6eea3d8947c30148",
+  "source_files_sha256": {
+    "ai_union/adapters/AGENTS.md": "44f078c9f81e436386d8476742b9785140b57cbd4f2f3366542fca54828df204",
+    "ai_union/adapters/governance_store.py": "76bcf48707a4ef99abd66252ce740eef863edbd8aee7095a90263301d701ca9a",
+    "ai_union/application/AGENTS.md": "50af1788c1183689ad0b88afd2201a4654c0902aff0eec0f366a698674c3234e",
+    "ai_union/application/model_access.py": "885ae58fadfa96166cf9fd0e5edca931bebb8a2f6fcca4d3258c2c9c390f06ba",
+    "ai_union/application/work.py": "8258b59088873230be7158406ce92d8e21a4e5b963c51b34971d15802644bc56",
+    "ai_union/application/work_dispatch.py": "ba6ddb5aae1347810c5d06e70b4ac12273c49a1563408ede73e960ab7ab86820",
+    "ai_union/application/work_recovery.py": "f003b044e23da814882d8b5f5dbab0fea3ddb48c11e0eb123ee408b668b01030",
+    "ai_union/domain/AGENTS.md": "cdd69d2bc666fe07b8e4bdb2a5100302694df8fa3093acdb86b00d5e6f4adddd",
+    "ai_union/domain/governance.py": "1ca1e13d3cc78b5a237af274cba07af9ace962c53c0fac41fd3cefc848953f6f",
+    "ai_union/domain/work.py": "22074ff42145f105ea2e8c2b8b69f7e6c2bd7e92db7de6b29cb37d874dce754c",
+    "ai_union/work_transport.py": "33c870d403131ec99e3b592cf6e2c7116677c75d616b893ca1fa4f00c0133c10",
+    "docs/decisions/ADR-0009-work-recovery.md": "587c09aae55339e6e9deebf83de0182cd8a965649528144dc8eb290f568a96af",
+    "evidence/U-092/contract.md": "d28a174ddd0770be1425fff3b85341e0b5c6d2cb90c28b8d877703ea236d719a",
+    "scripts/u092-work-recovery-browser.cjs": "586c03bc55aaea84786a5dfe09ab144ad1759efdfd22718af08e43a830da3042",
+    "scripts/u092_work_recovery_host.py": "2666dbe4956c38f89359d08d3976568d2c977b15575f1085cce30f549d2bf305",
+    "tests/test_work_dispatch_compatibility.py": "3bb389a3d6cb66da5570d3c84247dd36095c345bf28fe867386688cb8baf6f78",
+    "tests/test_work_recovery.py": "9c4e3d00792c57a2c30fec4ac846acc76364cdd5cd562e67112a9bd94203696e",
+    "web/console/src/api/types.ts": "bba9e64de95e0ab8422f1aab4c6b5ecf081f68f3af1c5d46efbe8e5bbb0d267b",
+    "web/console/src/features/work/WorkExecution.tsx": "da5a48124aa9127ef85e327e1d3bcb982b629fedadfac7de6952217f0cb379b0",
+    "web/console/src/features/work/page-execution.test.tsx": "8616e1574cb7cd9ca84a1a8f6d7378ef4fcd2ade0b3133a96c9c5310a7e25b81"
+  },
+  "source_unchanged_before_after": true,
+  "tests": 3,
+  "passed": 2,
+  "failures": [
+    {
+      "test": "__main__.SupersededRecoveryReview.test_superseded_replay_after_replacement_completion_cannot_mutate_ownership",
+      "assertion": "AssertionError: False is not true : superseded original recovery committed another ownership/preparation mutation"
+    }
+  ],
+  "errors": [],
+  "observations": [
+    {
+      "test": "test_completed_recovery_replay_control_is_read_only",
+      "http": 200,
+      "response_status": "succeeded",
+      "response_code": null,
+      "state_unchanged": true,
+      "epoch_before": 1,
+      "epoch_after": 1,
+      "recovery_phases_before": [
+        "completed"
+      ],
+      "recovery_phases_after": [
+        "completed"
+      ],
+      "original_attempt_preserved": true,
+      "original_model_request_preserved": true,
+      "fake_dispatches": 1,
+      "new_fake_dispatches_during_replay": 0,
+      "real_model_calls": 0
+    },
+    {
+      "test": "test_superseded_replay_after_replacement_completion_cannot_mutate_ownership",
+      "http": 409,
+      "response_status": null,
+      "response_code": null,
+      "state_unchanged": false,
+      "epoch_before": 2,
+      "epoch_after": 3,
+      "recovery_phases_before": [
+        "superseded",
+        "completed"
+      ],
+      "recovery_phases_after": [
+        "superseded",
+        "completed"
+      ],
+      "original_attempt_preserved": true,
+      "original_model_request_preserved": true,
+      "fake_dispatches": 1,
+      "new_fake_dispatches_during_replay": 0,
+      "real_model_calls": 0
+    },
+    {
+      "test": "test_superseded_replay_while_replacement_prepared_cannot_mutate_ownership",
+      "http": 409,
+      "response_status": null,
+      "response_code": null,
+      "state_unchanged": true,
+      "epoch_before": 2,
+      "epoch_after": 2,
+      "recovery_phases_before": [
+        "superseded",
+        "prepared"
+      ],
+      "recovery_phases_after": [
+        "superseded",
+        "prepared"
+      ],
+      "original_attempt_preserved": true,
+      "original_model_request_preserved": true,
+      "fake_dispatches": 1,
+      "new_fake_dispatches_during_replay": 0,
+      "real_model_calls": 0
+    }
+  ],
+  "log_sha256": "797ddde303409f144a3ece822f572d2675cd9b32ae5faba5b7f0e822ccbdfd5a",
+  "probe_sha256": "df7bb62671249594b821714bf11948e768dfef19c5984abb59d4925ae81be570",
+  "real_model_calls": 0,
+  "new_fake_dispatches_during_replay": 0,
+  "full_product_suite_rerun": false
+}
