@@ -1,0 +1,29 @@
+{
+  "scope": "Publication byte normalization only; no behavior rerun.",
+  "files": {
+    "source-manifest.json": {
+      "execution_sha256": "1e2ba98aa1193d97be72c489ead4111f9765ea60f3d1a875b787b2fa3d7bd02c",
+      "published_sha256": "f2f85447d94fb16c12f7e5b75c3a8dc2e93a301c9536b59e5af93c0ccf65fe95",
+      "execution_bytes": 2399,
+      "published_bytes": 2373,
+      "CRLF_to_LF_equal": true,
+      "parsed_json_equal": true
+    },
+    "contract.md": {
+      "execution_sha256": "2be86cfaa0ab56fc1f9d4b7187332a072539f6c072dec0903640a121f41f6878",
+      "published_sha256": "0c6c43143a1036fbc4c29f48d49754394ab41798fabfe1c11260c567bc08a80b",
+      "execution_bytes": 1506,
+      "published_bytes": 1493,
+      "CRLF_to_LF_equal": true,
+      "parsed_json_equal": null
+    },
+    "session-result.json": {
+      "execution_sha256": "c13c31a617265b6004681c6d0f836000d17f155cdc5761317c2a0a04759c4469",
+      "published_sha256": "f40aae1a5e1d7e0c19e7c2cd0e9ac393925ad5f7b3abf3d687abbff2dfe1f696",
+      "execution_bytes": 1318,
+      "published_bytes": 1265,
+      "CRLF_to_LF_equal": true,
+      "parsed_json_equal": true
+    }
+  }
+}
