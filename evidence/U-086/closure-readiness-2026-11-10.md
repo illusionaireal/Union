@@ -51,13 +51,17 @@
    unknown 以原身份存活）只能单侧成立。曾把根因记为「catalog 行 legacy_v0 与目录 core_v1
    不一致导致整次 `/api/session` 409」，但本轮复核发现该不一致会先以 `incompatible_state`
    结束、且 `session_info` 会跳过 core 条目，故**根因仍未证实**
-   （[归因与反证](session-409-during-core-creation.md)）。已交付的
-   [修复候选 9472a64](session-409-skip-fix.md) 只覆盖「单个不一致条目不应拖垮 session」这一
-   **稳健性缺口**，**不声称**修好了 117 B 前快照；第 4 项仍需一次有界真实运行取证。
+   （[归因与反证](session-409-during-core-creation.md)）。相关修复候选几经值守复审迭代：
+   9472a64（仅捕获 `CoreError`）→ 被否；1730a11（补 `Rejected(INCOMPATIBLE)` 与准备态
+   creator 行）→ 部分通过；**5545d4f**（区分「目录解析失败」与「创建审计失败」，并附
+   [真实 catalog/HTTP 回归](../../tests/test_core_session_real_catalog.py)）为当前候选。
+   这些只覆盖「**记录不一致时读取不应整站失败**」的稳健性缺口，**不声称**修好 117 B 前快照；
+   第 4 项仍需一次有界真实运行取证。
 5. **重开/重放不派发新请求** —— 状态侧证据（重启后 attempts 数、`attempt_ids`、预约保持）成立；
-   「以原命令重放时新增派发 = 0」的观测函数与三态记录器已实现并接入驱动
-   （[观测](replay-no-dispatch-observation.md)、[接线](replay-observation-wiring.md)），
-   但真实运行要拿到 `observed` 仍需可用前快照，即仍依赖第 4 项。
+   「以原命令重放时新增派发 = 0」的观测函数、三态记录器与**比较失败记录**
+   （[观测](replay-no-dispatch-observation.md)、[接线](replay-observation-wiring.md)、
+   [过度声称修正](replay-observation-overclaim-fix.md)）已实现并接入驱动；
+   但真实运行要拿到显式派发计数仍需一次有界真实运行，本卡当前**未提供该计数**，故第 5 项不成立。
 6. **准确 head 的 CI 与关闭判定** —— 本会话未取得 CI 结论：本机无 `gh` CLI、无
    `GH_TOKEN`/`GITHUB_TOKEN`，未认证访问 GitHub API 返回 403 rate limit，且未读取
    Windows Credential Manager 中的 Git 凭据（不回显任何凭据）。仓库现有三个工作流，
