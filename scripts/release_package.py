@@ -96,7 +96,8 @@ def pack(root, output, release_id):
         p.startswith('web/console/src/') or p.startswith('web/console/public/') or
         p.startswith('services/modeld/src/') or p.startswith('services/modeld/patches/') or
         p in {'package.json', 'package-lock.json', 'web/console/package.json', 'web/console/index.html',
-              'web/console/vite.config.ts', 'services/modeld/build.ts', 'services/modeld/prepare.mjs'})]
+              'web/console/vite.config.ts', 'services/modeld/build.ts', 'services/modeld/prepare.mjs',
+              'services/modeld/verify-upstream.mjs'})]
     source_bytes = {p: regular(root / p) for p in sorted(set(source_names + build_sources))}
     source_hashes = {p: digest(data) for p, data in source_bytes.items()}
     for directory in ('web/console/dist', 'services/modeld/dist'):
