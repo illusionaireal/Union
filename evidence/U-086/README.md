@@ -2,6 +2,10 @@
 
 # U-086 / #40：新候选与当前集成边界复核
 
+2026-11-10 重启后「无新增派发」观测（严格 TDD）：[合同·RED·GREEN](replay-no-dispatch-observation.md)。
+新增只读 `observeNoNewDispatch`（比较 attempts、model_request 去重数、budget.used），
+前侧缺失时返回 `unavailable` 而非猜测；5 项测试、`exit22` 314/314 通过。尚未接入驱动主流程。
+
 2026-11-10 取消证据读取的归因缺口（严格 TDD）：[合同·RED·GREEN](cancel-evidence-attribution.md)。
 `scripts/exit22-cancel-evidence.cjs` 原先失败只抛通用状态断言，无法归因到路由；现先记录四条
 路由的 HTTP 结果、失败信息含键名/路由/状态/Core 错误码。新增 3 项测试、`exit22` 309/309 通过；

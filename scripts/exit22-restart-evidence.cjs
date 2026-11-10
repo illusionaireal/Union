@@ -119,4 +119,40 @@ function compareSnapshots(before, after, auId, workId) {
     delivered_result_id: original.delivered_result_id ?? null };
 }
 
-module.exports = { readSnapshot, compareSnapshots };
+// Observe whether reopening the original work dispatched anything new. Read-only:
+// both inputs are already-read Core work bodies, never a fresh request.
+function observeNoNewDispatch(before, after, workId) {
+  const side = (snapshot, name) => {
+    if (!snapshot || snapshot.protocol !== 'core.work.v1') {
+      const code = (snapshot && (snapshot.code || snapshot.error)) || 'no core.work.v1 body';
+      return { unavailable: name + ' snapshot is not a core.work.v1 body: ' + String(code) };
+    }
+    const work = originalWork(snapshot, workId);
+    return {
+      attempts: (work.attempts || []).length,
+      model_requests: new Set((work.steps || []).map(step => step.model_request_id).filter(Boolean)).size,
+      budget: { used: work.budget?.used ?? null, reserved: work.budget?.reserved ?? null },
+    };
+  };
+  const prior = side(before, 'before'), current = side(after, 'after');
+  if (prior.unavailable || current.unavailable) {
+    return { status: 'unavailable', work_id: workId,
+      reason: prior.unavailable || current.unavailable, new_dispatches: null };
+  }
+  if (current.attempts > prior.attempts) {
+    throw new Error('new dispatch after restart: attempts ' + prior.attempts + ' -> ' + current.attempts);
+  }
+  if (current.model_requests > prior.model_requests) {
+    throw new Error('new dispatch after restart: model requests ' + prior.model_requests + ' -> ' + current.model_requests);
+  }
+  if (Number.isSafeInteger(prior.budget.used) && Number.isSafeInteger(current.budget.used)
+      && current.budget.used > prior.budget.used) {
+    throw new Error('new dispatch after restart: budget used ' + prior.budget.used + ' -> ' + current.budget.used);
+  }
+  return { protocol: 'acceptance.replay-observation.v1', status: 'observed', work_id: workId,
+    attempts: { before: prior.attempts, after: current.attempts },
+    model_requests: { before: prior.model_requests, after: current.model_requests },
+    budget: { before: prior.budget, after: current.budget }, new_dispatches: 0 };
+}
+
+module.exports = { readSnapshot, compareSnapshots, observeNoNewDispatch };
