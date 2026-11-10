@@ -16,6 +16,10 @@
   - Node `npm test -- exit22` = **306/306 通过**；
   - 全量 Python `python -m unittest discover -v` = **Ran 812 / OK (skipped=11) / exit 0**
     （见 [daily-full-python-faa5a4c.md](daily-full-python-faa5a4c.md)，含私有日志摘要）。
+  - 本地前端面 `npm run check:console`（tsc + 相关前端/浏览器用例 + 打包）= **exit 0**：
+    2054 modules transformed、`dist` 主包 563.89 kB（gzip 174.04 kB）、构建 6.75s
+    （日志摘要 sha256 `f0d96f88e5a978b4dea85ab341c2edd955ccd11ac955bcaf0697fccc8d67b921`，
+    原日志未提交）。
 - 本卡目录内的多个增量各自带合同、可执行反例与验证记录（逐项索引见本目录 README；
   本轮未逐条重跑）：取消边界、取消交付、页面取消动作、取消响应断体、登记响应断体、
   观察结算、预算守恒、成果来源、重开下载、材料读取、最终中断复核等，均以实际
