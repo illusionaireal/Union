@@ -2248,6 +2248,13 @@
                     "from": "backlog",
                     "to": "backlog",
                     "note": "用户继续后实际建立执行子卡#45–#50 / U-091–U-096；在线revision351逐张读回，父卡原owner/status/依赖保留。全部五卡合计21子卡，无依赖环；仅38/51依实际前置ready，其余backlog，未自动认领。证据docs/reviews/2026-11-08-task-granularity.md、evidence/U-079/five-card-split.json。本条是交付历史，不用于在线调度。"
+                },
+                {
+                    "at": "2026-11-10T10:47:25.151Z",
+                    "actor": "codex-home/single-duty-review-input-repair",
+                    "from": "backlog",
+                    "to": "backlog",
+                    "note": "u092-review-inputs-message135: PR76/77原负向评审与20文件来源保留；补齐评审输入检查，缺失/摘要不符先退出2且0行为测试，修正版需显式manifest绑定。证据索引evidence/U-092/README.md、修复evidence/U-092/review-inputs/README.md。本条只记录审查工具交付，不采用未发布U092产品或关闭#46/#25及#47/#52；在线归属/状态/WIP仍以Kanban为准，无新增真实模型调用。"
                 }
             ]
         },

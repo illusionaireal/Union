@@ -1,0 +1,197 @@
+{
+  "date": "2026-11-10",
+  "base": "faa5a4ca98331657a78546f9f1480734a959a01f",
+  "scope": "Review-runner input diagnosis only; original unpublished U092 product is not adopted",
+  "actor": "single codex-home duty implementation of the review-input repair",
+  "source_snapshot_manifest_sha256": "37b49c71de59f9cdad4ab0358a703df6deaa5f980336373a6eea3d8947c30148",
+  "input_contract": "contract.md",
+  "strict_tdd": {
+    "red": {
+      "tests": 2,
+      "assertion_failures": 4,
+      "errors": 0,
+      "log_sha256": "755c483a51231be97bb0a509b0ff621dda575205894a499654264b54118eb7e0"
+    },
+    "initial_clean_integration": {
+      "runners": 2,
+      "exit": 1,
+      "fixture_import_failed": true,
+      "behavioral_tests_run": 0,
+      "reports_written": 0
+    },
+    "initial_green_fixture_error": {
+      "errors": 2,
+      "reason": "New test assertions accidentally placed in the wrong test; KeyError missing. Corrected test placement; not a product RED."
+    },
+    "green": {
+      "exit": 0,
+      "log_sha256": "6d8cb52f0b8d5c88eba33e04c3a4328c4f3186553498203938413b146c23eec2",
+      "tests": 5
+    }
+  },
+  "focused": {
+    "input_regression": {
+      "exit": 0,
+      "log_sha256": "6d8cb52f0b8d5c88eba33e04c3a4328c4f3186553498203938413b146c23eec2"
+    },
+    "duty-review-20261110": {
+      "exit": 1,
+      "tests": 3,
+      "failures": 2,
+      "errors": 0,
+      "log_sha256": "d29402b0ae74be02f729678d239fdc194326a4798572e56ca27701b4b0615f45",
+      "source_files": 20
+    },
+    "clean_duty-review-20261110": {
+      "exit": 2,
+      "tests": 0,
+      "status": "input_unavailable",
+      "missing": [
+        "ai_union/application/work_recovery.py",
+        "docs/decisions/ADR-0009-work-recovery.md",
+        "evidence/U-092/contract.md",
+        "scripts/u092-work-recovery-browser.cjs",
+        "scripts/u092_work_recovery_host.py",
+        "tests/test_work_recovery.py"
+      ]
+    },
+    "superseded-recovery-review": {
+      "exit": 1,
+      "tests": 3,
+      "failures": 1,
+      "errors": 0,
+      "log_sha256": "388767761bfd71e747564176e311e3aa50934aa98fe463724f0fde0d3a5f5857",
+      "source_files": 20
+    },
+    "clean_superseded-recovery-review": {
+      "exit": 2,
+      "tests": 0,
+      "status": "input_unavailable",
+      "missing": [
+        "ai_union/application/work_recovery.py",
+        "docs/decisions/ADR-0009-work-recovery.md",
+        "evidence/U-092/contract.md",
+        "scripts/u092-work-recovery-browser.cjs",
+        "scripts/u092_work_recovery_host.py",
+        "tests/test_work_recovery.py"
+      ]
+    }
+  },
+  "original_behavioral_assertions_unchanged": true,
+  "historical_validation_files_unchanged": true,
+  "historical_20_source_hashes_unchanged": true,
+  "focused_historical_fake_calls": 6,
+  "real_model_calls_added": 0,
+  "npm_check": {
+    "exit": 0,
+    "seconds": 42.25,
+    "node": "v24.19.0",
+    "log_sha256": "200082fba59e7d46e2f92c89c752f12b73266e3f33c71eb545f78587a68464cc",
+    "management_tests": 37,
+    "node_tests": 306,
+    "frontend_tests": 363
+  },
+  "setup_history": [
+    {
+      "step": "npm launch",
+      "result": "not_started",
+      "reason": "Pinned node directory contains node.exe only; nonexistent npm.cmd path corrected."
+    },
+    {
+      "step": "initial npm check",
+      "result": "passed",
+      "final_verification": false,
+      "reason": "npm launcher used installed Node24.16; final check repeated with Node24.19 for launcher and every npm child."
+    },
+    {
+      "step": "vendor integrity precheck",
+      "result": "comparison rejected before any edit",
+      "reason": "Git used 10-character diff index abbreviations while the pinned patch used 7; rechecked with --abbrev=7 and confirmed identical patch bytes."
+    },
+    {
+      "step": "validation Git metadata",
+      "result": "initial read-tree did not start",
+      "reason": "CRLF in the private alternates path was corrected to LF; no product/source change."
+    }
+  ],
+  "python_full": {
+    "initial_missing_vendor": {
+      "exit": 1,
+      "seconds": 535.531,
+      "log_sha256": "c45ca990a6aa900629d8d8cb04edacc0722b0cf335c352aa4999ef6d359bac52",
+      "tests": 817,
+      "errors": 1,
+      "skipped": 10,
+      "reason": "Archived validation source lacked the pinned vendor tree; SDK fixture exited before emitting readiness JSON."
+    },
+    "prepared_vendor_missing_git_metadata": {
+      "exit": 1,
+      "seconds": 523.328,
+      "log_sha256": "8046246e7c5371cf7c5bca4e621330a0e2798a4596d20a9cb45007144fd09b66",
+      "tests": 817,
+      "summary": [
+        "FAILED (errors=2, skipped=8)"
+      ],
+      "errors": 2,
+      "skipped": 8,
+      "reason": "Built-package tests require git ls-files; source archive did not yet have a validation index."
+    },
+    "sdk_after_vendor_preparation": {
+      "exit": 0,
+      "seconds": 6.328,
+      "log_sha256": "c4c6102a82cd13dd8b556ef6fa7afa3e6453aed7babf5dc34a00d454aa345144",
+      "tests": 1
+    },
+    "release_after_git_preparation": {
+      "exit": 0,
+      "seconds": 3.265,
+      "log_sha256": "ddaf541697f3bfea92bc9f47c865a76741f4b4831886c6b49bdbe881da53c58f",
+      "validation_git_metadata_added": true,
+      "original_repository_untouched": true,
+      "tests": 2
+    },
+    "final_full_status": "Requires final exact-head full validation and CI; the two incomplete local runs above are not reported as passing full runs."
+  },
+  "new_browser_tests_required": false,
+  "reason": "Only Python review CLI and documentation changed; original fixture HTTP/SQLite probes were revalidated",
+  "candidate_source_sha256": {
+    "evidence/U-092/review_inputs.py": "9980750c9a202f1c5dd17bae5b8779e072114126373deb6ba92b631ab1bbec38",
+    "tests/test_u092_review_inputs.py": "34f0b1375c98aa06f4c12eaa89bfe9322d27bf497d0c76be8ccfa7490bb00289",
+    "evidence/U-092/review-inputs/contract.md": "6fde01cda14c6d11cf3633fc647ea4d30845747772e5945131b027f0eacd1b85",
+    "evidence/U-092/review-inputs/README.md": "154e31d1ba5680d4d17326bec4ef80a158365a7c5e0b63a40a20dc6c35540a84",
+    "evidence/U-092/duty-review-20261110/README.md": "28eb5bc664effbf861494d5766f68c3d7cc59b056576445594eaf9bb45c1b1b7",
+    "evidence/U-092/duty-review-20261110/contract.md": "5701b93998355e2c9d6b225675a31e7cb6f3255b832bdbf7f90830ea484acbc9",
+    "evidence/U-092/duty-review-20261110/probes.py": "5a2ab16f241e2494ff0cd9593c4a29bd9fc0b1d2d3617118aabf79aaf23ca79b",
+    "evidence/U-092/superseded-recovery-review/README.md": "a7401ea682bdc51e2180619059009b3061da906f6d160f2c09b93e43d1b422fa",
+    "evidence/U-092/superseded-recovery-review/contract.md": "8ed2cf17fcccb7c52264045bd65f72d7f7d0ec4555676672dd5d84f13cea7746",
+    "evidence/U-092/superseded-recovery-review/probes.py": "9b6d2eb4ef9005b47891a7ca8536527f6387db2f28ddb190a7e1f36f3f106def",
+    "evidence/U-092/README.md": "9dbfc8fc680b63dd4916fa10e541b31edd83dfaa4c2a3480892a88056b1a0f4e",
+    "management/project.json": "49e4a9605d2d3f26c2eb2790222c322e873dda4cfc87c6e12053582b6309b255"
+  },
+  "dependency_preparation": {
+    "vendor_commit": "805a42ffaa56b29a88baef87c7567f1ab9a40a8f",
+    "vendor_diff_matches_pinned_patch": true,
+    "empty_archive_vendor_replaced_by_verified_dependency_junction": true,
+    "build_exit": 0,
+    "seconds": 95.719,
+    "log_sha256": "3ca0b2e93f492f779f5e7f7c0354fe385d574b13e492d18d176056981bcab0f4"
+  },
+  "final_management": {
+    "exit": 0,
+    "seconds": 2.031,
+    "log_sha256": "7bf7d43fb2cc1b18598950cbce90fadf84eb0b5ec646f555a196b83363bdc7c6",
+    "node": "v24.19.0",
+    "tests": 37
+  },
+  "source_invariants": {
+    "unchanged_base_blobs_verified": 2268,
+    "ordinary_head_unchanged": true,
+    "ordinary_index_unchanged": true,
+    "preexisting_files_unchanged": 28
+  },
+  "original_assertion_verification": {
+    "original_probe_classes_ast_unchanged": true,
+    "historical_candidate_hashes_unchanged": 20
+  },
+  "adoption": "Candidate review-input repair only; current-head CI is required before merging. No unpublished recovery implementation is adopted."
+}

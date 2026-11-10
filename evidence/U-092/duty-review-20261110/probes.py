@@ -11,8 +11,10 @@ import unittest
 from unittest.mock import patch
 
 
-candidate = Path(sys.argv[1]).resolve()
-report = Path(sys.argv[2]).resolve()
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from review_inputs import prepare_candidate  # noqa: E402
+
+candidate, report, source_binding = prepare_candidate()
 sys.path.insert(0, str(candidate))
 
 from ai_union.errors import Rejected  # noqa: E402
@@ -103,6 +105,7 @@ suite = unittest.TestSuite(LifecycleReview(name) for name in names)
 result = unittest.TextTestRunner(verbosity=2).run(suite)
 manifest = candidate / "review-source-manifest.json"
 output = {
+    "source_binding": source_binding,
     "scope": "independent synthetic HTTP/SQLite lifecycle review; no author source mutation",
     "manifest_sha256": hashlib.sha256(manifest.read_bytes()).hexdigest() if manifest.exists() else None,
     "source_sha256": {name: hashlib.sha256((candidate / name).read_bytes()).hexdigest()

@@ -9,8 +9,10 @@ from pathlib import Path
 import sys
 import unittest
 
-candidate = Path(sys.argv[1]).resolve()
-report = Path(sys.argv[2]).resolve()
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from review_inputs import prepare_candidate  # noqa: E402
+
+candidate, report, source_binding = prepare_candidate()
 sys.path.insert(0, str(candidate))
 
 from ai_union.errors import Rejected  # noqa: E402
@@ -101,6 +103,7 @@ names = [name for name in SupersededRecoveryReview.__dict__ if name.startswith("
 suite = unittest.TestSuite(SupersededRecoveryReview(name) for name in names)
 result = unittest.TextTestRunner(verbosity=2).run(suite)
 output = {
+    "source_binding": source_binding,
     "scope": "independent synthetic HTTP/SQLite superseded-recovery review",
     "source_sha256": {name: hashlib.sha256((candidate / name).read_bytes()).hexdigest()
                       for name in ("ai_union/application/work_recovery.py", "tests/test_work_recovery.py")},
