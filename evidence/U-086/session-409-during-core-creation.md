@@ -55,6 +55,18 @@
 它记录的是「一个不一致条目不应拖垮整个 session 读取」这一**稳健性缺口**（该缺口本身真实存在，
 且已由 [修复候选 9472a64](session-409-skip-fix.md) 覆盖），但**不能**声称为 117 B 前快照的根因。
 
+## 下一步如何唯一确定根因（不需要新写工具）
+
+驱动已具备路由级归因（`scripts/exit22-restart-evidence.cjs` 的 `readSnapshot`，见
+[restart-read-diagnostics.md](restart-read-diagnostics.md)）：下一次运行若前快照读取失败，
+会抛/记录 `restart snapshot <key> read failed: <route> HTTP <status> <code>`，直接指出
+是 `/api/session` 还是 `/api/v1/work`、以及具体错误码。配合
+[取消证据的 `http` 映射](cancel-evidence-attribution.md)，一次运行即可同时定位两条读取链。
+
+因此本轮**停止继续静态推断**：待一次有界真实运行（或用户授权）后，按该路由级记录定性，
+再决定是否需要第二轮产品修复。
+
+
 这属于**就绪/catalog 一致性问题**，不是权限问题，也不会因为重跑驱动而自动消失。
 
 ## 影响
