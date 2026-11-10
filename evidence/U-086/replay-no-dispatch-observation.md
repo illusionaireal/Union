@@ -71,3 +71,4 @@ RED→GREEN：新增测试 `the comparison summary states that dispatch counting
 
 RED→GREEN：新测试先以「字段缺失」失败；实现后该套件 **5/5**、全量 `npm test -- exit22` **343/343**。
 写入器仍不发明计数：`observed` 之外一律 `null` + `unknown:true`。
+更正：上面写的「343/343」为笔误，实测 `npm test -- exit22` 为 **342/342**（新增 1 条测试：341→342）。
