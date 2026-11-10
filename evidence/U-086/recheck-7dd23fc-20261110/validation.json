@@ -1,0 +1,120 @@
+{
+  "checked_at": "2026-11-10T15:42:12.271612+00:00",
+  "candidate_head": "7dd23fc7b1bea4798a889d005849cae8ca27414a",
+  "source_manifest_sha256": "d0427c930a6ece64cc98e68f57ba03560bcc34331c73e6289774fc34dd05b872",
+  "bound_files": 21,
+  "source_unchanged": true,
+  "original_replay_probe_sha256": "535b834e720c7449dec7be71c2c8345284c554ba5e3a7338295ebb46071fa4df",
+  "original_replay_assertions_changed": false,
+  "scope_comment_id": 392,
+  "checks": [
+    {
+      "operation": "replay-probes",
+      "exit_code": 0,
+      "elapsed_seconds": 0.157,
+      "log_sha256": "3ad13124b48efd6c86bac1527d8c63ecb713f50a3bf831ceb064114ae73640ba",
+      "summary": [
+        "ℹ tests 5",
+        "ℹ suites 0",
+        "ℹ pass 5",
+        "ℹ fail 0",
+        "ℹ cancelled 0",
+        "ℹ skipped 0",
+        "ℹ duration_ms 103.287"
+      ]
+    },
+    {
+      "operation": "cancel-driver-probes",
+      "exit_code": 1,
+      "elapsed_seconds": 0.141,
+      "log_sha256": "a09fc579b6d7a2eda7cdcb3ef82bd3f68cabce7f5c3e47ca8600ecb360bc933d",
+      "summary": [
+        "ℹ tests 6",
+        "ℹ suites 0",
+        "ℹ pass 4",
+        "ℹ fail 2",
+        "ℹ cancelled 0",
+        "ℹ skipped 0",
+        "ℹ duration_ms 90.2376",
+        "  AssertionError [ERR_ASSERTION]: durable diagnostic lost completed reads: work, receipt, current",
+        "      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {",
+        "  AssertionError [ERR_ASSERTION]: durable diagnostic lost completed reads: work, receipt, current",
+        "      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {"
+      ]
+    },
+    {
+      "operation": "author-replay-cancel",
+      "exit_code": 0,
+      "elapsed_seconds": 0.172,
+      "log_sha256": "f537187eaddeae5eae67ca299699c9a276fb0b82475bf8d45cd3f4f8b918eeb7",
+      "summary": [
+        "ℹ tests 16",
+        "ℹ suites 0",
+        "ℹ pass 16",
+        "ℹ fail 0",
+        "ℹ cancelled 0",
+        "ℹ skipped 0",
+        "ℹ duration_ms 123.1479"
+      ]
+    }
+  ],
+  "results": {
+    "original_replay": {
+      "tests": 5,
+      "passed": 5,
+      "failed": 0
+    },
+    "cancel_driver": {
+      "tests": 6,
+      "passed": 4,
+      "assertion_failures": 2,
+      "errors": 0
+    },
+    "author_affected": {
+      "tests": 16,
+      "passed": 16,
+      "failed": 0
+    }
+  },
+  "remaining_finding": {
+    "severity": "P2",
+    "scope": "new cancellation driver failure archive",
+    "failed_call_sites": [
+      "before restart",
+      "after restart"
+    ],
+    "supplied_statuses": {
+      "session": 409,
+      "work": 503,
+      "receipt": 404,
+      "current": 200
+    },
+    "missing_completed_routes": [
+      "work",
+      "receipt",
+      "current"
+    ],
+    "underlying_cancel_helper_changed": false,
+    "standalone_unchanged_helper_rerun": false,
+    "unchanged_helper_sha256": "9b5de0846f2e3cbe5ce427a470859a100f7ce1068e9eb71ad40147834667e43a"
+  },
+  "full_product_suite_run": false,
+  "product_browser_run": false,
+  "product_adopted": false,
+  "real_model_calls": 0,
+  "actor": "Codex independent engineering review session 01a1c618-e266-7223-b89a-e72e9b40f5b9",
+  "online_member_id": "89f4c1c1-329a-4b54-ad37-235cf061e9a8",
+  "u092_source_check": {
+    "compared": 20,
+    "different": [],
+    "behavior_tests_run": false
+  },
+  "pr82_evidence_adoption": {
+    "head": "39febbf421cecfb916fed48ee84e70208b744969",
+    "merge": "dd582dd6d09a239fc1721512588ba7ffee4d9ebd",
+    "git_tree_readback": "a365615bd70961b52d89566bf95745df8262af25",
+    "checks": 14,
+    "workflows": 6,
+    "product_adopted": false
+  }
+}
