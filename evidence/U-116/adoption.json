@@ -1,0 +1,98 @@
+{
+  "time": "2026-11-10T22:07:27.762023+00:00",
+  "pr": 88,
+  "head": "2ccfb5b1390ffe9663a80d3d7eb0b5c92593aabb",
+  "merge_sha": "81a0b833fcb3f4318f35cc7a7b329d82a962248d",
+  "tree": "568cde2609487727ebb1f9e239a4e444ab3551c2",
+  "checks": 14,
+  "all_success": true,
+  "comment_id": 6780575151,
+  "implementer_self_check": true,
+  "independent_review_claimed": false,
+  "check_runs": [
+    {
+      "id": 130155366431,
+      "name": "offline-checks (ubuntu-latest)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 130155366122,
+      "name": "offline-checks (windows-latest)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 130155366054,
+      "name": "unittest (windows-latest)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 130155365956,
+      "name": "model-service (windows-latest)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 130155365749,
+      "name": "unittest (ubuntu-latest)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 130155365596,
+      "name": "console-browser",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 130155365563,
+      "name": "model-service (ubuntu-latest)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 130155319362,
+      "name": "offline-checks (ubuntu-latest)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 130155319265,
+      "name": "offline-checks (windows-latest)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 130155319259,
+      "name": "unittest (windows-latest)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 130155318811,
+      "name": "console-browser",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 130155318757,
+      "name": "model-service (windows-latest)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 130155318720,
+      "name": "unittest (ubuntu-latest)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 130155318476,
+      "name": "model-service (ubuntu-latest)",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ]
+}
