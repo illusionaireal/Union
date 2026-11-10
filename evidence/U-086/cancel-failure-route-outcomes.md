@@ -58,3 +58,10 @@ RED→GREEN：两条新测试先失败（transport 无结构化 code；malformed
 `git archive b948203` → 隔离候选；按同一方式机械重签 21 文件 manifest 后运行值守探针：
 `replay-probes.cjs` **5/5 通过**、`cancel-driver-probes.cjs` **6/6 通过**——
 说明本轮「网络/JSON 中断结构化诊断」没有回归其已有的失败归档断言。仍属作者自检，不等于值守复核。
+## 自检复跑（head 744e082）：比较摘要与记录字段改动后 11 探针仍全绿
+
+`git archive 744e082` → 隔离候选，机械重签 21 文件 manifest：
+`replay-probes.cjs` **5/5**、`cancel-driver-probes.cjs` **6/6** 通过。
+说明本轮对 `exit22-restart-evidence.cjs`（新增 `dispatch_count_unknown` / `identity_equality_only`）
+与 `exit22-replay-observation.cjs`（记录统一标注计数可用性）的改动，没有回归值守既有的失败归档与重放断言。
+仍属作者自检，不等于值守复核。
