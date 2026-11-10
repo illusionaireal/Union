@@ -47,6 +47,28 @@
    （c）任一 run 的成功前快照、（d）原命令重放的新增派发计数；或由用户授权的有界真实运行重新捕获。
    以上均不得以 check 标签或推断替代。
 
+## 待诊线索：为什么「前快照」永远只有 117 B（供 owner/值守离线排查）
+
+本轮读驱动与工装时发现一条可离线查的线索，不涉及新调用：
+
+1. 集成里的前快照写法是 `scripts/exit22b_page.cjs:405`（`exit22c_download.cjs:379` 同形）：
+   `const before = await snapshot(); fs.writeFileSync('snapshot-before-restart.json', …)`。
+2. `snapshot()`（`exit22b_page.cjs:26`）调用 `scripts/exit22-restart-evidence.cjs:4` 的 `readSnapshot`，
+   后者读 `/api/session` + `/api/v1/work?organization_id=…`，并返回**复合对象** `{session, work, current}`；
+   其中对 `session`/`current` 断言 `core_protocol`、`principal_id`、`service_instance`，
+   对 `work` 断言 `core.work.v1`/`organization_id`/`access.principal_id`。
+3. 但入库的 8 个 `snapshot-before-restart.json` 都是**单个错误对象**
+   `{"code":"unsupported_capability","error":"此 AU 尚在准备态，自主行动与资源操作尚未启用"}`（117 B），
+   **不是** `{session, work, current}` 复合结构，也不是断言失败应有的抛错形态。
+
+由此可查的两个方向（都不需新真实调用）：
+- (a) 这些 run 用的驱动版本可能与集成内的 `readSnapshot` 不同（或该错误由外层 catch 直接落盘），
+  需比对 run 对应的驱动 commit 与集成的差异；
+- (b) 若确实是 `/api/session` 或 `/api/v1/work` 返回该错误，则与「同一 AU 已能派发并取消真实请求」
+  的事实矛盾（除非快照发生在 AU 启用生效之前），属**就绪门/时序**问题，应离线定位后再谈第 4 项。
+
+这两点只影响「前快照为何缺失」的归因，不改变第 4 项仍未证的结论。
+
 ## 复核后更正（回应值守 `supplement-record-audit` 609a337）
 
 1. 「134 为单次真实派发」→ 改为：该 run 内有**两条**模型请求记录（1 used、1 unknown），已知用量子集
