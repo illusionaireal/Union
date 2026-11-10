@@ -1,0 +1,1777 @@
+{
+  "kind": "fixed_disposition_evidence_not_operational_ledger",
+  "checked_at": "2026-11-10T18:13:07.942Z",
+  "revision_before": 1026,
+  "revision_after": 1083,
+  "actor": "Codex coordinator / user-authorized product audit correction",
+  "online_member_id": "89f4c1c1-329a-4b54-ad37-235cf061e9a8",
+  "source_commit": "2ae0362ac493cc8f41b4bbecf89164db244175db",
+  "private_snapshot_sha256": {
+    "before-private.json": "212a7d622ed03309ea87df414212097d854dfbd8eb5c515900e064ba0165084e",
+    "after-private.json": "22bbdd003af2605aaeb3f33682a401a5c473236c0a0069081774586d85d875cc"
+  },
+  "new_task_ids": {
+    "disposition": 63,
+    "design": 64,
+    "entry": 65,
+    "resources": 66,
+    "work": 67,
+    "governance": 68,
+    "retire": 69
+  },
+  "new_tasks": [
+    {
+      "kind": "create",
+      "http": 201,
+      "readback_http": 200,
+      "key": "disposition",
+      "revision": 1027,
+      "task": {
+        "id": 63,
+        "title": "落实产品审计：纠正任务、依赖和后续代码责任 · U-109",
+        "status": "ready",
+        "version": 1,
+        "assignee": null,
+        "dependencies": [],
+        "archived": 0
+      }
+    },
+    {
+      "kind": "create",
+      "http": 201,
+      "readback_http": 200,
+      "key": "design",
+      "revision": 1029,
+      "task": {
+        "id": 64,
+        "title": "冻结 V1 完整组织体验与交互契约 · U-110",
+        "status": "ready",
+        "version": 1,
+        "assignee": null,
+        "dependencies": [
+          19
+        ],
+        "archived": 0
+      }
+    },
+    {
+      "kind": "create",
+      "http": 201,
+      "readback_http": 200,
+      "key": "entry",
+      "revision": 1030,
+      "task": {
+        "id": 65,
+        "title": "替换默认入口：创建并重开 V1 组织工作空间 · U-111",
+        "status": "backlog",
+        "version": 1,
+        "assignee": null,
+        "dependencies": [
+          64,
+          20,
+          24
+        ],
+        "archived": 0
+      }
+    },
+    {
+      "kind": "create",
+      "http": 201,
+      "readback_http": 200,
+      "key": "resources",
+      "revision": 1031,
+      "task": {
+        "id": 66,
+        "title": "从组织准备缺口完成模型与资料授权配置 · U-112",
+        "status": "backlog",
+        "version": 1,
+        "assignee": null,
+        "dependencies": [
+          64,
+          65,
+          21
+        ],
+        "archived": 0
+      }
+    },
+    {
+      "kind": "create",
+      "http": 201,
+      "readback_http": 200,
+      "key": "work",
+      "revision": 1032,
+      "task": {
+        "id": 67,
+        "title": "完成新工作体验：目标到自动执行与可用成果 · U-113",
+        "status": "backlog",
+        "version": 1,
+        "assignee": null,
+        "dependencies": [
+          64,
+          66,
+          38,
+          59,
+          60,
+          62
+        ],
+        "archived": 0
+      }
+    },
+    {
+      "kind": "create",
+      "http": 201,
+      "readback_http": 200,
+      "key": "governance",
+      "revision": 1033,
+      "task": {
+        "id": 68,
+        "title": "按实际职责完成治理决定与责任交接体验 · U-114",
+        "status": "backlog",
+        "version": 1,
+        "assignee": null,
+        "dependencies": [
+          64,
+          65,
+          24
+        ],
+        "archived": 0
+      }
+    },
+    {
+      "kind": "create",
+      "http": 201,
+      "readback_http": 200,
+      "key": "retire",
+      "revision": 1034,
+      "task": {
+        "id": 69,
+        "title": "退役旧前端入口与失效的兼容回归约束 · U-115",
+        "status": "backlog",
+        "version": 1,
+        "assignee": null,
+        "dependencies": [
+          65,
+          66,
+          67,
+          68
+        ],
+        "archived": 0
+      }
+    }
+  ],
+  "original_task_changes": [
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1035,
+      "before": {
+        "id": 19,
+        "title": "写清第一版要做的功能和开发顺序 · U-065",
+        "status": "done",
+        "version": 5,
+        "assignee": "f926a8ec-c502-41c9-910d-80bbfe88f989",
+        "dependencies": [],
+        "archived": 0
+      },
+      "after": {
+        "id": 19,
+        "title": "[规范基础] 写清第一版要做的功能和开发顺序 · U-065",
+        "status": "done",
+        "version": 6,
+        "assignee": "f926a8ec-c502-41c9-910d-80bbfe88f989",
+        "dependencies": [],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "title"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1036,
+      "before": {
+        "id": 20,
+        "title": "登录后创建组织，刷新或重启仍能打开 · U-066",
+        "status": "done",
+        "version": 9,
+        "assignee": "f926a8ec-c502-41c9-910d-80bbfe88f989",
+        "dependencies": [
+          19
+        ],
+        "archived": 0
+      },
+      "after": {
+        "id": 20,
+        "title": "[核心基础] 登录后创建组织，刷新或重启仍能打开 · U-066",
+        "status": "done",
+        "version": 10,
+        "assignee": "f926a8ec-c502-41c9-910d-80bbfe88f989",
+        "dependencies": [
+          19
+        ],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "title"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1037,
+      "before": {
+        "id": 21,
+        "title": "填好模型连接，让 AI 读取一份资料并回答 · U-072",
+        "status": "done",
+        "version": 15,
+        "assignee": "f926a8ec-c502-41c9-910d-80bbfe88f989",
+        "dependencies": [
+          20,
+          24
+        ],
+        "archived": 0
+      },
+      "after": {
+        "id": 21,
+        "title": "[核心基础] 填好模型连接，让 AI 读取一份资料并回答 · U-072",
+        "status": "done",
+        "version": 16,
+        "assignee": "f926a8ec-c502-41c9-910d-80bbfe88f989",
+        "dependencies": [
+          20,
+          24
+        ],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "title"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1038,
+      "before": {
+        "id": 22,
+        "title": "输入一个目标，让 AI 交出第一份成果 · U-067",
+        "status": "progress",
+        "version": 21,
+        "assignee": "cafeef64-ac40-4062-97c1-ac82ece0a379",
+        "dependencies": [
+          20,
+          24,
+          21
+        ],
+        "archived": 0
+      },
+      "after": {
+        "id": 22,
+        "title": "输入一个目标，让 AI 交出第一份成果 · U-067",
+        "status": "progress",
+        "version": 22,
+        "assignee": "cafeef64-ac40-4062-97c1-ac82ece0a379",
+        "dependencies": [
+          20,
+          24,
+          21
+        ],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "acceptance",
+        "checklist"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1039,
+      "before": {
+        "id": 23,
+        "title": "给第一版提意见，让 AI 交付修改后的第二版 · U-068",
+        "status": "backlog",
+        "version": 5,
+        "assignee": null,
+        "dependencies": [
+          22
+        ],
+        "archived": 0
+      },
+      "after": {
+        "id": 23,
+        "title": "给第一版提意见，让 AI 交付修改后的第二版 · U-068",
+        "status": "backlog",
+        "version": 6,
+        "assignee": null,
+        "dependencies": [
+          22
+        ],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "acceptance"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1040,
+      "before": {
+        "id": 24,
+        "title": "设置负责人、修改规则、撤销权限和交接工作 · U-069",
+        "status": "done",
+        "version": 6,
+        "assignee": "f926a8ec-c502-41c9-910d-80bbfe88f989",
+        "dependencies": [
+          20
+        ],
+        "archived": 0
+      },
+      "after": {
+        "id": 24,
+        "title": "[核心基础] 设置负责人、修改规则、撤销权限和交接工作 · U-069",
+        "status": "done",
+        "version": 7,
+        "assignee": "f926a8ec-c502-41c9-910d-80bbfe88f989",
+        "dependencies": [
+          20
+        ],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "title"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1041,
+      "before": {
+        "id": 25,
+        "title": "任务卡住或重启后，找回进度并继续处理 · U-070",
+        "status": "backlog",
+        "version": 6,
+        "assignee": null,
+        "dependencies": [
+          22,
+          24
+        ],
+        "archived": 0
+      },
+      "after": {
+        "id": 25,
+        "title": "任务卡住或重启后，找回进度并继续处理 · U-070",
+        "status": "backlog",
+        "version": 7,
+        "assignee": null,
+        "dependencies": [
+          22,
+          24
+        ],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "acceptance"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1042,
+      "before": {
+        "id": 26,
+        "title": "让 AI 试用新的做法，比较效果再决定是否保留 · U-073",
+        "status": "backlog",
+        "version": 3,
+        "assignee": null,
+        "dependencies": [
+          23
+        ],
+        "archived": 0
+      },
+      "after": {
+        "id": 26,
+        "title": "让 AI 试用新的做法，比较效果再决定是否保留 · U-073",
+        "status": "backlog",
+        "version": 4,
+        "assignee": null,
+        "dependencies": [
+          23
+        ],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "acceptance"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1043,
+      "before": {
+        "id": 27,
+        "title": "安装后能持续做事，也能备份、升级和恢复 · U-074",
+        "status": "backlog",
+        "version": 4,
+        "assignee": null,
+        "dependencies": [
+          23,
+          25,
+          30,
+          21,
+          26
+        ],
+        "archived": 0
+      },
+      "after": {
+        "id": 27,
+        "title": "安装后能持续做事，也能备份、升级和恢复 · U-074",
+        "status": "backlog",
+        "version": 5,
+        "assignee": null,
+        "dependencies": [
+          23,
+          25,
+          30,
+          21,
+          26,
+          69
+        ],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "dependencies",
+        "acceptance",
+        "checklist"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1044,
+      "before": {
+        "id": 28,
+        "title": "接入其他模型服务，逐个验证是否真的能用 · U-075",
+        "status": "progress",
+        "version": 26,
+        "assignee": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+        "dependencies": [
+          21
+        ],
+        "archived": 0
+      },
+      "after": {
+        "id": 28,
+        "title": "接入其他模型服务，逐个验证是否真的能用 · U-075",
+        "status": "progress",
+        "version": 27,
+        "assignee": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+        "dependencies": [
+          21
+        ],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "acceptance"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1045,
+      "before": {
+        "id": 29,
+        "title": "让组织合作交付，并能交接、合并或拆分 · U-076",
+        "status": "backlog",
+        "version": 3,
+        "assignee": null,
+        "dependencies": [
+          23,
+          24,
+          25,
+          30
+        ],
+        "archived": 0
+      },
+      "after": {
+        "id": 29,
+        "title": "让组织合作交付，并能交接、合并或拆分 · U-076",
+        "status": "backlog",
+        "version": 4,
+        "assignee": null,
+        "dependencies": [
+          23,
+          24,
+          25,
+          30
+        ],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "acceptance"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1046,
+      "before": {
+        "id": 30,
+        "title": "让外部管理工具通过接口操作组织 · U-071",
+        "status": "backlog",
+        "version": 6,
+        "assignee": null,
+        "dependencies": [
+          20,
+          22
+        ],
+        "archived": 0
+      },
+      "after": {
+        "id": 30,
+        "title": "让外部管理工具通过接口操作组织 · U-071",
+        "status": "backlog",
+        "version": 7,
+        "assignee": null,
+        "dependencies": [
+          20,
+          24,
+          59
+        ],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "dependencies",
+        "acceptance",
+        "checklist"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1047,
+      "before": {
+        "id": 31,
+        "title": "Kanban 运行态统一：CLI/MCP 认领与 WIP 只依据实时 API · U-077",
+        "status": "done",
+        "version": 6,
+        "assignee": "54f3ed9e-817b-482a-90c1-d46bfc01728c",
+        "dependencies": [],
+        "archived": 0
+      },
+      "after": {
+        "id": 31,
+        "title": "[工程支撑] Kanban 运行态统一：CLI/MCP 认领与 WIP 只依据实时 API · U-077",
+        "status": "done",
+        "version": 7,
+        "assignee": "54f3ed9e-817b-482a-90c1-d46bfc01728c",
+        "dependencies": [],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "title"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1048,
+      "before": {
+        "id": 32,
+        "title": "跨平台测试修复：Linux symlink / Windows junction 越界防护 · U-078",
+        "status": "done",
+        "version": 3,
+        "assignee": "cafeef64-ac40-4062-97c1-ac82ece0a379",
+        "dependencies": [],
+        "archived": 0
+      },
+      "after": {
+        "id": 32,
+        "title": "[工程支撑] 跨平台测试修复：Linux symlink / Windows junction 越界防护 · U-078",
+        "status": "done",
+        "version": 4,
+        "assignee": "cafeef64-ac40-4062-97c1-ac82ece0a379",
+        "dependencies": [],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "title"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1049,
+      "before": {
+        "id": 33,
+        "title": "NAS 部署值守接入：五分钟巡检与可追溯交接 · U-079",
+        "status": "done",
+        "version": 5,
+        "assignee": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+        "dependencies": [],
+        "archived": 0
+      },
+      "after": {
+        "id": 33,
+        "title": "[工程支撑] NAS 部署值守接入：五分钟巡检与可追溯交接 · U-079",
+        "status": "done",
+        "version": 6,
+        "assignee": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+        "dependencies": [],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "title"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1050,
+      "before": {
+        "id": 34,
+        "title": "修复工作台浏览器 CI 的 V1 空态契约失配 · U-080",
+        "status": "done",
+        "version": 4,
+        "assignee": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+        "dependencies": [],
+        "archived": 0
+      },
+      "after": {
+        "id": 34,
+        "title": "[历史检查·旧约束退役] 修复工作台浏览器 CI 的 V1 空态契约失配 · U-080",
+        "status": "done",
+        "version": 5,
+        "assignee": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+        "dependencies": [],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "title"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1051,
+      "before": {
+        "id": 35,
+        "title": "在核心任务页显示 AI 工作与成果 · U-081",
+        "status": "done",
+        "version": 10,
+        "assignee": "54f3ed9e-817b-482a-90c1-d46bfc01728c",
+        "dependencies": [
+          20,
+          24,
+          21
+        ],
+        "archived": 0
+      },
+      "after": {
+        "id": 35,
+        "title": "[历史接线·交互待替换] 在核心任务页显示 AI 工作与成果 · U-081",
+        "status": "done",
+        "version": 11,
+        "assignee": "54f3ed9e-817b-482a-90c1-d46bfc01728c",
+        "dependencies": [
+          20,
+          24,
+          21
+        ],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "title"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1052,
+      "before": {
+        "id": 36,
+        "title": "独立复核 S03 的 V1 HTTP 夹具等待修复 · U-082",
+        "status": "done",
+        "version": 4,
+        "assignee": "54f3ed9e-817b-482a-90c1-d46bfc01728c",
+        "dependencies": [
+          20,
+          24,
+          21
+        ],
+        "archived": 0
+      },
+      "after": {
+        "id": 36,
+        "title": "[工程支撑] 独立复核 S03 的 V1 HTTP 夹具等待修复 · U-082",
+        "status": "done",
+        "version": 5,
+        "assignee": "54f3ed9e-817b-482a-90c1-d46bfc01728c",
+        "dependencies": [
+          20,
+          24,
+          21
+        ],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "title"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1053,
+      "before": {
+        "id": 37,
+        "title": "Kanban：管理员可将开发者提升为管理员 · U-083",
+        "status": "done",
+        "version": 13,
+        "assignee": "89f4c1c1-329a-4b54-ad37-235cf061e9a8",
+        "dependencies": [],
+        "archived": 0
+      },
+      "after": {
+        "id": 37,
+        "title": "[开发工具] Kanban：管理员可将开发者提升为管理员 · U-083",
+        "status": "done",
+        "version": 14,
+        "assignee": "89f4c1c1-329a-4b54-ad37-235cf061e9a8",
+        "dependencies": [],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "title"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1054,
+      "before": {
+        "id": 38,
+        "title": "从页面实际运行 AI 工作并找回原请求 · U-084",
+        "status": "done",
+        "version": 10,
+        "assignee": "54f3ed9e-817b-482a-90c1-d46bfc01728c",
+        "dependencies": [
+          20,
+          21,
+          24
+        ],
+        "archived": 0
+      },
+      "after": {
+        "id": 38,
+        "title": "[历史工程·交互待替换] 从页面实际运行 AI 工作并找回原请求 · U-084",
+        "status": "done",
+        "version": 11,
+        "assignee": "54f3ed9e-817b-482a-90c1-d46bfc01728c",
+        "dependencies": [
+          20,
+          21,
+          24
+        ],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "title"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1055,
+      "before": {
+        "id": 39,
+        "title": "真实读取资料并交付可下载的第一份成果 · U-085",
+        "status": "backlog",
+        "version": 3,
+        "assignee": null,
+        "dependencies": [
+          38,
+          20,
+          21,
+          24,
+          59,
+          60
+        ],
+        "archived": 0
+      },
+      "after": {
+        "id": 39,
+        "title": "真实读取资料并交付可下载的第一份成果 · U-085",
+        "status": "backlog",
+        "version": 4,
+        "assignee": null,
+        "dependencies": [
+          38,
+          20,
+          21,
+          24,
+          59,
+          60,
+          67
+        ],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "dependencies",
+        "acceptance",
+        "blocker"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1056,
+      "before": {
+        "id": 40,
+        "title": "真实中断后查询原请求并重开同一工作 · U-086",
+        "status": "progress",
+        "version": 167,
+        "assignee": "cafeef64-ac40-4062-97c1-ac82ece0a379",
+        "dependencies": [
+          20,
+          21,
+          24,
+          62
+        ],
+        "archived": 0
+      },
+      "after": {
+        "id": 40,
+        "title": "真实中断后查询原请求并重开同一工作 · U-086",
+        "status": "progress",
+        "version": 168,
+        "assignee": "cafeef64-ac40-4062-97c1-ac82ece0a379",
+        "dependencies": [
+          20,
+          21,
+          24,
+          62
+        ],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "acceptance"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1057,
+      "before": {
+        "id": 41,
+        "title": "对指定成果版本提交可追踪的反馈 · U-087",
+        "status": "backlog",
+        "version": 1,
+        "assignee": null,
+        "dependencies": [
+          22
+        ],
+        "archived": 0
+      },
+      "after": {
+        "id": 41,
+        "title": "对指定成果版本提交可追踪的反馈 · U-087",
+        "status": "backlog",
+        "version": 2,
+        "assignee": null,
+        "dependencies": [
+          20,
+          24,
+          60,
+          64
+        ],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "dependencies",
+        "acceptance"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1058,
+      "before": {
+        "id": 42,
+        "title": "采用反馈并实际产出可比较的第二版 · U-088",
+        "status": "backlog",
+        "version": 1,
+        "assignee": null,
+        "dependencies": [
+          22,
+          41
+        ],
+        "archived": 0
+      },
+      "after": {
+        "id": 42,
+        "title": "采用反馈并实际产出可比较的第二版 · U-088",
+        "status": "backlog",
+        "version": 2,
+        "assignee": null,
+        "dependencies": [
+          20,
+          21,
+          24,
+          38,
+          60,
+          41
+        ],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "dependencies",
+        "acceptance"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1059,
+      "before": {
+        "id": 43,
+        "title": "纠正资料事实后只修订受影响的工作 · U-089",
+        "status": "backlog",
+        "version": 1,
+        "assignee": null,
+        "dependencies": [
+          22,
+          42
+        ],
+        "archived": 0
+      },
+      "after": {
+        "id": 43,
+        "title": "纠正资料事实后只修订受影响的工作 · U-089",
+        "status": "backlog",
+        "version": 2,
+        "assignee": null,
+        "dependencies": [
+          42
+        ],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "dependencies",
+        "acceptance"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1060,
+      "before": {
+        "id": 44,
+        "title": "真实反馈使第一版发生可核验的改变 · U-090",
+        "status": "backlog",
+        "version": 1,
+        "assignee": null,
+        "dependencies": [
+          22,
+          39,
+          42,
+          43
+        ],
+        "archived": 0
+      },
+      "after": {
+        "id": 44,
+        "title": "真实反馈使第一版发生可核验的改变 · U-090",
+        "status": "backlog",
+        "version": 2,
+        "assignee": null,
+        "dependencies": [
+          39,
+          42,
+          43
+        ],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "dependencies",
+        "acceptance"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1061,
+      "before": {
+        "id": 45,
+        "title": "一项模型卡住时独立工作仍可完成 · U-091",
+        "status": "backlog",
+        "version": 1,
+        "assignee": null,
+        "dependencies": [
+          22,
+          24
+        ],
+        "archived": 0
+      },
+      "after": {
+        "id": 45,
+        "title": "一项模型卡住时独立工作仍可完成 · U-091",
+        "status": "ready",
+        "version": 2,
+        "assignee": null,
+        "dependencies": [
+          20,
+          21,
+          24,
+          38,
+          59,
+          60,
+          62
+        ],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "dependencies",
+        "status",
+        "acceptance"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1062,
+      "before": {
+        "id": 46,
+        "title": "重启后按原请求恢复责任和预约用量 · U-092",
+        "status": "progress",
+        "version": 4,
+        "assignee": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+        "dependencies": [
+          20,
+          21,
+          24,
+          38,
+          59,
+          60,
+          62
+        ],
+        "archived": 0
+      },
+      "after": {
+        "id": 46,
+        "title": "重启后按原请求恢复责任和预约用量 · U-092",
+        "status": "progress",
+        "version": 5,
+        "assignee": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+        "dependencies": [
+          20,
+          21,
+          24,
+          38,
+          59,
+          60,
+          62
+        ],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "acceptance"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1063,
+      "before": {
+        "id": 47,
+        "title": "长任务运行中接收并保留新的要求 · U-093",
+        "status": "backlog",
+        "version": 2,
+        "assignee": null,
+        "dependencies": [
+          20,
+          21,
+          24,
+          38,
+          59,
+          60,
+          62,
+          46
+        ],
+        "archived": 0
+      },
+      "after": {
+        "id": 47,
+        "title": "长任务运行中接收并保留新的要求 · U-093",
+        "status": "backlog",
+        "version": 3,
+        "assignee": null,
+        "dependencies": [
+          20,
+          21,
+          24,
+          38,
+          59,
+          60,
+          62,
+          46,
+          64
+        ],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "dependencies",
+        "acceptance"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1064,
+      "before": {
+        "id": 48,
+        "title": "按明确条件唤醒等待中的原工作 · U-094",
+        "status": "backlog",
+        "version": 1,
+        "assignee": null,
+        "dependencies": [
+          22,
+          24,
+          46,
+          47
+        ],
+        "archived": 0
+      },
+      "after": {
+        "id": 48,
+        "title": "按明确条件唤醒等待中的原工作 · U-094",
+        "status": "backlog",
+        "version": 2,
+        "assignee": null,
+        "dependencies": [
+          24,
+          46,
+          47
+        ],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "dependencies",
+        "acceptance"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1065,
+      "before": {
+        "id": 49,
+        "title": "由执行之外的监督者进行有限恢复 · U-095",
+        "status": "backlog",
+        "version": 1,
+        "assignee": null,
+        "dependencies": [
+          22,
+          24,
+          46,
+          48
+        ],
+        "archived": 0
+      },
+      "after": {
+        "id": 49,
+        "title": "由执行之外的监督者进行有限恢复 · U-095",
+        "status": "backlog",
+        "version": 2,
+        "assignee": null,
+        "dependencies": [
+          24,
+          46,
+          48
+        ],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "dependencies",
+        "acceptance"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1066,
+      "before": {
+        "id": 50,
+        "title": "在真实故障与交接窗口验证持续责任 · U-096",
+        "status": "backlog",
+        "version": 1,
+        "assignee": null,
+        "dependencies": [
+          22,
+          24,
+          39,
+          40,
+          45,
+          46,
+          47,
+          48,
+          49
+        ],
+        "archived": 0
+      },
+      "after": {
+        "id": 50,
+        "title": "在真实故障与交接窗口验证持续责任 · U-096",
+        "status": "backlog",
+        "version": 2,
+        "assignee": null,
+        "dependencies": [
+          24,
+          39,
+          40,
+          45,
+          46,
+          47,
+          48,
+          49,
+          67,
+          68
+        ],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "dependencies",
+        "acceptance"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1067,
+      "before": {
+        "id": 51,
+        "title": "在 V1 模型页看到原请求的生成过程 · U-097",
+        "status": "done",
+        "version": 7,
+        "assignee": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+        "dependencies": [
+          21
+        ],
+        "archived": 0
+      },
+      "after": {
+        "id": 51,
+        "title": "[历史工程·交互待替换] 在 V1 模型页看到原请求的生成过程 · U-097",
+        "status": "done",
+        "version": 8,
+        "assignee": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+        "dependencies": [
+          21
+        ],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "title"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1068,
+      "before": {
+        "id": 52,
+        "title": "为 Responses 接入长任务续接和新输入 · U-098",
+        "status": "backlog",
+        "version": 1,
+        "assignee": null,
+        "dependencies": [
+          21,
+          46,
+          47
+        ],
+        "archived": 0
+      },
+      "after": {
+        "id": 52,
+        "title": "为 Responses 接入长任务续接和新输入 · U-098",
+        "status": "backlog",
+        "version": 2,
+        "assignee": null,
+        "dependencies": [
+          21,
+          46,
+          47
+        ],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "acceptance"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1069,
+      "before": {
+        "id": 53,
+        "title": "用真实 Responses 服务完成资料工具往返 · U-099",
+        "status": "done",
+        "version": 8,
+        "assignee": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+        "dependencies": [
+          21
+        ],
+        "archived": 0
+      },
+      "after": {
+        "id": 53,
+        "title": "[限定真实验证] 用真实 Responses 服务完成资料工具往返 · U-099",
+        "status": "done",
+        "version": 9,
+        "assignee": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+        "dependencies": [
+          21
+        ],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "title"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1070,
+      "before": {
+        "id": 54,
+        "title": "核验 Responses 的真实取消和原请求恢复 · U-100",
+        "status": "done",
+        "version": 8,
+        "assignee": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+        "dependencies": [
+          21
+        ],
+        "archived": 0
+      },
+      "after": {
+        "id": 54,
+        "title": "[限定真实验证] 核验 Responses 的真实取消和原请求恢复 · U-100",
+        "status": "done",
+        "version": 9,
+        "assignee": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+        "dependencies": [
+          21
+        ],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "title"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1071,
+      "before": {
+        "id": 55,
+        "title": "独立客户端通过公开接口创建并查询组织 · U-101",
+        "status": "backlog",
+        "version": 1,
+        "assignee": null,
+        "dependencies": [
+          20,
+          22
+        ],
+        "archived": 0
+      },
+      "after": {
+        "id": 55,
+        "title": "独立客户端通过公开接口创建并查询组织 · U-101",
+        "status": "ready",
+        "version": 2,
+        "assignee": null,
+        "dependencies": [
+          20
+        ],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "dependencies",
+        "status",
+        "acceptance"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1072,
+      "before": {
+        "id": 56,
+        "title": "独立客户端完成一种有权限的工作命令 · U-102",
+        "status": "backlog",
+        "version": 1,
+        "assignee": null,
+        "dependencies": [
+          20,
+          22,
+          55
+        ],
+        "archived": 0
+      },
+      "after": {
+        "id": 56,
+        "title": "独立客户端完成一种有权限的工作命令 · U-102",
+        "status": "backlog",
+        "version": 2,
+        "assignee": null,
+        "dependencies": [
+          20,
+          24,
+          59,
+          55
+        ],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "dependencies",
+        "acceptance"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1073,
+      "before": {
+        "id": 57,
+        "title": "查明现有外部工具是否绕过公开接口 · U-103",
+        "status": "backlog",
+        "version": 1,
+        "assignee": null,
+        "dependencies": [
+          20,
+          22,
+          55
+        ],
+        "archived": 0
+      },
+      "after": {
+        "id": 57,
+        "title": "查明现有外部工具是否绕过公开接口 · U-103",
+        "status": "ready",
+        "version": 2,
+        "assignee": null,
+        "dependencies": [
+          20
+        ],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "dependencies",
+        "status",
+        "acceptance"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1074,
+      "before": {
+        "id": 58,
+        "title": "核验核心在没有私有平台时仍可独立使用 · U-104",
+        "status": "backlog",
+        "version": 1,
+        "assignee": null,
+        "dependencies": [
+          20,
+          22,
+          55,
+          56,
+          57
+        ],
+        "archived": 0
+      },
+      "after": {
+        "id": 58,
+        "title": "核验核心在没有私有平台时仍可独立使用 · U-104",
+        "status": "backlog",
+        "version": 2,
+        "assignee": null,
+        "dependencies": [
+          20,
+          24,
+          55,
+          56,
+          57
+        ],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "dependencies",
+        "acceptance"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1075,
+      "before": {
+        "id": 59,
+        "title": "在核心任务页登记有责任与预算的目标 · U-105",
+        "status": "done",
+        "version": 13,
+        "assignee": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+        "dependencies": [
+          38,
+          20,
+          21,
+          24
+        ],
+        "archived": 0
+      },
+      "after": {
+        "id": 59,
+        "title": "[历史工程·交互待替换] 在核心任务页登记有责任与预算的目标 · U-105",
+        "status": "done",
+        "version": 14,
+        "assignee": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+        "dependencies": [
+          38,
+          20,
+          21,
+          24
+        ],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "title"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1076,
+      "before": {
+        "id": 60,
+        "title": "在核心任务页采用并交付原AI成果 · U-106",
+        "status": "done",
+        "version": 8,
+        "assignee": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+        "dependencies": [
+          38,
+          20,
+          21,
+          24,
+          59
+        ],
+        "archived": 0
+      },
+      "after": {
+        "id": 60,
+        "title": "[历史工程·交互待替换] 在核心任务页采用并交付原AI成果 · U-106",
+        "status": "done",
+        "version": 9,
+        "assignee": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+        "dependencies": [
+          38,
+          20,
+          21,
+          24,
+          59
+        ],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "title"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1077,
+      "before": {
+        "id": 61,
+        "title": "上线已验收的 UNION 工作台（PR38） · U-107",
+        "status": "done",
+        "version": 13,
+        "assignee": "89f4c1c1-329a-4b54-ad37-235cf061e9a8",
+        "dependencies": [
+          20,
+          21,
+          24,
+          38,
+          59
+        ],
+        "archived": 0
+      },
+      "after": {
+        "id": 61,
+        "title": "[历史发布·退出主线] 上线已验收的 UNION 工作台（PR38） · U-107",
+        "status": "done",
+        "version": 14,
+        "assignee": "89f4c1c1-329a-4b54-ad37-235cf061e9a8",
+        "dependencies": [
+          20,
+          21,
+          24,
+          38,
+          59
+        ],
+        "archived": 1
+      },
+      "fields": [
+        "description",
+        "title",
+        "archived"
+      ]
+    },
+    {
+      "kind": "patch",
+      "http": 200,
+      "revision": 1078,
+      "before": {
+        "id": 62,
+        "title": "在工作页观察原模型请求的实际输出 · U-108",
+        "status": "done",
+        "version": 6,
+        "assignee": "54f3ed9e-817b-482a-90c1-d46bfc01728c",
+        "dependencies": [
+          20,
+          21,
+          24,
+          38,
+          51
+        ],
+        "archived": 0
+      },
+      "after": {
+        "id": 62,
+        "title": "[历史工程·交互待替换] 在工作页观察原模型请求的实际输出 · U-108",
+        "status": "done",
+        "version": 7,
+        "assignee": "54f3ed9e-817b-482a-90c1-d46bfc01728c",
+        "dependencies": [
+          20,
+          21,
+          24,
+          38,
+          51
+        ],
+        "archived": 0
+      },
+      "fields": [
+        "description",
+        "title"
+      ]
+    }
+  ],
+  "owner_annotations": [
+    {
+      "kind": "comment",
+      "readback_http": 200,
+      "card": 22,
+      "comment_id": 399
+    },
+    {
+      "kind": "comment",
+      "readback_http": 200,
+      "card": 28,
+      "comment_id": 400
+    },
+    {
+      "kind": "comment",
+      "readback_http": 200,
+      "card": 40,
+      "comment_id": 401
+    },
+    {
+      "kind": "comment",
+      "readback_http": 200,
+      "card": 46,
+      "comment_id": 402
+    }
+  ],
+  "source_path_corrections": [
+    {
+      "kind": "source_path_correction",
+      "http": 200,
+      "readback_http": 200,
+      "card": 66,
+      "before_version": 1,
+      "after_version": 2,
+      "path": "ai_union/application/model_access.py",
+      "reason": "核对实际 ModelAccessService 所在文件，修正任务范围路径；业务范围不变"
+    }
+  ],
+  "checks": {
+    "original_active_coverage": 44,
+    "new_unique_tasks": 7,
+    "dependency_changes": 16,
+    "archived_with_history": [
+      61
+    ],
+    "new_ready_existing": [
+      45,
+      55,
+      57
+    ],
+    "original_owner_preserved": true,
+    "original_evidence_preserved": true,
+    "original_started_status_preserved": true,
+    "no_dependency_cycle": true,
+    "no_active_dependency_on_archived": true,
+    "ready_dependencies_done": true,
+    "writes_confirmed_and_read_back": true,
+    "new_implementation_cards_unclaimed": true
+  },
+  "active_counts_at_check": {
+    "backlog": 23,
+    "ready": 4,
+    "progress": 5,
+    "review": 0,
+    "blocked": 0,
+    "done": 18
+  },
+  "completion_boundary": "Only task allocation, documentation and coordination evidence. New product implementation and its user/real/sustained acceptance remain open."
+}

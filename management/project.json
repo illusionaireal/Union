@@ -89,7 +89,7 @@
             "name": "工作台与观察 / 核心及可选平台",
             "implemented": "React 八页导航、本地多组织、模型配置、事件/工作/成果/回执、只读成员运行状态/会话/工作区摘要",
             "validation": "V1：checkpoint观察仅lstat、不打开原库；定向50/全量260与独立94项通过，独立长结论因额度中断",
-            "gap": "检查点存在性当前无true生产来源；跨来源非原子、热配置、真实续拍/崩溃/供应商迟到、真实恢复、浏览器与整体复核未过；公共账户/多租户未实现",
+            "gap": "用户已取消旧 AU/旧 UX 作为重构基线；U-110 完整体验契约与 U-111–U-115 新入口、资源就绪、完整工作、治理交接、旧前端退役待交付。现有页面增量不等于完整 V1 产品。",
             "evidence": [
                 "evidence/007-workspace-redesign/README.md",
                 "evidence/016-member-workspace/README.md",
@@ -104,7 +104,8 @@
                 "evidence/037-session-revisions/README.md",
                 "evidence/038-activity-boundaries/README.md",
                 "evidence/039-wal-observation/README.md",
-                "evidence/040-checkpoint-metadata/README.md"
+                "evidence/040-checkpoint-metadata/README.md",
+                "evidence/U-109/README.md"
             ]
         },
         {
@@ -2692,6 +2693,42 @@
                     "from": "done",
                     "to": "done",
                     "note": "基于真实Kanban revision212中的原完成记录补入长期交付镜像；不是新认领，不覆盖在线负责人和历史。DSH d5e779f通过Windows/Linux各32项独立验证；PR #15合并1baf7d1包含Windows路径等价修复。"
+                }
+            ]
+        },
+        {
+            "id": "U-109",
+            "title": "产品审计处置：退出旧 AU/旧 UX 基线并重排代码交付",
+            "priority": "P0",
+            "milestone": "G0",
+            "module": "management",
+            "status": "done",
+            "owner": "codex-home-coordinator（当前 Codex 协调会话）",
+            "role": "开发协调 / 产品验收纠偏",
+            "acceptance": "原 44 张活动卡逐项标注，新增 7 卡含 5 项代码修正，16 卡按实际契约调整依赖，旧发布 #61 归档；保留原负责人/已开工状态/证据。新 V1 产品设计与代码仍待各执行卡交付。",
+            "dependencies": [],
+            "blocker": null,
+            "started_at": "2026-11-11",
+            "updated_at": "2026-11-11",
+            "completion": {
+                "scope": "documentation",
+                "reviewer": "Codex 当前协调会话（实施者结构与读回自检，仅文档/任务处置）",
+                "evidence": [
+                    "docs/reviews/2026-11-11-kanban-charter-product-audit.md",
+                    "evidence/U-109/README.md",
+                    "evidence/U-109/assignment-specs.json",
+                    "evidence/U-109/readback.json"
+                ],
+                "note": "用户明确授权审计修正后，按实际在线身份和版本完成任务布置并逐项读回。此处只保存长期交付证据，不据本地状态认领；新前端、真实成果与持续运行未被标成完成。"
+            },
+            "claim": null,
+            "history": [
+                {
+                    "at": "2026-11-10T18:13:27.836Z",
+                    "actor": "Codex coordinator / product audit disposition",
+                    "from": "candidate",
+                    "to": "done",
+                    "note": "显式记录本次文档与协调交付；不是在线看板双向同步，不更改其他历史卡。"
                 }
             ]
         }
