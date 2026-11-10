@@ -56,3 +56,7 @@ python -m unittest discover -v
 - `python -m unittest discover` → **Ran 834 tests in 533.595s / OK (skipped=11) / exit 0**
 - `npm test -- exit22` → **338/338**；`check:management` 37/37；`management:render` PASS（15 模块 / 8 里程碑 / 81 任务）
 - 未执行真实模型调用；未部署或迁移；产品与标准测试字节等于集成 `d27d543` 加本卡驱动/证据改动。
+## 追加：`npm run check` 全绿（head 1b94cae，2026-11-11 07:3x）
+
+- `check:management` **37/37**；Node 全套 **341/341**；前端 **29 文件 / 363 项**全过（含 tsc + build）。
+- 该 head 同时含：PR83-P2 修复、网络/JSON 中断结构化诊断、重启比较「计数未知」标注；Python 侧自 834/834 后无改动。
