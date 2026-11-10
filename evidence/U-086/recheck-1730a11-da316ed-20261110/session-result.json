@@ -1,0 +1,53 @@
+{
+  "candidate": "da316ed309c105694b1826be581d55857b2016d9",
+  "source_manifest_sha256": "ed89b4a9da88178a044b3e8b7e6965114dd2c053083c1fa93d57ebb1c373fa5b",
+  "tests": 4,
+  "passed": 3,
+  "failures": [
+    "test_real_core_mismatch_keeps_healthy_session_available"
+  ],
+  "errors": [],
+  "observations": [
+    {
+      "case": "healthy_control",
+      "http_status": 200,
+      "error_code": null,
+      "direct_exception_type": null,
+      "listed_profiles": [
+        "core_v1",
+        "legacy_v0"
+      ],
+      "catalog_and_state_unchanged": true
+    },
+    {
+      "case": "scope_control",
+      "http_status": 200,
+      "error_code": null,
+      "direct_exception_type": null,
+      "listed_profiles": [
+        "legacy_v0"
+      ],
+      "catalog_and_state_unchanged": true
+    },
+    {
+      "case": "legacy_profile_mismatch",
+      "http_status": 200,
+      "error_code": null,
+      "direct_exception_type": null,
+      "listed_profiles": [
+        "core_v1"
+      ],
+      "catalog_and_state_unchanged": true
+    },
+    {
+      "case": "core_locator_profile_mismatch",
+      "http_status": 409,
+      "error_code": "incompatible_state",
+      "direct_exception_type": "CoreError",
+      "listed_profiles": [],
+      "catalog_and_state_unchanged": true
+    }
+  ],
+  "source_unchanged": true,
+  "real_model_calls": 0
+}
