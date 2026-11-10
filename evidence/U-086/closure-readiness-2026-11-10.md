@@ -40,9 +40,15 @@
    不得折算成真实费用，也不得记为零。
 4. **重开不派发新请求**（真实条件下） —— 受控链已验证原 ID 复核不重派发，但未在
    真实请求上验证；真实 `unknown` 预约的保留语义随之未验。
-5. **准确 head 的 CI 与关闭判定** —— 本轮未读取 GitHub Actions/PR 检查结论，
-   最近一次有记录的 CI 全绿是 PR44 受审 head `744b456`（14/14）；`faa5a4c` 及其后
-   增量的 CI 仍待值守确认。
+5. **准确 head 的 CI 与关闭判定** —— 本轮未取得 `faa5a4c` 的 CI 结论：本机无 `gh`
+   CLI、无 `GH_TOKEN`/`GITHUB_TOKEN`，未认证访问 GitHub API 返回 403 rate limit，
+   且未读取 Windows Credential Manager 中的 Git 凭据（不回显任何凭据）。仓库现有三个
+   工作流，需由值守/协调者按准确 head 确认全部绿：
+   - `.github/workflows/ci.yml`「frontend and historical checks」（jobs：
+     `offline-checks`、`console-browser`；push 与 pull_request 触发）
+   - `.github/workflows/tests.yml`「mechanism-tests」（job：`unittest`）
+   - `.github/workflows/model-service.yml`「fixed model service」（job：`model-service`）
+   最近一次有记录的 CI 全绿是 PR44 受审 head `744b456`（14/14）。
 6. **独立非实施角色对最近增量的复核** —— 已覆盖部分见上；最近几个增量是否已满足
    当前卡的复核要求，由值守判定。
 
