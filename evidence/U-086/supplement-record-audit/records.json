@@ -1,0 +1,222 @@
+{
+  "status": "record_audit_completed",
+  "commit": "02dc3f37a4c0ad0c43e33b1cce1a18db2b2fd556",
+  "source_sha256": {
+    "evidence/U-086/original-id-supplement-2026-11-10.md": "55a69da933eb64a6cb4409e94653f01799f34447d6b6cdbd4ae94db00e266aa7",
+    "evidence/127-u086-real-interrupt-exit/snapshot-after-restart-final-head.json": "9fc891225fe877db7796175c52a1fb69ce0aa9e56057150106fbe3322c02b70d",
+    "evidence/127-u086-real-interrupt-exit/checks-final-head.json": "f54e589fc7f892c58c0e97f0bc570a4ac073ffcf37f99609c516c6e6c52a3682",
+    "evidence/127-u086-real-interrupt-exit/snapshot-before-restart.json": "12c39af0ee99573ddf48f59a3528bd8047705705aea2c334c7a2865ce2c4392a",
+    "evidence/134-u086-interrupt-final-verification/snapshot-after-restart.json": "457893ac6af8a35c7934f35cb1cb23895edb0b6dbd5a78e51455767486dc5fa2",
+    "evidence/134-u086-interrupt-final-verification/checks.json": "a23c507872ae1fcb1a15e373ae946a48bed1fec0dab5139b952378d449e315e8",
+    "evidence/134-u086-interrupt-final-verification/snapshot-before-restart.json": "12c39af0ee99573ddf48f59a3528bd8047705705aea2c334c7a2865ce2c4392a",
+    "evidence/139-u086-original-output-gate-exit/snapshot-after-restart.json": "88041a7bf0c253df684924ceda5d15aa3b5dae38ab491481ccc19c66412cfbea",
+    "evidence/139-u086-original-output-gate-exit/checks.json": "d205e239b0e85724d889d33db678189ceb8366acdbd6ee0df115023a15f2ad4f",
+    "evidence/139-u086-original-output-gate-exit/snapshot-before-restart.json": "12c39af0ee99573ddf48f59a3528bd8047705705aea2c334c7a2865ce2c4392a"
+  },
+  "runs": {
+    "127": {
+      "snapshot_path": "evidence/127-u086-real-interrupt-exit/snapshot-after-restart-final-head.json",
+      "nonce": "UNION-EXIT22B-011d432a",
+      "au_id": "org-7f718c209e044c56b0eb1a574fbb60f5",
+      "principal_id": "b92a8d7a-8af7-4544-8926-ee279b9c31db",
+      "step_records": [
+        {
+          "step_ref": "work-exit#s1",
+          "attempt_id": "work-exit#a1",
+          "command_id": "83c0dc54-8f0e-4552-939f-c5d447f6770e-t1",
+          "model_request_id": "work-3f86df9f7c63ae9c567522bdabe9be0bc69978199ed6c2627899f5bb7b029cf7",
+          "status": "used",
+          "model_outcome": null,
+          "usage": {
+            "input_tokens": 438,
+            "output_tokens": 43
+          },
+          "reason": "模型步进已完成"
+        },
+        {
+          "step_ref": "work-exit#s2",
+          "attempt_id": "work-exit#a1",
+          "command_id": "83c0dc54-8f0e-4552-939f-c5d447f6770e-t2",
+          "model_request_id": "work-cd9ac3daeb94b5b49a993b1af5812324459aab64e36795cb48866e47bc6a3c3a",
+          "status": "unknown",
+          "model_outcome": "unknown",
+          "usage": null,
+          "reason": "模型通道结果未知；已保留该次调用预约等待核对，不自动重放：work_step_interrupted"
+        }
+      ],
+      "distinct_saved_request_ids": 2,
+      "cancelled_request_id_matches_check_label": true,
+      "cancelled_request_usage_present": false,
+      "cancelled_request_model_outcome": "unknown",
+      "cancelled_request_has_saved_interrupted_status": false,
+      "cancel_label_contains_complete_json": false,
+      "receipt_identity_check_labels": [],
+      "checks_top_level_fields": [
+        "checks",
+        "errors",
+        "nonce",
+        "passed",
+        "workId"
+      ],
+      "original_output_check_present": false,
+      "before_snapshot_is_core_work": false,
+      "budget": {
+        "max_calls": 3,
+        "reserved": 1,
+        "used": 1
+      },
+      "known_usage_subtotal": {
+        "input_tokens": 438,
+        "output_tokens": 43
+      },
+      "reported_usage_equals_known_subtotal": true,
+      "unknown_usage_included_in_subtotal": false
+    },
+    "134": {
+      "snapshot_path": "evidence/134-u086-interrupt-final-verification/snapshot-after-restart.json",
+      "nonce": "UNION-EXIT22B-cb690ad0",
+      "au_id": "org-90b60618437d45439631d98c8663d388",
+      "principal_id": "0e9b9d18-966c-47db-a8d4-da4a30f8254c",
+      "step_records": [
+        {
+          "step_ref": "work-exit#s1",
+          "attempt_id": "work-exit#a1",
+          "command_id": "be367bba-6fdf-4405-b611-3011b6291b36-t1",
+          "model_request_id": "work-fdcd86f881d4b837f8fa55bdfcec03c5259c6ee4a243b940010a43297976a6b6",
+          "status": "used",
+          "model_outcome": null,
+          "usage": {
+            "input_tokens": 438,
+            "output_tokens": 40
+          },
+          "reason": "模型步进已完成"
+        },
+        {
+          "step_ref": "work-exit#s2",
+          "attempt_id": "work-exit#a1",
+          "command_id": "be367bba-6fdf-4405-b611-3011b6291b36-t2",
+          "model_request_id": "work-2ea7bef8ada7b48f770a2ce9fc2a4f1286125e36a688a3a23f8f5a20052016f4",
+          "status": "unknown",
+          "model_outcome": "unknown",
+          "usage": null,
+          "reason": "模型通道结果未知；已保留该次调用预约等待核对，不自动重放：work_step_interrupted"
+        }
+      ],
+      "distinct_saved_request_ids": 2,
+      "cancelled_request_id_matches_check_label": true,
+      "cancelled_request_usage_present": false,
+      "cancelled_request_model_outcome": "unknown",
+      "cancelled_request_has_saved_interrupted_status": false,
+      "cancel_label_contains_complete_json": false,
+      "receipt_identity_check_labels": [
+        "cancel receipt identifies the same command/attempt/step/model request",
+        "cancel receipt id matches the submitted cancel command",
+        "original GET returns the delivered cancel receipt (identity match)"
+      ],
+      "checks_top_level_fields": [
+        "checks",
+        "errors",
+        "nonce",
+        "passed",
+        "workId"
+      ],
+      "original_output_check_present": false,
+      "before_snapshot_is_core_work": false,
+      "budget": {
+        "max_calls": 3,
+        "reserved": 1,
+        "used": 1
+      },
+      "known_usage_subtotal": {
+        "input_tokens": 438,
+        "output_tokens": 40
+      },
+      "reported_usage_equals_known_subtotal": true,
+      "unknown_usage_included_in_subtotal": false
+    },
+    "139": {
+      "snapshot_path": "evidence/139-u086-original-output-gate-exit/snapshot-after-restart.json",
+      "nonce": "UNION-EXIT22B-63e8bcc6",
+      "au_id": "org-3854ea1a0ae2424daa72aaa841bc5e72",
+      "principal_id": "59ff5fd5-d017-4f1e-b29f-3b8bb43bb536",
+      "step_records": [
+        {
+          "step_ref": "work-exit#s1",
+          "attempt_id": "work-exit#a1",
+          "command_id": "0e16cedb-e108-4f35-ae94-b155737b9688-t1",
+          "model_request_id": "work-b6dc24935d70fe39f7ca2aafb45c280cdd3e626cf66d76afed03faa0778cf52c",
+          "status": "used",
+          "model_outcome": null,
+          "usage": {
+            "input_tokens": 438,
+            "output_tokens": 46
+          },
+          "reason": "模型步进已完成"
+        },
+        {
+          "step_ref": "work-exit#s2",
+          "attempt_id": "work-exit#a1",
+          "command_id": "0e16cedb-e108-4f35-ae94-b155737b9688-t2",
+          "model_request_id": "work-dfac8f2a53757132c7789afca6eb3bc4f9996d257a8ed9dc3b3447a81a7593f1",
+          "status": "unknown",
+          "model_outcome": "unknown",
+          "usage": null,
+          "reason": "模型通道结果未知；已保留该次调用预约等待核对，不自动重放：work_step_interrupted"
+        }
+      ],
+      "distinct_saved_request_ids": 2,
+      "cancelled_request_id_matches_check_label": true,
+      "cancelled_request_usage_present": false,
+      "cancelled_request_model_outcome": "unknown",
+      "cancelled_request_has_saved_interrupted_status": false,
+      "cancel_label_contains_complete_json": false,
+      "receipt_identity_check_labels": [
+        "cancel receipt identifies the same command/attempt/step/model request",
+        "cancel receipt id matches the submitted cancel command",
+        "original GET returns the delivered cancel receipt (identity match)"
+      ],
+      "checks_top_level_fields": [
+        "checks",
+        "errors",
+        "nonce",
+        "passed",
+        "workId"
+      ],
+      "original_output_check_present": true,
+      "before_snapshot_is_core_work": false,
+      "budget": {
+        "max_calls": 3,
+        "reserved": 1,
+        "used": 1
+      },
+      "known_usage_subtotal": {
+        "input_tokens": 438,
+        "output_tokens": 46
+      },
+      "reported_usage_equals_known_subtotal": true,
+      "unknown_usage_included_in_subtotal": false
+    }
+  },
+  "structural_controls": {
+    "all_cancelled_ids_match_check_labels": true,
+    "all_reported_usage_matches_known_subtotals": true,
+    "three_distinct_aus": true
+  },
+  "supplement_134_claims": {
+    "saved_request_count": 2,
+    "verified_remote_invocation_count": null,
+    "modeld_interrupted_status_recorded": false,
+    "complete_cancel_receipt_json": false,
+    "127_review_binds_134_run": false,
+    "later_139_has_output_check": true,
+    "full_22c_acceptance_established": false
+  },
+  "limits": [
+    "Selected public artifacts only; no assertion that other private records do not exist.",
+    "Receipt check labels are retained evidence, not independently recomputed full receipts.",
+    "The later 139 output check does not by itself prove page-visible real output or full acceptance.",
+    "Persisted request records are not verified remote invocation or billing counts.",
+    "This is documentary consistency analysis, not a product behavioral test or model run."
+  ],
+  "real_model_calls_by_audit": 0
+}
