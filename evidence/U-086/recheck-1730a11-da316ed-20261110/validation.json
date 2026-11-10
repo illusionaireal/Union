@@ -1,0 +1,93 @@
+{
+  "observed_at": "2026-11-10T14:53:44.558606+00:00",
+  "candidate_head": "da316ed309c105694b1826be581d55857b2016d9",
+  "source_manifest_sha256": "ed89b4a9da88178a044b3e8b7e6965114dd2c053083c1fa93d57ebb1c373fa5b",
+  "bound_files": 17,
+  "source_unchanged": true,
+  "session_runner_identical_to_original": true,
+  "checks": {
+    "session-controls": {
+      "operation": "session-controls",
+      "exit_code": 0,
+      "log_sha256": "b75225df0183a2898258358c6f171e6c63556e59c90e9a7cc156717acaa2e462",
+      "elapsed_seconds": 1.480487,
+      "counts": [
+        "Ran 10 tests in 1.021s",
+        "OK"
+      ]
+    },
+    "session-probes": {
+      "operation": "session-probes",
+      "exit_code": 1,
+      "log_sha256": "3d40a73116678ac331d7eb3a61c30b30033c63847f336b158a1b52abb2aee4b2",
+      "elapsed_seconds": 3.979473,
+      "counts": [
+        "Ran 4 tests in 3.594s",
+        "FAILED (failures=1)"
+      ]
+    },
+    "replay-controls": {
+      "operation": "replay-controls",
+      "exit_code": 0,
+      "log_sha256": "10ec10f978e4fd8de8d86f063bd76eca00bd24b34f44bbb7cf85c6b5118f84d0",
+      "elapsed_seconds": 0.191978,
+      "counts": {
+        "tests": 8,
+        "pass": 8,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      }
+    },
+    "replay-probes": {
+      "operation": "replay-probes",
+      "exit_code": 1,
+      "log_sha256": "e68a2b1b38ab4477ac2901fc5c9cc24be374ab14dd00024eb9cfbdcff8ab2248",
+      "elapsed_seconds": 0.183875,
+      "counts": {
+        "tests": 5,
+        "pass": 3,
+        "fail": 2,
+        "cancelled": 0,
+        "skipped": 0
+      }
+    }
+  },
+  "session_author_tests": 9,
+  "integrity_controls": 1,
+  "session_probes": {
+    "tests": 4,
+    "passed": 3,
+    "assertion_failures": 1,
+    "runtime_errors": 0
+  },
+  "replay_probes": {
+    "tests": 5,
+    "passed": 3,
+    "assertion_failures": 2,
+    "runtime_errors": 0
+  },
+  "replay_assertion_adaptations": [
+    "segment starts at revised recorder call before comparison",
+    "unchanged status replaces observed; no successful dispatch check",
+    "dispatch_count null replaces the deleted new_dispatches field"
+  ],
+  "new_counterexamples": [
+    "same-count model_request_id replacement",
+    "same-count result content change"
+  ],
+  "product_changed": false,
+  "real_model_calls": 0,
+  "full_suite_run": false,
+  "full_browser_run": false,
+  "candidate_adopted": false,
+  "scope": "bounded independent review; verified partial repairs, remaining contract and diagnostic gaps",
+  "actor": "Codex session 01a1c5eb-0bf1-7082-b001-ed1e0460a9bc",
+  "online_member_id": "89f4c1c1-329a-4b54-ad37-235cf061e9a8",
+  "scope_comment_id": 379,
+  "u092_source_check": {
+    "compared": 20,
+    "different": [],
+    "behavior_tests_run": false
+  }
+}
