@@ -1,0 +1,80 @@
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+import test from 'node:test';
+
+// Direct unit coverage of the read-only original-cancel evidence helper.
+// The helper never issues or replays commands; only page.evaluate is faked here.
+const requireHelper = createRequire(new URL('../scripts/exit22-cancel-evidence.cjs', import.meta.url));
+const { readCancelEvidence } = requireHelper('../scripts/exit22-cancel-evidence.cjs');
+
+const connection = { id: 'connection-original', revision: 1 };
+const reference = {
+  organization_id: 'au-original', work_id: 'work-original', cancel_id: 'cancel-original',
+  principal_id: 'principal-original', step_ref: 'step-original', attempt_id: 'attempt-original',
+  command_id: 'loop-original-t2', model_request_id: 'model-original', connection,
+};
+const receipt = {
+  id: 'cancel-original', organization_id: 'au-original', kind: 'cancel_step', status: 'succeeded',
+  effect: 'applied', actor_principal_id: 'principal-original', model_request_id: 'model-original',
+  cancel_accepted: true, base_version: 10, version: 11, message: 'delivered',
+  step: { step_ref: 'step-original', model_request_id: 'model-original' },
+  cancel_connection: connection, delivery: { cancel_accepted: true, message: 'delivered' },
+};
+
+function payload(overrides: any = {}) {
+  const session = { status: 200, body: {
+    core_protocol: 'core.au.v1', principal_id: 'principal-original', service_instance: 'service-original' } };
+  return {
+    session: structuredClone(session),
+    work: { status: 200, body: {
+      protocol: 'core.work.v1', organization_id: 'au-original', version: 12,
+      access: { principal_id: 'principal-original' },
+      works: [{ id: 'work-original', steps: [{ step_ref: 'step-original', attempt_id: 'attempt-original',
+        command_id: 'loop-original-t2', model_request_id: 'model-original', connection }] }] } },
+    receipt: { status: 200, body: { receipt: structuredClone(receipt) } },
+    current: structuredClone(session),
+    ...overrides,
+  };
+}
+
+function fakePage(value: any) {
+  return { evaluate: async () => structuredClone(value) };
+}
+
+test('cancel evidence records the per-route HTTP outcome for attribution', async () => {
+  const evidence = await readCancelEvidence(fakePage(payload()), reference, receipt);
+  assert.equal(evidence.protocol, 'acceptance.cancel-receipt.v1');
+  assert.deepEqual(evidence.receipt, receipt);
+  // Without the per-route outcomes a failure cannot be attributed to a route.
+  assert.deepEqual(evidence.http, {
+    session: { route: '/api/session', status: 200 },
+    work: { route: '/api/v1/work', status: 200 },
+    receipt: { route: '/api/v1/governance/receipts', status: 200 },
+    current: { route: '/api/session', status: 200 },
+  });
+});
+
+test('a rejected session read names the route, status and Core error code', async () => {
+  const rejected = payload({
+    session: { status: 409, body: { code: 'unsupported_capability', error: '此 AU 尚在准备态' } },
+  });
+  await assert.rejects(
+    () => readCancelEvidence(fakePage(rejected), reference, receipt),
+    (error: any) => {
+      assert.match(String(error.message), /\/api\/session/);
+      assert.match(String(error.message), /409/);
+      assert.match(String(error.message), /unsupported_capability/);
+      return true;
+    },
+  );
+});
+
+test('a mismatched cancel receipt still fails the durable-fact comparison', async () => {
+  const changed = payload();
+  changed.receipt.body.receipt.base_version = 11;
+  changed.receipt.body.receipt.version = 11;
+  await assert.rejects(
+    () => readCancelEvidence(fakePage(changed), reference, receipt),
+    /original cancel versions/,
+  );
+});

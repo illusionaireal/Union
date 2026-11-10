@@ -27,8 +27,24 @@ async function readCancelEvidence(page, reference, expectedReceipt) {
     const current = await read('/api/session');
     return { session, work, receipt, current };
   }, reference);
-  for (const value of Object.values(response)) assert.equal(value.status, 200, 'original cancel evidence HTTP status');
+  // Record every route outcome before asserting, so a failure can be attributed to
+  // the exact route, status and Core error code instead of a bare status mismatch.
+  const routes = {
+    session: '/api/session', work: '/api/v1/work',
+    receipt: '/api/v1/governance/receipts', current: '/api/session',
+  };
+  const http = Object.fromEntries(Object.entries(routes)
+    .map(([key, route]) => [key, { route, status: response[key] === undefined ? null : response[key].status }]));
+  for (const [key, route] of Object.entries(routes)) {
+    const value = response[key] || {};
+    if (value.status !== 200) {
+      const code = (value.body && (value.body.code || value.body.error)) || '';
+      throw new Error('original cancel evidence ' + key + ' read failed: ' + route
+        + ' HTTP ' + String(value.status) + (code ? ' ' + code : ''));
+    }
+  }
   const { session, current } = response;
+
   for (const value of [session.body, current.body]) {
     assert.equal(value?.core_protocol, 'core.au.v1');
     assert.equal(value.principal_id, reference.principal_id, 'original cancel principal');
@@ -65,7 +81,8 @@ async function readCancelEvidence(page, reference, expectedReceipt) {
   assert.equal(receipt.delivery?.cancel_accepted, true, 'durable cancel delivery');
   assert.equal(receipt.delivery.message, receipt.message, 'consistent delivery observation');
   assert.deepEqual(canonical(receipt), canonical(expectedReceipt), 'original cancel receipt facts changed');
-  return { protocol: 'acceptance.cancel-receipt.v1', reference, service_instance: session.body.service_instance, receipt };
+  return { protocol: 'acceptance.cancel-receipt.v1', reference, service_instance: session.body.service_instance,
+    http, receipt };
 }
 
 module.exports = { readCancelEvidence };
