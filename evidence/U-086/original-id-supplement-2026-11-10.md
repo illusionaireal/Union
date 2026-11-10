@@ -1,52 +1,47 @@
-# U-086 / #40：按 B 口径对原 ID 记录的逐项补证映射（2026-11-10，含记录级核对）
+# U-086 / #40：按 B 口径对原 ID 记录的逐项补证映射（2026-11-10，含当前基线 evidence/134）
 
 本文件把协调者 2026-11-10 在 #22 评论336 / 留言#138 的 B 口径，逐条对照**已入库的原 ID 记录**。
 约束：不新增模型请求、不把缺失用量补 0、不发明历史；未记录的一律保留未证。
 执行者 DSH 会话 `dsh/deepseek-v4.1-flash/DESKTOP-SA4MRG7`；真实推理 0、无部署/迁移。
 
-## 记录来源（本轮实际打开的原始文件）
+## 记录来源（本轮实际打开）
 
-- `evidence/127-u086-real-interrupt-exit/snapshot-after-restart-final-head.json`（6643 B，重启后 Core 快照，
-  `protocol core.work.v1`、work `work-exit` v15）
-- `evidence/127-u086-real-interrupt-exit/checks-final-head.json`（13 项通过 + 1 条非产品错误文本）
-- `evidence/127-u086-real-interrupt-exit/snapshot-before-restart.json`（117 B，只有 `unsupported_capability` 错误）
-- 复核侧记录：`final-interrupt-review.md`、`strict-download-review.md`、`evidence/U-085/2026-11-09-source-review.md`
+- **当前基线**：`evidence/134-u086-interrupt-final-verification/`（驱动重构 c836a91/d6a9bec 后复验）
+  - `checks.json`：**20/20 通过**、`exit 0`、**单次真实派发**（`deepseek-v4.1-flash`）、nonce `UNION-EXIT22B-cb690ad0`
+  - `run.txt`、`snapshot-after-restart.json`（6643 B）、`snapshot-before-restart.json`（117 B）
+- 早期运行：`evidence/127-u086-real-interrupt-exit/`（13 项通过；同一 work `work-exit`）
+- 复核侧：`final-interrupt-review.md`、`strict-download-review.md`、`evidence/U-085/2026-11-09-source-review.md`
 
-## 记录级事实（本轮读出的关键字段）
+## 134 记录中的关键断言（原文摘录）
 
-- 完成步（`work-exit#s1`，seq=1）：`status=used`、reason「模型步进已完成」、`command_id 83c0dc54-…-t1`、
-  `command_sha256 d9d4118a…`、`model_request_id work-3f86df9f…`、usage **438/43**。
-- 被取消步（`work-exit#s2`，seq=2）：`status=unknown`、`model_outcome=unknown`、reason 含
-  **`work_step_interrupted`**、`cancel_requested_at 2026-11-09T01:50:53Z`、`cancel_requested_by 真实中断验收：等待期请求停止`、
-  `command_id …-t2`、`command_sha256 f374444a…`、`model_request_id work-cd9ac3da…`（= 检查项中的 line-end id）。
-- 身份/上下文（同一记录内）：`principal_id b92a8d7a-…`、`connection-a`（`grant-388a10f8bca9` rev 1、
-  `deepseek-v4.1-flash`、max_output 1024）、`context_scope`={au `org-7f718c…`、binding-page v1、def-page v1、
-  ma-page v1}、`host_instance service-c912d6af…`、`policy_version 2`、`charter_version 2`。
-- work 级：`budget {max_calls 3, used 1, reserved 1}`、`cost_status unknown`、`usage 438/43`、`steps 2`、
-  `tool_calls 1`（`read_document brief.md` 70 B sha `9f95ee6b…`）、`attempts 1`（`work-exit#a1`，`stale=true`、
-  outcome null）、`delivered_at null`、`result_ids []`。
-- 取消回执（`checks-final-head.json` 检查项内）：`cancel_accepted=true`、`actor_principal_id b92a8d7a-…`、
-  `base_version 13`、`cancel_connection{grant_ref grant-388a10f8bca9…}`。
-- 前快照：**不存在**——`snapshot-before-restart.json` 仅 117 B 的 `unsupported_capability`（准备态未启用）。
+- `the cancelled request is this run's own in-flight request (distinct id, own attempt): work-2ea7bef8… / work-exit#a1`
+- `cancel receipt identifies the same command/attempt/step/model request`
+- `cancel receipt id matches the submitted cancel command`
+- `original GET returns the delivered cancel receipt (identity match)`
+- `step settled as unknown (cost unknown)` / `an unknown settlement keeps the budget reserved`
+- `the settled step keeps its original identity across the rebuild`
+- `the settle reason persists` / `an unresolved step keeps its original reservation after the rebuild`
+- 取消回执身份：`actor_principal_id 0e9b9d18-…`、`base_version 13`、`cancel_accepted=true`、
+  `cancel_connection{grant_ref grant-45dca659d88d…}`
+- 前快照：`snapshot-before-restart.json` 仍为 117 B 的 `unsupported_capability`（准备态未启用）
 
-## 逐项判定（在记录级事实之后更新）
+## 逐项判定（以 134 为当前基线）
 
-| # | B 口径要求 | 更新后判定 | 依据 |
+| # | B 口径要求 | 判定 | 依据 |
 | --- | --- | --- | --- |
-| 1 | 被取消原请求**确有输出 events** | **仍未记录**（不可补造） | 该记录无 events 数组、无输出正文，只有 `model_outcome=unknown` 与 reason；`final-interrupt-review.md:37,71-75` 亦指出 driver 只等预约、不保存输出事件 |
-| 2 | cancel command/模型请求/主体/AU 与 GET 回执一致 | **记录齐备、断言未绑定** | 身份与 ID 两侧都在（步级 principal/connection/context_scope/command_id+sha/model_request_id；回执 actor_principal_id/base_version/cancel_connection）；但 `final-interrupt-review.md:38` 证明现有断言可被异构 AU/命令/attempt/step/请求通过，缺少「提交的 cancel command ID 与回执逐项相等」的显式核对 |
-| 3 | 受理 / modeld interrupted / 远端未知 | **三分均有记录** | 受理：`cancel_requested_at/by` + 回执 `cancel_accepted=true`；中断：`model_outcome=unknown` + reason `work_step_interrupted`；远端未知：`cost_status=unknown`、未推断 0（`:54-62` 口径一致） |
-| 4 | 同一运行前后核对 unknown 预约/已知用量 | **前侧缺失，仍不成立** | 前快照仅 117 B 的 `unsupported_capability`；后侧事实完整（reserved=1/used=1/cost unknown/usage 438/43），但无前侧即非「同运行前后」；`final-interrupt-review.md:64-69` 同结论 |
-| 5 | 重启后原命令查询/重放新增派发 0 | **状态侧成立、行为侧未证** | 重启后快照：attempts=1、steps=2、budget used=1、`attempt_ids []`、`delivered_at null` → 未见新增派发；但 `final-interrupt-review.md:74-75` 指出重启本身不证明「原命令重放」行为 |
-| 6 | 源码/服务/运行身份绑定 | **已记录可核对** | 作者 `1e490d0`、host 修复 `d3823e8`、driver+4 证据输入 SHA256 一致（`final-interrupt-review.md:3-24`）；本轮另确认 work 级 principal/connection/grant/host_instance/mandate 绑定 |
+| 1 | 被取消原请求**确有输出 events** | **仍缺**（不可补造） | 134/127 的 checks 与快照都只有 `model_outcome=unknown`、reason `work_step_interrupted` 与 line-end/queue 标识，**没有输出正文或 events 数组**；两份 README 也未声明已捕获输出 |
+| 2 | cancel command/模型请求/主体/AU 与 GET 回执一致 | **已满足（当前基线）** | 134 四项断言：本次运行自身 attempt、回执标识同一 command/attempt/step/model request、回执 id == 提交命令 id、同 run 原 GET 身份匹配。`final-interrupt-review.md:38` 的「异构身份也能通过」针对的是**修复前的旧 driver**；134 是修复后真实运行 |
+| 3 | 受理 / modeld interrupted / 远端未知 | **已满足** | 受理：`cancel_accepted=true` + 回执；中断：`model_outcome=unknown` + `work_step_interrupted`；远端未知：`cost_status=unknown`、用量未补 0（127 快照 `usage 438/43` 仅为已知子集） |
+| 4 | 同一运行前后核对 unknown 预约/已知用量 | **仍缺前侧** | 134 与 127 的 `snapshot-before-restart.json` 都是 117 B 的 `unsupported_capability`；后侧事实完整（`budget{max_calls 3, used 1, reserved 1}`、`cost_status unknown`、原始身份保持），但无前侧即非「同运行前后」 |
+| 5 | 重启后原命令查询/重放新增派发 0 | **状态侧成立，行为侧未单独断言** | 134：重启后 settled step 以 unknown 存活、原 step_ref/model_request_id/attempt_id 保持、预约保持，且整轮为**单次真实派发**；但没有一条断言显式核对「以原命令重放查询时新增派发 = 0」 |
+| 6 | 源码/服务/运行身份绑定 | **已满足** | `final-interrupt-review.md:3-24`（作者 1e490d0、host d3823e8、driver+4 输入 SHA256）；134/127 快照的 principal/connection/grant/host_instance/mandate/context_scope 一致可核对 |
 
-## 结论
+## 结论（可直接用于关闭判定）
 
-1. 本轮把结论从「多数未记录」细化为：**第 3、6 项已有记录支撑**；**第 2 项记录齐备但缺绑定断言**；
-   **第 5 项状态侧成立、行为侧未证**；**第 1、4 项确认无法从现有记录补出**（前快照缺失、输出 events 从未捕获）。
-2. 因此 #40 真实出口仍不成立，#22 不能据此关闭；可关闭的只是「记录核对」这一层工作。
-3. 要补齐第 1、2、4 项：需用户授权的有界真实运行（捕获输出 events、保存完整 cancel/GET 回执并做 ID 逐项相等、
-   同运行前后快照），或由作者提供其历史运行中这些记录（若从未捕获则继续标未证）。
+1. **已满足 3 项**：第 2（取消回执与提交命令/身份一致，当前基线 134 的真实运行）、第 3（三分记录）、第 6（身份/源码绑定）。
+2. **部分成立 1 项**：第 5——重启后状态与预约保持、整轮单次派发成立，但缺「原命令重放新增派发 0」的显式断言。
+3. **仍缺 2 项**：第 1（原请求输出 events 从未捕获）、第 4（同运行前快照不存在且不可重建）。
+4. 因此真实出口**仍不成立、#22 不能据此关闭**；剩余缺口要么由用户授权的有界真实运行补齐（捕获输出 events + 同运行前快照 + 重放新增派发计数），要么由作者提供其历史运行中已存在的这些记录。**不得把第 1/4 项用受控结论或推断补成已验。**
 
 ## 方法与边界
 
