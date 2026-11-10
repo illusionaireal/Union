@@ -48,9 +48,15 @@
    不得补 0，也不得把「单次派发」写成「一次模型调用」。
 4. **同运行前后事实** —— 127/128/129/134/136/137/138/139 八个 `snapshot-before-restart.json`
    全部是 117 B 的 `unsupported_capability`，**前侧缺失且不可事后重建**；后侧（`reserved=1`、
-   unknown 以原身份存活）只能单侧成立。
-5. **重开/重放不派发新请求** —— 状态侧证据（重启后 attempts 数、`attempt_ids`、预约保持）成立，
-   但缺一条「以原命令重放查询时新增派发 = 0」的显式断言。
+   unknown 以原身份存活）只能单侧成立。根因已定位到「catalog 行仍标 legacy_v0、目录已是
+   core_v1 时整次 `/api/session` 409」（[归因](session-409-during-core-creation.md)），并已提交
+   [修复候选 9472a64](session-409-skip-fix.md)（仅跳过这两类不一致错误码，其余照旧上抛；
+   5 项新测试、全量 Python 822/Node 320 全绿），**待协调者评审采用**。修复本身不产生前后快照：
+   第 4 项仍需一次有界真实运行才能取证。
+5. **重开/重放不派发新请求** —— 状态侧证据（重启后 attempts 数、`attempt_ids`、预约保持）成立；
+   「以原命令重放时新增派发 = 0」的观测函数与三态记录器已实现并接入驱动
+   （[观测](replay-no-dispatch-observation.md)、[接线](replay-observation-wiring.md)），
+   但真实运行要拿到 `observed` 仍需可用前快照，即仍依赖第 4 项。
 6. **准确 head 的 CI 与关闭判定** —— 本会话未取得 CI 结论：本机无 `gh` CLI、无
    `GH_TOKEN`/`GITHUB_TOKEN`，未认证访问 GitHub API 返回 403 rate limit，且未读取
    Windows Credential Manager 中的 Git 凭据（不回显任何凭据）。仓库现有三个工作流，
