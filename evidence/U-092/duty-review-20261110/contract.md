@@ -28,3 +28,11 @@ production restart, migration or author-checkout/index write is allowed.
 Review scope is a bounded independent check, approximately 1–2 hours. The
 author owns product fixes, browser completion, full validation and publication;
 this review will provide executable failures with source hashes.
+
+## Reproduction input clarification (2026-11-10)
+
+This historical review requires the unpublished 20-file author snapshot,
+including `tests/test_work_recovery.py`; clean integration `faa5a4c` contains
+only evidence. The [input contract](../review-inputs/contract.md) now checks
+the source map before imports and separates exit 2 input failure (zero tests)
+from exit 1 behavioral findings. Original product expectations above remain.
