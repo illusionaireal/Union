@@ -5,7 +5,12 @@ const { observeNoNewDispatch } = require('./exit22-restart-evidence.cjs');
 const PROTOCOL = 'acceptance.replay-observation.v1';
 
 function write(fs, path, output, value) {
-  fs.writeFileSync(path.join(output, 'replay-observation.json'), JSON.stringify(value, null, 2));
+  // Say explicitly whether a dispatch count was available, so a null counter cannot be
+  // read as "zero new dispatches" by whoever opens the record later.
+  const counted = typeof value.dispatch_count === 'number';
+  const record = { ...value, dispatch_count_unknown: !counted };
+  fs.writeFileSync(path.join(output, 'replay-observation.json'), JSON.stringify(record, null, 2));
+  return record;
 }
 
 function recordReplayObservation({ fs, path, output, before, after, workId, check }) {

@@ -83,3 +83,21 @@ test('a rejected strict comparison replaces an unchanged record with the failure
   assert.match(record.reason, /preserves every original request fact/);
   assert.ok(!('new_dispatches' in record));
 });
+
+test('every written replay record states whether dispatch counting was available', () => {
+  // A null counter must never read as "zero new dispatches"; the record says which it is.
+  const { deps, files } = harness();
+  recordReplayObservation({ ...deps, before: workBody(['work-original#a1'], ['model-1'], 0),
+    after: workBody(['work-original#a1'], ['model-1'], 0) });
+  assert.equal(files.get('replay-observation.json').dispatch_count_unknown, true);
+
+  const second = harness();
+  recordReplayObservation({ ...second.deps, before: workBody(['work-original#a1'], ['model-1'], 0),
+    after: workBody(['work-original#a1'], ['model-1'], 1) });
+  const record = second.files.get('replay-observation.json');
+  if (record.status === 'observed') {
+    assert.equal(record.dispatch_count_unknown, false);
+  } else {
+    assert.equal(record.dispatch_count_unknown, true);
+  }
+});

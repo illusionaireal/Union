@@ -62,3 +62,12 @@
 RED→GREEN：新增测试 `the comparison summary states that dispatch counting is unknown`
 先失败（两字段缺失），实现后 `exit22-restart-snapshot` **106/106**；
 全量 `npm test -- exit22` **341/341**；`check:management` 37/37。无 Python 改动。
+## 追加：`replay-observation.json` 每条记录显式标注计数未知（2026-11-11 07:5x）
+
+与比较摘要一致，记录器统一在写入前计算 `dispatch_count_unknown`：
+
+- `dispatch_count` 是数值（仅 `observed` 且显式计数）→ `false`；
+- `dispatch_count` 为 `null`（unchanged / unavailable / failed / 比较失败）→ `true`。
+
+RED→GREEN：新测试先以「字段缺失」失败；实现后该套件 **5/5**、全量 `npm test -- exit22` **343/343**。
+写入器仍不发明计数：`observed` 之外一律 `null` + `unknown:true`。
