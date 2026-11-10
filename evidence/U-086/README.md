@@ -1,5 +1,10 @@
 # U-086 / #40：新候选与当前集成边界复核
 
+2026-11-10 收尾就绪度陈述：[已覆盖与未覆盖的真实出口](closure-readiness-2026-11-10.md)。
+汇总集成 head `faa5a4c` 上的本地自动化面（306 Node / 812 Python 全绿）与仍开放的真实
+出口（真实输出后取消、真实取消受理/远端事实、真实用量费用、真实条件下重开不派发、
+准确 head CI 与最近增量的非实施复核）。该陈述不关闭任何出口，真实授权仍在用户侧。
+
 2026-11-10 集成 head `faa5a4c` 全量回归：本机 `.venv` 运行 `python -m unittest discover -v`
 得 812 项全过（skipped 11，exit 0），同期 Node `exit22` 306/306；历史记录的环境性失败
 `test_binding_rejects_board_failure…`（WinError 1314）本次正常通过，未为它改动产品代码。
