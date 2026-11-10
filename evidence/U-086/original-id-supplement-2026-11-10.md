@@ -67,6 +67,20 @@
 - (b) 若确实是 `/api/session` 或 `/api/v1/work` 返回该错误，则与「同一 AU 已能派发并取消真实请求」
   的事实矛盾（除非快照发生在 AU 启用生效之前），属**就绪门/时序**问题，应离线定位后再谈第 4 项。
 
+### 已定位到代码级归因（本轮继续追查，仍为只读）
+
+- `unsupported_capability` 的默认文案「此 AU 尚在准备态…」在 `ai_union/errors.py:22` 是**通用缺省消息**，
+  HTTP 状态 409（`errors.py:15`）；因此**不能**从该文案推断「AU 处于准备态」。
+- 该错误在代码里由「**用 legacy 引擎路径访问 core_v1 AU**」触发：
+  `ai_union/console.py:119`（`_catalog_engine`：`profile != "legacy_v0"` 即抛）、
+  `ai_union/adapters/au_catalog.py:135`（`legacy_directory` 同判）、`au_catalog.py:70`（core_v1 状态读到即抛）；
+  另一处是 `application/governance.py:23`（自定义文案「此接口仅支持核心 V1 AU」）。
+- 结论方向：前快照的 117 B 409 更可能是**驱动在切换到 Core 会话之前读了 legacy 路由**
+  （如 `/api/session` 走 legacy console 引擎），而非 AU 真处于准备态；重启后 Console 以 Core 模式启动，
+  同一读取才成功。若成立，第 4 项的「前侧缺失」属**驱动时序/路由选择**问题，
+  可由 owner 在不新增真实调用的前提下改驱动（先确认 Core 会话后再拍前快照），
+  但**仍需一次有界真实运行**才能产出前后两侧的同一 run 记录。
+
 这两点只影响「前快照为何缺失」的归因，不改变第 4 项仍未证的结论。
 
 ## 复核后更正（回应值守 `supplement-record-audit` 609a337）
