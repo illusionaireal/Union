@@ -53,3 +53,8 @@ error 的 message，因此 work/503、receipt/404、current/200 三个已观测�
 RED→GREEN：两条新测试先失败（transport 无结构化 code；malformed 未被识别），实现后
 `tests/exit22-cancel-evidence.test.ts` **6/6**；全量 `npm test -- exit22` **340/340**；
 `check:management` 37/37。仅 JS 驱动/测试改动，Python 未受影响。
+## 自检复跑（新 head b948203）：值守 11 探针仍全绿
+
+`git archive b948203` → 隔离候选；按同一方式机械重签 21 文件 manifest 后运行值守探针：
+`replay-probes.cjs` **5/5 通过**、`cancel-driver-probes.cjs` **6/6 通过**——
+说明本轮「网络/JSON 中断结构化诊断」没有回归其已有的失败归档断言。仍属作者自检，不等于值守复核。
