@@ -381,16 +381,11 @@ function startHost() {
     cancel_id: cancelCommandId, principal_id: outputObservation.principal_id,
     ...Object.fromEntries(['step_ref', 'attempt_id', 'command_id', 'model_request_id', 'connection']
       .map(key => [key, inflight[key]])) };
-  let cancelEvidenceBefore;
-  try {
-    cancelEvidenceBefore = await require('./exit22-cancel-evidence.cjs').readCancelEvidence(
-      page, originalCancelReference, cancelOutcome.receipt);
-  } catch (error) {
-    // A failed cancel-evidence read must leave its own record, never only a stack.
-    require('./exit22-evidence-failure.cjs').recordEvidenceFailure({
-      fs, path, output, name: 'cancel-receipt-before-restart', workId, error });
-    throw error;
-  }
+  const cancelEvidenceBefore = await require('./exit22-evidence-failure.cjs').readWithFailureRecord({
+    loader: (args) => require('./exit22-cancel-evidence.cjs').readCancelEvidence(
+      page, args.reference, args.expected),
+    reference: originalCancelReference, expected: cancelOutcome.receipt,
+    fs, path, output, name: 'cancel-receipt-before-restart', workId });
   fs.writeFileSync(path.join(output, 'cancel-receipt-before-restart.json'), JSON.stringify(cancelEvidenceBefore, null, 2));
   check('original GET returns the complete original delivered cancel receipt');
   // on the race with the real model; both must settle only via the original request.
@@ -441,28 +436,25 @@ function startHost() {
         !unresolved || entry.budget.reserved === 1);
   // Record the reopen observation BEFORE the strict comparison, so a rejected
   // comparison still leaves replay-observation.json behind for attribution.
-  const replayObservation = require('./exit22-replay-observation.cjs');
-  replayObservation.recordReplayObservation({ fs, path, output, before, after, workId, check });
+  require('./exit22-replay-observation.cjs').recordReplayObservation({
+    fs, path, output, before, after, workId, check });
   // Counts can match while identities or result bytes differ. Probe the pure comparison
   // first so a rejection is written to the record instead of leaving an 'unchanged' claim.
   try {
     require('./exit22-restart-evidence.cjs').compareSnapshots(
       before, after, createdReceipt.organization_id, workId);
   } catch (error) {
-    replayObservation.recordReplayComparisonFailure({ fs, path, output, workId, error });
+    require('./exit22-replay-observation.cjs').recordReplayComparisonFailure({
+      fs, path, output, workId, error });
     throw error;
   }
   const restartComparison = require('./exit22-restart-evidence.cjs').compareSnapshots(
     before, after, createdReceipt.organization_id, workId);
-  let cancelEvidenceAfter;
-  try {
-    cancelEvidenceAfter = await require('./exit22-cancel-evidence.cjs').readCancelEvidence(
-      page, originalCancelReference, cancelEvidenceBefore.receipt);
-  } catch (error) {
-    require('./exit22-evidence-failure.cjs').recordEvidenceFailure({
-      fs, path, output, name: 'cancel-receipt-after-restart', workId, error });
-    throw error;
-  }
+  const cancelEvidenceAfter = await require('./exit22-evidence-failure.cjs').readWithFailureRecord({
+    loader: (args) => require('./exit22-cancel-evidence.cjs').readCancelEvidence(
+      page, args.reference, args.expected),
+    reference: originalCancelReference, expected: cancelEvidenceBefore.receipt,
+    fs, path, output, name: 'cancel-receipt-after-restart', workId });
   fs.writeFileSync(path.join(output, 'cancel-receipt-after-restart.json'), JSON.stringify(cancelEvidenceAfter, null, 2));
   check('original cancel receipt survives restart under the original principal and Work');
   fs.writeFileSync(path.join(output, 'restart-request-comparison.json'), JSON.stringify(restartComparison, null, 2));

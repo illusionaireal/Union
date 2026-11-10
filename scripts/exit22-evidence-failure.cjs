@@ -15,4 +15,14 @@ function recordEvidenceFailure({ fs, path, output, name, workId, error }) {
   return record;
 }
 
-module.exports = { recordEvidenceFailure };
+// Wrap a read-only evidence loader: on failure write the failure record, then rethrow.
+async function readWithFailureRecord({ loader, fs, path, output, name, workId, ...rest }) {
+  try {
+    return await loader(rest);
+  } catch (error) {
+    recordEvidenceFailure({ fs, path, output, name, workId, error });
+    throw error;
+  }
+}
+
+module.exports = { recordEvidenceFailure, readWithFailureRecord };

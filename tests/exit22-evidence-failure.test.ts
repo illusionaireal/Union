@@ -4,7 +4,7 @@ import test from 'node:test';
 
 // A failed read must leave a record behind, never only an unhandled rejection.
 const requireHelper = createRequire(new URL('../scripts/exit22-evidence-failure.cjs', import.meta.url));
-const { recordEvidenceFailure } = requireHelper('../scripts/exit22-evidence-failure.cjs');
+const { recordEvidenceFailure, readWithFailureRecord } = requireHelper('../scripts/exit22-evidence-failure.cjs');
 
 function harness() {
   const files = new Map<string, any>();
@@ -39,4 +39,26 @@ test('the failure record never claims a receipt or a zero dispatch count', () =>
   assert.ok(!('receipt' in record));
   assert.ok(!('new_dispatches' in record));
   assert.equal(record.dispatch_count ?? null, null);
+});
+
+test('the wrapper records a failure and rethrows the original error', async () => {
+  const { deps, files } = harness();
+  const original = new Error('original cancel evidence work read failed: /api/v1/work HTTP 409 incompatible_state');
+  await assert.rejects(
+    () => readWithFailureRecord({ ...deps, name: 'cancel-receipt-before-restart',
+      reference: 'ref', expected: 'receipt',
+      loader: async () => { throw original; } }),
+    (error: any) => error === original,
+  );
+  const record = files.get('cancel-receipt-before-restart-failure.json');
+  assert.equal(record.status, 'failed');
+  assert.match(record.reason, /HTTP 409/);
+});
+
+test('the wrapper returns the loader result untouched on success', async () => {
+  const { deps, files } = harness();
+  const value = await readWithFailureRecord({ ...deps, name: 'cancel-receipt-before-restart',
+    reference: 'ref', expected: 'receipt', loader: async (args: any) => ({ ok: args.reference }) });
+  assert.deepEqual(value, { ok: 'ref' });
+  assert.equal(files.size, 0);
 });
