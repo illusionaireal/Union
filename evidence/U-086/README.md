@@ -2,6 +2,11 @@
 
 # U-086 / #40：新候选与当前集成边界复核
 
+2026-11-10 取消证据读取的归因缺口（严格 TDD）：[合同·RED·GREEN](cancel-evidence-attribution.md)。
+`scripts/exit22-cancel-evidence.cjs` 原先失败只抛通用状态断言，无法归因到路由；现先记录四条
+路由的 HTTP 结果、失败信息含键名/路由/状态/Core 错误码。新增 3 项测试、`exit22` 309/309 通过；
+只提升可归因性，不产生新的真实运行事实。
+
 2026-11-10 按协调者 B 口径的逐项补证映射：[原 ID 记录对照](original-id-supplement-2026-11-10.md)。
 把取消输出 events、cancel command/身份一致、受理-interrupted-远端未知三分、同运行前后预约与用量、
 重启重放零派发、源码/服务/运行身份绑定六项逐条标为「已记录／未记录／仅受控断言」，并指出可只读
