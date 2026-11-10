@@ -29,3 +29,14 @@ error 的 message，因此 work/503、receipt/404、current/200 三个已观测�
 - 值守的 6 探针以其 21 输入 manifest 绑定 7dd23fc；本轮改动使其失效。为自检，我按当前 head
   重新计算机械哈希后另存 manifest 再跑（属我自己的验证，不冒充值守签名）。
 - 历史 117 B 前快照根因仍未证实；第 4/5 项仍不成立。
+
+## 自检：用值守 PR83 的 6 探针复跑（2026-11-11 07:2x）
+
+- 候选：`git archive 638e7a0`（含本刀 + 集成 d27d543 合并）→ 隔离目录。
+- 探针：从 `b50850d`（PR83）原样取出 `replay-probes.cjs`、`cancel-driver-probes.cjs`、`contract.md`；
+  其 `source-manifest.json` 绑定 7dd23fc，本刀改动了 4 个受绑文件，故我按当前 head **机械重算 21 文件哈希**
+  另存 manifest（文件中注明「机械重签、非值守签名」），再以 `UNION_REVIEW_CANDIDATE` 指向候选运行。
+- 结果：
+  - `node --test replay-probes.cjs` → **5/5 通过**
+  - `node --test cancel-driver-probes.cjs` → **6/6 通过**（含此前失败的两条「完整 HTTP 失败归档」探针）
+- 说明：这是作者的**自检**，不等于值守复验；值守仍需按新 head 重签 manifest 后独立复核。
