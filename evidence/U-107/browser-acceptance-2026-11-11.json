@@ -1,0 +1,181 @@
+{
+  "authentication": {
+    "identity_and_role_preserved": true,
+    "new_password_verified": true,
+    "old_password_hash_replaced": true,
+    "recovery_verified": true,
+    "non_auth_catalog_preserved": true,
+    "schema_versions": [
+      2,
+      1
+    ],
+    "live_login_sessions": 1
+  },
+  "databases": [
+    {
+      "index": 0,
+      "integrity": "ok",
+      "logical_sha256": "9010f26f74f351846d53226f2c1354b19bd2bd4441c610701259098737306cba"
+    },
+    {
+      "index": 1,
+      "integrity": "ok",
+      "logical_sha256": "80f7a52986f4caabcf3d301d5187162eda080ebd541355c24987445dbc8f4da2",
+      "matches_stopped_predeployment_backup": true
+    },
+    {
+      "index": 2,
+      "integrity": "ok",
+      "logical_sha256": "721505d314f9ca582a6369f5ab71dfc43e7365072182b66140dfc48223a9866a",
+      "matches_stopped_predeployment_backup": true
+    }
+  ],
+  "reset_receipt": {
+    "operation_id": "u107-password-reset-20261110",
+    "status": "completed",
+    "password_reset": true,
+    "recovery_code_reset": true,
+    "principal_preserved": true,
+    "account_role_preserved": true,
+    "all_non_auth_catalog_facts_preserved": true,
+    "core_schema_revision_advanced_by_existing_auth_triggers": true,
+    "old_login_sessions_revoked": 0,
+    "reset_session_used_for_browser": false,
+    "backup_saved": true,
+    "rehearsal_passed": true,
+    "reconciled_existing_intent": false,
+    "service_restarted": false,
+    "product_model_calls": 0,
+    "at": 1794325988.7483866
+  },
+  "browser_original_data": {
+    "original_au_id_sha256": "4634d706507db0f1bf1319409a111b9319a37a0bbf515c5754dfb2397fe62156",
+    "all_exposed_persisted_fields_match_original": true,
+    "computed_work_display_status_excluded": true,
+    "work_count": 3,
+    "work_statuses": [
+      "pending",
+      "pending",
+      "pending"
+    ],
+    "artifact_count": 0,
+    "run_count": 3,
+    "run_details_opened": 3,
+    "receipt_count": 5
+  },
+  "pages": [
+    {
+      "step": "work-list",
+      "path": "/tasks",
+      "ok": true,
+      "errors": 0
+    },
+    {
+      "step": "work-detail",
+      "path": "/tasks",
+      "ok": true,
+      "errors": 0
+    },
+    {
+      "step": "close-work",
+      "path": "/tasks",
+      "ok": true,
+      "errors": 0
+    },
+    {
+      "step": "artifacts-list",
+      "path": "/artifacts",
+      "ok": true,
+      "errors": 0
+    },
+    {
+      "step": "activity-list",
+      "path": "/activity",
+      "ok": true,
+      "errors": 0
+    },
+    {
+      "step": "execution-list",
+      "path": "/resources",
+      "ok": true,
+      "errors": 0
+    },
+    {
+      "step": "run-detail-0",
+      "path": "/resources",
+      "ok": true,
+      "errors": 0
+    },
+    {
+      "step": "close-run-0",
+      "path": "/resources",
+      "ok": true,
+      "errors": 0
+    },
+    {
+      "step": "run-detail-1",
+      "path": "/resources",
+      "ok": true,
+      "errors": 0
+    },
+    {
+      "step": "close-run-1",
+      "path": "/resources",
+      "ok": true,
+      "errors": 0
+    },
+    {
+      "step": "run-detail-2",
+      "path": "/resources",
+      "ok": true,
+      "errors": 0
+    },
+    {
+      "step": "close-run-2",
+      "path": "/resources",
+      "ok": true,
+      "errors": 0
+    },
+    {
+      "step": "final-overview",
+      "path": "/overview",
+      "ok": true,
+      "errors": 0
+    }
+  ],
+  "network": {
+    "normal_password_login_http": 200,
+    "login_posts": 1,
+    "product_mutations": 0,
+    "model_calls": 0,
+    "javascript_errors": 0,
+    "prelogin_session_401_expected": true,
+    "favicon_404_observed": true,
+    "session_survives_browser_restart": true
+  },
+  "verification_adaptations": [
+    "Initial catalog rehearsal rollback: preserve and account for original write_revision triggers",
+    "Browser default text input selector corrected before any login request",
+    "Snapshot computed display_status excluded from persisted-field comparison",
+    "SQLite stopped backup verified with original WAL/SHM; bare database file comparison was incomplete"
+  ],
+  "actor": "foreground Codex coordinator, user-delegated browser acceptance",
+  "online_member_id": "89f4c1c1-329a-4b54-ad37-235cf061e9a8",
+  "deployed_source": "3e1071bc22139233ad512bc40c824168cb53b8b9",
+  "evidence_scope": "real",
+  "user_manually_operated": false,
+  "sustained_acceptance": false,
+  "recorded_at": "2026-11-10T16:03:02.619726+00:00",
+  "private_evidence_sha256": {
+    "password-reset-error-private.log": "b6278d80ec25731468cff65545c9592cdc8e2df0576e09de53c8e812e9f77714",
+    "reset-on-host-stdout-private.log": "5e8f65c3668e3e6fbe9e90fd1c3391e3d1470b4c5fe0dc0a4495001bd6dffc14",
+    "verify-after-stdout-private.log": "290704f34fc99f0b48363ba648af9ea1092ad8e9c2b8f652e71c34d8c478bf4f",
+    "network-login-summary.json": "d6f9b91bbac48000143f9eb1dd553303ef1a7c3c378ba7a917d6a5553c6d8995",
+    "network-details-summary.json": "c6aa1ae6a18aa6adfa6e173dcbd104208fbfadd8d62db3955fb51e3776445615",
+    "work-detail-private.png": "710ab39594788608a66f402889b631a865885d765e109aeae0cca888ede72aec",
+    "artifacts-list-private.png": "d77dbb966e4b15652c65cfd966ef16f6d4677f06dcf86d993f2ea90be8cbf946",
+    "run-detail-0-private.png": "a7e463713ab367058f15a66e8aa2fa201aa0dc83edc2a363ee33dd945c75f8e0",
+    "run-detail-1-private.png": "358a1b062b8983c3ffb1c1a48787b7c9983926a78093aa34486115b2e2453be1",
+    "run-detail-2-private.png": "b9de65bedd615187f36f16db61fe1bcbfa4831208e38b66830fd05f959a6bded"
+  }
+}
