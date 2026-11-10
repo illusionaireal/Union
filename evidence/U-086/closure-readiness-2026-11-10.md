@@ -33,27 +33,34 @@
 
 ## 未覆盖（真实出口，仍未完成，不得据此关闭）
 
-按卡的验收原文，以下各项都要求**真实模型请求**与**真实远端事实**；本卡至今所有运行
-均使用替身模型（真实推理 0），因此这些仍是开放出口：
+本卡后续确实做过**真实派发**（`deepseek-v4.1-flash`；`evidence/127`–`139`，其中 139 为门控版 118/118），
+因此不能再写「本卡所有运行都是替身模型」。但按 [原 ID 补证映射](original-id-supplement-2026-11-10.md)
+的两层判定（驱动报告 / 存档可核对），下列各条仍有实质缺口：
 
-1. **看到原请求真实输出后取消** —— 受控链已能读取“已保存的部分文本”并发起本地取消，
-   但没有一次真实供应商响应被“看到后取消”。
-2. **真实取消受理与远端事实** —— 只记录到本地取消请求与 modeld `interrupted`；
-   远端是否已取消不可确认，必须保持 unknown，不能宣称已取消。
-3. **真实用量/费用** —— 替身运行不产生真实 token/金额；真实账单与币种仍未知，
-   不得折算成真实费用，也不得记为零。
-4. **重开不派发新请求**（真实条件下） —— 受控链已验证原 ID 复核不重派发，但未在
-   真实请求上验证；真实 `unknown` 预约的保留语义随之未验。
-5. **准确 head 的 CI 与关闭判定** —— 本轮未取得 `faa5a4c` 的 CI 结论：本机无 `gh`
-   CLI、无 `GH_TOKEN`/`GITHUB_TOKEN`，未认证访问 GitHub API 返回 403 rate limit，
-   且未读取 Windows Credential Manager 中的 Git 凭据（不回显任何凭据）。仓库现有三个
-   工作流，需由值守/协调者按准确 head 确认全部绿：
+1. **看到原请求真实输出后取消** —— 139 的驱动报告有 `original request text observed before cancel`
+   与有序公开文本/工具观察标签，但**事件正文未入库**（只留哈希与 UTF-8 字节数），
+   不能升级为完整页面验收。
+2. **取消受理身份与远端事实** —— 驱动报告声称回执与提交命令/attempt/step/model request 一致，
+   但存档内嵌回执 **在 192 字符处截断**、提交命令与配对 POST/GET 正文未入库，
+   第三方无法逐字段重算；modeld 真实中断回执缺失；远端是否已取消必须保持 unknown。
+3. **真实用量/费用** —— 每个 run 内可见两条模型请求记录（1 `used` + 1 `unknown`），
+   已知用量子集 139=438/46、134=438/40；被取消请求用量缺失、`cost_status=unknown`，
+   不得补 0，也不得把「单次派发」写成「一次模型调用」。
+4. **同运行前后事实** —— 127/128/129/134/136/137/138/139 八个 `snapshot-before-restart.json`
+   全部是 117 B 的 `unsupported_capability`，**前侧缺失且不可事后重建**；后侧（`reserved=1`、
+   unknown 以原身份存活）只能单侧成立。
+5. **重开/重放不派发新请求** —— 状态侧证据（重启后 attempts 数、`attempt_ids`、预约保持）成立，
+   但缺一条「以原命令重放查询时新增派发 = 0」的显式断言。
+6. **准确 head 的 CI 与关闭判定** —— 本会话未取得 CI 结论：本机无 `gh` CLI、无
+   `GH_TOKEN`/`GITHUB_TOKEN`，未认证访问 GitHub API 返回 403 rate limit，且未读取
+   Windows Credential Manager 中的 Git 凭据（不回显任何凭据）。仓库现有三个工作流，
+   需由值守/协调者按准确 head 确认全部绿：
    - `.github/workflows/ci.yml`「frontend and historical checks」（jobs：
      `offline-checks`、`console-browser`；push 与 pull_request 触发）
    - `.github/workflows/tests.yml`「mechanism-tests」（job：`unittest`）
    - `.github/workflows/model-service.yml`「fixed model service」（job：`model-service`）
    最近一次有记录的 CI 全绿是 PR44 受审 head `744b456`（14/14）。
-6. **独立非实施角色对最近增量的复核** —— 已覆盖部分见上；最近几个增量是否已满足
+7. **独立非实施角色对最近增量的复核** —— 已覆盖部分见上；最近几个增量是否已满足
    当前卡的复核要求，由值守判定。
 
 ## 解除真实出口所需（属用户侧授权，不在本会话执行）
