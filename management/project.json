@@ -1,6 +1,6 @@
 {
     "schema_version": 1,
-    "updated_at": "2026-11-10",
+    "updated_at": "2026-11-11",
     "wip_limit": 8,
     "modules": [
         {
@@ -2420,7 +2420,7 @@
             ],
             "blocker": null,
             "started_at": null,
-            "updated_at": "2026-11-10",
+            "updated_at": "2026-11-11",
             "completion": null,
             "history": [
                 {
@@ -2443,6 +2443,13 @@
                     "from": "backlog",
                     "to": "backlog",
                     "note": "U107/#61固定PR38@3e1071b已在原NAS HTTPS入口上线。用户明确授权本次auth0/catalog0→auth2/catalog1停服身份迁移，原账号密码/AU/创建回执及工作/请求保留，旧会话撤销。94包文件/59固定依赖及原入口JS/CSS实测一致；75文件停服备份已跨宿主复制核验；两个非身份库逻辑数据及24原私有文件保留，实际Chrome登录表单无JS错误/写请求。证据evidence/U-107/live-deployment-2026-11-10.md、live-deployment-2026-11-10.json。未代用户输入密码，modeld仍不可用，真实调用0；原stop137/备份权限失败保留。此为固定版本发布事实，父#27持续使用/业务验收和本地历史状态不升级；运行态仅以在线卡为准。"
+                },
+                {
+                    "at": "2026-11-10T16:02:05.900Z",
+                    "actor": "foreground Codex coordinator / member 89f4c1c1-329a-4b54-ad37-235cf061e9a8",
+                    "from": "backlog",
+                    "to": "backlog",
+                    "note": "U107/#61：用户委托控制电脑验收并明确授权原账号密码重置。原principal/角色与AU/工作/请求保留，部署版认证实现先备份及副本演练、再原子更新凭据；真实Chrome正常密码登录HTTP200，同一原AU、3项pending工作、0成果、3条delivered执行详情及5原回执可读。两非认证库与含WAL的停服完整备份逻辑一致，3库完整性正常，业务写入/模型调用/重启0。证据evidence/U-107/browser-acceptance-2026-11-11.md/json；这是用户委托的真实浏览器验收，非用户亲自操作，不关闭父#27持续使用。首次副本修订计数断言失败和检查适配历史保留。"
                 }
             ]
         },
