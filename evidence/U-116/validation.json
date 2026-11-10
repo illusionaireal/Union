@@ -1,0 +1,151 @@
+{
+  "checked_at": "2026-11-10T21:52:00.868225+00:00",
+  "scope": "controlled build-fix candidate; exact-head CI and review pending",
+  "base": "cb3fa500847f8dc3ce75488f85fd40d49e69082c",
+  "actor": "Codex CI duty implementer / 01a1c746-eb38-7711-ad90-290392a05d89",
+  "online_member_id": "89f4c1c1-329a-4b54-ad37-235cf061e9a8",
+  "trigger": {
+    "pr": 87,
+    "head": "0e8a14467255f3dd20665c07cc506589c3598368",
+    "failed_jobs": [
+      130143042945,
+      130143447040
+    ],
+    "failed_step": "node services/modeld/prepare.mjs",
+    "error": "Unrecorded upstream changes",
+    "paired_windows": "cancelled by matrix"
+  },
+  "red": {
+    "tests": 4,
+    "passed": 2,
+    "failed": 2,
+    "exit_code": 1,
+    "reason": "Actual Git diff index hashes use configured 12/40 digits; existing comparator rejects identical contents"
+  },
+  "green": {
+    "tests": 4,
+    "passed": 4,
+    "failed": 0,
+    "exit_code": 0
+  },
+  "npm_check": {
+    "exit_code": 0,
+    "management": 37,
+    "node": 310,
+    "frontend": 363
+  },
+  "modeld_tests": {
+    "exit_code": 0,
+    "passed": 89,
+    "failed": 0,
+    "files": 8
+  },
+  "fresh_sdk": {
+    "prepare_exit": 0,
+    "install_check_exit": 0,
+    "vendor_commit": "805a42ffaa56b29a88baef87c7567f1ab9a40a8f",
+    "fresh_physical_checkout": true,
+    "vendor_lock_or_patch_modified": false,
+    "prepare_completed_marker": true,
+    "install_checks_passed": 4
+  },
+  "release_source_probe": {
+    "baseline": {
+      "helper_bound": false,
+      "helper_hash": null,
+      "files": 95,
+      "source_hashes": 221
+    },
+    "candidate": {
+      "helper_bound": true,
+      "helper_hash": "5b5f7ffe3c5a5e5ecabe49dd16045ed7bb52a04d178a585913da98149bc2f942",
+      "files": 95,
+      "source_hashes": 222
+    }
+  },
+  "python_full": {
+    "status": "passed",
+    "exit_code": 0,
+    "tests": 817,
+    "seconds": 536.212,
+    "skipped": 8,
+    "failures": 0,
+    "errors": 0
+  },
+  "source_files_sha256": {
+    "services/modeld/prepare.mjs": "b8674530b4c4deb7121799178f3c5361a29add3ea9e92a72451cb7aa7f5b7885",
+    "services/modeld/verify-upstream.mjs": "5b5f7ffe3c5a5e5ecabe49dd16045ed7bb52a04d178a585913da98149bc2f942",
+    "scripts/release_package.py": "ee0915c175f0298c588dab60bd442782fd6dcb94f7e9be5e9010f64a5ab09dfe",
+    "tests/modeld-upstream-patch.test.ts": "83786cef52e9e617f622781721943c7516bfe005afe7fe38473c25082e18ed51"
+  },
+  "logs": {
+    "ci-job-130143042945.log": {
+      "bytes": 18699,
+      "sha256": "14937a62d37c7e3d6c1cb3f71155333eb6d2f3fd527450f6d0fe7532fac1e93c"
+    },
+    "ci-job-130143447040.log": {
+      "bytes": 19850,
+      "sha256": "785b2ffee78f581b451bcca7c1f80814d7fa54292fdf8e87de04b4a015f18abd"
+    },
+    "u116-red.log": {
+      "bytes": 4176,
+      "sha256": "160c1f324616000c80a82512200de0451c4cf5b6e179cae0320cf7f0ccfb38d7"
+    },
+    "u116-green.log": {
+      "bytes": 447,
+      "sha256": "9a8c2270873e5c0e9b7c9ad35cb84ea2dda9402649229971234fe84a20a8b1d6"
+    },
+    "u116-npm-check.log": {
+      "bytes": 31837,
+      "sha256": "c9e1a0e441e964028ce2fcee458bdae966236f08a3b89fb0ec6a188640ec99aa"
+    },
+    "u116-modeld-tests.log": {
+      "bytes": 9232,
+      "sha256": "f87dc805fbaba3bdc596123e591436a329ba9319c112ecc2baed1567b7edc46e"
+    },
+    "u116-fresh-prepare.log": {
+      "bytes": 544,
+      "sha256": "23ba0a4d059a5c6543cf24bf202419cbc9e94c56ba07fd28d0901ba793087f84"
+    },
+    "u116-fresh-install-check.log": {
+      "bytes": 317,
+      "sha256": "0a3e587de466ecf68ddea493f1d0746becc2f63ec4105a28a2a5ab7c96d14b9e"
+    },
+    "u116-fresh-install.json": {
+      "bytes": 360,
+      "sha256": "16730ac9298f6192527fdd81f60516d775a9a11e759a2bbdcd74ad4983d4f588"
+    },
+    "u116-source-manifest-probe.json": {
+      "bytes": 307,
+      "sha256": "74ea6baccbccb4c48b1a76549a790dd59622c4861e5a4a200c3ce027354a3228"
+    },
+    "u116-python-full.log": {
+      "sha256": "2adf50c7331501908242717be0e98919eafd1ab316bf4ba40d1544f620320b72",
+      "bytes": 147820
+    },
+    "u116-structure.log": {
+      "sha256": "15b91c40ad08376e93d61cc4c571fe2fd4aa2d06b79bd392a928711590f30857",
+      "bytes": 3968
+    }
+  },
+  "real_model_calls": 0,
+  "nas_deployment": false,
+  "runtime_code_changed": false,
+  "independent_review": {
+    "status": "pending",
+    "implementer_self_approval": false
+  },
+  "working_tree_files_sha256": {
+    "services/modeld/prepare.mjs": "b8674530b4c4deb7121799178f3c5361a29add3ea9e92a72451cb7aa7f5b7885",
+    "services/modeld/verify-upstream.mjs": "5b5f7ffe3c5a5e5ecabe49dd16045ed7bb52a04d178a585913da98149bc2f942",
+    "scripts/release_package.py": "ee0915c175f0298c588dab60bd442782fd6dcb94f7e9be5e9010f64a5ab09dfe",
+    "tests/modeld-upstream-patch.test.ts": "83786cef52e9e617f622781721943c7516bfe005afe7fe38473c25082e18ed51"
+  },
+  "source_hash_encoding": "Git index blob bytes; Windows working-tree bytes recorded separately",
+  "other_current_failure": {
+    "job": 130143448789,
+    "step": "node scripts/u108-work-events-browser.cjs",
+    "failure": "Timeout waiting for the view-output button; separate from upstream patch comparison",
+    "not_claimed_fixed_by_u116": true
+  }
+}

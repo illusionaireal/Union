@@ -2577,7 +2577,7 @@
             "status": "done",
             "owner": "codex/deployment-coordinator/01a1b7fe-81cb-7ec0-8459-d85fd97a9ba7",
             "role": "部署与集成值守",
-            "acceptance": "实际NAS密钥连接及服务状态有脱敏记录；5分钟计划任务可查询且至少两次实际轮询成功；重复启动互斥、读取失败不更新成功游标、无变化不调用模型；自动处理所需CLI登录不足时明确阻塞，不伪报自动修复；凭据/地址/私有日志不入库。提供关闭/恢复和故障处理说明，并同步长期交付证据。",
+            "acceptance": "实际NAS密钥连接及服务状态有脱敏记录；5分钟计划任务可查询且至少两次实际轮询成功；重复启动互斥、读取失败不更新成功游标、无变化不调用模型；自动处理所需CLI登录不足时明确阻塞，不伪报自动修复；凭据/地址/私有日志不入库。提供关闭/恢复和故障处理说明，并同步长期交付证据。\n\n2026-11-11：U-116/#70处理新CI的固定补丁SHA缩写误拒，见[evidence/U-116/README.md](evidence/U-116/README.md)。它是独立构建修复候选，不把U-101客户端或父卡验收升级为已通过。\n\n2026-11-11：U-117/#71修复当前U108浏览器驱动的原预约就绪检查；见[evidence/U-117/README.md](evidence/U-117/README.md)。限定受控CI支持，不推断历史117B或补造U086真实验收。",
             "dependencies": [],
             "blocker": null,
             "started_at": "2026-11-07",
@@ -2606,6 +2606,20 @@
                     "from": "done",
                     "to": "done",
                     "note": "PR31经17 watcher回归及当前14项CI合并e7b139f，已安装精确源；14:21:55Z三源成功，board299，NAS running/OOM=false/restart=0，attention实际标出#28，前台锁下agent busy。#33 v5读回采用，证据evidence/U-079/overdue-host-adoption.md。每五分钟轮询/四小时停滞重评已生效，0新增真实产品调用。"
+                },
+                {
+                    "at": "2026-11-10T21:45:51.606Z",
+                    "actor": "Codex CI implementer / 01a1c746-eb38-7711-ad90-290392a05d89; online member 89f4c1c1-329a-4b54-ad37-235cf061e9a8",
+                    "from": "done",
+                    "to": "done",
+                    "note": "U-116/#70从#55的真实CI阻塞拆出：固定Git完整diff显示的SHA缩写，额外源码仍拒绝；2项真实RED→4项GREEN，89项SDK和全新目录prepare/安装检查通过，完整检查/准确head CI另见evidence/U-116/validation.json。未改vendor pin/锁/补丁、运行时或监督。只追加长期交付证据，在线owner/WIP/采用保持Kanban权威。"
+                },
+                {
+                    "at": "2026-11-10T22:02:36.696492Z",
+                    "actor": "Codex duty CI implementer / 01a1c746-eb38-7711-ad90-290392a05d89; online member 89f4c1c1-329a-4b54-ad37-235cf061e9a8",
+                    "from": "done",
+                    "to": "done",
+                    "note": "U-117/#71从新CI浏览器失败独立拆分：原驱动同一超时RED保留；只读有界等待原命令已提交预约，再刷新页面。7就绪+2退出回归及21项实际Chrome断言通过。准确源/全量/CI见evidence/U-117/validation.json；未修改产品、监督或真实资源。只记长期交付证据，不用本地状态代替在线认领/采用。"
                 }
             ],
             "claim": null
