@@ -20,12 +20,15 @@ function workBody(attempts: string[], modelRequests: string[], used: number, res
   };
 }
 
-test('an unchanged restart observes zero new dispatches', async () => {
+test('an unchanged restart reports unchanged state without claiming zero dispatches', async () => {
   const before = workBody(['work-original#a1'], ['model-1', 'model-2'], 1, 1);
   const after = workBody(['work-original#a1'], ['model-1', 'model-2'], 1, 1);
   const observation = observeNoNewDispatch(before, after, 'work-original');
-  assert.equal(observation.status, 'observed');
-  assert.equal(observation.new_dispatches, 0);
+  // Unchanged persisted state only; no replay or dispatch counter was observed.
+  assert.equal(observation.status, 'unchanged');
+  assert.equal(observation.persistent_differences, 0);
+  assert.equal(observation.dispatch_count, null);
+  assert.ok(!('new_dispatches' in observation));
   assert.deepEqual(observation.attempts, { before: 1, after: 1 });
   assert.deepEqual(observation.model_requests, { before: 2, after: 2 });
   assert.deepEqual(observation.budget, { before: { used: 1, reserved: 1 }, after: { used: 1, reserved: 1 } });

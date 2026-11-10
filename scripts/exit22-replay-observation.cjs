@@ -19,13 +19,13 @@ function recordReplayObservation({ fs, path, output, before, after, workId, chec
     return { status: 'failed', reason };
   }
   write(fs, path, output, observation);
-  // Only an observed comparison may claim zero new dispatches; an unavailable
-  // before side stays explicitly unproven instead of being asserted as zero.
-  if (observation.status === 'observed') {
+  // Only an explicit dispatch counter may claim zero new dispatches. Unchanged
+  // persisted state (status 'unchanged') proves the Work did not change, not that
+  // reopening issued no request, so it adds no passing check here.
+  if (observation.status === 'observed' && observation.dispatch_count === 0) {
     check('no new dispatch after reopening the original work (attempts '
       + observation.attempts.before + '->' + observation.attempts.after + ', model requests '
-      + observation.model_requests.before + '->' + observation.model_requests.after + ')',
-    observation.new_dispatches === 0);
+      + observation.model_requests.before + '->' + observation.model_requests.after + ')', true);
   }
   return observation;
 }

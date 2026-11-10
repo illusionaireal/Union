@@ -158,10 +158,14 @@ function observeNoNewDispatch(before, after, workId) {
       && current.budget.used > prior.budget.used) {
     throw new Error('new dispatch after restart: budget used ' + prior.budget.used + ' -> ' + current.budget.used);
   }
-  return { protocol: 'acceptance.replay-observation.v1', status: 'observed', work_id: workId,
+  // Unchanged persisted state does not prove that reopening dispatched nothing:
+  // no replay or dispatch counter is observed here, so the count stays unknown.
+  return { protocol: 'acceptance.replay-observation.v1', status: 'unchanged', work_id: workId,
     attempts: { before: prior.attempts, after: current.attempts },
     model_requests: { before: prior.model_requests, after: current.model_requests },
-    budget: { before: prior.budget, after: current.budget }, new_dispatches: 0 };
+    budget: { before: prior.budget, after: current.budget },
+    persistent_differences: 0, dispatch_count: null,
+    note: 'unchanged persisted state only; no replay or dispatch counter was observed' };
 }
 
 module.exports = { readSnapshot, compareSnapshots, observeNoNewDispatch };

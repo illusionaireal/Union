@@ -33,15 +33,16 @@ function workBody(attempts: string[], modelRequests: string[], used: number) {
   };
 }
 
-test('an unchanged reopen writes an observed record and one passing check', () => {
+test('an unchanged reopen records unchanged state and claims no passing check', () => {
   const { deps, files, checks } = harness();
   recordReplayObservation({ ...deps, before: workBody(['work-original#a1'], ['model-1'], 0),
     after: workBody(['work-original#a1'], ['model-1'], 0) });
   const record = files.get('replay-observation.json');
-  assert.equal(record.status, 'observed');
-  assert.equal(record.new_dispatches, 0);
-  assert.equal(checks.length, 1);
-  assert.equal(checks[0].passed, true);
+  assert.equal(record.status, 'unchanged');
+  assert.equal(record.dispatch_count, null);
+  assert.ok(!('new_dispatches' in record));
+  // Unchanged persisted state is not proof that reopening dispatched nothing.
+  assert.equal(checks.length, 0);
 });
 
 test('a missing before side is recorded as unavailable without claiming zero', () => {
