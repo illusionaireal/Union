@@ -14,38 +14,56 @@ async function readCancelEvidence(page, reference, expectedReceipt) {
     assert.ok(typeof reference[key] === 'string' && reference[key].trim(), 'original cancel reference ' + key);
   }
   assert.ok(reference.connection && typeof reference.connection === 'object', 'original connection');
-  const response = await page.evaluate(async ref => {
-    const read = async url => {
-      const r = await fetch(url);
-      return { status: r.status, body: await r.json() };
-    };
-    const query = new URLSearchParams({ organization_id: ref.organization_id });
-    const session = await read('/api/session');
-    const work = await read('/api/v1/work?' + query);
-    query.set('id', ref.cancel_id);
-    const receipt = await read('/api/v1/governance/receipts?' + query);
-    const current = await read('/api/session');
-    return { session, work, receipt, current };
-  }, reference);
+  let response;
+  try {
+    response = await page.evaluate(async ref => {
+      const read = async url => {
+        const r = await fetch(url);
+        return { status: r.status, body: await r.json() };
+      };
+      const query = new URLSearchParams({ organization_id: ref.organization_id });
+      const session = await read('/api/session');
+      const work = await read('/api/v1/work?' + query);
+      query.set('id', ref.cancel_id);
+      const receipt = await read('/api/v1/governance/receipts?' + query);
+      const current = await read('/api/session');
+      return { session, work, receipt, current };
+    }, reference);
+  } catch (error) {
+    // Transport/JSON interruption: keep a structured diagnostic, never an invented outcome.
+    const failure = new Error('original cancel evidence transport failure: '
+      + String((error && error.message) || error));
+    failure.http = null;
+    failure.route = null;
+    failure.status = null;
+    failure.code = 'transport_error';
+    throw failure;
+  }
   // Record every route outcome before asserting, so a failure can be attributed to
   // the exact route, status and Core error code instead of a bare status mismatch.
   const routes = {
     session: '/api/session', work: '/api/v1/work',
     receipt: '/api/v1/governance/receipts', current: '/api/session',
   };
+  const observedStatus = key => {
+    const value = response && response[key];
+    return value && typeof value.status === 'number' ? value.status : null;
+  };
   const http = Object.fromEntries(Object.entries(routes)
-    .map(([key, route]) => [key, { route, status: response[key] === undefined ? null : response[key].status }]));
+    .map(([key, route]) => [key, { route, status: observedStatus(key) }]));
   for (const [key, route] of Object.entries(routes)) {
-    const value = response[key] || {};
+    const value = (response && response[key]) || {};
     if (value.status !== 200) {
-      const code = (value.body && (value.body.code || value.body.error)) || '';
+      const code = value.status === undefined || value.status === null
+        ? 'unknown_shape'
+        : ((value.body && (value.body.code || value.body.error)) || '');
       const error = new Error('original cancel evidence ' + key + ' read failed: ' + route
         + ' HTTP ' + String(value.status) + (code ? ' ' + code : ''));
       // Keep every completed route outcome on the error so a durable failure archive can
       // record them; the map holds routes, statuses and Core codes only - never bodies.
       error.http = http;
       error.route = route;
-      error.status = value.status;
+      error.status = value.status === undefined ? null : value.status;
       error.code = code || null;
       throw error;
     }

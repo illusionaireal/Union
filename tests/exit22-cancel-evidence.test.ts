@@ -74,6 +74,27 @@ test('a rejected read preserves every completed route outcome on the error', asy
   });
 });
 
+test('a transport failure keeps a structured reason and no invented outcome', async () => {
+  // The review left network/JSON interruption unexpanded; a transport failure must still
+  // produce a structured diagnostic instead of an untyped rejection.
+  const failing = { evaluate: async () => { throw new Error('socket hang up'); } };
+  await assert.rejects(() => readCancelEvidence(failing as any, reference, receipt), (error: any) => {
+    assert.equal(error.code, 'transport_error');
+    assert.equal(error.http, null);
+    assert.match(String(error.message), /socket hang up/);
+    return true;
+  });
+});
+
+test('a malformed response is recorded as unknown status, not as success', async () => {
+  const malformed = payload({ work: { status: undefined, body: { protocol: 'core.work.v1' } } });
+  await assert.rejects(() => readCancelEvidence(fakePage(malformed), reference, receipt), (error: any) => {
+    assert.equal(error.http.work.status, null);
+    assert.equal(error.code, 'unknown_shape');
+    return true;
+  });
+});
+
 test('a rejected session read names the route, status and Core error code', async () => {
   const rejected = payload({
     session: { status: 409, body: { code: 'unsupported_capability', error: '此 AU 尚在准备态' } },

@@ -40,3 +40,16 @@ error 的 message，因此 work/503、receipt/404、current/200 三个已观测�
   - `node --test replay-probes.cjs` → **5/5 通过**
   - `node --test cancel-driver-probes.cjs` → **6/6 通过**（含此前失败的两条「完整 HTTP 失败归档」探针）
 - 说明：这是作者的**自检**，不等于值守复验；值守仍需按新 head 重签 manifest 后独立复核。
+## 追加：网络/JSON 中断的结构化诊断（2026-11-11 07:2x）
+
+值守在 PR83 README 里注明「未扩展网络/JSON 中断用例」。本轮补上，且不放松任何校验：
+
+- `page.evaluate` 抛出（fetch/JSON 中断）→ 抛结构化错误：`code='transport_error'`、`http=null`、
+  `route=null`、`status=null`，message 保留原始原因（`socket hang up`）。
+- 响应体形状异常（`status` 缺失/非数值）→ 该路由在 `http` 中记为 `status:null`，
+  并抛 `code='unknown_shape'`；**不得**把缺失状态当成功。
+- 正常非 200 仍按路由归因（原行为不变）。
+
+RED→GREEN：两条新测试先失败（transport 无结构化 code；malformed 未被识别），实现后
+`tests/exit22-cancel-evidence.test.ts` **6/6**；全量 `npm test -- exit22` **340/340**；
+`check:management` 37/37。仅 JS 驱动/测试改动，Python 未受影响。
