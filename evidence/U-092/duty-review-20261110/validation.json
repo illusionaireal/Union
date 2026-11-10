@@ -1,0 +1,97 @@
+{
+  "reviewed_at": "2026-11-10T07:03:58.619700+00:00",
+  "scope": "controlled, independent prepublication review; rejected until lifecycle fence is corrected",
+  "base": "63c4030ec1c520824c00633e42b45019a3e9c533",
+  "source_manifest_sha256": "37b49c71de59f9cdad4ab0358a703df6deaa5f980336373a6eea3d8947c30148",
+  "source_files_sha256": {
+    "ai_union/adapters/AGENTS.md": "44f078c9f81e436386d8476742b9785140b57cbd4f2f3366542fca54828df204",
+    "ai_union/adapters/governance_store.py": "76bcf48707a4ef99abd66252ce740eef863edbd8aee7095a90263301d701ca9a",
+    "ai_union/application/AGENTS.md": "50af1788c1183689ad0b88afd2201a4654c0902aff0eec0f366a698674c3234e",
+    "ai_union/application/model_access.py": "885ae58fadfa96166cf9fd0e5edca931bebb8a2f6fcca4d3258c2c9c390f06ba",
+    "ai_union/application/work.py": "8258b59088873230be7158406ce92d8e21a4e5b963c51b34971d15802644bc56",
+    "ai_union/application/work_dispatch.py": "ba6ddb5aae1347810c5d06e70b4ac12273c49a1563408ede73e960ab7ab86820",
+    "ai_union/application/work_recovery.py": "f003b044e23da814882d8b5f5dbab0fea3ddb48c11e0eb123ee408b668b01030",
+    "ai_union/domain/AGENTS.md": "cdd69d2bc666fe07b8e4bdb2a5100302694df8fa3093acdb86b00d5e6f4adddd",
+    "ai_union/domain/governance.py": "1ca1e13d3cc78b5a237af274cba07af9ace962c53c0fac41fd3cefc848953f6f",
+    "ai_union/domain/work.py": "22074ff42145f105ea2e8c2b8b69f7e6c2bd7e92db7de6b29cb37d874dce754c",
+    "ai_union/work_transport.py": "33c870d403131ec99e3b592cf6e2c7116677c75d616b893ca1fa4f00c0133c10",
+    "docs/decisions/ADR-0009-work-recovery.md": "587c09aae55339e6e9deebf83de0182cd8a965649528144dc8eb290f568a96af",
+    "evidence/U-092/contract.md": "d28a174ddd0770be1425fff3b85341e0b5c6d2cb90c28b8d877703ea236d719a",
+    "scripts/u092-work-recovery-browser.cjs": "586c03bc55aaea84786a5dfe09ab144ad1759efdfd22718af08e43a830da3042",
+    "scripts/u092_work_recovery_host.py": "2666dbe4956c38f89359d08d3976568d2c977b15575f1085cce30f549d2bf305",
+    "tests/test_work_dispatch_compatibility.py": "3bb389a3d6cb66da5570d3c84247dd36095c345bf28fe867386688cb8baf6f78",
+    "tests/test_work_recovery.py": "9c4e3d00792c57a2c30fec4ac846acc76364cdd5cd562e67112a9bd94203696e",
+    "web/console/src/api/types.ts": "bba9e64de95e0ab8422f1aab4c6b5ecf081f68f3af1c5d46efbe8e5bbb0d267b",
+    "web/console/src/features/work/WorkExecution.tsx": "da5a48124aa9127ef85e327e1d3bcb982b629fedadfac7de6952217f0cb379b0",
+    "web/console/src/features/work/page-execution.test.tsx": "8616e1574cb7cd9ca84a1a8f6d7378ef4fcd2ade0b3133a96c9c5310a7e25b81"
+  },
+  "author_source_unchanged_during_review": true,
+  "author_existing_suite": {
+    "tests": 19,
+    "failures": 0,
+    "errors": 0,
+    "seconds": 29.021,
+    "log_sha256": "230ec3cc7d2c0f28ec70bca8db4b80cd0dfc2a389f27b9ccea9fc953516b2bd0"
+  },
+  "independent_probes": {
+    "tests": 3,
+    "passed": 1,
+    "failures": [
+      "__main__.LifecycleReview.test_close_during_channel_construction_cannot_commit_or_dispatch",
+      "__main__.LifecycleReview.test_close_after_reservation_keeps_original_intent_without_dispatch"
+    ],
+    "errors": [],
+    "seconds": 2.629,
+    "log_sha256": "be63f734f54df0efae9a91ddb99fc13fecd46d4717bab6065e459cc78a4f4b95",
+    "observations": [
+      {
+        "test": "test_live_service_control_dispatches_once",
+        "service_closed": false,
+        "fake_dispatches": 1,
+        "state_unchanged": false,
+        "steps": [
+          {
+            "step_ref": "work-overview#s1",
+            "command_id": "bb577ba4-1d14-41b5-9d4e-5c5a7d6f71fd",
+            "model_request_id": "work-e6899901f98b0dfc490907b67520994381a4bc3f4a12f5f3949cfc0b5633d71c",
+            "status": "used"
+          }
+        ],
+        "real_model_calls": 0
+      },
+      {
+        "test": "test_close_during_channel_construction_cannot_commit_or_dispatch",
+        "service_closed": true,
+        "fake_dispatches": 1,
+        "state_unchanged": false,
+        "steps": [
+          {
+            "step_ref": "work-overview#s1",
+            "command_id": "a18e3d69-79a3-4e74-85b1-f4823f504db0",
+            "model_request_id": "work-eabdf6839aa4f6ab81f3b302a9b5e50ea080cd829bc1eaf0c55c5813f3563e31",
+            "status": "reserved"
+          }
+        ],
+        "real_model_calls": 0
+      },
+      {
+        "test": "test_close_after_reservation_keeps_original_intent_without_dispatch",
+        "service_closed": true,
+        "fake_dispatches": 1,
+        "state_unchanged": false,
+        "steps": [
+          {
+            "step_ref": "work-overview#s1",
+            "command_id": "0d0f4d1f-2d3a-43e9-b6af-0e6f94b7687b",
+            "model_request_id": "work-e5949a2b2022428cf7e8ab759d378c1b93137970272290cc38692b9c07cf594c",
+            "status": "reserved"
+          }
+        ],
+        "real_model_calls": 0
+      }
+    ]
+  },
+  "real_model_calls": 0,
+  "full_suite_rerun": false,
+  "reason": "No product change or candidate adoption; bounded negative review with two reproduced failures."
+}
