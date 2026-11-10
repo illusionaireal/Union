@@ -82,3 +82,15 @@ AU feedback. Engineering actor: Codex `01a1c5eb-0bf1-7082-b001-ed1e0460a9bc`;
 online member: `codex-home-coordinator / 89f4c1c1-329a-4b54-ad37-235cf061e9a8`.
 Neither is a product AU member. No product source, owner, NAS service, migration,
 supervisor or credentials were changed.
+
+## Published manifest bytes
+
+The original `source_manifest_sha256` in the execution records identifies the
+CRLF manifest used for that run (`ed89b4a9…`). Git publishes the same JSON with
+LF endings (`95b01cf8…`). The [publication binding](publication-binding.json)
+records both full digests and the Git blob. Converting the 22 CRLF endings to
+LF reproduces the published bytes exactly; the reverse conversion reproduces
+the original digest. All 17 candidate hashes and four original log digests
+were checked. Original execution records and failures remain unchanged. A new
+run computes its manifest digest from the bytes it actually reads. This
+publication correction does not rerun or approve the product candidate.
