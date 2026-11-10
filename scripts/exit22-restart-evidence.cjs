@@ -12,15 +12,24 @@ async function readSnapshot(page, auId, workId) {
     const current = await read('/api/session');
     return { session, work, current };
   }, auId);
+  // Attribute a failed read to its route, status and Core error code before asserting
+  // identities, so a missing pre-restart snapshot can never be reported as a bare mismatch.
+  const routes = { session: '/api/session', work: '/api/v1/work', current: '/api/session' };
+  for (const [key, route] of Object.entries(routes)) {
+    const value = response[key] || {};
+    if (value.status !== 200) {
+      const code = (value.body && (value.body.code || value.body.error)) || '';
+      assert.fail('restart snapshot ' + key + ' read failed: ' + route
+        + ' HTTP ' + String(value.status) + (code ? ' ' + code : ''));
+    }
+  }
   const { session, work, current } = response;
   for (const value of [session, current]) {
-    assert.equal(value.status, 200, 'Core session HTTP status');
     assert.equal(value.body?.core_protocol, 'core.au.v1', 'Core session protocol');
     assert.ok(value.body.principal_id && value.body.service_instance, 'authenticated Core identity');
   }
   assert.equal(current.body.principal_id, session.body.principal_id, 'principal changed during snapshot');
   assert.equal(current.body.service_instance, session.body.service_instance, 'service changed during snapshot');
-  assert.equal(work.status, 200, 'Core Work snapshot HTTP status');
   const body = work.body;
   assert.equal(body?.protocol, 'core.work.v1', 'Core Work snapshot protocol');
   assert.equal(body.organization_id, auId, 'original AU snapshot');
