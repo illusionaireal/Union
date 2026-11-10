@@ -48,3 +48,11 @@ python -m unittest discover -v
 
 本轮未执行真实模型调用，未部署或迁移；产品与标准测试字节等于集成 `7b018f3` 加本卡证据文档。
 
+
+## 追加：集成 d27d543 合并后的全量（2026-11-11 07:0x–07:1x，分支 55bb137）
+
+合并集成 `d27d543`（含 PR87/PR89 等）并叠加本卡 PR83-P2 修复后复跑：
+
+- `python -m unittest discover` → **Ran 834 tests in 533.595s / OK (skipped=11) / exit 0**
+- `npm test -- exit22` → **338/338**；`check:management` 37/37；`management:render` PASS（15 模块 / 8 里程碑 / 81 任务）
+- 未执行真实模型调用；未部署或迁移；产品与标准测试字节等于集成 `d27d543` 加本卡驱动/证据改动。
