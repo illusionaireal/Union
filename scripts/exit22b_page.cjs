@@ -433,6 +433,10 @@ function startHost() {
         !unresolved || entry.budget.reserved === 1);
   const restartComparison = require('./exit22-restart-evidence.cjs').compareSnapshots(
     before, after, createdReceipt.organization_id, workId);
+  // Record whether reopening dispatched anything new; an unusable before side
+  // stays explicitly unproven rather than being asserted as zero dispatches.
+  require('./exit22-replay-observation.cjs').recordReplayObservation({
+    fs, path, output, before, after, workId, check });
   const cancelEvidenceAfter = await require('./exit22-cancel-evidence.cjs').readCancelEvidence(
     page, originalCancelReference, cancelEvidenceBefore.receipt);
   fs.writeFileSync(path.join(output, 'cancel-receipt-after-restart.json'), JSON.stringify(cancelEvidenceAfter, null, 2));

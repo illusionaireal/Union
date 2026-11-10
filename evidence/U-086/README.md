@@ -2,6 +2,11 @@
 
 # U-086 / #40：新候选与当前集成边界复核
 
+2026-11-10 把「重启后无新增派发」接进中断驱动（严格 TDD）：[合同·RED·GREEN](replay-observation-wiring.md)。
+新增 `scripts/exit22-replay-observation.cjs` 记录器（observed / unavailable / failed 三态，只在
+两侧可用时断言零派发），驱动在 `restartComparison` 之后落盘 `replay-observation.json`；
+`exit22` 320/320 通过，既有源码切片用例未受影响。
+
 2026-11-10 重启前后读取的归因缺口（严格 TDD）：[合同·RED·GREEN](restart-read-diagnostics.md)。
 `readSnapshot` 原先失败只抛通用状态断言，现按路由归因（键名+路由+状态+Core 错误码）并保持
 AssertionError 类型；3 项新测试，`exit22` 317/317 通过（过程中修正了一处真实回归）。
