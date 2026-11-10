@@ -12,7 +12,9 @@ unauthorised one, other Core errors still surface, and a healthy entry is listed
 """
 import unittest
 
+from ai_union.adapters.au_catalog import INCOMPATIBLE
 from ai_union.console import Console
+from ai_union.engine import Rejected
 from ai_union.errors import CoreError
 
 
@@ -97,12 +99,54 @@ class SessionInconsistentCatalogueTests(unittest.TestCase):
         self.assertEqual(info['organizations'],
                          [{'id': 'au-healthy', 'name': '健康网关', 'profile': 'legacy_v0'}])
 
-    def test_unauthorised_engine_rows_still_surface_as_before(self):
-        console = stub_console([{'id': 'au-unauthorised', 'profile': 'legacy_v0'}],
-                               refusing('not_authorized'))
+    def test_plain_rejected_incompatible_record_is_skipped(self):
+        """resolve_directory raises plain Rejected(INCOMPATIBLE), not CoreError."""
+        def engine(token, au_id):
+            raise Rejected(INCOMPATIBLE)
+        console = stub_console([{'id': 'au-mismatched', 'profile': 'legacy_v0'}], engine)
+        self.assertEqual(console.session_info('token-test')['organizations'], [])
+
+    def test_other_plain_rejections_still_surface(self):
+        def engine(token, au_id):
+            raise Rejected('组织目录超出服务范围；请保留原记录并在宿主核对')
+        console = stub_console([{'id': 'au-outside', 'profile': 'legacy_v0'}], engine)
+        with self.assertRaises(Rejected):
+            console.session_info('token-test')
+
+    def test_prepared_core_creation_row_is_skipped(self):
+        """The creator branch must skip a prepared AU instead of failing the session."""
+        console = stub_console([{'id': 'au-prepared', 'profile': 'core_v1'}], refusing('not_authorized'))
+        console.creation.catalog.creator = staticmethod(lambda au_id: {'id': au_id})
+
+        def read(session, au_id):
+            raise CoreError('unsupported_capability')
+        console.creation.read = staticmethod(read)
+        self.assertEqual(console.session_info('token-test')['organizations'], [])
+
+    def test_creator_branch_still_surfaces_storage_errors(self):
+        console = stub_console([{'id': 'au-prepared', 'profile': 'core_v1'}], refusing('not_authorized'))
+        console.creation.catalog.creator = staticmethod(lambda au_id: {'id': au_id})
+
+        def read(session, au_id):
+            raise CoreError('storage_unavailable')
+        console.creation.read = staticmethod(read)
         with self.assertRaises(CoreError) as caught:
             console.session_info('token-test')
-        self.assertEqual(caught.exception.code, 'not_authorized')
+        self.assertEqual(caught.exception.code, 'storage_unavailable')
+
+    def test_creator_branch_still_surfaces_a_damaged_creation_record(self):
+        """A damaged creation audit must keep failing the session (409), as today."""
+        console = stub_console([{'id': 'au-damaged', 'profile': 'core_v1'}], refusing('not_authorized'))
+        console.creation.catalog.creator = staticmethod(lambda au_id: {'id': au_id})
+
+        def read(session, au_id):
+            raise CoreError('incompatible_state')
+        console.creation.read = staticmethod(read)
+        with self.assertRaises(CoreError) as caught:
+            console.session_info('token-test')
+        self.assertEqual(caught.exception.code, 'incompatible_state')
+
+
 
 
 if __name__ == '__main__':

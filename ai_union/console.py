@@ -10,7 +10,7 @@ from contextlib import closing, contextmanager, nullcontext
 from pathlib import Path
 
 from .activity import activity
-from .adapters.au_catalog import resolve_directory
+from .adapters.au_catalog import INCOMPATIBLE, resolve_directory
 from .application.creation import CreationService
 from .errors import CoreError
 from .engine import Engine, Rejected, encoded, identifier, model_name, now, require, text, uid, validate_charter, validate_resources
@@ -177,20 +177,29 @@ class Console:
                     try:
                         state = self.creation.read(session, item["id"])["au"]
                     except CoreError as error:
-                        if error.code != "not_authorized":
+                        # A prepared core AU cannot be read as a live AU yet; skip that row
+                        # instead of failing the whole session. A damaged creation record
+                        # (incompatible_state) must still surface, so only this code and
+                        # not_authorized are skipped here.
+                        if error.code not in ("not_authorized", "unsupported_capability"):
                             raise
                     else:
                         orgs.append({"id": state["id"], "name": state["name"], "profile": "core_v1"})
                 continue
             if session["organizations"] is None or item["id"] in session["organizations"]:
-                # A catalogue row may still say legacy_v0 while the AU directory already
-                # resolves to core_v1 (creation/refresh window). One such row must not fail
-                # the whole session read; skip it like an unauthorised entry and keep the
-                # remaining Core errors visible.
+                # A catalogue row may still say legacy_v0 while its directory no longer
+                # opens as a legacy AU. One such row must not fail the whole session read;
+                # skip it like an unauthorised entry and keep every other error visible.
                 try:
                     e = self.engine(token, item["id"])
                 except CoreError as error:
                     if error.code in ("unsupported_capability", "incompatible_state"):
+                        continue
+                    raise
+                except Rejected as error:
+                    # resolve_directory raises a plain Rejected (INCOMPATIBLE) when the
+                    # stored record and the catalogue disagree; only that marker is skipped.
+                    if str(error) == INCOMPATIBLE:
                         continue
                     raise
                 with e.read_transaction() as cx:
