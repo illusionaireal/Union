@@ -50,3 +50,15 @@
   `status === 'observed'` 时增加一条 check。
 - 即便接线完成，真正的「真实运行证据」仍需一次有界真实运行（含可用的前快照），
   或原 owner 交出历史记录；不得用本函数的存在替代真实验收。
+
+## 追加：比较摘要显式标注「派发计数未知」（2026-11-11 07:4x）
+
+重启比较此前只给 `transport_dispatch_count: null` 与 `no_new_request_identity: true`，
+读者容易把「身份集合相同」误读成「没有派发」。本轮在同一摘要里显式加两个字段：
+
+- `dispatch_count_unknown: true` —— 计数来源不可用；
+- `identity_equality_only: true` —— 本次比较只证明请求身份相同，不证明传输层派发次数。
+
+RED→GREEN：新增测试 `the comparison summary states that dispatch counting is unknown`
+先失败（两字段缺失），实现后 `exit22-restart-snapshot` **106/106**；
+全量 `npm test -- exit22` **341/341**；`check:management` 37/37。无 Python 改动。

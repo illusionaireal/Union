@@ -123,7 +123,8 @@ function compareSnapshots(before, after, auId, workId) {
   assert.deepEqual(canonical(reopened.budget), canonical(original.budget), 'restart preserves original budget');
   return { protocol: 'acceptance.restart-requests.v1', organization_id: auId, work_id: workId,
     principal_id: before.access.principal_id, model_request_identity_count: prior.length,
-    transport_dispatch_count: null, no_new_request_identity: true, requests: prior,
+    transport_dispatch_count: null, dispatch_count_unknown: true, identity_equality_only: true,
+    no_new_request_identity: true, requests: prior,
     budget: original.budget, result_identity_count: priorResults.length, results: priorResults,
     delivered_result_id: original.delivered_result_id ?? null };
 }
