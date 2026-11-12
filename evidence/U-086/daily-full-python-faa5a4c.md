@@ -68,3 +68,7 @@ python -m unittest discover -v
 
 - `check:management` **37/37**；Node 全套 **352/352**（含 cancel-facts 4 项与校验诊断 6 项）；前端 **29 文件 / 363 项**（tsc + build）。
 - 该 head 含：P2 两轮修复（`c4b95b7`、`a1d9957`）+ 复审包 + 文档增量；Python 自 834/834 后无改动。
+## 日常全量（2026-11-12 21:3x，head dfd4dff）
+
+`python -m unittest discover` → **Ran 834 tests in 573.043s / OK (skipped=11) / exit 0**。
+产品源码该 head 与值守复验过的 `5545d4f` 逐字节相同，故结果与 11-11 一致；仅 JS 驱动/测试/证据变化。
