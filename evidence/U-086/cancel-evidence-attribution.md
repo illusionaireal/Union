@@ -45,3 +45,22 @@
   第 2 项要求的「完整回执与配对 POST/GET 正文」仍需一次有界真实运行落盘，
   或由原 owner 交出历史运行里的这些记录。
 - 下一步（同清单）：C「重启后按原命令查询并断言新增派发 = 0」；B 前快照端点/时序的代码部分。
+
+## 追加：三项取消事实分列落盘（2026-11-12，head 待定）
+
+卡面要求「分别记录取消受理 / modeld interrupted / 远端事实」。此前这些事实散落在多个断言与检查里，
+没有一份**单列三态**的驱动产物。本轮新增只读模块 `scripts/exit22-cancel-facts.cjs`
+（`buildCancelFacts({receipt, step, work})`），驱动在结算后写 `cancel-facts.json`：
+
+- `local_acceptance`：`accepted`、`receipt_id`、`status`、`delivery_message`（来自产品受理回执）；
+- `modeld_settlement`：`observed`、`step_status`、`interrupted`（仅 `status==='unknown'`）、`reason`、`usage`、`cost_status`；
+- `remote_fact`：**恒为 `unknown`**，理由写明「本机取消受理与投递观察不证明远端模型服务已停止」；
+- `reservation`：`reserved` / `used` / `max_calls`（未知一律 `null`，不补 0）。
+
+严格 TDD：新测试 `tests/exit22-cancel-facts.test.ts` 先以 `Cannot find module` 失败，实现后 **4/4**；
+接线后用 `node --test tests/exit22-observed-settlement.test.ts` 发现切片测试上下文缺少 `cancelReceipt`，
+改为守卫写（仅在真实驱动上下文内落盘），随后 `observed-settlement` **8/8**、全量 `exit22` **352/352**、
+`check:management` **37/37**。
+
+偏差说明：为保证复审切片测试可运行，落盘语句带 `typeof cancelReceipt !== 'undefined'` 守卫；
+真实驱动上下文一定满足，切片上下文跳过（该上下文不需要此产物）。

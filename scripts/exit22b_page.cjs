@@ -403,6 +403,14 @@ function startHost() {
         ['unknown', 'used'].includes(step.status));
   check('an unknown settlement keeps the budget reserved',
         step.status !== 'unknown' || work.budget.reserved === 1);
+  // Keep the card's three facts separate in their own artifact: what the product accepted
+  // locally, how the supervised step settled, and the remote fact this machine cannot prove.
+  // Guarded because review harnesses execute this region with a partial context.
+  if (typeof cancelReceipt !== 'undefined' && step) {
+    fs.writeFileSync(path.join(output, 'cancel-facts.json'), JSON.stringify(
+      require('./exit22-cancel-facts.cjs').buildCancelFacts({ receipt: cancelReceipt, step, work }),
+      null, 2));
+  }
   // Persisted facts must survive a console rebuild on the same root.
   const before = await snapshot();
   fs.writeFileSync(path.join(output, 'snapshot-before-restart.json'), JSON.stringify(before, null, 2));
