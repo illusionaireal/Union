@@ -2,6 +2,7 @@
 
 # U-086 / #40：新候选与当前集成边界复核
 
+2026-11-12 有界真实运行计划（**待授权、未执行**）：[bounded-real-run-plan.md](bounded-real-run-plan.md)。目的=第 4/5 项一次取证；上限 3 次真实调用/≤10 分钟；禁止新建 AU、补造快照、部署与迁移；remote_fact 恒 unknown。
 2026-11-12 PR 描述（供协调者代开 PR）：[pr-ready-description.md](pr-ready-description.md)。标题/摘要/范围/验证表/复验指针/未闭合项一页备好；交付 head e7b1b0c。
 2026-11-12 取消证据读取的后续校验失败诊断（复审包）：[合同·四反例·两控制](cancel-validation-diagnostics.md)。四路 GET 200 后的 principal/receipt 校验拒绝仍带四路 route/status；修复 c4b95b7，交付 head a858999。
 2026-11-11 失败归档保留已观测路由结果（回应 PR83 P2）：[合同·RED·GREEN](cancel-failure-route-outcomes.md)。`readCancelEvidence` 失败时把 `http/route/status/code` 挂在 error 上，写入器写入 `<name>-failure.json`（仅路由与状态，无正文/凭据）；`exit22` 338/338。
