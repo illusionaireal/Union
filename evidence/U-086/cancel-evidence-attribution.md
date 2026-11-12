@@ -64,3 +64,16 @@
 
 偏差说明：为保证复审切片测试可运行，落盘语句带 `typeof cancelReceipt !== 'undefined'` 守卫；
 真实驱动上下文一定满足，切片上下文跳过（该上下文不需要此产物）。
+## 追加：驱动接线保护测试（2026-11-12 21:0x）
+
+`cancel-facts.json` 此前只有模块单元测试与「切片上下文守卫跳过」的事实，接线本身（文件名、写入位置、守卫）
+没有测试保护。新增 `tests/exit22-cancel-facts-wiring.test.ts`：从 `scripts/exit22b_page.cjs` 截取真实区段
+（`check('an unknown settlement keeps the budget reserved'` → `// Persisted facts must survive`）并在受控上下文执行：
+
+1. 提供 `cancelReceipt/step/work` → 断言 `cancel-facts.json` 落盘且 `protocol`、`local_acceptance`、
+   `modeld_settlement`、`remote_fact`、`reservation` 正确；
+2. 不提供 `cancelReceipt`（复审切片上下文）→ 不抛错且不落盘（守卫生效）。
+
+**偏差说明（如实）**：该接线在上一提交已实现，本测试属**先有实现后补保护**，无法观察到「功能缺失」的 RED；
+首跑失败原因是我的期望值写错（区段内只有 1 条 check，我写了 2），修正后 2/2 通过。全量 `exit22` **354/354**，
+`check:management` **37/37**。
