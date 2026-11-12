@@ -83,3 +83,9 @@ RED→GREEN（四反例 + 两合法控制，全为真实行为测试）：
   —— 四条在修复前均因 `error.http === undefined` 失败，修复后均保留四路 map 并严格拒绝；
 - 控制：干净读取仍返回证据 + 四路 map；干净读取且 work version 更新仍通过。
 - 结果：helper 套件 **12/12**；`npm test -- exit22` **348/348**（342+6）。
+## 自检复跑（head c4b95b7）：值守 11 探针仍全绿
+
+`git archive c4b95b7` → 隔离候选，按同一方式机械重签 21 文件 manifest 后运行：
+`replay-probes.cjs` **5/5**、`cancel-driver-probes.cjs` **6/6** 通过（含此前失败的两条
+「完整 HTTP 失败归档」探针）。说明本轮「后续校验失败也带上四路 map」未回归既有断言；
+仍属作者自检，不等于值守复核。
