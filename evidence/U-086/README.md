@@ -2,6 +2,7 @@
 
 # U-086 / #40：新候选与当前集成边界复核
 
+2026-11-12 取消证据读取的后续校验失败诊断（复审包）：[合同·四反例·两控制](cancel-validation-diagnostics.md)。四路 GET 200 后的 principal/receipt 校验拒绝仍带四路 route/status；修复 c4b95b7，交付 head a858999。
 2026-11-11 失败归档保留已观测路由结果（回应 PR83 P2）：[合同·RED·GREEN](cancel-failure-route-outcomes.md)。`readCancelEvidence` 失败时把 `http/route/status/code` 挂在 error 上，写入器写入 `<name>-failure.json`（仅路由与状态，无正文/凭据）；`exit22` 338/338。
 
 2026-11-10 产品修复（待评审）：[一个不一致的 catalog 行不再让整个 `/api/session` 失败](session-409-skip-fix.md)。
