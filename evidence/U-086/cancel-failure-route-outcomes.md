@@ -89,3 +89,8 @@ RED→GREEN（四反例 + 两合法控制，全为真实行为测试）：
 `replay-probes.cjs` **5/5**、`cancel-driver-probes.cjs` **6/6** 通过（含此前失败的两条
 「完整 HTTP 失败归档」探针）。说明本轮「后续校验失败也带上四路 map」未回归既有断言；
 仍属作者自检，不等于值守复核。
+## 自检复跑（交付 head 72dda8a）：值守 11 探针仍全绿
+
+`git archive 72dda8a` → 隔离候选，机械重签 21 文件 manifest：
+`replay-probes.cjs` **5/5**、`cancel-driver-probes.cjs` **6/6** 通过。
+确认交付 head（含 P2 两轮修复、cancel-facts 与接线测试）未回归值守既有断言；仍属作者自检。
