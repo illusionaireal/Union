@@ -64,3 +64,7 @@ python -m unittest discover -v
 
 - `check:management` **37/37**；Node 全套 **348/348**（含 P2 续例的四反例 + 两合法控制）；前端 **29 文件 / 363 项**（tsc + build）。
 - 该 head 含：P2 二次修复（后续严格校验失败保留四路安全 HTTP 诊断）+ 自检记录；Python 自 834/834 后无改动。
+## 追加：`npm run check` 全绿（head 93b8628，2026-11-12 20:4x）
+
+- `check:management` **37/37**；Node 全套 **352/352**（含 cancel-facts 4 项与校验诊断 6 项）；前端 **29 文件 / 363 项**（tsc + build）。
+- 该 head 含：P2 两轮修复（`c4b95b7`、`a1d9957`）+ 复审包 + 文档增量；Python 自 834/834 后无改动。
