@@ -76,3 +76,8 @@ python -m unittest discover -v
 
 - `check:management` **37/37**；Node 全套 **354/354**（含 cancel-facts 4 项、接线 2 项、校验诊断 6 项）；前端 **29 文件 / 363 项**（tsc + build）。
 - 配合当日全量 Python **834/834 OK (skipped=11)**：交付 head 的双栈门禁均为实测通过。
+## 追加：干净导出可移植性（head ebd1382，2026-11-12 23:5x）
+
+`git archive ebd1382` → 全新目录（**无** node_modules、无工作区未跟踪文件）直接运行关键测试：
+`node --test tests/exit22-cancel-facts.test.ts tests/exit22-cancel-facts-wiring.test.ts tests/exit22-cancel-evidence.test.ts`
+→ **18/18 通过**。说明交付 head 的关键断言不依赖工作区残留文件，复审者按导出目录即可复跑。
