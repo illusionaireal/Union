@@ -72,3 +72,7 @@ python -m unittest discover -v
 
 `python -m unittest discover` → **Ran 834 tests in 573.043s / OK (skipped=11) / exit 0**。
 产品源码该 head 与值守复验过的 `5545d4f` 逐字节相同，故结果与 11-11 一致；仅 JS 驱动/测试/证据变化。
+## 追加：`npm run check` 全绿（交付 head bd09ab1，2026-11-12 21:4x）
+
+- `check:management` **37/37**；Node 全套 **354/354**（含 cancel-facts 4 项、接线 2 项、校验诊断 6 项）；前端 **29 文件 / 363 项**（tsc + build）。
+- 配合当日全量 Python **834/834 OK (skipped=11)**：交付 head 的双栈门禁均为实测通过。
