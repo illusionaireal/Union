@@ -69,8 +69,9 @@ async function readCancelEvidence(page, reference, expectedReceipt) {
     }
   }
   const { session, current } = response;
-
-  for (const value of [session.body, current.body]) {
+  let receipt;
+  try {
+    for (const value of [session.body, current.body]) {
     assert.equal(value?.core_protocol, 'core.au.v1');
     assert.equal(value.principal_id, reference.principal_id, 'original cancel principal');
     assert.ok(typeof value.service_instance === 'string' && value.service_instance, 'current Core service');
@@ -91,7 +92,7 @@ async function readCancelEvidence(page, reference, expectedReceipt) {
     assert.equal(steps[0][key], reference[key], 'original step ' + key);
   }
   assert.deepEqual(canonical(steps[0].connection), canonical(reference.connection), 'original step connection');
-  const receipt = response.receipt.body?.receipt;
+  receipt = response.receipt.body?.receipt;
   assert.ok(receipt, 'original cancel receipt exists');
   for (const [key, value] of Object.entries({ id: reference.cancel_id, organization_id: reference.organization_id,
     actor_principal_id: reference.principal_id, kind: 'cancel_step', status: 'succeeded', effect: 'applied',
@@ -106,6 +107,17 @@ async function readCancelEvidence(page, reference, expectedReceipt) {
   assert.equal(receipt.delivery?.cancel_accepted, true, 'durable cancel delivery');
   assert.equal(receipt.delivery.message, receipt.message, 'consistent delivery observation');
   assert.deepEqual(canonical(receipt), canonical(expectedReceipt), 'original cancel receipt facts changed');
+  } catch (error) {
+    // Every GET above returned 200, so the safe route map is already known: a later strict
+    // validation rejection must keep it and must rethrow the original error unchanged.
+    if (error && typeof error === 'object') {
+      if (!error.http) error.http = http;
+      if (error.route === undefined) error.route = null;
+      if (error.status === undefined) error.status = null;
+      if (!error.code) error.code = 'validation_failed';
+    }
+    throw error;
+  }
   return { protocol: 'acceptance.cancel-receipt.v1', reference, service_instance: session.body.service_instance,
     http, receipt };
 }

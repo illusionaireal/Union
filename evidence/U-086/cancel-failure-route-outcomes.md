@@ -65,3 +65,21 @@ RED→GREEN：两条新测试先失败（transport 无结构化 code；malformed
 说明本轮对 `exit22-restart-evidence.cjs`（新增 `dispatch_count_unknown` / `identity_equality_only`）
 与 `exit22-replay-observation.cjs`（记录统一标注计数可用性）的改动，没有回归值守既有的失败归档与重放断言。
 仍属作者自检，不等于值守复核。
+## 追加：后续严格校验失败也保留四路安全 HTTP 诊断（2026-11-12，回应评论 433）
+
+值守复核 `0729da8` 的 P2 续例：before/after 两段中**四路 GET 均 200**，随后 current principal
+或原 receipt ID 等**严格校验**被拒；但 `failure.json` 的 `http` 为 `null`，丢掉了
+session/work/receipt/current 四路已完成的 route/status。源码定位正确：只有非 200 分支附
+`error.http`，后续断言未携带该 map。
+
+修复（不改严格性）：
+- `readCancelEvidence` 把 GET 后的全部严格校验包在 try/catch 中；失败时**在原始 error 上**
+  附加 `http`（四路 route/status，仍不含正文/凭据）与 `route:null / status:null`，
+  并把原错误**原样重抛**（`ERR_ASSERTION` 等 `code` 不被覆盖）；
+- 不吞断言、不序列化私有正文、不补造 receipt/历史快照、不把未知计数填 0。
+
+RED→GREEN（四反例 + 两合法控制，全为真实行为测试）：
+- 反例：session principal 错配、current principal 错配、原 receipt ID 错配、receipt 事实被改
+  —— 四条在修复前均因 `error.http === undefined` 失败，修复后均保留四路 map 并严格拒绝；
+- 控制：干净读取仍返回证据 + 四路 map；干净读取且 work version 更新仍通过。
+- 结果：helper 套件 **12/12**；`npm test -- exit22` **348/348**（342+6）。

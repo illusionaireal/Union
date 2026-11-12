@@ -119,3 +119,63 @@ test('a mismatched cancel receipt still fails the durable-fact comparison', asyn
     /original cancel versions/,
   );
 });
+
+// PR83 counterexample 1/4 + 2 legitimate controls: the strict identity validation runs after
+// every GET returned 200, so its rejection must still carry the completed safe route map.
+const validationHttp = {
+  session: { route: '/api/session', status: 200 },
+  work: { route: '/api/v1/work', status: 200 },
+  receipt: { route: '/api/v1/governance/receipts', status: 200 },
+  current: { route: '/api/session', status: 200 },
+};
+
+test('a session principal mismatch keeps the four-route map and rejects strictly', async () => {
+  const tampered = payload();
+  tampered.session.body.principal_id = 'principal-other';
+  await assert.rejects(() => readCancelEvidence(fakePage(tampered), reference, receipt), (error: any) => {
+    assert.deepEqual(error.http, validationHttp);
+    assert.equal(error.code, 'ERR_ASSERTION');
+    return true;
+  });
+});
+
+test('a current principal mismatch keeps the four-route map and rejects strictly', async () => {
+  const tampered = payload();
+  tampered.current.body.principal_id = 'principal-other';
+  await assert.rejects(() => readCancelEvidence(fakePage(tampered), reference, receipt), (error: any) => {
+    assert.deepEqual(error.http, validationHttp);
+    return true;
+  });
+});
+
+test('an original receipt id mismatch keeps the four-route map and rejects strictly', async () => {
+  const tampered = payload();
+  tampered.receipt.body.receipt.id = 'receipt-other';
+  await assert.rejects(() => readCancelEvidence(fakePage(tampered), reference, receipt), (error: any) => {
+    assert.deepEqual(error.http, validationHttp);
+    return true;
+  });
+});
+
+test('changed original receipt facts keep the four-route map and reject strictly', async () => {
+  const tampered = payload();
+  tampered.receipt.body.receipt.message = 'different message';
+  await assert.rejects(() => readCancelEvidence(fakePage(tampered), reference, receipt), (error: any) => {
+    assert.deepEqual(error.http, validationHttp);
+    return true;
+  });
+});
+
+test('control: a clean read still returns the evidence together with its route map', async () => {
+  const evidence = await readCancelEvidence(fakePage(payload()), reference, receipt);
+  assert.deepEqual(evidence.http, validationHttp);
+  assert.equal(evidence.receipt.id, reference.cancel_id);
+  assert.equal(evidence.protocol, 'acceptance.cancel-receipt.v1');
+});
+
+test('control: a clean read with a newer work version still passes', async () => {
+  const newer = payload();
+  newer.work.body.version = 99;
+  const evidence = await readCancelEvidence(fakePage(newer), reference, receipt);
+  assert.equal(evidence.http.work.status, 200);
+});
