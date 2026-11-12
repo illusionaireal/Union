@@ -60,3 +60,7 @@ python -m unittest discover -v
 
 - `check:management` **37/37**；Node 全套 **341/341**；前端 **29 文件 / 363 项**全过（含 tsc + build）。
 - 该 head 同时含：PR83-P2 修复、网络/JSON 中断结构化诊断、重启比较「计数未知」标注；Python 侧自 834/834 后无改动。
+## 追加：`npm run check` 全绿（head c5bdc3b，2026-11-12 19:5x）
+
+- `check:management` **37/37**；Node 全套 **348/348**（含 P2 续例的四反例 + 两合法控制）；前端 **29 文件 / 363 项**（tsc + build）。
+- 该 head 含：P2 二次修复（后续严格校验失败保留四路安全 HTTP 诊断）+ 自检记录；Python 自 834/834 后无改动。
