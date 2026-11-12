@@ -98,3 +98,16 @@
 - 受控工程面：本轮在 `faa5a4c` 上本地自动化面全绿（306 Node / 812 Python），
   证据索引完整，可支持“受控部分完成”的陈述。
 - 真实出口：**全部仍未完成**，卡 #40 与父 #22 不能关闭；DSH owner/progress/WIP 保持。
+
+### 增量（2026-11-12，head `a1d9957`，均为实测）
+
+- P2 两轮修复：①`c4b95b7` 后续严格校验失败保留四路安全 HTTP 诊断（四反例 + 两合法控制）；
+  ②`a1d9957` 三项取消事实分列落盘（`cancel-facts.json`：`local_acceptance` /
+  `modeld_settlement` / `remote_fact` 恒 unknown / `reservation` 未知为 null）。
+- 自动化面：`exit22` **352/352**、`check:management` **37/37**、前端 29 文件/363 项（tsc+build）、
+  索引 92 文档 / 197 相对链接 0 失效。
+- 值守 PR83 探针作者自检（机械重签 manifest，非复核签名）：replay **5/5**、cancel-driver **6/6**。
+- 交付路径限制：本机无 `gh` CLI、无 `GH_TOKEN`/`GITHUB_TOKEN`，**无法自行开 PR**；
+  分支 `dsh/u086-page-cancel` 已推送 `gh` 并 ls-remote 核验，需协调者代开 PR 或直接按分支合入。
+- 仍待外部：值守按 `a1d9957` 独立复验 P2 两轮修复；`remote_fact` 保持 unknown；
+  第 4/5 项（117 B 前快照根因、真实派发计数）**仍不成立**。
