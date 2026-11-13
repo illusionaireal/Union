@@ -1,0 +1,33 @@
+{
+  "commit": "f5ebff8f80fa06bd7f0520539261576d72758fd8",
+  "reviewer_actor": "Codex independent reviewer session 01a1d489-ff03-7481-9efd-eda92b0c9889",
+  "online_member_id": "89f4c1c1-329a-4b54-ad37-235cf061e9a8",
+  "prior_manifest_commit": "0729da8694f9f353d25a9cf0ae22b56a1a74957a",
+  "files": {
+    "ai_union/adapters/au_catalog.py": "e83df6ed1c9e0a5b84f916661625349ab8c87f65a24575d24c92b91a917d5380",
+    "ai_union/adapters/creation_catalog.py": "13f28e48f5cdaca1629178e3d558183c922d1f359a3923ae47b2c84e2bf4d072",
+    "ai_union/application/creation.py": "98eab879d6a31cf815fe673909d1f2d738d8ec63c0c7994af849990bf13d701f",
+    "ai_union/console.py": "90568479aae53371c387c725db5519f054d0e1efb857095bee4b06dbe4bcd0e3",
+    "ai_union/engine.py": "2edee43c7d23867025587c605e3d71e1ef55ef0e95a7adf5e2e926dba18a7528",
+    "ai_union/errors.py": "03ad071360ff5fd1d44634ea13eee49066866a9bb4ee6c70e77f38b812976b28",
+    "evidence/U-086/replay-no-dispatch-observation.md": "b2823da047efaea3c0cafb1da5e12f7568c644a9c2482e4ea1ba0cb51233ab6e",
+    "evidence/U-086/replay-observation-wiring.md": "f9db4f288762dbf55e39011c9d2a2b12198cf75b967bb8ec8f6dcb250202a416",
+    "scripts/exit22-cancel-evidence.cjs": "57827eb879b183834a471435de4ef351351c84edffe2d4d651ab308a260a586c",
+    "scripts/exit22-evidence-failure.cjs": "b34decb0a923182329976191d220b8f4e2b1dbc6887aaa86520adc8c704bace2",
+    "scripts/exit22-replay-observation.cjs": "b68000769d6b0f9e6fe52f11ee1007f82110141ef9bd00809f41c6f06656d612",
+    "scripts/exit22-restart-evidence.cjs": "9143ee42151c10ae3207628efe4d08e5aeb129f9712d60096e619de184a146ed",
+    "scripts/exit22b_page.cjs": "012879a55d5b2a3b2855f080ff42d37784851d2e8b19315d2675531ddfc6eab9",
+    "tests/exit22-cancel-evidence.test.ts": "67d5b04a6fc24d58ed8154d17934acf47e6c34a0d20b906dfb654dfb5d4de989",
+    "tests/exit22-evidence-failure.test.ts": "51e8ceb44e3fede3e81ff06267fe6aac7d4edffc5036f49584f6c2b302b5e6f8",
+    "tests/exit22-replay-no-dispatch.test.ts": "7cfef653f03a7d457e2bf5b55b65af03e65c3a5899e2864f8708c3dd1974a831",
+    "tests/exit22-replay-observation.test.ts": "26532256fbdd5d2c1e045ebab1a85b0bd965311b05d9518e88358dcd7f370914",
+    "tests/support.py": "1eb954c08a5170f9f89234d7b7b68278bd1680e550f404c8e22aa3eb7b31417c",
+    "tests/test_core_creation.py": "af17b97a9870e29f4f6a0350b265bf204ebe46e50af4d04501c855b0c97b681a",
+    "tests/test_core_creation_failures.py": "c0ed96ed19346e9145e97740b8618234d7aa651b64e54ec7c4e14bb3b72b8657",
+    "tests/test_core_session_inconsistent_catalog.py": "002277f0b7c06e519632d405d011d4350a72f584c3a8af503136e39ab1e41956",
+    "scripts/exit22-cancel-facts.cjs": "e7403d0995a601250138e11f145ba1a0871c224daf3a25f0d56e44032e83f09a",
+    "tests/exit22-cancel-facts.test.ts": "36e2befd8b813e7c68f48e7f6f136905a03b4f44db8d6109205d3ed0becf1114",
+    "tests/exit22-cancel-facts-wiring.test.ts": "a2dc06d54a132d67bf198437a1147cef75b0a2a585623332c261c8313e2d2b63"
+  },
+  "tree": "08b17e04e4daae9f5232a14fa3b2f05fd5f529dc"
+}
