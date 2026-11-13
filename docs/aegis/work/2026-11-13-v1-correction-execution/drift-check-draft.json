@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "aegis.schema.v0",
+  "taskId": "v1-correction-20261113",
+  "taskIntentRef": "docs/aegis/work/2026-11-13-v1-correction-execution/task-intent-draft.json",
+  "baselineRefs": [
+    "docs/UNION_CHARTER_v1.0.md",
+    "docs/CHARTER_ADOPTION.md",
+    "docs/PRD.md",
+    "docs/ARCHITECTURE.md",
+    "docs/decisions/0003-react-console.md",
+    "docs/decisions/0004-rewrite-delivery-contract.md",
+    "docs/product-design.md",
+    "docs/FRONTEND.md",
+    "management/KANBAN.md",
+    "specs/053-union-rewrite/plan.md"
+  ],
+  "scopeStatus": "U-110与U-118候选符合既定边界，下一卡U-111尚待认领执行。",
+  "compatStatus": "已有责任/原请求/预约与历史保留，固定Python847项通过含9跳过；文档历史附录字节不变。",
+  "retirementStatus": "旧Controller/Broker新派发和installer新安装实现移除，保留原job核对；宿主副本未采用核验。",
+  "newRiskSignals": [
+    "首次ModelsIdentity异步等待失败未复现，完整重跑通过，根因仍未确定",
+    "历史broker日志失败缺少独立完整度字段",
+    "完整新前端和真实/持续产品验收尚未完成"
+  ],
+  "decision": "continue"
+}

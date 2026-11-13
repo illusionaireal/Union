@@ -1,0 +1,117 @@
+{
+  "kind": "fixed_requirement_plan_not_operational_ledger",
+  "date": "2026-11-13",
+  "basis": "d27d543",
+  "parent_scope": "U-112/U-113/U-114 keep complete acceptance; child cards do not close V1 product",
+  "cards": [
+    {
+      "u": "U-119",
+      "parent": "U-112",
+      "title": "从准备缺口完成模型、工具与有限资源配置",
+      "hours": "4–6",
+      "deps": [
+        "U-110",
+        "U-111",
+        "U-072",
+        "U-069"
+      ],
+      "files": "web/console/src/features/models/*、新能力资源页；api客户端及 ModelAccessService/Store 的实际必要公开投影。共享路由壳由U-111所有者集成。",
+      "result": "从新组织空间的明确缺口进入配置，保存、有限验证、采用的含义清楚，返回原组织/目标可看到真实就绪状态、范围、预约/实际用量与费用未知项；不用多个通用命令表单拼步骤。业务资料由 U-120 接续，不能把验证用文本当正式业务资料许可。",
+      "acceptance": "保存零推理；验证仅使用当前主体/AU的合法 provider/modeld grant与修订；编辑、焦点、错误和原请求重开保留，unknown只核对。连接测试和计划预算不冒称自主业务/真实额度。断网、撤权、跨主体/AU、版本变化、费用未知有明确行为。原Profile真实证据仍由U-075及子卡负责。",
+      "operation": "v1-correction-split-20261113/U-119",
+      "common": "依据与实施：Main Chapter V1、docs/product-design.md 的 VJ/UX、docs/FRONTEND.md；基线 d27d543，开工重新核对当前源码/合同/真实在线owner/version。保留 React/TypeScript/Vite，使用最新 rewrite/charter-v1 的任务分支并交 PR 到 rewrite。先冻结受影响字段/错误/授权/事务/恢复/文件责任，再严格有意义 RED→最小 GREEN→回归；保留正确行为。必要 UI/API/应用/持久化同片贯通，非单层空壳。npm check、固定Python全量及受影响真实浏览器/HTTP/SQLite；身份/权限/资源由另一工程角色复核。受控/真实/用户/持续证据分开，本卡不授权真实花费、部署或旧AU迁移；历史身份/请求/责任/预约保留。"
+    },
+    {
+      "u": "U-120",
+      "parent": "U-112",
+      "title": "选择并授权业务资料，让同一工作实际读取",
+      "hours": "6–8",
+      "deps": [
+        "U-110",
+        "U-111",
+        "U-119",
+        "U-084",
+        "U-105"
+      ],
+      "files": "新能力资源页、工作资料选择；ai_union/adapters/documents.py、ModelAccess/Work原所有者与必要公开API/存储。先冻结稳定引用和单一授权写入者。",
+      "result": "有权用户通过正常页面发现/选择或导入一份业务资料，得到名称、来源、范围、版本/摘要与许可；现有同一Work经受控工具实际读取该引用。普通用户不填写宿主路径/别名、不编辑 document-roots.json。S02连接测试附件不自动成为业务资料。",
+      "acceptance": "贯通资料入口到同一Work受控读取及来源证据；越界路径、跨AU/主体、撤权/变更版本拒绝；目录发现不写数据/授新权。若采用导入，冻结大小/类型/持久归属/幂等/未采用内容清理范围。不回传私有宿主路径/密钥，不以空下拉或SSH步骤关闭验收。",
+      "operation": "v1-correction-split-20261113/U-120",
+      "common": "依据与实施：Main Chapter V1、docs/product-design.md 的 VJ/UX、docs/FRONTEND.md；基线 d27d543，开工重新核对当前源码/合同/真实在线owner/version。保留 React/TypeScript/Vite，使用最新 rewrite/charter-v1 的任务分支并交 PR 到 rewrite。先冻结受影响字段/错误/授权/事务/恢复/文件责任，再严格有意义 RED→最小 GREEN→回归；保留正确行为。必要 UI/API/应用/持久化同片贯通，非单层空壳。npm check、固定Python全量及受影响真实浏览器/HTTP/SQLite；身份/权限/资源由另一工程角色复核。受控/真实/用户/持续证据分开，本卡不授权真实花费、部署或旧AU迁移；历史身份/请求/责任/预约保留。"
+    },
+    {
+      "u": "U-122",
+      "parent": "U-113",
+      "title": "在新组织空间阅读和下载有来源的成果正文",
+      "hours": "4–6",
+      "deps": [
+        "U-110",
+        "U-111",
+        "U-106",
+        "U-108"
+      ],
+      "files": "新成果列表/详情、features/work/ResultList、api客户端/types；消费 WorkService.result_content 和既有 GET /api/v1/work/results，不新增成果事实副本。",
+      "result": "在新V1成果入口阅读正文、版本、来源与采用/交付依据，下载同一成果；候选/已采用/已交付分别表达，返回原Work。路由 /au/:auId/work/:workId/results/:resultId 保留真正唯一身份。",
+      "acceptance": "同AU两个Work的相同resultId直达/刷新/返回/下载严格隔离；缺失/歧义/越界拒绝。摘要校验失败明确显示，外部/模型内容不执行，切主体/AU/服务清内容和迟到下载。只读零派发；正文而非仅JSON可用。受控阅读证据不代替U-121从空组织目标自动产生成果；反馈复用U-087版本合同。",
+      "operation": "v1-correction-split-20261113/U-122",
+      "common": "依据与实施：Main Chapter V1、docs/product-design.md 的 VJ/UX、docs/FRONTEND.md；基线 d27d543，开工重新核对当前源码/合同/真实在线owner/version。保留 React/TypeScript/Vite，使用最新 rewrite/charter-v1 的任务分支并交 PR 到 rewrite。先冻结受影响字段/错误/授权/事务/恢复/文件责任，再严格有意义 RED→最小 GREEN→回归；保留正确行为。必要 UI/API/应用/持久化同片贯通，非单层空壳。npm check、固定Python全量及受影响真实浏览器/HTTP/SQLite；身份/权限/资源由另一工程角色复核。受控/真实/用户/持续证据分开，本卡不授权真实花费、部署或旧AU迁移；历史身份/请求/责任/预约保留。"
+    },
+    {
+      "u": "U-121",
+      "parent": "U-113",
+      "title": "一次合法工作意图被持久采用后自动推进到交付",
+      "hours": "6–8，开工对原恢复/新输入合同复评；超过8小时先进一步拆独立结果",
+      "deps": [
+        "U-110",
+        "U-112",
+        "U-122",
+        "U-084",
+        "U-105",
+        "U-106",
+        "U-108",
+        "U-092",
+        "U-093"
+      ],
+      "files": "features/work、新目标入口与实际进度；WorkService、work_dispatch/run_loop和同AU既有领域/存储。先冻结持久意图与运行身份，不增加第二loop或浏览器调度器。",
+      "result": "从新V1 AU表达目标/约束和必要资料，在有效权限/资源内一次采用后由应用持续承担责任，完成准备、执行、观察以及按有效规则采用/交付，进入U-122可读成果。保留事项形成具体待决定对象。",
+      "acceptance": "真实HTTP/SQLite和受控模型浏览器从无Work/无正文走到交付，无手工start_attempt/finish/submit_result/预约结算串联。状态与后续意图可靠持久；关页、退出、会话到期不等于运行撤权，执行不用长期借用浏览器token，真正撤权拒绝新动作/无效采用。响应丢失查原请求，重启接回原责任/预约，未知不重放。消费U-092恢复、U-093新输入同一事实，U-094条件唤醒另归其owner；共享事务按PR顺序集成，不复制恢复引擎。真实模型出口仍U-085。",
+      "operation": "v1-correction-split-20261113/U-121",
+      "common": "依据与实施：Main Chapter V1、docs/product-design.md 的 VJ/UX、docs/FRONTEND.md；基线 d27d543，开工重新核对当前源码/合同/真实在线owner/version。保留 React/TypeScript/Vite，使用最新 rewrite/charter-v1 的任务分支并交 PR 到 rewrite。先冻结受影响字段/错误/授权/事务/恢复/文件责任，再严格有意义 RED→最小 GREEN→回归；保留正确行为。必要 UI/API/应用/持久化同片贯通，非单层空壳。npm check、固定Python全量及受影响真实浏览器/HTTP/SQLite；身份/权限/资源由另一工程角色复核。受控/真实/用户/持续证据分开，本卡不授权真实花费、部署或旧AU迁移；历史身份/请求/责任/预约保留。"
+    },
+    {
+      "u": "U-123",
+      "parent": "U-114",
+      "title": "在组织空间看清规则并完成有权治理决定",
+      "hours": "4–6",
+      "deps": [
+        "U-110",
+        "U-111",
+        "U-069"
+      ],
+      "files": "features/governance与新治理/成员页；消费现有公开治理命令和投影，保持GovernanceStore唯一写入者。",
+      "result": "按实际职责查看有效规则、治理者/最终决定方、保留事项、角色或小AU等价绑定及继任/退出；有权者理解后果后修章、任免、撤权或提出交接。正常入口不暴露21种命令大表单。",
+      "acceptance": "单Agent合法、不强制层级；预览不生效，旧有效程序决定新版本采用，显示名/主机/付款不授治理权。正常/拒绝/unknown/失联与原决定重开有实际HTTP与浏览器证据；敏感动作按实际保留事项确认。AI Work责任真正转移由U-124负责，不能用旧文字Work fixture宣称该能力完成。",
+      "operation": "v1-correction-split-20261113/U-123",
+      "common": "依据与实施：Main Chapter V1、docs/product-design.md 的 VJ/UX、docs/FRONTEND.md；基线 d27d543，开工重新核对当前源码/合同/真实在线owner/version。保留 React/TypeScript/Vite，使用最新 rewrite/charter-v1 的任务分支并交 PR 到 rewrite。先冻结受影响字段/错误/授权/事务/恢复/文件责任，再严格有意义 RED→最小 GREEN→回归；保留正确行为。必要 UI/API/应用/持久化同片贯通，非单层空壳。npm check、固定Python全量及受影响真实浏览器/HTTP/SQLite；身份/权限/资源由另一工程角色复核。受控/真实/用户/持续证据分开，本卡不授权真实花费、部署或旧AU迁移；历史身份/请求/责任/预约保留。"
+    },
+    {
+      "u": "U-124",
+      "parent": "U-114",
+      "title": "交接同一AI工作的责任、资料与未决执行",
+      "hours": "6–8",
+      "deps": [
+        "U-110",
+        "U-123",
+        "U-121",
+        "U-069",
+        "U-092",
+        "U-093"
+      ],
+      "files": "新治理交接交互、原governance/responsibility与Work领域/应用/同AU存储。state.work_runtime和原执行/预约是同一事实，不另建镜像。",
+      "result": "有效发起者及按规则需要的接收者确认后，新责任者接续同一AU/Work及必要资料/上下文，旧任职/执行不能继续新行动或无效采用；未完责任、原预约、真实用量与未知外部结果不丢。",
+      "acceptance": "先冻结Member/Work/Mandate/AgentDefinition/执行所有权/接收条件与旧版本，原状态和交接意图可靠关联。正常、拒绝、重复/unknown、在途迟到、双接收者竞争、重启及新输入保留经HTTP/SQLite/浏览器验证。治理身份移交和AI Work交接分开，不只更新state.work或UI姓名；必要资料不扩权、不复制全体记忆；未知保留原请求/预约。消费U092/U093/U121合同并顺序集成，U096另验真实持续窗口。",
+      "operation": "v1-correction-split-20261113/U-124",
+      "common": "依据与实施：Main Chapter V1、docs/product-design.md 的 VJ/UX、docs/FRONTEND.md；基线 d27d543，开工重新核对当前源码/合同/真实在线owner/version。保留 React/TypeScript/Vite，使用最新 rewrite/charter-v1 的任务分支并交 PR 到 rewrite。先冻结受影响字段/错误/授权/事务/恢复/文件责任，再严格有意义 RED→最小 GREEN→回归；保留正确行为。必要 UI/API/应用/持久化同片贯通，非单层空壳。npm check、固定Python全量及受影响真实浏览器/HTTP/SQLite；身份/权限/资源由另一工程角色复核。受控/真实/用户/持续证据分开，本卡不授权真实花费、部署或旧AU迁移；历史身份/请求/责任/预约保留。"
+    }
+  ]
+}

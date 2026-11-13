@@ -1,0 +1,591 @@
+test_broker_start_and_not_started_resolution_are_not_exposed (tests.test_dev_orchestrator.RetirementTests.test_broker_start_and_not_started_resolution_are_not_exposed) ...
+  test_broker_start_and_not_started_resolution_are_not_exposed (tests.test_dev_orchestrator.RetirementTests.test_broker_start_and_not_started_resolution_are_not_exposed) (action='start') ... FAIL
+  test_broker_start_and_not_started_resolution_are_not_exposed (tests.test_dev_orchestrator.RetirementTests.test_broker_start_and_not_started_resolution_are_not_exposed) (action='resolve_not_started') ... FAIL
+test_budget_sandbox_authority_and_expired_run_never_restore_dispatch (tests.test_dev_orchestrator.RetirementTests.test_budget_sandbox_authority_and_expired_run_never_restore_dispatch) ...
+  test_budget_sandbox_authority_and_expired_run_never_restore_dispatch (tests.test_dev_orchestrator.RetirementTests.test_budget_sandbox_authority_and_expired_run_never_restore_dispatch) (overrides={'max_calls': 0}) ... FAIL
+  test_budget_sandbox_authority_and_expired_run_never_restore_dispatch (tests.test_dev_orchestrator.RetirementTests.test_budget_sandbox_authority_and_expired_run_never_restore_dispatch) (overrides={'sandbox_verified': False}) ... FAIL
+  test_budget_sandbox_authority_and_expired_run_never_restore_dispatch (tests.test_dev_orchestrator.RetirementTests.test_budget_sandbox_authority_and_expired_run_never_restore_dispatch) (overrides={'credentials_isolation_verified': False}) ... FAIL
+  test_budget_sandbox_authority_and_expired_run_never_restore_dispatch (tests.test_dev_orchestrator.RetirementTests.test_budget_sandbox_authority_and_expired_run_never_restore_dispatch) (overrides={'unknown_cost_authorized': False}) ... FAIL
+  test_budget_sandbox_authority_and_expired_run_never_restore_dispatch (tests.test_dev_orchestrator.RetirementTests.test_budget_sandbox_authority_and_expired_run_never_restore_dispatch) (overrides={'non_authority_tasks': ['U-1'], 'independent_reviews': {'U-1': {'base_sha': '9f5948e62b2edadcef310ae7f08272e6c2502191'}}}) ... FAIL
+test_claim_and_finalize_cannot_write_ledger_report_or_git (tests.test_dev_orchestrator.RetirementTests.test_claim_and_finalize_cannot_write_ledger_report_or_git) ...
+  test_claim_and_finalize_cannot_write_ledger_report_or_git (tests.test_dev_orchestrator.RetirementTests.test_claim_and_finalize_cannot_write_ledger_report_or_git) (action='claim_task') ... FAIL
+  test_claim_and_finalize_cannot_write_ledger_report_or_git (tests.test_dev_orchestrator.RetirementTests.test_claim_and_finalize_cannot_write_ledger_report_or_git) (action='finalize') ... FAIL
+test_cli_dry_run_and_preflight_are_read_only_retirement_reports (tests.test_dev_orchestrator.RetirementTests.test_cli_dry_run_and_preflight_are_read_only_retirement_reports) ...
+  test_cli_dry_run_and_preflight_are_read_only_retirement_reports (tests.test_dev_orchestrator.RetirementTests.test_cli_dry_run_and_preflight_are_read_only_retirement_reports) (args=('once', '--dry-run')) ... FAIL
+  test_cli_dry_run_and_preflight_are_read_only_retirement_reports (tests.test_dev_orchestrator.RetirementTests.test_cli_dry_run_and_preflight_are_read_only_retirement_reports) (args=('once', '--dry-run', '--trial')) ... FAIL
+  test_cli_dry_run_and_preflight_are_read_only_retirement_reports (tests.test_dev_orchestrator.RetirementTests.test_cli_dry_run_and_preflight_are_read_only_retirement_reports) (args=('preflight',)) ... FAIL
+test_direct_invocation_of_every_role_is_retired_before_any_reservation (tests.test_dev_orchestrator.RetirementTests.test_direct_invocation_of_every_role_is_retired_before_any_reservation) ...
+  test_direct_invocation_of_every_role_is_retired_before_any_reservation (tests.test_dev_orchestrator.RetirementTests.test_direct_invocation_of_every_role_is_retired_before_any_reservation) (role='planner') ... FAIL
+  test_direct_invocation_of_every_role_is_retired_before_any_reservation (tests.test_dev_orchestrator.RetirementTests.test_direct_invocation_of_every_role_is_retired_before_any_reservation) (role='worker') ... FAIL
+  test_direct_invocation_of_every_role_is_retired_before_any_reservation (tests.test_dev_orchestrator.RetirementTests.test_direct_invocation_of_every_role_is_retired_before_any_reservation) (role='reviewer') ... FAIL
+  test_direct_invocation_of_every_role_is_retired_before_any_reservation (tests.test_dev_orchestrator.RetirementTests.test_direct_invocation_of_every_role_is_retired_before_any_reservation) (role='probe_astra') ... FAIL
+  test_direct_invocation_of_every_role_is_retired_before_any_reservation (tests.test_dev_orchestrator.RetirementTests.test_direct_invocation_of_every_role_is_retired_before_any_reservation) (role='probe_sol') ... FAIL
+  test_direct_invocation_of_every_role_is_retired_before_any_reservation (tests.test_dev_orchestrator.RetirementTests.test_direct_invocation_of_every_role_is_retired_before_any_reservation) (role='validator') ... FAIL
+  test_direct_invocation_of_every_role_is_retired_before_any_reservation (tests.test_dev_orchestrator.RetirementTests.test_direct_invocation_of_every_role_is_retired_before_any_reservation) (role='finalize') ... FAIL
+  test_direct_invocation_of_every_role_is_retired_before_any_reservation (tests.test_dev_orchestrator.RetirementTests.test_direct_invocation_of_every_role_is_retired_before_any_reservation) (role='setup') ... FAIL
+  test_direct_invocation_of_every_role_is_retired_before_any_reservation (tests.test_dev_orchestrator.RetirementTests.test_direct_invocation_of_every_role_is_retired_before_any_reservation) (role='chromium') ... FAIL
+test_direct_probe_cannot_create_run_or_call (tests.test_dev_orchestrator.RetirementTests.test_direct_probe_cannot_create_run_or_call) ... FAIL
+test_generic_git_cannot_commit_even_when_directly_called (tests.test_dev_orchestrator.RetirementTests.test_generic_git_cannot_commit_even_when_directly_called) ... FAIL
+test_generic_save_cannot_create_run_or_adopt_existing_run (tests.test_dev_orchestrator.RetirementTests.test_generic_save_cannot_create_run_or_adopt_existing_run) ...
+  test_generic_save_cannot_create_run_or_adopt_existing_run (tests.test_dev_orchestrator.RetirementTests.test_generic_save_cannot_create_run_or_adopt_existing_run) (state='created') ... FAIL
+  test_generic_save_cannot_create_run_or_adopt_existing_run (tests.test_dev_orchestrator.RetirementTests.test_generic_save_cannot_create_run_or_adopt_existing_run) (state='accepted') ... FAIL
+test_once_retires_before_run_reservation_or_broker_even_with_all_gates_open (tests.test_dev_orchestrator.RetirementTests.test_once_retires_before_run_reservation_or_broker_even_with_all_gates_open) ... FAIL
+test_pause_cannot_be_cleared_to_restore_old_dispatch (tests.test_dev_orchestrator.RetirementTests.test_pause_cannot_be_cleared_to_restore_old_dispatch) ... FAIL
+test_real_cli_rejects_once_trial_probe_and_resume_without_side_effects (tests.test_dev_orchestrator.RetirementTests.test_real_cli_rejects_once_trial_probe_and_resume_without_side_effects) ...
+  test_real_cli_rejects_once_trial_probe_and_resume_without_side_effects (tests.test_dev_orchestrator.RetirementTests.test_real_cli_rejects_once_trial_probe_and_resume_without_side_effects) (args=('once',)) ... FAIL
+  test_real_cli_rejects_once_trial_probe_and_resume_without_side_effects (tests.test_dev_orchestrator.RetirementTests.test_real_cli_rejects_once_trial_probe_and_resume_without_side_effects) (args=('once', '--trial')) ... FAIL
+  test_real_cli_rejects_once_trial_probe_and_resume_without_side_effects (tests.test_dev_orchestrator.RetirementTests.test_real_cli_rejects_once_trial_probe_and_resume_without_side_effects) (args=('preflight', '--probe-models')) ... FAIL
+  test_real_cli_rejects_once_trial_probe_and_resume_without_side_effects (tests.test_dev_orchestrator.RetirementTests.test_real_cli_rejects_once_trial_probe_and_resume_without_side_effects) (args=('resume',)) ... FAIL
+test_tampered_or_failed_evidence_never_reenables_adoption (tests.test_dev_orchestrator.RetirementTests.test_tampered_or_failed_evidence_never_reenables_adoption) ...
+  test_tampered_or_failed_evidence_never_reenables_adoption (tests.test_dev_orchestrator.RetirementTests.test_tampered_or_failed_evidence_never_reenables_adoption) (name='tests.json') ... FAIL
+  test_tampered_or_failed_evidence_never_reenables_adoption (tests.test_dev_orchestrator.RetirementTests.test_tampered_or_failed_evidence_never_reenables_adoption) (name='checksums.json') ... FAIL
+  test_tampered_or_failed_evidence_never_reenables_adoption (tests.test_dev_orchestrator.RetirementTests.test_tampered_or_failed_evidence_never_reenables_adoption) (name='change.patch') ... FAIL
+test_broker_poll_sends_only_recorded_original_identity (tests.test_dev_orchestrator.HistoryTests.test_broker_poll_sends_only_recorded_original_identity) ... ok
+test_evidence_directory_symlink_cannot_escape_state (tests.test_dev_orchestrator.HistoryTests.test_evidence_directory_symlink_cannot_escape_state) ... FAIL
+test_explicit_resolution_requires_observed_exit_and_never_releases_calls (tests.test_dev_orchestrator.HistoryTests.test_explicit_resolution_requires_observed_exit_and_never_releases_calls) ... ok
+test_inspect_missing_run_does_not_create_evidence_directory (tests.test_dev_orchestrator.HistoryTests.test_inspect_missing_run_does_not_create_evidence_directory) ... FAIL
+test_malformed_stored_job_cannot_escape_evidence_directory (tests.test_dev_orchestrator.HistoryTests.test_malformed_stored_job_cannot_escape_evidence_directory) ... FAIL
+test_missing_and_unsafe_run_ids_do_not_create_evidence (tests.test_dev_orchestrator.HistoryTests.test_missing_and_unsafe_run_ids_do_not_create_evidence) ...
+  test_missing_and_unsafe_run_ids_do_not_create_evidence (tests.test_dev_orchestrator.HistoryTests.test_missing_and_unsafe_run_ids_do_not_create_evidence) (rid='bdac593f76c546bfa76e3bec87e62942') ... FAIL
+test_missing_container_remains_unknown_and_keeps_reservation_after_restart (tests.test_dev_orchestrator.HistoryTests.test_missing_container_remains_unknown_and_keeps_reservation_after_restart) ... FAIL
+test_pause_is_durable_and_never_claims_remote_cancellation (tests.test_dev_orchestrator.HistoryTests.test_pause_is_durable_and_never_claims_remote_cancellation) ... ok
+test_read_commands_do_not_initialize_missing_state (tests.test_dev_orchestrator.HistoryTests.test_read_commands_do_not_initialize_missing_state) ...
+  test_read_commands_do_not_initialize_missing_state (tests.test_dev_orchestrator.HistoryTests.test_read_commands_do_not_initialize_missing_state) (args=('status',)) ... FAIL
+  test_read_commands_do_not_initialize_missing_state (tests.test_dev_orchestrator.HistoryTests.test_read_commands_do_not_initialize_missing_state) (args=('preflight',)) ... FAIL
+  test_read_commands_do_not_initialize_missing_state (tests.test_dev_orchestrator.HistoryTests.test_read_commands_do_not_initialize_missing_state) (args=('once', '--dry-run')) ... FAIL
+test_reconcile_failure_preserves_original_call_and_history (tests.test_dev_orchestrator.HistoryTests.test_reconcile_failure_preserves_original_call_and_history) ... ok
+test_reconcile_observes_original_without_replay_adoption_or_task_writes (tests.test_dev_orchestrator.HistoryTests.test_reconcile_observes_original_without_replay_adoption_or_task_writes) ... ok
+test_same_repository_second_controller_cannot_reconcile_concurrently (tests.test_dev_orchestrator.HistoryTests.test_same_repository_second_controller_cannot_reconcile_concurrently) ... skipped 'POSIX flock behavior; Windows uses msvcrt locking'
+test_state_directory_still_cannot_be_inside_repository (tests.test_dev_orchestrator.HistoryTests.test_state_directory_still_cannot_be_inside_repository) ... ok
+test_status_and_inspect_preserve_history_bytes_without_broker (tests.test_dev_orchestrator.HistoryTests.test_status_and_inspect_preserve_history_bytes_without_broker) ...
+  test_status_and_inspect_preserve_history_bytes_without_broker (tests.test_dev_orchestrator.HistoryTests.test_status_and_inspect_preserve_history_bytes_without_broker) (args=('status',)) ... FAIL
+test_unknown_job_id_cannot_be_polled_even_directly (tests.test_dev_orchestrator.HistoryTests.test_unknown_job_id_cannot_be_polled_even_directly) ... FAIL
+test_wrong_job_receipt_cannot_replace_original_observation (tests.test_dev_orchestrator.HistoryTests.test_wrong_job_receipt_cannot_replace_original_observation) ... FAIL
+
+======================================================================
+FAIL: test_broker_start_and_not_started_resolution_are_not_exposed (tests.test_dev_orchestrator.RetirementTests.test_broker_start_and_not_started_resolution_are_not_exposed) (action='start')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 452, in test_broker_start_and_not_started_resolution_are_not_exposed
+    with self.assertRaisesRegex(RuntimeError, 'retired'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: RuntimeError not raised
+
+======================================================================
+FAIL: test_broker_start_and_not_started_resolution_are_not_exposed (tests.test_dev_orchestrator.RetirementTests.test_broker_start_and_not_started_resolution_are_not_exposed) (action='resolve_not_started')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 452, in test_broker_start_and_not_started_resolution_are_not_exposed
+    with self.assertRaisesRegex(RuntimeError, 'retired'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: RuntimeError not raised
+
+======================================================================
+FAIL: test_budget_sandbox_authority_and_expired_run_never_restore_dispatch (tests.test_dev_orchestrator.RetirementTests.test_budget_sandbox_authority_and_expired_run_never_restore_dispatch) (overrides={'max_calls': 0})
+----------------------------------------------------------------------
+RuntimeError: whole-cycle wall time exhausted before dispatch
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 470, in test_budget_sandbox_authority_and_expired_run_never_restore_dispatch
+    with self.assertRaisesRegex(RuntimeError, 'retired'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "retired" does not match "whole-cycle wall time exhausted before dispatch"
+
+======================================================================
+FAIL: test_budget_sandbox_authority_and_expired_run_never_restore_dispatch (tests.test_dev_orchestrator.RetirementTests.test_budget_sandbox_authority_and_expired_run_never_restore_dispatch) (overrides={'sandbox_verified': False})
+----------------------------------------------------------------------
+RuntimeError: whole-cycle wall time exhausted before dispatch
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 470, in test_budget_sandbox_authority_and_expired_run_never_restore_dispatch
+    with self.assertRaisesRegex(RuntimeError, 'retired'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "retired" does not match "whole-cycle wall time exhausted before dispatch"
+
+======================================================================
+FAIL: test_budget_sandbox_authority_and_expired_run_never_restore_dispatch (tests.test_dev_orchestrator.RetirementTests.test_budget_sandbox_authority_and_expired_run_never_restore_dispatch) (overrides={'credentials_isolation_verified': False})
+----------------------------------------------------------------------
+RuntimeError: whole-cycle wall time exhausted before dispatch
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 470, in test_budget_sandbox_authority_and_expired_run_never_restore_dispatch
+    with self.assertRaisesRegex(RuntimeError, 'retired'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "retired" does not match "whole-cycle wall time exhausted before dispatch"
+
+======================================================================
+FAIL: test_budget_sandbox_authority_and_expired_run_never_restore_dispatch (tests.test_dev_orchestrator.RetirementTests.test_budget_sandbox_authority_and_expired_run_never_restore_dispatch) (overrides={'unknown_cost_authorized': False})
+----------------------------------------------------------------------
+RuntimeError: whole-cycle wall time exhausted before dispatch
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 470, in test_budget_sandbox_authority_and_expired_run_never_restore_dispatch
+    with self.assertRaisesRegex(RuntimeError, 'retired'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "retired" does not match "whole-cycle wall time exhausted before dispatch"
+
+======================================================================
+FAIL: test_budget_sandbox_authority_and_expired_run_never_restore_dispatch (tests.test_dev_orchestrator.RetirementTests.test_budget_sandbox_authority_and_expired_run_never_restore_dispatch) (overrides={'non_authority_tasks': ['U-1'], 'independent_reviews': {'U-1': {'base_sha': '9f5948e62b2edadcef310ae7f08272e6c2502191'}}})
+----------------------------------------------------------------------
+RuntimeError: whole-cycle wall time exhausted before dispatch
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 470, in test_budget_sandbox_authority_and_expired_run_never_restore_dispatch
+    with self.assertRaisesRegex(RuntimeError, 'retired'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "retired" does not match "whole-cycle wall time exhausted before dispatch"
+
+======================================================================
+FAIL: test_claim_and_finalize_cannot_write_ledger_report_or_git (tests.test_dev_orchestrator.RetirementTests.test_claim_and_finalize_cannot_write_ledger_report_or_git) (action='claim_task')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 406, in test_claim_and_finalize_cannot_write_ledger_report_or_git
+    with self.assertRaisesRegex(RuntimeError, 'retired'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: RuntimeError not raised
+
+======================================================================
+FAIL: test_claim_and_finalize_cannot_write_ledger_report_or_git (tests.test_dev_orchestrator.RetirementTests.test_claim_and_finalize_cannot_write_ledger_report_or_git) (action='finalize')
+----------------------------------------------------------------------
+RuntimeError: fatal: pathspec 'PROJECT.md' did not match any files
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 406, in test_claim_and_finalize_cannot_write_ledger_report_or_git
+    with self.assertRaisesRegex(RuntimeError, 'retired'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "retired" does not match "fatal: pathspec 'PROJECT.md' did not match any files
+"
+
+======================================================================
+FAIL: test_cli_dry_run_and_preflight_are_read_only_retirement_reports (tests.test_dev_orchestrator.RetirementTests.test_cli_dry_run_and_preflight_are_read_only_retirement_reports) (args=('once', '--dry-run'))
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 376, in test_cli_dry_run_and_preflight_are_read_only_retirement_reports
+    self.assertEqual(body.get('decision'), 'retired', body)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'ready' != 'retired'
+- ready
++ retired
+ : {'issues': [], 'head': 'd8355dc86a52a484abd87a9955b58c087f694b85', 'enabled': True, 'paused': False, 'calls_reserved': 0, 'max_calls': 20, 'cost': 'unknown', 'runs': [], 'dry_run': True, 'decision': 'ready', 'model_calls': 0}
+
+======================================================================
+FAIL: test_cli_dry_run_and_preflight_are_read_only_retirement_reports (tests.test_dev_orchestrator.RetirementTests.test_cli_dry_run_and_preflight_are_read_only_retirement_reports) (args=('once', '--dry-run', '--trial'))
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 376, in test_cli_dry_run_and_preflight_are_read_only_retirement_reports
+    self.assertEqual(body.get('decision'), 'retired', body)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'ready' != 'retired'
+- ready
++ retired
+ : {'issues': [], 'head': 'd8355dc86a52a484abd87a9955b58c087f694b85', 'enabled': True, 'paused': False, 'calls_reserved': 0, 'max_calls': 20, 'cost': 'unknown', 'runs': [], 'dry_run': True, 'decision': 'ready', 'model_calls': 0}
+
+======================================================================
+FAIL: test_cli_dry_run_and_preflight_are_read_only_retirement_reports (tests.test_dev_orchestrator.RetirementTests.test_cli_dry_run_and_preflight_are_read_only_retirement_reports) (args=('preflight',))
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 376, in test_cli_dry_run_and_preflight_are_read_only_retirement_reports
+    self.assertEqual(body.get('decision'), 'retired', body)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: None != 'retired' : {'issues': [], 'head': 'd8355dc86a52a484abd87a9955b58c087f694b85', 'enabled': True, 'paused': False, 'calls_reserved': 0, 'max_calls': 20, 'cost': 'unknown', 'runs': []}
+
+======================================================================
+FAIL: test_direct_invocation_of_every_role_is_retired_before_any_reservation (tests.test_dev_orchestrator.RetirementTests.test_direct_invocation_of_every_role_is_retired_before_any_reservation) (role='planner')
+----------------------------------------------------------------------
+RuntimeError: unexpected dispatch
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 386, in test_direct_invocation_of_every_role_is_retired_before_any_reservation
+    with self.assertRaisesRegex(RuntimeError, 'retired'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "retired" does not match "unexpected dispatch"
+
+======================================================================
+FAIL: test_direct_invocation_of_every_role_is_retired_before_any_reservation (tests.test_dev_orchestrator.RetirementTests.test_direct_invocation_of_every_role_is_retired_before_any_reservation) (role='worker')
+----------------------------------------------------------------------
+RuntimeError: unexpected dispatch
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 386, in test_direct_invocation_of_every_role_is_retired_before_any_reservation
+    with self.assertRaisesRegex(RuntimeError, 'retired'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "retired" does not match "unexpected dispatch"
+
+======================================================================
+FAIL: test_direct_invocation_of_every_role_is_retired_before_any_reservation (tests.test_dev_orchestrator.RetirementTests.test_direct_invocation_of_every_role_is_retired_before_any_reservation) (role='reviewer')
+----------------------------------------------------------------------
+RuntimeError: unexpected dispatch
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 386, in test_direct_invocation_of_every_role_is_retired_before_any_reservation
+    with self.assertRaisesRegex(RuntimeError, 'retired'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "retired" does not match "unexpected dispatch"
+
+======================================================================
+FAIL: test_direct_invocation_of_every_role_is_retired_before_any_reservation (tests.test_dev_orchestrator.RetirementTests.test_direct_invocation_of_every_role_is_retired_before_any_reservation) (role='probe_astra')
+----------------------------------------------------------------------
+RuntimeError: unexpected dispatch
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 386, in test_direct_invocation_of_every_role_is_retired_before_any_reservation
+    with self.assertRaisesRegex(RuntimeError, 'retired'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "retired" does not match "unexpected dispatch"
+
+======================================================================
+FAIL: test_direct_invocation_of_every_role_is_retired_before_any_reservation (tests.test_dev_orchestrator.RetirementTests.test_direct_invocation_of_every_role_is_retired_before_any_reservation) (role='probe_sol')
+----------------------------------------------------------------------
+RuntimeError: unexpected dispatch
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 386, in test_direct_invocation_of_every_role_is_retired_before_any_reservation
+    with self.assertRaisesRegex(RuntimeError, 'retired'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "retired" does not match "unexpected dispatch"
+
+======================================================================
+FAIL: test_direct_invocation_of_every_role_is_retired_before_any_reservation (tests.test_dev_orchestrator.RetirementTests.test_direct_invocation_of_every_role_is_retired_before_any_reservation) (role='validator')
+----------------------------------------------------------------------
+RuntimeError: unexpected dispatch
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 386, in test_direct_invocation_of_every_role_is_retired_before_any_reservation
+    with self.assertRaisesRegex(RuntimeError, 'retired'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "retired" does not match "unexpected dispatch"
+
+======================================================================
+FAIL: test_direct_invocation_of_every_role_is_retired_before_any_reservation (tests.test_dev_orchestrator.RetirementTests.test_direct_invocation_of_every_role_is_retired_before_any_reservation) (role='finalize')
+----------------------------------------------------------------------
+RuntimeError: unexpected dispatch
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 386, in test_direct_invocation_of_every_role_is_retired_before_any_reservation
+    with self.assertRaisesRegex(RuntimeError, 'retired'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "retired" does not match "unexpected dispatch"
+
+======================================================================
+FAIL: test_direct_invocation_of_every_role_is_retired_before_any_reservation (tests.test_dev_orchestrator.RetirementTests.test_direct_invocation_of_every_role_is_retired_before_any_reservation) (role='setup')
+----------------------------------------------------------------------
+RuntimeError: unexpected dispatch
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 386, in test_direct_invocation_of_every_role_is_retired_before_any_reservation
+    with self.assertRaisesRegex(RuntimeError, 'retired'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "retired" does not match "unexpected dispatch"
+
+======================================================================
+FAIL: test_direct_invocation_of_every_role_is_retired_before_any_reservation (tests.test_dev_orchestrator.RetirementTests.test_direct_invocation_of_every_role_is_retired_before_any_reservation) (role='chromium')
+----------------------------------------------------------------------
+RuntimeError: unexpected dispatch
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 386, in test_direct_invocation_of_every_role_is_retired_before_any_reservation
+    with self.assertRaisesRegex(RuntimeError, 'retired'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "retired" does not match "unexpected dispatch"
+
+======================================================================
+FAIL: test_direct_probe_cannot_create_run_or_call (tests.test_dev_orchestrator.RetirementTests.test_direct_probe_cannot_create_run_or_call)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 395, in test_direct_probe_cannot_create_run_or_call
+    with self.assertRaisesRegex(RuntimeError, 'retired'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: RuntimeError not raised
+
+======================================================================
+FAIL: test_generic_git_cannot_commit_even_when_directly_called (tests.test_dev_orchestrator.RetirementTests.test_generic_git_cannot_commit_even_when_directly_called)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 427, in test_generic_git_cannot_commit_even_when_directly_called
+    with self.assertRaisesRegex(RuntimeError, 'retired'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: RuntimeError not raised
+
+======================================================================
+FAIL: test_generic_save_cannot_create_run_or_adopt_existing_run (tests.test_dev_orchestrator.RetirementTests.test_generic_save_cannot_create_run_or_adopt_existing_run) (state='created')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 420, in test_generic_save_cannot_create_run_or_adopt_existing_run
+    with self.assertRaisesRegex(RuntimeError, 'retired'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: RuntimeError not raised
+
+======================================================================
+FAIL: test_generic_save_cannot_create_run_or_adopt_existing_run (tests.test_dev_orchestrator.RetirementTests.test_generic_save_cannot_create_run_or_adopt_existing_run) (state='accepted')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 420, in test_generic_save_cannot_create_run_or_adopt_existing_run
+    with self.assertRaisesRegex(RuntimeError, 'retired'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: RuntimeError not raised
+
+======================================================================
+FAIL: test_once_retires_before_run_reservation_or_broker_even_with_all_gates_open (tests.test_dev_orchestrator.RetirementTests.test_once_retires_before_run_reservation_or_broker_even_with_all_gates_open)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 351, in test_once_retires_before_run_reservation_or_broker_even_with_all_gates_open
+    self.assertEqual(result.get('decision'), 'retired', result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: None != 'retired' : {'run_id': '4251e53cca3a4184890aef54b56c07f8', 'state': 'unknown', 'base_sha': 'd684611e1c3359060804523369bac1ac9aacf078', 'created': 1794536747.4403493, 'models': {'planner_model': 'gpt-6-astra', 'worker_model': 'gpt-6.1-sol', 'reviewer_model': 'gpt-6-astra'}, 'cost': 'unknown', 'error': 'unexpected dispatch'}
+
+======================================================================
+FAIL: test_pause_cannot_be_cleared_to_restore_old_dispatch (tests.test_dev_orchestrator.RetirementTests.test_pause_cannot_be_cleared_to_restore_old_dispatch)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 458, in test_pause_cannot_be_cleared_to_restore_old_dispatch
+    with self.assertRaisesRegex(RuntimeError, 'retired'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: RuntimeError not raised
+
+======================================================================
+FAIL: test_real_cli_rejects_once_trial_probe_and_resume_without_side_effects (tests.test_dev_orchestrator.RetirementTests.test_real_cli_rejects_once_trial_probe_and_resume_without_side_effects) (args=('once',))
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 363, in test_real_cli_rejects_once_trial_probe_and_resume_without_side_effects
+    self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : {
+  "run_id": "223798f362024fb785614cd06687f1ad",
+  "state": "unknown",
+  "base_sha": "bb631687d8bbda9d9be06501981edb6fecef5dfc",
+  "created": 1794536749.483407,
+  "models": {
+    "planner_model": "gpt-6-astra",
+    "worker_model": "gpt-6.1-sol",
+    "reviewer_model": "gpt-6-astra"
+  },
+  "cost": "unknown",
+  "error": "module 'socket' has no attribute 'AF_UNIX'"
+}
+
+
+======================================================================
+FAIL: test_real_cli_rejects_once_trial_probe_and_resume_without_side_effects (tests.test_dev_orchestrator.RetirementTests.test_real_cli_rejects_once_trial_probe_and_resume_without_side_effects) (args=('once', '--trial'))
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 363, in test_real_cli_rejects_once_trial_probe_and_resume_without_side_effects
+    self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : {
+  "decision": "blocked",
+  "reason": "reconcile previous run",
+  "runs": [
+    {
+      "id": "223798f362024fb785614cd06687f1ad",
+      "state": "unknown"
+    }
+  ]
+}
+
+
+======================================================================
+FAIL: test_real_cli_rejects_once_trial_probe_and_resume_without_side_effects (tests.test_dev_orchestrator.RetirementTests.test_real_cli_rejects_once_trial_probe_and_resume_without_side_effects) (args=('preflight', '--probe-models'))
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 363, in test_real_cli_rejects_once_trial_probe_and_resume_without_side_effects
+    self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 2 : Traceback (most recent call last):
+  File "<WORKTREE>\ops\dev-orchestrator\union_dev.py", line 529, in <module>
+    main()
+    ~~~~^^
+  File "<WORKTREE>\ops\dev-orchestrator\union_dev.py", line 502, in main
+    result = c.probe_models() if args.probe_models else c.preflight()
+             ~~~~~~~~~~~~~~^^
+  File "<WORKTREE>\ops\dev-orchestrator\union_dev.py", line 470, in probe_models
+    raise ValueError('reconcile unfinished run first')
+ValueError: reconcile unfinished run first
+
+
+======================================================================
+FAIL: test_real_cli_rejects_once_trial_probe_and_resume_without_side_effects (tests.test_dev_orchestrator.RetirementTests.test_real_cli_rejects_once_trial_probe_and_resume_without_side_effects) (args=('resume',))
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 363, in test_real_cli_rejects_once_trial_probe_and_resume_without_side_effects
+    self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 2 : Traceback (most recent call last):
+  File "<WORKTREE>\ops\dev-orchestrator\union_dev.py", line 529, in <module>
+    main()
+    ~~~~^^
+  File "<WORKTREE>\ops\dev-orchestrator\union_dev.py", line 509, in main
+    raise ValueError('reconcile and explicitly resolve unfinished runs first')
+ValueError: reconcile and explicitly resolve unfinished runs first
+
+
+======================================================================
+FAIL: test_tampered_or_failed_evidence_never_reenables_adoption (tests.test_dev_orchestrator.RetirementTests.test_tampered_or_failed_evidence_never_reenables_adoption) (name='tests.json')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 446, in test_tampered_or_failed_evidence_never_reenables_adoption
+    self.assertEqual(self.files(self.repo), repo_before)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'.gi[1198 chars]: b'{\r\n  "wip_limit": 2,\r\n  "tasks": [\r\n[31064 chars]e\n'} != {'.gi[1198 chars]: b'{"wip_limit": 2, "tasks": [{"id": "U-1", "[30121 chars]e\n'}
+Diff is 70151 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_tampered_or_failed_evidence_never_reenables_adoption (tests.test_dev_orchestrator.RetirementTests.test_tampered_or_failed_evidence_never_reenables_adoption) (name='checksums.json')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 446, in test_tampered_or_failed_evidence_never_reenables_adoption
+    self.assertEqual(self.files(self.repo), repo_before)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'.gi[1591 chars]iew: cd5fc19080b04648b5cedc7d0f902afc",\r\n   [30967 chars]e\n'} != {'.gi[1591 chars]iew: bf24be5a2adb4c41bab5ec7979226377",\r\n   [30671 chars]e\n'}
+Diff is 73060 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_tampered_or_failed_evidence_never_reenables_adoption (tests.test_dev_orchestrator.RetirementTests.test_tampered_or_failed_evidence_never_reenables_adoption) (name='change.patch')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 446, in test_tampered_or_failed_evidence_never_reenables_adoption
+    self.assertEqual(self.files(self.repo), repo_before)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'.gi[1591 chars]iew: 0280dfec760b4abf882bce07bf57439f",\r\n   [31263 chars]e\n'} != {'.gi[1591 chars]iew: cd5fc19080b04648b5cedc7d0f902afc",\r\n   [30967 chars]e\n'}
+Diff is 75299 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_evidence_directory_symlink_cannot_escape_state (tests.test_dev_orchestrator.HistoryTests.test_evidence_directory_symlink_cannot_escape_state)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 576, in test_evidence_directory_symlink_cannot_escape_state
+    with self.assertRaisesRegex(ValueError, 'path'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_inspect_missing_run_does_not_create_evidence_directory (tests.test_dev_orchestrator.HistoryTests.test_inspect_missing_run_does_not_create_evidence_directory)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 549, in test_inspect_missing_run_does_not_create_evidence_directory
+    self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : {
+  "error": "run not found",
+  "evidence_directory": "D:\\Temp\\tmpdk0ew1rh\\state\\ae3facf3355843a5a3470bed42cdf1b0"
+}
+
+
+======================================================================
+FAIL: test_malformed_stored_job_cannot_escape_evidence_directory (tests.test_dev_orchestrator.HistoryTests.test_malformed_stored_job_cannot_escape_evidence_directory)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 559, in test_malformed_stored_job_cannot_escape_evidence_directory
+    with self.assertRaisesRegex(ValueError, 'job id'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_missing_and_unsafe_run_ids_do_not_create_evidence (tests.test_dev_orchestrator.HistoryTests.test_missing_and_unsafe_run_ids_do_not_create_evidence) (rid='bdac593f76c546bfa76e3bec87e62942')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 531, in test_missing_and_unsafe_run_ids_do_not_create_evidence
+    with self.assertRaises(ValueError):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_missing_container_remains_unknown_and_keeps_reservation_after_restart (tests.test_dev_orchestrator.HistoryTests.test_missing_container_remains_unknown_and_keeps_reservation_after_restart)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 619, in test_missing_container_remains_unknown_and_keeps_reservation_after_restart
+    self.assertEqual(restarted.once()['decision'], 'retired')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'blocked' != 'retired'
+- blocked
++ retired
+
+
+======================================================================
+FAIL: test_read_commands_do_not_initialize_missing_state (tests.test_dev_orchestrator.HistoryTests.test_read_commands_do_not_initialize_missing_state) (args=('status',))
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 510, in test_read_commands_do_not_initialize_missing_state
+    self.assertFalse(missing.exists())
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_read_commands_do_not_initialize_missing_state (tests.test_dev_orchestrator.HistoryTests.test_read_commands_do_not_initialize_missing_state) (args=('preflight',))
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 510, in test_read_commands_do_not_initialize_missing_state
+    self.assertFalse(missing.exists())
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_read_commands_do_not_initialize_missing_state (tests.test_dev_orchestrator.HistoryTests.test_read_commands_do_not_initialize_missing_state) (args=('once', '--dry-run'))
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 510, in test_read_commands_do_not_initialize_missing_state
+    self.assertFalse(missing.exists())
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_status_and_inspect_preserve_history_bytes_without_broker (tests.test_dev_orchestrator.HistoryTests.test_status_and_inspect_preserve_history_bytes_without_broker) (args=('status',))
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 491, in test_status_and_inspect_preserve_history_bytes_without_broker
+    self.assertFalse(body['enabled'])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_unknown_job_id_cannot_be_polled_even_directly (tests.test_dev_orchestrator.HistoryTests.test_unknown_job_id_cannot_be_polled_even_directly)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 542, in test_unknown_job_id_cannot_be_polled_even_directly
+    with self.assertRaisesRegex(ValueError, 'recorded original job'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_wrong_job_receipt_cannot_replace_original_observation (tests.test_dev_orchestrator.HistoryTests.test_wrong_job_receipt_cannot_replace_original_observation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 637, in test_wrong_job_receipt_cannot_replace_original_observation
+    with self.assertRaisesRegex(ValueError, 'identity'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+----------------------------------------------------------------------
+Ran 28 tests in 27.283s
+
+FAILED (failures=45, skipped=1)

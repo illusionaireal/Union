@@ -43,3 +43,12 @@ Entries are workspace records, not authoritative runtime decisions.
 | 2026-11-06 | work | docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/proof-bundle.md | 2026-11-06-s02-model-tool-roundtrip proof bundle |
 | 2026-11-06 | artifact | docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/evidence-bundle-draft-V1-card-clarity.json | 2026-11-06-s02-model-tool-roundtrip evidence V1-card-clarity |
 | 2026-11-06 | artifact | docs/aegis/work/2026-11-06-s02-model-tool-roundtrip/evidence-bundle-draft-S02-finish.json | 2026-11-06-s02-model-tool-roundtrip evidence S02-finish |
+| 2026-11-13 | artifact | docs/aegis/work/2026-11-13-v1-correction-execution/gate-input-pack.json | 2026-11-13-v1-correction-execution gate input pack |
+| 2026-11-13 | work | docs/aegis/work/2026-11-13-v1-correction-execution/proof-bundle.md | 2026-11-13-v1-correction-execution proof bundle |
+| 2026-11-13 | work | docs/aegis/work/2026-11-13-v1-correction-execution/10-intent.md | V1纠偏 10-intent.md |
+| 2026-11-13 | work | docs/aegis/work/2026-11-13-v1-correction-execution/20-checkpoint.md | V1纠偏 20-checkpoint.md |
+| 2026-11-13 | work | docs/aegis/work/2026-11-13-v1-correction-execution/90-evidence.md | V1纠偏 90-evidence.md |
+| 2026-11-13 | artifact | docs/aegis/work/2026-11-13-v1-correction-execution/task-intent-draft.json | V1纠偏 task-intent-draft.json |
+| 2026-11-13 | artifact | docs/aegis/work/2026-11-13-v1-correction-execution/impact-statement-draft.json | V1纠偏 impact-statement-draft.json |
+| 2026-11-13 | artifact | docs/aegis/work/2026-11-13-v1-correction-execution/drift-check-draft.json | V1纠偏 drift-check-draft.json |
+| 2026-11-13 | artifact | docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-correction-candidate.json | V1纠偏 evidence-bundle-draft-correction-candidate.json |
