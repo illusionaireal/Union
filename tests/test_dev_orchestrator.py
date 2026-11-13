@@ -276,7 +276,8 @@ class HistoryTests(LegacyFixture):
                 else:
                     self.assertEqual(body['id'], rid)
                     self.assertEqual(json.loads(body['data'])['original_error'], 'lost response; execution may have happened')
-                    self.assertEqual(Path(body['evidence_directory']), self.state / rid)
+                    # Windows TEMP may use an 8.3 alias; inspect returns the resolved path.
+                    self.assertEqual(Path(body['evidence_directory']), (self.state / rid).resolve())
                 self.assertEqual(self.journal(), before)
                 self.assertEqual(self.files(self.repo), repo_before)
                 self.assertEqual(self.files(self.state), state_before)
