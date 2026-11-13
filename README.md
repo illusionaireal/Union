@@ -1,5 +1,11 @@
 # UNION / ai-union
 
+## 当前重构入口（2026-11-13）
+
+本批 V1 工作从最新 `origin/rewrite/charter-v1` 建任务分支，PR 目标为 `rewrite/charter-v1`。先读[完整产品体验](docs/product-design.md)、[前端契约与责任](docs/FRONTEND.md)和[实时 Kanban](https://union-kanban.361102304.workers.dev/)，再读本卡消费的核心合同。dev 是历史 MVP 与未来独立集成的参考，不作为本批开发起点。
+
+用户要求重建完整 V1 产品；U-109 已纠正任务布置，U-110 定义组织空间、持续工作、成果反馈、关注恢复、治理、资源、改进与适用合作的同一体验。设计不等于新界面已完成；实现和验收由 U-111–U-115 及已有反馈/持续性等卡交付。保留 React 栈与正确核心能力，旧导航、手工控制台和旧 AU 迁移不作为新产品验收条件。
+
 **2026-11-06：S02 模型接入与真实资料往返。** 核心模型页支持保存连接、有限授权、只读资料工具往返、逐次用量及独立默认采用。工程、66 项实际浏览器和隔离安装验证通过后，用户新指定的兼容 API 完成两次真实推理、一次资料读取及重启核对，另有 14 项真实结果页面检查。原 Codex 认证失败与未知费用保留；新连接没有报告金额时仍显示未知。见 [058 验收证据](evidence/058-s02-model-tools/README.md)。
 
 当前重写以 **[Main Chapter V1](docs/UNION_CHARTER_v1.0.md)** 为唯一项目宪章基线，来源与采用决定见[记录](docs/CHARTER_ADOPTION.md)。从[HANDOFF](HANDOFF.md)进入[PRD v1.0](docs/PRD.md)、[总体架构/ADR](docs/ARCHITECTURE.md)和[垂直切片](specs/053-union-rewrite/tasks.md)。旧规划退出当前阅读路径，Git历史保留追溯。
@@ -8,9 +14,9 @@
 
 核心目标是让用户安装、登录、连接模型工具、设定目标后持续取得真实成果，并能反馈、恢复和维护；核心包含基础认证、AU权限与审计，不依赖私有平台账户/仓库凭据/许可证服务。方向已采用，运行能力和实际开源发布仍以各自证据为准，具体许可证尚未选择。
 
-当前已实现 [U-066/S01](specs/053-union-rewrite/s01-contract.md) 的稳定核心身份、准备态 AU 创建/重开和兼容隔离，以及 [U-069/S05](specs/053-union-rewrite/s05-contract.md) 的受控本地治理、旧规则修章、继任/退出、撤权和内部记录责任交接。验证范围分别见 [056](evidence/056-s01-core-creation/README.md) 与 [057](evidence/057-s05-governance/README.md)。本地治理激活仍不启用自主业务、模型或资源；完整 S05 受控验收后的下一计划为 S02/U-072。使用 `rewrite/charter-v1` 交接，`dev` 仍为日常开发主线；main 用于本次宪章来源。
+当前已实现 [U-066/S01](specs/053-union-rewrite/s01-contract.md) 的稳定核心身份、准备态 AU 创建/重开和兼容隔离，以及 [U-069/S05](specs/053-union-rewrite/s05-contract.md) 的受控本地治理、旧规则修章、继任/退出、撤权和内部记录责任交接。验证范围分别见 [056](evidence/056-s01-core-creation/README.md) 与 [057](evidence/057-s05-governance/README.md)。本地治理激活仍不启用自主业务、模型或资源；这些是相应日期的基础交付；当前任务按在线卡和上方重构契约接手，main 的固定提交只提供已采用宪章来源。
 
-[近期交付路线（一页）](docs/NEAR_TERM_DELIVERY.md) · [项目总览](PROJECT.md) · [唯一任务主账与生成看板](TASKS.md) · [管理方法](management/README.md) · [在线Kanban约定](management/KANBAN.md) · [正式开发门槛](docs/FORMAL_DEVELOPMENT.md)。
+[近期交付路线（一页）](docs/NEAR_TERM_DELIVERY.md) · [项目总览](PROJECT.md) · [本地交付历史与生成视图](TASKS.md) · [管理方法](management/README.md) · [在线Kanban约定](management/KANBAN.md) · [正式开发门槛](docs/FORMAL_DEVELOPMENT.md)。
 
 以下日期条目描述各自历史实现和验证，不代替V1需求或当前任务状态。
 
@@ -66,14 +72,14 @@ npm start -- --root .union/console --port 8766 --open
 
 业务事实与交易能力优先复用 ERP／CRM／文件／发布等已有系统；ai-union 负责 AI 成员、授权、组织决定、责任、执行与恢复。当前未接入这些业务系统，也不为抽象的 AI 企业预先重建 ERP、CRM 或 MES。
 
-开发集成入口为 `dev` 分支，包含运行时、真实 API 后端和 React 工作台；[集成验证](evidence/dev-integration/README.md)记录本次合并范围。
+历史 dev 集成曾包含运行时、API 和 React 工作台；[当时证据](evidence/dev-integration/README.md)只记录该次范围，当前开发起点与 PR base 使用上方 V1 约定。
 
 ## 从这里接手
 
 1. [当前状态](docs/ai-union/STATUS.md)与[工程交接](HANDOFF.md)：已实现范围、明确缺口和下一步。
 2. [新环境开发与验证](docs/DEVELOPMENT.md)：从新克隆仓库重建模拟场景、运行工程检查、构建正式工作台，不依赖前一个环境。
-3. [PRD](docs/PRD.md)、[产品设计](docs/product-design.md)与[005 前端工程待办](specs/005-frontend-engineering/tasks.md)：当前 P0 产品范围及验收。
-4. [治理设计依据](docs/ai-union/DESIGN.md)、[最初开发交接](docs/ai-union/DEVELOPMENT.md)与[ADR-0002](docs/decisions/0002-ai-union-direction.md)：产品与路线背景；当前进度以 STATUS／HANDOFF 为准。
+3. [PRD](docs/PRD.md)、[完整产品设计](docs/product-design.md)、[前端责任](docs/FRONTEND.md)与[053切片](specs/053-union-rewrite/tasks.md)：当前产品范围、消费合同和整体验收。005前端记录仅供历史核查。
+4. [治理设计依据](docs/ai-union/DESIGN.md)、[最初开发交接](docs/ai-union/DEVELOPMENT.md)与[ADR-0002](docs/decisions/0002-ai-union-direction.md)：产品与路线背景；日期化记录不覆盖实时 Kanban 和当前验收证据。
 
 ## 两条项目线
 

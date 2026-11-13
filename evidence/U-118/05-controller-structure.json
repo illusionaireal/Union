@@ -1,0 +1,32 @@
+{
+  "scope": "Controller candidate before installer contract extension",
+  "baseline": "d27d543e044a4111204c898130f9187c9e4770f7",
+  "checks": {
+    "python_ast": "pass",
+    "removed_development_owners": "pass",
+    "no_run_or_call_inserts": "pass",
+    "no_git_subprocess": "pass",
+    "no_legacy_priority_or_ledger_input": "pass",
+    "history_only_config": "pass",
+    "readme_links": "pass",
+    "git_diff_check_exit": 0
+  },
+  "files": {
+    "ops/dev-orchestrator/union_dev.py": {
+      "sha256": "c01cc9c0318baed36142c11749d4fb24496ffa5c43279a753a5d0e4da6863a4d",
+      "lines": 240
+    },
+    "ops/dev-orchestrator/README.md": {
+      "sha256": "e52d2d940c0d6ce7b586a5ea1ad7469403fc2c2b364fffc9c856387ebd903f70",
+      "lines": 46
+    },
+    "ops/dev-orchestrator/config.example.json": {
+      "sha256": "7a52d16b8e41933c00fe5675f7a2eb0ddd90ab84a3f3657f9fa3a303d16fe77c",
+      "lines": 5
+    },
+    "tests/test_dev_orchestrator.py": {
+      "sha256": "f68f97e56077d0881429a468120028d813fa47eeeadd0ef4aa7299cc3398cdca",
+      "lines": 475
+    }
+  }
+}

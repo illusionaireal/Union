@@ -1,6 +1,12 @@
 # UNION / ai-union repository instructions
 
-## 2026-11-11 产品审计修正（当前执行口径）
+## 2026-11-13 接手基线与纠偏
+
+- 当前 V1 开发从最新 `origin/rewrite/charter-v1` 建任务分支，PR 到 `rewrite/charter-v1`；不要从 dev/MVP 开新 V1 工作，也不要直接推集成分支。rewrite→dev 是另行验收后的集成决定。
+- 先读实时 Kanban 卡及其关联契约。U-110 的完整体验在 `docs/product-design.md`，前端接口/文件责任在 `docs/FRONTEND.md`，40条旅程映射在053追踪表。053父切片和本地交付历史不是要求所有新卡必须已出现在旧本地表中的准入条件。
+- U-118 退役旧 `ops/dev-orchestrator` 新派发及本地认领/完成/Git写权，保留原作业状态和有限核对；新开发只用现行在线 adapter/配方。仓库修改不代表宿主已注册副本已更新，需分别读回。
+
+## 2026-11-11 产品审计修正（持续有效）
 
 - 用户明确“不需要原 AU”，并授权按审计重排任务。旧 AU/账号迁移、旧页面/导航/手工控制台不再是重构目标或验收前提；原记录不擅自销毁，新 V1 身份、请求、责任与预约的连续性继续保障。
 - 先完成 U-110 的完整组织体验与交互契约，再实施 U-111–U-115 的新入口、资源就绪、工作成果、治理交接和旧前端退役；状态/负责人/依赖只读在线 Kanban。保留 React/TypeScript/Vite 不等于保留旧 UX，不以聊天页或单次成果 MVP 替代完整 V1 产品。
@@ -44,7 +50,7 @@
 - Each slice delivers a user-observable result through its necessary UI, API, application, persistence and tests. Record requirement IDs, effective identity/version, transaction/side-effect/recovery, compatibility and evidence. S01 has three sequential internal steps; partial legacy work cannot close U-066 or claim V1 creation completed.
 - Before executing any card, assess decomposition using docs/DEVELOPMENT.md: one independently verifiable outcome, normally 2–8 focused engineering hours including validation. Split estimates above 8 hours or multiple independently deliverable outcomes before implementation; small fixes need no artificial split. Record the estimate, scope, acceptance, dependencies and split/no-split reason on Kanban. Reassess after a successful current-version claim and source inspection, and when resuming with changed scope. This is planning granularity, not a model/job timeout.
 - Add local AGENTS only when actual code responsibility moves into that module. Do not prebuild empty packages or hypothetical ports. Fix contracts and file ownership before delegating independent work; shared transactions/schemas integrate sequentially. The coordinator alone mutates the ledger, online board integration and Git; development subagents are not product AU members.
-- S01/U-066 now delivers controlled stable core identity, prepared V1 AU creation/reopen and legacy isolation on `rewrite/charter-v1`; evidence is in `evidence/056-s01-core-creation/`. `dev` remains the development mainline. Before continuing, check real branch/HEAD, upstream, task availability and existing edits. The next planned slice is S05/U-069; no implicit authority to execute future slices, activate autonomous business, migrate live data or deploy.
+- S01/U-066 evidence remains in `evidence/056-s01-core-creation/`; later S05/S02 and Work evidence retain their actual scopes. For current work verify real branch/HEAD, upstream, online task/owner/dependencies and existing edits. Start task branches from the latest `origin/rewrite/charter-v1` and target that integration branch in PRs. Historical next-slice notes do not authorize new work, autonomous business, live migration or deployment.
 
 ## Product and runtime invariants
 

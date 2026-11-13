@@ -1,0 +1,201 @@
+{
+  "kind": "dated_kanban_write_evidence_not_operational_ledger",
+  "date": "2026-11-13",
+  "actor": "codex/session-01a1d291-a349-77b0-b570-682e3102236d",
+  "writes": [
+    {
+      "u": "U-119",
+      "id": 73,
+      "version": 1,
+      "http": 201,
+      "revision": 1163,
+      "parent": 66,
+      "status": "backlog",
+      "assignee": null,
+      "dependencies": [
+        64,
+        65,
+        21,
+        24
+      ],
+      "title": "从准备缺口完成模型、工具与有限资源配置 · U-119"
+    },
+    {
+      "u": "U-120",
+      "id": 74,
+      "version": 1,
+      "http": 201,
+      "revision": 1164,
+      "parent": 66,
+      "status": "backlog",
+      "assignee": null,
+      "dependencies": [
+        64,
+        65,
+        73,
+        38,
+        59
+      ],
+      "title": "选择并授权业务资料，让同一工作实际读取 · U-120"
+    },
+    {
+      "u": "U-122",
+      "id": 75,
+      "version": 1,
+      "http": 201,
+      "revision": 1165,
+      "parent": 67,
+      "status": "backlog",
+      "assignee": null,
+      "dependencies": [
+        64,
+        65,
+        60,
+        62
+      ],
+      "title": "在新组织空间阅读和下载有来源的成果正文 · U-122"
+    },
+    {
+      "u": "U-121",
+      "id": 76,
+      "version": 1,
+      "http": 201,
+      "revision": 1166,
+      "parent": 67,
+      "status": "backlog",
+      "assignee": null,
+      "dependencies": [
+        64,
+        66,
+        75,
+        38,
+        59,
+        60,
+        62,
+        46,
+        47
+      ],
+      "title": "一次合法工作意图被持久采用后自动推进到交付 · U-121"
+    },
+    {
+      "u": "U-123",
+      "id": 77,
+      "version": 1,
+      "http": 201,
+      "revision": 1167,
+      "parent": 68,
+      "status": "backlog",
+      "assignee": null,
+      "dependencies": [
+        64,
+        65,
+        24
+      ],
+      "title": "在组织空间看清规则并完成有权治理决定 · U-123"
+    },
+    {
+      "u": "U-124",
+      "id": 78,
+      "version": 1,
+      "http": 201,
+      "revision": 1168,
+      "parent": 68,
+      "status": "backlog",
+      "assignee": null,
+      "dependencies": [
+        64,
+        77,
+        76,
+        24,
+        46,
+        47
+      ],
+      "title": "交接同一AI工作的责任、资料与未决执行 · U-124"
+    }
+  ],
+  "parent_updates": [
+    {
+      "u": "U-112",
+      "id": 66,
+      "http": 200,
+      "previous_version": 2,
+      "version": 3,
+      "revision": 1169,
+      "status": "backlog",
+      "dependencies": [
+        64,
+        65,
+        21,
+        73,
+        74
+      ]
+    },
+    {
+      "u": "U-113",
+      "id": 67,
+      "http": 200,
+      "previous_version": 1,
+      "version": 2,
+      "revision": 1170,
+      "status": "backlog",
+      "dependencies": [
+        64,
+        66,
+        38,
+        59,
+        60,
+        62,
+        76,
+        75
+      ]
+    },
+    {
+      "u": "U-114",
+      "id": 68,
+      "http": 200,
+      "previous_version": 1,
+      "version": 2,
+      "revision": 1171,
+      "status": "backlog",
+      "dependencies": [
+        64,
+        65,
+        24,
+        77,
+        78
+      ]
+    }
+  ],
+  "graph_verification": {
+    "revision": 1172,
+    "active_cards": 59,
+    "cycles": 0,
+    "missing_or_archived_dependencies": 0,
+    "preserved_existing_inflight": [
+      {
+        "id": 22,
+        "status": "progress",
+        "assignee": "cafeef64-ac40-4062-97c1-ac82ece0a379",
+        "version": 22
+      },
+      {
+        "id": 40,
+        "status": "progress",
+        "assignee": "cafeef64-ac40-4062-97c1-ac82ece0a379",
+        "version": 168
+      },
+      {
+        "id": 28,
+        "status": "progress",
+        "assignee": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+        "version": 27
+      },
+      {
+        "id": 46,
+        "status": "progress",
+        "assignee": "c18f0d21-1d63-4e37-af3e-2dbb78d75995",
+        "version": 5
+      }
+    ]
+  }
+}
