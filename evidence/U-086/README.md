@@ -245,3 +245,7 @@ nonce/digest checks alone no longer pass. Controlled checks do not close real ex
 ## 2026-11-10 replay and cancellation driver recheck
 
 [Independent 7dd23fc review](recheck-7dd23fc-20261110/README.md): all five original replay probes pass. Four cancellation call-site controls pass; two new durable-diagnostic probes still lose completed HTTP outcomes. Sixteen affected author checks pass. This is bounded evidence, not combined-product adoption or real acceptance.
+
+## 2026-11-13 独立复验 f5ebff8
+
+[组合候选评审](recheck-f5ebff8-20261113/README.md)：旧诊断修复17探针及292项受影响检查通过；新增取消事实记录把任意本地unknown标为modeld interrupted，4反例失败、3合法控制通过。组合采用继续阻塞；原owner/WIP与真实出口保留。
