@@ -93,3 +93,19 @@
 
 RED→GREEN：本地 unknown 的 5 种 reason（含 null/undefined）与「无回执不得声称 interrupted」在新测试下先失败
 （7 项），实现后 **11/11** 通过；`npm test -- exit22` **359/359**；`check:management` 37/37。
+## 自检复跑：复核者四套探针在修复 head 上全通过（00ca91a）
+
+`git archive 00ca91a` → 隔离候选；从集成 `fa77339` 取回复核目录
+`evidence/U-086/recheck-f5ebff8-20261113` 的 4 个探针文件与合同，**机械重签 24 文件 manifest**
+（注明为作者自检、非复核签名）后运行（`UNION_REVIEW_CANDIDATE` 指向候选）：
+
+| 探针 | 结果 | 修复前（f5ebff8 复核记录） |
+| --- | --- | --- |
+| `replay-probes.cjs` | **5/5 通过**（exit 0） | 5/5 |
+| `cancel-driver-probes.cjs` | **6/6 通过**（exit 0） | 6/6 |
+| `validation-diagnostic-probes.cjs` | **6/6 通过**（exit 0） | 6/6 |
+| `cancel-facts-probes.cjs` | **7/7 通过**（exit 0） | 3 控制通过 + **4 断言失败**（exit 1） |
+
+即复核者指出的四类本地 unknown（`work_step_wait_expired` / `work_step_failed` / 传输失败 / 缺 reason）
+不再被写成 modeld interrupted，而其三项合法控制（used / absent / explicit interrupted reason）保持通过。
+仍属作者自检，不等于独立复核。
