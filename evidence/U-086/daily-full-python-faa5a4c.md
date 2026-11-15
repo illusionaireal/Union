@@ -85,3 +85,7 @@ python -m unittest discover -v
 
 - `check:management` **37/37**；Node 全套 **359/359**；前端 **29 文件 / 363 项**（tsc + build）。
 - 与同 head 的受影响 Python **36 OK（skip 1）** 合计：合并集成 `fa77339` 后双栈门禁仍全绿。
+## 日常全量（2026-11-15 21:1x，head 9798bc0 = 合并 fa77339 后）
+
+`python -m unittest discover` → **Ran 857 tests in 557.0s / OK (skipped=12) / exit 0**。
+较上一基线（834/11）增量来自并入的 PR90/PR91 与其它在制分支；产品差异仍仅本卡 2 文件（+37/−4）。
