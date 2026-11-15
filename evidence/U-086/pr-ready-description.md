@@ -1,7 +1,7 @@
 # U-086 / #40：PR 描述（供协调者代开 PR 时直接使用）
 
-分支：`dsh/u086-page-cancel`　交付 head：`e7b1b0c`（代码等同 `dfd4dff`，其后仅证据提交）
-基准集成：`rewrite/charter-v1` = `d27d543`
+分支：`dsh/u086-page-cancel`　交付 head：**`3a4fecb`**（代码等同 `88e5a21`，其后仅证据提交）
+基准集成：**`fa77339`**（PR90 基线对齐/退役 legacy 派发 + PR91 U086 复核证据；已并入本分支，无冲突）
 
 ## 建议 PR 标题
 
@@ -48,3 +48,14 @@
 - 历史 117 B 前快照根因未证实；一次有界真实运行仍缺（同运行前后快照与真实派发计数）。
 - `remote_fact` 恒 unknown（本机无法证明远端已停）。
 - 关闭判定与 CI 由值守/协调者按准确 head 确认。
+
+
+## 2026-11-15 更新（回应 PR91）
+
+- 值守 PR91 裁定：**旧诊断 P2 关闭**；**新 P2「本地 unknown 被误报 modeld interrupted」**已修
+  （`00ca91a`）：`interrupted` 仅由显式校验的 modeld 回执为 true，本地 `used`→false，本地 unknown/缺失→`null`，
+  并新增 `modeld_source` / `modeld_receipt_id` / `modeld_unavailable_reason`。
+- 复核者四套探针在修复 head 上自检全过：`replay 5/5`、`cancel-driver 6/6`、`validation-diagnostic 6/6`、
+  `cancel-facts **7/7**`（原 3 控制 + 4 断言失败）。
+- 合并后 head 门禁：Node **359/359**、`check:management` **37/37**、前端 **29 文件/363**、受影响 Python **36 OK(skip 1)**。
+- 产品面仍是 2 文件（`console.py`、`application/creation.py`，+37/−4），集成**尚未包含**该会话修复。
