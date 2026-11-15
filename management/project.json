@@ -2103,6 +2103,13 @@
                     "from": "doing",
                     "to": "doing",
                     "note": "u086-reopened-download-7f02d38c：#40评论287限定验收修复；原重开只比较metadata，正文缺失/损坏/拒绝仍可通过。冻结合同后原driver完整尾段1控制PASS/14反例RED，Chrome/CoreHTTP/SQLite1控制PASS/10反例RED→全GREEN。只读原AU/Work/result正文GET，核对当前主体/service、完整metadata、UTF-8字节和摘要；产品/授权/事务不改。286相关Node通过，完整npm/Python及失败和源码hash见evidence/U-086/reopened-download/validation.json。原DSH owner/WIP、#60 done及真实父出口保持；真实调用0，准确head CI及非实施角色复核仍是采用条件。本条只追加交付历史，不是在线状态或采用事实。"
+                },
+                {
+                    "at": "2026-11-15T13:18:33.350698Z",
+                    "actor": "Codex duty implementation session 01a1df4f-5b39-7153-b26c-fb4880864505",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "u086-observed-settlement-ci-20261115：续评论455的窄测试修复，现有单步Chrome夹具截取不再误含新严格快照比较；原unknown/两released控制、原GET及实际steps/budget重启对等保持。证据evidence/U-086/observed-settlement-ci-scope-20261115/README.md与validation.json。产品严格校验、未知用量、owner/WIP与真实出口保持。仅交付历史，不改变在线状态；当前head CI及非实施复核另验。"
                 }
             ],
             "claim": {
