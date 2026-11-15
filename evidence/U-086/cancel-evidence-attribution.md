@@ -1,0 +1,122 @@
+# U-086：原始取消证据读取的归因缺口（严格 TDD，2026-11-10）
+
+针对 B 口径第 2 项「存档可核对层」的第一块离线工作：中断驱动把取消回执写进
+`cancel-receipt-before/after-restart.json`，但读取失败时无法归因到具体路由。
+执行者 DSH 会话 `dsh/deepseek-v4.1-flash/DESKTOP-SA4MRG7`；真实推理 0、无部署/迁移。
+
+## 契约（先冻结）
+
+- 读取器 `scripts/exit22-cancel-evidence.cjs` 只读：不发送、不重放任何命令。
+- 新增要求 ①：无论成功与否，都要给出四条路由的 HTTP 结果
+  （`/api/session`、`/api/v1/work`、`/api/v1/governance/receipts`、再次 `/api/session`）。
+- 新增要求 ②：任一路由非 200 时，错误信息必须包含**键名 + 路由 + 状态码 + Core 错误码**。
+- 既有要求不变：身份/step/connection/回执逐字段比对与 `canonical(receipt)` 恒等比较。
+
+## RED（先在 commit `96e6b07` 上观察，命令 `node --test tests/exit22-cancel-evidence.test.ts`）
+
+- 用例 1（`cancel evidence records the per-route HTTP outcome for attribution`）失败：
+  `actual: undefined` vs 期望的四条 `{route, status}` 映射。
+- 用例 2（`a rejected session read names the route, status and Core error code`）失败：
+
+  ```text
+  AssertionError: The input did not match the regular expression /\/api\/session/. Input:
+  'original cancel evidence HTTP status\n\n409 !== 200\n'
+  ```
+
+  即旧实现只抛通用的状态断言，既没有路由也没有 Core 错误码。
+- 用例 3（回执事实被改写时仍失败于 `original cancel versions`）为回归保护，RED 阶段即通过。
+
+## GREEN（最小实现）
+
+- 读取后先构造 `http` 映射（键 → `{route, status}`），再逐条检查；失败时抛出
+  `original cancel evidence <key> read failed: <route> HTTP <status> <code>`。
+- 返回值增加 `http`；其余断言与返回字段不变。
+
+## 验证
+
+- `node --test tests/exit22-cancel-evidence.test.ts` → **3/3 通过**。
+- `npm test -- exit22` → **309/309 通过**（原 306 + 新增 3）。
+- `npm run check:management` → **37/37**。
+- 无真实模型调用、无产品行为改动、无部署或迁移。
+
+## 边界与后续
+
+- 本切片只提升**失败可归因性**与**证据结构**，不产生新的真实运行事实；
+  第 2 项要求的「完整回执与配对 POST/GET 正文」仍需一次有界真实运行落盘，
+  或由原 owner 交出历史运行里的这些记录。
+- 下一步（同清单）：C「重启后按原命令查询并断言新增派发 = 0」；B 前快照端点/时序的代码部分。
+
+## 追加：三项取消事实分列落盘（2026-11-12，head 待定）
+
+卡面要求「分别记录取消受理 / modeld interrupted / 远端事实」。此前这些事实散落在多个断言与检查里，
+没有一份**单列三态**的驱动产物。本轮新增只读模块 `scripts/exit22-cancel-facts.cjs`
+（`buildCancelFacts({receipt, step, work})`），驱动在结算后写 `cancel-facts.json`：
+
+- `local_acceptance`：`accepted`、`receipt_id`、`status`、`delivery_message`（来自产品受理回执）；
+- `modeld_settlement`：`observed`、`step_status`、`interrupted`（仅 `status==='unknown'`）、`reason`、`usage`、`cost_status`；
+- `remote_fact`：**恒为 `unknown`**，理由写明「本机取消受理与投递观察不证明远端模型服务已停止」；
+- `reservation`：`reserved` / `used` / `max_calls`（未知一律 `null`，不补 0）。
+
+严格 TDD：新测试 `tests/exit22-cancel-facts.test.ts` 先以 `Cannot find module` 失败，实现后 **4/4**；
+接线后用 `node --test tests/exit22-observed-settlement.test.ts` 发现切片测试上下文缺少 `cancelReceipt`，
+改为守卫写（仅在真实驱动上下文内落盘），随后 `observed-settlement` **8/8**、全量 `exit22` **352/352**、
+`check:management` **37/37**。
+
+偏差说明：为保证复审切片测试可运行，落盘语句带 `typeof cancelReceipt !== 'undefined'` 守卫；
+真实驱动上下文一定满足，切片上下文跳过（该上下文不需要此产物）。
+## 追加：驱动接线保护测试（2026-11-12 21:0x）
+
+`cancel-facts.json` 此前只有模块单元测试与「切片上下文守卫跳过」的事实，接线本身（文件名、写入位置、守卫）
+没有测试保护。新增 `tests/exit22-cancel-facts-wiring.test.ts`：从 `scripts/exit22b_page.cjs` 截取真实区段
+（`check('an unknown settlement keeps the budget reserved'` → `// Persisted facts must survive`）并在受控上下文执行：
+
+1. 提供 `cancelReceipt/step/work` → 断言 `cancel-facts.json` 落盘且 `protocol`、`local_acceptance`、
+   `modeld_settlement`、`remote_fact`、`reservation` 正确；
+2. 不提供 `cancelReceipt`（复审切片上下文）→ 不抛错且不落盘（守卫生效）。
+
+**偏差说明（如实）**：该接线在上一提交已实现，本测试属**先有实现后补保护**，无法观察到「功能缺失」的 RED；
+首跑失败原因是我的期望值写错（区段内只有 1 条 check，我写了 2），修正后 2/2 通过。全量 `exit22` **354/354**，
+`check:management` **37/37**。
+## 第三轮：把「本地 Work step 未知」与「modeld interrupted 回执」分开（2026-11-15）
+
+独立复核 `recheck-f5ebff8-20261113`（PR91）判定：诊断面 P2 **已关闭**（6/6 探针），但
+`scripts/exit22-cancel-facts.cjs` 的 `interrupted` 仅由 `step.status === 'unknown'` 推出，
+而本地 Work step 变 unknown 也可能是 `work_step_wait_expired`、`work_step_failed`、
+传输失败或失败执行 —— 因此把任何本地 unknown 写成 `modeld_settlement.interrupted: true` 属**过度声称**。
+
+修复（不改本地事实、不放宽任何校验）：
+- `interrupted` 只在**显式提供并校验过的 modeld 回执**（`modeldReceipt.status === 'interrupted'`）时为 `true`；
+- 本地 `used`（已完成调用）→ `false`；本地 `unknown` 或 step 缺失 → **`null`（未知）**，不再写 `true`；
+- 新增 `modeld_source`（`explicit_receipt` / `local_work_step` / `unavailable`）、`modeld_receipt_id`、
+  `modeld_unavailable_reason`，让读者不会把本地 Work step 误当 modeld 证据；
+- `local_acceptance`、`remote_fact: unknown`、`reservation` 语义保持不变。
+
+RED→GREEN：本地 unknown 的 5 种 reason（含 null/undefined）与「无回执不得声称 interrupted」在新测试下先失败
+（7 项），实现后 **11/11** 通过；`npm test -- exit22` **359/359**；`check:management` 37/37。
+## 自检复跑：复核者四套探针在修复 head 上全通过（00ca91a）
+
+`git archive 00ca91a` → 隔离候选；从集成 `fa77339` 取回复核目录
+`evidence/U-086/recheck-f5ebff8-20261113` 的 4 个探针文件与合同，**机械重签 24 文件 manifest**
+（注明为作者自检、非复核签名）后运行（`UNION_REVIEW_CANDIDATE` 指向候选）：
+
+| 探针 | 结果 | 修复前（f5ebff8 复核记录） |
+| --- | --- | --- |
+| `replay-probes.cjs` | **5/5 通过**（exit 0） | 5/5 |
+| `cancel-driver-probes.cjs` | **6/6 通过**（exit 0） | 6/6 |
+| `validation-diagnostic-probes.cjs` | **6/6 通过**（exit 0） | 6/6 |
+| `cancel-facts-probes.cjs` | **7/7 通过**（exit 0） | 3 控制通过 + **4 断言失败**（exit 1） |
+
+即复核者指出的四类本地 unknown（`work_step_wait_expired` / `work_step_failed` / 传输失败 / 缺 reason）
+不再被写成 modeld interrupted，而其三项合法控制（used / absent / explicit interrupted reason）保持通过。
+仍属作者自检，不等于独立复核。
+## 第四轮：并入集成 PR90/PR91 后复验（2026-11-15，head 88e5a21）
+
+集成已前进到 `fa77339`（PR90「align V1 baseline and retire legacy dispatch」+ PR91「U086 复核证据」）。
+把集成并入本分支（合并提交 `88e5a21`，无冲突），随后在**合并后 head** 复验：
+
+- `npm test -- exit22` → **359/359**；`check:management` → **37/37**。
+- 受影响 4 个 Python 模块 → **Ran 36 / OK (skipped=1) / exit 0**。
+- 集成**不含**会话修复：`ai_union/application/creation.py` 在集成分支上 0 个 `RESOLUTION_INCOMPATIBLE` 标记，
+  相对集成的产品差异仍是 2 文件 +37/−4 —— 我的产品补丁仍必要。
+- 复核者四套探针（隔离导出 `88e5a21` + 机械重签 24 文件 manifest，作者自检）：
+  `replay 5/5`、`cancel-driver 6/6`、`validation-diagnostic 6/6`、`cancel-facts 7/7`。

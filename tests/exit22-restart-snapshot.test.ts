@@ -241,3 +241,15 @@ test('empty interrupt results survive a read-only restart', () => {
   assert.equal(summary.result_identity_count, 0);
   assert.equal(summary.delivered_result_id, null);
 });
+
+test('the comparison summary states that dispatch counting is unknown', () => {
+  // Identity equality across a restart is not a dispatch count; the summary must say so
+  // instead of letting a null counter read as "nothing was dispatched".
+  const before = structuredClone(original);
+  const after = structuredClone(original);
+  const summary = require('./exit22-restart-evidence.cjs').compareSnapshots(
+    before, after, 'au-original', 'work-original');
+  assert.equal(summary.transport_dispatch_count, null);
+  assert.equal(summary.dispatch_count_unknown, true);
+  assert.equal(summary.identity_equality_only, true);
+});

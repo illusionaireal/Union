@@ -1,6 +1,56 @@
+2026-11-15：准确组合 `c3b439c` 的产品独立复核与当前验证见[组合评审](combination-review-c3b439c-20261115/README.md)。4 HTTP/7取消事实/36受影响Python（1跳过）/30 Chrome通过；真实出口保持未完成。
+
 2026-11-10：新补证02dc3f3的逐原始记录复核见[补证核对](supplement-record-audit/README.md)；三个运行分别绑定，modeld中断、真实调用数和完整回执仍按实际证据陈述。
 
 # U-086 / #40：新候选与当前集成边界复核
+
+2026-11-12 有界真实运行计划（**待授权、未执行**）：[bounded-real-run-plan.md](bounded-real-run-plan.md)。目的=第 4/5 项一次取证；上限 3 次真实调用/≤10 分钟；禁止新建 AU、补造快照、部署与迁移；remote_fact 恒 unknown。
+2026-11-12 PR 描述（供协调者代开 PR）：[pr-ready-description.md](pr-ready-description.md)。标题/摘要/范围/验证表/复验指针/未闭合项一页备好；交付 head e7b1b0c。
+2026-11-12 取消证据读取的后续校验失败诊断（复审包）：[合同·四反例·两控制](cancel-validation-diagnostics.md)。四路 GET 200 后的 principal/receipt 校验拒绝仍带四路 route/status；修复 c4b95b7，交付 head a858999。
+2026-11-11 失败归档保留已观测路由结果（回应 PR83 P2）：[合同·RED·GREEN](cancel-failure-route-outcomes.md)。`readCancelEvidence` 失败时把 `http/route/status/code` 挂在 error 上，写入器写入 `<name>-failure.json`（仅路由与状态，无正文/凭据）；`exit22` 338/338。
+
+2026-11-10 产品修复（待评审）：[一个不一致的 catalog 行不再让整个 `/api/session` 失败](session-409-skip-fix.md)。
+`console.py` 的 legacy 分支仅跳过 `unsupported_capability`/`incompatible_state`，其余 CoreError 照旧上抛；
+5 项新测试、全量 Python 822/11 跳过/0 失败、Node 320/320、管理 37/37。仅供协调者评审后采用。
+
+2026-11-10 `/api/session` 在 core_v1 AU 创建期间可能 409（前快照缺失根因假设）：
+[只读归因与建议](session-409-during-core-creation.md)。catalog 行仍记 legacy_v0 而目录已是
+core_v1 时，`session_info` 的 legacy 分支会被 `_catalog_engine` 拒绝、整个 `/api/session` 409；
+重启后一致才成功——解释「前侧 117B、后侧 6643B」。未改产品代码，建议修法见文内。
+
+2026-11-10 把「重启后无新增派发」接进中断驱动（严格 TDD）：[合同·RED·GREEN](replay-observation-wiring.md)。
+新增 `scripts/exit22-replay-observation.cjs` 记录器（observed / unavailable / failed 三态，只在
+两侧可用时断言零派发），驱动在 `restartComparison` 之后落盘 `replay-observation.json`；
+`exit22` 320/320 通过，既有源码切片用例未受影响。
+
+2026-11-10 重启前后读取的归因缺口（严格 TDD）：[合同·RED·GREEN](restart-read-diagnostics.md)。
+`readSnapshot` 原先失败只抛通用状态断言，现按路由归因（键名+路由+状态+Core 错误码）并保持
+AssertionError 类型；3 项新测试，`exit22` 317/317 通过（过程中修正了一处真实回归）。
+
+2026-11-10 重启后「无新增派发」观测（严格 TDD）：[合同·RED·GREEN](replay-no-dispatch-observation.md)。
+新增只读 `observeNoNewDispatch`（比较 attempts、model_request 去重数、budget.used），
+前侧缺失时返回 `unavailable` 而非猜测；5 项测试、`exit22` 314/314 通过。尚未接入驱动主流程。
+
+2026-11-10 取消证据读取的归因缺口（严格 TDD）：[合同·RED·GREEN](cancel-evidence-attribution.md)。
+`scripts/exit22-cancel-evidence.cjs` 原先失败只抛通用状态断言，无法归因到路由；现先记录四条
+路由的 HTTP 结果、失败信息含键名/路由/状态/Core 错误码。新增 3 项测试、`exit22` 309/309 通过；
+只提升可归因性，不产生新的真实运行事实。
+
+2026-11-10 按协调者 B 口径的逐项补证映射：[原 ID 记录对照](original-id-supplement-2026-11-10.md)。
+把取消输出 events、cancel command/身份一致、受理-interrupted-远端未知三分、同运行前后预约与用量、
+重启重放零派发、源码/服务/运行身份绑定六项逐条标为「已记录／未记录／仅受控断言」，并指出可只读
+补证与不可补造的分界；不新增模型调用、缺失用量不补 0、历史失败保留。
+
+2026-11-10 收尾就绪度陈述：[已覆盖与未覆盖的真实出口](closure-readiness-2026-11-10.md)。
+汇总集成 head `faa5a4c` 上的本地自动化面（306 Node / 812 Python 全绿）与仍开放的真实
+出口（真实输出后取消、真实取消受理/远端事实、真实用量费用、真实条件下重开不派发、
+准确 head CI 与最近增量的非实施复核）。该陈述不关闭任何出口，真实授权仍在用户侧。
+
+2026-11-10 集成 head `faa5a4c` 全量回归：本机 `.venv` 运行 `python -m unittest discover -v`
+得 812 项全过（skipped 11，exit 0），同期 Node `exit22` 306/306；历史记录的环境性失败
+`test_binding_rejects_board_failure…`（WinError 1314）本次正常通过，未为它改动产品代码。
+见[全量回归记录](daily-full-python-faa5a4c.md)。该记录只覆盖本地自动化面，真实集成、
+用户验收、发布就绪与持续运行仍按 `docs/FORMAL_DEVELOPMENT.md` 分别另验；真实出口未关闭。
 
 2026-11-09 重开现在同时保留原成果来源、完整记录和交付引用，不能仅凭相同摘要
 掩盖成果事实变更。18个Node/9个实际HTTP浏览器反例RED→GREEN，见
@@ -249,3 +299,7 @@ nonce/digest checks alone no longer pass. Controlled checks do not close real ex
 ## 2026-11-13 独立复验 f5ebff8
 
 [组合候选评审](recheck-f5ebff8-20261113/README.md)：旧诊断修复17探针及292项受影响检查通过；新增取消事实记录把任意本地unknown标为modeld interrupted，4反例失败、3合法控制通过。组合采用继续阻塞；原owner/WIP与真实出口保留。
+
+## 2026-11-15 settlement browser CI repair
+
+[Fixture scope repair](observed-settlement-ci-scope-20261115/README.md) restores the documented single-step settlement/restart test boundary. Original RED, legal controls and strict snapshot regressions remain separate from real acceptance.

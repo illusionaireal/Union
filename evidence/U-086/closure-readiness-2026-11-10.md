@@ -1,0 +1,126 @@
+# U-086 / #40：收尾就绪度陈述（2026-11-10）
+
+本文件只汇总 **当前已核实/未核实的事实**，供值守与协调者做关闭判定；它本身不关闭
+任何出口，也不把未验证项写成已验证。执行者为 DSH 开发会话
+`dsh/deepseek-v4.1-flash/DESKTOP-SA4MRG7`（在线成员 HOME-GOOSE /
+`cafeef64-ac40-4062-97c1-ac82ece0a379`，ID 分别记录）；真实推理 0、无部署、无迁移。
+
+## 卡的验收原文（在线卡 #40）
+
+> 看到原请求真实输出后取消；分别记录取消受理/modeld interrupted/远端事实；
+> 未知留预约、确认完成才 used，重开不派发新请求。
+
+## 已覆盖（受控工程面；下列基线为 2026-11-10 的 `faa5a4c`）
+
+- 集成 head `faa5a4ca98331657a78546f9f1480734a959a01f` 上：
+  - Node `npm test -- exit22` = **306/306 通过**；
+  - 全量 Python `python -m unittest discover -v` = **Ran 812 / OK (skipped=11) / exit 0**
+    （见 [daily-full-python-faa5a4c.md](daily-full-python-faa5a4c.md)，含私有日志摘要）。
+  - 本地前端面 `npm run check:console`（tsc + 相关前端/浏览器用例 + 打包）= **exit 0**：
+    2054 modules transformed、`dist` 主包 563.89 kB（gzip 174.04 kB）、构建 6.75s
+    （日志摘要 sha256 `f0d96f88e5a978b4dea85ab341c2edd955ccd11ac955bcaf0697fccc8d67b921`，
+    原日志未提交）。
+- 本卡目录内的多个增量各自带合同、可执行反例与验证记录（逐项索引见本目录 README；
+  本轮未逐条重跑）：取消边界、取消交付、页面取消动作、取消响应断体、登记响应断体、
+  观察结算、预算守恒、成果来源、重开下载、材料读取、最终中断复核等，均以实际
+  Chrome / Core HTTP / SQLite 与替身模型成对观察 RED→GREEN。
+- 既有的独立工程角色复核（非实施者自批）：PR44 采用记录 review `5820485820`
+  覆盖权限/身份/原 run_loop 与取消恢复、观察完整性与 unknown 预约；PR70/PR73 的
+  取消读取与能力声明各自经过值守复核后再采用。
+- 索引完整性（2026-11-10 本轮核对）：`evidence/U-086` 全目录 71 个 markdown、
+  144 个相对链接**解析全部可命中（0 失效）**；外部 http(s) 链接未逐一访问，
+  不作为已验证内容。
+### 增量（2026-11-11，head `b5c0986`，均为实测）
+
+- 合并集成 `d27d543` 后：全量 Python **Ran 834 / OK (skipped=11) / exit 0**；
+  Node 全套 **342/342**；`check:management` **37/37**；前端 **29 文件 / 363 项**（tsc + build）。
+- 值守 PR83 复核后我修掉 P2 并补中断用例：失败归档保留全部已观测路由结果
+  （[记录](cancel-failure-route-outcomes.md)），重放记录与比较摘要显式标注计数未知。
+- 索引完整性：`evidence/U-086` 全目录 **91 个 markdown、195 个相对链接，0 失效**。
+- 值守探针作者自检（机械重签 manifest，非复核签名）：replay **5/5**、cancel-driver **6/6**。
+- 受影响 4 个 Python 模块在该 head 上 **Ran 36 / OK (skipped=1)**，与值守对 5545d4f 的复核数字一致。
+
+## 未覆盖（真实出口，仍未完成，不得据此关闭）
+
+本卡后续确实做过**真实派发**（`deepseek-v4.1-flash`；`evidence/127`–`139`，其中 139 为门控版 118/118），
+因此不能再写「本卡所有运行都是替身模型」。但按 [原 ID 补证映射](original-id-supplement-2026-11-10.md)
+的两层判定（驱动报告 / 存档可核对），下列各条仍有实质缺口：
+
+1. **看到原请求真实输出后取消** —— 139 的驱动报告有 `original request text observed before cancel`
+   与有序公开文本/工具观察标签，但**事件正文未入库**（只留哈希与 UTF-8 字节数），
+   不能升级为完整页面验收。
+2. **取消受理身份与远端事实** —— 驱动报告声称回执与提交命令/attempt/step/model request 一致，
+   但存档内嵌回执 **在 192 字符处截断**、提交命令与配对 POST/GET 正文未入库，
+   第三方无法逐字段重算；modeld 真实中断回执缺失；远端是否已取消必须保持 unknown。
+3. **真实用量/费用** —— 每个 run 内可见两条模型请求记录（1 `used` + 1 `unknown`），
+   已知用量子集 139=438/46、134=438/40；被取消请求用量缺失、`cost_status=unknown`，
+   不得补 0，也不得把「单次派发」写成「一次模型调用」。
+4. **同运行前后事实** —— 127/128/129/134/136/137/138/139 八个 `snapshot-before-restart.json`
+   全部是 117 B 的 `unsupported_capability`，**前侧缺失且不可事后重建**；后侧（`reserved=1`、
+   unknown 以原身份存活）只能单侧成立。曾把根因记为「catalog 行 legacy_v0 与目录 core_v1
+   不一致导致整次 `/api/session` 409」，但本轮复核发现该不一致会先以 `incompatible_state`
+   结束、且 `session_info` 会跳过 core 条目，故**根因仍未证实**
+   （[归因与反证](session-409-during-core-creation.md)）。相关修复候选几经值守复审迭代：
+   9472a64（仅捕获 `CoreError`）→ 被否；1730a11（补 `Rejected(INCOMPATIBLE)` 与准备态
+   creator 行）→ 部分通过；**5545d4f**（区分「目录解析失败」与「创建审计失败」，并附
+   [真实 catalog/HTTP 回归](../../tests/test_core_session_real_catalog.py)）为当前候选。
+   这些只覆盖「**记录不一致时读取不应整站失败**」的稳健性缺口，**不声称**修好 117 B 前快照；
+   第 4 项仍需一次有界真实运行取证。值守已独立复验 5545d4f（4/4 HTTP 探针通过），
+   我也用自己的隔离复跑核对了同一结果（[复跑记录](session-probe-independent-rerun.md)）。
+5. **重开/重放不派发新请求** —— 状态侧证据（重启后 attempts 数、`attempt_ids`、预约保持）成立；
+   「以原命令重放时新增派发 = 0」的观测函数、三态记录器与**比较失败记录**
+   （[观测](replay-no-dispatch-observation.md)、[接线](replay-observation-wiring.md)、
+   [过度声称修正](replay-observation-overclaim-fix.md)）已实现并接入驱动；值守对 `7dd23fc`
+   的 5 条重放探针**全通过**，取消侧失败归档经 P2 修复后
+   [已保留全部已观测路由结果](cancel-failure-route-outcomes.md)（含网络/JSON 中断用例），
+   记录与摘要均显式标注 `dispatch_count_unknown`；
+   但真实运行要拿到显式派发计数仍需一次有界真实运行，本卡当前**未提供该计数**，故第 5 项不成立。
+6. **准确 head 的 CI 与关闭判定** —— 本会话未取得 CI 结论：本机无 `gh` CLI、无
+   `GH_TOKEN`/`GITHUB_TOKEN`，未认证访问 GitHub API 返回 403 rate limit，且未读取
+   Windows Credential Manager 中的 Git 凭据（不回显任何凭据）。仓库现有三个工作流，
+   需由值守/协调者按准确 head 确认全部绿：
+   - `.github/workflows/ci.yml`「frontend and historical checks」（jobs：
+     `offline-checks`、`console-browser`；push 与 pull_request 触发）
+   - `.github/workflows/tests.yml`「mechanism-tests」（job：`unittest`）
+   - `.github/workflows/model-service.yml`「fixed model service」（job：`model-service`）
+   最近一次有记录的 CI 全绿是 PR44 受审 head `744b456`（14/14）。
+7. **独立非实施角色对最近增量的复核** —— 已覆盖部分见上；最近几个增量是否已满足
+   当前卡的复核要求，由值守判定。
+
+## 解除真实出口所需（属用户侧授权，不在本会话执行）
+
+需要为用户确认的**合法 profile/account/模型**、**有限调用次数**与**输出上限**授权，
+且明确允许“看到真实输出后取消”的有界试验；缺此授权时不得派发真实请求，本卡也不应
+以受控结论替代真实验收。
+
+## 结论
+
+- 受控工程面：本轮在 `faa5a4c` 上本地自动化面全绿（306 Node / 812 Python），
+  证据索引完整，可支持“受控部分完成”的陈述。
+- 真实出口：**全部仍未完成**，卡 #40 与父 #22 不能关闭；DSH owner/progress/WIP 保持。
+
+### 增量（2026-11-12，head `a1d9957`，均为实测）
+
+- P2 两轮修复：①`c4b95b7` 后续严格校验失败保留四路安全 HTTP 诊断（四反例 + 两合法控制）；
+  ②`a1d9957` 三项取消事实分列落盘（`cancel-facts.json`：`local_acceptance` /
+  `modeld_settlement` / `remote_fact` 恒 unknown / `reservation` 未知为 null）。
+- 自动化面：`exit22` **352/352**、`check:management` **37/37**、前端 29 文件/363 项（tsc+build）、
+  索引 92 文档 / 197 相对链接 0 失效。
+- 值守 PR83 探针作者自检（机械重签 manifest，非复核签名）：replay **5/5**、cancel-driver **6/6**。
+- 交付路径限制：本机无 `gh` CLI、无 `GH_TOKEN`/`GITHUB_TOKEN`，**无法自行开 PR**；
+  分支 `dsh/u086-page-cancel` 已推送 `gh` 并 ls-remote 核验，需协调者代开 PR 或直接按分支合入。
+- 仍待外部：值守按 `a1d9957` 独立复验 P2 两轮修复；`remote_fact` 保持 unknown；
+  第 4/5 项（117 B 前快照根因、真实派发计数）**仍不成立**。
+### 增量（2026-11-15，head `933e2bc`，均为实测）
+
+- 集成前进到 `fa77339`（PR90 基线对齐/退役 legacy 派发 + PR91 U086 复核证据），已并入本分支（`88e5a21`，无冲突）。
+- 值守 PR91 裁定：**旧诊断 P2 已关闭**（四路 GET 200 后严格校验拒绝仍保留 route/status，17 探针 + 292 受影响检查通过）；
+  新 P2「本地 unknown 被误报为 modeld interrupted」已按合同修复（commit `00ca91a`）。
+- 修复语义：`interrupted` 仅在**显式校验的 modeld 回执**下为 true；本地 `used` → false；本地 unknown/缺失 → **null**，
+  并新增 `modeld_source` / `modeld_receipt_id` / `modeld_unavailable_reason`。本地受理、`remote_fact: unknown`、预约语义不变。
+- 门禁（合并后 head）：Python 全量此前 834/834 基线不变、受影响 4 模块 **36 OK（skip 1）**；Node **359/359**；
+  `check:management` **37/37**；前端 **29 文件/363 项**（tsc+build）。
+- 复核者四套探针（隔离导出 + 机械重签 24 文件 manifest，作者自检）：`replay 5/5`、`cancel-driver 6/6`、
+  `validation-diagnostic 6/6`、`cancel-facts **7/7**`（原 3 控制 + 4 断言失败）。
+- 集成仍**不含**会话修复（`creation.py` 0 个 `RESOLUTION_INCOMPATIBLE` 标记），产品差异 2 文件 +37/−4 → 我的补丁仍必要。
+- 仍待外部：值守按 `933e2bc` 独立复验；第 4/5 项（117 B 前快照根因、真实派发计数）**仍不成立**。

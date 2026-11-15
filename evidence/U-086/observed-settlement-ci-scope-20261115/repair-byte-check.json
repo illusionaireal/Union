@@ -1,0 +1,9 @@
+{
+  "parent": "9798bc0b477a9a458d2f89bba52576ebb83483fe",
+  "path": "evidence/U-086/observed-settlement/browser.cjs",
+  "before_sha256": "2b1cdedc3910902c85d47349b1dbef2046d6232e09415f219fd55d7ed5ebe98d",
+  "after_sha256": "6e9772173817abca57fb512638de795ebadabef23e90a74c358ba3d5cd41ce38",
+  "only_change": "end-marker declaration and explanation; all scenario assertion bytes unchanged",
+  "original_get_and_state_assertions_unchanged": true,
+  "product_driver_blob": "f464927a1aaa28b2a635a2a852efcccde3348663"
+}

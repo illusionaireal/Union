@@ -1,0 +1,16 @@
+{
+  "commit": "c3b439c20dc235d690118cdbea15c7bcf6037601",
+  "files": {
+    "ai_union/console.py": "90568479aae53371c387c725db5519f054d0e1efb857095bee4b06dbe4bcd0e3",
+    "ai_union/adapters/au_catalog.py": "e83df6ed1c9e0a5b84f916661625349ab8c87f65a24575d24c92b91a917d5380",
+    "ai_union/errors.py": "03ad071360ff5fd1d44634ea13eee49066866a9bb4ee6c70e77f38b812976b28",
+    "ai_union/engine.py": "2edee43c7d23867025587c605e3d71e1ef55ef0e95a7adf5e2e926dba18a7528",
+    "ai_union/application/creation.py": "98eab879d6a31cf815fe673909d1f2d738d8ec63c0c7994af849990bf13d701f",
+    "ai_union/adapters/creation_catalog.py": "13f28e48f5cdaca1629178e3d558183c922d1f359a3923ae47b2c84e2bf4d072",
+    "tests/test_core_session_inconsistent_catalog.py": "002277f0b7c06e519632d405d011d4350a72f584c3a8af503136e39ab1e41956",
+    "tests/test_core_creation.py": "af17b97a9870e29f4f6a0350b265bf204ebe46e50af4d04501c855b0c97b681a",
+    "tests/support.py": "1eb954c08a5170f9f89234d7b7b68278bd1680e550f404c8e22aa3eb7b31417c"
+  },
+  "reviewer_actor": "01a1df9d-1a7a-7963-86be-3f9f41d14fa9",
+  "prior_manifest_commit": "9472a64e7462e6520aece2e3f09b7c01f0c6c621"
+}

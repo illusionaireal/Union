@@ -381,8 +381,11 @@ function startHost() {
     cancel_id: cancelCommandId, principal_id: outputObservation.principal_id,
     ...Object.fromEntries(['step_ref', 'attempt_id', 'command_id', 'model_request_id', 'connection']
       .map(key => [key, inflight[key]])) };
-  const cancelEvidenceBefore = await require('./exit22-cancel-evidence.cjs').readCancelEvidence(
-    page, originalCancelReference, cancelOutcome.receipt);
+  const cancelEvidenceBefore = await require('./exit22-evidence-failure.cjs').readWithFailureRecord({
+    loader: (args) => require('./exit22-cancel-evidence.cjs').readCancelEvidence(
+      page, args.reference, args.expected),
+    reference: originalCancelReference, expected: cancelOutcome.receipt,
+    fs, path, output, name: 'cancel-receipt-before-restart', workId });
   fs.writeFileSync(path.join(output, 'cancel-receipt-before-restart.json'), JSON.stringify(cancelEvidenceBefore, null, 2));
   check('original GET returns the complete original delivered cancel receipt');
   // on the race with the real model; both must settle only via the original request.
@@ -400,6 +403,14 @@ function startHost() {
         ['unknown', 'used'].includes(step.status));
   check('an unknown settlement keeps the budget reserved',
         step.status !== 'unknown' || work.budget.reserved === 1);
+  // Keep the card's three facts separate in their own artifact: what the product accepted
+  // locally, how the supervised step settled, and the remote fact this machine cannot prove.
+  // Guarded because review harnesses execute this region with a partial context.
+  if (typeof cancelReceipt !== 'undefined' && step) {
+    fs.writeFileSync(path.join(output, 'cancel-facts.json'), JSON.stringify(
+      require('./exit22-cancel-facts.cjs').buildCancelFacts({ receipt: cancelReceipt, step, work }),
+      null, 2));
+  }
   // Persisted facts must survive a console rebuild on the same root.
   const before = await snapshot();
   fs.writeFileSync(path.join(output, 'snapshot-before-restart.json'), JSON.stringify(before, null, 2));
@@ -431,10 +442,27 @@ function startHost() {
   const unresolved = settledStep.status === 'unknown';
   check('an unresolved step keeps its original reservation after the rebuild',
         !unresolved || entry.budget.reserved === 1);
+  // Record the reopen observation BEFORE the strict comparison, so a rejected
+  // comparison still leaves replay-observation.json behind for attribution.
+  require('./exit22-replay-observation.cjs').recordReplayObservation({
+    fs, path, output, before, after, workId, check });
+  // Counts can match while identities or result bytes differ. Probe the pure comparison
+  // first so a rejection is written to the record instead of leaving an 'unchanged' claim.
+  try {
+    require('./exit22-restart-evidence.cjs').compareSnapshots(
+      before, after, createdReceipt.organization_id, workId);
+  } catch (error) {
+    require('./exit22-replay-observation.cjs').recordReplayComparisonFailure({
+      fs, path, output, workId, error });
+    throw error;
+  }
   const restartComparison = require('./exit22-restart-evidence.cjs').compareSnapshots(
     before, after, createdReceipt.organization_id, workId);
-  const cancelEvidenceAfter = await require('./exit22-cancel-evidence.cjs').readCancelEvidence(
-    page, originalCancelReference, cancelEvidenceBefore.receipt);
+  const cancelEvidenceAfter = await require('./exit22-evidence-failure.cjs').readWithFailureRecord({
+    loader: (args) => require('./exit22-cancel-evidence.cjs').readCancelEvidence(
+      page, args.reference, args.expected),
+    reference: originalCancelReference, expected: cancelEvidenceBefore.receipt,
+    fs, path, output, name: 'cancel-receipt-after-restart', workId });
   fs.writeFileSync(path.join(output, 'cancel-receipt-after-restart.json'), JSON.stringify(cancelEvidenceAfter, null, 2));
   check('original cancel receipt survives restart under the original principal and Work');
   fs.writeFileSync(path.join(output, 'restart-request-comparison.json'), JSON.stringify(restartComparison, null, 2));

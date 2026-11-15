@@ -1,0 +1,146 @@
+{
+  "scope": "controlled test-maintenance; no product/real acceptance",
+  "parent": "9798bc0b477a9a458d2f89bba52576ebb83483fe",
+  "actor": "Codex duty continuation 01a1df4f-5b39-7153-b26c-fb4880864505",
+  "run": "20261115T130441808723Z",
+  "online_member_id": "89f4c1c1-329a-4b54-ad37-235cf061e9a8",
+  "prior_actor": "Codex duty 01a1df41-8ec2-7722-a4eb-bd7ebe729e94",
+  "input_blob_files": 2405,
+  "bound_probe_files": 24,
+  "checks": {
+    "browser_red": {
+      "exit_code": 1,
+      "log_sha256": "0d2c10d801f659d89ed1ef7ccc1a47b5dd8532568e8ffb8f26409cd8ddededd9",
+      "passed": 2,
+      "failed": 1
+    },
+    "browser_green": {
+      "exit_code": 0,
+      "log_sha256": "d66617b4b7e2911d8fca660717bf14781636bcc313e100428c0ef5c03e0be5dd",
+      "passed": 3,
+      "failed": 0,
+      "fake_model_calls": 3,
+      "fake_cancel_calls": 3,
+      "real_model_calls": 0
+    },
+    "npm": {
+      "exit_code": 0,
+      "log_sha256": "bf2529078cbc4336585ef2bcee332729eb160c7097f197e9f1000d4b632db7fa",
+      "management": 37,
+      "node": 359,
+      "frontend": 363
+    },
+    "sdk_and_package": {
+      "exit_code": 0,
+      "log_sha256": "b88a06b7c4117461aa982d1f5f36bad5dde8d8a1c459548e692dcfd69c90d7d6"
+    },
+    "modeld_build": {
+      "exit_code": 0,
+      "log_sha256": "3ca0b2e93f492f779f5e7f7c0354fe385d574b13e492d18d176056981bcab0f4"
+    },
+    "budget-conservation": {
+      "exit_code": 0,
+      "passed": 7,
+      "log_sha256": "dc2337fdcd9e3cb43c13ef9973f69e4f3cbb11e70bb40f4966445633947df5ff",
+      "fake_model_calls": 2,
+      "real_model_calls": 0
+    },
+    "result-provenance": {
+      "exit_code": 0,
+      "passed": 10,
+      "log_sha256": "35d3ad2703b9ca7f037ada6a98b4c560efe172086621e97a1666ec38a851b1ff",
+      "fake_model_calls": 2,
+      "real_model_calls": 0
+    },
+    "reopened-download": {
+      "exit_code": 0,
+      "passed": 11,
+      "log_sha256": "92a6f0d4b7678f02c3bfd0d7277b7887544b48923f84449d060859f925e1b44c",
+      "fake_model_calls": 2,
+      "real_model_calls": 0
+    },
+    "material-read": {
+      "exit_code": 0,
+      "passed": 10,
+      "log_sha256": "f99733ada11d6c01ece003447dfa9e1555e826f8eaabaf09e8ee2e58f921d571",
+      "fake_model_calls": 2,
+      "real_model_calls": 0
+    },
+    "management_final": {
+      "exit_code": 0,
+      "tests": 37,
+      "log_sha256": "7bd0554064c008beb62d8fbe834143e4c7a922e0431eb932410de39551f628a2"
+    }
+  },
+  "python_full": {
+    "exit_code": 0,
+    "tests": 857,
+    "skipped": 9,
+    "errors": 0,
+    "failures": 0,
+    "seconds": 556.443,
+    "log_sha256": "040c5c5d5b1224784acbdeb182a2ef1357576ee50aaa420ddea4dbe348b69193"
+  },
+  "environment_failures": {
+    "initial_missing_frontend": {
+      "log_sha256": "6fc2e288f83acdac292cf2f8042b6cc6957cd1794766b01aad63eaf650e98b01"
+    },
+    "bun_install_path_length": {
+      "exit_code": 1,
+      "log_sha256": "a3379d34e6c2292399dfafdcd64e9505fdd5a3f45e9009199fdef762ae4a4f69"
+    },
+    "sdk_before_effect_link": {
+      "exit_code": 1,
+      "log_sha256": "9fc366a17122a418b73425d290cbeefa57e413f1d841363d6f47e620012c7810"
+    }
+  },
+  "prior_independent_probes": {
+    "replay-probes.cjs": {
+      "exit_code": 0,
+      "log_sha256": "267f0cfa5150a57e379c1fcd1347472551e31ae08e506100c2ccd6176b18d30d",
+      "tests": 5,
+      "pass": 5,
+      "fail": 0,
+      "cancelled": 0
+    },
+    "cancel-driver-probes.cjs": {
+      "exit_code": 0,
+      "log_sha256": "631eddabf8d1a42bb5aed79379c9575bb3d2a16f0a69ae712d82caa810af1073",
+      "tests": 6,
+      "pass": 6,
+      "fail": 0,
+      "cancelled": 0
+    },
+    "validation-diagnostic-probes.cjs": {
+      "exit_code": 0,
+      "log_sha256": "2037a462b2d71bf44d9b9ae8f670bc5ee8160493eb6b0dcb27a786770797c956",
+      "tests": 6,
+      "pass": 6,
+      "fail": 0,
+      "cancelled": 0
+    },
+    "cancel-facts-probes.cjs": {
+      "exit_code": 0,
+      "log_sha256": "62f028b77769fd696cdff74bd8ceea3f4707a951de1e43a1d74a25279214cecc",
+      "tests": 7,
+      "pass": 7,
+      "fail": 0,
+      "cancelled": 0
+    }
+  },
+  "adoption": "pending non-implementer review and exact-head CI; DSH candidate integration and #40 real acceptance separate",
+  "python_full_initial": {
+    "exit_code": 1,
+    "tests": 857,
+    "errors": 1,
+    "skipped": 11,
+    "seconds": 586.433,
+    "reason": "isolated SDK fixture lacked Effect dependency at its first execution; fixed-source modeld build and 3 SDK/package checks subsequently passed",
+    "log_sha256": "e8a1935b8e1f79f7071364351e505f334d943df53c8a90ad8327d8ace5e881b6"
+  },
+  "toolchain": {
+    "python": "3.12.10",
+    "node": "24.19.0",
+    "bun": "1.4.2"
+  }
+}

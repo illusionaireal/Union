@@ -10,7 +10,9 @@ const root = path.resolve(__dirname, '../../..');
 const driver = path.join(root, 'scripts/exit22b_page.cjs');
 const source = fs.readFileSync(driver, 'utf8');
 const start = source.indexOf('  // on the race with the real model');
-const end = source.indexOf('  const restartComparison =', start);
+// Stop before the replay/comparison block: this single-step fixture intentionally
+// owns settlement/rebuild checks, while full-loop fixtures own strict snapshots.
+const end = source.indexOf('  // Record the reopen observation BEFORE the strict comparison,', start);
 assert.ok(start >= 0 && end > start);
 const fragment = source.slice(start, end);
 const { readCancelEvidence } = require('../../../scripts/exit22-cancel-evidence.cjs');

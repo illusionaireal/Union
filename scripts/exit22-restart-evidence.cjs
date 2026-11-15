@@ -12,15 +12,24 @@ async function readSnapshot(page, auId, workId) {
     const current = await read('/api/session');
     return { session, work, current };
   }, auId);
+  // Attribute a failed read to its route, status and Core error code before asserting
+  // identities, so a missing pre-restart snapshot can never be reported as a bare mismatch.
+  const routes = { session: '/api/session', work: '/api/v1/work', current: '/api/session' };
+  for (const [key, route] of Object.entries(routes)) {
+    const value = response[key] || {};
+    if (value.status !== 200) {
+      const code = (value.body && (value.body.code || value.body.error)) || '';
+      assert.fail('restart snapshot ' + key + ' read failed: ' + route
+        + ' HTTP ' + String(value.status) + (code ? ' ' + code : ''));
+    }
+  }
   const { session, work, current } = response;
   for (const value of [session, current]) {
-    assert.equal(value.status, 200, 'Core session HTTP status');
     assert.equal(value.body?.core_protocol, 'core.au.v1', 'Core session protocol');
     assert.ok(value.body.principal_id && value.body.service_instance, 'authenticated Core identity');
   }
   assert.equal(current.body.principal_id, session.body.principal_id, 'principal changed during snapshot');
   assert.equal(current.body.service_instance, session.body.service_instance, 'service changed during snapshot');
-  assert.equal(work.status, 200, 'Core Work snapshot HTTP status');
   const body = work.body;
   assert.equal(body?.protocol, 'core.work.v1', 'Core Work snapshot protocol');
   assert.equal(body.organization_id, auId, 'original AU snapshot');
@@ -114,9 +123,50 @@ function compareSnapshots(before, after, auId, workId) {
   assert.deepEqual(canonical(reopened.budget), canonical(original.budget), 'restart preserves original budget');
   return { protocol: 'acceptance.restart-requests.v1', organization_id: auId, work_id: workId,
     principal_id: before.access.principal_id, model_request_identity_count: prior.length,
-    transport_dispatch_count: null, no_new_request_identity: true, requests: prior,
+    transport_dispatch_count: null, dispatch_count_unknown: true, identity_equality_only: true,
+    no_new_request_identity: true, requests: prior,
     budget: original.budget, result_identity_count: priorResults.length, results: priorResults,
     delivered_result_id: original.delivered_result_id ?? null };
 }
 
-module.exports = { readSnapshot, compareSnapshots };
+// Observe whether reopening the original work dispatched anything new. Read-only:
+// both inputs are already-read Core work bodies, never a fresh request.
+function observeNoNewDispatch(before, after, workId) {
+  const side = (snapshot, name) => {
+    if (!snapshot || snapshot.protocol !== 'core.work.v1') {
+      const code = (snapshot && (snapshot.code || snapshot.error)) || 'no core.work.v1 body';
+      return { unavailable: name + ' snapshot is not a core.work.v1 body: ' + String(code) };
+    }
+    const work = originalWork(snapshot, workId);
+    return {
+      attempts: (work.attempts || []).length,
+      model_requests: new Set((work.steps || []).map(step => step.model_request_id).filter(Boolean)).size,
+      budget: { used: work.budget?.used ?? null, reserved: work.budget?.reserved ?? null },
+    };
+  };
+  const prior = side(before, 'before'), current = side(after, 'after');
+  if (prior.unavailable || current.unavailable) {
+    return { status: 'unavailable', work_id: workId,
+      reason: prior.unavailable || current.unavailable, new_dispatches: null };
+  }
+  if (current.attempts > prior.attempts) {
+    throw new Error('new dispatch after restart: attempts ' + prior.attempts + ' -> ' + current.attempts);
+  }
+  if (current.model_requests > prior.model_requests) {
+    throw new Error('new dispatch after restart: model requests ' + prior.model_requests + ' -> ' + current.model_requests);
+  }
+  if (Number.isSafeInteger(prior.budget.used) && Number.isSafeInteger(current.budget.used)
+      && current.budget.used > prior.budget.used) {
+    throw new Error('new dispatch after restart: budget used ' + prior.budget.used + ' -> ' + current.budget.used);
+  }
+  // Unchanged persisted state does not prove that reopening dispatched nothing:
+  // no replay or dispatch counter is observed here, so the count stays unknown.
+  return { protocol: 'acceptance.replay-observation.v1', status: 'unchanged', work_id: workId,
+    attempts: { before: prior.attempts, after: current.attempts },
+    model_requests: { before: prior.model_requests, after: current.model_requests },
+    budget: { before: prior.budget, after: current.budget },
+    persistent_differences: 0, dispatch_count: null,
+    note: 'unchanged persisted state only; no replay or dispatch counter was observed' };
+}
+
+module.exports = { readSnapshot, compareSnapshots, observeNoNewDispatch };

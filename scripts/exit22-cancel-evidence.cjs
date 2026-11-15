@@ -14,22 +14,64 @@ async function readCancelEvidence(page, reference, expectedReceipt) {
     assert.ok(typeof reference[key] === 'string' && reference[key].trim(), 'original cancel reference ' + key);
   }
   assert.ok(reference.connection && typeof reference.connection === 'object', 'original connection');
-  const response = await page.evaluate(async ref => {
-    const read = async url => {
-      const r = await fetch(url);
-      return { status: r.status, body: await r.json() };
-    };
-    const query = new URLSearchParams({ organization_id: ref.organization_id });
-    const session = await read('/api/session');
-    const work = await read('/api/v1/work?' + query);
-    query.set('id', ref.cancel_id);
-    const receipt = await read('/api/v1/governance/receipts?' + query);
-    const current = await read('/api/session');
-    return { session, work, receipt, current };
-  }, reference);
-  for (const value of Object.values(response)) assert.equal(value.status, 200, 'original cancel evidence HTTP status');
+  let response;
+  try {
+    response = await page.evaluate(async ref => {
+      const read = async url => {
+        const r = await fetch(url);
+        return { status: r.status, body: await r.json() };
+      };
+      const query = new URLSearchParams({ organization_id: ref.organization_id });
+      const session = await read('/api/session');
+      const work = await read('/api/v1/work?' + query);
+      query.set('id', ref.cancel_id);
+      const receipt = await read('/api/v1/governance/receipts?' + query);
+      const current = await read('/api/session');
+      return { session, work, receipt, current };
+    }, reference);
+  } catch (error) {
+    // Transport/JSON interruption: keep a structured diagnostic, never an invented outcome.
+    const failure = new Error('original cancel evidence transport failure: '
+      + String((error && error.message) || error));
+    failure.http = null;
+    failure.route = null;
+    failure.status = null;
+    failure.code = 'transport_error';
+    throw failure;
+  }
+  // Record every route outcome before asserting, so a failure can be attributed to
+  // the exact route, status and Core error code instead of a bare status mismatch.
+  const routes = {
+    session: '/api/session', work: '/api/v1/work',
+    receipt: '/api/v1/governance/receipts', current: '/api/session',
+  };
+  const observedStatus = key => {
+    const value = response && response[key];
+    return value && typeof value.status === 'number' ? value.status : null;
+  };
+  const http = Object.fromEntries(Object.entries(routes)
+    .map(([key, route]) => [key, { route, status: observedStatus(key) }]));
+  for (const [key, route] of Object.entries(routes)) {
+    const value = (response && response[key]) || {};
+    if (value.status !== 200) {
+      const code = value.status === undefined || value.status === null
+        ? 'unknown_shape'
+        : ((value.body && (value.body.code || value.body.error)) || '');
+      const error = new Error('original cancel evidence ' + key + ' read failed: ' + route
+        + ' HTTP ' + String(value.status) + (code ? ' ' + code : ''));
+      // Keep every completed route outcome on the error so a durable failure archive can
+      // record them; the map holds routes, statuses and Core codes only - never bodies.
+      error.http = http;
+      error.route = route;
+      error.status = value.status === undefined ? null : value.status;
+      error.code = code || null;
+      throw error;
+    }
+  }
   const { session, current } = response;
-  for (const value of [session.body, current.body]) {
+  let receipt;
+  try {
+    for (const value of [session.body, current.body]) {
     assert.equal(value?.core_protocol, 'core.au.v1');
     assert.equal(value.principal_id, reference.principal_id, 'original cancel principal');
     assert.ok(typeof value.service_instance === 'string' && value.service_instance, 'current Core service');
@@ -50,7 +92,7 @@ async function readCancelEvidence(page, reference, expectedReceipt) {
     assert.equal(steps[0][key], reference[key], 'original step ' + key);
   }
   assert.deepEqual(canonical(steps[0].connection), canonical(reference.connection), 'original step connection');
-  const receipt = response.receipt.body?.receipt;
+  receipt = response.receipt.body?.receipt;
   assert.ok(receipt, 'original cancel receipt exists');
   for (const [key, value] of Object.entries({ id: reference.cancel_id, organization_id: reference.organization_id,
     actor_principal_id: reference.principal_id, kind: 'cancel_step', status: 'succeeded', effect: 'applied',
@@ -65,7 +107,19 @@ async function readCancelEvidence(page, reference, expectedReceipt) {
   assert.equal(receipt.delivery?.cancel_accepted, true, 'durable cancel delivery');
   assert.equal(receipt.delivery.message, receipt.message, 'consistent delivery observation');
   assert.deepEqual(canonical(receipt), canonical(expectedReceipt), 'original cancel receipt facts changed');
-  return { protocol: 'acceptance.cancel-receipt.v1', reference, service_instance: session.body.service_instance, receipt };
+  } catch (error) {
+    // Every GET above returned 200, so the safe route map is already known: a later strict
+    // validation rejection must keep it and must rethrow the original error unchanged.
+    if (error && typeof error === 'object') {
+      if (!error.http) error.http = http;
+      if (error.route === undefined) error.route = null;
+      if (error.status === undefined) error.status = null;
+      if (!error.code) error.code = 'validation_failed';
+    }
+    throw error;
+  }
+  return { protocol: 'acceptance.cancel-receipt.v1', reference, service_instance: session.body.service_instance,
+    http, receipt };
 }
 
 module.exports = { readCancelEvidence };
