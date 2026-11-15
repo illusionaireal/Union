@@ -77,3 +77,19 @@
 **偏差说明（如实）**：该接线在上一提交已实现，本测试属**先有实现后补保护**，无法观察到「功能缺失」的 RED；
 首跑失败原因是我的期望值写错（区段内只有 1 条 check，我写了 2），修正后 2/2 通过。全量 `exit22` **354/354**，
 `check:management` **37/37**。
+## 第三轮：把「本地 Work step 未知」与「modeld interrupted 回执」分开（2026-11-15）
+
+独立复核 `recheck-f5ebff8-20261113`（PR91）判定：诊断面 P2 **已关闭**（6/6 探针），但
+`scripts/exit22-cancel-facts.cjs` 的 `interrupted` 仅由 `step.status === 'unknown'` 推出，
+而本地 Work step 变 unknown 也可能是 `work_step_wait_expired`、`work_step_failed`、
+传输失败或失败执行 —— 因此把任何本地 unknown 写成 `modeld_settlement.interrupted: true` 属**过度声称**。
+
+修复（不改本地事实、不放宽任何校验）：
+- `interrupted` 只在**显式提供并校验过的 modeld 回执**（`modeldReceipt.status === 'interrupted'`）时为 `true`；
+- 本地 `used`（已完成调用）→ `false`；本地 `unknown` 或 step 缺失 → **`null`（未知）**，不再写 `true`；
+- 新增 `modeld_source`（`explicit_receipt` / `local_work_step` / `unavailable`）、`modeld_receipt_id`、
+  `modeld_unavailable_reason`，让读者不会把本地 Work step 误当 modeld 证据；
+- `local_acceptance`、`remote_fact: unknown`、`reservation` 语义保持不变。
+
+RED→GREEN：本地 unknown 的 5 种 reason（含 null/undefined）与「无回执不得声称 interrupted」在新测试下先失败
+（7 项），实现后 **11/11** 通过；`npm test -- exit22` **359/359**；`check:management` 37/37。

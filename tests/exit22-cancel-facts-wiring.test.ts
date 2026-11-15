@@ -41,7 +41,8 @@ test('the driver writes cancel-facts.json with the three separate facts', () => 
   assert.equal(facts.protocol, 'acceptance.cancel-facts.v1');
   assert.equal(facts.local_acceptance.accepted, true);
   assert.equal(facts.modeld_settlement.step_status, 'unknown');
-  assert.equal(facts.modeld_settlement.interrupted, true);
+  assert.equal(facts.modeld_settlement.interrupted, null);
+  assert.equal(facts.modeld_settlement.modeld_source, 'unavailable');
   assert.equal(facts.remote_fact.status, 'unknown');
   assert.equal(facts.reservation.reserved, 1);
   // The region still runs its own settlement checks.
