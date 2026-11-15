@@ -111,3 +111,16 @@
   分支 `dsh/u086-page-cancel` 已推送 `gh` 并 ls-remote 核验，需协调者代开 PR 或直接按分支合入。
 - 仍待外部：值守按 `a1d9957` 独立复验 P2 两轮修复；`remote_fact` 保持 unknown；
   第 4/5 项（117 B 前快照根因、真实派发计数）**仍不成立**。
+### 增量（2026-11-15，head `933e2bc`，均为实测）
+
+- 集成前进到 `fa77339`（PR90 基线对齐/退役 legacy 派发 + PR91 U086 复核证据），已并入本分支（`88e5a21`，无冲突）。
+- 值守 PR91 裁定：**旧诊断 P2 已关闭**（四路 GET 200 后严格校验拒绝仍保留 route/status，17 探针 + 292 受影响检查通过）；
+  新 P2「本地 unknown 被误报为 modeld interrupted」已按合同修复（commit `00ca91a`）。
+- 修复语义：`interrupted` 仅在**显式校验的 modeld 回执**下为 true；本地 `used` → false；本地 unknown/缺失 → **null**，
+  并新增 `modeld_source` / `modeld_receipt_id` / `modeld_unavailable_reason`。本地受理、`remote_fact: unknown`、预约语义不变。
+- 门禁（合并后 head）：Python 全量此前 834/834 基线不变、受影响 4 模块 **36 OK（skip 1）**；Node **359/359**；
+  `check:management` **37/37**；前端 **29 文件/363 项**（tsc+build）。
+- 复核者四套探针（隔离导出 + 机械重签 24 文件 manifest，作者自检）：`replay 5/5`、`cancel-driver 6/6`、
+  `validation-diagnostic 6/6`、`cancel-facts **7/7**`（原 3 控制 + 4 断言失败）。
+- 集成仍**不含**会话修复（`creation.py` 0 个 `RESOLUTION_INCOMPATIBLE` 标记），产品差异 2 文件 +37/−4 → 我的补丁仍必要。
+- 仍待外部：值守按 `933e2bc` 独立复验；第 4/5 项（117 B 前快照根因、真实派发计数）**仍不成立**。
