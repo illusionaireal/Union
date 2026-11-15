@@ -109,3 +109,14 @@ RED→GREEN：本地 unknown 的 5 种 reason（含 null/undefined）与「无�
 即复核者指出的四类本地 unknown（`work_step_wait_expired` / `work_step_failed` / 传输失败 / 缺 reason）
 不再被写成 modeld interrupted，而其三项合法控制（used / absent / explicit interrupted reason）保持通过。
 仍属作者自检，不等于独立复核。
+## 第四轮：并入集成 PR90/PR91 后复验（2026-11-15，head 88e5a21）
+
+集成已前进到 `fa77339`（PR90「align V1 baseline and retire legacy dispatch」+ PR91「U086 复核证据」）。
+把集成并入本分支（合并提交 `88e5a21`，无冲突），随后在**合并后 head** 复验：
+
+- `npm test -- exit22` → **359/359**；`check:management` → **37/37**。
+- 受影响 4 个 Python 模块 → **Ran 36 / OK (skipped=1) / exit 0**。
+- 集成**不含**会话修复：`ai_union/application/creation.py` 在集成分支上 0 个 `RESOLUTION_INCOMPATIBLE` 标记，
+  相对集成的产品差异仍是 2 文件 +37/−4 —— 我的产品补丁仍必要。
+- 复核者四套探针（隔离导出 `88e5a21` + 机械重签 24 文件 manifest，作者自检）：
+  `replay 5/5`、`cancel-driver 6/6`、`validation-diagnostic 6/6`、`cancel-facts 7/7`。
