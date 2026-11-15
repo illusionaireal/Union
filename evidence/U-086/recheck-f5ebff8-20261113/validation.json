@@ -1,0 +1,78 @@
+{
+  "checked_at": "2026-11-13T11:01:42.147267+00:00",
+  "scope": "independent controlled review; combined candidate blocked",
+  "candidate": "f5ebff8f80fa06bd7f0520539261576d72758fd8",
+  "tree": "08b17e04e4daae9f5232a14fa3b2f05fd5f529dc",
+  "actor": "Codex independent reviewer session 01a1d489-ff03-7481-9efd-eda92b0c9889",
+  "online_member_id": "89f4c1c1-329a-4b54-ad37-235cf061e9a8",
+  "source_manifest_sha256": "5a58c79fc9ff3972e3537b5919d32bdd6bb42b8a3eb1aa365e790df6fe532cbd",
+  "source_files_count": 24,
+  "source_unchanged_before_after": true,
+  "prior_probe_bytes_unchanged": true,
+  "checks": {
+    "replay-probes.cjs": {
+      "tests": 5,
+      "pass": 5,
+      "fail": 0,
+      "cancelled": 0,
+      "log_sha256": "59fe62ddf63a0d84265737d9742670572a0f93be1d572206a1f68caa5545de1b",
+      "exit_code": 0
+    },
+    "cancel-driver-probes.cjs": {
+      "tests": 6,
+      "pass": 6,
+      "fail": 0,
+      "cancelled": 0,
+      "log_sha256": "911a19df8a261585cbefe248dcf735afeacb7512724bb851e91dded91e9fe496",
+      "exit_code": 0
+    },
+    "validation-diagnostic-probes.cjs": {
+      "tests": 6,
+      "pass": 6,
+      "fail": 0,
+      "cancelled": 0,
+      "log_sha256": "eef00dd38bb728433dfbe5aea583b409210d64a7838a2ce4db6224a589e5c546",
+      "exit_code": 0
+    },
+    "cancel-facts-probes": {
+      "tests": 7,
+      "pass": 3,
+      "fail": 4,
+      "cancelled": 0,
+      "log_sha256": "9d38df1498f9c637ab2cb8898f7c3ed39050ce3ee7208dc5cc98be078ce1be6c",
+      "exit_code": 1
+    },
+    "affected_author": {
+      "tests": 292,
+      "pass": 292,
+      "fail": 0,
+      "cancelled": 0,
+      "log_sha256": "5004b051c4a6b73dc3807ce298aa392e71d0c944bcfde49448be12c21122bc70",
+      "exit_code": 0
+    }
+  },
+  "resolved_prior_finding": "Four all-200 validation failures preserve route diagnostics; strict rejection remains.",
+  "new_finding": {
+    "priority": "P2",
+    "location": "scripts/exit22-cancel-facts.cjs:24",
+    "actual": "unknown local Work step unconditionally produces modeld_settlement.interrupted=true",
+    "counterexample_reasons": [
+      "work_step_wait_expired",
+      "work_step_failed",
+      "transport connection lost",
+      null
+    ],
+    "assertion_failures": 4,
+    "runtime_errors": 0,
+    "controls_passed": 3
+  },
+  "limits": {
+    "combined_candidate_adopted": false,
+    "full_product_npm_python_chrome_rerun": false,
+    "real_model_calls": 0,
+    "real_modeld_interrupted_receipt_observed": false,
+    "real_cancellation_acceptance": false,
+    "deployment": false,
+    "migration": false
+  }
+}

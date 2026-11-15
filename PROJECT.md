@@ -1,6 +1,6 @@
 # 项目总览：目标、成熟度与路线
 
-**当前需求基线：[Main Chapter V1](docs/UNION_CHARTER_v1.0.md)。** 采用依据与固定版本见[CHARTER_ADOPTION](docs/CHARTER_ADOPTION.md)；重写按[PRD v1.0](docs/PRD.md)、[总体架构/ADR](docs/ARCHITECTURE.md)、[053切片](specs/053-union-rewrite/tasks.md)及严格TDD推进。当前状态、负责人和验收只由下方主账生成视图说明；本次文档重建不升级历史成熟度。
+**当前需求基线：[Main Chapter V1](docs/UNION_CHARTER_v1.0.md)。** 采用依据与固定版本见[CHARTER_ADOPTION](docs/CHARTER_ADOPTION.md)；重写按[PRD v1.0](docs/PRD.md)、[总体架构/ADR](docs/ARCHITECTURE.md)、[053切片](specs/053-union-rewrite/tasks.md)及严格TDD推进。当前状态、负责人、依赖和WIP只查[实时Kanban](management/KANBAN.md)；下方主账生成视图保存正式交付、成熟度和历史证据，本次文档重建不升级历史成熟度。
 
 ## 1. 产品与目标
 
@@ -72,10 +72,10 @@
 
 ## 5. 统一待办与当前看板
 
-任务唯一主账为 `management/project.json`，保留 U 编号；以下视图由 `npm run management:render` 生成。实际负责人和所需责任角色分开，未认领不虚构为公司成员。
+长期路线和正式交付主账为 `management/project.json`，保留 U 编号；当前任务运行态查实时Kanban，以下历史视图由 `npm run management:render` 生成。实际负责人和所需责任角色分开，未认领不虚构为公司成员。
 
 <!-- management:tasks:start -->
-历史交付快照：2026-11-11；历史在制 6/8，就绪 2，阻塞 7，完成 42。这是历史工作项统计；当前状态/认领/WIP 查在线 Kanban，不是产品完成率。
+历史交付快照：2026-11-13；历史在制 8/8，就绪 2，阻塞 7，完成 42。这是历史工作项统计；当前状态/认领/WIP 查在线 Kanban，不是产品完成率。
 
 | 任务 | 内容 | 优先级 / 阶段 | 状态 | 实际负责人 | 依赖 |
 | --- | --- | --- | --- | --- | --- |
@@ -116,6 +116,8 @@
 | [U-066](TASKS.md#u-066) | 登录后创建组织，刷新或重启仍能打开 | P0 / G1 | 完成 | codex/gpt-6/session-01a1a9fa-d89d-7091-ba52-c31a1df00b23 | U-065 |
 | [U-077](TASKS.md#u-077) | Kanban 运行态统一：CLI/MCP 认领与 WIP 依据实时 API | P0 / G1 | 完成 | chatGPT-online | — |
 | [U-109](TASKS.md#u-109) | 产品审计处置：退出旧 AU/旧 UX 基线并重排代码交付 | P0 / G0 | 完成 | codex-home-coordinator（当前 Codex 协调会话） | — |
+| [U-110](TASKS.md#u-110) | 冻结完整V1组织体验及纠偏执行合同 | P0 / G0 | 待验收 | zbook-codex / codex/session-01a1d291-a349-77b0-b570-682e3102236d | U-065 |
+| [U-118](TASKS.md#u-118) | 统一V1开发基线并退役旧本地派单和安装入口 | P0 / G0 | 待验收 | zbook-codex / codex/session-01a1d291-a349-77b0-b570-682e3102236d | U-077, U-109 |
 | [U-008](TASKS.md#u-008) | 部署持久服务 | P1 / G3 | 阻塞 | 待认领 | — |
 | [U-009](TASKS.md#u-009) | 演练恢复与资源控制 | P1 / G3 | 待依赖 | 待认领 | U-006, U-008 |
 | [U-010](TASKS.md#u-010) | 接通发布、观察和回滚 | P1 / G3 | 待依赖 | 待认领 | U-006, U-008 |
@@ -184,7 +186,7 @@
 - 每周或每个里程碑结束：短评审一次，只看实际交付、未解决失败、资源/成本与下一工作批次；这是建议节奏，尚未配置自动任务。
 - 产品负责人决定目标优先级及资源取舍；工程负责人对实现和验证负责；验收角色判断是否达到结果。公司成立后可自主承担适用工作，人类董事会保留章程规定的最终控制。
 - 路线变化记录原因和取舍；重大执行器、存储、托管选择写 ADR，不在聊天里悄悄更换目标。
-- 当前采用仓库主账及自动生成的总览/看板。需要多人并发协作时，可将工作卡迁入 GitHub Issues/Projects；迁移时明确唯一主账，本页只汇总，不维护两份独立状态。
+- 当前在线Kanban拥有认领、状态、负责人、依赖和WIP；仓库主账及生成总览只在交付时保存长期路线和证据。不建立第二运行态账本或自动双向同步。
 
 看板的工作流、在制工作限制和基于历史周期时间的交付预测，可参考 [The Kanban Guide](https://kanbanguides.org/the-kanban-guide)。本项目暂不以未经测量的“速度”承诺工期。
 

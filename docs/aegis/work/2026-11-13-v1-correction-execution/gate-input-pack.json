@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "aegis.schema.v0",
+  "baselineRefs": [
+    "docs/UNION_CHARTER_v1.0.md",
+    "docs/CHARTER_ADOPTION.md",
+    "docs/PRD.md",
+    "docs/ARCHITECTURE.md",
+    "docs/decisions/0003-react-console.md",
+    "docs/decisions/0004-rewrite-delivery-contract.md",
+    "docs/product-design.md",
+    "docs/FRONTEND.md",
+    "management/KANBAN.md",
+    "specs/053-union-rewrite/plan.md"
+  ],
+  "impactStatement": "docs/aegis/work/2026-11-13-v1-correction-execution/impact-statement-draft.json",
+  "compatPlan": "保留正确核心身份/授权/恢复和历史作业查询；旧新派单/安装及MVP交互无保留义务。",
+  "retirementPlan": "旧Controller/Broker新派发和installer新安装实现移除，保留原job核对；宿主副本未采用核验。",
+  "evidenceBundle": [
+    "docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-correction-candidate.json"
+  ]
+}

@@ -8,6 +8,12 @@
 
 2026-11-05 的 [S01 实现](../evidence/056-s01-core-creation/README.md)已迁出创建纯规则、应用流程及 catalog/legacy/V1 存储适配器，并由 `identity_schema.py` 统一拥有显式身份升级。[S05](../specs/053-union-rewrite/s05-contract.md)在此基础上实现受支持的本地治理、责任及内部文字结果。稳定 principal 由核心认证签发，AU state 中不可变 `governance_root` 保存初始来源，`governance.current_principal_id` 及有效规则决定当前权威；catalog 只定位并保留原创建意图。新建仍是准备态，显式采用/激活本地治理不会启用模型、资源或自主业务。
 
+## 2026-11-13：V1用户体验的所有者与实施边界
+
+[U-110](product-design.md)冻结完整组织体验，[FRONTEND](FRONTEND.md)固定路由/作用域、真实公开API和责任分工。React视图不拥有领域状态；Workspace管理一个当前作用域，各业务页面消费其合法投影，不再由Layout把不同路由统一换成旧治理控制台。
+
+U-112的业务资料公开发现/授权、U-113的完整工作持久意图、U-114的AI工作责任交接是源码核查出的待补接缝，由原领域/应用/存储owner细化合同并顺序整合；不把它们当成已有接口，也不为UI新建第二个Engine/调度器/账本。本文上方和下方标有2026-11-06的进程图/实现快照保留当时含义，最新可调用API与源码差距见FRONTEND §3–4及各执行卡。
+
 ## 1. 产品与部署边界
 
 `ai-union`核心必须能够独立构建、运行、验证并连接模型和工具，包含基础认证、AU权限与审计。AI-Union-Platform通过版本化公开契约提供可选托管、商业账户、集成等增强服务，不直接读写核心私有表或导入内部模块绕过边界。

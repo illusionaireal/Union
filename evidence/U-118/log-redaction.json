@@ -1,0 +1,66 @@
+{
+  "date": "2026-11-13",
+  "reason": "Private machine paths, ANSI formatting, line endings and trailing whitespace only; assertion text and outcomes retained. Raw bytes preserved in host-local evidence, not committed.",
+  "files": [
+    {
+      "file": "evidence\\U-118\\01-red.log",
+      "raw_sha256": "cefbfa5443935b37953c4fd0da153ae8c498c7e0f0056d138b34f1ac74339574",
+      "repository_sha256": "0b976c11d19e3bf6fc5e80ea455791db87221e7dc7f4f5a0a9dd14e97cdc20d5"
+    },
+    {
+      "file": "evidence\\U-118\\02-red.log",
+      "raw_sha256": "e918e74189550ffc3907eb5d66bd51a167c0eea395cd8cda41ecde7499618452",
+      "repository_sha256": "3552f4d21f7f0d21797f1926fc11856c091261aac80b3395f220e19f862bb082"
+    },
+    {
+      "file": "evidence\\U-118\\03-green.log",
+      "raw_sha256": "193cf5b191ecb2eff8da83cb0ca6348812272d1cc9e1f989bc6a706cf273bbd3",
+      "repository_sha256": "4edf2b22c437c4827e0e74823ee8fbae0a713cf812058ca1582465395ddf6e53"
+    },
+    {
+      "file": "evidence\\U-118\\04-targeted.log",
+      "raw_sha256": "d69431cd4bac1be3ddb9f1e21c66aed57dbe7f0e8e3229352f7b9d3fef47971e",
+      "repository_sha256": "02738e336e49f9319fc6c2e9b0c96da880d0a37ae234419e57b9a928afdfe97d"
+    },
+    {
+      "file": "evidence\\U-118\\06-broker-installer-red.log",
+      "raw_sha256": "b6306cf9da45723d3c1f73954e02fa28f586e561aacc65d34fa686be9786495e",
+      "repository_sha256": "e406e2505224176ba0a67c28b64545320d995b50e9d1145cc459034dd106b2db"
+    },
+    {
+      "file": "evidence\\U-118\\06b-broker-installer-red.log",
+      "raw_sha256": "5292c5e363cce70574fa8add376189eeadfdf292db27ee41337b0d5ba4ec5827",
+      "repository_sha256": "61f8e2bff994597ddf237a82cdb0c6edfbce7d3c39c250bf31d038a17a715867"
+    },
+    {
+      "file": "evidence\\U-118\\07-broker-installer-green.log",
+      "raw_sha256": "1ca05d5331bbb757012891701a6ff57261c664f29f5eb7a9c373f3ebe0d2646a",
+      "repository_sha256": "860dd808b9c1ab25bfb1ae3b67ae13806ba20e40919d00ef150e2de887b004a2"
+    },
+    {
+      "file": "evidence\\U-118\\08-final-targeted.log",
+      "raw_sha256": "b403ea56d6acdcae306b76c9e4ab3ed780bf4b1f1b175c77b06ef868fbd6a872",
+      "repository_sha256": "d9e4827fec05980a380fab754ba4241bdeb83ffadf470fac8eda651f4a2be2a0"
+    },
+    {
+      "file": "evidence\\U-118\\root-models-identity-repro.log",
+      "raw_sha256": "472b4a5a2e9ec854eebca83cd841b230ebf156084356a98d04f6254b6b91c315",
+      "repository_sha256": "695a87a2177180afb5ead0cf051175db5d30ff803f14cb06ae6743347131afb1"
+    },
+    {
+      "file": "evidence\\U-118\\root-npm-check-rerun.log",
+      "raw_sha256": "e2c27ffed715b2f7d07f17355428ece6d3bf974a1442843a7815908cca3da88f",
+      "repository_sha256": "331440b38d97acde033c17f79aa1f46830d2b7a6398394c09e59973f265ce2cc"
+    },
+    {
+      "file": "evidence\\U-118\\root-npm-check.log",
+      "raw_sha256": "3bd6b06ccc12bfd2dd1f24190af79fec878de6f7e173ee4ef98deb867d6e7aa7",
+      "repository_sha256": "6112a3d8d4995e2f3985f67de5b5c098cc762c2ea62cca9cf423ad31a3416336"
+    },
+    {
+      "file": "evidence\\U-118\\root-python-suite.log",
+      "raw_sha256": "f7bda87809aedca261ae24e167ada56323e2d18e35007c0b2023dceb29287db9",
+      "repository_sha256": "3761acc839dfa13f0840b38e7c5e2c6857c90d544819e85fb801065301ccd425"
+    }
+  ]
+}

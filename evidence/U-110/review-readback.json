@@ -1,0 +1,24 @@
+{
+  "date": "2026-11-13",
+  "kind": "dated_review_transition_evidence_not_live_ledger",
+  "receipts": [
+    {
+      "u": "U-110",
+      "id": 64,
+      "status": "review",
+      "version": 4,
+      "assignee": "363a9919-cc7e-4dbd-8e49-a104a4f0f5ed",
+      "revision": 1174,
+      "http": 200
+    },
+    {
+      "u": "U-118",
+      "id": 72,
+      "status": "review",
+      "version": 5,
+      "assignee": "363a9919-cc7e-4dbd-8e49-a104a4f0f5ed",
+      "revision": 1176,
+      "http": 200
+    }
+  ]
+}

@@ -1,0 +1,165 @@
+test_all_new_roles_refused_before_docker_or_job_creation (tests.test_dev_orchestrator.BrokerRetirementTests.test_all_new_roles_refused_before_docker_or_job_creation) ...
+  test_all_new_roles_refused_before_docker_or_job_creation (tests.test_dev_orchestrator.BrokerRetirementTests.test_all_new_roles_refused_before_docker_or_job_creation) (role='planner') ... FAIL
+  test_all_new_roles_refused_before_docker_or_job_creation (tests.test_dev_orchestrator.BrokerRetirementTests.test_all_new_roles_refused_before_docker_or_job_creation) (role='worker') ... FAIL
+  test_all_new_roles_refused_before_docker_or_job_creation (tests.test_dev_orchestrator.BrokerRetirementTests.test_all_new_roles_refused_before_docker_or_job_creation) (role='reviewer') ... FAIL
+  test_all_new_roles_refused_before_docker_or_job_creation (tests.test_dev_orchestrator.BrokerRetirementTests.test_all_new_roles_refused_before_docker_or_job_creation) (role='probe_astra') ... FAIL
+  test_all_new_roles_refused_before_docker_or_job_creation (tests.test_dev_orchestrator.BrokerRetirementTests.test_all_new_roles_refused_before_docker_or_job_creation) (role='probe_sol') ... FAIL
+  test_all_new_roles_refused_before_docker_or_job_creation (tests.test_dev_orchestrator.BrokerRetirementTests.test_all_new_roles_refused_before_docker_or_job_creation) (role='validator') ... FAIL
+  test_all_new_roles_refused_before_docker_or_job_creation (tests.test_dev_orchestrator.BrokerRetirementTests.test_all_new_roles_refused_before_docker_or_job_creation) (role='finalize') ... FAIL
+  test_all_new_roles_refused_before_docker_or_job_creation (tests.test_dev_orchestrator.BrokerRetirementTests.test_all_new_roles_refused_before_docker_or_job_creation) (role='setup') ... FAIL
+  test_all_new_roles_refused_before_docker_or_job_creation (tests.test_dev_orchestrator.BrokerRetirementTests.test_all_new_roles_refused_before_docker_or_job_creation) (role='chromium') ... FAIL
+test_existing_running_or_reserved_job_cannot_enable_start (tests.test_dev_orchestrator.BrokerRetirementTests.test_existing_running_or_reserved_job_cannot_enable_start) ... FAIL
+test_foreign_container_label_cannot_be_read_or_change_history (tests.test_dev_orchestrator.BrokerRetirementTests.test_foreign_container_label_cannot_be_read_or_change_history) ... ok
+test_foreign_recorded_job_identity_is_rejected_before_docker (tests.test_dev_orchestrator.BrokerRetirementTests.test_foreign_recorded_job_identity_is_rejected_before_docker) ... FAIL
+test_missing_container_remains_unknown_without_changing_reservation (tests.test_dev_orchestrator.BrokerRetirementTests.test_missing_container_remains_unknown_without_changing_reservation) ... ok
+test_missing_history_directory_is_not_created (tests.test_dev_orchestrator.BrokerRetirementTests.test_missing_history_directory_is_not_created) ... FAIL
+test_not_started_resolution_refused_without_docker_or_history_writes (tests.test_dev_orchestrator.BrokerRetirementTests.test_not_started_resolution_refused_without_docker_or_history_writes) ... FAIL
+test_poll_exited_original_keeps_identity_and_failure_evidence (tests.test_dev_orchestrator.BrokerRetirementTests.test_poll_exited_original_keeps_identity_and_failure_evidence) ... ok
+test_poll_running_original_reads_logs_without_history_mutation (tests.test_dev_orchestrator.BrokerRetirementTests.test_poll_running_original_reads_logs_without_history_mutation) ... ok
+test_symlinked_job_record_is_not_read_or_written (tests.test_dev_orchestrator.BrokerRetirementTests.test_symlinked_job_record_is_not_read_or_written) ... FAIL
+test_unknown_or_malformed_job_never_contacts_docker (tests.test_dev_orchestrator.BrokerRetirementTests.test_unknown_or_malformed_job_never_contacts_docker) ... ok
+test_installer_refuses_before_private_paths_or_host_side_effects (tests.test_dev_orchestrator.InstallerIsolationTests.test_installer_refuses_before_private_paths_or_host_side_effects) ... FAIL
+
+======================================================================
+FAIL: test_all_new_roles_refused_before_docker_or_job_creation (tests.test_dev_orchestrator.BrokerRetirementTests.test_all_new_roles_refused_before_docker_or_job_creation) (role='planner')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 487, in test_all_new_roles_refused_before_docker_or_job_creation
+    with self.assertRaisesRegex(RuntimeError, 'retired'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: RuntimeError not raised
+
+======================================================================
+FAIL: test_all_new_roles_refused_before_docker_or_job_creation (tests.test_dev_orchestrator.BrokerRetirementTests.test_all_new_roles_refused_before_docker_or_job_creation) (role='worker')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 487, in test_all_new_roles_refused_before_docker_or_job_creation
+    with self.assertRaisesRegex(RuntimeError, 'retired'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: RuntimeError not raised
+
+======================================================================
+FAIL: test_all_new_roles_refused_before_docker_or_job_creation (tests.test_dev_orchestrator.BrokerRetirementTests.test_all_new_roles_refused_before_docker_or_job_creation) (role='reviewer')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 487, in test_all_new_roles_refused_before_docker_or_job_creation
+    with self.assertRaisesRegex(RuntimeError, 'retired'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: RuntimeError not raised
+
+======================================================================
+FAIL: test_all_new_roles_refused_before_docker_or_job_creation (tests.test_dev_orchestrator.BrokerRetirementTests.test_all_new_roles_refused_before_docker_or_job_creation) (role='probe_astra')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 487, in test_all_new_roles_refused_before_docker_or_job_creation
+    with self.assertRaisesRegex(RuntimeError, 'retired'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: RuntimeError not raised
+
+======================================================================
+FAIL: test_all_new_roles_refused_before_docker_or_job_creation (tests.test_dev_orchestrator.BrokerRetirementTests.test_all_new_roles_refused_before_docker_or_job_creation) (role='probe_sol')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 487, in test_all_new_roles_refused_before_docker_or_job_creation
+    with self.assertRaisesRegex(RuntimeError, 'retired'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: RuntimeError not raised
+
+======================================================================
+FAIL: test_all_new_roles_refused_before_docker_or_job_creation (tests.test_dev_orchestrator.BrokerRetirementTests.test_all_new_roles_refused_before_docker_or_job_creation) (role='validator')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 487, in test_all_new_roles_refused_before_docker_or_job_creation
+    with self.assertRaisesRegex(RuntimeError, 'retired'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: RuntimeError not raised
+
+======================================================================
+FAIL: test_all_new_roles_refused_before_docker_or_job_creation (tests.test_dev_orchestrator.BrokerRetirementTests.test_all_new_roles_refused_before_docker_or_job_creation) (role='finalize')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 487, in test_all_new_roles_refused_before_docker_or_job_creation
+    with self.assertRaisesRegex(RuntimeError, 'retired'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: RuntimeError not raised
+
+======================================================================
+FAIL: test_all_new_roles_refused_before_docker_or_job_creation (tests.test_dev_orchestrator.BrokerRetirementTests.test_all_new_roles_refused_before_docker_or_job_creation) (role='setup')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 487, in test_all_new_roles_refused_before_docker_or_job_creation
+    with self.assertRaisesRegex(RuntimeError, 'retired'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: RuntimeError not raised
+
+======================================================================
+FAIL: test_all_new_roles_refused_before_docker_or_job_creation (tests.test_dev_orchestrator.BrokerRetirementTests.test_all_new_roles_refused_before_docker_or_job_creation) (role='chromium')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 487, in test_all_new_roles_refused_before_docker_or_job_creation
+    with self.assertRaisesRegex(RuntimeError, 'retired'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: RuntimeError not raised
+
+======================================================================
+FAIL: test_existing_running_or_reserved_job_cannot_enable_start (tests.test_dev_orchestrator.BrokerRetirementTests.test_existing_running_or_reserved_job_cannot_enable_start)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 502, in test_existing_running_or_reserved_job_cannot_enable_start
+    self.assertIsInstance(error, RuntimeError)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError('original repository job is still running') is not an instance of <class 'RuntimeError'>
+
+======================================================================
+FAIL: test_foreign_recorded_job_identity_is_rejected_before_docker (tests.test_dev_orchestrator.BrokerRetirementTests.test_foreign_recorded_job_identity_is_rejected_before_docker)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 588, in test_foreign_recorded_job_identity_is_rejected_before_docker
+    with self.assertRaisesRegex(ValueError, 'identity'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_missing_history_directory_is_not_created (tests.test_dev_orchestrator.BrokerRetirementTests.test_missing_history_directory_is_not_created)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 521, in test_missing_history_directory_is_not_created
+    self.assertFalse(absent.exists())
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_not_started_resolution_refused_without_docker_or_history_writes (tests.test_dev_orchestrator.BrokerRetirementTests.test_not_started_resolution_refused_without_docker_or_history_writes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 513, in test_not_started_resolution_refused_without_docker_or_history_writes
+    with self.assertRaisesRegex(RuntimeError, 'retired'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: RuntimeError not raised
+
+======================================================================
+FAIL: test_symlinked_job_record_is_not_read_or_written (tests.test_dev_orchestrator.BrokerRetirementTests.test_symlinked_job_record_is_not_read_or_written)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 602, in test_symlinked_job_record_is_not_read_or_written
+    with self.assertRaisesRegex(ValueError, 'path'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_installer_refuses_before_private_paths_or_host_side_effects (tests.test_dev_orchestrator.InstallerIsolationTests.test_installer_refuses_before_private_paths_or_host_side_effects)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKTREE>\tests\test_dev_orchestrator.py", line 628, in test_installer_refuses_before_private_paths_or_host_side_effects
+    paths.assert_not_called()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\unittest\mock.py", line 940, in assert_not_called
+    raise AssertionError(msg)
+AssertionError: Expected 'Path' to not have been called. Called 2 times.
+Calls: [call('/volume1/docker/union-dev'),
+ call('C:\\Users\\曾驳\\.codex\\worktrees\\5be7\\Union\\ops\\dev-orchestrator\\install.py')].
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.142s
+
+FAILED (failures=15)

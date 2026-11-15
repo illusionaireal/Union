@@ -1,0 +1,13 @@
+{
+  "date": "2026-11-13",
+  "scope": "documentation structure and checked source references only",
+  "charter_sha256": "01b2c7f0b40be6e761376cd719e2c7b61c0d782df6f53ca9b9e4ad0ad50e6174",
+  "normative_rows": 40,
+  "unique_rows": 40,
+  "journeys": 10,
+  "acceptance_rows": 10,
+  "local_link_targets": 47,
+  "historical_appendix_sha256": "e7ecf31dca5933415bc702c7d7adeffe667c91a8cabbb52de92631e6214a81bd",
+  "result": "pass",
+  "limitations": "No browser, model, runtime, authorization or sustained-operation acceptance. Subclause semantics independently reviewed."
+}

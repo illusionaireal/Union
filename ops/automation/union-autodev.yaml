@@ -14,11 +14,12 @@ instructions: |
 
   环境（每条 shell 命令都从项目根开始）：
   - 项目根由宿主 UNION_REPO_ROOT 指向已交接的独立 checkout；不得在 Synology 同步目录或他人的共享 checkout 切分支。未交接时只读诊断并留言，不启动写代码轮次。
+  - 开工先fetch并核对最新origin/rewrite/charter-v1、当前分支与卡片branch；dev/main不能作为本批V1任务起点。宿主已注册recipe是副本，须单独读回采用版本，仓库修改不证明副本已更新。
   - 集成基线目前为 rewrite/charter-v1；每个开发者自己的 checkout 用 codex/<U编号>-<主题> 或 dev/<U编号>-<主题> 分支交付 PR，勿直接推集成分支。
   - 在线凭据与代理只由宿主环境或 UNION_KANBAN_CONFIG 私有文件提供，不回显，不借用其他执行主体账号。
   - 选卡：`node ops/automation/pick-next.mjs`（只读在线板，输出 JSON）。看字段：`all_v1_done`、`next`（`resume` 在制卡优先于 `ready` 新卡，结构含 `id`/`card`/`version`/`status`）、`ready`、`blocked`。
 
-  权威与阅读顺序（只读）：AGENTS.md、docs/UNION_CHARTER_v1.0.md、docs/CHARTER_ADOPTION.md、docs/DEVELOPMENT.md、docs/FORMAL_DEVELOPMENT.md、specs/053-union-rewrite/{plan,tasks,charter-traceability}.md 中本卡章节、management/{README,KANBAN}.md 与 management/project.json 中本卡记录。
+  权威与阅读顺序（只读）：实时Kanban本卡完整描述/验收/评论及其消费契约；AGENTS.md、docs/UNION_CHARTER_v1.0.md、docs/CHARTER_ADOPTION.md、docs/DEVELOPMENT.md、docs/FORMAL_DEVELOPMENT.md、management/{README,KANBAN}.md。053的plan/tasks/charter-traceability提供父切片依据，本地project.json只供交付历史核查，新U卡不必已在其中；界面卡另读docs/product-design.md和docs/FRONTEND.md。
 
   硬性约束：
   - 严格 TDD：先写会失败的行为测试并实际观察失败（日志存 evidence/），再最小实现，最后在回归保护下重构。不得为制造 RED 破坏正常代码。
@@ -26,7 +27,7 @@ instructions: |
   - 不部署、不发生真实资金、不迁移生产数据、不修改 main/dev、不建立第二份状态表。
   - 凭据不写入仓库/卡片/日志/提交信息；不关闭 TLS 校验；不伪造证据。做不到的真实验收就如实记为未完成。
   - 在线 Kanban 必须即时同步，不得积压：写前读回最新 `version`，PATCH 带最新整数 version 且收到 HTTP 200 才算成功；409 先读回比较，不盲重试。
-    - 认领（仅在无人认领时）：`node scripts/project-management.mjs claim <U-###> --actor <actor> --lease 180`
+    - 认领（仅在无人认领时）：`node scripts/project-management.mjs claim <U-###> --actor <actor>`
     - 进展：`move <U-###> doing --actor <actor>`，并在卡片评论写明本轮范围与验证结果。
     - 完成：`record <U-###> --actor <actor> --scope <real|controlled|documentation> --reviewer <reviewer> --evidence <p1,p2> --note <summary>`，完整卡满足验收才 done，子步骤用 review/评论附 branch、PR 与 evidence；协调者显式更新本地交付镜像。
   - 主账与视图：`npm run management:render` 后 `npm run check:management` 必须通过。
@@ -46,8 +47,8 @@ prompt: |
      - `all_v1_done=true` → 输出 `TICK_RESULT: NONE done - 当前所有活动卡均已完成（以本次在线返回为准）` 并结束（不做任何写操作）。
      - `next=null` → 输出 `TICK_RESULT: NONE idle - 无可推进卡（在制 <in_flight>/<wip_limit>）` 并结束。
      - 否则取 `next.id` / `next.card` / `next.version` / `next.status`。
-  2. 读回该卡最新状态与 comments，确认负责人就是本轮主体；被他人认领则报告并结束，不抢占。
-  3. 读本卡在 `specs/053-union-rewrite/tasks.md` 的完整要求，按本卡用户结果推进下一个必要垂直子步骤；S03 优先自动执行循环、真实有界验收与中断恢复，冻结新增纯手工记账 UI；续做在制卡时从上次卡评论与未提交/已提交内容接着走，不重做已完成部分。
+  2. 读回该卡最新状态与 comments：本人 progress/review 续做；无人认领的 ready 卡用统一 adapter、当前 user.id/version claim，收到 HTTP 200 并读回本人 progress 后才开工；被他人认领则报告并结束，不抢占。
+  3. 读实时卡的完整要求、关联契约与所属完整旅程，053仅作为父切片依据；按用户结果推进必要垂直子步骤。新前端按U-110契约实施，不继续扩展旧导航/手工命令台，不把单次报告当整个V1。续做时对照当前branch/HEAD、卡评论与已有内容，不重复完成部分。
   4. RED→GREEN→重构，证据存 `evidence/<U编号>/` 的单卡索引；旧证据保留原路径。
   5. 跑 npm run check、Python 全量和受影响检查，提交任务分支并开 PR，记录实际结果；不得直接合并。
   6. 立即同步在线卡（评论本轮范围/验证结果，必要时 review/done 附 branch+evidence），再 `npm run management:render`。

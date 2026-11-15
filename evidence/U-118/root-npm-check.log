@@ -1,0 +1,3077 @@
+
+> union@0.0.0 check
+> npm run check:management && npm run check:plan && npm test && npm run check:console
+
+
+> union@0.0.0 check:management
+> node scripts/project-management.mjs check && node --test tests/project-management.test.mjs tests/union-board.test.mjs tests/kanban-operational.test.mjs
+
+Management check: 15 modules, 8 milestones, 81 tasks; PASS
+✔ CLI claims online-only card with real user/version without reading damaged local mirror (362.4384ms)
+✔ CLI refuses a foreign assignee and unmet dependencies before PATCH (389.9497ms)
+✔ MCP uses the same owner protection and does not steal a card (192.4183ms)
+✔ 409 produces one PATCH, reads back the card and preserves mirror (276.8445ms)
+✔ completion without real evidence is refused before changing online status (151.8851ms)
+✔ configured live WIP includes blocked work and refuses a further claim (199.0694ms)
+✔ lost PATCH response and HTTP 202 are read back without replay (481.6259ms)
+✔ successful CLI and MCP records preserve complete evidence without a second write (405.196ms)
+✔ own started claim is idempotent and cannot release or force-hide started work (571.0916ms)
+✔ missing credentials never fall back to a local operational write (197.2793ms)
+✔ status reads online despite damaged historical ledger and exposes absent WIP configuration (258.4383ms)
+✔ picker resumes only current user, does not select foreign work or backlog, and counts blocked WIP (263.4588ms)
+✔ rejects missing owners at start and unfinished dependencies, but permits honest unassigned backlog (10.2755ms)
+✔ completion requires scope, reviewer and existing evidence, and does not promote milestones (5.4025ms)
+✔ rejects duplicate IDs, unknown references and dependency cycles (6.0233ms)
+✔ blocked work needs an unblock action; already-started blocked work counts toward WIP (7.0499ms)
+✔ rejects evidence outside repository, invalid scope and malformed dates (3.3385ms)
+✔ deterministic generated views reject stale output and preserve surrounding narrative (30.6151ms)
+✔ flow summary keeps empty live evidence distinct from completion counts (2.3641ms)
+✔ milestone acceptance and task scope cannot be asserted without their review metadata (5.8792ms)
+✔ claim writes a lease and enters doing, and blocks a second harness until the lease expires (8.3672ms)
+✔ claim refuses cards that are not ready and refuses to exceed the WIP limit (4.4606ms)
+✔ claim requires a real actor and refuses unknown cards (4.0288ms)
+✔ release only gives back an unstarted claim and clears the lease (5.0335ms)
+✔ done needs scope, reviewer, note and real evidence; completion clears the lease (6.3996ms)
+✔ a non-holder cannot move a card, and force cannot smuggle a foreign lease silently (3.8245ms)
+✔ blocked needs a reason and an unblock action, and started work cannot hide back in ready (4.9994ms)
+✔ board view exposes columns, the ready queue and lease state (24.7552ms)
+✔ serializeLedger keeps the ledger byte format (4 spaces, CRLF, trailing newline) (4.054ms)
+✔ the ledger lock refuses a second writer, then recovers after the holder finishes (140.41ms)
+✔ mutateLedger writes the ledger and rebuilds both generated views in one locked step (15.4928ms)
+✔ a rejected mutation leaves the ledger untouched (6.1273ms)
+✔ a doing card with no live lease can be claimed, but a live lease still blocks it (3.5335ms)
+✔ a view failure cannot leave a half-written ledger behind (7.2144ms)
+✔ a forced transition must record why and keeps the reason in the task history (3.2391ms)
+✔ a failed view write keeps the ledger unchanged, so the state stays recoverable (7.3422ms)
+✔ the MCP server refuses local operational writes even with force (122.7104ms)
+ℹ tests 37
+ℹ suites 0
+ℹ pass 37
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3977.1385
+
+> union@0.0.0 check:plan
+> node scripts/check-plan.mjs
+
+{"baseline":"UNION-B1","tasks":82,"dependencies":181,"cycles":0,"missingDependencies":0,"baselineFiles":5,"githubTasks":8}
+
+> union@0.0.0 test
+> node --test tests/*.test.ts
+
+✔ retry uses the same reservation; changed request is rejected (175.6912ms)
+✔ unauthorized model actions and tenant/currency changes leave budget untouched (110.4829ms)
+✔ only positive safe integer amounts and bounded keys are accepted (97.4662ms)
+✔ eight competing processes cannot exceed a 100-minor-unit hard budget (870.7204ms)
+✔ process crash after external success recovers by lookup without repeating the effect (405.568ms)
+✔ crash before external call retains reservation when lookup is inconclusive (316.5363ms)
+✔ definitive failure releases reservation exactly once (184.6949ms)
+✔ settling below maximum releases the difference and invalid receipt rolls back (173.3255ms)
+✔ same key across test tenants remains independent (252.0094ms)
+✔ original delivered cancel GET succeeds without any new command (58.9662ms)
+▶ cancel GET must validate HTTP status even when its body looks successful
+  ✔ 401 (7.3711ms)
+  ✔ 403 (7.6155ms)
+  ✔ 404 (4.4612ms)
+  ✔ 409 (4.2777ms)
+  ✔ 500 (6.3885ms)
+✔ cancel GET must validate HTTP status even when its body looks successful (32.5642ms)
+▶ cancel GET must bind the complete original receipt
+  ✔ another AU (18.1578ms)
+  ✔ another actor (8.0775ms)
+  ✔ another kind (20.4474ms)
+  ✔ rejected command (11.8461ms)
+  ✔ another step (11.8724ms)
+  ✔ another step request (4.7159ms)
+  ✔ wrong original connection (8.2551ms)
+  ✔ missing delivery (5.34ms)
+  ✔ different delivery (11.0625ms)
+  ✔ invalid version (4.1172ms)
+  ✔ changed persisted receipt (3.7503ms)
+✔ cancel GET must bind the complete original receipt (111.5915ms)
+▶ receipt step must resolve to the original Work and attempt
+  ✔ missing Work (4.1727ms)
+  ✔ wrong Work (5.3084ms)
+  ✔ missing step (4.2208ms)
+  ✔ duplicate step (6.723ms)
+  ✔ wrong attempt (5.1229ms)
+  ✔ wrong step command (13.6588ms)
+  ✔ wrong current principal (5.832ms)
+✔ receipt step must resolve to the original Work and attempt (47.0312ms)
+▶ current session and service are checked around the receipt read
+  ✔ another principal (10.723ms)
+  ✔ principal changes (19.6412ms)
+  ✔ service changes (17.94ms)
+✔ current session and service are checked around the receipt read (50.3581ms)
+✔ restart re-queries the same cancel and preserves its receipt when service changes (22.707ms)
+✔ restart cannot pass if the original cancel receipt disappears (12.1128ms)
+✔ restart cannot pass if the original receipt is replaced (16.2357ms)
+✔ final download read preserves the original result and unknown usage after a stable restart (75.139ms)
+✔ final download GET rejects in-flight principal before saving success (20.0384ms)
+✔ final download GET rejects in-flight service before saving success (15.1252ms)
+✔ final download GET rejects in-flight expired before saving success (10.927ms)
+✔ original Unicode material receipt cited by the original candidate passes (8.6115ms)
+✔ pre-delivery driver rejects no material read (3.7323ms)
+✔ pre-delivery driver rejects listing only (2.2628ms)
+✔ pre-delivery driver rejects another material path (1.6635ms)
+✔ pre-delivery driver rejects another material digest (2.4055ms)
+✔ pre-delivery driver rejects character count instead of UTF-8 bytes (2.231ms)
+✔ pre-delivery driver rejects read not cited by candidate (2.4083ms)
+✔ pre-delivery driver rejects duplicate receipt identity (2.7085ms)
+✔ pre-delivery driver rejects receipt from another attempt (2.1687ms)
+✔ pre-delivery driver rejects unknown model outcome (2.3035ms)
+✔ pre-delivery driver rejects manual step without original request (1.7011ms)
+✔ observed interrupt: unknown keeps the original reservation and null usage (39.9319ms)
+✔ observed interrupt: completed call keeps used occupancy with unreported usage (18.9323ms)
+✔ observed interrupt: released original call is rejected even when both snapshots agree (17.3074ms)
+✔ observed interrupt: retaining a budget does not legitimize a released original call (11.4988ms)
+✔ observed interrupt: unknown still requires its reservation (11.0451ms)
+✔ observed interrupt: reopened original call cannot become released (23.9787ms)
+✔ observed interrupt: a different unexecuted released step does not invalidate the original call (42.5196ms)
+✔ observed interrupt: absent original output cannot reach settlement acceptance (14.0599ms)
+✔ actual observed reader survives original cancel GET and service restart without new POST (40.2496ms)
+✔ reader change after output cannot replace the original principal for cancel recovery (16.6503ms)
+✔ service change during the downstream read is still rejected (13.8358ms)
+✔ composed restart still rejects a substituted original receipt (15.7797ms)
+✔ original page command and delivered original receipt are accepted (5.7246ms)
+✔ page cancellation refuses empty ID (3.2513ms)
+✔ page cancellation refuses wrong kind (2.1862ms)
+✔ page cancellation refuses wrong AU (1.3959ms)
+✔ page cancellation refuses wrong Work (0.9244ms)
+✔ page cancellation refuses wrong step (0.4997ms)
+✔ page cancellation refuses old version (0.4466ms)
+✔ page cancellation refuses missing version (0.3837ms)
+✔ original cancel lookup refuses replacement ID (0.5844ms)
+✔ original cancel lookup refuses wrong kind (0.6542ms)
+✔ original cancel lookup refuses wrong AU (0.466ms)
+✔ original cancel lookup refuses wrong reader (0.3643ms)
+✔ original cancel lookup refuses rejection (0.3829ms)
+✔ original cancel lookup refuses unknown (0.3156ms)
+✔ original cancel lookup refuses not adopted (0.3396ms)
+✔ original cancel lookup refuses different base (0.3209ms)
+✔ original cancel lookup refuses old version (0.2696ms)
+✔ original cancel lookup refuses wrong step (0.2595ms)
+✔ original cancel lookup refuses different model request (0.2543ms)
+✔ original cancel lookup refuses delivery missing (0.3168ms)
+✔ original cancel lookup refuses delivery refused (0.2775ms)
+✔ HTTP 401 cannot certify cancellation (0.335ms)
+✔ HTTP 403 cannot certify cancellation (0.2319ms)
+✔ HTTP 404 cannot certify cancellation (0.9073ms)
+✔ HTTP 500 cannot certify cancellation (0.4566ms)
+✔ changed principal refuses before any page cancel (1.9723ms)
+✔ changed service refuses before any page cancel (0.4959ms)
+✔ changed attempt refuses before any page cancel (0.5639ms)
+✔ changed model refuses before any page cancel (0.433ms)
+✔ changed connection refuses before any page cancel (2.2409ms)
+✔ changed settled refuses before any page cancel (0.5738ms)
+✔ download acceptance uses both original Core result controls and records only their command IDs (19.4009ms)
+✔ missing adoption control cannot be bypassed with a successful direct API command (2.9748ms)
+✔ running attempt cannot be closed manually to make delivery acceptance pass (3.358ms)
+✔ adopted is insufficient without delivery (3.235ms)
+✔ another delivered result is rejected (4.3957ms)
+✔ changed principal is rejected (3.2234ms)
+✔ changed original sources are rejected (3.4943ms)
+✔ original registered Work and receipt remain verifiable without starting any model (6.8364ms)
+✔ registration cannot accept a substituted receipt: id (9.0614ms)
+✔ registration cannot accept a substituted receipt: kind (0.6272ms)
+✔ registration cannot accept a substituted receipt: organization_id (0.6499ms)
+✔ registration cannot accept a substituted receipt: base_version (1.7684ms)
+✔ registration cannot accept a substituted receipt: actor_principal_id (0.6122ms)
+✔ registration cannot accept a substituted receipt: status (0.4337ms)
+✔ registration cannot accept a substituted receipt: version (0.5869ms)
+✔ registration cannot accept a substituted receipt: work_id (0.6216ms)
+✔ unreadable original receipt stops at HTTP 401 (1.1034ms)
+✔ unreadable original receipt stops at HTTP 403 (0.5751ms)
+✔ unreadable original receipt stops at HTTP 404 (0.4291ms)
+✔ unreadable original receipt stops at HTTP 500 (0.3049ms)
+✔ persisted registration rejects substituted Work (0.5398ms)
+✔ persisted registration rejects wrong responsibility (0.3746ms)
+✔ persisted registration rejects wrong binding (0.3804ms)
+✔ persisted registration rejects wrong definition (0.3475ms)
+✔ persisted registration rejects wrong mandate (0.3878ms)
+✔ persisted registration rejects withdrawn mandate (0.3834ms)
+✔ persisted registration rejects wrong goal (0.4223ms)
+✔ persisted registration rejects changed budget (0.3389ms)
+✔ persisted registration rejects preexisting use (0.3948ms)
+✔ persisted registration rejects unknown reservation (0.3907ms)
+✔ persisted registration rejects another Work (0.4245ms)
+✔ persisted registration rejects wrong reader (0.3466ms)
+✔ persisted registration rejects missing read_document (1.1198ms)
+✔ persisted registration rejects different connection (0.4076ms)
+✔ persisted registration rejects changed adopted revision (0.3214ms)
+✔ original Unicode result and unchanged snapshots survive a service restart (22.082ms)
+✔ reopened download rejects missing body (5.7953ms)
+✔ reopened download rejects corrupted body with unchanged metadata (4.1969ms)
+✔ reopened download rejects HTTP 403 with an otherwise matching body (5.4743ms)
+✔ reopened download rejects HTTP 500 with an otherwise matching body (4.3662ms)
+✔ reopened download rejects another AU (4.1484ms)
+✔ reopened download rejects another Work (4.1833ms)
+✔ reopened download rejects another result (8.0713ms)
+✔ reopened download rejects another protocol (3.8584ms)
+✔ reopened download rejects changed sources (4.2218ms)
+✔ reopened download rejects changed title (5.1725ms)
+✔ reopened download rejects character count instead of UTF-8 bytes (4.1039ms)
+✔ session revoked after body GET (17.0316ms)
+✔ principal changed during body GET (3.4424ms)
+✔ service changed during body GET (4.0526ms)
+✔ exit22b_page.cjs: same-run Core snapshots preserve two requests and unknown usage (56.479ms)
+▶ exit22b_page.cjs: reject bad HTTP, scope and session before saving a snapshot
+  ✔ 403 (8.1985ms)
+  ✔ legacy error (9.7288ms)
+  ✔ wrong AU (13.0949ms)
+  ✔ wrong protocol (14.7945ms)
+  ✔ wrong principal (14.9082ms)
+  ✔ missing Work (16.121ms)
+  ✔ not Core session (12.9293ms)
+  ✔ principal changes during read (9.7249ms)
+  ✔ service changes during read (4.0213ms)
+✔ exit22b_page.cjs: reject bad HTTP, scope and session before saving a snapshot (108.8225ms)
+▶ exit22b_page.cjs: malformed original requests cannot establish a baseline
+  ✔ zero requests (3.7278ms)
+  ✔ missing request identity (5.922ms)
+  ✔ duplicate request identity (5.612ms)
+  ✔ unsettled request (4.7373ms)
+  ✔ duplicate original Work (4.957ms)
+✔ exit22b_page.cjs: malformed original requests cannot establish a baseline (26.4879ms)
+▶ exit22b_page.cjs: reject changed persisted facts and new request identities
+  ✔ extra request (7.9311ms)
+  ✔ missing original request (14.1912ms)
+  ✔ substituted request (17.9213ms)
+  ✔ changed original loop (23.5308ms)
+  ✔ lost usage (10.1468ms)
+  ✔ unknown usage fabricated as zero (19.3105ms)
+  ✔ lost reservation (13.1416ms)
+  ✔ unknown released (18.4297ms)
+  ✔ changed connection (33.4364ms)
+✔ exit22b_page.cjs: reject changed persisted facts and new request identities (160.8117ms)
+▶ exit22b_page.cjs: consistent snapshots must still conserve every step occupancy
+  ✔ lost used call (14.4905ms)
+  ✔ invented used call (26.628ms)
+  ✔ lost unknown reservation (14.8648ms)
+  ✔ invented reservation (12.7408ms)
+  ✔ missing counts (12.1006ms)
+  ✔ boolean count (17.6272ms)
+  ✔ fractional limit (20.4622ms)
+  ✔ negative count (11.7326ms)
+  ✔ occupancy exceeds limit (14.3172ms)
+✔ exit22b_page.cjs: consistent snapshots must still conserve every step occupancy (148.0776ms)
+✔ exit22b_page.cjs: multiple completed calls and released steps preserve exact occupancy (8.7818ms)
+▶ exit22b_page.cjs: restart preserves complete original result provenance
+  ✔ changed source (5.0738ms)
+  ✔ lost source (5.0452ms)
+  ✔ changed title (5.7602ms)
+  ✔ changed result bytes (5.795ms)
+  ✔ extra result (6.6952ms)
+  ✔ duplicate original result (12.066ms)
+✔ exit22b_page.cjs: restart preserves complete original result provenance (42.1783ms)
+▶ exit22b_page.cjs: malformed result lists cannot establish restart evidence
+  ✔ missing list (3.9435ms)
+  ✔ empty identity (3.341ms)
+  ✔ duplicate identity (3.7753ms)
+✔ exit22b_page.cjs: malformed result lists cannot establish restart evidence (12.0779ms)
+✔ exit22b_page.cjs: result order and JSON key order do not change provenance (4.5499ms)
+✔ exit22b_page.cjs: normal restart permits reordered steps and JSON keys (6.0746ms)
+✔ exit22b_page.cjs: completed request with unreported usage remains explicitly unknown (4.2839ms)
+✔ exit22c_download.cjs: same-run Core snapshots preserve two requests and unknown usage (9.5842ms)
+▶ exit22c_download.cjs: reject bad HTTP, scope and session before saving a snapshot
+  ✔ 403 (3.084ms)
+  ✔ legacy error (2.225ms)
+  ✔ wrong AU (2.152ms)
+  ✔ wrong protocol (2.2917ms)
+  ✔ wrong principal (2.4654ms)
+  ✔ missing Work (2.6641ms)
+  ✔ not Core session (3.5893ms)
+  ✔ principal changes during read (2.9696ms)
+  ✔ service changes during read (2.3432ms)
+✔ exit22c_download.cjs: reject bad HTTP, scope and session before saving a snapshot (25.5766ms)
+▶ exit22c_download.cjs: malformed original requests cannot establish a baseline
+  ✔ zero requests (2.4695ms)
+  ✔ missing request identity (3.5411ms)
+  ✔ duplicate request identity (3.2041ms)
+  ✔ unsettled request (2.2119ms)
+  ✔ duplicate original Work (2.3347ms)
+✔ exit22c_download.cjs: malformed original requests cannot establish a baseline (14.6949ms)
+▶ exit22c_download.cjs: reject changed persisted facts and new request identities
+  ✔ extra request (3.4983ms)
+  ✔ missing original request (3.027ms)
+  ✔ substituted request (6.848ms)
+  ✔ changed original loop (6.835ms)
+  ✔ lost usage (6.3316ms)
+  ✔ unknown usage fabricated as zero (6.2138ms)
+  ✔ lost reservation (4.0909ms)
+  ✔ unknown released (5.2867ms)
+  ✔ changed connection (6.2486ms)
+✔ exit22c_download.cjs: reject changed persisted facts and new request identities (50.2443ms)
+▶ exit22c_download.cjs: consistent snapshots must still conserve every step occupancy
+  ✔ lost used call (6.0484ms)
+  ✔ invented used call (6.2224ms)
+  ✔ lost unknown reservation (6.2835ms)
+  ✔ invented reservation (5.1619ms)
+  ✔ missing counts (8.3049ms)
+  ✔ boolean count (12.2031ms)
+  ✔ fractional limit (8.3114ms)
+  ✔ negative count (10.38ms)
+  ✔ occupancy exceeds limit (11.1563ms)
+✔ exit22c_download.cjs: consistent snapshots must still conserve every step occupancy (76.6299ms)
+✔ exit22c_download.cjs: multiple completed calls and released steps preserve exact occupancy (11.9956ms)
+▶ exit22c_download.cjs: restart preserves complete original result provenance
+  ✔ changed source (11.3432ms)
+  ✔ lost source (7.0844ms)
+  ✔ changed title (6.0469ms)
+  ✔ changed result bytes (3.9631ms)
+  ✔ extra result (5.1138ms)
+  ✔ duplicate original result (4.5536ms)
+✔ exit22c_download.cjs: restart preserves complete original result provenance (39.7385ms)
+▶ exit22c_download.cjs: malformed result lists cannot establish restart evidence
+  ✔ missing list (3.4297ms)
+  ✔ empty identity (2.7628ms)
+  ✔ duplicate identity (2.758ms)
+✔ exit22c_download.cjs: malformed result lists cannot establish restart evidence (10.4202ms)
+✔ exit22c_download.cjs: result order and JSON key order do not change provenance (8.5171ms)
+✔ exit22c_download.cjs: normal restart permits reordered steps and JSON keys (7.593ms)
+✔ exit22c_download.cjs: completed request with unreported usage remains explicitly unknown (7.2913ms)
+✔ empty interrupt results survive a read-only restart (0.388ms)
+✔ exit22b_page.cjs: navigation preserves the sole created AU instead of leaving an untracked second AU (21.9614ms)
+✔ exit22b_page.cjs: refresh does not mint a second grant or replace the adopted grant reference (13.2517ms)
+✔ exit22b_page.cjs: unknown creation stops without a new AU or grant (3.4162ms)
+✔ exit22b_page.cjs: failed prepare stops without a second grant or connection adoption (4.285ms)
+✔ exit22c_download.cjs: navigation preserves the sole created AU instead of leaving an untracked second AU (9.01ms)
+✔ exit22c_download.cjs: refresh does not mint a second grant or replace the adopted grant reference (14.3269ms)
+✔ exit22c_download.cjs: unknown creation stops without a new AU or grant (3.1117ms)
+✔ exit22c_download.cjs: failed prepare stops without a second grant or connection adoption (3.286ms)
+✔ interrupt accepts public original text without inventing per-event request_id (23.9182ms)
+✔ interrupt follows the original cursor past filtered and tool-only pages (6.1637ms)
+▶ interrupt rejects unavailable, wrong-origin, non-output and malformed observations
+  ✔ HTTP 403 (12.2333ms)
+  ✔ missing U108 (5.7473ms)
+  ✔ unavailable server (4.0722ms)
+  ✔ wrong protocol (4.8091ms)
+  ✔ wrong source (6.7215ms)
+  ✔ other organization_id (4.0922ms)
+  ✔ other work_id (9.333ms)
+  ✔ other attempt_id (4.7359ms)
+  ✔ other step_ref (18.3295ms)
+  ✔ other command_id (11.6523ms)
+  ✔ other model_request_id (9.8323ms)
+  ✔ other principal (15.6963ms)
+  ✔ other service (11.5775ms)
+  ✔ changed original connection (4.4385ms)
+  ✔ only tool activity (11.6205ms)
+  ✔ only lifecycle activity (22.7652ms)
+  ✔ empty text (38.2475ms)
+  ✔ whitespace only (16.8117ms)
+  ✔ wrong text type (5.5234ms)
+  ✔ metadata only (10.9522ms)
+  ✔ invalid cursor (5.1131ms)
+  ✔ invalid sequence (5.8636ms)
+  ✔ event beyond cursor (8.9414ms)
+  ✔ duplicate sequence (3.6421ms)
+  ✔ principal changed in flight (4.0896ms)
+  ✔ service changed in flight (4.1438ms)
+✔ interrupt rejects unavailable, wrong-origin, non-output and malformed observations (271.4878ms)
+✔ interrupt rejects cursor regression after a filtered page (5.6311ms)
+✔ interrupt records original identity and UTF-8 text digest without raw text (11.2333ms)
+✔ download reopen keeps the original result even beside another adopted result (8.0123ms)
+▶ download reopen rejects substituted identity, digest, status, scope and HTTP failures
+  ✔ another result (11.7859ms)
+  ✔ changed digest (7.1735ms)
+  ✔ another delivered result (20.388ms)
+  ✔ not adopted (17.5503ms)
+  ✔ not delivered (2.7601ms)
+  ✔ missing original work (8.8119ms)
+  ✔ another AU (14.2661ms)
+  ✔ wrong protocol (4.0811ms)
+  ✔ HTTP 403 with a matching body (5.0506ms)
+✔ download reopen rejects substituted identity, digest, status, scope and HTTP failures (96.1395ms)
+✔ recorded patch remains valid with Git core.abbrev=12 (2621.3583ms)
+✔ recorded patch remains valid with Git core.abbrev=40 (3281.1122ms)
+✔ the complete comparison still rejects additional tracked source changes (2598.3079ms)
+✔ normalizes recorded line endings while retaining index and hunk validation (1283.445ms)
+✔ waits through the pre-reservation snapshot and returns the same original step (15.2378ms)
+✔ does not accept a different work, command, settled step or missing occupied budget (45.5098ms)
+✔ an already committed original reservation succeeds with one read (0.7358ms)
+✔ a reservation that never appears fails within the bounded polling window (45.5829ms)
+✔ rejects changed read scope: protocol (2.652ms)
+✔ rejects changed read scope: organization_id (0.5367ms)
+✔ read failure stops immediately without polling or replacing the command (0.5566ms)
+ℹ tests 317
+ℹ suites 0
+ℹ pass 317
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 11054.1952
+
+> union@0.0.0 check:console
+> npm run typecheck --workspace @union/console && npm run test --workspace @union/console && npm run build:console
+
+
+> @union/console@0.1.0 typecheck
+> tsc --noEmit
+
+
+> @union/console@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 <WORKTREE>/web/console
+
+ ✓ src/app/governance-workspace.test.tsx (16 tests) 1187ms
+   ✓ current governance access projection > keeps the authorized AU readable after dispatch advances its schema  382ms
+ ✓ src/pages/Identity.test.tsx (14 tests) 1460ms
+   ✓ identity boundary > shows the setup form on an unconfigured deployment and keeps its fields  349ms
+ ✓ src/features/work/result-delivery.test.tsx (21 tests) 2252ms
+   ✓ adopts with disabled model connection, persists scoped identity before a single POST  375ms
+ ✓ src/features/work/page-execution.test.tsx (20 tests) 2935ms
+   ✓ an unknown step has no page cancel button  1033ms
+ ✓ src/features/work/cancel-recovery.test.tsx (26 tests) 3569ms
+   ✓ the actual automatic reservation has an original-request cancel entry  301ms
+ ✓ src/features/work/registration.test.tsx (33 tests) 4295ms
+   ✓ Core empty state registers one bounded responsible Work, persisting original identity before POST  466ms
+stderr | src/features/work/WorkPanel.test.tsx > V1 work panel > reports an unknown execution and the last tool receipt instead of success
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: ["core-models","au-1"]
+
+stderr | src/features/work/WorkPanel.test.tsx > V1 work panel > explains the empty state when no V1 work exists
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: ["core-models","au-1"]
+
+stderr | src/features/work/WorkPanel.test.tsx > V1 work panel > shows an adopted result with its digest and source count
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: ["core-models","au-1"]
+
+stderr | src/features/work/WorkPanel.test.tsx > V1 work panel > starts an execution and adopts a candidate result through the API
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: ["core-models","au-1"]
+
+stderr | src/features/work/WorkPanel.test.tsx > V1 work panel > submits a candidate result with the selected sources
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: ["core-models","au-1"]
+
+stderr | src/features/work/WorkPanel.test.tsx > V1 work panel > closes a running attempt with an explicit outcome
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: ["core-models","au-1"]
+
+stderr | src/features/work/WorkPanel.test.tsx > V1 work panel > completes a work with its adopted result
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: ["core-models","au-1"]
+
+stderr | src/features/work/WorkPanel.test.tsx > V1 work panel > hides the completion button while an execution is still running
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: ["core-models","au-1"]
+
+ ✓ src/features/work/WorkPanel.test.tsx (10 tests) 1326ms
+   ✓ V1 work panel > starts an execution and adopts a candidate result through the API  344ms
+ ✓ src/features/commands/fields.test.tsx (9 tests) 1394ms
+   ✓ operation form interactions > keeps edited content and focus across snapshot refreshes  322ms
+ ✓ src/features/models/ModelsDiagnostics.test.tsx (17 tests) 12879ms
+   ✓ model check eligibility after version changes or local stop > keeps an unstopped unknown check on the same revision blocking another check  1051ms
+   ✓ model check eligibility after version changes or local stop > rechecks an unfinished current-version check that appears before preview  869ms
+   ✓ model check eligibility after version changes or local stop > allows an explicit new bounded check after an updated connection version  1321ms
+   ✓ model check eligibility after version changes or local stop > allows an explicit new bounded check after a requested local stop  1056ms
+   ✓ model check eligibility after version changes or local stop > still requires remaining calls after the previous version or check stops blocking  406ms
+   ✓ model check eligibility after version changes or local stop > still requires current permission after the previous version or check stops blocking  378ms
+   ✓ model diagnostics and observed usage > keeps each safe next step with its saving operation, check or attempt  490ms
+   ✓ model diagnostics and observed usage > keeps worker_start_failed on explicit original-check reconciliation  1260ms
+   ✓ model diagnostics and observed usage > keeps original_request_missing on explicit original-check reconciliation  1074ms
+   ✓ model diagnostics and observed usage > keeps provider_result_unconfirmed on explicit original-check reconciliation  1003ms
+   ✓ model diagnostics and observed usage > keeps legacy schema 3 records readable without inventing diagnostics or usage sources  524ms
+   ✓ model diagnostics and observed usage > preserves partial event usage when the check is cancel_requested  577ms
+   ✓ model diagnostics and observed usage > preserves partial event usage when the check is not_adopted  513ms
+   ✓ model diagnostics and observed usage > preserves partial event usage when the check is unknown  511ms
+   ✓ model diagnostics and observed usage > describes a cancelled attempt as local stop without implying a remote cancellation or refund  650ms
+   ✓ model diagnostics and observed usage > replaces event usage with the received result fields without adding snapshots or attempts  814ms
+   ✓ model diagnostics and observed usage > renders next-step text inertly and clears it with revoked AU read access  378ms
+ ✓ src/features/models/Models.test.tsx (15 tests) 13265ms
+   ✓ core model access user journey > selects Responses explicitly, previews its protocol and clears the submitted key  1765ms
+   ✓ core model access user journey > opens the core models route and navigation for a normal core governor  404ms
+   ✓ core model access user journey > states each profile capability scope without generalizing one profile  477ms
+   ✓ core model access user journey > saves without inference or adoption, clears the key and keeps only request identities  1008ms
+   ✓ core model access user journey > grants bounded resources, reads a selected document twice and adopts independently  3036ms
+   ✓ core model access user journey > can adopt an enabled untested connection without purchasing a check  912ms
+   ✓ core model access user journey > requires a fresh API key when editing an endpoint and does not reuse an old check  489ms
+   ✓ core model access user journey > uses only an explicitly supplied modeld grant, without listing host accounts  832ms
+   ✓ core model access user journey > rejects a credential containing 空白 before preview or POST  715ms
+   ✓ core model access user journey > rejects a credential containing 非 ASCII 字符 before preview or POST  710ms
+   ✓ core model access user journey > rejects a credential containing 超过 4096 字符 before preview or POST  639ms
+   ✓ core model access user journey > keeps normal inputs after a persisted domain rejection and allows a new preview  860ms
+   ✓ core model access user journey > offers the governance next step when the charter lacks the read-only tool  520ms
+   ✓ core model access user journey > reads persisted schema 3 records without legacy fallback  360ms
+   ✓ core model access user journey > lets the V1 governor explicitly enable read_document while preserving other tools  534ms
+ ✓ src/features/models/ModelsStream.test.tsx (21 tests) 14350ms
+   ✓ V1 original-request observation > renders partial text as text and original tool names without posting a command  1163ms
+   ✓ V1 original-request observation > deduplicates repeat pages and retains the original cursor across a failed read  886ms
+   ✓ V1 original-request observation > clears content on mismatched organization_id  671ms
+   ✓ V1 original-request observation > clears content on mismatched attempt_id  614ms
+   ✓ V1 original-request observation > clears content on mismatched check_id  576ms
+   ✓ V1 original-request observation > clears content on mismatched protocol  715ms
+   ✓ V1 original-request observation > clears content when the stream grant is revoked despite a still readable model list  655ms
+   ✓ V1 original-request observation > ignores a delayed result after a principal switch and does not persist text  620ms
+   ✓ V1 original-request observation > rejects a changed cookie identity even before workspace refresh  876ms
+   ✓ V1 original-request observation > rejects conflicting same-sequence text and discards its old output  745ms
+   ✓ V1 original-request observation > clears malformed observation responses  681ms
+   ✓ V1 original-request observation > clears malformed observation responses  584ms
+   ✓ V1 original-request observation > clears a response for another principal_id  602ms
+   ✓ V1 original-request observation > clears a response for another service_instance  682ms
+   ✓ V1 original-request observation > keeps the selected original attempt when the check creates its next attempt  524ms
+   ✓ V1 original-request observation > clears stopped output when its connection is disabled in the current projection  601ms
+   ✓ V1 original-request observation > clears stopped output when its connection is revised in the current projection  573ms
+   ✓ V1 original-request observation > clears stopped output when its connection is removed in the current projection  797ms
+   ✓ V1 original-request observation > discards a delayed observation after current connection access is removed  637ms
+   ✓ V1 original-request observation > does not replace a removed selected request with a different available attempt  564ms
+   ✓ V1 original-request observation > keeps stopped output for unchanged authority when unrelated connection metadata changes  582ms
+ ✓ src/features/commands/core-boundaries.test.tsx (10 tests) 7156ms
+   ✓ lets a core participant prepare its own AU while withholding legacy operations and showing its stable identity  1326ms
+   ✓ core creation identity and receipt boundaries > rejects a POST receipt with the wrong id and retains the original V1 request  925ms
+   ✓ core creation identity and receipt boundaries > rejects a POST receipt with the wrong kind and retains the original V1 request  865ms
+   ✓ core creation identity and receipt boundaries > keeps an unsubmitted creation draft and focus through a same-principal session renewal  774ms
+   ✓ core creation identity and receipt boundaries > checks the current principal again before sending a prepared draft  406ms
+   ✓ core creation identity and receipt boundaries > refuses to bind a draft to a different principal even before the workspace poll notices the change  543ms
+   ✓ core creation identity and receipt boundaries > adopts a delayed creation result only for its original principal (changed=false)  737ms
+   ✓ core creation identity and receipt boundaries > adopts a delayed creation result only for its original principal (changed=true)  602ms
+   ✓ core creation identity and receipt boundaries > shows a lookup failure beside an unknown receipt while retaining its original ID  539ms
+   ✓ core creation identity and receipt boundaries > does not create an AU when the user cancels while the identity preflight is still pending  433ms
+ ✓ src/features/commands/core-creation.test.tsx (7 tests) 4730ms
+   ✓ core creation through the workspace > keeps explicit legacy company creation reachable after reopening a prepared AU  1581ms
+   ✓ core creation through the workspace > explains the prepared boundary at the empty model entry instead of promising immediate configuration  351ms
+   ✓ core creation through the workspace > opens the saved prepared AU through V1 and shows bound governance without legacy snapshot calls  913ms
+   ✓ core creation through the workspace > retains an unknown V1 request for lookup after the result dialog closes  642ms
+   ✓ core creation through the workspace > keeps input editable after a pre-allocation V1 validation rejection  547ms
+   ✓ core creation through the workspace > submits ordinary creation as create_v1 with exactly the five supported fields  451ms
+ ✓ src/pages/SubscriptionConnections.test.tsx (8 tests) 1144ms
+   ✓ subscription configuration > clears the key and blocks duplicate writes while original result is unknown  333ms
+ ❯ src/features/models/ModelsIdentity.test.tsx (11 tests | 1 failed) 7270ms
+   × model identity, scope and input lifetime > keeps draft fields and keyboard focus through refresh and same-principal renewal 1312ms
+     → Unable to find role="button" and name "添加模型连接"
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <a
+      class="skip"
+      href="#main"
+    >
+      跳转到正文
+    </a>
+    <aside
+      aria-label="工作台导航"
+      class="sidebar"
+    >
+      <a
+        class="brand"
+        data-discover="true"
+        href="/overview?organization=core-au"
+      >
+        <span
+          class="brand-symbol"
+        >
+          u
+        </span>
+        <span>
+          UNION
+          <small>
+            AI-UNION / AU
+          </small>
+        </span>
+      </a>
+      <label
+        class="workspace-switch"
+      >
+        <span
+          class="org-icon"
+        >
+          内
+        </span>
+        <span
+          class="workspace-select"
+        >
+          <small>
+            当前 AU
+          </small>
+          <select
+            aria-label="当前组织"
+            id="org-select"
+          >
+            <option
+              value="core-au"
+            >
+              内部记录 AU
+            </option>
+          </select>
+        </span>
+      </label>
+      <nav
+        id="navigation"
+      >
+        <div
+          class="nav-entry"
+        >
+          <div
+            class="nav-caption"
+          >
+            工作空间
+          </div>
+          <a
+            class="nav-button"
+            data-discover="true"
+            data-nav="overview"
+            href="/overview?organization=core-au"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-layout-dashboard"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="19"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect
+                height="9"
+                rx="1"
+                width="7"
+                x="3"
+                y="3"
+              />
+              <rect
+                height="5"
+                rx="1"
+                width="7"
+                x="14"
+                y="3"
+              />
+              <rect
+                height="9"
+                rx="1"
+                width="7"
+                x="14"
+                y="12"
+              />
+              <rect
+                height="5"
+                rx="1"
+                width="7"
+                x="3"
+                y="16"
+              />
+            </svg>
+            <span>
+              AU与治理
+            </span>
+          </a>
+        </div>
+        <div
+          class="nav-entry"
+        >
+          <a
+            class="nav-button"
+            data-discover="true"
+            data-nav="tasks"
+            href="/tasks?organization=core-au"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-list-checks"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="19"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M13 5h8"
+              />
+              <path
+                d="M13 12h8"
+              />
+              <path
+                d="M13 19h8"
+              />
+              <path
+                d="m3 17 2 2 4-4"
+              />
+              <path
+                d="m3 7 2 2 4-4"
+              />
+            </svg>
+            <span>
+              责任与工作
+            </span>
+          </a>
+        </div>
+        <div
+          class="nav-entry"
+        >
+          <div
+            class="nav-caption"
+          >
+            运行管理
+          </div>
+          <a
+            aria-current="page"
+            class="nav-button active"
+            data-discover="true"
+            data-nav="models"
+            href="/models?organization=core-au"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-cpu"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="19"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12 20v2"
+              />
+              <path
+                d="M12 2v2"
+              />
+              <path
+                d="M17 20v2"
+              />
+              <path
+                d="M17 2v2"
+              />
+              <path
+                d="M2 12h2"
+              />
+              <path
+                d="M2 17h2"
+              />
+              <path
+                d="M2 7h2"
+              />
+              <path
+                d="M20 12h2"
+              />
+              <path
+                d="M20 17h2"
+              />
+              <path
+                d="M20 7h2"
+              />
+              <path
+                d="M7 20v2"
+              />
+              <path
+                d="M7 2v2"
+              />
+              <rect
+                height="16"
+                rx="2"
+                width="16"
+                x="4"
+                y="4"
+              />
+              <rect
+                height="8"
+                rx="1"
+                width="8"
+                x="8"
+                y="8"
+              />
+            </svg>
+            <span>
+              模型与 API
+            </span>
+            <span
+              class="nav-tag"
+            >
+              配置
+            </span>
+          </a>
+        </div>
+        <div
+          class="nav-entry"
+        >
+          <a
+            class="nav-button"
+            data-discover="true"
+            data-nav="settings"
+            href="/settings?organization=core-au"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-settings"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="19"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"
+              />
+              <circle
+                cx="12"
+                cy="12"
+                r="3"
+              />
+            </svg>
+            <span>
+              章程与记录
+            </span>
+          </a>
+        </div>
+      </nav>
+      <div
+        class="sidebar-bottom"
+      >
+        <div
+          class="sidebar-footer"
+        >
+          <span
+            class="avatar tiny human"
+          >
+            人
+          </span>
+          <div>
+            <strong
+              id="role-label"
+            >
+              核心参与者
+            </strong>
+            <small>
+              本地工作空间 · 记录持久保存
+            </small>
+          </div>
+        </div>
+      </div>
+    </aside>
+    <div
+      class="workspace"
+    >
+      <header
+        class="topbar"
+      >
+        <div
+          class="breadcrumb"
+        >
+          <span>
+            工作空间
+          </span>
+          <span>
+            /
+          </span>
+          <strong
+            id="breadcrumb-page"
+          >
+            模型与 API
+          </strong>
+        </div>
+        <div
+          class="topbar-actions"
+        >
+          <span
+            class="source-label"
+            id="source-label"
+          >
+            模型接入记录
+          </span>
+          <button
+            class="button secondary compact"
+            id="refresh"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-refresh-cw"
+              fill="none"
+              height="15"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="15"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"
+              />
+              <path
+                d="M21 3v5h-5"
+              />
+              <path
+                d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"
+              />
+              <path
+                d="M8 16H3v5"
+              />
+            </svg>
+            刷新
+          </button>
+        </div>
+      </header>
+      <main
+        id="main"
+        tabindex="-1"
+      >
+        <section
+          class="identity-settings"
+        >
+          <h2>
+            账号与登录
+          </h2>
+          <p>
+            当前账号：participant
+          </p>
+          <label
+            class="identity-principal"
+          >
+            当前核心身份标识
+            <input
+              aria-label="当前核心身份标识"
+              readonly=""
+              value="ad0d511c-eac5-4acf-b92c-6100b3d55ea9"
+            />
+            <small>
+              用于提名和责任绑定；标识本身不授予权限。
+            </small>
+          </label>
+          <button
+            class="button secondary"
+          >
+            修改密码
+          </button>
+          <button
+            class="button secondary"
+          >
+            退出登录
+          </button>
+        </section>
+        <div
+          class="page-heading"
+        >
+          <div>
+            <div
+              class="eyebrow"
+            >
+              UNION /
+              MODELS
+            </div>
+            <h1
+              id="page-title"
+            >
+              模型与 API
+            </h1>
+            <p
+              id="page-description"
+            >
+              为当前 AU 保存模型连接、授予有限调用并核对工具往返。
+            </p>
+          </div>
+          <div
+            class="connection"
+          >
+            <div>
+              <span
+                class="dot green"
+              />
+              <span
+                id="connection-label"
+              >
+                已连接本机服务
+              </span>
+            </div>
+            <small
+              id="last-updated"
+            >
+              最近更新 10:57:18
+            </small>
+          </div>
+        </div>
+        <div
+          id="view"
+        >
+          <div
+            class="governance-workspace core-models"
+          >
+            <section
+              class="model-intro"
+            >
+              <div>
+                <h2>
+                  接入模型，核对实际工具能力
+                </h2>
+                <p>
+                  保存连接、授予有限调用、选择资料验证，再独立决定是否采用默认。每一步都有原请求和结果记录。
+                </p>
+                <span
+                  class="security-note"
+                >
+                  密钥不回显 · 保存不推理 · 只读取所选文本
+                </span>
+              </div>
+            </section>
+            <div
+              class="model-refresh"
+            >
+              <button
+                class="button secondary"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-refresh-cw"
+                  fill="none"
+                  height="15"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="15"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"
+                  />
+                  <path
+                    d="M21 3v5h-5"
+                  />
+                  <path
+                    d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"
+                  />
+                  <path
+                    d="M8 16H3v5"
+                  />
+                </svg>
+                刷新模型记录
+              </button>
+            </div>
+            <section
+              class="card "
+            >
+              <div
+                class="card-heading"
+              >
+                <h2>
+                  模型记录暂不可用
+                </h2>
+              </div>
+              <p
+                role="status"
+              >
+                正在读取当前 AU 的模型连接…
+              </p>
+              <a
+                class="button secondary"
+                data-discover="true"
+                href="/overview?organization=core-au"
+              >
+                前往 AU 与治理
+              </a>
+            </section>
+          </div>
+        </div>
+        <button
+          class="button secondary"
+          data-command="create_v1"
+          title="创建 AU"
+        >
+          创建另一个 AU
+        </button>
+        <div
+          class="legacy-creation"
+        >
+          <p>
+            旧版试验继续使用原有运行时；小说公司保留独立的兼容入口。
+          </p>
+          <button
+            class="button secondary"
+            data-command="create"
+            disabled=""
+            title="旧版操作需要受权发起人会话"
+          >
+            旧版兼容试验（含小说）
+          </button>
+        </div>
+        <footer
+          class="data-footer"
+        >
+          <details>
+            <summary>
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-shield-check"
+                fill="none"
+                height="13"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="13"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"
+                />
+                <path
+                  d="m9 12 2 2 4-4"
+                />
+              </svg>
+              数据与运行记录
+            </summary>
+            <span
+              id="snapshot-meta"
+            >
+              core-au · 状态 v12 · 章程 v1 · 本地治理
+            </span>
+          </details>
+          <span>
+            读取和刷新不派发工作
+          </span>
+        </footer>
+      </main>
+    </div>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <a
+      class="skip"
+      href="#main"
+    >
+      跳转到正文
+    </a>
+    <aside
+      aria-label="工作台导航"
+      class="sidebar"
+    >
+      <a
+        class="brand"
+        data-discover="true"
+        href="/overview?organization=core-au"
+      >
+        <span
+          class="brand-symbol"
+        >
+          u
+        </span>
+        <span>
+          UNION
+          <small>
+            AI-UNION / AU
+          </small>
+        </span>
+      </a>
+      <label
+        class="workspace-switch"
+      >
+        <span
+          class="org-icon"
+        >
+          内
+        </span>
+        <span
+          class="workspace-select"
+        >
+          <small>
+            当前 AU
+          </small>
+          <select
+            aria-label="当前组织"
+            id="org-select"
+          >
+            <option
+              value="core-au"
+            >
+              内部记录 AU
+            </option>
+          </select>
+        </span>
+      </label>
+      <nav
+        id="navigation"
+      >
+        <div
+          class="nav-entry"
+        >
+          <div
+            class="nav-caption"
+          >
+            工作空间
+          </div>
+          <a
+            class="nav-button"
+            data-discover="true"
+            data-nav="overview"
+            href="/overview?organization=core-au"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-layout-dashboard"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="19"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect
+                height="9"
+                rx="1"
+                width="7"
+                x="3"
+                y="3"
+              />
+              <rect
+                height="5"
+                rx="1"
+                width="7"
+                x="14"
+                y="3"
+              />
+              <rect
+                height="9"
+                rx="1"
+                width="7"
+                x="14"
+                y="12"
+              />
+              <rect
+                height="5"
+                rx="1"
+                width="7"
+                x="3"
+                y="16"
+              />
+            </svg>
+            <span>
+              AU与治理
+            </span>
+          </a>
+        </div>
+        <div
+          class="nav-entry"
+        >
+          <a
+            class="nav-button"
+            data-discover="true"
+            data-nav="tasks"
+            href="/tasks?organization=core-au"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-list-checks"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="19"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M13 5h8"
+              />
+              <path
+                d="M13 12h8"
+              />
+              <path
+                d="M13 19h8"
+              />
+              <path
+                d="m3 17 2 2 4-4"
+              />
+              <path
+                d="m3 7 2 2 4-4"
+              />
+            </svg>
+            <span>
+              责任与工作
+            </span>
+          </a>
+        </div>
+        <div
+          class="nav-entry"
+        >
+          <div
+            class="nav-caption"
+          >
+            运行管理
+          </div>
+          <a
+            aria-current="page"
+            class="nav-button active"
+            data-discover="true"
+            data-nav="models"
+            href="/models?organization=core-au"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-cpu"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="19"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12 20v2"
+              />
+              <path
+                d="M12 2v2"
+              />
+              <path
+                d="M17 20v2"
+              />
+              <path
+                d="M17 2v2"
+              />
+              <path
+                d="M2 12h2"
+              />
+              <path
+                d="M2 17h2"
+              />
+              <path
+                d="M2 7h2"
+              />
+              <path
+                d="M20 12h2"
+              />
+              <path
+                d="M20 17h2"
+              />
+              <path
+                d="M20 7h2"
+              />
+              <path
+                d="M7 20v2"
+              />
+              <path
+                d="M7 2v2"
+              />
+              <rect
+                height="16"
+                rx="2"
+                width="16"
+                x="4"
+                y="4"
+              />
+              <rect
+                height="8"
+                rx="1"
+                width="8"
+                x="8"
+                y="8"
+              />
+            </svg>
+            <span>
+              模型与 API
+            </span>
+            <span
+              class="nav-tag"
+            >
+              配置
+            </span>
+          </a>
+        </div>
+        <div
+          class="nav-entry"
+        >
+          <a
+            class="nav-button"
+            data-discover="true"
+            data-nav="settings"
+            href="/settings?organization=core-au"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-settings"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="19"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"
+              />
+              <circle
+                cx="12"
+                cy="12"
+                r="3"
+              />
+            </svg>
+            <span>
+              章程与记录
+            </span>
+          </a>
+        </div>
+      </nav>
+      <div
+        class="sidebar-bottom"
+      >
+        <div
+          class="sidebar-footer"
+        >
+          <span
+            class="avatar tiny human"
+          >
+            人
+          </span>
+          <div>
+            <strong
+              id="role-label"
+            >
+              核心参与者
+            </strong>
+            <small>
+              本地工作空间 · 记录持久保存
+            </small>
+          </div>
+        </div>
+      </div>
+    </aside>
+    <div
+      class="workspace"
+    >
+      <header
+        class="topbar"
+      >
+        <div
+          class="breadcrumb"
+        >
+          <span>
+            工作空间
+          </span>
+          <span>
+            /
+          </span>
+          <strong
+            id="breadcrumb-page"
+          >
+            模型与 API
+          </strong>
+        </div>
+        <div
+          class="topbar-actions"
+        >
+          <span
+            class="source-label"
+            id="source-label"
+          >
+            模型接入记录
+          </span>
+          <button
+            class="button secondary compact"
+            id="refresh"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-refresh-cw"
+              fill="none"
+              height="15"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="15"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"
+              />
+              <path
+                d="M21 3v5h-5"
+              />
+              <path
+                d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"
+              />
+              <path
+                d="M8 16H3v5"
+              />
+            </svg>
+            刷新
+          </button>
+        </div>
+      </header>
+      <main
+        id="main"
+        tabindex="-1"
+      >
+        <section
+          class="identity-settings"
+        >
+          <h2>
+            账号与登录
+          </h2>
+          <p>
+            当前账号：participant
+          </p>
+          <label
+            class="identity-principal"
+          >
+            当前核心身份标识
+            <input
+              aria-label="当前核心身份标识"
+              readonly=""
+              value="ad0d511c-eac5-4acf-b92c-6100b3d55ea9"
+            />
+            <small>
+              用于提名和责任绑定；标识本身不授予权限。
+            </small>
+          </label>
+          <button
+            class="button secondary"
+          >
+            修改密码
+          </button>
+          <button
+            class="button secondary"
+          >
+            退出登录
+          </button>
+        </section>
+        <div
+          class="page-heading"
+        >
+          <div>
+            <div
+              class="eyebrow"
+            >
+              UNION /
+              MODELS
+            </div>
+            <h1
+              id="page-title"
+            >
+              模型与 API
+            </h1>
+            <p
+              id="page-description"
+            >
+              为当前 AU 保存模型连接、授予有限调用并核对工具往返。
+            </p>
+          </div>
+          <div
+            class="connection"
+          >
+            <div>
+              <span
+                class="dot green"
+              />
+              <span
+                id="connection-label"
+              >
+                已连接本机服务
+              </span>
+            </div>
+            <small
+              id="last-updated"
+            >
+              最近更新 10:57:18
+            </small>
+          </div>
+        </div>
+        <div
+          id="view"
+        >
+          <div
+            class="governance-workspace core-models"
+          >
+            <section
+              class="model-intro"
+            >
+              <div>
+                <h2>
+                  接入模型，核对实际工具能力
+                </h2>
+                <p>
+                  保存连接、授予有限调用、选择资料验证，再独立决定是否采用默认。每一步都有原请求和结果记录。
+                </p>
+                <span
+                  class="security-note"
+                >
+                  密钥不回显 · 保存不推理 · 只读取所选文本
+                </span>
+              </div>
+            </section>
+            <div
+              class="model-refresh"
+            >
+              <button
+                class="button secondary"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-refresh-cw"
+                  fill="none"
+                  height="15"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="15"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"
+                  />
+                  <path
+                    d="M21 3v5h-5"
+                  />
+                  <path
+                    d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"
+                  />
+                  <path
+                    d="M8 16H3v5"
+                  />
+                </svg>
+                刷新模型记录
+              </button>
+            </div>
+            <section
+              class="card "
+            >
+              <div
+                class="card-heading"
+              >
+                <h2>
+                  模型记录暂不可用
+                </h2>
+              </div>
+              <p
+                role="status"
+              >
+                正在读取当前 AU 的模型连接…
+              </p>
+              <a
+                class="button secondary"
+                data-discover="true"
+                href="/overview?organization=core-au"
+              >
+                前往 AU 与治理
+              </a>
+            </section>
+          </div>
+        </div>
+        <button
+          class="button secondary"
+          data-command="create_v1"
+          title="创建 AU"
+        >
+          创建另一个 AU
+        </button>
+        <div
+          class="legacy-creation"
+        >
+          <p>
+            旧版试验继续使用原有运行时；小说公司保留独立的兼容入口。
+          </p>
+          <button
+            class="button secondary"
+            data-command="create"
+            disabled=""
+            title="旧版操作需要受权发起人会话"
+          >
+            旧版兼容试验（含小说）
+          </button>
+        </div>
+        <footer
+          class="data-footer"
+        >
+          <details>
+            <summary>
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-shield-check"
+                fill="none"
+                height="13"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="13"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"
+                />
+                <path
+                  d="m9 12 2 2 4-4"
+                />
+              </svg>
+              数据与运行记录
+            </summary>
+            <span
+              id="snapshot-meta"
+            >
+              core-au · 状态 v12 · 章程 v1 · 本地治理
+            </span>
+          </details>
+          <span>
+            读取和刷新不派发工作
+          </span>
+        </footer>
+      </main>
+    </div>
+  </div>
+</body>
+   ✓ model identity, scope and input lifetime > retains draft while offline and never queues a command for reconnection  974ms
+   ✓ model identity, scope and input lifetime > clears a draft after permissions change and does not reopen it when access returns  644ms
+   ✓ model identity, scope and input lifetime > erases credentials immediately when preflight learns that read access was denied  558ms
+   ✓ model identity, scope and input lifetime > rejects a response for a different AU, then can recover on an explicit matching refresh  430ms
+   ✓ model identity, scope and input lifetime > ignores an earlier successful read arriving after a newer permission denial  721ms
+   ✓ model identity, scope and input lifetime > rejects a changed cookie identity before any command is posted  638ms
+   ✓ model identity, scope and input lifetime > does not expose a late command result to a different principal  714ms
+   ✓ model identity, scope and input lifetime > clears draft and previous results on a new service instance  421ms
+   ✓ model identity, scope and input lifetime > clears form on AU switch and never displays an old AU response as the new one  585ms
+   ✓ model identity, scope and input lifetime > renders model output as plain text and does not claim a stale revision is verified 266ms
+ ✓ src/features/models/ModelsRecovery.test.tsx (10 tests) 9647ms
+   ✓ model original-request recovery > never replays a lost save and only queries the original receipt  2598ms
+   ✓ model original-request recovery > treats a concrete validation error as rejected input instead of unknown  1130ms
+   ✓ model original-request recovery > keeps an unmatched response unknown without displaying another AU receipt  911ms
+   ✓ model original-request recovery > retains own receipt lookup after AU read access is denied and clears former output  374ms
+   ✓ model original-request recovery > recovers after a service restart using the original issuer and ID  311ms
+   ✓ model original-request recovery > reconciles a saved unknown operation explicitly without resubmitting credentials  829ms
+   ✓ model original-request recovery > keeps other connections usable when one verification is unknown  964ms
+   ✓ model original-request recovery > allows the current governor to request local stop while governance is unavailable  893ms
+   ✓ model original-request recovery > lets an unavailable current governor disable a connection while enable and default stay unavailable  923ms
+   ✓ model original-request recovery > does not submit if the dialog is cancelled while checking current identity  705ms
+ ✓ src/app/work-route.test.tsx (9 tests) 1675ms
+   ✓ AI work on the actual core tasks route > exposes explicit automatic preparation on the actual core route without manual bookkeeping  526ms
+ ✓ src/pages/RuntimeObservation.test.tsx (11 tests) 896ms
+ ✓ src/app/workspace.test.tsx (4 tests) 1155ms
+   ✓ workspace organization transitions > keeps the session and draft mounted while withholding old organization data and writes  481ms
+   ✓ workspace organization transitions > rechecks identity when session_scope changes  386ms
+ ✓ src/pages/Gateways.test.tsx (3 tests) 818ms
+ ✓ src/features/work/WorkStream.test.tsx (20 tests) 25769ms
+   ✓ shows the original work request output with read-only eligibility and never dispatches or stores text  328ms
+   ✓ continues checking read permission after terminal output  3082ms
+   ✓ rechecks authority after the browser aggregate text cap  3578ms
+   ✓ rechecks authority after the browser aggregate events cap  8229ms
+   ✓ keeps truncated body loading stopped through a temporary metadata read failure and recovery  3123ms
+   ✓ clears truncated output after a later 401 instead of retaining it forever  3086ms
+   ✓ clears truncated output after a later 403 instead of retaining it forever  3093ms
+ ✓ src/features/commands/receipts.test.ts (5 tests) 37ms
+ ✓ src/pages/ModelServiceConnections.test.tsx (2 tests) 453ms
+   ✓ binds adoption to selected account, model and AU; lost reply blocks a second write  391ms
+ ✓ src/api/client.test.ts (3 tests) 44ms
+ ✓ src/app/url-state.test.tsx (1 test) 315ms
+   ✓ URL filter state > composes rapid edits without restoring a cleared search and preserves organization scope  313ms
+ ✓ src/features/work/ResultList.test.tsx (2 tests) 185ms
+ ✓ src/pages/Tasks.test.tsx (1 test) 156ms
+ ✓ src/api/work-command.test.ts (1 test) 10ms
+ ✓ src/features/governance/Governance.test.tsx (53 tests) 29040ms
+   ✓ governance user journey > keeps account-level AU creation available from a governed overview page without governing commands  922ms
+   ✓ governance user journey > keeps account-level AU creation available from a governed tasks page without governing commands  460ms
+   ✓ governance user journey > separates the original root from current authority and renders only server-provided actions  302ms
+   ✓ governance user journey > previews and adopts a single-principal exit procedure without activating business  693ms
+   ✓ governance user journey > configures an explicit successor principal without treating its name as authority  628ms
+   ✓ governance user journey > previews and explicitly submits acknowledge_recovery using the current server version  427ms
+   ✓ governance user journey > previews and explicitly submits activate_governance using the current server version  641ms
+   ✓ governance user journey > previews and explicitly submits renew_governance using the current server version  528ms
+   ✓ governance user journey > previews and explicitly submits accept_governance using the current server version  537ms
+   ✓ governance user journey > previews and explicitly submits recover_governance using the current server version  503ms
+   ✓ governance user journey > previews and explicitly submits exit_governance using the current server version  835ms
+   ✓ governance user journey > nominates another core identity and offers explicit cancellation of an existing nomination  663ms
+   ✓ governance user journey > revises only the displayed charter fields while preserving other stored fields  607ms
+   ✓ governance user journey > retains a new goal draft and focus across same-principal renewal and polling  716ms
+   ✓ controlled responsibility forms > appoints a human member with separate generated member and responsibility IDs  756ms
+   ✓ controlled responsibility forms > uses existing record choices for 'update_appointment' and sends its exact responsibility payload  525ms
+   ✓ controlled responsibility forms > uses existing record choices for 'create_work' and sends its exact responsibility payload  625ms
+   ✓ controlled responsibility forms > uses existing record choices for 'update_work' and sends its exact responsibility payload  590ms
+   ✓ controlled responsibility forms > uses existing record choices for 'grant_mandate' and sends its exact responsibility payload  683ms
+   ✓ controlled responsibility forms > uses existing record choices for 'revoke_mandate' and sends its exact responsibility payload  723ms
+   ✓ controlled responsibility forms > uses existing record choices for 'handoff_responsibility' and sends its exact responsibility payload  568ms
+   ✓ controlled responsibility forms > uses existing record choices for 'begin_local_action' and sends its exact responsibility payload  474ms
+   ✓ controlled responsibility forms > uses existing record choices for 'submit_local_result' and sends its exact responsibility payload  436ms
+   ✓ controlled responsibility forms > uses existing record choices for 'accept_local_result' and sends its exact responsibility payload  457ms
+   ✓ governance command recovery boundaries > keeps an editable draft after a command endpoint 401 with code undefined  577ms
+   ✓ governance command recovery boundaries > keeps an editable draft after a command endpoint 401 with code not_authenticated  558ms
+   ✓ governance command recovery boundaries > retains the original request when identity verification fails with 401/'not_authenticated' after a successful POST  636ms
+   ✓ governance command recovery boundaries > retains the original request when identity verification fails with 401/undefined after a successful POST  646ms
+   ✓ governance command recovery boundaries > retains the original request when identity verification fails with 409/'incompatible_state' after a successful POST  611ms
+   ✓ governance command recovery boundaries > treats an explicit unsupported adoption as a known rejection and keeps an editable draft  478ms
+   ✓ governance command recovery boundaries > recognizes a rejected original receipt even when the server version is lower than its requested base  499ms
+   ✓ governance command recovery boundaries > preserves rejected input and requires a new preview after a server version rejection  564ms
+   ✓ governance command recovery boundaries > keeps an unknown original ID and only queries it without persisting or replaying its content  607ms
+   ✓ governance command recovery boundaries > keeps query errors next to the original request and never offers a replay  568ms
+   ✓ governance command recovery boundaries > does not create a second request for the same action after closing an unknown result  790ms
+   ✓ governance command recovery boundaries > keeps an unknown action local and lets a different work proceed with its own request  1122ms
+   ✓ governance command recovery boundaries > recovers an original request after reload onto a new service instance with the same principal  795ms
+   ✓ governance command recovery boundaries > refreshes evidence-only rejection while retaining the unadopted content and its original request  549ms
+   ✓ governance command recovery boundaries > does not send when browser request-identity storage is unavailable  489ms
+   ✓ governance command recovery boundaries > stops before POST when the current AU version changed after preview  517ms
+   ✓ governance command recovery boundaries > stops a preflight when principal_id changes before the workspace poll  532ms
+   ✓ governance command recovery boundaries > stops a preflight when service_instance changes before the workspace poll  498ms
+   ✓ governance command recovery boundaries > does not send a command when the user cancels a pending identity preflight  501ms
+   ✓ governance command recovery boundaries > rejects an unrelated receipt with a mismatched id  520ms
+   ✓ governance command recovery boundaries > rejects an unrelated receipt with a mismatched kind  553ms
+   ✓ governance command recovery boundaries > rejects an unrelated receipt with a mismatched organization_id  374ms
+   ✓ governance command recovery boundaries > lets the original issuer query its own receipt after losing current AU access  303ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/models/ModelsIdentity.test.tsx > model identity, scope and input lifetime > keeps draft fields and keyboard focus through refresh and same-principal renewal
+TestingLibraryElementError: Unable to find role="button" and name "添加模型连接"
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <a
+      class="skip"
+      href="#main"
+    >
+      跳转到正文
+    </a>
+    <aside
+      aria-label="工作台导航"
+      class="sidebar"
+    >
+      <a
+        class="brand"
+        data-discover="true"
+        href="/overview?organization=core-au"
+      >
+        <span
+          class="brand-symbol"
+        >
+          u
+        </span>
+        <span>
+          UNION
+          <small>
+            AI-UNION / AU
+          </small>
+        </span>
+      </a>
+      <label
+        class="workspace-switch"
+      >
+        <span
+          class="org-icon"
+        >
+          内
+        </span>
+        <span
+          class="workspace-select"
+        >
+          <small>
+            当前 AU
+          </small>
+          <select
+            aria-label="当前组织"
+            id="org-select"
+          >
+            <option
+              value="core-au"
+            >
+              内部记录 AU
+            </option>
+          </select>
+        </span>
+      </label>
+      <nav
+        id="navigation"
+      >
+        <div
+          class="nav-entry"
+        >
+          <div
+            class="nav-caption"
+          >
+            工作空间
+          </div>
+          <a
+            class="nav-button"
+            data-discover="true"
+            data-nav="overview"
+            href="/overview?organization=core-au"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-layout-dashboard"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="19"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect
+                height="9"
+                rx="1"
+                width="7"
+                x="3"
+                y="3"
+              />
+              <rect
+                height="5"
+                rx="1"
+                width="7"
+                x="14"
+                y="3"
+              />
+              <rect
+                height="9"
+                rx="1"
+                width="7"
+                x="14"
+                y="12"
+              />
+              <rect
+                height="5"
+                rx="1"
+                width="7"
+                x="3"
+                y="16"
+              />
+            </svg>
+            <span>
+              AU与治理
+            </span>
+          </a>
+        </div>
+        <div
+          class="nav-entry"
+        >
+          <a
+            class="nav-button"
+            data-discover="true"
+            data-nav="tasks"
+            href="/tasks?organization=core-au"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-list-checks"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="19"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M13 5h8"
+              />
+              <path
+                d="M13 12h8"
+              />
+              <path
+                d="M13 19h8"
+              />
+              <path
+                d="m3 17 2 2 4-4"
+              />
+              <path
+                d="m3 7 2 2 4-4"
+              />
+            </svg>
+            <span>
+              责任与工作
+            </span>
+          </a>
+        </div>
+        <div
+          class="nav-entry"
+        >
+          <div
+            class="nav-caption"
+          >
+            运行管理
+          </div>
+          <a
+            aria-current="page"
+            class="nav-button active"
+            data-discover="true"
+            data-nav="models"
+            href="/models?organization=core-au"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-cpu"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="19"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12 20v2"
+              />
+              <path
+                d="M12 2v2"
+              />
+              <path
+                d="M17 20v2"
+              />
+              <path
+                d="M17 2v2"
+              />
+              <path
+                d="M2 12h2"
+              />
+              <path
+                d="M2 17h2"
+              />
+              <path
+                d="M2 7h2"
+              />
+              <path
+                d="M20 12h2"
+              />
+              <path
+                d="M20 17h2"
+              />
+              <path
+                d="M20 7h2"
+              />
+              <path
+                d="M7 20v2"
+              />
+              <path
+                d="M7 2v2"
+              />
+              <rect
+                height="16"
+                rx="2"
+                width="16"
+                x="4"
+                y="4"
+              />
+              <rect
+                height="8"
+                rx="1"
+                width="8"
+                x="8"
+                y="8"
+              />
+            </svg>
+            <span>
+              模型与 API
+            </span>
+            <span
+              class="nav-tag"
+            >
+              配置
+            </span>
+          </a>
+        </div>
+        <div
+          class="nav-entry"
+        >
+          <a
+            class="nav-button"
+            data-discover="true"
+            data-nav="settings"
+            href="/settings?organization=core-au"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-settings"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="19"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"
+              />
+              <circle
+                cx="12"
+                cy="12"
+                r="3"
+              />
+            </svg>
+            <span>
+              章程与记录
+            </span>
+          </a>
+        </div>
+      </nav>
+      <div
+        class="sidebar-bottom"
+      >
+        <div
+          class="sidebar-footer"
+        >
+          <span
+            class="avatar tiny human"
+          >
+            人
+          </span>
+          <div>
+            <strong
+              id="role-label"
+            >
+              核心参与者
+            </strong>
+            <small>
+              本地工作空间 · 记录持久保存
+            </small>
+          </div>
+        </div>
+      </div>
+    </aside>
+    <div
+      class="workspace"
+    >
+      <header
+        class="topbar"
+      >
+        <div
+          class="breadcrumb"
+        >
+          <span>
+            工作空间
+          </span>
+          <span>
+            /
+          </span>
+          <strong
+            id="breadcrumb-page"
+          >
+            模型与 API
+          </strong>
+        </div>
+        <div
+          class="topbar-actions"
+        >
+          <span
+            class="source-label"
+            id="source-label"
+          >
+            模型接入记录
+          </span>
+          <button
+            class="button secondary compact"
+            id="refresh"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-refresh-cw"
+              fill="none"
+              height="15"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="15"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"
+              />
+              <path
+                d="M21 3v5h-5"
+              />
+              <path
+                d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"
+              />
+              <path
+                d="M8 16H3v5"
+              />
+            </svg>
+            刷新
+          </button>
+        </div>
+      </header>
+      <main
+        id="main"
+        tabindex="-1"
+      >
+        <section
+          class="identity-settings"
+        >
+          <h2>
+            账号与登录
+          </h2>
+          <p>
+            当前账号：participant
+          </p>
+          <label
+            class="identity-principal"
+          >
+            当前核心身份标识
+            <input
+              aria-label="当前核心身份标识"
+              readonly=""
+              value="ad0d511c-eac5-4acf-b92c-6100b3d55ea9"
+            />
+            <small>
+              用于提名和责任绑定；标识本身不授予权限。
+            </small>
+          </label>
+          <button
+            class="button secondary"
+          >
+            修改密码
+          </button>
+          <button
+            class="button secondary"
+          >
+            退出登录
+          </button>
+        </section>
+        <div
+          class="page-heading"
+        >
+          <div>
+            <div
+              class="eyebrow"
+            >
+              UNION /
+              MODELS
+            </div>
+            <h1
+              id="page-title"
+            >
+              模型与 API
+            </h1>
+            <p
+              id="page-description"
+            >
+              为当前 AU 保存模型连接、授予有限调用并核对工具往返。
+            </p>
+          </div>
+          <div
+            class="connection"
+          >
+            <div>
+              <span
+                class="dot green"
+              />
+              <span
+                id="connection-label"
+              >
+                已连接本机服务
+              </span>
+            </div>
+            <small
+              id="last-updated"
+            >
+              最近更新 10:57:18
+            </small>
+          </div>
+        </div>
+        <div
+          id="view"
+        >
+          <div
+            class="governance-workspace core-models"
+          >
+            <section
+              class="model-intro"
+            >
+              <div>
+                <h2>
+                  接入模型，核对实际工具能力
+                </h2>
+                <p>
+                  保存连接、授予有限调用、选择资料验证，再独立决定是否采用默认。每一步都有原请求和结果记录。
+                </p>
+                <span
+                  class="security-note"
+                >
+                  密钥不回显 · 保存不推理 · 只读取所选文本
+                </span>
+              </div>
+            </section>
+            <div
+              class="model-refresh"
+            >
+              <button
+                class="button secondary"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-refresh-cw"
+                  fill="none"
+                  height="15"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="15"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"
+                  />
+                  <path
+                    d="M21 3v5h-5"
+                  />
+                  <path
+                    d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"
+                  />
+                  <path
+                    d="M8 16H3v5"
+                  />
+                </svg>
+                刷新模型记录
+              </button>
+            </div>
+            <section
+              class="card "
+            >
+              <div
+                class="card-heading"
+              >
+                <h2>
+                  模型记录暂不可用
+                </h2>
+              </div>
+              <p
+                role="status"
+              >
+                正在读取当前 AU 的模型连接…
+              </p>
+              <a
+                class="button secondary"
+                data-discover="true"
+                href="/overview?organization=core-au"
+              >
+                前往 AU 与治理
+              </a>
+            </section>
+          </div>
+        </div>
+        <button
+          class="button secondary"
+          data-command="create_v1"
+          title="创建 AU"
+        >
+          创建另一个 AU
+        </button>
+        <div
+          class="legacy-creation"
+        >
+          <p>
+            旧版试验继续使用原有运行时；小说公司保留独立的兼容入口。
+          </p>
+          <button
+            class="button secondary"
+            data-command="create"
+            disabled=""
+            title="旧版操作需要受权发起人会话"
+          >
+            旧版兼容试验（含小说）
+          </button>
+        </div>
+        <footer
+          class="data-footer"
+        >
+          <details>
+            <summary>
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-shield-check"
+                fill="none"
+                height="13"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="13"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"
+                />
+                <path
+                  d="m9 12 2 2 4-4"
+                />
+              </svg>
+              数据与运行记录
+            </summary>
+            <span
+              id="snapshot-meta"
+            >
+              core-au · 状态 v12 · 章程 v1 · 本地治理
+            </span>
+          </details>
+          <span>
+            读取和刷新不派发工作
+          </span>
+        </footer>
+      </main>
+    </div>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <a
+      class="skip"
+      href="#main"
+    >
+      跳转到正文
+    </a>
+    <aside
+      aria-label="工作台导航"
+      class="sidebar"
+    >
+      <a
+        class="brand"
+        data-discover="true"
+        href="/overview?organization=core-au"
+      >
+        <span
+          class="brand-symbol"
+        >
+          u
+        </span>
+        <span>
+          UNION
+          <small>
+            AI-UNION / AU
+          </small>
+        </span>
+      </a>
+      <label
+        class="workspace-switch"
+      >
+        <span
+          class="org-icon"
+        >
+          内
+        </span>
+        <span
+          class="workspace-select"
+        >
+          <small>
+            当前 AU
+          </small>
+          <select
+            aria-label="当前组织"
+            id="org-select"
+          >
+            <option
+              value="core-au"
+            >
+              内部记录 AU
+            </option>
+          </select>
+        </span>
+      </label>
+      <nav
+        id="navigation"
+      >
+        <div
+          class="nav-entry"
+        >
+          <div
+            class="nav-caption"
+          >
+            工作空间
+          </div>
+          <a
+            class="nav-button"
+            data-discover="true"
+            data-nav="overview"
+            href="/overview?organization=core-au"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-layout-dashboard"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="19"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect
+                height="9"
+                rx="1"
+                width="7"
+                x="3"
+                y="3"
+              />
+              <rect
+                height="5"
+                rx="1"
+                width="7"
+                x="14"
+                y="3"
+              />
+              <rect
+                height="9"
+                rx="1"
+                width="7"
+                x="14"
+                y="12"
+              />
+              <rect
+                height="5"
+                rx="1"
+                width="7"
+                x="3"
+                y="16"
+              />
+            </svg>
+            <span>
+              AU与治理
+            </span>
+          </a>
+        </div>
+        <div
+          class="nav-entry"
+        >
+          <a
+            class="nav-button"
+            data-discover="true"
+            data-nav="tasks"
+            href="/tasks?organization=core-au"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-list-checks"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="19"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M13 5h8"
+              />
+              <path
+                d="M13 12h8"
+              />
+              <path
+                d="M13 19h8"
+              />
+              <path
+                d="m3 17 2 2 4-4"
+              />
+              <path
+                d="m3 7 2 2 4-4"
+              />
+            </svg>
+            <span>
+              责任与工作
+            </span>
+          </a>
+        </div>
+        <div
+          class="nav-entry"
+        >
+          <div
+            class="nav-caption"
+          >
+            运行管理
+          </div>
+          <a
+            aria-current="page"
+            class="nav-button active"
+            data-discover="true"
+            data-nav="models"
+            href="/models?organization=core-au"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-cpu"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="19"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12 20v2"
+              />
+              <path
+                d="M12 2v2"
+              />
+              <path
+                d="M17 20v2"
+              />
+              <path
+                d="M17 2v2"
+              />
+              <path
+                d="M2 12h2"
+              />
+              <path
+                d="M2 17h2"
+              />
+              <path
+                d="M2 7h2"
+              />
+              <path
+                d="M20 12h2"
+              />
+              <path
+                d="M20 17h2"
+              />
+              <path
+                d="M20 7h2"
+              />
+              <path
+                d="M7 20v2"
+              />
+              <path
+                d="M7 2v2"
+              />
+              <rect
+                height="16"
+                rx="2"
+                width="16"
+                x="4"
+                y="4"
+              />
+              <rect
+                height="8"
+                rx="1"
+                width="8"
+                x="8"
+                y="8"
+              />
+            </svg>
+            <span>
+              模型与 API
+            </span>
+            <span
+              class="nav-tag"
+            >
+              配置
+            </span>
+          </a>
+        </div>
+        <div
+          class="nav-entry"
+        >
+          <a
+            class="nav-button"
+            data-discover="true"
+            data-nav="settings"
+            href="/settings?organization=core-au"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-settings"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="19"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"
+              />
+              <circle
+                cx="12"
+                cy="12"
+                r="3"
+              />
+            </svg>
+            <span>
+              章程与记录
+            </span>
+          </a>
+        </div>
+      </nav>
+      <div
+        class="sidebar-bottom"
+      >
+        <div
+          class="sidebar-footer"
+        >
+          <span
+            class="avatar tiny human"
+          >
+            人
+          </span>
+          <div>
+            <strong
+              id="role-label"
+            >
+              核心参与者
+            </strong>
+            <small>
+              本地工作空间 · 记录持久保存
+            </small>
+          </div>
+        </div>
+      </div>
+    </aside>
+    <div
+      class="workspace"
+    >
+      <header
+        class="topbar"
+      >
+        <div
+          class="breadcrumb"
+        >
+          <span>
+            工作空间
+          </span>
+          <span>
+            /
+          </span>
+          <strong
+            id="breadcrumb-page"
+          >
+            模型与 API
+          </strong>
+        </div>
+        <div
+          class="topbar-actions"
+        >
+          <span
+            class="source-label"
+            id="source-label"
+          >
+            模型接入记录
+          </span>
+          <button
+            class="button secondary compact"
+            id="refresh"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-refresh-cw"
+              fill="none"
+              height="15"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="15"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"
+              />
+              <path
+                d="M21 3v5h-5"
+              />
+              <path
+                d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"
+              />
+              <path
+                d="M8 16H3v5"
+              />
+            </svg>
+            刷新
+          </button>
+        </div>
+      </header>
+      <main
+        id="main"
+        tabindex="-1"
+      >
+        <section
+          class="identity-settings"
+        >
+          <h2>
+            账号与登录
+          </h2>
+          <p>
+            当前账号：participant
+          </p>
+          <label
+            class="identity-principal"
+          >
+            当前核心身份标识
+            <input
+              aria-label="当前核心身份标识"
+              readonly=""
+              value="ad0d511c-eac5-4acf-b92c-6100b3d55ea9"
+            />
+            <small>
+              用于提名和责任绑定；标识本身不授予权限。
+            </small>
+          </label>
+          <button
+            class="button secondary"
+          >
+            修改密码
+          </button>
+          <button
+            class="button secondary"
+          >
+            退出登录
+          </button>
+        </section>
+        <div
+          class="page-heading"
+        >
+          <div>
+            <div
+              class="eyebrow"
+            >
+              UNION /
+              MODELS
+            </div>
+            <h1
+              id="page-title"
+            >
+              模型与 API
+            </h1>
+            <p
+              id="page-description"
+            >
+              为当前 AU 保存模型连接、授予有限调用并核对工具往返。
+            </p>
+          </div>
+          <div
+            class="connection"
+          >
+            <div>
+              <span
+                class="dot green"
+              />
+              <span
+                id="connection-label"
+              >
+                已连接本机服务
+              </span>
+            </div>
+            <small
+              id="last-updated"
+            >
+              最近更新 10:57:18
+            </small>
+          </div>
+        </div>
+        <div
+          id="view"
+        >
+          <div
+            class="governance-workspace core-models"
+          >
+            <section
+              class="model-intro"
+            >
+              <div>
+                <h2>
+                  接入模型，核对实际工具能力
+                </h2>
+                <p>
+                  保存连接、授予有限调用、选择资料验证，再独立决定是否采用默认。每一步都有原请求和结果记录。
+                </p>
+                <span
+                  class="security-note"
+                >
+                  密钥不回显 · 保存不推理 · 只读取所选文本
+                </span>
+              </div>
+            </section>
+            <div
+              class="model-refresh"
+            >
+              <button
+                class="button secondary"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-refresh-cw"
+                  fill="none"
+                  height="15"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="15"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"
+                  />
+                  <path
+                    d="M21 3v5h-5"
+                  />
+                  <path
+                    d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"
+                  />
+                  <path
+                    d="M8 16H3v5"
+                  />
+                </svg>
+                刷新模型记录
+              </button>
+            </div>
+            <section
+              class="card "
+            >
+              <div
+                class="card-heading"
+              >
+                <h2>
+                  模型记录暂不可用
+                </h2>
+              </div>
+              <p
+                role="status"
+              >
+                正在读取当前 AU 的模型连接…
+              </p>
+              <a
+                class="button secondary"
+                data-discover="true"
+                href="/overview?organization=core-au"
+              >
+                前往 AU 与治理
+              </a>
+            </section>
+          </div>
+        </div>
+        <button
+          class="button secondary"
+          data-command="create_v1"
+          title="创建 AU"
+        >
+          创建另一个 AU
+        </button>
+        <div
+          class="legacy-creation"
+        >
+          <p>
+            旧版试验继续使用原有运行时；小说公司保留独立的兼容入口。
+          </p>
+          <button
+            class="button secondary"
+            data-command="create"
+            disabled=""
+            title="旧版操作需要受权发起人会话"
+          >
+            旧版兼容试验（含小说）
+          </button>
+        </div>
+        <footer
+          class="data-footer"
+        >
+          <details>
+            <summary>
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-shield-check"
+                fill="none"
+                height="13"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="13"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"
+                />
+                <path
+                  d="m9 12 2 2 4-4"
+                />
+              </svg>
+              数据与运行记录
+            </summary>
+            <span
+              id="snapshot-meta"
+            >
+              core-au · 状态 v12 · 章程 v1 · 本地治理
+            </span>
+          </details>
+          <span>
+            读取和刷新不派发工作
+          </span>
+        </footer>
+      </main>
+    </div>
+  </div>
+</body>
+ ❯ waitForWrapper ../../node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ open src/features/models/test-fixtures.tsx:330:32
+    328| }
+    329| export async function open(label: string) {
+    330|   fireEvent.click(await screen.findByRole('button', { name: label }));
+       |                                ^
+    331|   return screen.findByRole('dialog');
+    332| }
+ ❯ fillConnection src/features/models/test-fixtures.tsx:345:9
+ ❯ src/features/models/ModelsIdentity.test.tsx:27:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 28 passed (29)
+      Tests  1 failed | 362 passed (363)
+   Start at  10:56:52
+   Duration  41.88s (transform 5.07s, setup 50.79s, collect 40.49s, tests 149.42s, environment 143.00s, prepare 15.27s)
+
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path <WORKTREE>\web\console
+npm error workspace @union/console@0.1.0
+npm error location <WORKTREE>\web\console
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c vitest run

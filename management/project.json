@@ -1,6 +1,6 @@
 {
     "schema_version": 1,
-    "updated_at": "2026-11-11",
+    "updated_at": "2026-11-13",
     "wip_limit": 8,
     "modules": [
         {
@@ -2757,6 +2757,63 @@
                     "from": "candidate",
                     "to": "done",
                     "note": "显式记录本次文档与协调交付；不是在线看板双向同步，不更改其他历史卡。"
+                }
+            ]
+        },
+        {
+            "id": "U-110",
+            "title": "冻结完整V1组织体验及纠偏执行合同",
+            "priority": "P0",
+            "milestone": "G0",
+            "module": "console",
+            "status": "review",
+            "owner": "zbook-codex / codex/session-01a1d291-a349-77b0-b570-682e3102236d",
+            "role": "产品体验 / 交互 / 独立设计复核",
+            "acceptance": "完整VJ/UX旅程、40条及子条款映射、真实API与三个缺口、旧交互退役边界一致；独立复核通过并交付PR。Kanban子卡保留父级完整验收，文档不证明产品实现。",
+            "dependencies": [
+                "U-065"
+            ],
+            "blocker": null,
+            "started_at": "2026-11-13",
+            "updated_at": "2026-11-13",
+            "completion": null,
+            "claim": null,
+            "history": [
+                {
+                    "at": "2026-11-13T03:15:58.731Z",
+                    "actor": "codex/session-01a1d291-a349-77b0-b570-682e3102236d",
+                    "from": "review",
+                    "to": "review",
+                    "note": "显式记录本次已验证候选的交付检查点，非本地认领；在线review读回见evidence/U-110/review-readback.json。证据：evidence/U-110/README.md；准备PR。"
+                }
+            ]
+        },
+        {
+            "id": "U-118",
+            "title": "统一V1开发基线并退役旧本地派单和安装入口",
+            "priority": "P0",
+            "milestone": "G0",
+            "module": "management",
+            "status": "review",
+            "owner": "zbook-codex / codex/session-01a1d291-a349-77b0-b570-682e3102236d",
+            "role": "开发入口治理 / Python工程 / 独立代码复核",
+            "acceptance": "当前任务从rewrite分支按实时Kanban准入；旧Controller/Broker/installer不能新派发/本地认领完成/自动Git采用。原作业核对、未知预约和历史保留；严格TDD、独立复核、固定全量检查与PR交付。仓库验证不代表宿主采用。",
+            "dependencies": [
+                "U-077",
+                "U-109"
+            ],
+            "blocker": null,
+            "started_at": "2026-11-13",
+            "updated_at": "2026-11-13",
+            "completion": null,
+            "claim": null,
+            "history": [
+                {
+                    "at": "2026-11-13T03:15:58.731Z",
+                    "actor": "codex/session-01a1d291-a349-77b0-b570-682e3102236d",
+                    "from": "review",
+                    "to": "review",
+                    "note": "显式记录本次已验证候选的交付检查点，非本地认领；在线review读回见evidence/U-110/review-readback.json。证据：evidence/U-118/coordinator-review.md；准备PR。"
                 }
             ]
         }

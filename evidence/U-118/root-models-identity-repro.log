@@ -1,0 +1,14 @@
+
+> @union/console@0.1.0 test
+> vitest run src/features/models/ModelsIdentity.test.tsx
+
+
+ RUN  v3.2.7 <WORKTREE>/web/console
+
+ ✓ src/features/models/ModelsIdentity.test.tsx (11 tests) 2477ms
+   ✓ model identity, scope and input lifetime > keeps draft fields and keyboard focus through refresh and same-principal renewal  457ms
+
+ Test Files  1 passed (1)
+      Tests  11 passed (11)
+   Start at  11:00:17
+   Duration  6.56s (transform 1.11s, setup 437ms, collect 1.76s, tests 2.48s, environment 1.17s, prepare 286ms)

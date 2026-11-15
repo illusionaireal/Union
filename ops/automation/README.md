@@ -1,5 +1,8 @@
 # 自动开发调度
 
+2026-11-13：当前开发从最新 `origin/rewrite/charter-v1` 建任务分支，先读实时卡及关联合同；U-110的新产品体验见 `docs/product-design.md` / `docs/FRONTEND.md`。053和本地账本是父切片/历史依据，新卡不必已在旧表中。旧 `ops/dev-orchestrator` 已进入新派发退役范围，不得通过其本地任务写入流程执行V1卡。宿主注册recipe是复制品，当前运行副本/checkout/目标分支需各自读回，本文和仓库更新不证明宿主已采用。
+
+
 ## 2026-11-08 生效的交接规则
 
 当前运行态只以在线看板为准。pick-next 与 CLI/MCP 共用客户端；只续做实际 user.id 自己的 progress/review，ready 候选必须无人认领、前置完成，blocked 计入 WIP。无在线配置就明确失败。
@@ -58,16 +61,16 @@ goose schedule remove --schedule-id union-autodev    # 停止自动推进
 - 调度器运行在 goose 进程内，需要 goose 保持运行（桌面端启动时已带 `--enable-scheduler`）。goose 关闭时不会触发。
 - `add` 会把 recipe 复制到 goose 的 `data\scheduled_recipes\` 存储；**修改仓库里的 yaml 后需重新 `add`** 才生效。
 
-## 每轮行为
+## 当前每轮行为（2026-11-13）
 
 1. `node ops/automation/pick-next.mjs` 选卡：`all_v1_done` → 直接结束；`next=null` → 空转结束（不写任何东西）；否则取 `next`。
 2. 在制卡（`progress`/`review`）优先续做，避免边做边开新卡推高在制数。
-3. 读卡要求 → RED→GREEN→重构 → 跑测试与 `check:management` → 提交推送 `rewrite/charter-v1`。
+3. 读实时卡/消费契约/完整旅程 → RED→GREEN→重构 → 跑相关检查 → 提交推送个人任务分支并开PR到 `rewrite/charter-v1`。
 4. 即时同步：卡片评论、`claim`/`move`/`record`（每次写前读回最新 `version`，HTTP 200 才确认）、`management:render`。
 
-## 边界
+## 当前执行边界（2026-11-13）
 
-允许：读代码文档、写测试与实现、跑本地测试、提交推送 `rewrite/charter-v1`、更新主账/在线卡/视图。
+允许：按实际在线认领读写本卡代码/测试、跑本地检查、提交推送个人任务分支并开PR到 `rewrite/charter-v1`、同步在线卡与正式交付证据。只有协调者按当前head验证后集成；不直接推集成分支。
 
 禁止：部署、真实资金、生产数据迁移、改 `main`/`dev`、`git add -A`（工作区有历史未跟踪文件）、覆盖他人未提交工作、伪造证据、把密钥写入仓库/卡片/日志。真实验收按 `docs/FORMAL_DEVELOPMENT.md` 分级，不因自动提交而升级。
 

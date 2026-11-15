@@ -1,19 +1,16 @@
-"""Root-owned, local Unix-socket broker. No arbitrary argv, paths or models from clients.
+"""Root-owned local broker for existing job inspection only (Python 3.8+).
 
-Python 3.8 compatible for DSM. Install outside the target repo; configuration is
-root-owned. Each job is a named, retained container, so controller/SSH restarts
-do not kill it. Workers never see the socket, controller state, or host root.
+New starts and not-started resolution are retired. Original named containers and
+receipts remain available for polling; disappearance is an unknown outcome.
 """
 from __future__ import annotations
 import argparse
-import hashlib
 import json
 import os
 from pathlib import Path
 import re
 import socketserver
 import subprocess
-import time
 
 
 def docker(*args, check=True):
@@ -26,100 +23,24 @@ def docker(*args, check=True):
 class Broker:
     def __init__(self, config):
         self.c = config
-        self.jobs = Path(config['broker_jobs'])
-        self.jobs.mkdir(parents=True, exist_ok=True, mode=0o700)
-        self.repository_id = hashlib.sha256(str(Path(config['repository']).resolve()).encode()).hexdigest()
+        self.jobs = Path(config['broker_jobs']).resolve()
 
     def request(self, req):
+        if req.get('action') != 'poll':
+            raise RuntimeError('Legacy broker starts and not-started resolution are retired; only original job polling is supported. Use scripts/kanban-operations.mjs for new development.')
         jid = req.get('job_id', '')
-        if not re.fullmatch(r'[a-f0-9]{32}', jid):
+        if not isinstance(jid, str) or not re.fullmatch(r'[a-f0-9]{32}', jid):
             raise ValueError('invalid job identity')
         directory = self.jobs / jid
+        path = directory / 'job.json'
+        if directory.is_symlink() or directory.resolve().parent != self.jobs or path.is_symlink():
+            raise ValueError('unsafe original job path')
+        if not path.is_file():
+            raise ValueError('unknown original job')
+        receipt = json.loads(path.read_text(encoding='utf-8'))
         name = 'uniondev-' + jid
-        if req['action'] == 'start':
-            active = docker('ps', '-q', '--filter', 'label=union-dev.repository=' + self.repository_id).stdout.strip()
-            if active:
-                raise ValueError('original repository job is still running')
-            for previous in self.jobs.glob('*/job.json'):
-                if json.loads(previous.read_text()).get('phase') == 'reserved':
-                    raise ValueError('reserved original job requires reconciliation')
-            directory.mkdir(mode=0o700)  # Existing identity is never replayed.
-            role = req.get('role')
-            if role not in ('planner', 'worker', 'reviewer', 'validator', 'probe_astra', 'probe_sol', 'setup', 'chromium', 'finalize'):
-                raise ValueError('role not allowed')
-            validator = role in ('validator', 'chromium', 'finalize')
-            ro = role in ('planner', 'reviewer', 'probe_astra', 'probe_sol')
-            cmd = ['run', '-d', '--name', name, '--label', 'union-dev.job=' + jid,
-                   '--label', 'union-dev.repository=' + self.repository_id,
-                   '--user', '10002:10001', '--cap-drop', 'ALL', '--security-opt', 'no-new-privileges',
-                   '--read-only', '--pids-limit', '512', '--memory', '4g', '--cpu-shares', '512',
-                   '--tmpfs', '/tmp:rw,exec,nosuid,size=1g,uid=10002,gid=10001',
-                   '--tmpfs', '/run/union:rw,exec,nosuid,size=128m,uid=10002,gid=10001',
-                   '--shm-size', '256m', '--workdir', '/repo', '-e', 'HOME=/tmp',
-                   '-e', 'UNION_PYTHON=/repo/.venv/bin/python',
-                   '-e', 'UNION_CHROMIUM_PATH=/usr/bin/chromium',
-                   '-e', 'GIT_CONFIG_COUNT=1', '-e', 'GIT_CONFIG_KEY_0=safe.directory', '-e', 'GIT_CONFIG_VALUE_0=/repo',
-                   '-v', self.c['repository'] + ':/repo' + (':ro' if ro else ':rw'),
-                   '-v', self.c['repository'] + '/.git:/repo/.git:ro']
-            if validator:
-                cmd += ['--network', 'none']
-            if role == 'finalize':
-                argv = ['sh', '-ec', 'node scripts/project-management.mjs render; node scripts/project-management.mjs check']
-            elif role == 'validator':
-                profile = self.c['test_profiles'].get(req.get('profile'))
-                index = req.get('index')
-                if not profile or type(index) is not int or not 0 <= index < len(profile):
-                    raise ValueError('test profile/index not allowed')
-                argv = profile[index]
-            elif role == 'setup':
-                # Explicit installer action only. Never accepted from a model plan.
-                argv = ['sh', '-ec', 'npm ci --ignore-scripts; python3 -m venv .venv; .venv/bin/pip install -r requirements-harness.lock -e .; npm run build:console']
-            elif role == 'chromium':
-                argv = ['node', '-e', "const {chromium}=require('playwright-core'); (async()=>{const b=await chromium.launch({executablePath:'/usr/bin/chromium',headless:true,args:['--no-sandbox']}); const p=await b.newPage(); await p.setContent('<title>union-smoke</title>'); if(await p.title()!=='union-smoke')throw Error('title'); await b.close(); console.log('CHROMIUM_START_STOP_PASS')})().catch(e=>{console.error(e);process.exit(1)})"]
-            else:
-                if not self.c.get('sandbox_verified') or not self.c.get('credentials_isolation_verified'):
-                    raise ValueError('model execution disabled: sandbox/credential isolation not verified')
-                prompt = req.get('prompt', '')
-                if not isinstance(prompt, str) or len(prompt.encode()) > 800000:
-                    raise ValueError('prompt size')
-                (directory / 'prompt').write_text(prompt, encoding='utf-8')
-                os.chmod(directory, 0o755)
-                os.chmod(directory / 'prompt', 0o444)
-                cmd += ['-v', str(directory) + ':/input:ro', '-v', self.c['auth_directory'] + ':/auth:ro']
-                model = 'gpt-6.1-sol' if role in ('worker', 'probe_sol') else 'gpt-6-astra'
-                argv = ['sh', '-ec', 'umask 077; mkdir -p /run/union/codex; cp /auth/auth.json /run/union/codex/auth.json; export CODEX_HOME=/run/union/codex; umask 002; exec "$@" < /input/prompt', 'union-dev',
-                        'codex', '-a', 'never', 'exec', '--model', model, '--sandbox',
-                        'read-only' if ro else 'workspace-write', '--json', '-']
-            if role == 'validator' and argv[:2] == ['npm', 'run'] and argv[2:] in (['test:browser'], ['test:gateways']):
-                # Chromium reports navigator.onLine=false with a loopback-only NIC.
-                # Dedicated internal bridge has no host IPv4 address; never attach
-                # a validation job to the default/production bridge for this check.
-                network = json.loads(docker('network', 'inspect', 'union-dev-validation').stdout)[0]
-                if (not network['Internal'] or network['Driver'] != 'bridge' or network['EnableIPv6']
-                        or network['Id'] != self.c.get('validation_network_id') or network.get('Containers')
-                        or network['Options'].get('com.docker.network.bridge.inhibit_ipv4') != 'true'):
-                    raise ValueError('isolated browser network policy missing')
-                at = cmd.index('--network')
-                cmd[at + 1] = 'union-dev-validation'
-            receipt = {'job_id': jid, 'role': role, 'created': time.time(), 'container': name,
-                       'phase': 'reserved', 'argv': argv, 'image': self.c['image']}
-            (directory / 'job.json').write_text(json.dumps(receipt), encoding='utf-8')
-            result = docker(*cmd, self.c['image'], *argv)
-            receipt.update(phase='started', container_id=result.stdout.strip())
-            (directory / 'job.json').write_text(json.dumps(receipt), encoding='utf-8')
-            return receipt
-        if req['action'] == 'resolve_not_started' and (directory / 'job.json').exists():
-            docker('version', '--format', '{{.Server.Version}}')
-            check = docker('inspect', name, check=False)
-            if check.returncode == 0 or 'No such object' not in check.stderr:
-                raise ValueError('cannot prove container was not created')
-            receipt = json.loads((directory / 'job.json').read_text())
-            receipt.update(phase='resolved_not_started', resolution='Explicit inspection confirmed no original container')
-            (directory / 'job.json').write_text(json.dumps(receipt))
-            return receipt
-        if req['action'] != 'poll' or not (directory / 'job.json').exists():
-            raise ValueError('unknown action/job')
-        receipt = json.loads((directory / 'job.json').read_text())
+        if receipt.get('job_id') != jid or receipt.get('container') != name:
+            raise ValueError('original job identity mismatch')
         p = docker('inspect', name, check=False)
         if p.returncode:
             return dict(receipt, state='unknown')
@@ -129,7 +50,7 @@ class Broker:
         state = details['State']
         if not state['Running']:
             receipt['phase'] = 'complete'
-            (directory / 'job.json').write_text(json.dumps(receipt), encoding='utf-8')
+            path.write_text(json.dumps(receipt), encoding='utf-8')
         logs = docker('logs', name, check=False)
         return dict(receipt, state='running' if state['Running'] else 'exited',
                     exit_code=state['ExitCode'], oom_killed=state['OOMKilled'],
@@ -138,10 +59,10 @@ class Broker:
 
 
 def main():
-    p = argparse.ArgumentParser()
+    p = argparse.ArgumentParser(description='Poll existing historical jobs; all new starts are retired.')
     p.add_argument('config')
     args = p.parse_args()
-    cfg = json.loads(Path(args.config).read_text())
+    cfg = json.loads(Path(args.config).read_text(encoding='utf-8'))
     broker = Broker(cfg)
 
     class Handler(socketserver.StreamRequestHandler):

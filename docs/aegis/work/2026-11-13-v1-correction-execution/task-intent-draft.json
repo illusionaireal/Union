@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "aegis.schema.v0",
+  "requestedOutcome": "重新审查偏离 Chapter V1 的开发，先在 Kanban 提出修正，再派单执行。",
+  "goal": "续接 U-109，交付 U-110 体验合同及 U-118 错误开发入口退役，接续 U-111 新入口实施。",
+  "successEvidence": [
+    "40条与完整旅程、API/共享事实责任经独立复核",
+    "实际Kanban创建/版本化修改读回，父卡验收和原在制责任保留",
+    "旧派单及安装入口严格RED/GREEN、独立复核、固定全量检查",
+    "任务分支PR交付，下一实施卡实际认领后执行"
+  ],
+  "stopCondition": "当前切片按真实证据交付并接续已授权执行；未完成的完整产品和真实/持续出口保持明确。",
+  "nonGoals": [
+    "真实模型支出",
+    "宿主服务/已注册配方变更",
+    "部署和在线数据迁移",
+    "删除原工作区修改"
+  ],
+  "scope": "U-110设计/协调，U-118仓库退役；U-111按前置和独立合同接续。",
+  "changeKinds": [
+    "documentation",
+    "code-retirement",
+    "frontend-entry"
+  ],
+  "riskHints": [
+    "身份/原请求/历史证据保护",
+    "产品交互与任务来源漂移"
+  ]
+}

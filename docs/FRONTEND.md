@@ -1,153 +1,132 @@
-# React 组织工作台工程
+# V1 工作台工程契约
 
-> 当前产品依据为[Main Chapter V1](UNION_CHARTER_v1.0.md)、[PRD v1.0](PRD.md)与[053切片](../specs/053-union-rewrite/tasks.md)。本文件保留React工程说明；历史验收和旧界面描述不代表V1能力已经交付。
+2026-11-13，U-110 v1。产品行为以[完整体验契约](product-design.md)为准，规范来自[Chapter V1](UNION_CHARTER_v1.0.md)和[PRD](PRD.md)。本文冻结实现责任、消费边界和验收；基线 `d27d543` 仍是待替换的旧工作台，不能从本文推断新界面已实现。
 
-## 2026-11-11：整体交互重构与旧入口退役
+## 1. 当前核查与改造原则
 
-用户已要求退出旧 AU/旧 MVP 前端基线。U-110 先冻结完整产品信息架构与交互契约；U-111 负责默认路由、组织空间和创建；U-112 负责资源/模型就绪；U-113 负责目标到自动执行和成果的完整体验；U-114 负责治理与交接；U-115 负责已替换旧入口、孤儿前端代码与失效回归约束的最终退役。详见[审计](reviews/2026-11-11-kanban-charter-product-audit.md)与[布置证据](../evidence/U-109/README.md)。本节是新的开发约束，不声称新前端已经实现。
+现有 `app/App.tsx` 将首页导向 `/overview`；`app/Layout.tsx` 仍按 profile 分流，并将 governed AU 的多数路由交给同一个 GovernanceWorkspace。`app/workspace.tsx` 会默认选择列表首项。工作登记、执行准备、成果采用/交付各自有控件，完整用户意图尚未成为一个可靠的应用流程。
 
-每张实现卡在当次更新受影响路由和测试，不把错误的“新入口不存在”断言留到最终清理。保留授权、原命令查询、跨主体清理、unknown 预约、事实采用等正确行为；旧 CSS、Layout 七页、兼容页脚、ResponsibilityWorkspace 和通用命令表单均无永久保留义务。实际仍有调用者的组件按用户旅程逐个替换，不删除旧数据或历史证据，不引入第二套独立 HTML demo。
+保留 React/TypeScript/Vite、React Router、TanStack Query 和同源 Python 服务。保留有证据的命令/读取/恢复逻辑；不用复制旧页面或新建全局事实缓存来承接新 UX。UI 不写领域表、不调用私有 modeld、不取得比核心 API 更大的权限。
 
-新输入、反馈、局部恢复与监督由对应现有执行卡实现并接入同一体验。已开工的底层恢复修复可沿原合同继续；共享事务、路由与样式的变更顺序集成，不重复实现 run_loop 或另造事实写入者。
+新任务从最新 `origin/rewrite/charter-v1` 建任务分支，PR 到 `rewrite/charter-v1`。dev 是历史MVP/未来集成参考，不是本批 V1 开发基线。先读实时 Kanban 卡及消费契约，053 提供父切片依据；本地任务记录不替代在线认领。
 
-## 2026-11-09：U-097 原请求生成观测候选
+## 2. 路由与作用域的唯一所有者
 
-V1模型页增加已登记S02验证调用的文本观测，展开时按原事件序号读取，收起停止；
-断线和重开只查询原ID。当前governor及modeld授权分别核对，主体/服务/AU切换、
-撤权或响应身份错配清除内容，不向浏览器存储正文或native数据。
-这是共同事件投影的受控候选；各profile真实流式、长任务输入和S03工作流仍分别
-取证。身份/授权需另一工程角色复核，详见[合同](../specs/053-union-rewrite/s09-model-observation-contract.md)
-和[U-097证据](../evidence/U-097/README.md)。
+产品路径定义在 [product-design §2](product-design.md#2-信息架构与默认入口)。本节规定实现边界：
 
-## 2026-11-08：U-081 核心任务页的 AI 工作读取
+- `app/App.tsx` 拥有路由表；新组织空间入口与旧链接解析在此组合，不通过 Layout 重写各页渲染结果。
+- `app/workspace.tsx` 是当前身份/服务/AU选择的唯一前端所有者；URL中的明确AU优先，最近访问仅为经校验的导航提示，不是授权依据。不得再在新Layout、localStorage、列表首项各自维护一个权威选择。
+- 新的 V1 壳只拥有导航与布局。页面的工作、成果、资源、治理投影按职责读取，不把所有路由转成治理控制台；旧 shell 不再挂载于新入口。
+- `ai_union/server.py` 的同源静态路由与 React 一起更新。只匹配声明的路径模板，原静态资产/CSP/防穿越规则保持；未知 `/api`、文件路径或未声明URL不能兜底为HTML。
+- 旧URL只做经scope校验的replace映射。新路径的AU/Work/result越界、编码异常或不可读取应显式拒绝，不自动选另一组织，也不以legacy页面回退。
+- 首次/普通登录复用 `pages/Identity.tsx` 的核心边界。账户、AU治理、成员和平台管理不是同一角色；选组织不授予权限。
+- 未完成子页面的入口可以说明其明确能力缺口及对应责任，不渲染假数据或调用旧API冒充新能力。整体UX-10在所有必要页面接通后才验收。
 
-U-084 候选在核心任务页增加已登记工作的显式自动执行：无活动尝试时先“准备本轮执行”，再“运行 AI 工作”调用既有 run_loop。原请求身份在提交前保存，断网/刷新仅查询原回执，不重新派发；主体/服务/AU变化隔离状态，撤权清除旧内容。旧手工登记、预约和提交控件保持隐藏。长循环不使用通用五秒读取超时。候选及实际验证范围见 [U-084契约](../specs/053-union-rewrite/s03-page-execution-contract.md)和[证据](../evidence/U-084/README.md)，权限边界仍需另一工程角色复核，不能关闭父卡真实出口。
+## 3. 已有公开消费契约
 
-核心 `/tasks` 的治理路由复用 WorkPanel，只读显示已保存的 AI 工作、责任、预算、工具回执和成果下载，保留原责任工作区。查询按当前主体、服务实例和 AU 分隔，错配记录不显示；“刷新 AI 工作”只重读记录。准备态和 legacy 路由沿原行为，不暴露旧手工记账控件。自动派发控制、原请求恢复及真实成果验收仍由 U-067 的未完成出口承接，不能把本次读取接线称为自主工作闭环。契约见 [U-081](../specs/053-union-rewrite/s03-work-read-ui-contract.md)，验证及未完成条件见 [证据](../evidence/U-081/README.md)。
+下表只列 `d27d543` 已实际存在的入口；精确载荷仍由各原合同和 `api/client.ts`、`api/types.ts` 拥有。新增字段或行为由其实现卡先冻结，再严格TDD。
 
-## 2026-11-06：S02 模型与资料验证
+| 用户能力 | 现有HTTP入口/生产者 | 消费与边界 |
+| --- | --- | --- |
+| 认证/会话/AU目录 | `/api/auth/*`，`GET /api/session`；Identity/Console | AU列表来自session；没有已实现的裸 `GET /api/v1/aus` 集合接口。只显示合法V1项 |
+| 新建AU | `POST /api/commands`、`kind=create_v1`；CreationService | 沿[s01-contract](../specs/053-union-rewrite/s01-contract.md)；保存不推理，原创建ID/字节/回执保持 |
+| AU读取/创建回执 | `GET /api/v1/aus/:id`、`GET /api/v1/receipts?id=...` | 核对 `core.au.v1`、主体/AU、当前版本和支持范围；目录不是治理事实 |
+| 模型/工具准备 | `GET /api/v1/models?organization_id=...`、`POST /api/v1/models/commands` | ModelAccessService/Store负责配置、授权和修订；保存、测试、默认采用分开，不能暗用其他凭据 |
+| 模型观察/回执 | `GET /api/v1/models/events`、`GET /api/v1/models/receipts` | 仅所属原操作的事实；不是所有业务工作的观察入口 |
+| 工作读取/命令 | `GET /api/v1/work?organization_id=...`、`POST /api/v1/work/commands` | WorkService及同AU领域/存储；当前读取、新动作、采用资格分开；UI不自行改work状态 |
+| 工作原请求/输出 | `GET /api/v1/governance/receipts`、`GET /api/v1/work/events` | 当前工作回执复用governance读取；events绑定AU/Work/step_ref/cursor，刷新只查原请求 |
+| 成果正文/下载 | `GET /api/v1/work/results`；WorkService.result_content | 绑定AU、Work、result；校验正文摘要、归属和当前读取权；不能直接打开legacy Artifacts的数据假设 |
+| 治理决定/回执 | `POST /api/v1/governance/commands`及governance receipts | 沿S05有效规则及旧版本采用；前端预览不生效，显示名/宿主身份不授权 |
 
-2026-11-06：V1 `/models` 由 `features/models/` 维护，复用核心身份、工作区、同源客户端、预览与回执组件。保存、授权、文本工具验证和默认采用分开；原请求、输入/焦点、身份切换、断网和逐次用量均有实际浏览器证据。结构化诊断只展示受控说明及下一步，浏览器不保存密钥、资料正文或 native 数据。见 [S02 契约](../specs/053-union-rewrite/s02-contract.md)和 [058](../evidence/058-s02-model-tools/README.md)。
+`/api/snapshot`、`/api/artifact`、旧运行/平台订阅入口不作为新V1页面的回退数据源。平台增强能力可选且须有独立入口/权限，不成为核心准备的隐藏前置。
 
-直接 API 表单仍表示 Chat Completions；用户选定的 Responses 连接由宿主显式登记后，以本 AU 的精确 `modeld_grant` 采用，不根据模型名或失败切换协议。当前所选 Codex 连接认证失败，不能把受控浏览器 66 项通过称为真实模型已经接通。
+各页面可以组合合法投影，但不同API读取不宣称全局事务快照。同scope不同版本只说明读取时点不同；不得拼接成新的授权事实。写前沿命令owner重验其必要版本/修订，变化则保留输入并刷新。
 
-## 2026-11-05：S05 本地治理与责任交接
+## 4. 必须补合同的三个接缝
 
-登录页支持“登记核心参与者”，明确账户登记不授予任何 AU 权限。核心参与者可以创建自己的 AU，在账户处取得稳定主体标识，并以自己的登录会话确认被提名的治理/恢复职责。治理页分别显示初始根、当前治理者、最终决定方、保留事项、期限和失能程序；缺失身份等 `readiness_gaps` 直接展示。可用操作来自当前 AU 投影，服务端始终重新校验。
+### 4.1 U-112：业务资料可发现、可选择、可授权
 
-`features/governance` 拥有独立的有类型表单、预览和回执展示，`workspace` 读取版本化 AU 投影。21 种命令统一发送至 `/api/v1/governance/commands`，原回执仅用 `/api/v1/governance/receipts` 查询。注册沿 `/api/auth/register`；S01 创建和 legacy 命令保留各自协议。内部 Work/授权/本地尝试与文字结果可由人类参与者完成，页面明确本地治理激活尚未启用自主业务、模型或资源；操作步骤见 [工作台指南](CONSOLE.md)。
+现有S02表单上传文本只用于连接验证；`adapters/documents.py`读取宿主 `document-roots.json`，S03表单仍让人手填 `materials_root` 别名。U-112不能将两者视为已贯通。
 
-预览前重验主体、服务实例与 AU 版本；取消预检阻止 POST。身份变化清除旧 AU 内容，当前读取权与本人原回执查询分开。HTTP 200 的拒绝回执可持久恢复，明确格式/能力错误保留草稿；网络不确定保留原 ID，只提供查询。`effect=evidence_only` 解释为只收存迟到内容、未采用结果。表单/焦点、乱序响应、重启、四种宽度和键盘的实际证据见 [057](../evidence/057-s05-governance/README.md)。屏幕阅读器、实体设备和真实用户研究仍需各自证据。
+先冻结公开的资料发现/选择或导入合同：返回主体有权使用的稳定引用、名称、来源、范围、版本/摘要、读权限及缺口；不返回宿主绝对路径、密钥、私有配置。引用与AU/授权/版本绑定，资料内容由受控存储/工具读取。导入若存在，要明确大小/类型、持久归属、幂等和未采用内容处置；读取不建目录、不授新权或隐式迁移。
 
-## 2026-11-05：S01 准备态 AU 创建与重开
+沿现有资料adapter、ModelAccess与Work边界接入，只有一个逻辑写入者。现有公开API未提供这一完整能力；对应字段/错误码/事务/主机授权边界在该子卡实施前冻结。普通用户不承担编辑宿主文件的完成前提。
 
-普通创建经 `CommandForm` 发送 `create_v1`，要求服务声明 `core.au.v1` 且登录绑定稳定 principal；不兼容时保留输入并解释原因。`PreparedAU` 读取版本化 AU 接口，展示目标、初始治理主体、保存的章程与资源计划，明确自主业务未启用。旧组织和小说试验继续经显式兼容入口创建，不将其能力投射到准备态 AU。
+### 4.2 U-113：一次工作意图可靠推进到成果
 
-原请求 kind/ID 决定回执查询路径；unknown 不重新提交。POST 回执必须匹配原请求，采用回执时重新核对当前主体与服务实例；迟到响应不能导航另一账号。同主体的会话续期保留草稿和焦点，提交前验证有效主体；身份预检期间取消会阻止 POST。查询失败显示在当前结果区，200 字符合法名称可完整换行。
+旧合同中的“登记后再准备、准备后再运行、再分别采用和交付”是已交付工程范围，不是新产品的正常操作义务。
 
-[056](../evidence/056-s01-core-creation/README.md)记录 70 项前端检查、30 项实际 Chromium S01 检查与 71 项旧工作台检查，以及[独立评审](reviews/2026-11-05-s01-core-creation.md)。浏览器覆盖 1440/1024/390/320、键盘、断网输入保留、服务重启登录和原回执恢复；屏幕阅读器、真实用户研究和实体设备未在本片验收。服务端 profile/身份隔离由相应 Python 行为测试独立保护。
+U-113需在Work应用所有者内冻结完整意图的采用和恢复协议：当前主体/规则/资源/资料/模型版本校验，稳定Work/Member/Mandate/Definition/Execution关联，状态与后续意图可靠持久，调用前预约，原请求核对，结果采用资格和证据。沿原事务/执行所有者，不增加另一个通用Engine或浏览器调度器。
 
-## 2026-11-02：043身份与模型配置
+准备、运行、采用/交付的程序步骤可以分事务，但中间责任和唤醒依据持久可恢复。关闭页面、正常退出或会话到期不等于撤销已合法采用的运行授权；运行身份由受信持久意图和当前有效规则约束，不能长期借用浏览器 token，也不能因此绕过真正撤权。跨DB/文件不宣称全局原子；未知不盲重放。自动采用须来自已生效规则/明确授权；确属保留事项时形成可处理关注事项，不能让模型自批或默认把所有步骤交给人。
 
-IdentityBoundary在现有WorkspaceProvider内控制匿名入口（未设置账号时直接显示设置表单，已设置后显示登录页），AccountSettings提供首次认领/改密/退出；成功登录或退出重载页面以清理旧会话缓存。ModelConnectionFields复用原命令体系，新增导入、岗位/备用配置、成本分摊及资料事件。预览前refresh返回最新snapshot，服务端仍检查组织/权限/版本与幂等。`npm run test:model-access`使用私有临时服务、实际重启和回环替身，15项/320px验收。详情见[指南](MODEL_ACCESS.md)、[043](../evidence/043-usable-model-access/README.md)。
+修正 `WorkService.read()` 与 GovernanceWorkspace 的过期硬编码说明时按真实持久事实生成分层能力/进度；不将 `autonomous_business` 简单置true。正文阅读/版本/来源/下载与同一 AU/Work/result 绑定，成果详情路径包含 workId；同 AU 两个 Work 使用相同 resultId 时，直达、刷新、返回、下载不得串读。受控完整链由本卡证明，真实模型出口仍是U-085。
 
-## 2026-11-01：订阅认证故障修复（042）
+### 4.3 U-114：AI工作责任交接
 
-新增authorize_go/complete_chatgpt交互；native_available决定原生账号入口，key_available独立。回调只存request ID、不存输入，后端单次预约防跨ID重放；native attempt的明确终态可只读收口transport unknown。
+当前 `domain/responsibility.py` 的交接遍历 `state.work`，AI Work位于 `state.work_runtime`。同页展示不能证明已交接。
 
+先冻结AI工作交接的有权发起者、接收确认条件、旧有效版本、Member/Work/Mandate/Agent Definition关联、必要资料、旧执行资格及原预约/未知请求处置；治理身份移交和工作交接分开。由原治理/Work领域应用协作、同AU存储顺序整合，不以修改UI姓名代替交接，也不追认旧执行。
 
-## 2026-11-01 /models订阅区
-SubscriptionConnections.tsx/css/test复用工作台会话/卡片。session_scope为非秘密会话视图标识，分区查询和sessionStorage请求ID；mutation以scopeRef拒迟到写结果。API密钥不进浏览器持久缓存。固定同源/api/subscriptions、subscription-commands、subscription-receipts复用平台管理员与Host/Origin校验；原组织API连接保留。HTTPS演示部署及验收见041。
+工程合同与U-092/U-093的原请求恢复/新输入消费同一责任事实，冲突的存储/事务修改串行集成；U-096另验真实执行替换与持续责任窗口。任何缺口保留明确归属，不以旧人类文字交接fixture关闭AI验收。
 
+## 5. 通用组件与恢复状态
 
-010（2026-10-17）：总览显示尚未正式成立的筹建成员、任务和协调责任；`continued` 显示进度已保存。网页 API 测试使用两次调用验证工具往返。`npm start` 先检查/准备项目 `.venv` 与固定 Harness 依赖，再构建并启动；`UNION_PYTHON` 指定解释器时需预先安装 `requirements-harness.lock` 及项目。API 启动已接入 Deep Agents。
+- 继续由 `api/client.ts` 持有同源请求与类型化错误，读取可取消，写入不自动重试/离线排队。
+- 保留命令恢复的原 ID/kind/base_version/principal/service/AU/Work引用；保存失败不提交。不要持久化秘密、目标/资料正文或聊天。
+- 前端表单、预览、回执状态局部管理；TanStack Query只缓存读取，不作为正式事实或执行日志的新owner。轮询不重挂载表单。
+- 身份/AU/服务切换清除受保护投影、下载与迟到响应资格；新动作权限不足不等于失去合法读取/原回执查询。
+- UI处理200拒绝、确定失败、unknown、单独回执403、当前AU读取拒绝、版本变化和已确认后迟到网络失败；不能用一个error分支抹去已确认事实。
+- 正常呈现目标、成果、责任、原因、等待对象、时间与费用依据；底层事件流放进有权限的执行详情，不能作为组织进展的唯一界面。
 
-## 007：整体工作台与模型管理
+## 6. 文件所有权与交付顺序
 
-`/models` 是独立的模型 API 管理页，在空实例、通用组织及小说公司中均可发现。首次使用：总览创建公司 → 模型与 API 添加连接（API 根地址、API Key、模型 ID）→ 保存 → 明确确认一次连接测试 → 总览有限运行。编辑、默认切换、解绑均沿用受信命令和预览；保存不产生模型请求。
+| 卡 | 文件/所有者 | 同卡必须验证的用户结果 |
+| --- | --- | --- |
+| U-111 | `app/App.tsx`、`app/Layout.tsx`及新壳、`app/workspace.tsx`、身份/创建组件、`server.py`静态路由；一个路由/作用域owner | UX-01；新默认入口、无legacy默选、原创建/重开、深链接/返回/刷新 |
+| U-112 | `features/models/*`和能力资源页面；`application/model_access.py`、资料adapter和必要受控API | UX-02；配置连续可用，实际工作能消费所选资料 |
+| U-113 | `features/work/*`、成果详情、API/types；`application/work.py`、`work_dispatch.py`及原存储 | UX-03；持久意图到可读成果，状态与原请求恢复一致 |
+| U-114 | `features/governance/*`；原governance/responsibility/Work应用领域及必要存储 | UX-06；有权决定、AI原责任交接、撤权/未知保留 |
+| U-115 | 路由owner顺序清理旧Layout/pages/commands的无调用者部分；浏览器脚本和文档 | UX-10；完整新页面可达，旧UI/重复逻辑已退役 |
+| U-087–090/U-093 | 原Work/成果输入和反馈owner；新模块仅在责任实际迁入时创建 | UX-04；输入语义共用，可靠消费、真实下一版和事实纠正 |
+| U-091–096 | 原WorkRuntime/观察/资源owner，必要modeld容量；页面消费同一投影 | UX-05；局部并发、重启/输入/唤醒/监督与真实窗口 |
+| U-073/U-076/U-074 | 按既有切片的改进、组合、维护owner；由新壳提供一致入口 | UX-07/08/09；不复制另一个账本或流程系统 |
 
-统一布局在 `src/app/Layout.tsx`，新视觉层在 `src/workspace.css`；`SetupGuide` 与 `PageStats` 复用于所有页面。`src/pages/Models.tsx` 按服务实例、角色、组织与版本读取公开连接配置；`CommandOptions` 只传公开编辑初值，新增连接标识独立生成。`/` 重定向保留一次性 fragment，完成会话交换后清除，避免初始导航丢失启动凭据。
+文件名/目录组织是实施选择；正式持久化/领域owner和公共合同的变化先落原规格/ADR。没有实际代码责任迁入时不预建空包或AGENTS。权限/身份/资源变更采用前须另一工程角色复核。
 
-新增验证 `npm run test:workspace`，使用独立临时服务和回环模型替身。`UNION_WORKSPACE_EVIDENCE` 指定新结果目录。保留 `npm run check`、Python 全量、`npm run test:browser` 及 `npm run test:novel`；原七页与首次 API 表单的历史描述按本节更新。
+实施前置保持真实消费关系：U-111依U-110/S01/S05；U-112依新入口和S02；U-113依资源就绪及已有Work/成果接口；U-114依新入口和治理基础；U-115等新入口/资源/工作/治理全部接通后最终退役。需拆后端接缝时，子卡继承实际接口前置，不让子卡反依赖等待它的父卡。
 
-2026-10-16 更新：开发主分支 `dev`；小说公司首版已接入网页创建、模型 API 配置并绑定/连接测试、经营周期/章节/账本及缺失用量核对。操作入口按页面职责展示。最新范围和使用步骤见 [NOVEL_COMPANY.md](NOVEL_COMPANY.md)，下文旧迭代记录以此更新为准。
+U-113/U-114 开工前读取 U-092/U-093 的当前合同，冻结同一 Work/Execution/预约/新输入的事实所有权；存在消费关系时更新真实前置、按共享事务顺序集成。U-113 负责合法工作意图的连续采用和呈现，U-092 拥有原执行恢复，U-093 拥有长工作新输入，U-094 拥有条件唤醒；不复制恢复引擎，也不把整组未来卡笼统设为前置。
 
-更新：2026-10-14（北京时间）。正式前端位于 `web/console/`，使用 React、TypeScript、Vite、React Router 和 TanStack Query。产品范围见 [005](../specs/005-frontend-engineering/spec.md)，操作及本机会话见 [CONSOLE.md](CONSOLE.md)。
+2026-11-13 粒度复评已先写入 Kanban：U-112 保留完整能力就绪验收，U-119 实施模型/工具/资源流程，U-120 实施公开业务资料选择与同一 Work 读取；U-113 保留目标到成果完整验收，U-121 实施持久工作意图，U-122 实施正文阅读/下载；U-114 保留完整治理交接验收，U-123 实施治理决定交互，U-124 实施 AI Work 责任交接。父卡不再作为原八小时单体实施包；具体前置从实时卡读取。U-121/U-124 消费已登记的 U-092/U-093 合同，顺序集成共享事务。子卡均是贯通必要层次的用户结果；父卡仍需整体验收。固定处置证据见 [U-110 派单记录](../evidence/U-110/assignment-readback.json)。
 
-`dev` 已整合真实 API 后端。会话执行器包含 `api`；运行表单正确标识模型 API，仅允许选择已绑定的默认连接，并要求确认有限调用的未知费用。API 配置、绑定和连接测试先通过 [API_MODELS.md](API_MODELS.md) 的 CLI／HTTP 完成，专门的连接管理表单仍待接入。API 回执在设置页显示，恢复只保存请求身份。当前集成验证见 [dev](../evidence/dev-integration/README.md)。
+## 7. 旧路径退役矩阵
 
-## 安装、启动和验证
+| 旧责任 | 新owner/退出条件 | 必须保留的保障 |
+| --- | --- | --- |
+| Layout按profile把所有页面换成治理面板 | U-111新路由/作用域；各业务页由对应卡接入，U-115清除孤儿实现 | 身份隔离、能力缺口、合法读取与原回执 |
+| 旧创建/小说/legacy页脚与默认选首个组织 | V1组织入口；旧链接仅解析，不能启动旧创建 | S01稳定身份、重复/unknown、不迁移读取 |
+| 手工登记/准备/运行/结束/采用/交付成为日常流程 | U-113持久意图；保留适用治理决定与必要补救 | 版本、授权、绑定、预约、事实/采用分离、未知核对 |
+| 只有摘要/JSON下载的成果入口 | U-113正文阅读/版本与来源，受控下载 | 防脚本执行、完整性、AU/Work/当前读取权限 |
+| 只作用于旧文字工作的交接 | U-114真实AI责任契约 | 同一责任/必要资料/原预约/未知与旧执行失效 |
+| 检查强制兼容页脚、旧责任面板或分步按钮 | 各实现卡当次更新对应合同/断言，U-115最终全路径核对 | 等价或更强的权限、重复派发、恢复与可用性反例 |
 
-使用 `.nvmrc` 的 Node 24.19.0、npm 和 Python 3.11+。从仓库根目录运行：
+退役是代码/内部交互责任移除，不是生产数据删除。历史证据不改写。不能让旧路径长期承担相同业务owner，也不能先删正确保障来制造RED；新owner的行为证据决定切换。
 
-```sh
+## 8. 验证与运行
+
+固定工具链来自 `.nvmrc`、锁文件和开发说明；本项目当前Node为24.19.0。安装根workspace后构建生产前端，由Python同源服务提供。端口/真实地址/凭据使用宿主配置，不写仓库。
+
+```powershell
 npm ci --ignore-scripts
-npm start -- --root .union/console --port 8766 --open
+npm run check
+$env:PYTHONUTF8='1'
+$env:PYTHONIOENCODING='utf-8'
+.venv\Scripts\python.exe -m unittest discover -v
 ```
 
-首次安装后，一条启动命令先类型检查和构建，再启动原 Python 服务。Linux 默认 `python3`，Windows 默认 `python`；可用 `UNION_PYTHON` 指定解释器。已有构建时也可直接 `python3 -m ai_union.server --open`。构建目录不提交，新克隆必须安装并构建。
+行为采用严格TDD：先有意义RED，最小GREEN，必要重构和回归。每卡至少包含其公开HTTP/存储和实际路由用户结果；UI覆盖空/错/等待/unknown/撤权/重启、重复/丢响应不重派、四宽度与键盘、输入/焦点保留。权限/身份/金额的独立审阅不能由测试替代。
 
-开发模式：`npm run dev -- --root .union/dev-console --port 8766 --open`。首次构建后 Vite 持续重建，页面重新加载即可看到修改；所有请求仍由 Python 同源提供，无需配置第二个浏览器来源或放宽后端校验。`npm run dev:console` 单独启动构建观察器，供已启动 Python 的开发者使用。开发观察器不持续做类型检查，提交前必须执行完整检查。
+复用 `check_core_creation.cjs`、`s02-models-browser.cjs`、`s05-governance-browser.cjs` 及S03相关driver，按新合同改受影响断言；不得运行旧独立HTML生成流程或把旧兼容检查当新产品通过。U-115检查全部新路由和退役引用，不能只让页面构建通过。
 
-```sh
-npm run check                 # 历史计划、旧动作测试、前端类型/测试/构建
-python3 -m unittest discover -v
-python3 scripts/check_console_start.py
-UNION_CHROMIUM_PATH=/usr/bin/chromium UNION_PYTHON=python3 npm run test:browser
-```
-
-Playwright Core 随锁文件安装。Linux 使用现有 Chromium，或运行 `npx playwright-core install --with-deps chromium` 后不设置浏览器路径。Windows 默认使用标准 Chrome 安装路径，也可通过 `UNION_CHROMIUM_PATH` 指定。浏览器验证使用临时服务和 fixture，测试控制只走私有 stdin；不调用真实模型。
-
-`npm run format --workspace @union/console` 格式化，`npm run format:check --workspace @union/console` 检查格式。CI 的 Linux/Windows 工作流执行完整 `npm run check`，Linux 浏览器任务执行实际 HTTP 流程并上传证据。仓库 CI 配置已更新，远端执行结果需另查。
-
-## 源码职责
-
-| 目录／文件 | 职责 |
-| --- | --- |
-| `src/api/types.ts` | 会话、组织快照、工作、成果、命令与回执的 HTTP 类型 |
-| `src/api/client.ts` | 同源请求、取消和 5 秒超时；POST 无重试 |
-| `src/app/workspace.tsx` | 会话交换、组织范围、4 秒轮询、手动刷新、断网与乱序处理 |
-| `src/app/url-state.ts` | 路由参数更新，防止快速连续修改恢复旧筛选条件 |
-| `src/app/App.tsx`、`Layout.tsx` | 七页路由、导航、组织切换、连接与操作入口 |
-| `src/pages/` | 总览、成员、工作、成果、活动、资源、设置 |
-| `src/features/commands/` | 操作规则、表单、影响预览、提交与持久请求身份/回执查询 |
-| `src/features/details/` | 工作/成员/活动/回执详情、实际成果校验与下载 |
-| `src/components/` | 对话框、状态标签、卡片及记录列表 |
-| `ai_union/server.py` | 原会话和命令 API；构建资产及明确的 SPA 路由 |
-| `scripts/start-console.mjs` | 跨平台构建及 Python 启动入口 |
-
-## 架构和数据流
-
-```mermaid
-flowchart TB
-  Browser[React 七页工作台] --> Router[React Router / URL 筛选]
-  Browser --> Query[TanStack Query / 读取与轮询]
-  Browser --> Commands[表单 / 预览 / 明确提交]
-  Query --> API[Python 同源 HTTP API]
-  Commands --> API
-  Vite[Vite 生产构建] --> Static[web/console/dist]
-  Static --> Server[Python 静态页面与资源]
-  Server --> Browser
-  API --> Console[现有 Console 会话与命令层]
-  Console --> Runtime[现有 Engine / Runner / Executor]
-  Runtime --> SQLite[(SQLite / 组织与回执)]
-  Runtime --> Artifacts[版本化成果文件]
-```
-
-读取缓存按组织与活动 offset 分开；每次读取重新验证会话、服务实例和返回组织。取消过期请求，并检查快照序号，不用组织版本判断执行或事件有没有更新。切换到曾访问的组织时，可以显示缓存内容，但在新快照完成前禁止提交。
-
-断网立即显示过期、保留最后快照并禁止写操作。恢复联网、页面恢复可见以及手动刷新都会重新读取。查询配置 `networkMode: always`，避免把浏览器离线状态留成已连接；命令同样不进入恢复后自动执行的队列。
-
-操作表单在打开时固定初值，轮询更新不会覆盖编辑。预览绑定组织和基准版本，提交前再核对；服务器仍是权限和版本的最终校验者。POST 前只把请求身份写入 sessionStorage，不保存正文或凭据。超时/断线只查询原 ID，已确认终态不会被晚到响应覆盖。
-
-成果采用 React 纯文本呈现。读取和下载均由原后端校验文件；缓存不代替一次新的校验。浏览器不会接收主机路径、董事会密钥或私有执行日志。
-
-## 页面与交付边界
-
-正式路由：`/overview`、`/members`、`/tasks`、`/artifacts`、`/activity`、`/resources`、`/settings`。组织通过 `organization` 参数选择，工作页支持 `q/status/member`，活动页支持 `type/offset`；链接可刷新和使用浏览器前进后退。
-
-Python 只给明确页面路由返回 SPA，未知资源、源码和私有文件返回 404；页面和资产继续执行主机/来源限制。CSP 仅允许同源脚本、样式和请求，不使用内联执行授权。静态资源公开加载用于建立初始会话，API 保持原权限边界。
-
-2026-10-18：用户取消独立单 HTML 演示/报告。根目录四份 HTML、旧设计/单页源码和专用生成、部署、浏览器验收脚本已删除；正式 Vite 入口 `web/console/index.html` 继续使用。只在 `dev` 维护正式 React 工作台，历史证据和 Git 提交保留，见 [退役说明](site.md)。
-
-当前会话没有可调用的 Sites、Figma、Canva 工具，因此本轮交付是可运行仓库工程和设计实现，没有外部 Sites 站点或设计平台文件。真实模型、外部部署和经营闭环继续按各自条件验收。
+文档U-110验证40条/子条款映射、接口存在性、相对链接、所有权、依赖图和独立设计审查；不写镜像测试。工程、指定真实profile、完整用户验收、发布及持续窗口分别报告。操作/验证记录在各U证据目录，任务运行态只在Kanban，主账只同步正式交付与长期路线。
