@@ -81,3 +81,7 @@ python -m unittest discover -v
 `git archive ebd1382` → 全新目录（**无** node_modules、无工作区未跟踪文件）直接运行关键测试：
 `node --test tests/exit22-cancel-facts.test.ts tests/exit22-cancel-facts-wiring.test.ts tests/exit22-cancel-evidence.test.ts`
 → **18/18 通过**。说明交付 head 的关键断言不依赖工作区残留文件，复审者按导出目录即可复跑。
+## 追加：并入 PR90/PR91 后的完整 `npm run check`（head b80f342，2026-11-15 21:3x）
+
+- `check:management` **37/37**；Node 全套 **359/359**；前端 **29 文件 / 363 项**（tsc + build）。
+- 与同 head 的受影响 Python **36 OK（skip 1）** 合计：合并集成 `fa77339` 后双栈门禁仍全绿。
