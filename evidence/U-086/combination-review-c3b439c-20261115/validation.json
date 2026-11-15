@@ -1,0 +1,122 @@
+{
+  "candidate": "c3b439c20dc235d690118cdbea15c7bcf6037601",
+  "tree": "088839418834595a409e72dc14bbad68cb1b03d6",
+  "integration": "fa77339efbf07e9c9e41482a3376d4c8337f910a",
+  "actor": "Codex independent product reviewer session 01a1df9d-1a7a-7963-86be-3f9f41d14fa9",
+  "online_member_id": "89f4c1c1-329a-4b54-ad37-235cf061e9a8",
+  "snapshot_blobs_verified": 2410,
+  "source_unchanged": true,
+  "product_files": [
+    "ai_union/application/creation.py",
+    "ai_union/console.py"
+  ],
+  "product_diff": "+37/-4",
+  "same_product_as": "5545d4f",
+  "session_probes": {
+    "candidate": "c3b439c20dc235d690118cdbea15c7bcf6037601",
+    "source_manifest_sha256": "93da490be93543b13c7c1b7cd2170584c7e6d3effbbcad921de648b9f21e66a9",
+    "tests": 4,
+    "passed": 4,
+    "failures": [],
+    "errors": [],
+    "observations": [
+      {
+        "case": "healthy_control",
+        "http_status": 200,
+        "error_code": null,
+        "direct_exception_type": null,
+        "listed_profiles": [
+          "core_v1",
+          "legacy_v0"
+        ],
+        "catalog_and_state_unchanged": true
+      },
+      {
+        "case": "scope_control",
+        "http_status": 200,
+        "error_code": null,
+        "direct_exception_type": null,
+        "listed_profiles": [
+          "legacy_v0"
+        ],
+        "catalog_and_state_unchanged": true
+      },
+      {
+        "case": "legacy_profile_mismatch",
+        "http_status": 200,
+        "error_code": null,
+        "direct_exception_type": null,
+        "listed_profiles": [
+          "core_v1"
+        ],
+        "catalog_and_state_unchanged": true
+      },
+      {
+        "case": "core_locator_profile_mismatch",
+        "http_status": 200,
+        "error_code": null,
+        "direct_exception_type": null,
+        "listed_profiles": [
+          "core_v1"
+        ],
+        "catalog_and_state_unchanged": true
+      }
+    ],
+    "source_unchanged": true,
+    "real_model_calls": 0
+  },
+  "checks": {
+    "session": {
+      "exit": 0,
+      "sha256": "c6d30f4e00e370a9d146af6ff4590f0ddd5b438bd0e1e274ea32424fb0f454e6",
+      "tests": 4,
+      "passed": 4
+    },
+    "cancel": {
+      "exit": 0,
+      "sha256": "f3cb619ca04b694c12781c538752160b5921e4dc787b58bbc46ed69f9061002a",
+      "tests": 7,
+      "passed": 7
+    },
+    "affected": {
+      "exit": 0,
+      "sha256": "dedb5d1badd6d16093061c56646a91c33d0416fede13f72c22d0b3a626c13014",
+      "tests": 36,
+      "skipped": 1,
+      "failures": 0,
+      "errors": 0
+    },
+    "chrome": {
+      "exit": 0,
+      "sha256": "c0708924c49eac42092185fb7a464d5cb554d0c5e7c153a22d7b4c7991eebcc8",
+      "checks": 30,
+      "passed": 30
+    }
+  },
+  "prior_full_validation": {
+    "npm": {
+      "matched": true,
+      "bytes": 37024,
+      "sha256": "bf2529078cbc4336585ef2bcee332729eb160c7097f197e9f1000d4b632db7fa"
+    },
+    "python": {
+      "matched": true,
+      "bytes": 156480,
+      "sha256": "040c5c5d5b1224784acbdeb182a2ef1357576ee50aaa420ddea4dbe348b69193"
+    }
+  },
+  "ci": {
+    "integration": {
+      "checks": 7,
+      "success": 7
+    },
+    "candidate": {
+      "checks": 7,
+      "success": 7
+    }
+  },
+  "independent_decision": "Product changes accepted within controlled session-listing scope. Full combination remains gated by pull-request checks. PR92 fixture independently reviewed by DSH in Kanban457/458; no self-approval claimed.",
+  "real_acceptance": "not completed: historical before snapshot, original complete cancellation and explicit transport dispatch count remain unavailable; remote outcome unknown",
+  "real_model_calls": 0,
+  "production_changes": 0
+}
