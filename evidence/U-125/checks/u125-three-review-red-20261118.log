@@ -1,0 +1,1096 @@
+
+> @union/console@0.1.0 test
+> vitest run src/app/organization-entry.test.tsx src/features/governance/Governance.test.tsx
+
+
+ RUN  v3.2.7 <checkout>/web/console
+
+ ❯ src/app/organization-entry.test.tsx (30 tests | 2 failed) 1807ms
+   ✓ V1 organization entry > preserves unscoped historical create references without automatic lookup 292ms
+   ✓ V1 organization entry > preserves unscoped historical create_v1 references without automatic lookup 118ms
+   ✓ V1 organization entry > does not poll a creation owned by another principal or silently open its AU 107ms
+   × V1 organization entry > offers explicit recovery for a partial historical creation without guessing its missing scope 113ms
+     → Unable to find an accessible element with the role "button" and name "查询原请求"
+
+Here are the accessible roles:
+
+  link:
+
+  Name "跳转到正文":
+  [36m<a[39m
+    [33mclass[39m=[32m"skip"[39m
+    [33mhref[39m=[32m"#main"[39m
+  [36m/>[39m
+
+  Name "ai-union":
+  [36m<a[39m
+    [33mclass[39m=[32m"organization-brand"[39m
+    [33mdata-discover[39m=[32m"true"[39m
+    [33mhref[39m=[32m"/organizations"[39m
+  [36m/>[39m
+
+  Name "资料研究组织 打开后核对当前状态与准备条件":
+  [36m<a[39m
+    [33mdata-discover[39m=[32m"true"[39m
+    [33mhref[39m=[32m"/au/first"[39m
+  [36m/>[39m
+
+  Name "写作组织 打开后核对当前状态与准备条件":
+  [36m<a[39m
+    [33mdata-discover[39m=[32m"true"[39m
+    [33mhref[39m=[32m"/au/second"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  banner:
+
+  Name "":
+  [36m<header[39m
+    [33mclass[39m=[32m"organization-header"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "账号与登录":
+  [36m<button[39m
+    [33mclass[39m=[32m"button secondary"[39m
+  [36m/>[39m
+
+  Name "刷新":
+  [36m<button[39m
+    [33mclass[39m=[32m"button secondary"[39m
+  [36m/>[39m
+
+  Name "创建组织":
+  [36m<button[39m
+    [33mclass[39m=[32m"button primary"[39m
+    [33mdata-command[39m=[32m"create_v1"[39m
+    [33mtitle[39m=[32m"创建 AU"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  main:
+
+  Name "":
+  [36m<main[39m
+    [33mclass[39m=[32m"organization-main"[39m
+    [33mid[39m=[32m"main"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "我的组织":
+  [36m<h1[39m
+    [33mtabindex[39m=[32m"-1"[39m
+  [36m/>[39m
+
+  Name "从一个明确的目的开始":
+  [36m<h2 />[39m
+
+  --------------------------------------------------
+  region:
+
+  Name "创建恢复":
+  [36m<section[39m
+    [33maria-label[39m=[32m"创建恢复"[39m
+    [33mclass[39m=[32m"creation-recovery"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  --------------------------------------------------
+  list:
+
+  Name "可访问的组织":
+  [36m<ul[39m
+    [33maria-label[39m=[32m"可访问的组织"[39m
+    [33mclass[39m=[32m"organization-list"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  listitem:
+
+  Name "":
+  [36m<li />[39m
+
+  Name "":
+  [36m<li />[39m
+
+  --------------------------------------------------
+  strong:
+
+  Name "":
+  [36m<strong />[39m
+
+  Name "":
+  [36m<strong />[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"organization-shell"[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"skip"[39m
+        [33mhref[39m=[32m"#main"[39m
+      [36m>[39m
+        [0m跳转到正文[0m
+      [36m</a>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"organization-header"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"organization-brand"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/organizations"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33maria-hidden[39m=[32m"true"[39m
+          [36m>[39m
+            [0mu[0m
+          [36m</span>[39m
+          [0mai-union[0m
+        [36m</a>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"organization-header-actions"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"button secondary"[39m
+          [36m>[39m
+            [0m账号与登录[0m
+          [36m</button>[39m
+        [36m</div>[39m
+      [36m</header>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"organization-body"[39m
+      [36m>[39m
+        [36m<main[39m
+          [33mclass[39m=[32m"organization-main"[39m
+          [33mid[39m=[32m"main"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"organization-page-heading"[39m
+          [36m>[39m
+            [36m<h1[39m
+              [33mtabindex[39m=[32m"-1"[39m
+            [36m>[39m
+              [0m我的组织[0m
+            [36m</h1>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"button secondary"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-refresh-cw"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"15"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"15"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M21 3v5h-5"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M8 16H3v5"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+              [0m刷新[0m
+            [36m</button>[39m
+          [36m</div>[39m
+          [36m<section[39m
+            [33maria-label[39m=[32m"创建恢复"[39m
+            [33mclass[39m=[32m"creation-recovery"[39m
+          [36m>[39m
+            [36m<p>[39m
+              [0m还有其他账户或服务的创建引用，切回原账户与服务后可核对。[0m
+            [36m</p>[39m
+          [36m</section>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"organization-intro"[39m
+          [36m>[39m
+            [36m<div>[39m
+              [36m<h2>[39m
+                [0m从一个明确的目的开始[0m
+              [36m</h2>[39m
+              [36m<p>[39m
+                [0m选择一个组织继续，或创建新的组织，保存目的与边界。一个 Agent 也可以组成 AU。[0m
+              [36m</p>[39m
+            [36m</div>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"button primary"[39m
+              [33mdata-command[39m=[32m"create_v1"[39m
+              [33mtitle[39m=[32m"创建 AU"[39m
+            [36m>[39m
+              [0m创建组织[0m
+            [36m</button>[39m
+          [36m</div>[39m
+          [36m<ul[39m
+            [33maria-label[39m=[32m"可访问的组织"[39m
+            [33mclass[39m=[32m"organization-list"[39m
+          [36m>[39m
+            [36m<li>[39m
+              [36m<a[39m
+                [33mdata-discover[39m=[32m"true"[39m
+                [33mhref[39m=[32m"/au/first"[39m
+              [36m>[39m
+                [36m<span>[39m
+                  [36m<strong>[39m
+                    [0m资料研究组织[0m
+                  [36m</strong>[39m
+                  [36m<small>[39m
+                    [0m打开后核对当前状态与准备条件[0m
+                  [36m</small>[39m
+                [36m</span>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mclass[39m=[32m"lucide lucide-arrow-up-right"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"21"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-linecap[39m=[32m"round"[39m
+                  [33mstroke-linejoin[39m=[32m"round"[39m
+                  [33mstroke-width[39m=[32m"2"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"21"[39m
+                  [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M7 7h10v10"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M7 17 17 7"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+              [36m</a>[39m
+            [36m</li>[39m
+            [36m<li>[39m
+              [36m<a[39m
+                [33mdata-discover[39m=[32m"true"[39m
+                [33mhref[39m=[32m"/au/second"[39m
+              [36m>[39m
+                [36m<span>[39m
+                  [36m<strong>[39m
+                    [0m写作组织[0m
+                  [36m</strong>[39m
+                  [36m<small>[39m
+                    [0m打开后核对当前状态与准备条件[0m
+                  [36m</small>[39m
+                [36m</span>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mclass[39m=[32m"lucide lucide-arrow-up-right"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"21"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-linecap[39m=[32m"round"[39m
+                  [33mstroke-linejoin[39m=[32m"round"[39m
+                  [33mstroke-width[39m=[32m"2"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"21"[39m
+                  [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M7 7h10v10"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M7 17 17 7"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+              [36m</a>[39m
+            [36m</li>[39m
+          [36m</ul>[39m
+        [36m</main>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+   ✓ V1 organization entry > queries an owned original creation after restart without overriding explicit navigation 73ms
+   ✓ V1 organization entry > does not select the first AU at / 18ms
+   ✓ V1 organization entry > does not select the first AU at /organizations 12ms
+   ✓ V1 organization entry > lists authorized V1 organizations without a legacy default or legacy creation 85ms
+   ✓ V1 organization entry > uses the explicit path AU instead of a conflicting legacy query 11ms
+   ✓ V1 organization entry > does not fall back from rejected target /au/missing 19ms
+   ✓ V1 organization entry > does not fall back from rejected target /au/legacy 31ms
+   ✓ V1 organization entry > does not fall back from rejected target /au/first/unknown 17ms
+   ✓ V1 organization entry > does not fall back from rejected target /au/first%2Fsecond 14ms
+   ✓ V1 organization entry > does not fall back from rejected target /au/%ZZ 13ms
+   ✓ V1 organization entry > does not fall back from rejected target /au/first/work/invalid%255Fid 22ms
+   ✓ V1 organization entry > resolves a valid old link to the new scoped page, without mounting the old shell 70ms
+   ✓ V1 organization entry > explains the optional platform boundary when resolving an old gateways link 48ms
+   ✓ V1 organization entry > marks results as the active navigation for a scoped Work result link 44ms
+   ✓ V1 organization entry > returns to the list when a recent AU is no longer readable (403) 55ms
+   ✓ V1 organization entry > returns to the list when a recent AU is no longer readable (404) 53ms
+   ✓ V1 organization entry > rejects a router-normalized undeclared list path /organizations/ 43ms
+   ✓ V1 organization entry > rejects a router-normalized undeclared list path /ORGANIZATIONS 32ms
+   ✓ V1 organization entry > reopens a verified recent AU and keeps only a navigation reference 28ms
+   ✓ V1 organization entry > waits for a recent AU read before resolving the full authenticated home route 94ms
+   ✓ V1 organization entry > does not use a different principal or service recent AU 22ms
+   ✓ V1 organization entry > ignores a late AU result after a newer explicit navigation 56ms
+   ✓ V1 organization entry > erases a denied projection and does not resurrect it after network loss 82ms
+   ✓ V1 organization entry > clears a previously readable AU when the service protocol becomes incompatible 41ms
+   ✓ V1 organization entry > does not resurrect a denied AU from a different cached route during network failure 66ms
+   × V1 organization entry > does not resurrect an AU after learning an incompatible protocol on the list route 128ms
+     → expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  none
+Received:
+  first
+ ❯ src/features/governance/Governance.test.tsx (55 tests | 2 failed) 8218ms
+   ✓ governance user journey > keeps account-level AU creation reachable from /au/core-au without governing commands  334ms
+   ✓ governance user journey > keeps account-level AU creation reachable from /au/core-au/work without governing commands 106ms
+   ✓ governance user journey > keeps account-level AU creation reachable from /au/core-au/governance without governing commands 120ms
+   ✓ governance user journey > renders server readiness gaps without misreporting missing governing identities as an expired deadline 63ms
+   ✓ governance user journey > separates the original root from current authority and renders only server-provided actions 77ms
+   ✓ governance user journey > previews and adopts a single-principal exit procedure without activating business 176ms
+   ✓ governance user journey > configures an explicit successor principal without treating its name as authority 229ms
+   ✓ governance user journey > previews and explicitly submits acknowledge_recovery using the current server version 138ms
+   ✓ governance user journey > previews and explicitly submits activate_governance using the current server version 137ms
+   ✓ governance user journey > previews and explicitly submits renew_governance using the current server version 125ms
+   ✓ governance user journey > previews and explicitly submits accept_governance using the current server version 126ms
+   ✓ governance user journey > previews and explicitly submits recover_governance using the current server version 128ms
+   ✓ governance user journey > previews and explicitly submits exit_governance using the current server version 133ms
+   ✓ governance user journey > nominates another core identity and offers explicit cancellation of an existing nomination 167ms
+   ✓ governance user journey > revises only the displayed charter fields while preserving other stored fields 144ms
+   ✓ governance user journey > retains a new goal draft and focus across same-principal renewal and polling 170ms
+   ✓ retained controlled responsibility feature contract > appoints a human member with separate generated member and responsibility IDs 128ms
+   ✓ retained controlled responsibility feature contract > uses existing record choices for 'update_appointment' and sends its exact responsibility payload 96ms
+   ✓ retained controlled responsibility feature contract > uses existing record choices for 'create_work' and sends its exact responsibility payload 103ms
+   ✓ retained controlled responsibility feature contract > uses existing record choices for 'update_work' and sends its exact responsibility payload 108ms
+   ✓ retained controlled responsibility feature contract > uses existing record choices for 'grant_mandate' and sends its exact responsibility payload 87ms
+   ✓ retained controlled responsibility feature contract > uses existing record choices for 'revoke_mandate' and sends its exact responsibility payload 84ms
+   ✓ retained controlled responsibility feature contract > uses existing record choices for 'handoff_responsibility' and sends its exact responsibility payload 98ms
+   ✓ retained controlled responsibility feature contract > uses existing record choices for 'begin_local_action' and sends its exact responsibility payload 79ms
+   ✓ retained controlled responsibility feature contract > uses existing record choices for 'submit_local_result' and sends its exact responsibility payload 104ms
+   ✓ retained controlled responsibility feature contract > uses existing record choices for 'accept_local_result' and sends its exact responsibility payload 84ms
+   ✓ governance command recovery boundaries > keeps an editable draft after a command endpoint 401 with code undefined 190ms
+   ✓ governance command recovery boundaries > keeps an editable draft after a command endpoint 401 with code not_authenticated 176ms
+   ✓ governance command recovery boundaries > retains the original request when identity verification fails with 401/'not_authenticated' after a successful POST 168ms
+   ✓ governance command recovery boundaries > retains the original request when identity verification fails with 401/undefined after a successful POST 211ms
+   ✓ governance command recovery boundaries > retains the original request when identity verification fails with 409/'incompatible_state' after a successful POST 175ms
+   ✓ governance command recovery boundaries > treats an explicit unsupported adoption as a known rejection and keeps an editable draft 113ms
+   ✓ governance command recovery boundaries > recognizes a rejected original receipt even when the server version is lower than its requested base 142ms
+   ✓ governance command recovery boundaries > preserves rejected input and requires a new preview after a server version rejection 158ms
+   ✓ governance command recovery boundaries > keeps an unknown original ID and only queries it without persisting or replaying its content 182ms
+   ✓ governance command recovery boundaries > keeps query errors next to the original request and never offers a replay 165ms
+   ✓ governance command recovery boundaries > does not create a second request for the same action after closing an unknown result 250ms
+   ✓ governance command recovery boundaries > keeps an unknown action local and lets a different work proceed with its own request  302ms
+   ✓ governance command recovery boundaries > recovers an original request after reload onto a new service instance with the same principal 204ms
+   ✓ governance command recovery boundaries > refreshes evidence-only rejection while retaining the unadopted content and its original request 140ms
+   ✓ governance command recovery boundaries > does not send when browser request-identity storage is unavailable 167ms
+   ✓ governance command recovery boundaries > stops before POST when the current AU version changed after preview 156ms
+   ✓ governance command recovery boundaries > stops a preflight when principal_id changes before the workspace poll 127ms
+   ✓ governance command recovery boundaries > stops a preflight when service_instance changes before the workspace poll 140ms
+   ✓ governance command recovery boundaries > does not send a command when the user cancels a pending identity preflight 149ms
+   ✓ governance command recovery boundaries > rejects an unrelated receipt with a mismatched id 168ms
+   ✓ governance command recovery boundaries > rejects an unrelated receipt with a mismatched kind 159ms
+   ✓ governance command recovery boundaries > rejects an unrelated receipt with a mismatched organization_id 166ms
+   ✓ governance command recovery boundaries > rejects an unrelated receipt with a mismatched actor_principal_id 148ms
+   ✓ governance command recovery boundaries > rejects an unrelated receipt with a mismatched base_version 154ms
+   ✓ governance command recovery boundaries > does not apply a late POST response after the current principal_id changed 141ms
+   ✓ governance command recovery boundaries > does not apply a late POST response after the current service_instance changed 174ms
+   ✓ governance command recovery boundaries > lets the original issuer query its own receipt after losing current AU access 196ms
+   × governance command recovery boundaries > discards protected governance input after losing AU read access 110ms
+     → expect(element).not.toBeInTheDocument()
+
+expected document not to contain element, found <dialog
+  aria-labelledby="operation-title"
+  id="governance-dialog"
+  open=""
+>
+  <div
+    class="dialog-inner"
+  >
+    <div
+      class="dialog-header"
+    >
+      <div>
+        <div
+          class="eyebrow"
+        >
+          UNION WORKSPACE
+        </div>
+        <h2
+          id="operation-title"
+        >
+          修订章程
+        </h2>
+      </div>
+      <button
+        aria-label="关闭"
+        class="icon-button"
+        id="close-governance"
+      >
+        <svg
+          aria-hidden="true"
+          class="lucide lucide-x"
+          fill="none"
+          height="20"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M18 6 6 18"
+          />
+          <path
+            d="m6 6 12 12"
+          />
+        </svg>
+      </button>
+    </div>
+    <form
+      class="governance-form"
+    >
+      <fieldset>
+        <label
+          class="operation-field"
+        >
+          章程正文
+          <textarea
+            maxlength="100000"
+            name="charter_text"
+            required=""
+            rows="6"
+          >
+            先核对责任与授权，再保存内部记录。
+          </textarea>
+        </label>
+        <label
+          class="check-field"
+        >
+          <input
+            checked=""
+            name="record_memory"
+            type="checkbox"
+          />
+          允许内部文字记录
+        </label>
+        <label
+          class="check-field"
+        >
+          <input
+            name="read_document"
+            type="checkbox"
+          />
+          允许只读所选验证资料
+        </label>
+        <p
+          class="form-note"
+        >
+          仅允许模型接入验证读取明确选择的文本资料，不授予宿主文件访问或其他工具权限。
+        </p>
+        <label
+          class="check-field"
+        >
+          <input
+            checked=""
+            name="board_can_amend"
+            type="checkbox"
+          />
+          允许修订章程
+        </label>
+        <p
+          class="form-note"
+        >
+          保留其余已存的操作、工具和保留事项字段。本地治理仅执行已支持的规则，正文不隐式授权。
+        </p>
+        <label
+          class="operation-field"
+        >
+          决定依据
+          <textarea
+            maxlength="10000"
+            name="reason"
+            required=""
+            rows="3"
+          />
+        </label>
+      </fieldset>
+      <div
+        class="operation-footer"
+      >
+        <button
+          class="button secondary"
+          type="button"
+        >
+          取消
+        </button>
+        <button
+          class="button secondary"
+          type="submit"
+        >
+          预览影响
+        </button>
+      </div>
+    </form>
+  </div>
+</dialog> instead
+   × governance command recovery boundaries > retains the same-AU governance draft read-only during a transient network failure 138ms
+     → expect(element).toBeDisabled()
+
+Received element is not disabled:
+  <button
+  class="button secondary"
+  type="submit"
+/>
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/app/organization-entry.test.tsx > V1 organization entry > offers explicit recovery for a partial historical creation without guessing its missing scope
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "查询原请求"
+
+Here are the accessible roles:
+
+  link:
+
+  Name "跳转到正文":
+  <a
+    class="skip"
+    href="#main"
+  />
+
+  Name "ai-union":
+  <a
+    class="organization-brand"
+    data-discover="true"
+    href="/organizations"
+  />
+
+  Name "资料研究组织 打开后核对当前状态与准备条件":
+  <a
+    data-discover="true"
+    href="/au/first"
+  />
+
+  Name "写作组织 打开后核对当前状态与准备条件":
+  <a
+    data-discover="true"
+    href="/au/second"
+  />
+
+  --------------------------------------------------
+  banner:
+
+  Name "":
+  <header
+    class="organization-header"
+  />
+
+  --------------------------------------------------
+  button:
+
+  Name "账号与登录":
+  <button
+    class="button secondary"
+  />
+
+  Name "刷新":
+  <button
+    class="button secondary"
+  />
+
+  Name "创建组织":
+  <button
+    class="button primary"
+    data-command="create_v1"
+    title="创建 AU"
+  />
+
+  --------------------------------------------------
+  main:
+
+  Name "":
+  <main
+    class="organization-main"
+    id="main"
+  />
+
+  --------------------------------------------------
+  heading:
+
+  Name "我的组织":
+  <h1
+    tabindex="-1"
+  />
+
+  Name "从一个明确的目的开始":
+  <h2 />
+
+  --------------------------------------------------
+  region:
+
+  Name "创建恢复":
+  <section
+    aria-label="创建恢复"
+    class="creation-recovery"
+  />
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  <p />
+
+  Name "":
+  <p />
+
+  --------------------------------------------------
+  list:
+
+  Name "可访问的组织":
+  <ul
+    aria-label="可访问的组织"
+    class="organization-list"
+  />
+
+  --------------------------------------------------
+  listitem:
+
+  Name "":
+  <li />
+
+  Name "":
+  <li />
+
+  --------------------------------------------------
+  strong:
+
+  Name "":
+  <strong />
+
+  Name "":
+  <strong />
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <div
+      class="organization-shell"
+    >
+      <a
+        class="skip"
+        href="#main"
+      >
+        跳转到正文
+      </a>
+      <header
+        class="organization-header"
+      >
+        <a
+          class="organization-brand"
+          data-discover="true"
+          href="/organizations"
+        >
+          <span
+            aria-hidden="true"
+          >
+            u
+          </span>
+          ai-union
+        </a>
+        <div
+          class="organization-header-actions"
+        >
+          <button
+            class="button secondary"
+          >
+            账号与登录
+          </button>
+        </div>
+      </header>
+      <div
+        class="organization-body"
+      >
+        <main
+          class="organization-main"
+          id="main"
+        >
+          <div
+            class="organization-page-heading"
+          >
+            <h1
+              tabindex="-1"
+            >
+              我的组织
+            </h1>
+            <button
+              class="button secondary"
+            >
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-refresh-cw"
+                fill="none"
+                height="15"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="15"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"
+                />
+                <path
+                  d="M21 3v5h-5"
+                />
+                <path
+                  d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"
+                />
+                <path
+                  d="M8 16H3v5"
+                />
+              </svg>
+              刷新
+            </button>
+          </div>
+          <section
+            aria-label="创建恢复"
+            class="creation-recovery"
+          >
+            <p>
+              还有其他账户或服务的创建引用，切回原账户与服务后可核对。
+            </p>
+          </section>
+          <div
+            class="organization-intro"
+          >
+            <div>
+              <h2>
+                从一个明确的目的开始
+              </h2>
+              <p>
+                选择一个组织继续，或创建新的组织，保存目的与边界。一个 Agent 也可以组成 AU。
+              </p>
+            </div>
+            <button
+              class="button primary"
+              data-command="create_v1"
+              title="创建 AU"
+            >
+              创建组织
+            </button>
+          </div>
+          <ul
+            aria-label="可访问的组织"
+            class="organization-list"
+          >
+            <li>
+              <a
+                data-discover="true"
+                href="/au/first"
+              >
+                <span>
+                  <strong>
+                    资料研究组织
+                  </strong>
+                  <small>
+                    打开后核对当前状态与准备条件
+                  </small>
+                </span>
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-arrow-up-right"
+                  fill="none"
+                  height="21"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="21"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M7 7h10v10"
+                  />
+                  <path
+                    d="M7 17 17 7"
+                  />
+                </svg>
+              </a>
+            </li>
+            <li>
+              <a
+                data-discover="true"
+                href="/au/second"
+              >
+                <span>
+                  <strong>
+                    写作组织
+                  </strong>
+                  <small>
+                    打开后核对当前状态与准备条件
+                  </small>
+                </span>
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-arrow-up-right"
+                  fill="none"
+                  height="21"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="21"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M7 7h10v10"
+                  />
+                  <path
+                    d="M7 17 17 7"
+                  />
+                </svg>
+              </a>
+            </li>
+          </ul>
+        </main>
+      </div>
+    </div>
+  </div>
+</body>
+ ❯ Object.getElementError ../../node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ ../../node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ ../../node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ ../../node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/app/organization-entry.test.tsx:93:19
+     91|     await screen.findByRole('link', { name: /资料研究组织/ });
+     92|     expect(api.receipt).not.toHaveBeenCalled();
+     93|     expect(screen.getByRole('button', { name: '查询原请求', exact: true }))…
+       |                   ^
+     94|   });
+     95| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  src/app/organization-entry.test.tsx > V1 organization entry > does not resurrect an AU after learning an incompatible protocol on the list route
+Error: expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  none
+Received:
+  first
+ ❯ src/app/organization-entry.test.tsx:305:41
+    303|     fireEvent.click(screen.getByRole('button', { name: '打开第一个组织' }));
+    304|     await waitFor(() => expect(screen.getByTestId('problem')).toHaveTe…
+    305|     expect(screen.getByTestId('scope')).toHaveTextContent('none');
+       |                                         ^
+    306|   });
+    307| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  src/features/governance/Governance.test.tsx > governance command recovery boundaries > discards protected governance input after losing AU read access
+Error: expect(element).not.toBeInTheDocument()
+
+expected document not to contain element, found <dialog
+  aria-labelledby="operation-title"
+  id="governance-dialog"
+  open=""
+>
+  <div
+    class="dialog-inner"
+  >
+    <div
+      class="dialog-header"
+    >
+      <div>
+        <div
+          class="eyebrow"
+        >
+          UNION WORKSPACE
+        </div>
+        <h2
+          id="operation-title"
+        >
+          修订章程
+        </h2>
+      </div>
+      <button
+        aria-label="关闭"
+        class="icon-button"
+        id="close-governance"
+      >
+        <svg
+          aria-hidden="true"
+          class="lucide lucide-x"
+          fill="none"
+          height="20"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M18 6 6 18"
+          />
+          <path
+            d="m6 6 12 12"
+          />
+        </svg>
+      </button>
+    </div>
+    <form
+      class="governance-form"
+    >
+      <fieldset>
+        <label
+          class="operation-field"
+        >
+          章程正文
+          <textarea
+            maxlength="100000"
+            name="charter_text"
+            required=""
+            rows="6"
+          >
+            先核对责任与授权，再保存内部记录。
+          </textarea>
+        </label>
+        <label
+          class="check-field"
+        >
+          <input
+            checked=""
+            name="record_memory"
+            type="checkbox"
+          />
+          允许内部文字记录
+        </label>
+        <label
+          class="check-field"
+        >
+          <input
+            name="read_document"
+            type="checkbox"
+          />
+          允许只读所选验证资料
+        </label>
+        <p
+          class="form-note"
+        >
+          仅允许模型接入验证读取明确选择的文本资料，不授予宿主文件访问或其他工具权限。
+        </p>
+        <label
+          class="check-field"
+        >
+          <input
+            checked=""
+            name="board_can_amend"
+            type="checkbox"
+          />
+          允许修订章程
+        </label>
+        <p
+          class="form-note"
+        >
+          保留其余已存的操作、工具和保留事项字段。本地治理仅执行已支持的规则，正文不隐式授权。
+        </p>
+        <label
+          class="operation-field"
+        >
+          决定依据
+          <textarea
+            maxlength="10000"
+            name="reason"
+            required=""
+            rows="3"
+          />
+        </label>
+      </fieldset>
+      <div
+        class="operation-footer"
+      >
+        <button
+          class="button secondary"
+          type="button"
+        >
+          取消
+        </button>
+        <button
+          class="button secondary"
+          type="submit"
+        >
+          预览影响
+        </button>
+      </div>
+    </form>
+  </div>
+</dialog> instead
+ ❯ src/features/governance/Governance.test.tsx:785:46
+    783|     fireEvent.click(screen.getByRole('button', { name: '刷新', exact: tr…
+    784|     await screen.findByText('读取权已撤销');
+    785|     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+       |                                              ^
+    786|     vi.mocked(api.coreAU).mockResolvedValue(governedAU());
+    787|     fireEvent.click(screen.getByRole('button', { name: '刷新', exact: tr…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  src/features/governance/Governance.test.tsx > governance command recovery boundaries > retains the same-AU governance draft read-only during a transient network failure
+Error: expect(element).toBeDisabled()
+
+Received element is not disabled:
+  <button
+  class="button secondary"
+  type="submit"
+/>
+ ❯ src/features/governance/Governance.test.tsx:799:58
+    797|     await screen.findByText(/核验的记录.*网络暂时中断/);
+    798|     expect(screen.getByRole('dialog')).toBeVisible();
+    799|     expect(screen.getByRole('button', { name: '预览影响' })).toBeDisabled(…
+       |                                                          ^
+    800|   });
+    801| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  4 failed | 81 passed (85)
+   Start at  09:03:03
+   Duration  12.13s (transform 850ms, setup 1.03s, collect 2.62s, tests 10.03s, environment 2.67s, prepare 574ms)
+
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path <checkout>\web\console
+npm error workspace @union/console@0.1.0
+npm error location <checkout>\web\console
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c vitest run src/app/organization-entry.test.tsx src/features/governance/Governance.test.tsx

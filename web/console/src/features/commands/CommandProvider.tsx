@@ -8,12 +8,13 @@ import {
   type ReactNode,
 } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useLocation } from 'react-router-dom';
 import { api, errorText } from '../../api/client';
 import type { CommandKind, PendingRequest, Receipt, Session, Snapshot } from '../../api/types';
 import { useWorkspace } from '../../app/workspace';
 import { Dialog } from '../../components/Dialog';
 import { ReceiptView, CommandForm } from './CommandForm';
-import { acceptReceipt, loadPending, matchesRequest, savePending } from './receipts';
+import { acceptReceipt, inspectableCreation, loadPending, matchesRequest, ownedCreation, savePending } from './receipts';
 import { blocked, titles, isCreation, sameCoreIdentity } from './model';
 export interface CommandOptions {
   gateway?: import('../../api/client').GatewayChoice;
@@ -41,6 +42,10 @@ interface Commands {
 const Context = createContext<Commands | null>(null);
 export function CommandProvider({ children }: { children: ReactNode }) {
   const workspace = useWorkspace();
+  const location = useLocation();
+  const currentLocation = useRef(location.key);
+  currentLocation.current = location.key;
+  const foreground = useRef(new Map<string, string>());
   const currentSession = useRef(workspace.session);
   currentSession.current = workspace.session;
   const mounted = useRef(true);
@@ -57,8 +62,15 @@ export function CommandProvider({ children }: { children: ReactNode }) {
   const [inspection, setInspection] = useState<PendingRequest | null>(null);
   const [lookupError, setLookupError] = useState('');
   const remember = useCallback((item: PendingRequest) => {
+    if (item.kind === 'create_v1') {
+      const session = currentSession.current;
+      if (!session?.principal_id || session.core_protocol !== 'core.au.v1') throw new Error('缺少可信核心身份');
+      item = { id: item.id, kind: item.kind, organization_id: item.organization_id,
+        principal_id: session.principal_id, service_instance: session.service_instance, service_origin: window.location.origin };
+    }
     const next = [...pendingRef.current.filter((p) => p.id !== item.id), item];
     savePending(next);
+    foreground.current.set(item.id, currentLocation.current);
     pendingRef.current = next;
     setPending(next);
   }, []);
@@ -71,10 +83,12 @@ export function CommandProvider({ children }: { children: ReactNode }) {
   const record = useCallback(
     (receipt: Receipt, expected?: PendingRequest) => {
       if (!mounted.current) throw new Error('会话已结束；请用原身份查询原请求');
-      const original = expected ?? pendingRef.current.find(item => item.id === receipt.id);
+      const original = pendingRef.current.find(item => item.id === receipt.id) ?? expected;
       if (original && !matchesRequest(original, receipt)) throw new Error('回执与原请求不匹配');
       if (original?.kind === 'create_v1' && !sameCoreIdentity(workspace.session, currentSession.current))
         throw new Error('核心登录身份或服务已变化；请用原身份查询原请求');
+      if (original?.kind === 'create_v1' && !inspectableCreation(original, currentSession.current) && !ownedCreation(original, currentSession.current))
+        throw new Error('请切回原账户查询原创建');
       const previous = known.current[receipt.id];
       const value = acceptReceipt(previous, receipt);
       if (value === previous) return value;
@@ -90,8 +104,10 @@ export function CommandProvider({ children }: { children: ReactNode }) {
         } catch {
           /* Stored original identity remains safe to query after reload. */
         }
-        if (isCreation(value.kind) && value.status === 'succeeded' && value.organization_id)
+        if (value.kind === 'create_v1' && value.status === 'succeeded' && value.organization_id &&
+            foreground.current.get(value.id) === currentLocation.current)
           workspace.selectOrg(value.organization_id);
+        foreground.current.delete(value.id);
         void client.invalidateQueries({ queryKey: ['workspace'] });
       }
       return value;
@@ -100,22 +116,39 @@ export function CommandProvider({ children }: { children: ReactNode }) {
   );
   const lookup = useCallback(
     async (item: PendingRequest) => {
+      const scope = currentSession.current;
+      if (item.kind !== 'create_v1' || (!ownedCreation(item, scope) && !inspectableCreation(item, scope)))
+        throw new Error('此引用需由原账户或原受控客户端核对');
+      const before = await api.session();
+      if (!sameCoreIdentity(scope, before)) {
+        void workspace.refresh();
+        throw new Error('核心登录身份或服务已变化；请用原身份查询原请求');
+      }
       const { receipt } = await api.receipt(item.id, item.organization_id, item.kind);
+      const after = await api.session();
+      if (!sameCoreIdentity(before, after) || !sameCoreIdentity(scope, currentSession.current)) {
+        void workspace.refresh();
+        throw new Error('核心登录身份或服务已变化；请用原身份查询原请求');
+      }
       return record(receipt, item);
     },
-    [record],
+    [record, workspace.refresh],
   );
+  const recoverable = pending.filter(item => ownedCreation(item, workspace.session));
   const queries = useQuery({
     queryKey: [
       'pending-receipts',
       workspace.session?.service_instance,
       workspace.session?.principal_id ?? workspace.session?.session_scope,
-      pending.map((p) => p.id).join(','),
+      recoverable.map((p) => p.id).join(','),
     ],
-    enabled: workspace.connected && pending.length > 0,
-    queryFn: () =>
-      Promise.all(
-        pending.map((p) =>
+    enabled: !!workspace.session?.principal_id && recoverable.length > 0,
+    queryFn: async ({ signal }) => {
+      const before = await api.session(signal);
+      signal.throwIfAborted();
+      if (!sameCoreIdentity(workspace.session, before)) { void workspace.refresh(); return []; }
+      const receipts = await Promise.all(
+        recoverable.map((p) =>
           api
             .receipt(p.id, p.organization_id, p.kind)
             .then((result) => {
@@ -124,7 +157,13 @@ export function CommandProvider({ children }: { children: ReactNode }) {
             })
             .catch(() => null),
         ),
-      ),
+      );
+      signal.throwIfAborted();
+      const after = await api.session(signal);
+      signal.throwIfAborted();
+      if (!sameCoreIdentity(before, after)) { void workspace.refresh(); return []; }
+      return receipts;
+    },
     refetchInterval: 2000,
     retry: false,
   });
@@ -137,6 +176,7 @@ export function CommandProvider({ children }: { children: ReactNode }) {
     workspace.data?.receipts.forEach(receipt => record(receipt));
   }, [workspace.data?.receipts, record]);
   const inspect = (item: PendingRequest) => {
+    foreground.current.set(item.id, currentLocation.current);
     setDraft(null);
     setInspection(item);
     setLookupError('');

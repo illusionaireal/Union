@@ -19,7 +19,8 @@ beforeEach(() => {
   HTMLDialogElement.prototype.showModal = function () { this.open = true; };
   HTMLDialogElement.prototype.close = function () { this.open = false; };
   sessionStorage.clear();
-  window.history.replaceState(null, '', '/overview');
+  localStorage.clear();
+  window.history.replaceState(null, '', '/organizations');
   vi.spyOn(api, 'session').mockResolvedValue(session);
   vi.spyOn(api, 'authStatus').mockResolvedValue(auth);
   vi.spyOn(api, 'receipt').mockRejectedValue(new Error('回执存储暂不可读'));
@@ -35,19 +36,20 @@ it('lets a core participant prepare its own AU while withholding legacy operatio
   vi.mocked(api.session).mockResolvedValue({ ...session, role: 'core', platform_admin: false });
   vi.mocked(api.authStatus).mockResolvedValue({ ...auth, account: 'participant' });
   mountApp();
-  await waitFor(() => expect(screen.getByRole('button', { name: /^创建 AU$/ })).toBeEnabled());
-  expect(screen.getByRole('button', { name: '旧版兼容试验（含小说）' })).toBeDisabled();
-  expect(screen.getByText('核心参与者')).toBeVisible();
+  await waitFor(() => expect(screen.getByRole('button', { name: /^(创建 AU|创建组织)$/ })).toBeEnabled());
+  expect(screen.queryByRole('button', { name: '旧版兼容试验（含小说）' })).not.toBeInTheDocument();
+  fireEvent.click(screen.getByRole('button', { name: '账号与登录' }));
   const ownIdentity = screen.getByLabelText('当前核心身份标识');
   expect(ownIdentity).toHaveValue(principal);
   expect(ownIdentity).toHaveAttribute('readonly');
-  fireEvent.click(screen.getByRole('button', { name: /^创建 AU$/ }));
+  fireEvent.click(screen.getByRole('button', { name: '关闭' }));
+  fireEvent.click(screen.getByRole('button', { name: /^(创建 AU|创建组织)$/ }));
   expect(await screen.findByLabelText('AU目标')).toBeVisible();
 });
 
 async function preview() {
-  await waitFor(() => expect(screen.getByRole('button', { name: /^创建 AU$/ })).toBeEnabled());
-  fireEvent.click(screen.getByRole('button', { name: /^创建 AU$/ }));
+  await waitFor(() => expect(screen.getByRole('button', { name: /^(创建 AU|创建组织)$/ })).toBeEnabled());
+  fireEvent.click(screen.getByRole('button', { name: /^(创建 AU|创建组织)$/ }));
   fireEvent.change(screen.getByLabelText('AU目标'), { target: { value: 'Retain this private goal' } });
   fireEvent.click(screen.getByRole('button', { name: '预览影响' }));
   return screen.findByRole('button', { name: '确认提交' });
@@ -64,9 +66,9 @@ describe('core creation identity and receipt boundaries', () => {
     const button = await preview();
     await act(async () => fireEvent.click(button));
     await waitFor(() => expect(submit).toHaveBeenCalledOnce());
-    expect(JSON.parse(sessionStorage.getItem('union-pending') || '[]')).toContainEqual({
+    expect(JSON.parse(sessionStorage.getItem('union-pending') || '[]')).toContainEqual(expect.objectContaining({
       id: submit.mock.calls[0][0].id, organization_id: null, kind: 'create_v1',
-    });
+    }));
     expect(screen.queryByText('Unrelated success')).not.toBeInTheDocument();
     expect(await screen.findByText(/回执与原请求不匹配/)).toBeVisible();
   });
@@ -131,20 +133,20 @@ describe('core creation identity and receipt boundaries', () => {
       principal_id: changed ? '00181221-7722-46ad-87e1-2b8a8f7aa9b4' : principal,
     });
     await act(async () => client.invalidateQueries({ queryKey: ['workspace'] }));
-    if (changed) await waitFor(() => expect(screen.getByRole('button', { name: /^创建 AU$/ })).toBeEnabled());
+    if (changed) await waitFor(() => expect(screen.getByRole('button', { name: /^(创建 AU|创建组织)$/ })).toBeEnabled());
     const request = submit.mock.calls[0][0];
     await act(async () => finish({ receipt: {
       id: request.id, kind: 'create_v1', base_version: null, organization_id: 'org-owned-by-a',
       actor: 'controlled', created_at: 'controlled', status: 'succeeded', message: 'Original account result',
     } }));
     if (changed) {
-      expect(window.location.search).not.toContain('org-owned-by-a');
-      expect(JSON.parse(sessionStorage.getItem('union-pending') || '[]')).toContainEqual({
+      expect(window.location.pathname).not.toContain('org-owned-by-a');
+      expect(JSON.parse(sessionStorage.getItem('union-pending') || '[]')).toContainEqual(expect.objectContaining({
         id: request.id, kind: 'create_v1', organization_id: null,
-      });
+      }));
       expect(screen.queryByText('Original account result')).not.toBeInTheDocument();
     } else {
-      await waitFor(() => expect(window.location.search).toContain('org-owned-by-a'));
+      await waitFor(() => expect(window.location.pathname).toContain('org-owned-by-a'));
       expect(JSON.parse(sessionStorage.getItem('union-pending') || '[]')).toEqual([]);
     }
   });
@@ -160,9 +162,9 @@ describe('core creation identity and receipt boundaries', () => {
     await screen.findByText('创建记录待核对');
     fireEvent.click(screen.getByRole('button', { name: '查询此请求回执' }));
     expect(await screen.findByText(/回执存储暂不可读/)).toBeVisible();
-    expect(JSON.parse(sessionStorage.getItem('union-pending') || '[]')).toContainEqual({
+    expect(JSON.parse(sessionStorage.getItem('union-pending') || '[]')).toContainEqual(expect.objectContaining({
       id: submit.mock.calls[0][0].id, organization_id: null, kind: 'create_v1',
-    });
+    }));
   });
 
   it('does not create an AU when the user cancels while the identity preflight is still pending', async () => {

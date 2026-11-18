@@ -1,26 +1,13 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { api } from '../api/client';
-import type { CoreAURead, CoreWork, Session } from '../api/types';
-import { Layout } from './Layout';
+import { api } from '../../api/client';
+import type { CoreAURead, CoreWork, Session } from '../../api/types';
+import { WorkPanel } from './WorkPanel';
 
 const state = vi.hoisted(() => ({ workspace: {} as Record<string, unknown> }));
-vi.mock('./workspace', () => ({ useWorkspace: () => state.workspace }));
-vi.mock('../features/commands/CommandProvider', () => ({
-  useCommands: () => ({ pending: [], inspect: vi.fn() }),
-  CommandButton: () => null,
-}));
-vi.mock('../pages/Identity', () => ({ AccountSettings: () => null }));
-vi.mock('../pages/PreparedAU', () => ({ default: () => <p>准备态原入口</p> }));
-vi.mock('../features/governance/GovernanceProvider', () => ({
-  GovernanceRecovery: () => null,
-  GovernanceButton: () => null,
-}));
-vi.mock('../features/governance/ResponsibilityWorkspace', () => ({
-  ResponsibilityWorkspace: () => <p>既有责任工作区</p>,
-}));
+vi.mock('../../app/workspace', () => ({ useWorkspace: () => state.workspace }));
 
 const core = (principal = 'p1', organization = 'au-1', service = 'service-1') =>
   ({
@@ -79,17 +66,14 @@ const work = (organization = 'au-1', principal = 'p1'): CoreWork => ({
 
 function mount() {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false, gcTime: 0 } } });
-  const tree = () => (
-    <QueryClientProvider client={client}>
-      <MemoryRouter initialEntries={['/tasks?organization=au-1']}>
-        <Routes>
-          <Route element={<Layout />}>
-            <Route path="tasks" element={<p>旧版工作入口</p>} />
-          </Route>
-        </Routes>
-      </MemoryRouter>
-    </QueryClientProvider>
-  );
+  const tree = () => {
+    const current = state.workspace.core as CoreAURead & { access: { principal_id: string; service_instance: string } };
+    return <QueryClientProvider client={client}><MemoryRouter>
+      <WorkPanel key={`${current.access.service_instance}:${current.access.principal_id}:${current.au.id}`}
+        organizationId={current.au.id} principalId={current.access.principal_id}
+        serviceInstance={current.access.service_instance} readOnly allowExecution allowRegistration allowResultDelivery />
+    </MemoryRouter></QueryClientProvider>;
+  };
   const view = render(tree());
   return { refresh: () => view.rerender(tree()) };
 }
@@ -117,8 +101,8 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-describe('AI work on the actual core tasks route', () => {
-  it('exposes explicit automatic preparation on the actual core route without manual bookkeeping', async () => {
+describe('Work feature boundaries retained independently of the retired manual route', () => {
+  it('preserves explicit execution preparation without manual reservation controls', async () => {
     const pending = work();
     pending.works[0] = {...pending.works[0],status:'pending',results:[],result_ids:[],budget:{max_calls:2,reserved:0,used:0}};
     vi.mocked(api.coreWork).mockResolvedValue(pending);
@@ -130,7 +114,6 @@ describe('AI work on the actual core tasks route', () => {
   it('shows persisted AI work and downloads without opening manual write controls', async () => {
     mount();
     expect(await screen.findByText('已保存的项目概览')).toBeTruthy();
-    expect(screen.getByText('既有责任工作区')).toBeTruthy();
     expect(screen.getByText('1 已用 · 0 已预约 · 上限 2')).toBeTruthy();
     expect(screen.getByRole('link', { name: '下载' })).toHaveAttribute(
       'href',
@@ -184,22 +167,4 @@ describe('AI work on the actual core tasks route', () => {
     },
   );
 
-  it('keeps the prepared AU and legacy tasks routes unchanged', () => {
-    state.workspace = {
-      ...state.workspace,
-      core: { ...core(), au: { ...core().au, schema_version: 1 } },
-    };
-    const view = mount();
-    expect(screen.getByText('准备态原入口')).toBeTruthy();
-    expect(api.coreWork).not.toHaveBeenCalled();
-    state.workspace = {
-      ...state.workspace,
-      core: undefined,
-      session: { role: 'board', organizations: [{ id: 'au-1', name: 'legacy' }] },
-      data: { organization: { name: 'legacy' }, execution_config: {} },
-    };
-    view.refresh();
-    expect(screen.getByText('旧版工作入口')).toBeTruthy();
-    expect(api.coreWork).not.toHaveBeenCalled();
-  });
 });

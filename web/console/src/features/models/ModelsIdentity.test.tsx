@@ -9,7 +9,7 @@ import {
   fillConnection,
   fixture,
   json,
-  mount,
+  mount as mountApp,
   savedConnection,
 } from './test-fixtures';
 
@@ -20,6 +20,10 @@ beforeEach(() => {
 afterEach(() => {
   vi.unstubAllGlobals();
 });
+
+function mount() {
+  return mountApp('/au/core-au/resources');
+}
 
 describe('model identity, scope and input lifetime', () => {
   it('keeps draft fields and keyboard focus through refresh and same-principal renewal', async () => {
@@ -178,17 +182,27 @@ describe('model identity, scope and input lifetime', () => {
 
   it('clears form on AU switch and never displays an old AU response as the new one', async () => {
     state.session.organizations.push({ id: 'core-other', name: '另一个 AU', profile: 'core_v1' });
+    state.read.checks.push(checkedRun());
     vi.mocked(api.coreAU).mockImplementation(async (id) => ({
       ...structuredClone(state.core),
       au: { ...structuredClone(state.core.au), id },
     }));
     mount();
+    expect(
+      await screen.findByText('资料描述了持续责任。校验码：controlled-challenge'),
+    ).toBeVisible();
     await fillConnection();
-    fireEvent.change(screen.getByRole('combobox', { name: '当前组织' }), {
-      target: { value: 'core-other' },
-    });
+    fireEvent.click(screen.getByRole('link', { name: '我的组织' }));
+    fireEvent.click(await screen.findByRole('link', { name: /^另一个 AU/ }));
     await waitFor(() => expect(screen.queryByLabelText('API Key')).not.toBeInTheDocument());
+    expect(window.location.pathname).toBe('/au/core-other');
+    fireEvent.click(await screen.findByRole('link', { name: '能力与资源' }));
     expect(await screen.findByText(/模型记录与当前身份、服务或 AU 不一致/)).toBeVisible();
+    expect(window.location.pathname).toBe('/au/core-other/resources');
+    expect(screen.queryByLabelText('API Key')).not.toBeInTheDocument();
+    expect(
+      screen.queryByText('资料描述了持续责任。校验码：controlled-challenge'),
+    ).not.toBeInTheDocument();
     expect(state.commands).toHaveLength(0);
   });
 

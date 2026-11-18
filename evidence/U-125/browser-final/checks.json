@@ -1,0 +1,3690 @@
+{
+  "task": "U-125",
+  "startedAt": "2026-11-18T01:08:03.840Z",
+  "finishedAt": "2026-11-18T01:08:23.220Z",
+  "controlled": true,
+  "realProviderCalls": 0,
+  "fixtureCreates": 4,
+  "versions": {
+    "node": "v24.19.0",
+    "browser": "156.0.8078.80",
+    "python": "Python 3.13.14",
+    "head": "2b3d281f7bfb6dc3fdb8e00f432cc4f76756a8fc",
+    "assets": [
+      "index-CUQUSYu-.css",
+      "index-DXGNcWbC.js"
+    ]
+  },
+  "buildHash": "349f5960184c89ebb02a16ae20094c92c79b0fef4d055a2fcc703beb6c7a1c0b",
+  "checks": [
+    {
+      "name": "E01: fixed-address first setup enters the empty V1 list without a ticket or private platform account",
+      "stage": "setup"
+    },
+    {
+      "name": "E01: empty entry reads no AU, snapshot or legacy artifact",
+      "stage": "setup"
+    },
+    {
+      "name": "E08: the empty list offers one labeled V1 creation action and no legacy selector or creation control",
+      "stage": "setup"
+    },
+    {
+      "name": "E01: an existing legacy catalog entry does not become the default AU or appear in the V1 list",
+      "stage": "controlled-fixtures"
+    },
+    {
+      "name": "E01: existing V1 entries are listed without selecting or reading the first AU",
+      "stage": "controlled-fixtures"
+    },
+    {
+      "name": "E08: organization list fits 1440px with a 200-character AU name (viewport=1440, document=1440, mainRight=1330)",
+      "stage": "controlled-fixtures"
+    },
+    {
+      "name": "E08: organization list fits 1024px with a 200-character AU name (viewport=1024, document=1024, mainRight=1024)",
+      "stage": "controlled-fixtures"
+    },
+    {
+      "name": "E08: organization list fits 768px with a 200-character AU name (viewport=768, document=768, mainRight=768)",
+      "stage": "controlled-fixtures"
+    },
+    {
+      "name": "E08: organization list fits 390px with a 200-character AU name (viewport=390, document=390, mainRight=390)",
+      "stage": "controlled-fixtures"
+    },
+    {
+      "name": "E01: explicit selection opens the selected prepared AU with its trusted original principal",
+      "stage": "controlled-fixtures"
+    },
+    {
+      "name": "E08: overview distinguishes preparation, planned calls and inactive business without claiming empty work or zero spending",
+      "stage": "controlled-fixtures"
+    },
+    {
+      "name": "E01: recent navigation stores only a versioned identity/service/AU reference",
+      "stage": "controlled-fixtures"
+    },
+    {
+      "name": "E01: home revalidates the current principal and recent AU before reopening it",
+      "stage": "controlled-fixtures"
+    },
+    {
+      "name": "E08: prepared overview fits 1440px with the full 200-character AU name (viewport=1440, document=1440, mainRight=1440)",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: full AU name is readable inside the main column at 1440px",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: navigation exposes eight organization pages at 1440px",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: the extra-page toggle is visible only at mobile width (1440px)",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: prepared overview fits 1024px with the full 200-character AU name (viewport=1024, document=1024, mainRight=1024)",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: full AU name is readable inside the main column at 1024px",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: navigation exposes eight organization pages at 1024px",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: the extra-page toggle is visible only at mobile width (1024px)",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: prepared overview fits 768px with the full 200-character AU name (viewport=768, document=768, mainRight=768)",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: full AU name is readable inside the main column at 768px",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: navigation exposes four direct organization pages at 768px",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: the extra-page toggle is visible only at mobile width (768px)",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: mobile remaining navigation expands by keyboard at 768px",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: expanded mobile links are keyboard reachable at 768px",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: prepared overview fits 390px with the full 200-character AU name (viewport=390, document=390, mainRight=390)",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: full AU name is readable inside the main column at 390px",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: navigation exposes four direct organization pages at 390px",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: the extra-page toggle is visible only at mobile width (390px)",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: mobile remaining navigation expands by keyboard at 390px",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: expanded mobile links are keyboard reachable at 390px",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: account dialog takes keyboard focus and labels the current core identity",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: Escape closes the account dialog and restores a visible keyboard focus to its trigger",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: keyboard navigation moves focus to the new page heading",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: work scoped shell fits 1440px (viewport=1440, document=1440, mainRight=1440)",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: work scoped shell fits 1024px (viewport=1024, document=1024, mainRight=1024)",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: work scoped shell fits 768px (viewport=768, document=768, mainRight=768)",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: work scoped shell fits 390px (viewport=390, document=390, mainRight=390)",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E02: work uses only the current AU navigation and no legacy execution form",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: results scoped shell fits 1440px (viewport=1440, document=1440, mainRight=1440)",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: results scoped shell fits 1024px (viewport=1024, document=1024, mainRight=1024)",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: results scoped shell fits 768px (viewport=768, document=768, mainRight=768)",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: results scoped shell fits 390px (viewport=390, document=390, mainRight=390)",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E02: results uses only the current AU navigation and no legacy execution form",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: attention scoped shell fits 1440px (viewport=1440, document=1440, mainRight=1440)",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: attention scoped shell fits 1024px (viewport=1024, document=1024, mainRight=1024)",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: attention scoped shell fits 768px (viewport=768, document=768, mainRight=768)",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: attention scoped shell fits 390px (viewport=390, document=390, mainRight=390)",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E02: attention uses only the current AU navigation and no legacy execution form",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: resources scoped shell fits 1440px (viewport=1440, document=1440, mainRight=1440)",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: resources scoped shell fits 1024px (viewport=1024, document=1024, mainRight=1024)",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: resources scoped shell fits 768px (viewport=768, document=768, mainRight=768)",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: resources scoped shell fits 390px (viewport=390, document=390, mainRight=390)",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E02: resources uses only the current AU navigation and no legacy execution form",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: governance scoped shell fits 1440px (viewport=1440, document=1440, mainRight=1440)",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: governance scoped shell fits 1024px (viewport=1024, document=1024, mainRight=1024)",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: governance scoped shell fits 768px (viewport=768, document=768, mainRight=768)",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: governance scoped shell fits 390px (viewport=390, document=390, mainRight=390)",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E02: governance uses only the current AU navigation and no legacy execution form",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: improvement scoped shell fits 1440px (viewport=1440, document=1440, mainRight=1440)",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: improvement scoped shell fits 1024px (viewport=1024, document=1024, mainRight=1024)",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: improvement scoped shell fits 768px (viewport=768, document=768, mainRight=768)",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: improvement scoped shell fits 390px (viewport=390, document=390, mainRight=390)",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E02: improvement uses only the current AU navigation and no legacy execution form",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: collaboration scoped shell fits 1440px (viewport=1440, document=1440, mainRight=1440)",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: collaboration scoped shell fits 1024px (viewport=1024, document=1024, mainRight=1024)",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: collaboration scoped shell fits 768px (viewport=768, document=768, mainRight=768)",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E08: collaboration scoped shell fits 390px (viewport=390, document=390, mainRight=390)",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E02: collaboration uses only the current AU navigation and no legacy execution form",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E02: a scoped old tasks link replaces itself with the canonical Work URL",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E02/E08: back, forward and reload preserve the explicit AU and page after alias replacement",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E02: AU/Work/result deep link wins over a conflicting organization query without reading the other AU",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E02: a result deep link preserves all scope components and explains the unavailable body",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E02: unscoped /overview returns to the list without reading the recent AU",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E02: unscoped /tasks returns to the list without reading the recent AU",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E02: unscoped /artifacts returns to the list without reading the recent AU",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E02: unscoped /models returns to the list without reading the recent AU",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E02: unscoped /members returns to the list without reading the recent AU",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E02: unscoped /resources returns to the list without reading the recent AU",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E02: unscoped /activity returns to the list without reading the recent AU",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E02: unscoped /settings returns to the list without reading the recent AU",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E02: old gateway entry explains the optional-platform boundary without loading legacy management",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E02: legacy explicit AU in old route is refused without falling back to any AU",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E02: legacy explicit AU in canonical route is refused without falling back to any AU",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E02: unknown explicit AU in old route is refused without falling back to any AU",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E02: unknown explicit AU in canonical route is refused without falling back to any AU",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E05: undeclared or encoded path /not-a-declared-page returns 404 instead of SPA HTML",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E05: undeclared or encoded path /api/u125-missing returns 404 instead of SPA HTML",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E05: undeclared or encoded path /au/invalid%252fsegment returns 404 instead of SPA HTML",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E05: undeclared or encoded path /au/:auId/work/w/results/r/extra returns 404 instead of SPA HTML",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E05: declared deep-link HTML retains CSP, same-origin connect policy and nosniff",
+      "stage": "navigation-and-layout"
+    },
+    {
+      "name": "E04: same-AU browser offline retains an explicitly stale authorized snapshot and disables new decisions",
+      "stage": "read-fault-injection"
+    },
+    {
+      "name": "E04: reconnect performs reads only and does not turn the preparation plan into execution",
+      "stage": "read-fault-injection"
+    },
+    {
+      "name": "E03: injected current-AU 403 clears the protected charter and its action",
+      "stage": "read-fault-injection"
+    },
+    {
+      "name": "E03: disconnect after an explicit AU denial cannot resurrect its old protected body",
+      "stage": "read-fault-injection"
+    },
+    {
+      "name": "E03: an injected delayed AU read hides the prior organization before the new response",
+      "stage": "read-fault-injection"
+    },
+    {
+      "name": "E03: the delayed or cancelled A response cannot replace B after an explicit organization switch",
+      "stage": "read-fault-injection"
+    },
+    {
+      "name": "E03: a separately registered principal has no access to the owner prepared AUs",
+      "stage": "independent-principals"
+    },
+    {
+      "name": "E03: real other-principal deep-link refusal does not fetch the owner AU or select a substitute",
+      "stage": "independent-principals"
+    },
+    {
+      "name": "E03: the real HTTP service also rejects another principal directly, without protected body contents",
+      "stage": "independent-principals"
+    },
+    {
+      "name": "E01/E03: a recent reference belonging to the other real principal cannot select or read their AU",
+      "stage": "independent-principals"
+    },
+    {
+      "name": "E03: injected session principal change clears the previously protected organization in the open tab",
+      "stage": "independent-principals"
+    },
+    {
+      "name": "E03: a late authorized response from the old principal cannot restore their body after session change",
+      "stage": "independent-principals"
+    },
+    {
+      "name": "E03: injected directory removal invalidates the current body without reading a substitute",
+      "stage": "independent-principals"
+    },
+    {
+      "name": "E03: injected service-instance change hides the old body until a new authorized AU read completes",
+      "stage": "independent-principals"
+    },
+    {
+      "name": "E03: injected session 401 removes the protected AU and its available actions",
+      "stage": "independent-principals"
+    },
+    {
+      "name": "E01/E03: actual service restart retains the original stable principal, AU and preparation bytes",
+      "stage": "restart-and-normal-login"
+    },
+    {
+      "name": "E01/E08: normal password sign-in reopens the scoped original AU without another ticket or creation",
+      "stage": "restart-and-normal-login"
+    },
+    {
+      "name": "E01/E08: injected unavailable preference storage still permits the list, explicit selection and deep-link reload",
+      "stage": "storage-fault-injection"
+    },
+    {
+      "name": "E01-E04: exactly the original owner A/B and isolated legacy record remain, with no substitute or duplicate AU",
+      "stage": "final-invariants"
+    },
+    {
+      "name": "E01-E04: only four explicitly declared fixture creates ran; navigation/recovery dispatched no command",
+      "stage": "final-invariants"
+    },
+    {
+      "name": "E01-E04: no V1 route reads a legacy snapshot/artifact/workspace or dispatches model/work execution",
+      "stage": "final-invariants"
+    },
+    {
+      "name": "E01-E08: browser network is same-origin and no unhandled browser or service exception occurred",
+      "stage": "final-invariants"
+    },
+    {
+      "name": "Verification served one unchanged production build throughout the browser run",
+      "stage": "final-invariants"
+    }
+  ],
+  "requests": [
+    {
+      "page": "owner",
+      "stage": "setup",
+      "method": "GET",
+      "path": "/",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "setup",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "setup",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "setup",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "setup",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "setup",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "setup",
+      "method": "POST",
+      "path": "/api/auth/setup",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "setup",
+      "method": "GET",
+      "path": "/",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "setup",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "setup",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "setup",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "setup",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "setup",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "setup",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "setup",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "setup",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "setup",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "controlled-fixtures",
+      "method": "POST",
+      "path": "/api/commands",
+      "originMatches": true,
+      "id": "u125-fixture-legacy",
+      "kind": "create",
+      "expectedFixture": true
+    },
+    {
+      "page": "owner",
+      "stage": "controlled-fixtures",
+      "method": "POST",
+      "path": "/api/commands",
+      "originMatches": true,
+      "id": "u125-fixture-a",
+      "kind": "create_v1",
+      "expectedFixture": true
+    },
+    {
+      "page": "owner",
+      "stage": "controlled-fixtures",
+      "method": "POST",
+      "path": "/api/commands",
+      "originMatches": true,
+      "id": "u125-fixture-b",
+      "kind": "create_v1",
+      "expectedFixture": true
+    },
+    {
+      "page": "owner",
+      "stage": "controlled-fixtures",
+      "method": "GET",
+      "path": "/",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "controlled-fixtures",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "controlled-fixtures",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "controlled-fixtures",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "controlled-fixtures",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "controlled-fixtures",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "controlled-fixtures",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "controlled-fixtures",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "controlled-fixtures",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "controlled-fixtures",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "controlled-fixtures",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "controlled-fixtures",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "controlled-fixtures",
+      "method": "GET",
+      "path": "/api/v1/aus/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "controlled-fixtures",
+      "method": "GET",
+      "path": "/api/v1/aus/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "controlled-fixtures",
+      "method": "GET",
+      "path": "/",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "controlled-fixtures",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "controlled-fixtures",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "controlled-fixtures",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "controlled-fixtures",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "controlled-fixtures",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "controlled-fixtures",
+      "method": "GET",
+      "path": "/api/v1/aus/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "controlled-fixtures",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "controlled-fixtures",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "controlled-fixtures",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "controlled-fixtures",
+      "method": "GET",
+      "path": "/api/v1/aus/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/au/org-fd799536d46e4a368c45ae4c1173a6aa/work",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/v1/aus/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/au/org-fd799536d46e4a368c45ae4c1173a6aa/results",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/v1/aus/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/au/org-fd799536d46e4a368c45ae4c1173a6aa/attention",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/v1/aus/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/au/org-fd799536d46e4a368c45ae4c1173a6aa/resources",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/v1/aus/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/v1/models",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/au/org-fd799536d46e4a368c45ae4c1173a6aa/governance",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/v1/aus/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/au/org-fd799536d46e4a368c45ae4c1173a6aa/improvement",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/v1/aus/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/au/org-fd799536d46e4a368c45ae4c1173a6aa/collaboration",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/v1/aus/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/au/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/v1/aus/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/tasks",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/v1/aus/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/v1/aus/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/au/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/v1/aus/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/au/org-fd799536d46e4a368c45ae4c1173a6aa/work",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/v1/aus/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/au/org-fd799536d46e4a368c45ae4c1173a6aa/work",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/v1/aus/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/au/org-e9c80cc192894b29839ba6f777169661/work/work.beta/results/result.beta",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/v1/aus/org-e9c80cc192894b29839ba6f777169661",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/overview",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/tasks",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/artifacts",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/models",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/members",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/resources",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/activity",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/settings",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/gateways",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/tasks",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/au/org-0e881f762eb04e7dab832ba86ae8614d",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/tasks",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/au/org-u125-missing",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "navigation-and-layout",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "read-fault-injection",
+      "method": "GET",
+      "path": "/au/org-fd799536d46e4a368c45ae4c1173a6aa/governance",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "read-fault-injection",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "read-fault-injection",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "read-fault-injection",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "read-fault-injection",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "read-fault-injection",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "read-fault-injection",
+      "method": "GET",
+      "path": "/api/v1/aus/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "read-fault-injection",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "read-fault-injection",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "read-fault-injection",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "read-fault-injection",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "read-fault-injection",
+      "method": "GET",
+      "path": "/api/v1/aus/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "read-fault-injection",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "read-fault-injection",
+      "method": "GET",
+      "path": "/api/v1/aus/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "read-fault-injection",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "read-fault-injection",
+      "method": "GET",
+      "path": "/au/org-e9c80cc192894b29839ba6f777169661",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "read-fault-injection",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "read-fault-injection",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "read-fault-injection",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "read-fault-injection",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "read-fault-injection",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "read-fault-injection",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "read-fault-injection",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "read-fault-injection",
+      "method": "GET",
+      "path": "/api/v1/aus/org-e9c80cc192894b29839ba6f777169661",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "read-fault-injection",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "read-fault-injection",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "read-fault-injection",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "read-fault-injection",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "read-fault-injection",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "read-fault-injection",
+      "method": "GET",
+      "path": "/api/v1/aus/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "read-fault-injection",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "read-fault-injection",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "read-fault-injection",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "read-fault-injection",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "read-fault-injection",
+      "method": "GET",
+      "path": "/api/v1/aus/org-e9c80cc192894b29839ba6f777169661",
+      "originMatches": true
+    },
+    {
+      "page": "participant",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/",
+      "originMatches": true
+    },
+    {
+      "page": "participant",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "participant",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "participant",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "participant",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "participant",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "participant",
+      "stage": "independent-principals",
+      "method": "POST",
+      "path": "/api/auth/register",
+      "originMatches": true
+    },
+    {
+      "page": "participant",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/",
+      "originMatches": true
+    },
+    {
+      "page": "participant",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "participant",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "participant",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "participant",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "participant",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "participant",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "participant",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "participant",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "participant",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "participant",
+      "stage": "independent-principals",
+      "method": "POST",
+      "path": "/api/commands",
+      "originMatches": true,
+      "id": "u125-fixture-c",
+      "kind": "create_v1",
+      "expectedFixture": true
+    },
+    {
+      "page": "participant",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/au/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "participant",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "participant",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "participant",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "participant",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "participant",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "participant",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "participant",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/v1/aus/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "participant",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/au/org-f8137338467f4f559a33536fe8d14dfd",
+      "originMatches": true
+    },
+    {
+      "page": "participant",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "participant",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "participant",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "participant",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "participant",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "participant",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/v1/aus/org-f8137338467f4f559a33536fe8d14dfd",
+      "originMatches": true
+    },
+    {
+      "page": "participant",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/au/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/v1/aus/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "participant",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/au/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/v1/aus/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/v1/aus/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/au/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/v1/aus/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/au/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/v1/aus/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/v1/aus/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/au/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/v1/aus/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/au/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/v1/aus/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "independent-principals",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "restart-and-normal-login",
+      "method": "GET",
+      "path": "/au/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "restart-and-normal-login",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "restart-and-normal-login",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "restart-and-normal-login",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "restart-and-normal-login",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "restart-and-normal-login",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "restart-and-normal-login",
+      "method": "GET",
+      "path": "/api/v1/aus/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "restart-and-normal-login",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "restart-and-normal-login",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "restart-and-normal-login",
+      "method": "GET",
+      "path": "/api/v1/aus/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "restart-and-normal-login",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "restart-and-normal-login",
+      "method": "POST",
+      "path": "/api/auth/logout",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "restart-and-normal-login",
+      "method": "GET",
+      "path": "/au/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "restart-and-normal-login",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "restart-and-normal-login",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "restart-and-normal-login",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "restart-and-normal-login",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "restart-and-normal-login",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "restart-and-normal-login",
+      "method": "POST",
+      "path": "/api/auth/login",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "restart-and-normal-login",
+      "method": "GET",
+      "path": "/au/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "restart-and-normal-login",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "restart-and-normal-login",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "restart-and-normal-login",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "restart-and-normal-login",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "restart-and-normal-login",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "restart-and-normal-login",
+      "method": "GET",
+      "path": "/api/v1/aus/org-fd799536d46e4a368c45ae4c1173a6aa",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "restart-and-normal-login",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "restart-and-normal-login",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "participant",
+      "stage": "storage-fault-injection",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "storage-fault",
+      "stage": "storage-fault-injection",
+      "method": "GET",
+      "path": "/",
+      "originMatches": true
+    },
+    {
+      "page": "participant",
+      "stage": "storage-fault-injection",
+      "method": "GET",
+      "path": "/api/v1/aus/org-f8137338467f4f559a33536fe8d14dfd",
+      "originMatches": true
+    },
+    {
+      "page": "participant",
+      "stage": "storage-fault-injection",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "storage-fault",
+      "stage": "storage-fault-injection",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "storage-fault",
+      "stage": "storage-fault-injection",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "storage-fault",
+      "stage": "storage-fault-injection",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "storage-fault",
+      "stage": "storage-fault-injection",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "storage-fault",
+      "stage": "storage-fault-injection",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "storage-fault",
+      "stage": "storage-fault-injection",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "storage-fault",
+      "stage": "storage-fault-injection",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "storage-fault",
+      "stage": "storage-fault-injection",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "storage-fault",
+      "stage": "storage-fault-injection",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "storage-fault",
+      "stage": "storage-fault-injection",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "storage-fault",
+      "stage": "storage-fault-injection",
+      "method": "GET",
+      "path": "/api/v1/aus/org-e9c80cc192894b29839ba6f777169661",
+      "originMatches": true
+    },
+    {
+      "page": "storage-fault",
+      "stage": "storage-fault-injection",
+      "method": "GET",
+      "path": "/au/org-e9c80cc192894b29839ba6f777169661",
+      "originMatches": true
+    },
+    {
+      "page": "storage-fault",
+      "stage": "storage-fault-injection",
+      "method": "GET",
+      "path": "/assets/index-DXGNcWbC.js",
+      "originMatches": true
+    },
+    {
+      "page": "storage-fault",
+      "stage": "storage-fault-injection",
+      "method": "GET",
+      "path": "/assets/index-CUQUSYu-.css",
+      "originMatches": true
+    },
+    {
+      "page": "storage-fault",
+      "stage": "storage-fault-injection",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "storage-fault",
+      "stage": "storage-fault-injection",
+      "method": "GET",
+      "path": "/favicon.svg",
+      "originMatches": true
+    },
+    {
+      "page": "storage-fault",
+      "stage": "storage-fault-injection",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    },
+    {
+      "page": "storage-fault",
+      "stage": "storage-fault-injection",
+      "method": "GET",
+      "path": "/api/v1/aus/org-e9c80cc192894b29839ba6f777169661",
+      "originMatches": true
+    },
+    {
+      "page": "storage-fault",
+      "stage": "storage-fault-injection",
+      "method": "GET",
+      "path": "/api/auth/status",
+      "originMatches": true
+    },
+    {
+      "page": "owner",
+      "stage": "final-invariants",
+      "method": "GET",
+      "path": "/api/session",
+      "originMatches": true
+    }
+  ],
+  "injectedFaults": [
+    "browser offline",
+    "AU 403",
+    "delayed AU read",
+    "session principal/service/401",
+    "directory removal",
+    "preference storage unavailable"
+  ],
+  "limits": [
+    "Prepared AU entry only; U-126 creation form and original-request uncertainty are separate.",
+    "Work/results are scope-preserving capability-gap pages; no business body or autonomy acceptance.",
+    "No real provider, real resource grant, deployment, screen-reader or physical-device testing."
+  ]
+}

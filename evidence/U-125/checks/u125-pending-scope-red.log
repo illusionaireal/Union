@@ -1,0 +1,1621 @@
+
+> @union/console@0.1.0 test
+> vitest run src/app/organization-entry.test.tsx
+
+
+ RUN  v3.2.7 <checkout>/web/console
+
+ ❯ src/app/organization-entry.test.tsx (20 tests | 5 failed) 2036ms
+   × V1 organization entry > preserves unscoped historical create references without automatic lookup 262ms
+     → expected "receipt" to not be called at all, but actually been called 1 times
+
+Received: 
+
+  1st receipt call:
+
+    Array [
+      "historical-request",
+      null,
+      "create",
+    ]
+
+
+Number of calls: 1
+
+   × V1 organization entry > preserves unscoped historical create_v1 references without automatic lookup 112ms
+     → expected "receipt" to not be called at all, but actually been called 1 times
+
+Received: 
+
+  1st receipt call:
+
+    Array [
+      "historical-request",
+      null,
+      "create_v1",
+    ]
+
+
+Number of calls: 1
+
+   × V1 organization entry > does not poll a creation owned by another principal or silently open its AU 125ms
+     → expected "receipt" to not be called at all, but actually been called 1 times
+
+Received: 
+
+  1st receipt call:
+
+    Array [
+      "other-creation",
+      null,
+      "create_v1",
+    ]
+
+
+Number of calls: 1
+
+   × V1 organization entry > queries an owned original creation after restart without overriding explicit navigation 1060ms
+     → Unable to find an element with the text: 原创建已核对. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"organization-shell"[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"skip"[39m
+        [33mhref[39m=[32m"#main"[39m
+      [36m>[39m
+        [0m跳转到正文[0m
+      [36m</a>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"organization-header"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"organization-brand"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/organizations"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33maria-hidden[39m=[32m"true"[39m
+          [36m>[39m
+            [0mu[0m
+          [36m</span>[39m
+          [0mai-union[0m
+        [36m</a>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"organization-header-actions"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"button secondary"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/organizations"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-arrow-left"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"16"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"2"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"16"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"m12 19-7-7 7-7"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M19 12H5"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [0m我的组织[0m
+          [36m</a>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"button secondary"[39m
+          [36m>[39m
+            [0m账号与登录[0m
+          [36m</button>[39m
+        [36m</div>[39m
+      [36m</header>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"organization-body"[39m
+      [36m>[39m
+        [36m<aside[39m
+          [33maria-label[39m=[32m"组织空间导航"[39m
+          [33mclass[39m=[32m"organization-navigation"[39m
+        [36m>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"organization-current"[39m
+          [36m>[39m
+            [0m资料研究组织[0m
+          [36m</p>[39m
+          [36m<nav[39m
+            [33maria-label[39m=[32m"组织页面"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33maria-current[39m=[32m"page"[39m
+              [33mclass[39m=[32m"organization-nav-link active"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mdata-nav[39m=[32m"overview"[39m
+              [33mhref[39m=[32m"/au/first"[39m
+            [36m>[39m
+              [0m概况[0m
+            [36m</a>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"organization-nav-link"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mdata-nav[39m=[32m"work"[39m
+              [33mhref[39m=[32m"/au/first/work"[39m
+            [36m>[39m
+              [0m工作[0m
+            [36m</a>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"organization-nav-link"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mdata-nav[39m=[32m"results"[39m
+              [33mhref[39m=[32m"/au/first/results"[39m
+            [36m>[39m
+              [0m成果[0m
+            [36m</a>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"organization-nav-link"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mdata-nav[39m=[32m"attention"[39m
+              [33mhref[39m=[32m"/au/first/attention"[39m
+            [36m>[39m
+              [0m关注事项[0m
+            [36m</a>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"organization-nav-link organization-extra"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mdata-nav[39m=[32m"resources"[39m
+              [33mhref[39m=[32m"/au/first/resources"[39m
+            [36m>[39m
+              [0m能力与资源[0m
+            [36m</a>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"organization-nav-link organization-extra"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mdata-nav[39m=[32m"governance"[39m
+              [33mhref[39m=[32m"/au/first/governance"[39m
+            [36m>[39m
+              [0m治理与成员[0m
+            [36m</a>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"organization-nav-link organization-extra"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mdata-nav[39m=[32m"improvement"[39m
+              [33mhref[39m=[32m"/au/first/improvement"[39m
+            [36m>[39m
+              [0m改进[0m
+            [36m</a>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"organization-nav-link organization-extra"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mdata-nav[39m=[32m"collaboration"[39m
+              [33mhref[39m=[32m"/au/first/collaboration"[39m
+            [36m>[39m
+              [0m合作[0m
+            [36m</a>[39m
+          [36m</nav>[39m
+          [36m<button[39m
+            [33maria-expanded[39m=[32m"false"[39m
+            [33mclass[39m=[32m"button secondary organization-menu"[39m
+          [36m>[39m
+            [0m更多页面[0m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-chevron-down"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"16"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"2"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"16"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"m6 9 6 6 6-6"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+          [36m</button>[39m
+        [36m</aside>[39m
+        [36m<main[39m
+          [33mclass[39m=[32m"organization-main"[39m
+          [33mid[39m=[32m"main"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"organization-page-heading"[39m
+          [36m>[39m
+            [36m<h1[39m
+              [33mtabindex[39m=[32m"-1"[39m
+            [36m>[39m
+              [0m概况[0m
+            [36m</h1>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"button secondary"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-refresh-cw"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"15"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"15"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M21 3v5h-5"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M8 16H3v5"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+              [0m刷新[0m
+            [36m</button>[39m
+          [36m</div>[39m
+          [36m<div>[39m
+            [36m<section[39m
+              [33mclass[39m=[32m"organization-purpose"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"eyebrow"[39m
+              [36m>[39m
+                [0mAI-UNION / AU[0m
+              [36m</span>[39m
+              [36m<h2>[39m
+                [0m资料研究组织[0m
+              [36m</h2>[39m
+              [36m<p[39m
+                [33mclass[39m=[32m"au-text"[39m
+              [36m>[39m
+                [0m持续整理有来源的资料[0m
+              [36m</p>[39m
+            [36m</section>[39m
+            [36m<dl[39m
+              [33mclass[39m=[32m"organization-state"[39m
+            [36m>[39m
+              [36m<div>[39m
+                [36m<dt>[39m
+                  [0m治理[0m
+                [36m</dt>[39m
+                [36m<dd>[39m
+                  [0m准备中 · 尚未采用[0m
+                [36m</dd>[39m
+              [36m</div>[39m
+              [36m<div>[39m
+                [36m<dt>[39m
+                  [0m资源计划[0m
+                [36m</dt>[39m
+                [36m<dd>[39m
+                  [0m计划 [0m
+                  [0m8[0m
+                  [0m 次调用[0m
+                [36m</dd>[39m
+              [36m</div>[39m
+              [36m<div>[39m
+                [36m<dt>[39m
+                  [0m自主业务[0m
+                [36m</dt>[39m
+                [36m<dd>[39m
+                  [0m尚未启用[0m
+                [36m</dd>[39m
+              [36m</div>[39m
+            [36m</dl>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"form-note"[39m
+            [36m>[39m
+              [0m资源计划与实际授权、用量分开核对。当前页面未汇总工作与成果，不据此推断组织没有工作或资源消耗。[0m
+            [36m</p>[39m
+            [36m<section[39m
+              [33mclass[39m=[32m"card "[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"card-heading"[39m
+              [36m>[39m
+                [36m<h2>[39m
+                  [0m继续准备[0m
+                [36m</h2>[39m
+              [36m</div>[39m
+              [36m<ul[39m
+                [33mclass[39m=[32m"organization-preparation"[39m
+              [36m>[39m
+                [36m<li>[39m
+                  [36m<div>[39m
+                    [36m<h3>[39m
+                      [0m治理与责任边界[0m
+                    [36m</h3>[39m
+                    [36m<p>[39m
+                      [0m初始治理主体已绑定。需要核对适用规则、保留事项与治理不可用时的处理程序。[0m
+                    [36m</p>[39m
+                  [36m</div>[39m
+                  [36m<a[39m
+                    [33mclass[39m=[32m"button secondary"[39m
+                    [33mdata-discover[39m=[32m"true"[39m
+                    [33mhref[39m=[32m"/au/first/governance"[39m
+                  [36m>[39m
+                    [0m查看治理[0m
+                  [36m</a>[39m
+                [36m</li>[39m
+                [36m<li>[39m
+                  [36m<div>[39m
+                    [36m<h3>[39m
+                      [0m能力与资源[0m
+                    [36m</h3>[39m
+                    [36m<p>[39m
+                      [0m模型连接、工具权限和有限资源需要分别准备；创建本身不会授予调用。[0m
+                    [36m</p>[39m
+                  [36m</div>[39m
+                  [36m<a[39m
+                    [33mclass[39m=[32m"button secondary"[39m
+                    [33mdata-discover[39m=[32m"true"[39m
+                    [33mhref[39m=[32m"/au/first/resources"[39m
+                  [36m>[39m
+                    [0m准备资源[0m
+                  [36m</a>[39m
+                [36m</li>[39m
+              [36m</ul>[39m
+            [36m</section>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"organization-next"[39m
+            [36m>[39m
+              [36m<a[39m
+                [33mdata-discover[39m=[32m"true"[39m
+                [33mhref[39m=[32m"/au/first/work"[39m
+              [36m>[39m
+                [36m<h2>[39m
+                  [0m工作[0m
+                [36m</h2>[39m
+                [36m<p>[39m
+                  [0m查看持续工作入口及当前支持范围。[0m
+                [36m</p>[39m
+                [36m<span>[39m
+                  [0m前往工作 →[0m
+                [36m</span>[39m
+              [36m</a>[39m
+              [36m<a[39m
+                [33mdata-discover[39m=[32m"true"[39m
+                [33mhref[39m=[32m"/au/first/results"[39m
+              [36m>[39m
+                [36m<h2>[39m
+                  [0m成果[0m
+                [36m</h2>[39m
+                [36m<p>[39m
+                  [0m了解成果阅读、版本和反馈的接入状态。[0m
+                [36m</p>[39m
+                [36m<span>[39m
+                  [0m前往成果 →[0m
+                [36m</span>[39m
+              [36m</a>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+        [36m</main>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"organization-shell"[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"skip"[39m
+        [33mhref[39m=[32m"#main"[39m
+      [36m>[39m
+        [0m跳转到正文[0m
+      [36m</a>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"organization-header"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"organization-brand"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/organizations"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33maria-hidden[39m=[32m"true"[39m
+          [36m>[39m
+            [0mu[0m
+          [36m</span>[39m
+          [0mai-union[0m
+        [36m</a>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"organization-header-actions"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"button secondary"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/organizations"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-arrow-left"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"16"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"2"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"16"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"m12 19-7-7 7-7"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M19 12H5"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [0m我的组织[0m
+          [36m</a>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"button secondary"[39m
+          [36m>[39m
+            [0m账号与登录[0m
+          [36m</button>[39m
+        [36m</div>[39m
+      [36m</header>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"organization-body"[39m
+      [36m>[39m
+        [36m<aside[39m
+          [33maria-label[39m=[32m"组织空间导航"[39m
+          [33mclass[39m=[32m"organization-navigation"[39m
+        [36m>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"organization-current"[39m
+          [36m>[39m
+            [0m资料研究组织[0m
+          [36m</p>[39m
+          [36m<nav[39m
+            [33maria-label[39m=[32m"组织页面"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33maria-current[39m=[32m"page"[39m
+              [33mclass[39m=[32m"organization-nav-link active"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mdata-nav[39m=[32m"overview"[39m
+              [33mhref[39m=[32m"/au/first"[39m
+            [36m>[39m
+              [0m概况[0m
+            [36m</a>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"organization-nav-link"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mdata-nav[39m=[32m"work"[39m
+              [33mhref[39m=[32m"/au/first/work"[39m
+            [36m>[39m
+              [0m工作[0m
+            [36m</a>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"organization-nav-link"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mdata-nav[39m=[32m"results"[39m
+              [33mhref[39m=[32m"/au/first/results"[39m
+            [36m>[39m
+              [0m成果[0m
+            [36m</a>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"organization-nav-link"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mdata-nav[39m=[32m"attention"[39m
+              [33mhref[39m=[32m"/au/first/attention"[39m
+            [36m>[39m
+              [0m关注事项[0m
+            [36m</a>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"organization-nav-link organization-extra"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mdata-nav[39m=[32m"resources"[39m
+              [33mhref[39m=[32m"/au/first/resources"[39m
+            [36m>[39m
+              [0m能力与资源[0m
+            [36m</a>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"organization-nav-link organization-extra"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mdata-nav[39m=[32m"governance"[39m
+              [33mhref[39m=[32m"/au/first/governance"[39m
+            [36m>[39m
+              [0m治理与成员[0m
+            [36m</a>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"organization-nav-link organization-extra"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mdata-nav[39m=[32m"improvement"[39m
+              [33mhref[39m=[32m"/au/first/improvement"[39m
+            [36m>[39m
+              [0m改进[0m
+            [36m</a>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"organization-nav-link organization-extra"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mdata-nav[39m=[32m"collaboration"[39m
+              [33mhref[39m=[32m"/au/first/collaboration"[39m
+            [36m>[39m
+              [0m合作[0m
+            [36m</a>[39m
+          [36m</nav>[39m
+          [36m<button[39m
+            [33maria-expanded[39m=[32m"false"[39m
+            [33mclass[39m=[32m"button secondary organization-menu"[39m
+          [36m>[39m
+            [0m更多页面[0m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-chevron-down"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"16"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"2"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"16"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"m6 9 6 6 6-6"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+          [36m</button>[39m
+        [36m</aside>[39m
+        [36m<main[39m
+          [33mclass[39m=[32m"organization-main"[39m
+          [33mid[39m=[32m"main"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"organization-page-heading"[39m
+          [36m>[39m
+            [36m<h1[39m
+              [33mtabindex[39m=[32m"-1"[39m
+            [36m>[39m
+              [0m概况[0m
+            [36m</h1>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"button secondary"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-refresh-cw"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"15"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"15"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M21 3v5h-5"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M8 16H3v5"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+              [0m刷新[0m
+            [36m</button>[39m
+          [36m</div>[39m
+          [36m<div>[39m
+            [36m<section[39m
+              [33mclass[39m=[32m"organization-purpose"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"eyebrow"[39m
+              [36m>[39m
+                [0mAI-UNION / AU[0m
+              [36m</span>[39m
+              [36m<h2>[39m
+                [0m资料研究组织[0m
+              [36m</h2>[39m
+              [36m<p[39m
+                [33mclass[39m=[32m"au-text"[39m
+              [36m>[39m
+                [0m持续整理有来源的资料[0m
+              [36m</p>[39m
+            [36m</section>[39m
+            [36m<dl[39m
+              [33mclass[39m=[32m"organization-state"[39m
+            [36m>[39m
+              [36m<div>[39m
+                [36m<dt>[39m
+                  [0m治理[0m
+                [36m</dt>[39m
+                [36m<dd>[39m
+                  [0m准备中 · 尚未采用[0m
+                [36m</dd>[39m
+              [36m</div>[39m
+              [36m<div>[39m
+                [36m<dt>[39m
+                  [0m资源计划[0m
+                [36m</dt>[39m
+                [36m<dd>[39m
+                  [0m计划 [0m
+                  [0m8[0m
+                  [0m 次调用[0m
+                [36m</dd>[39m
+              [36m</div>[39m
+              [36m<div>[39m
+                [36m<dt>[39m
+                  [0m自主业务[0m
+                [36m</dt>[39m
+                [36m<dd>[39m
+                  [0m尚未启用[0m
+                [36m</dd>[39m
+              [36m</div>[39m
+            [36m</dl>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"form-note"[39m
+            [36m>[39m
+              [0m资源计划与实际授权、用量分开核对。当前页面未汇总工作与成果，不据此推断组织没有工作或资源消耗。[0m
+            [36m</p>[39m
+            [36m<section[39m
+              [33mclass[39m=[32m"card "[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"card-heading"[39m
+              [36m>[39m
+                [36m<h2>[39m
+                  [0m继续准备[0m
+                [36m</h2>[39m
+              [36m</div>[39m
+              [36m<ul[39m
+                [33mclass[39m=[32m"organization-preparation"[39m
+              [36m>[39m
+                [36m<li>[39m
+                  [36m<div>[39m
+                    [36m<h3>[39m
+                      [0m治理与责任边界[0m
+                    [36m</h3>[39m
+                    [36m<p>[39m
+                      [0m初始治理主体已绑定。需要核对适用规则、保留事项与治理不可用时的处理程序。[0m
+                    [36m</p>[39m
+                  [36m</div>[39m
+                  [36m<a[39m
+                    [33mclass[39m=[32m"button secondary"[39m
+                    [33mdata-discover[39m=[32m"true"[39m
+                    [33mhref[39m=[32m"/au/first/governance"[39m
+                  [36m>[39m
+                    [0m查看治理[0m
+                  [36m</a>[39m
+                [36m</li>[39m
+                [36m<li>[39m
+                  [36m<div>[39m
+                    [36m<h3>[39m
+                      [0m能力与资源[0m
+                    [36m</h3>[39m
+                    [36m<p>[39m
+                      [0m模型连接、工具权限和有限资源需要分别准备；创建本身不会授予调用。[0m
+                    [36m</p>[39m
+                  [36m</div>[39m
+                  [36m<a[39m
+                    [33mclass[39m=[32m"button secondary"[39m
+                    [33mdata-discover[39m=[32m"true"[39m
+                    [33mhref[39m=[32m"/au/first/resources"[39m
+                  [36m>[39m
+                    [0m准备资源[0m
+                  [36m</a>[39m
+                [36m</li>[39m
+              [36m</ul>[39m
+            [36m</section>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"organization-next"[39m
+            [36m>[39m
+              [36m<a[39m
+                [33mdata-discover[39m=[32m"true"[39m
+                [33mhref[39m=[32m"/au/first/work"[39m
+              [36m>[39m
+                [36m<h2>[39m
+                  [0m工作[0m
+                [36m</h2>[39m
+                [36m<p>[39m
+                  [0m查看持续工作入口及当前支持范围。[0m
+                [36m</p>[39m
+                [36m<span>[39m
+                  [0m前往工作 →[0m
+                [36m</span>[39m
+              [36m</a>[39m
+              [36m<a[39m
+                [33mdata-discover[39m=[32m"true"[39m
+                [33mhref[39m=[32m"/au/first/results"[39m
+              [36m>[39m
+                [36m<h2>[39m
+                  [0m成果[0m
+                [36m</h2>[39m
+                [36m<p>[39m
+                  [0m了解成果阅读、版本和反馈的接入状态。[0m
+                [36m</p>[39m
+                [36m<span>[39m
+                  [0m前往成果 →[0m
+                [36m</span>[39m
+              [36m</a>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+        [36m</main>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+   ✓ V1 organization entry > does not select the first AU at / 11ms
+   ✓ V1 organization entry > does not select the first AU at /organizations 8ms
+   ✓ V1 organization entry > lists authorized V1 organizations without a legacy default or legacy creation 81ms
+   ✓ V1 organization entry > uses the explicit path AU instead of a conflicting legacy query 13ms
+   ✓ V1 organization entry > does not fall back from rejected target /au/missing 20ms
+   ✓ V1 organization entry > does not fall back from rejected target /au/legacy 16ms
+   ✓ V1 organization entry > does not fall back from rejected target /au/first/unknown 32ms
+   ✓ V1 organization entry > does not fall back from rejected target /au/first%2Fsecond 31ms
+   ✓ V1 organization entry > does not fall back from rejected target /au/%ZZ 13ms
+   ✓ V1 organization entry > does not fall back from rejected target /au/first/work/invalid%255Fid 15ms
+   ✓ V1 organization entry > resolves a valid old link to the new scoped page, without mounting the old shell 83ms
+   ✓ V1 organization entry > reopens a verified recent AU and keeps only a navigation reference 21ms
+   ✓ V1 organization entry > does not use a different principal or service recent AU 21ms
+   ✓ V1 organization entry > ignores a late AU result after a newer explicit navigation 29ms
+   ✓ V1 organization entry > erases a denied projection and does not resurrect it after network loss 65ms
+   × V1 organization entry > clears a previously readable AU when the service protocol becomes incompatible 15ms
+     → expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  none
+Received:
+  first
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/app/organization-entry.test.tsx > V1 organization entry > preserves unscoped historical create references without automatic lookup
+AssertionError: expected "receipt" to not be called at all, but actually been called 1 times
+
+Received: 
+
+  1st receipt call:
+
+    Array [
+      "historical-request",
+      null,
+      "create",
+    ]
+
+
+Number of calls: 1
+
+ ❯ src/app/organization-entry.test.tsx:69:29
+     67|     await screen.findByRole('link', { name: /资料研究组织/ });
+     68|     await act(async () => { await new Promise(resolve => setTimeout(re…
+     69|     expect(api.receipt).not.toHaveBeenCalled();
+       |                             ^
+     70|     expect(JSON.parse(sessionStorage.getItem('union-pending')!)).toEqu…
+     71|     expect(screen.getByText(kind === 'create' ? /旧版操作引用已保留/ : /历史创建引用尚…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  src/app/organization-entry.test.tsx > V1 organization entry > preserves unscoped historical create_v1 references without automatic lookup
+AssertionError: expected "receipt" to not be called at all, but actually been called 1 times
+
+Received: 
+
+  1st receipt call:
+
+    Array [
+      "historical-request",
+      null,
+      "create_v1",
+    ]
+
+
+Number of calls: 1
+
+ ❯ src/app/organization-entry.test.tsx:69:29
+     67|     await screen.findByRole('link', { name: /资料研究组织/ });
+     68|     await act(async () => { await new Promise(resolve => setTimeout(re…
+     69|     expect(api.receipt).not.toHaveBeenCalled();
+       |                             ^
+     70|     expect(JSON.parse(sessionStorage.getItem('union-pending')!)).toEqu…
+     71|     expect(screen.getByText(kind === 'create' ? /旧版操作引用已保留/ : /历史创建引用尚…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  src/app/organization-entry.test.tsx > V1 organization entry > does not poll a creation owned by another principal or silently open its AU
+AssertionError: expected "receipt" to not be called at all, but actually been called 1 times
+
+Received: 
+
+  1st receipt call:
+
+    Array [
+      "other-creation",
+      null,
+      "create_v1",
+    ]
+
+
+Number of calls: 1
+
+ ❯ src/app/organization-entry.test.tsx:80:29
+     78|     await screen.findByRole('link', { name: /资料研究组织/ });
+     79|     await act(async () => { await new Promise(resolve => setTimeout(re…
+     80|     expect(api.receipt).not.toHaveBeenCalled();
+       |                             ^
+     81|     expect(window.location.pathname).toBe('/organizations');
+     82|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  src/app/organization-entry.test.tsx > V1 organization entry > queries an owned original creation after restart without overriding explicit navigation
+TestingLibraryElementError: Unable to find an element with the text: 原创建已核对. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <div
+      class="organization-shell"
+    >
+      <a
+        class="skip"
+        href="#main"
+      >
+        跳转到正文
+      </a>
+      <header
+        class="organization-header"
+      >
+        <a
+          class="organization-brand"
+          data-discover="true"
+          href="/organizations"
+        >
+          <span
+            aria-hidden="true"
+          >
+            u
+          </span>
+          ai-union
+        </a>
+        <div
+          class="organization-header-actions"
+        >
+          <a
+            class="button secondary"
+            data-discover="true"
+            href="/organizations"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-arrow-left"
+              fill="none"
+              height="16"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="16"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="m12 19-7-7 7-7"
+              />
+              <path
+                d="M19 12H5"
+              />
+            </svg>
+            我的组织
+          </a>
+          <button
+            class="button secondary"
+          >
+            账号与登录
+          </button>
+        </div>
+      </header>
+      <div
+        class="organization-body"
+      >
+        <aside
+          aria-label="组织空间导航"
+          class="organization-navigation"
+        >
+          <p
+            class="organization-current"
+          >
+            资料研究组织
+          </p>
+          <nav
+            aria-label="组织页面"
+          >
+            <a
+              aria-current="page"
+              class="organization-nav-link active"
+              data-discover="true"
+              data-nav="overview"
+              href="/au/first"
+            >
+              概况
+            </a>
+            <a
+              class="organization-nav-link"
+              data-discover="true"
+              data-nav="work"
+              href="/au/first/work"
+            >
+              工作
+            </a>
+            <a
+              class="organization-nav-link"
+              data-discover="true"
+              data-nav="results"
+              href="/au/first/results"
+            >
+              成果
+            </a>
+            <a
+              class="organization-nav-link"
+              data-discover="true"
+              data-nav="attention"
+              href="/au/first/attention"
+            >
+              关注事项
+            </a>
+            <a
+              class="organization-nav-link organization-extra"
+              data-discover="true"
+              data-nav="resources"
+              href="/au/first/resources"
+            >
+              能力与资源
+            </a>
+            <a
+              class="organization-nav-link organization-extra"
+              data-discover="true"
+              data-nav="governance"
+              href="/au/first/governance"
+            >
+              治理与成员
+            </a>
+            <a
+              class="organization-nav-link organization-extra"
+              data-discover="true"
+              data-nav="improvement"
+              href="/au/first/improvement"
+            >
+              改进
+            </a>
+            <a
+              class="organization-nav-link organization-extra"
+              data-discover="true"
+              data-nav="collaboration"
+              href="/au/first/collaboration"
+            >
+              合作
+            </a>
+          </nav>
+          <button
+            aria-expanded="false"
+            class="button secondary organization-menu"
+          >
+            更多页面
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-chevron-down"
+              fill="none"
+              height="16"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="16"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="m6 9 6 6 6-6"
+              />
+            </svg>
+          </button>
+        </aside>
+        <main
+          class="organization-main"
+          id="main"
+        >
+          <div
+            class="organization-page-heading"
+          >
+            <h1
+              tabindex="-1"
+            >
+              概况
+            </h1>
+            <button
+              class="button secondary"
+            >
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-refresh-cw"
+                fill="none"
+                height="15"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="15"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"
+                />
+                <path
+                  d="M21 3v5h-5"
+                />
+                <path
+                  d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"
+                />
+                <path
+                  d="M8 16H3v5"
+                />
+              </svg>
+              刷新
+            </button>
+          </div>
+          <div>
+            <section
+              class="organization-purpose"
+            >
+              <span
+                class="eyebrow"
+              >
+                AI-UNION / AU
+              </span>
+              <h2>
+                资料研究组织
+              </h2>
+              <p
+                class="au-text"
+              >
+                持续整理有来源的资料
+              </p>
+            </section>
+            <dl
+              class="organization-state"
+            >
+              <div>
+                <dt>
+                  治理
+                </dt>
+                <dd>
+                  准备中 · 尚未采用
+                </dd>
+              </div>
+              <div>
+                <dt>
+                  资源计划
+                </dt>
+                <dd>
+                  计划 
+                  8
+                   次调用
+                </dd>
+              </div>
+              <div>
+                <dt>
+                  自主业务
+                </dt>
+                <dd>
+                  尚未启用
+                </dd>
+              </div>
+            </dl>
+            <p
+              class="form-note"
+            >
+              资源计划与实际授权、用量分开核对。当前页面未汇总工作与成果，不据此推断组织没有工作或资源消耗。
+            </p>
+            <section
+              class="card "
+            >
+              <div
+                class="card-heading"
+              >
+                <h2>
+                  继续准备
+                </h2>
+              </div>
+              <ul
+                class="organization-preparation"
+              >
+                <li>
+                  <div>
+                    <h3>
+                      治理与责任边界
+                    </h3>
+                    <p>
+                      初始治理主体已绑定。需要核对适用规则、保留事项与治理不可用时的处理程序。
+                    </p>
+                  </div>
+                  <a
+                    class="button secondary"
+                    data-discover="true"
+                    href="/au/first/governance"
+                  >
+                    查看治理
+                  </a>
+                </li>
+                <li>
+                  <div>
+                    <h3>
+                      能力与资源
+                    </h3>
+                    <p>
+                      模型连接、工具权限和有限资源需要分别准备；创建本身不会授予调用。
+                    </p>
+                  </div>
+                  <a
+                    class="button secondary"
+                    data-discover="true"
+                    href="/au/first/resources"
+                  >
+                    准备资源
+                  </a>
+                </li>
+              </ul>
+            </section>
+            <div
+              class="organization-next"
+            >
+              <a
+                data-discover="true"
+                href="/au/first/work"
+              >
+                <h2>
+                  工作
+                </h2>
+                <p>
+                  查看持续工作入口及当前支持范围。
+                </p>
+                <span>
+                  前往工作 →
+                </span>
+              </a>
+              <a
+                data-discover="true"
+                href="/au/first/results"
+              >
+                <h2>
+                  成果
+                </h2>
+                <p>
+                  了解成果阅读、版本和反馈的接入状态。
+                </p>
+                <span>
+                  前往成果 →
+                </span>
+              </a>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <div
+      class="organization-shell"
+    >
+      <a
+        class="skip"
+        href="#main"
+      >
+        跳转到正文
+      </a>
+      <header
+        class="organization-header"
+      >
+        <a
+          class="organization-brand"
+          data-discover="true"
+          href="/organizations"
+        >
+          <span
+            aria-hidden="true"
+          >
+            u
+          </span>
+          ai-union
+        </a>
+        <div
+          class="organization-header-actions"
+        >
+          <a
+            class="button secondary"
+            data-discover="true"
+            href="/organizations"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-arrow-left"
+              fill="none"
+              height="16"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="16"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="m12 19-7-7 7-7"
+              />
+              <path
+                d="M19 12H5"
+              />
+            </svg>
+            我的组织
+          </a>
+          <button
+            class="button secondary"
+          >
+            账号与登录
+          </button>
+        </div>
+      </header>
+      <div
+        class="organization-body"
+      >
+        <aside
+          aria-label="组织空间导航"
+          class="organization-navigation"
+        >
+          <p
+            class="organization-current"
+          >
+            资料研究组织
+          </p>
+          <nav
+            aria-label="组织页面"
+          >
+            <a
+              aria-current="page"
+              class="organization-nav-link active"
+              data-discover="true"
+              data-nav="overview"
+              href="/au/first"
+            >
+              概况
+            </a>
+            <a
+              class="organization-nav-link"
+              data-discover="true"
+              data-nav="work"
+              href="/au/first/work"
+            >
+              工作
+            </a>
+            <a
+              class="organization-nav-link"
+              data-discover="true"
+              data-nav="results"
+              href="/au/first/results"
+            >
+              成果
+            </a>
+            <a
+              class="organization-nav-link"
+              data-discover="true"
+              data-nav="attention"
+              href="/au/first/attention"
+            >
+              关注事项
+            </a>
+            <a
+              class="organization-nav-link organization-extra"
+              data-discover="true"
+              data-nav="resources"
+              href="/au/first/resources"
+            >
+              能力与资源
+            </a>
+            <a
+              class="organization-nav-link organization-extra"
+              data-discover="true"
+              data-nav="governance"
+              href="/au/first/governance"
+            >
+              治理与成员
+            </a>
+            <a
+              class="organization-nav-link organization-extra"
+              data-discover="true"
+              data-nav="improvement"
+              href="/au/first/improvement"
+            >
+              改进
+            </a>
+            <a
+              class="organization-nav-link organization-extra"
+              data-discover="true"
+              data-nav="collaboration"
+              href="/au/first/collaboration"
+            >
+              合作
+            </a>
+          </nav>
+          <button
+            aria-expanded="false"
+            class="button secondary organization-menu"
+          >
+            更多页面
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-chevron-down"
+              fill="none"
+              height="16"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="16"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="m6 9 6 6 6-6"
+              />
+            </svg>
+          </button>
+        </aside>
+        <main
+          class="organization-main"
+          id="main"
+        >
+          <div
+            class="organization-page-heading"
+          >
+            <h1
+              tabindex="-1"
+            >
+              概况
+            </h1>
+            <button
+              class="button secondary"
+            >
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-refresh-cw"
+                fill="none"
+                height="15"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="15"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"
+                />
+                <path
+                  d="M21 3v5h-5"
+                />
+                <path
+                  d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"
+                />
+                <path
+                  d="M8 16H3v5"
+                />
+              </svg>
+              刷新
+            </button>
+          </div>
+          <div>
+            <section
+              class="organization-purpose"
+            >
+              <span
+                class="eyebrow"
+              >
+                AI-UNION / AU
+              </span>
+              <h2>
+                资料研究组织
+              </h2>
+              <p
+                class="au-text"
+              >
+                持续整理有来源的资料
+              </p>
+            </section>
+            <dl
+              class="organization-state"
+            >
+              <div>
+                <dt>
+                  治理
+                </dt>
+                <dd>
+                  准备中 · 尚未采用
+                </dd>
+              </div>
+              <div>
+                <dt>
+                  资源计划
+                </dt>
+                <dd>
+                  计划 
+                  8
+                   次调用
+                </dd>
+              </div>
+              <div>
+                <dt>
+                  自主业务
+                </dt>
+                <dd>
+                  尚未启用
+                </dd>
+              </div>
+            </dl>
+            <p
+              class="form-note"
+            >
+              资源计划与实际授权、用量分开核对。当前页面未汇总工作与成果，不据此推断组织没有工作或资源消耗。
+            </p>
+            <section
+              class="card "
+            >
+              <div
+                class="card-heading"
+              >
+                <h2>
+                  继续准备
+                </h2>
+              </div>
+              <ul
+                class="organization-preparation"
+              >
+                <li>
+                  <div>
+                    <h3>
+                      治理与责任边界
+                    </h3>
+                    <p>
+                      初始治理主体已绑定。需要核对适用规则、保留事项与治理不可用时的处理程序。
+                    </p>
+                  </div>
+                  <a
+                    class="button secondary"
+                    data-discover="true"
+                    href="/au/first/governance"
+                  >
+                    查看治理
+                  </a>
+                </li>
+                <li>
+                  <div>
+                    <h3>
+                      能力与资源
+                    </h3>
+                    <p>
+                      模型连接、工具权限和有限资源需要分别准备；创建本身不会授予调用。
+                    </p>
+                  </div>
+                  <a
+                    class="button secondary"
+                    data-discover="true"
+                    href="/au/first/resources"
+                  >
+                    准备资源
+                  </a>
+                </li>
+              </ul>
+            </section>
+            <div
+              class="organization-next"
+            >
+              <a
+                data-discover="true"
+                href="/au/first/work"
+              >
+                <h2>
+                  工作
+                </h2>
+                <p>
+                  查看持续工作入口及当前支持范围。
+                </p>
+                <span>
+                  前往工作 →
+                </span>
+              </a>
+              <a
+                data-discover="true"
+                href="/au/first/results"
+              >
+                <h2>
+                  成果
+                </h2>
+                <p>
+                  了解成果阅读、版本和反馈的接入状态。
+                </p>
+                <span>
+                  前往成果 →
+                </span>
+              </a>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+</body>
+ ❯ waitForWrapper ../../node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/app/organization-entry.test.tsx:92:18
+     90|     mount(true);
+     91|     await waitFor(() => expect(api.receipt).toHaveBeenCalledWith('orig…
+     92|     await screen.findByText('原创建已核对');
+       |                  ^
+     93|     expect(window.location.pathname).toBe('/au/second');
+     94|     expect(api.coreAU).not.toHaveBeenCalledWith('first', expect.any(Ab…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  src/app/organization-entry.test.tsx > V1 organization entry > clears a previously readable AU when the service protocol becomes incompatible
+Error: expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  none
+Received:
+  first
+ ❯ src/app/organization-entry.test.tsx:209:41
+    207|     fireEvent.click(screen.getByRole('button', { name: '重新读取' }));
+    208|     await waitFor(() => expect(screen.getByTestId('problem')).toHaveTe…
+    209|     expect(screen.getByTestId('scope')).toHaveTextContent('none');
+       |                                         ^
+    210|     expect(screen.getByRole('button', { name: '需要最新权限的动作' })).toBeDisa…
+    211|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  5 failed | 15 passed (20)
+   Start at  12:17:20
+   Duration  6.33s (transform 859ms, setup 493ms, collect 1.45s, tests 2.04s, environment 1.42s, prepare 328ms)
+
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path <checkout>\web\console
+npm error workspace @union/console@0.1.0
+npm error location <checkout>\web\console
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c vitest run src/app/organization-entry.test.tsx

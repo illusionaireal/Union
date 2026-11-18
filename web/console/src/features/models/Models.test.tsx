@@ -52,11 +52,11 @@ describe('core model access user journey', () => {
   it('opens the core models route and navigation for a normal core governor', async () => {
     mount();
     expect(await screen.findByRole('button', { name: '添加模型连接' })).toBeEnabled();
-    expect(screen.getByRole('link', { name: /模型与 API/ })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: '能力与资源' })).toHaveAttribute(
       'href',
-      '/models?organization=core-au',
+      '/au/core-au/resources',
     );
-    expect(screen.getByRole('heading', { level: 1, name: '模型与 API' })).toBeVisible();
+    expect(screen.getByRole('heading', { level: 1, name: '能力与资源' })).toBeVisible();
     expect(screen.queryByText('当前为观察者会话')).not.toBeInTheDocument();
     expect(state.commands).toHaveLength(0);
   });
@@ -251,7 +251,7 @@ describe('core model access user journey', () => {
     mount();
     expect(await screen.findByRole('link', { name: '前往治理页允许只读资料工具' })).toHaveAttribute(
       'href',
-      '/settings?organization=core-au',
+      '/au/core-au/governance',
     );
     expect(screen.getByRole('button', { name: '验证工具往返' })).toBeDisabled();
     expect(screen.getByRole('button', { name: '设为默认' })).toBeEnabled();
@@ -273,7 +273,7 @@ describe('core model access user journey', () => {
     state.fetchMock.mockImplementation(async (_url, init) =>
       json({ receipt: accepted(JSON.parse(String(init?.body))) }),
     );
-    mount('/settings?organization=core-au');
+    mount('/au/core-au/governance');
     await open('修订章程');
     fireEvent.click(screen.getByLabelText('允许只读所选验证资料'));
     fill('决定依据', '开放有限模型接入验证');

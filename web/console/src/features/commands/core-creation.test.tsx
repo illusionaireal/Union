@@ -24,8 +24,8 @@ const prepared: CoreAURead = {
 };
 
 async function fillAndSubmit() {
-  await waitFor(() => expect(screen.getByRole('button', { name: /创建我的 AI 公司|创建 AU/ })).toBeEnabled());
-  fireEvent.click(screen.getByRole('button', { name: /创建我的 AI 公司|创建 AU/ }));
+  await waitFor(() => expect(screen.getByRole('button', { name: /创建组织/ })).toBeEnabled());
+  fireEvent.click(screen.getByRole('button', { name: /创建组织/ }));
   fireEvent.change(screen.getByLabelText('AU目标'), { target: { value: 'Keep the original goal' } });
   fireEvent.click(screen.getByRole('button', { name: '预览影响' }));
   fireEvent.click(await screen.findByRole('button', { name: '确认提交' }));
@@ -40,34 +40,32 @@ beforeEach(() => {
   HTMLDialogElement.prototype.showModal = function () { this.open = true; };
   HTMLDialogElement.prototype.close = function () { this.open = false; };
   sessionStorage.clear();
-  window.history.replaceState(null, '', '/overview');
+  localStorage.clear();
+  window.history.replaceState(null, '', '/organizations');
   vi.spyOn(api, 'session').mockResolvedValue(session);
   vi.spyOn(api, 'authStatus').mockResolvedValue({ configured: true, authenticated: true, can_setup: false, account: 'owner' });
   vi.spyOn(api, 'receipt').mockRejectedValue(new Error('pending'));
 });
 
 describe('core creation through the workspace', () => {
-  it('keeps explicit legacy company creation reachable after reopening a prepared AU', async () => {
+  it('keeps prepared organizations on the new entry without legacy creation controls', async () => {
     vi.mocked(api.session).mockResolvedValue({ ...session, organizations: [{ id: prepared.au.id, name: prepared.au.name, profile: 'core_v1' }] });
     vi.spyOn(api, 'coreAU').mockResolvedValue(prepared);
-    const submit = vi.spyOn(api, 'command').mockImplementation(() => new Promise(() => {}));
+    const submit = vi.spyOn(api, 'command');
+    window.history.replaceState(null, '', '/au/org-prepared');
     mountCore();
-    await screen.findByRole('region', { name: 'AU准备记录' });
-    fireEvent.click(screen.getByRole('button', { name: '旧版兼容试验（含小说）' }));
-    fireEvent.change(screen.getByLabelText('创建类型'), { target: { value: 'novel' } });
-    fireEvent.click(screen.getByRole('button', { name: '预览影响' }));
-    fireEvent.click(await screen.findByRole('button', { name: '确认提交' }));
-    await waitFor(() => expect(submit).toHaveBeenCalledOnce());
-    expect(submit.mock.calls[0][0].kind).toBe('create');
-    expect(submit.mock.calls[0][0].data.company).toBeDefined();
+    expect(await screen.findByRole('heading', { name: prepared.au.name })).toBeVisible();
+    expect(screen.queryByRole('button', { name: /旧版兼容/ })).not.toBeInTheDocument();
+    expect(submit).not.toHaveBeenCalled();
   });
 
-  it('explains the prepared boundary at the empty model entry instead of promising immediate configuration', async () => {
+  it('resolves an unscoped model link to the organization list without promising configuration', async () => {
     window.history.replaceState(null, '', '/models');
     mountCore();
-    await waitFor(() => expect(screen.getByRole('button', { name: '创建 AU 准备记录' })).toBeEnabled());
+    await waitFor(() => expect(screen.getByRole('button', { name: '创建组织' })).toBeEnabled());
+    expect(window.location.pathname).toBe('/organizations');
     expect(screen.queryByText('创建公司并继续配置')).not.toBeInTheDocument();
-    expect(screen.getByText(/新 AU 当前只保存资源计划，模型配置和调用尚未启用/)).toBeVisible();
+    expect(screen.getByText(/保存准备记录不会调用模型/)).toBeVisible();
   });
 
   it('opens the saved prepared AU through V1 and shows bound governance without legacy snapshot calls', async () => {
@@ -80,9 +78,11 @@ describe('core creation through the workspace', () => {
     mountCore();
     await fillAndSubmit();
     fireEvent.click(await screen.findByRole('button', { name: '完成，返回工作台' }));
-    expect(await screen.findByRole('region', { name: 'AU准备记录' })).toHaveTextContent('Keep the original goal');
-    expect(screen.getByText('业务自治尚未启用')).toBeVisible();
-    expect(screen.getByText(principal)).toBeVisible();
+    expect(await screen.findByText('Keep the original goal')).toBeVisible();
+    expect(window.location.pathname).toBe('/au/org-prepared');
+    expect(screen.getByText('尚未启用')).toBeVisible();
+    fireEvent.click(screen.getByRole('button', { name: '账号与登录' }));
+    expect(screen.getByLabelText('当前核心身份标识')).toHaveValue(principal);
     expect(snapshot).not.toHaveBeenCalled();
     expect(fetcher).toHaveBeenCalledWith('/api/v1/aus/org-prepared', expect.any(Object));
     expect(screen.queryByRole('button', { name: '启动／继续' })).not.toBeInTheDocument();
@@ -116,17 +116,17 @@ describe('core creation through the workspace', () => {
     vi.mocked(api.session).mockResolvedValue({ ...session, core_protocol: undefined });
     const submit = vi.spyOn(api, 'command');
     mountCore();
-    await waitFor(() => expect(screen.getByRole('button', { name: /创建我的 AI 公司|创建 AU/ })).toHaveAttribute('title', expect.stringContaining('版本不兼容')));
-    expect(screen.getByRole('button', { name: /创建我的 AI 公司|创建 AU/ })).toBeDisabled();
+    await waitFor(() => expect(screen.getByRole('button', { name: /创建组织/ })).toHaveAttribute('title', expect.stringContaining('版本不兼容')));
+    expect(screen.getByRole('button', { name: /创建组织/ })).toBeDisabled();
     expect(submit).not.toHaveBeenCalled();
   });
 
   it('submits ordinary creation as create_v1 with exactly the five supported fields', async () => {
     const submit = vi.spyOn(api, 'command').mockImplementation(() => new Promise(() => {}));
     mountCore();
-    await waitFor(() => expect(screen.getByRole('button', { name: /创建我的 AI 公司|创建 AU/ })).toBeEnabled());
-    fireEvent.click(screen.getByRole('button', { name: /创建我的 AI 公司|创建 AU/ }));
-    fireEvent.change(screen.getByLabelText(/公司目标|AU目标/), { target: { value: 'Keep the original goal' } });
+    await waitFor(() => expect(screen.getByRole('button', { name: /创建组织/ })).toBeEnabled());
+    fireEvent.click(screen.getByRole('button', { name: /创建组织/ }));
+    fireEvent.change(screen.getByLabelText(/AU目标/), { target: { value: 'Keep the original goal' } });
     fireEvent.click(screen.getByRole('button', { name: '预览影响' }));
     fireEvent.click(await screen.findByRole('button', { name: '确认提交' }));
     await waitFor(() => expect(submit).toHaveBeenCalledOnce());

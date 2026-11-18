@@ -12,13 +12,30 @@ from pathlib import Path
 from urllib.parse import parse_qs, urlsplit
 
 from .console import Console
-from .engine import Rejected, encoded, require
+from .engine import ID, Rejected, encoded, require
 from .errors import CoreError
 from .observation import artifact
 
 REPO = Path(__file__).resolve().parents[1]
-SPA_ROUTES = {"/", "/overview", "/members", "/tasks", "/artifacts", "/activity", "/resources", "/settings", "/models", "/gateways"}
+SPA_ROUTES = {"/", "/organizations", "/overview", "/members", "/tasks", "/artifacts",
+              "/activity", "/resources", "/settings", "/models", "/gateways"}
+SPA_AU_SECTIONS = {"work", "results", "attention", "resources", "governance", "improvement", "collaboration"}
 STATIC_CSP = "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; font-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+
+
+def _is_spa_route(path):
+    if path in SPA_ROUTES:
+        return True
+    parts = path.split("/")
+    if len(parts) not in (3, 4, 5, 7) or parts[:2] != ["", "au"] or not ID.fullmatch(parts[2]):
+        return False
+    if len(parts) == 3:
+        return True
+    if len(parts) == 4:
+        return parts[3] in SPA_AU_SECTIONS
+    if parts[3] != "work" or not ID.fullmatch(parts[4]):
+        return False
+    return len(parts) == 5 or (parts[5] == "results" and bool(ID.fullmatch(parts[6])))
 
 
 class Server(ThreadingHTTPServer):
@@ -83,8 +100,18 @@ class Handler(BaseHTTPRequestHandler):
     def static(self, path):
         """Only built assets and explicit SPA routes; never fall back for unknown files."""
         from urllib.parse import unquote
-        decoded = unquote(path)
-        if decoded in SPA_ROUTES:
+        # The base handler folds leading // in self.path before route selection.
+        request_target = self.requestline.split()[1]
+        if request_target.startswith("//") or re.search(r"%(?![0-9a-f]{2})|%2f|%5c", path, re.IGNORECASE):
+            return self.send(404, {"error": "资源不存在"})
+        try:
+            decoded = unquote(path, errors="strict")
+        except UnicodeDecodeError:
+            return self.send(404, {"error": "资源不存在"})
+        if any(char in decoded for char in ("\\", "\x00", "%")) or any(
+                part in (".", "..") for part in decoded.split("/")):
+            return self.send(404, {"error": "资源不存在"})
+        if _is_spa_route(decoded):
             try:
                 content = self.server.document.read_bytes()
                 match = re.search(rb'<meta http-equiv="Content-Security-Policy" content="([^"]+)"', content)
@@ -92,8 +119,6 @@ class Handler(BaseHTTPRequestHandler):
                 return self.send(200, content, "text/html; charset=utf-8", {"Content-Security-Policy": policy})
             except OSError:
                 return self.send(503, {"error": "前端尚未生成；从仓库根目录运行 npm run build:console 或 npm start"})
-        if "\\" in decoded or "\x00" in decoded or ".." in decoded.split("/"):
-            return self.send(404, {"error": "资源不存在"})
         if not (decoded.startswith("/assets/") or decoded == "/favicon.svg"):
             return self.send(404, {"error": "资源不存在"})
         root = self.server.static_dir

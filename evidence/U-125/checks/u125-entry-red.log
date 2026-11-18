@@ -1,0 +1,2072 @@
+
+> @union/console@0.1.0 test
+> vitest run src/app/organization-entry.test.tsx
+
+
+ RUN  v3.2.7 <checkout>/web/console
+
+ ❯ src/app/organization-entry.test.tsx (15 tests | 14 failed) 5436ms
+   × V1 organization entry > does not select the first AU at / 98ms
+     → expected "coreAU" to not be called at all, but actually been called 1 times
+
+Received: 
+
+  1st coreAU call:
+
+    Array [
+      "first",
+      AbortSignal {},
+    ]
+
+
+Number of calls: 1
+
+   × V1 organization entry > does not select the first AU at /organizations 21ms
+     → expected "coreAU" to not be called at all, but actually been called 1 times
+
+Received: 
+
+  1st coreAU call:
+
+    Array [
+      "first",
+      AbortSignal {},
+    ]
+
+
+Number of calls: 1
+
+   × V1 organization entry > lists authorized V1 organizations without a legacy default or legacy creation 1033ms
+     → Unable to find role="heading" and name "我的组织"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<a[39m
+      [33mclass[39m=[32m"skip"[39m
+      [33mhref[39m=[32m"#main"[39m
+    [36m>[39m
+      [0m跳转到正文[0m
+    [36m</a>[39m
+    [36m<aside[39m
+      [33maria-label[39m=[32m"工作台导航"[39m
+      [33mclass[39m=[32m"sidebar"[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"brand"[39m
+        [33mdata-discover[39m=[32m"true"[39m
+        [33mhref[39m=[32m"/overview"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"brand-symbol"[39m
+        [36m>[39m
+          [0mu[0m
+        [36m</span>[39m
+        [36m<span>[39m
+          [0mUNION[0m
+          [36m<small>[39m
+            [0mAI-UNION / AU[0m
+          [36m</small>[39m
+        [36m</span>[39m
+      [36m</a>[39m
+      [36m<label[39m
+        [33mclass[39m=[32m"workspace-switch"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"org-icon"[39m
+        [36m>[39m
+          [0mU[0m
+        [36m</span>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"workspace-select"[39m
+        [36m>[39m
+          [36m<small>[39m
+            [0m当前 AU[0m
+          [36m</small>[39m
+          [36m<select[39m
+            [33maria-label[39m=[32m"当前组织"[39m
+            [33mid[39m=[32m"org-select"[39m
+          [36m>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"legacy"[39m
+            [36m>[39m
+              [0m旧版试验[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"first"[39m
+            [36m>[39m
+              [0m资料研究组织[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"second"[39m
+            [36m>[39m
+              [0m写作组织[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</span>[39m
+      [36m</label>[39m
+      [36m<nav[39m
+        [33mid[39m=[32m"navigation"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"nav-entry"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"nav-caption"[39m
+          [36m>[39m
+            [0m工作空间[0m
+          [36m</div>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"nav-button"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mdata-nav[39m=[32m"overview"[39m
+            [33mhref[39m=[32m"/overview"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-layout-dashboard"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"19"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.7"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"19"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"9"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"3"[39m
+                [33my[39m=[32m"3"[39m
+              [36m/>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"5"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"14"[39m
+                [33my[39m=[32m"3"[39m
+              [36m/>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"9"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"14"[39m
+                [33my[39m=[32m"12"[39m
+              [36m/>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"5"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"3"[39m
+                [33my[39m=[32m"16"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [36m<span>[39m
+              [0m公司总览[0m
+            [36m</span>[39m
+          [36m</a>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"nav-entry"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"nav-button"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mdata-nav[39m=[32m"members"[39m
+            [33mhref[39m=[32m"/members"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-users"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"19"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.7"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"19"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M16 3.128a4 4 0 0 1 0 7.744"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M22 21v-2a4 4 0 0 0-3-3.87"[39m
+              [36m/>[39m
+              [36m<circle[39m
+                [33mcx[39m=[32m"9"[39m
+                [33mcy[39m=[32m"7"[39m
+                [33mr[39m=[32m"4"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [36m<span>[39m
+              [0m成员与岗位[0m
+            [36m</span>[39m
+          [36m</a>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"nav-entry"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"nav-button"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mdata-nav[39m=[32m"tasks"[39m
+            [33mhref[39m=[32m"/tasks"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-list-checks"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"19"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.7"[39m
+              [33m...
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<a[39m
+      [33mclass[39m=[32m"skip"[39m
+      [33mhref[39m=[32m"#main"[39m
+    [36m>[39m
+      [0m跳转到正文[0m
+    [36m</a>[39m
+    [36m<aside[39m
+      [33maria-label[39m=[32m"工作台导航"[39m
+      [33mclass[39m=[32m"sidebar"[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"brand"[39m
+        [33mdata-discover[39m=[32m"true"[39m
+        [33mhref[39m=[32m"/overview"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"brand-symbol"[39m
+        [36m>[39m
+          [0mu[0m
+        [36m</span>[39m
+        [36m<span>[39m
+          [0mUNION[0m
+          [36m<small>[39m
+            [0mAI-UNION / AU[0m
+          [36m</small>[39m
+        [36m</span>[39m
+      [36m</a>[39m
+      [36m<label[39m
+        [33mclass[39m=[32m"workspace-switch"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"org-icon"[39m
+        [36m>[39m
+          [0mU[0m
+        [36m</span>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"workspace-select"[39m
+        [36m>[39m
+          [36m<small>[39m
+            [0m当前 AU[0m
+          [36m</small>[39m
+          [36m<select[39m
+            [33maria-label[39m=[32m"当前组织"[39m
+            [33mid[39m=[32m"org-select"[39m
+          [36m>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"legacy"[39m
+            [36m>[39m
+              [0m旧版试验[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"first"[39m
+            [36m>[39m
+              [0m资料研究组织[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"second"[39m
+            [36m>[39m
+              [0m写作组织[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</span>[39m
+      [36m</label>[39m
+      [36m<nav[39m
+        [33mid[39m=[32m"navigation"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"nav-entry"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"nav-caption"[39m
+          [36m>[39m
+            [0m工作空间[0m
+          [36m</div>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"nav-button"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mdata-nav[39m=[32m"overview"[39m
+            [33mhref[39m=[32m"/overview"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-layout-dashboard"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"19"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.7"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"19"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"9"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"3"[39m
+                [33my[39m=[32m"3"[39m
+              [36m/>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"5"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"14"[39m
+                [33my[39m=[32m"3"[39m
+              [36m/>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"9"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"14"[39m
+                [33my[39m=[32m"12"[39m
+              [36m/>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"5"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"3"[39m
+                [33my[39m=[32m"16"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [36m<span>[39m
+              [0m公司总览[0m
+            [36m</span>[39m
+          [36m</a>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"nav-entry"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"nav-button"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mdata-nav[39m=[32m"members"[39m
+            [33mhref[39m=[32m"/members"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-users"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"19"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.7"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"19"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M16 3.128a4 4 0 0 1 0 7.744"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M22 21v-2a4 4 0 0 0-3-3.87"[39m
+              [36m/>[39m
+              [36m<circle[39m
+                [33mcx[39m=[32m"9"[39m
+                [33mcy[39m=[32m"7"[39m
+                [33mr[39m=[32m"4"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [36m<span>[39m
+              [0m成员与岗位[0m
+            [36m</span>[39m
+          [36m</a>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"nav-entry"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"nav-button"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mdata-nav[39m=[32m"tasks"[39m
+            [33mhref[39m=[32m"/tasks"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-list-checks"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"19"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.7"[39m
+              [33m...
+   × V1 organization entry > uses the explicit path AU instead of a conflicting legacy query 1013ms
+     → expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  second
+Received:
+  first
+
+Ignored nodes: comments, script, style
+[36m<html>[39m
+  [36m<head>[39m
+    [36m<title>[39m
+      [0m公司总览 · UNION[0m
+    [36m</title>[39m
+  [36m</head>[39m
+  [36m<body>[39m
+    [36m<div>[39m
+      [36m<output[39m
+        [33mdata-testid[39m=[32m"principal"[39m
+      [36m>[39m
+        [0mprincipal-one[0m
+      [36m</output>[39m
+      [36m<output[39m
+        [33mdata-testid[39m=[32m"scope"[39m
+      [36m>[39m
+        [0mfirst[0m
+      [36m</output>[39m
+      [36m<output[39m
+        [33mdata-testid[39m=[32m"name"[39m
+      [36m>[39m
+        [0m资料研究组织[0m
+      [36m</output>[39m
+      [36m<output[39m
+        [33mdata-testid[39m=[32m"problem"[39m
+      [36m/>[39m
+      [36m<button>[39m
+        [0m打开第二个组织[0m
+      [36m</button>[39m
+      [36m<button>[39m
+        [0m重新读取[0m
+      [36m</button>[39m
+      [36m<button>[39m
+        [0m需要最新权限的动作[0m
+      [36m</button>[39m
+    [36m</div>[39m
+  [36m</body>[39m
+[36m</html>[39m
+   × V1 organization entry > does not fall back from rejected target /au/missing 11ms
+     → expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  none
+Received:
+  first
+   × V1 organization entry > does not fall back from rejected target /au/legacy 15ms
+     → expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  none
+Received:
+  first
+   × V1 organization entry > does not fall back from rejected target /au/first/unknown 16ms
+     → expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  none
+Received:
+  first
+   × V1 organization entry > does not fall back from rejected target /au/first%2Fsecond 16ms
+     → expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  none
+Received:
+  first
+   × V1 organization entry > does not fall back from rejected target /au/%ZZ 16ms
+     → expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  none
+Received:
+  first
+   × V1 organization entry > does not fall back from rejected target /au/first/work/invalid%255Fid 16ms
+     → expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  none
+Received:
+  first
+   × V1 organization entry > resolves a valid old link to the new scoped page, without mounting the old shell 1019ms
+     → Unable to find role="heading" and name "工作"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<a[39m
+      [33mclass[39m=[32m"skip"[39m
+      [33mhref[39m=[32m"#main"[39m
+    [36m>[39m
+      [0m跳转到正文[0m
+    [36m</a>[39m
+    [36m<aside[39m
+      [33maria-label[39m=[32m"工作台导航"[39m
+      [33mclass[39m=[32m"sidebar"[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"brand"[39m
+        [33mdata-discover[39m=[32m"true"[39m
+        [33mhref[39m=[32m"/overview?organization=second"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"brand-symbol"[39m
+        [36m>[39m
+          [0mu[0m
+        [36m</span>[39m
+        [36m<span>[39m
+          [0mUNION[0m
+          [36m<small>[39m
+            [0mAI-UNION / AU[0m
+          [36m</small>[39m
+        [36m</span>[39m
+      [36m</a>[39m
+      [36m<label[39m
+        [33mclass[39m=[32m"workspace-switch"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"org-icon"[39m
+        [36m>[39m
+          [0m写[0m
+        [36m</span>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"workspace-select"[39m
+        [36m>[39m
+          [36m<small>[39m
+            [0m当前 AU[0m
+          [36m</small>[39m
+          [36m<select[39m
+            [33maria-label[39m=[32m"当前组织"[39m
+            [33mid[39m=[32m"org-select"[39m
+          [36m>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"first"[39m
+            [36m>[39m
+              [0m资料研究组织[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"second"[39m
+            [36m>[39m
+              [0m写作组织[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"legacy"[39m
+            [36m>[39m
+              [0m旧版试验[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</span>[39m
+      [36m</label>[39m
+      [36m<nav[39m
+        [33mid[39m=[32m"navigation"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"nav-entry"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"nav-caption"[39m
+          [36m>[39m
+            [0m工作空间[0m
+          [36m</div>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"nav-button"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mdata-nav[39m=[32m"overview"[39m
+            [33mhref[39m=[32m"/overview?organization=second"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-layout-dashboard"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"19"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.7"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"19"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"9"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"3"[39m
+                [33my[39m=[32m"3"[39m
+              [36m/>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"5"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"14"[39m
+                [33my[39m=[32m"3"[39m
+              [36m/>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"9"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"14"[39m
+                [33my[39m=[32m"12"[39m
+              [36m/>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"5"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"3"[39m
+                [33my[39m=[32m"16"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [36m<span>[39m
+              [0mAU准备记录[0m
+            [36m</span>[39m
+          [36m</a>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"nav-entry"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"nav-caption"[39m
+          [36m>[39m
+            [0m运行管理[0m
+          [36m</div>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"nav-button"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mdata-nav[39m=[32m"models"[39m
+            [33mhref[39m=[32m"/models?organization=second"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-cpu"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"19"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.7"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"19"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M12 20v2"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M12 2v2"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M17 20v2"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M17 2v2"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M2 12h2"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M2 17h2"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M2 7h2"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M20 12h2"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M20 17h2"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M20 7h2"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M7 20v2"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M7 2v2"[39m
+              [36m/>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"16"[39m
+          ...
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<a[39m
+      [33mclass[39m=[32m"skip"[39m
+      [33mhref[39m=[32m"#main"[39m
+    [36m>[39m
+      [0m跳转到正文[0m
+    [36m</a>[39m
+    [36m<aside[39m
+      [33maria-label[39m=[32m"工作台导航"[39m
+      [33mclass[39m=[32m"sidebar"[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"brand"[39m
+        [33mdata-discover[39m=[32m"true"[39m
+        [33mhref[39m=[32m"/overview?organization=second"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"brand-symbol"[39m
+        [36m>[39m
+          [0mu[0m
+        [36m</span>[39m
+        [36m<span>[39m
+          [0mUNION[0m
+          [36m<small>[39m
+            [0mAI-UNION / AU[0m
+          [36m</small>[39m
+        [36m</span>[39m
+      [36m</a>[39m
+      [36m<label[39m
+        [33mclass[39m=[32m"workspace-switch"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"org-icon"[39m
+        [36m>[39m
+          [0m写[0m
+        [36m</span>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"workspace-select"[39m
+        [36m>[39m
+          [36m<small>[39m
+            [0m当前 AU[0m
+          [36m</small>[39m
+          [36m<select[39m
+            [33maria-label[39m=[32m"当前组织"[39m
+            [33mid[39m=[32m"org-select"[39m
+          [36m>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"first"[39m
+            [36m>[39m
+              [0m资料研究组织[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"second"[39m
+            [36m>[39m
+              [0m写作组织[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"legacy"[39m
+            [36m>[39m
+              [0m旧版试验[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</span>[39m
+      [36m</label>[39m
+      [36m<nav[39m
+        [33mid[39m=[32m"navigation"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"nav-entry"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"nav-caption"[39m
+          [36m>[39m
+            [0m工作空间[0m
+          [36m</div>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"nav-button"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mdata-nav[39m=[32m"overview"[39m
+            [33mhref[39m=[32m"/overview?organization=second"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-layout-dashboard"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"19"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.7"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"19"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"9"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"3"[39m
+                [33my[39m=[32m"3"[39m
+              [36m/>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"5"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"14"[39m
+                [33my[39m=[32m"3"[39m
+              [36m/>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"9"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"14"[39m
+                [33my[39m=[32m"12"[39m
+              [36m/>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"5"[39m
+                [33mrx[39m=[32m"1"[39m
+                [33mwidth[39m=[32m"7"[39m
+                [33mx[39m=[32m"3"[39m
+                [33my[39m=[32m"16"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [36m<span>[39m
+              [0mAU准备记录[0m
+            [36m</span>[39m
+          [36m</a>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"nav-entry"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"nav-caption"[39m
+          [36m>[39m
+            [0m运行管理[0m
+          [36m</div>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"nav-button"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mdata-nav[39m=[32m"models"[39m
+            [33mhref[39m=[32m"/models?organization=second"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-cpu"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"19"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.7"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"19"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M12 20v2"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M12 2v2"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M17 20v2"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M17 2v2"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M2 12h2"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M2 17h2"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M2 7h2"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M20 12h2"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M20 17h2"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M20 7h2"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M7 20v2"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M7 2v2"[39m
+              [36m/>[39m
+              [36m<rect[39m
+                [33mheight[39m=[32m"16"[39m
+          ...
+   × V1 organization entry > reopens a verified recent AU and keeps only a navigation reference 1010ms
+     → expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  second
+Received:
+  first
+
+Ignored nodes: comments, script, style
+[36m<html>[39m
+  [36m<head>[39m
+    [36m<title>[39m
+      [0mAU准备记录 · UNION[0m
+    [36m</title>[39m
+  [36m</head>[39m
+  [36m<body>[39m
+    [36m<div>[39m
+      [36m<output[39m
+        [33mdata-testid[39m=[32m"principal"[39m
+      [36m>[39m
+        [0mprincipal-one[0m
+      [36m</output>[39m
+      [36m<output[39m
+        [33mdata-testid[39m=[32m"scope"[39m
+      [36m>[39m
+        [0mfirst[0m
+      [36m</output>[39m
+      [36m<output[39m
+        [33mdata-testid[39m=[32m"name"[39m
+      [36m>[39m
+        [0m资料研究组织[0m
+      [36m</output>[39m
+      [36m<output[39m
+        [33mdata-testid[39m=[32m"problem"[39m
+      [36m/>[39m
+      [36m<button>[39m
+        [0m打开第二个组织[0m
+      [36m</button>[39m
+      [36m<button>[39m
+        [0m重新读取[0m
+      [36m</button>[39m
+      [36m<button>[39m
+        [0m需要最新权限的动作[0m
+      [36m</button>[39m
+    [36m</div>[39m
+  [36m</body>[39m
+[36m</html>[39m
+   × V1 organization entry > does not use a different principal or service recent AU 1015ms
+     → expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  second
+Received:
+  first
+
+Ignored nodes: comments, script, style
+[36m<html>[39m
+  [36m<head>[39m
+    [36m<title>[39m
+      [0mAU准备记录 · UNION[0m
+    [36m</title>[39m
+  [36m</head>[39m
+  [36m<body>[39m
+    [36m<div>[39m
+      [36m<output[39m
+        [33mdata-testid[39m=[32m"principal"[39m
+      [36m>[39m
+        [0mprincipal-one[0m
+      [36m</output>[39m
+      [36m<output[39m
+        [33mdata-testid[39m=[32m"scope"[39m
+      [36m>[39m
+        [0mfirst[0m
+      [36m</output>[39m
+      [36m<output[39m
+        [33mdata-testid[39m=[32m"name"[39m
+      [36m>[39m
+        [0m资料研究组织[0m
+      [36m</output>[39m
+      [36m<output[39m
+        [33mdata-testid[39m=[32m"problem"[39m
+      [36m/>[39m
+      [36m<button>[39m
+        [0m打开第二个组织[0m
+      [36m</button>[39m
+      [36m<button>[39m
+        [0m重新读取[0m
+      [36m</button>[39m
+      [36m<button>[39m
+        [0m需要最新权限的动作[0m
+      [36m</button>[39m
+    [36m</div>[39m
+  [36m</body>[39m
+[36m</html>[39m
+   × V1 organization entry > ignores a late AU result after a newer explicit navigation 57ms
+     → expected '/au/first' to be '/au/second' // Object.is equality
+   ✓ V1 organization entry > erases a denied projection and does not resurrect it after network loss 78ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 14 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/app/organization-entry.test.tsx > V1 organization entry > does not select the first AU at /
+ FAIL  src/app/organization-entry.test.tsx > V1 organization entry > does not select the first AU at /organizations
+AssertionError: expected "coreAU" to not be called at all, but actually been called 1 times
+
+Received: 
+
+  1st coreAU call:
+
+    Array [
+      "first",
+      AbortSignal {},
+    ]
+
+
+Number of calls: 1
+
+ ❯ src/app/organization-entry.test.tsx:66:28
+     64|     mount();
+     65|     await waitFor(() => expect(screen.getByTestId('principal')).toHave…
+     66|     expect(api.coreAU).not.toHaveBeenCalled();
+       |                            ^
+     67|     expect(api.snapshot).not.toHaveBeenCalled();
+     68|     expect(screen.getByTestId('scope')).toHaveTextContent('none');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/14]⎯
+
+ FAIL  src/app/organization-entry.test.tsx > V1 organization entry > lists authorized V1 organizations without a legacy default or legacy creation
+TestingLibraryElementError: Unable to find role="heading" and name "我的组织"
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <a
+      class="skip"
+      href="#main"
+    >
+      跳转到正文
+    </a>
+    <aside
+      aria-label="工作台导航"
+      class="sidebar"
+    >
+      <a
+        class="brand"
+        data-discover="true"
+        href="/overview"
+      >
+        <span
+          class="brand-symbol"
+        >
+          u
+        </span>
+        <span>
+          UNION
+          <small>
+            AI-UNION / AU
+          </small>
+        </span>
+      </a>
+      <label
+        class="workspace-switch"
+      >
+        <span
+          class="org-icon"
+        >
+          U
+        </span>
+        <span
+          class="workspace-select"
+        >
+          <small>
+            当前 AU
+          </small>
+          <select
+            aria-label="当前组织"
+            id="org-select"
+          >
+            <option
+              value="legacy"
+            >
+              旧版试验
+            </option>
+            <option
+              value="first"
+            >
+              资料研究组织
+            </option>
+            <option
+              value="second"
+            >
+              写作组织
+            </option>
+          </select>
+        </span>
+      </label>
+      <nav
+        id="navigation"
+      >
+        <div
+          class="nav-entry"
+        >
+          <div
+            class="nav-caption"
+          >
+            工作空间
+          </div>
+          <a
+            class="nav-button"
+            data-discover="true"
+            data-nav="overview"
+            href="/overview"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-layout-dashboard"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="19"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect
+                height="9"
+                rx="1"
+                width="7"
+                x="3"
+                y="3"
+              />
+              <rect
+                height="5"
+                rx="1"
+                width="7"
+                x="14"
+                y="3"
+              />
+              <rect
+                height="9"
+                rx="1"
+                width="7"
+                x="14"
+                y="12"
+              />
+              <rect
+                height="5"
+                rx="1"
+                width="7"
+                x="3"
+                y="16"
+              />
+            </svg>
+            <span>
+              公司总览
+            </span>
+          </a>
+        </div>
+        <div
+          class="nav-entry"
+        >
+          <a
+            class="nav-button"
+            data-discover="true"
+            data-nav="members"
+            href="/members"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-users"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="19"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"
+              />
+              <path
+                d="M16 3.128a4 4 0 0 1 0 7.744"
+              />
+              <path
+                d="M22 21v-2a4 4 0 0 0-3-3.87"
+              />
+              <circle
+                cx="9"
+                cy="7"
+                r="4"
+              />
+            </svg>
+            <span>
+              成员与岗位
+            </span>
+          </a>
+        </div>
+        <div
+          class="nav-entry"
+        >
+          <a
+            class="nav-button"
+            data-discover="true"
+            data-nav="tasks"
+            href="/tasks"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-list-checks"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              ...
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <a
+      class="skip"
+      href="#main"
+    >
+      跳转到正文
+    </a>
+    <aside
+      aria-label="工作台导航"
+      class="sidebar"
+    >
+      <a
+        class="brand"
+        data-discover="true"
+        href="/overview"
+      >
+        <span
+          class="brand-symbol"
+        >
+          u
+        </span>
+        <span>
+          UNION
+          <small>
+            AI-UNION / AU
+          </small>
+        </span>
+      </a>
+      <label
+        class="workspace-switch"
+      >
+        <span
+          class="org-icon"
+        >
+          U
+        </span>
+        <span
+          class="workspace-select"
+        >
+          <small>
+            当前 AU
+          </small>
+          <select
+            aria-label="当前组织"
+            id="org-select"
+          >
+            <option
+              value="legacy"
+            >
+              旧版试验
+            </option>
+            <option
+              value="first"
+            >
+              资料研究组织
+            </option>
+            <option
+              value="second"
+            >
+              写作组织
+            </option>
+          </select>
+        </span>
+      </label>
+      <nav
+        id="navigation"
+      >
+        <div
+          class="nav-entry"
+        >
+          <div
+            class="nav-caption"
+          >
+            工作空间
+          </div>
+          <a
+            class="nav-button"
+            data-discover="true"
+            data-nav="overview"
+            href="/overview"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-layout-dashboard"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="19"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect
+                height="9"
+                rx="1"
+                width="7"
+                x="3"
+                y="3"
+              />
+              <rect
+                height="5"
+                rx="1"
+                width="7"
+                x="14"
+                y="3"
+              />
+              <rect
+                height="9"
+                rx="1"
+                width="7"
+                x="14"
+                y="12"
+              />
+              <rect
+                height="5"
+                rx="1"
+                width="7"
+                x="3"
+                y="16"
+              />
+            </svg>
+            <span>
+              公司总览
+            </span>
+          </a>
+        </div>
+        <div
+          class="nav-entry"
+        >
+          <a
+            class="nav-button"
+            data-discover="true"
+            data-nav="members"
+            href="/members"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-users"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="19"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"
+              />
+              <path
+                d="M16 3.128a4 4 0 0 1 0 7.744"
+              />
+              <path
+                d="M22 21v-2a4 4 0 0 0-3-3.87"
+              />
+              <circle
+                cx="9"
+                cy="7"
+                r="4"
+              />
+            </svg>
+            <span>
+              成员与岗位
+            </span>
+          </a>
+        </div>
+        <div
+          class="nav-entry"
+        >
+          <a
+            class="nav-button"
+            data-discover="true"
+            data-nav="tasks"
+            href="/tasks"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-list-checks"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              ...
+ ❯ waitForWrapper ../../node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/app/organization-entry.test.tsx:74:25
+     72|     vi.mocked(api.session).mockResolvedValue({ ...session, organizatio…
+     73|     mount(true);
+     74|     expect(await screen.findByRole('heading', { name: '我的组织', level: 1…
+       |                         ^
+     75|     expect(screen.getByRole('link', { name: /资料研究组织/ })).toHaveAttribu…
+     76|     expect(screen.getByRole('link', { name: /写作组织/ })).toHaveAttribute…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/14]⎯
+
+ FAIL  src/app/organization-entry.test.tsx > V1 organization entry > uses the explicit path AU instead of a conflicting legacy query
+Error: expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  second
+Received:
+  first
+
+Ignored nodes: comments, script, style
+<html>
+  <head>
+    <title>
+      公司总览 · UNION
+    </title>
+  </head>
+  <body>
+    <div>
+      <output
+        data-testid="principal"
+      >
+        principal-one
+      </output>
+      <output
+        data-testid="scope"
+      >
+        first
+      </output>
+      <output
+        data-testid="name"
+      >
+        资料研究组织
+      </output>
+      <output
+        data-testid="problem"
+      />
+      <button>
+        打开第二个组织
+      </button>
+      <button>
+        重新读取
+      </button>
+      <button>
+        需要最新权限的动作
+      </button>
+    </div>
+  </body>
+</html>
+ ❯ src/app/organization-entry.test.tsx:86:61
+     84|     window.history.replaceState(null, '', '/au/second/work?organizatio…
+     85|     mount();
+     86|     await waitFor(() => expect(screen.getByTestId('scope')).toHaveText…
+       |                                                             ^
+     87|     expect(api.coreAU).toHaveBeenCalledWith('second', expect.any(Abort…
+     88|     expect(api.coreAU).not.toHaveBeenCalledWith('first', expect.any(Ab…
+ ❯ runWithExpensiveErrorDiagnosticsDisabled ../../node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback ../../node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback ../../node_modules/@testing-library/dom/dist/wait-for.js:118:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/14]⎯
+
+ FAIL  src/app/organization-entry.test.tsx > V1 organization entry > does not fall back from rejected target /au/missing
+ FAIL  src/app/organization-entry.test.tsx > V1 organization entry > does not fall back from rejected target /au/legacy
+ FAIL  src/app/organization-entry.test.tsx > V1 organization entry > does not fall back from rejected target /au/first/unknown
+ FAIL  src/app/organization-entry.test.tsx > V1 organization entry > does not fall back from rejected target /au/first%2Fsecond
+ FAIL  src/app/organization-entry.test.tsx > V1 organization entry > does not fall back from rejected target /au/%ZZ
+ FAIL  src/app/organization-entry.test.tsx > V1 organization entry > does not fall back from rejected target /au/first/work/invalid%255Fid
+Error: expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  none
+Received:
+  first
+ ❯ src/app/organization-entry.test.tsx:96:41
+     94|     mount();
+     95|     await waitFor(() => expect(screen.getByTestId('principal')).toHave…
+     96|     expect(screen.getByTestId('scope')).toHaveTextContent('none');
+       |                                         ^
+     97|     expect(api.coreAU).not.toHaveBeenCalled();
+     98|     expect(api.snapshot).not.toHaveBeenCalled();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/14]⎯
+
+ FAIL  src/app/organization-entry.test.tsx > V1 organization entry > resolves a valid old link to the new scoped page, without mounting the old shell
+TestingLibraryElementError: Unable to find role="heading" and name "工作"
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <a
+      class="skip"
+      href="#main"
+    >
+      跳转到正文
+    </a>
+    <aside
+      aria-label="工作台导航"
+      class="sidebar"
+    >
+      <a
+        class="brand"
+        data-discover="true"
+        href="/overview?organization=second"
+      >
+        <span
+          class="brand-symbol"
+        >
+          u
+        </span>
+        <span>
+          UNION
+          <small>
+            AI-UNION / AU
+          </small>
+        </span>
+      </a>
+      <label
+        class="workspace-switch"
+      >
+        <span
+          class="org-icon"
+        >
+          写
+        </span>
+        <span
+          class="workspace-select"
+        >
+          <small>
+            当前 AU
+          </small>
+          <select
+            aria-label="当前组织"
+            id="org-select"
+          >
+            <option
+              value="first"
+            >
+              资料研究组织
+            </option>
+            <option
+              value="second"
+            >
+              写作组织
+            </option>
+            <option
+              value="legacy"
+            >
+              旧版试验
+            </option>
+          </select>
+        </span>
+      </label>
+      <nav
+        id="navigation"
+      >
+        <div
+          class="nav-entry"
+        >
+          <div
+            class="nav-caption"
+          >
+            工作空间
+          </div>
+          <a
+            class="nav-button"
+            data-discover="true"
+            data-nav="overview"
+            href="/overview?organization=second"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-layout-dashboard"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="19"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect
+                height="9"
+                rx="1"
+                width="7"
+                x="3"
+                y="3"
+              />
+              <rect
+                height="5"
+                rx="1"
+                width="7"
+                x="14"
+                y="3"
+              />
+              <rect
+                height="9"
+                rx="1"
+                width="7"
+                x="14"
+                y="12"
+              />
+              <rect
+                height="5"
+                rx="1"
+                width="7"
+                x="3"
+                y="16"
+              />
+            </svg>
+            <span>
+              AU准备记录
+            </span>
+          </a>
+        </div>
+        <div
+          class="nav-entry"
+        >
+          <div
+            class="nav-caption"
+          >
+            运行管理
+          </div>
+          <a
+            class="nav-button"
+            data-discover="true"
+            data-nav="models"
+            href="/models?organization=second"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-cpu"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="19"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12 20v2"
+              />
+              <path
+                d="M12 2v2"
+              />
+              <path
+                d="M17 20v2"
+              />
+              <path
+                d="M17 2v2"
+              />
+              <path
+                d="M2 12h2"
+              />
+              <path
+                d="M2 17h2"
+              />
+              <path
+                d="M2 7h2"
+              />
+              <path
+                d="M20 12h2"
+              />
+              <path
+                d="M20 17h2"
+              />
+              <path
+                d="M20 7h2"
+              />
+              <path
+                d="M7 20v2"
+              />
+              <path
+                d="M7 2v2"
+              />
+              <rect
+                height="16"
+          ...
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <a
+      class="skip"
+      href="#main"
+    >
+      跳转到正文
+    </a>
+    <aside
+      aria-label="工作台导航"
+      class="sidebar"
+    >
+      <a
+        class="brand"
+        data-discover="true"
+        href="/overview?organization=second"
+      >
+        <span
+          class="brand-symbol"
+        >
+          u
+        </span>
+        <span>
+          UNION
+          <small>
+            AI-UNION / AU
+          </small>
+        </span>
+      </a>
+      <label
+        class="workspace-switch"
+      >
+        <span
+          class="org-icon"
+        >
+          写
+        </span>
+        <span
+          class="workspace-select"
+        >
+          <small>
+            当前 AU
+          </small>
+          <select
+            aria-label="当前组织"
+            id="org-select"
+          >
+            <option
+              value="first"
+            >
+              资料研究组织
+            </option>
+            <option
+              value="second"
+            >
+              写作组织
+            </option>
+            <option
+              value="legacy"
+            >
+              旧版试验
+            </option>
+          </select>
+        </span>
+      </label>
+      <nav
+        id="navigation"
+      >
+        <div
+          class="nav-entry"
+        >
+          <div
+            class="nav-caption"
+          >
+            工作空间
+          </div>
+          <a
+            class="nav-button"
+            data-discover="true"
+            data-nav="overview"
+            href="/overview?organization=second"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-layout-dashboard"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="19"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect
+                height="9"
+                rx="1"
+                width="7"
+                x="3"
+                y="3"
+              />
+              <rect
+                height="5"
+                rx="1"
+                width="7"
+                x="14"
+                y="3"
+              />
+              <rect
+                height="9"
+                rx="1"
+                width="7"
+                x="14"
+                y="12"
+              />
+              <rect
+                height="5"
+                rx="1"
+                width="7"
+                x="3"
+                y="16"
+              />
+            </svg>
+            <span>
+              AU准备记录
+            </span>
+          </a>
+        </div>
+        <div
+          class="nav-entry"
+        >
+          <div
+            class="nav-caption"
+          >
+            运行管理
+          </div>
+          <a
+            class="nav-button"
+            data-discover="true"
+            data-nav="models"
+            href="/models?organization=second"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-cpu"
+              fill="none"
+              height="19"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="19"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12 20v2"
+              />
+              <path
+                d="M12 2v2"
+              />
+              <path
+                d="M17 20v2"
+              />
+              <path
+                d="M17 2v2"
+              />
+              <path
+                d="M2 12h2"
+              />
+              <path
+                d="M2 17h2"
+              />
+              <path
+                d="M2 7h2"
+              />
+              <path
+                d="M20 12h2"
+              />
+              <path
+                d="M20 17h2"
+              />
+              <path
+                d="M20 7h2"
+              />
+              <path
+                d="M7 20v2"
+              />
+              <path
+                d="M7 2v2"
+              />
+              <rect
+                height="16"
+          ...
+ ❯ waitForWrapper ../../node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/app/organization-entry.test.tsx:105:25
+    103|     window.history.replaceState(null, '', '/tasks?organization=second'…
+    104|     mount(true);
+    105|     expect(await screen.findByRole('heading', { name: '工作', level: 1 }…
+       |                         ^
+    106|     await waitFor(() => expect(window.location.pathname).toBe('/au/sec…
+    107|     expect(screen.queryByRole('button', { name: '启动／继续' })).not.toBeIn…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/14]⎯
+
+ FAIL  src/app/organization-entry.test.tsx > V1 organization entry > reopens a verified recent AU and keeps only a navigation reference
+Error: expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  second
+Received:
+  first
+
+Ignored nodes: comments, script, style
+<html>
+  <head>
+    <title>
+      AU准备记录 · UNION
+    </title>
+  </head>
+  <body>
+    <div>
+      <output
+        data-testid="principal"
+      >
+        principal-one
+      </output>
+      <output
+        data-testid="scope"
+      >
+        first
+      </output>
+      <output
+        data-testid="name"
+      >
+        资料研究组织
+      </output>
+      <output
+        data-testid="problem"
+      />
+      <button>
+        打开第二个组织
+      </button>
+      <button>
+        重新读取
+      </button>
+      <button>
+        需要最新权限的动作
+      </button>
+    </div>
+  </body>
+</html>
+ ❯ src/app/organization-entry.test.tsx:114:61
+    112|     window.history.replaceState(null, '', '/au/second');
+    113|     const first = mount();
+    114|     await waitFor(() => expect(screen.getByTestId('scope')).toHaveText…
+       |                                                             ^
+    115|     first.unmount();
+    116|     const saved = Object.keys(localStorage).map(key => localStorage.ge…
+ ❯ runWithExpensiveErrorDiagnosticsDisabled ../../node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback ../../node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback ../../node_modules/@testing-library/dom/dist/wait-for.js:118:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/14]⎯
+
+ FAIL  src/app/organization-entry.test.tsx > V1 organization entry > does not use a different principal or service recent AU
+Error: expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  second
+Received:
+  first
+
+Ignored nodes: comments, script, style
+<html>
+  <head>
+    <title>
+      AU准备记录 · UNION
+    </title>
+  </head>
+  <body>
+    <div>
+      <output
+        data-testid="principal"
+      >
+        principal-one
+      </output>
+      <output
+        data-testid="scope"
+      >
+        first
+      </output>
+      <output
+        data-testid="name"
+      >
+        资料研究组织
+      </output>
+      <output
+        data-testid="problem"
+      />
+      <button>
+        打开第二个组织
+      </button>
+      <button>
+        重新读取
+      </button>
+      <button>
+        需要最新权限的动作
+      </button>
+    </div>
+  </body>
+</html>
+ ❯ src/app/organization-entry.test.tsx:128:61
+    126|     window.history.replaceState(null, '', '/au/second');
+    127|     const first = mount();
+    128|     await waitFor(() => expect(screen.getByTestId('scope')).toHaveText…
+       |                                                             ^
+    129|     first.unmount();
+    130|     vi.mocked(api.coreAU).mockClear();
+ ❯ runWithExpensiveErrorDiagnosticsDisabled ../../node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback ../../node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback ../../node_modules/@testing-library/dom/dist/wait-for.js:118:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/14]⎯
+
+ FAIL  src/app/organization-entry.test.tsx > V1 organization entry > ignores a late AU result after a newer explicit navigation
+AssertionError: expected '/au/first' to be '/au/second' // Object.is equality
+
+Expected: "/au/second"
+Received: "/au/first"
+
+ ❯ src/app/organization-entry.test.tsx:150:38
+    148|     await act(async () => { resolveFirst(prepared('first')); });
+    149|     expect(screen.getByTestId('scope')).toHaveTextContent('second');
+    150|     expect(window.location.pathname).toBe('/au/second');
+       |                                      ^
+    151|   });
+    152| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/14]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  14 failed | 1 passed (15)
+   Start at  12:00:03
+   Duration  10.36s (transform 1.16s, setup 555ms, collect 1.89s, tests 5.44s, environment 1.57s, prepare 308ms)
+
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path <checkout>\web\console
+npm error workspace @union/console@0.1.0
+npm error location <checkout>\web\console
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c vitest run src/app/organization-entry.test.tsx

@@ -1,0 +1,73 @@
+.organization-shell { min-height: 100vh; background: #f6f7f9; }
+.organization-header { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 80px; padding: 18px 40px; background: #fff; border-bottom: 1px solid var(--line); }
+.organization-brand { display: flex; align-items: center; gap: 12px; font-size: 21px; font-weight: 700; letter-spacing: -.04em; }
+.organization-brand > span { width: 34px; height: 34px; display: grid; place-items: center; background: #dcece4; color: #214d3d; border-radius: 10px; font-size: 28px; }
+.organization-header-actions { display: flex; gap: 10px; align-items: center; }
+.organization-body { display: flex; max-width: 1600px; margin: auto; }
+.organization-navigation { flex: 0 0 225px; padding: 32px 20px; }
+.organization-current { font-weight: 650; padding: 0 12px 18px; margin: 0; overflow-wrap: anywhere; }
+.organization-navigation nav { display: grid; gap: 5px; }
+.organization-nav-link { display: block; min-height: 44px; padding: 12px; border-radius: 7px; color: #59657a; }
+.organization-nav-link:hover { background: #e9edf2; }
+.organization-nav-link.active { background: #e3ebe7; color: #234f3c; font-weight: 650; }
+.organization-shell .organization-menu { display: none; }
+.organization-main { min-width: 0; flex: 1; max-width: 1220px; width: 100%; margin: 0 auto; padding: 32px 44px 80px; }
+.organization-page-heading { display: flex; gap: 16px; align-items: center; justify-content: space-between; margin-bottom: 30px; }
+.organization-page-heading h1 { margin: 0; }
+.organization-main > div > .card, .organization-main > .card { margin-top: 24px; }
+.organization-intro { display: flex; align-items: center; gap: 28px; justify-content: space-between; margin: 22px 0 36px; }
+.organization-intro p { color: #59657a; max-width: 580px; margin: 0; }
+.organization-intro > button { flex-shrink: 0; }
+.organization-list { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--line); }
+.organization-list > li { border-bottom: 1px solid var(--line); }
+.organization-list a { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 102px; padding: 22px 16px; }
+.organization-list a:hover { background: #eef2ef; }
+.organization-list strong { display: block; font-size: 19px; margin-bottom: 7px; overflow-wrap: anywhere; }
+.organization-list small { font-size: 13px; }
+.organization-purpose { padding: 18px 0 26px; }
+.organization-purpose h2 { font-size: 28px; margin-top: 10px; overflow-wrap: anywhere; }
+.organization-purpose p { max-width: 760px; }
+.organization-state { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0 0 18px; border-block: 1px solid var(--line); }
+.organization-state > div { padding: 22px 16px; }
+.organization-state dt { color: #657085; margin-bottom: 8px; }
+.organization-state dd { margin: 0; font-weight: 600; }
+.organization-preparation { padding: 0; margin: 0; list-style: none; }
+.organization-preparation li { display: flex; align-items: center; justify-content: space-between; gap: 22px; padding: 18px 0; }
+.organization-preparation li + li { border-top: 1px solid var(--line); }
+.organization-preparation h3 { font-size: 16px; margin-bottom: 8px; }
+.organization-preparation p { margin: 0; color: #59657a; }
+.organization-preparation a { flex-shrink: 0; }
+.organization-next { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px; margin-top: 35px; }
+.organization-next > a { border-top: 2px solid #cbd6d1; padding: 24px 0; }
+.organization-next span { color: #2b6148; font-weight: 600; }
+.organization-problem, .organization-empty { padding: 34px 0; }
+.organization-main .au-text { white-space: pre-wrap; overflow-wrap: anywhere; }
+.organization-main .au-facts dd { overflow-wrap: anywhere; }
+@media (max-width: 1024px) {
+  .organization-header { padding: 18px 24px; }
+  .organization-navigation { flex-basis: 190px; padding-inline: 12px; }
+  .organization-main { padding: 28px 24px 64px; }
+}
+@media (max-width: 768px) {
+  .organization-header { min-height: 70px; padding: 14px 18px; gap: 12px; }
+  .organization-header-actions { gap: 6px; }
+  .organization-header-actions .button { padding: 9px; font-size: 12px; }
+  .organization-body { display: block; }
+  .organization-navigation { padding: 18px; border-bottom: 1px solid var(--line); }
+  .organization-current { padding: 0 0 12px; }
+  .organization-navigation nav { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 3px; }
+  .organization-nav-link { padding: 12px 3px; text-align: center; font-size: 13px; }
+  .organization-extra { display: none; }
+  .organization-extra.expanded { display: block; }
+  .organization-shell .organization-menu { display: flex; margin: 10px 0 0 auto; }
+  .organization-main { padding: 24px 18px 50px; }
+  .organization-page-heading { margin-bottom: 24px; }
+  .organization-page-heading h1 { font-size: 26px; }
+  .organization-intro { display: block; margin-top: 0; }
+  .organization-intro > button { margin-top: 22px; }
+  .organization-state { grid-template-columns: 1fr; }
+  .organization-state > div { display: flex; justify-content: space-between; gap: 16px; padding: 14px 0; }
+  .organization-state dt { margin: 0; }
+  .organization-preparation li { align-items: flex-start; flex-direction: column; }
+  .organization-next { grid-template-columns: 1fr; gap: 10px; }
+}

@@ -18,19 +18,15 @@
     "build:console": "npm run build --workspace @union/console",
     "build:documentation": "node web/console/documentation/build.mjs",
     "dev:console": "npm run dev --workspace @union/console",
-    "test:browser": "node scripts/check_console.cjs",
-    "test:novel": "node scripts/check_novel_company.cjs",
-    "test:workspace": "node scripts/check_workspace.cjs",
+    "test:browser": "node scripts/u125-organization-entry-browser.cjs",
+    "test:workspace": "node scripts/u125-organization-entry-browser.cjs",
     "start": "node scripts/start-console.mjs",
     "dev": "node scripts/start-console.mjs --watch",
     "management:render": "node scripts/project-management.mjs render",
     "management:status": "node scripts/project-management.mjs status",
     "check:management": "node scripts/project-management.mjs check && node --test tests/project-management.test.mjs tests/union-board.test.mjs tests/kanban-operational.test.mjs",
-    "test:gateways": "node scripts/check_gateways.cjs",
-    "test:model-access": "node scripts/check_model_access.cjs",
     "build:model-service": "node services/modeld/prepare.mjs",
     "test:model-service": "bun test --timeout 30000 services/modeld/test",
-    "test:model-service-browser": "node scripts/check_model_service.cjs",
     "start:model-service": "bun services/modeld/dist/main.js"
   }
 }

@@ -1,5 +1,18 @@
-import type { PendingRequest, Receipt } from '../../api/types';
+import type { PendingRequest, Receipt, Session } from '../../api/types';
 export const pendingKey = 'union-pending';
+export function ownedCreation(request: PendingRequest, session: Session | undefined): boolean {
+  return request.kind === 'create_v1' && !!session?.principal_id && session.core_protocol === 'core.au.v1' &&
+    request.principal_id === session.principal_id && request.service_origin === window.location.origin &&
+    !!request.service_instance;
+}
+export function unscopedCreation(request: PendingRequest): boolean {
+  return request.kind === 'create_v1' && (!request.principal_id || !request.service_origin || !request.service_instance);
+}
+export function inspectableCreation(request: PendingRequest, session: Session | undefined): boolean {
+  return unscopedCreation(request) && !!session?.principal_id && session.core_protocol === 'core.au.v1' &&
+    (!request.principal_id || request.principal_id === session.principal_id) &&
+    (!request.service_origin || request.service_origin === window.location.origin);
+}
 export function matchesRequest(request: PendingRequest, receipt: Receipt): boolean {
   return receipt.id === request.id && receipt.kind === request.kind &&
     (!request.organization_id || receipt.organization_id === request.organization_id);

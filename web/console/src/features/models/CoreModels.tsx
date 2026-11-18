@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Plus, RefreshCw } from 'lucide-react';
 import { errorText } from '../../api/client';
 import { useWorkspace } from '../../app/workspace';
+import { organizationPath } from '../../app/organization-routes';
 import { Card } from '../../components/ui';
 import { Dialog } from '../../components/Dialog';
 import { sameScope, type GovernanceScope } from '../governance/model';
@@ -40,7 +41,7 @@ function ModelWorkspace({ scope }: { scope: GovernanceScope }) {
   useEffect(() => {
     if (draft && !draftAllowed) setDraft(undefined);
   }, [draft, draftAllowed]);
-  const search = '?organization=' + encodeURIComponent(scope.organizationId);
+  const governancePath = organizationPath(scope.organizationId, 'governance');
   const open: OpenModelCommand = (kind, options = {}) => {
     if (!read || !workspace.core || !controller.connected || !controller.allowed(kind, options))
       return;
@@ -99,7 +100,7 @@ function ModelWorkspace({ scope }: { scope: GovernanceScope }) {
                 : '选择有权限的 AU 并恢复连接后，可读取原模型配置。'}
           </p>
           {controller.error && <p role="alert">{errorText(controller.error)}</p>}
-          <Link className="button secondary" to={{ pathname: '/overview', search }}>
+          <Link className="button secondary" to={governancePath}>
             前往 AU 与治理
           </Link>
         </Card>
@@ -114,7 +115,7 @@ function ModelWorkspace({ scope }: { scope: GovernanceScope }) {
           {!read.access.can_configure && (
             <div className="governance-boundary">
               <p>当前治理或权限尚不能配置模型。请在治理页核对实际身份、有效期和缺失条件。</p>
-              <Link className="button secondary" to={{ pathname: '/overview', search }}>
+              <Link className="button secondary" to={governancePath}>
                 前往 AU 与治理
               </Link>
             </div>
@@ -122,7 +123,7 @@ function ModelWorkspace({ scope }: { scope: GovernanceScope }) {
           {!read.document_read_allowed && (
             <div className="governance-boundary">
               <p>当前章程尚未允许只读所选验证资料；保存连接与采用默认无需调用模型。</p>
-              <Link className="button secondary" to={{ pathname: '/settings', search }}>
+              <Link className="button secondary" to={governancePath}>
                 前往治理页允许只读资料工具
               </Link>
             </div>

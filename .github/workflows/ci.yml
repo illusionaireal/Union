@@ -38,27 +38,10 @@ jobs:
       - run: npm run build:console
       - run: python3 scripts/check_console_start.py --output .union/frontend-startup.json
       - run: npx playwright-core install --with-deps chromium
+      # Current browser coverage and retained contract mapping: evidence/U-125/browser-migration.md
       - run: npm run test:browser
         env:
           UNION_PYTHON: python3
-      - run: npm run test:novel
-        env:
-          UNION_PYTHON: python3
-      - run: npm run test:model-service-browser
-        env:
-          UNION_PYTHON: python3
-      - run: node scripts/u081-work-read-browser.cjs
-        env:
-          UNION_PYTHON: python3
-      - run: node scripts/u084-work-execution-browser.cjs
-        env:
-          UNION_PYTHON: python3
-      - run: node scripts/u084-work-execution-browser.cjs
-        env:
-          UNION_PYTHON: python3
-          UNION_U084_PENDING_RECEIPT: '1'
-          UNION_U084_READ_ONLY_RECEIPT: '1'
-          UNION_U084_EVIDENCE: .union/u084-pending-receipt
       - run: node scripts/u097-model-events-browser.cjs
         env:
           UNION_PYTHON: python3
@@ -67,37 +50,7 @@ jobs:
           UNION_PYTHON: python3
           UNION_U097_CONNECTION_REVOKE: '1'
           UNION_U097_EVIDENCE: .union/u097-connection-access-browser
-      - run: node scripts/u105-work-registration-browser.cjs
-        env:
-          UNION_PYTHON: python3
-      - run: node scripts/u105-confirmed-access-browser.cjs
-        env:
-          UNION_PYTHON: python3
-      - run: node scripts/u106-result-delivery-browser.cjs
-        env:
-          UNION_PYTHON: python3
-      - run: node scripts/u086-cancel-recovery-browser.cjs
-        env:
-          UNION_PYTHON: python3
-          UNION_U086_EVIDENCE: .union/u086-cancel-recovery
-      - run: node scripts/u086-cancel-recovery-browser.cjs
-        env:
-          UNION_PYTHON: python3
-          UNION_U086_LOSE_CANCEL: '1'
-          UNION_U086_EVIDENCE: .union/u086-cancel-recovery-lost
       - run: node --test scripts/u108-work-events-browser.test.cjs
-      - run: node scripts/u108-work-events-browser.cjs
-        env:
-          UNION_PYTHON: python3
-      - run: node evidence/U-086/page-cancel-action/browser.cjs
-        env:
-          UNION_PYTHON: python3
-      - run: node evidence/U-086/cancel-response-body/browser.cjs
-        env:
-          UNION_PYTHON: python3
-      - run: node evidence/U-086/registration-response-body/browser.cjs
-        env:
-          UNION_PYTHON: python3
       - run: node evidence/U-086/observed-settlement/browser.cjs
         env:
           UNION_PYTHON: python3
@@ -118,16 +71,6 @@ jobs:
         with:
           name: console-browser-evidence
           path: |
-            .union/frontend-browser-evidence
-            .union/novel-browser-evidence
-            .union/u081-work-read-browser
-            .union/u084-page-execution
-            .union/u084-pending-receipt
+            .union/u125-organization-entry
             .union/u097-model-events-browser
             .union/u097-connection-access-browser
-            .union/u105-browser
-            .union/u105-confirmed-access
-            .union/u106-browser
-            .union/u086-cancel-recovery
-            .union/u086-cancel-recovery-lost
-            .union/u108-work-events-browser

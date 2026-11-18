@@ -3,8 +3,12 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router-dom';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { api, ApiError } from '../../api/client';
+import { isGovernedAU } from '../../api/core-boundary';
 import App from '../../app/App';
+import { WorkspaceProvider, useWorkspace } from '../../app/workspace';
 import type { CoreAURead } from '../../api/types';
+import { GovernanceProvider } from './GovernanceProvider';
+import { ResponsibilityWorkspace } from './ResponsibilityWorkspace';
 import type { GovernanceKind, GovernanceRequest } from './types';
 import {
   governedAU,
@@ -30,7 +34,7 @@ const receipt = (request: GovernanceRequest) => ({
 });
 let fetchMock = vi.fn<typeof fetch>();
 beforeEach(() => {
-  window.history.replaceState(null, '', '/overview?organization=core-au');
+  window.history.replaceState(null, '', '/au/core-au/governance');
   HTMLDialogElement.prototype.showModal = function () {
     this.open = true;
   };
@@ -40,11 +44,6 @@ beforeEach(() => {
   vi.spyOn(api, 'session').mockResolvedValue(governanceSession);
   vi.spyOn(api, 'authStatus').mockResolvedValue(auth);
   vi.spyOn(api, 'coreAU').mockResolvedValue(governedAU());
-  vi.spyOn(api, 'coreWork').mockResolvedValue({
-    protocol: 'core.work.v1', organization_id: 'core-au', version: 3,
-    access: { principal_id: principal, can_start: false }, works: [],
-    capabilities: { work_registration: true, execution: 'not_started', autonomous_business: false },
-  });
   fetchMock = vi.fn(async (_path, init) =>
     json({ receipt: receipt(JSON.parse(String(init?.body))) }),
   );
@@ -54,18 +53,35 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
-function mount(read?: CoreAURead, path = 'overview') {
+function mount(read?: CoreAURead, path = '/au/core-au/governance', content = <App />) {
   if (read) vi.mocked(api.coreAU).mockResolvedValue(read);
-  window.history.replaceState(null, '', `/${path}?organization=core-au`);
+  window.history.replaceState(null, '', path);
   const client = new QueryClient({ defaultOptions: { queries: { retry: false, gcTime: 0 } } });
   const view = render(
     <QueryClientProvider client={client}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <BrowserRouter>{content}</BrowserRouter>
     </QueryClientProvider>,
   );
   return { client, view };
+}
+
+// These retained manual forms are a feature contract, not the current /work page.
+function ResponsibilityContract() {
+  const { core } = useWorkspace();
+  return (
+    <GovernanceProvider>
+      {core && isGovernedAU(core) && <ResponsibilityWorkspace read={core} />}
+    </GovernanceProvider>
+  );
+}
+function mountResponsibility(read = governedAU()) {
+  return mount(
+    read,
+    '/au/core-au/work',
+    <WorkspaceProvider>
+      <ResponsibilityContract />
+    </WorkspaceProvider>,
+  );
 }
 async function open(label: string) {
   fireEvent.click((await screen.findAllByRole('button', { name: label }))[0]);
@@ -86,14 +102,16 @@ async function commit() {
 }
 
 describe('governance user journey', () => {
-  it.each(['overview', 'tasks', 'settings'])(
-    'keeps account-level AU creation available from a governed %s page without governing commands',
+  it.each(['/au/core-au', '/au/core-au/work', '/au/core-au/governance'])(
+    'keeps account-level AU creation reachable from %s without governing commands',
     async (path) => {
       const read = governedAU();
       read.access.commands = [];
       mount(read, path);
-      const creation = await screen.findByRole('button', { name: '创建另一个 AU' });
-      expect(creation).toBeEnabled();
+      fireEvent.click(await screen.findByRole('link', { name: '我的组织' }));
+      const creation = await screen.findByRole('button', { name: '创建组织' });
+      expect(window.location.pathname).toBe('/organizations');
+      await waitFor(() => expect(creation).toBeEnabled());
       fireEvent.click(creation);
       expect(await screen.findByLabelText('AU名称')).toBeVisible();
     },
@@ -108,6 +126,7 @@ describe('governance user journey', () => {
     mount(read);
     expect(await screen.findByText('当前治理账号已失效，请按现行失能程序处理')).toBeVisible();
     expect(screen.getByText('指定后继账号不存在')).toBeVisible();
+    expect(screen.getByText('内部文字记录：未启用')).toBeVisible();
     expect(screen.queryByText('治理期限已到')).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: '续期治理' })).not.toBeInTheDocument();
   });
@@ -120,16 +139,15 @@ describe('governance user journey', () => {
     };
     read.access.commands = ['renew_governance'];
     mount(read);
-    const section = await screen.findByRole('region', { name: '本地治理' });
-    expect(within(section).getByText('当前治理者')).toBeVisible();
+    fireEvent.click(await screen.findByText('治理主体与程序'));
+    const section = screen.getByRole('main');
+    expect(within(section).getByText('当前治理主体')).toBeVisible();
     expect(within(section).getByText('初始治理主体')).toBeVisible();
     expect(within(section).getByText(otherPrincipal)).toBeVisible();
     expect(within(section).getByText('最终决定方')).toBeVisible();
     expect(screen.getByRole('button', { name: '续期治理' })).toBeEnabled();
     expect(screen.queryByRole('button', { name: '修订章程' })).not.toBeInTheDocument();
-    expect(
-      screen.getByText('内部文字记录已启用；AI 执行、资源使用和对外承诺尚未启用。'),
-    ).toBeVisible();
+    expect(screen.getByText('内部文字记录：已启用')).toBeVisible();
   });
 
   it('previews and adopts a single-principal exit procedure without activating business', async () => {
@@ -224,7 +242,7 @@ describe('governance user journey', () => {
   });
 
   it('revises only the displayed charter fields while preserving other stored fields', async () => {
-    mount(undefined, 'settings');
+    mount();
     await open('修订章程');
     fill('章程正文', '内部记录暂不采用');
     fireEvent.click(screen.getByLabelText('允许内部文字记录'));
@@ -265,9 +283,9 @@ describe('governance user journey', () => {
   });
 });
 
-describe('controlled responsibility forms', () => {
+describe('retained controlled responsibility feature contract', () => {
   it('appoints a human member with separate generated member and responsibility IDs', async () => {
-    mount(undefined, 'tasks');
+    mountResponsibility();
     await open('登记责任成员');
     fill('成员姓名', '参与记录的人');
     fill('成员核心身份标识', otherPrincipal);
@@ -370,7 +388,7 @@ describe('controlled responsibility forms', () => {
     async ({ kind, label, fields, data }) => {
       const read = governedAU();
       read.access.commands = [kind as GovernanceKind];
-      mount(read, 'tasks');
+      mountResponsibility(read);
       await open(label);
       for (const [name, value] of Object.entries(fields)) fill(name, value);
       const request = await commit();
@@ -552,7 +570,7 @@ describe('governance command recovery boundaries', () => {
       id: 'independent-mandate',
       work_id: 'independent-work',
     };
-    mount(read, 'tasks');
+    mountResponsibility(read);
     await open('开始文字提交');
     const original = await commit();
     await screen.findByText('结果尚未确认');
@@ -600,7 +618,7 @@ describe('governance command recovery boundaries', () => {
         },
       }),
     );
-    mount(undefined, 'tasks');
+    mountResponsibility();
     await open('提交文字内容');
     fill('文字内容', '撤权后到达的内部记录');
     const before = vi.mocked(api.coreAU).mock.calls.length;
@@ -748,11 +766,38 @@ describe('governance command recovery boundaries', () => {
       await client.invalidateQueries({ queryKey: ['workspace'] });
     });
     await waitFor(() =>
-      expect(screen.queryByRole('region', { name: '本地治理' })).not.toBeInTheDocument(),
+      expect(screen.queryByRole('heading', { name: '当前治理' })).not.toBeInTheDocument(),
     );
+    expect(screen.queryByText(governedAU().au.charter.text)).not.toBeInTheDocument();
     fetchMock.mockResolvedValueOnce(json({ receipt: receipt(request) }));
     fireEvent.click(screen.getByRole('button', { name: `查询原请求 ${request.id}` }));
     expect(await screen.findByText('本地操作已保存')).toBeVisible();
     expect(fetchMock.mock.calls.filter((call) => call[1]?.method === 'POST')).toHaveLength(1);
+  });
+
+  it('discards protected governance input after losing AU read access', async () => {
+    mount();
+    await open('修订章程');
+    expect(screen.getByRole('dialog')).toBeVisible();
+    vi.mocked(api.coreAU).mockRejectedValue(new ApiError('读取权已撤销', 403));
+    fireEvent.click(screen.getByRole('button', { name: '刷新' }));
+    await screen.findByText('读取权已撤销');
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    vi.mocked(api.coreAU).mockResolvedValue(governedAU());
+    fireEvent.click(screen.getByRole('button', { name: '刷新' }));
+    await screen.findByRole('button', { name: '修订章程' });
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+
+  it('retains the same-AU governance draft read-only during a transient network failure', async () => {
+    mount();
+    await open('修订章程');
+    vi.mocked(api.coreAU).mockRejectedValue(new TypeError('网络暂时中断'));
+    fireEvent.click(screen.getByRole('button', { name: '刷新' }));
+    await screen.findByText(/核验的记录.*网络暂时中断/);
+    expect(screen.getByRole('dialog')).toBeVisible();
+    fireEvent.click(screen.getByRole('button', { name: '预览影响' }));
+    expect(screen.queryByRole('button', { name: '确认提交' })).not.toBeInTheDocument();
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 });

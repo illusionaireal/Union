@@ -1,0 +1,106 @@
+test_static_rejects_duplicate_leading_separators (tests.test_http.HTTPTests.test_static_rejects_duplicate_leading_separators) ... 
+  test_static_rejects_duplicate_leading_separators (tests.test_http.HTTPTests.test_static_rejects_duplicate_leading_separators) (path='//') ... FAIL
+  test_static_rejects_duplicate_leading_separators (tests.test_http.HTTPTests.test_static_rejects_duplicate_leading_separators) (path='//organizations') ... FAIL
+  test_static_rejects_duplicate_leading_separators (tests.test_http.HTTPTests.test_static_rejects_duplicate_leading_separators) (path='///organizations') ... FAIL
+  test_static_rejects_duplicate_leading_separators (tests.test_http.HTTPTests.test_static_rejects_duplicate_leading_separators) (path='//organizations?organization=other') ... FAIL
+  test_static_rejects_duplicate_leading_separators (tests.test_http.HTTPTests.test_static_rejects_duplicate_leading_separators) (path='//overview') ... FAIL
+  test_static_rejects_duplicate_leading_separators (tests.test_http.HTTPTests.test_static_rejects_duplicate_leading_separators) (path='//au/a') ... FAIL
+  test_static_rejects_duplicate_leading_separators (tests.test_http.HTTPTests.test_static_rejects_duplicate_leading_separators) (path='//au/a/work/w/results/r') ... FAIL
+  test_static_rejects_duplicate_leading_separators (tests.test_http.HTTPTests.test_static_rejects_duplicate_leading_separators) (path='///au/a/work/w/results/r') ... FAIL
+  test_static_rejects_duplicate_leading_separators (tests.test_http.HTTPTests.test_static_rejects_duplicate_leading_separators) (path='//assets/app-test.js') ... FAIL
+  test_static_rejects_duplicate_leading_separators (tests.test_http.HTTPTests.test_static_rejects_duplicate_leading_separators) (path='///favicon.svg') ... FAIL
+
+======================================================================
+FAIL: test_static_rejects_duplicate_leading_separators (tests.test_http.HTTPTests.test_static_rejects_duplicate_leading_separators) (path='//')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 244, in test_static_rejects_duplicate_leading_separators
+    self.assertEqual(status, 404)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 200 != 404
+
+======================================================================
+FAIL: test_static_rejects_duplicate_leading_separators (tests.test_http.HTTPTests.test_static_rejects_duplicate_leading_separators) (path='//organizations')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 244, in test_static_rejects_duplicate_leading_separators
+    self.assertEqual(status, 404)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 200 != 404
+
+======================================================================
+FAIL: test_static_rejects_duplicate_leading_separators (tests.test_http.HTTPTests.test_static_rejects_duplicate_leading_separators) (path='///organizations')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 244, in test_static_rejects_duplicate_leading_separators
+    self.assertEqual(status, 404)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 200 != 404
+
+======================================================================
+FAIL: test_static_rejects_duplicate_leading_separators (tests.test_http.HTTPTests.test_static_rejects_duplicate_leading_separators) (path='//organizations?organization=other')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 244, in test_static_rejects_duplicate_leading_separators
+    self.assertEqual(status, 404)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 200 != 404
+
+======================================================================
+FAIL: test_static_rejects_duplicate_leading_separators (tests.test_http.HTTPTests.test_static_rejects_duplicate_leading_separators) (path='//overview')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 244, in test_static_rejects_duplicate_leading_separators
+    self.assertEqual(status, 404)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 200 != 404
+
+======================================================================
+FAIL: test_static_rejects_duplicate_leading_separators (tests.test_http.HTTPTests.test_static_rejects_duplicate_leading_separators) (path='//au/a')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 244, in test_static_rejects_duplicate_leading_separators
+    self.assertEqual(status, 404)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 200 != 404
+
+======================================================================
+FAIL: test_static_rejects_duplicate_leading_separators (tests.test_http.HTTPTests.test_static_rejects_duplicate_leading_separators) (path='//au/a/work/w/results/r')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 244, in test_static_rejects_duplicate_leading_separators
+    self.assertEqual(status, 404)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 200 != 404
+
+======================================================================
+FAIL: test_static_rejects_duplicate_leading_separators (tests.test_http.HTTPTests.test_static_rejects_duplicate_leading_separators) (path='///au/a/work/w/results/r')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 244, in test_static_rejects_duplicate_leading_separators
+    self.assertEqual(status, 404)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 200 != 404
+
+======================================================================
+FAIL: test_static_rejects_duplicate_leading_separators (tests.test_http.HTTPTests.test_static_rejects_duplicate_leading_separators) (path='//assets/app-test.js')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 244, in test_static_rejects_duplicate_leading_separators
+    self.assertEqual(status, 404)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 200 != 404
+
+======================================================================
+FAIL: test_static_rejects_duplicate_leading_separators (tests.test_http.HTTPTests.test_static_rejects_duplicate_leading_separators) (path='///favicon.svg')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 244, in test_static_rejects_duplicate_leading_separators
+    self.assertEqual(status, 404)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 200 != 404
+
+----------------------------------------------------------------------
+Ran 1 test in 0.771s
+
+FAILED (failures=10)

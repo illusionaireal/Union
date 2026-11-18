@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "aegis.schema.v0",
+  "taskId": "2026-11-13-v1-correction-execution",
+  "currentTodo": "U125完整Python及PR，随后U126创建恢复和U111贯通",
+  "completedTodos": [
+    "U110/U118已合并；U125独立反例修复、396前端及116浏览器通过"
+  ],
+  "activeSlice": "U-125",
+  "evidenceRefs": [
+    "evidence/U-125/README.md"
+  ],
+  "blockedOn": null,
+  "nextStep": "核对完整Python收据；交付U125后认领U126",
+  "updatedAt": "2026-11-18"
+}

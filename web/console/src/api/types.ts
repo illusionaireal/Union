@@ -229,6 +229,9 @@ export interface PendingRequest {
   id: string;
   organization_id: string | null;
   kind: ReceiptKind;
+  principal_id?: string;
+  service_instance?: string;
+  service_origin?: string;
 }
 export interface Snapshot {
   bootstrap?: {

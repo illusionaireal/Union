@@ -1,49 +1,72 @@
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
-import { WorkspaceProvider } from './workspace';
+import { Navigate, Outlet, Route, Routes, useLocation } from 'react-router-dom';
+import { WorkspaceProvider, useWorkspace } from './workspace';
+import { organizationPath, organizationRoute } from './organization-routes';
 import { CommandProvider } from '../features/commands/CommandProvider';
-import { DetailsProvider } from '../features/details/Details';
-import { Layout } from './Layout';
-import Overview from '../pages/Overview';
-import Members from '../pages/Members';
-import Tasks from '../pages/Tasks';
-import Artifacts from '../pages/Artifacts';
-import Activity from '../pages/Activity';
-import Resources from '../pages/Resources';
-import Settings from '../pages/Settings';
-import Models from '../pages/Models';
-import Gateways from '../pages/Gateways';
-import { IdentityBoundary } from '../pages/Identity';
 import { GovernanceProvider } from '../features/governance/GovernanceProvider';
-function Home() {
-  const { search, hash } = useLocation();
-  return <Navigate to={{ pathname: '/overview', search, hash }} replace />;
+import { IdentityBoundary } from '../pages/Identity';
+import { Layout } from './Layout';
+import { Organizations, OrganizationOverview, OrganizationSectionPage, EntryProblem } from '../pages/Organizations';
+
+function ResolveEntry() {
+  const { core, loading, error } = useWorkspace();
+  const location = useLocation();
+  const route = organizationRoute(location.pathname, location.search);
+  if (loading) return <p role="status">正在核对组织入口…</p>;
+  if (route.kind === 'home' && !core) return <Navigate replace to="/organizations" />;
+  if (location.pathname === '/gateways') return <Navigate replace to="/organizations?entry=platform" />;
+  if (error || route.kind === 'invalid') return <EntryProblem />;
+  return <Navigate replace to={core ? organizationPath(core.au.id, route.section) : '/organizations'} />;
 }
+
+function DeclaredRouteBoundary() {
+  const location = useLocation();
+  return organizationRoute(location.pathname, location.search).kind === 'invalid'
+    ? <EntryProblem /> : <Outlet />;
+}
+
+function OrganizationBoundary() {
+  const { core, loading } = useWorkspace();
+  if (loading) return <p role="status">正在核对当前组织与访问权限…</p>;
+  if (!core) return <EntryProblem />;
+  return <div key={core.au.id}><Outlet /></div>;
+}
+
+function SignedInWorkspace() {
+  const { session, error, refresh } = useWorkspace();
+  if (!session) return <main className="identity-page"><div>
+    <p role="status">{error || '正在核对当前核心身份…'}</p>
+    {error && <button className="button secondary" onClick={() => void refresh()}>重试连接</button>}
+  </div></main>;
+  // Same-principal login renewal retains drafts. Other identities and service
+  // instances cannot inherit protected component state or late responses.
+  const identity = `${session?.service_instance ?? ''}:${session?.principal_id ?? session?.session_scope ?? ''}`;
+  return <CommandProvider key={identity}>
+    <GovernanceProvider>
+      <Routes>
+        <Route element={<Layout />}>
+          <Route element={<DeclaredRouteBoundary />}>
+          <Route index element={<ResolveEntry />} />
+          <Route path="organizations" element={<Organizations />} />
+          <Route path="au/:auId" element={<OrganizationBoundary />}>
+            <Route index element={<OrganizationOverview />} />
+            <Route path="work" element={<OrganizationSectionPage section="work" />} />
+            <Route path="work/:workId" element={<OrganizationSectionPage section="work" />} />
+            <Route path="results" element={<OrganizationSectionPage section="results" />} />
+            <Route path="work/:workId/results/:resultId" element={<OrganizationSectionPage section="results" />} />
+            <Route path="attention" element={<OrganizationSectionPage section="attention" />} />
+            <Route path="resources" element={<OrganizationSectionPage section="resources" />} />
+            <Route path="governance" element={<OrganizationSectionPage section="governance" />} />
+            <Route path="improvement" element={<OrganizationSectionPage section="improvement" />} />
+            <Route path="collaboration" element={<OrganizationSectionPage section="collaboration" />} />
+          </Route>
+          <Route path="*" element={<ResolveEntry />} />
+          </Route>
+        </Route>
+      </Routes>
+    </GovernanceProvider>
+  </CommandProvider>;
+}
+
 export default function App() {
-  return (
-    <WorkspaceProvider>
-      <IdentityBoundary>
-      <GovernanceProvider>
-      <CommandProvider>
-        <DetailsProvider>
-          <Routes>
-            <Route element={<Layout />}>
-              <Route index element={<Home />} />
-              <Route path="overview" element={<Overview />} />
-              <Route path="members" element={<Members />} />
-              <Route path="tasks" element={<Tasks />} />
-              <Route path="artifacts" element={<Artifacts />} />
-              <Route path="activity" element={<Activity />} />
-              <Route path="resources" element={<Resources />} />
-              <Route path="settings" element={<Settings />} />
-              <Route path="models" element={<Models />} />
-              <Route path="gateways" element={<Gateways />} />
-              <Route path="*" element={<p>页面不存在，请从左侧导航选择工作台页面。</p>} />
-            </Route>
-          </Routes>
-        </DetailsProvider>
-      </CommandProvider>
-      </GovernanceProvider>
-      </IdentityBoundary>
-    </WorkspaceProvider>
-  );
+  return <WorkspaceProvider><IdentityBoundary><SignedInWorkspace /></IdentityBoundary></WorkspaceProvider>;
 }

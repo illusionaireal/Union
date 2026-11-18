@@ -1,0 +1,668 @@
+
+> union@0.0.0 check
+> npm run check:management && npm run check:plan && npm test && npm run check:console
+
+
+> union@0.0.0 check:management
+> node scripts/project-management.mjs check && node --test tests/project-management.test.mjs tests/union-board.test.mjs tests/kanban-operational.test.mjs
+
+Management check: 15 modules, 8 milestones, 83 tasks; PASS
+✔ CLI claims online-only card with real user/version without reading damaged local mirror (241.0023ms)
+✔ CLI refuses a foreign assignee and unmet dependencies before PATCH (379.6901ms)
+✔ MCP uses the same owner protection and does not steal a card (163.9636ms)
+✔ 409 produces one PATCH, reads back the card and preserves mirror (243.2643ms)
+✔ completion without real evidence is refused before changing online status (136.8604ms)
+✔ configured live WIP includes blocked work and refuses a further claim (196.5868ms)
+✔ lost PATCH response and HTTP 202 are read back without replay (460.9257ms)
+✔ successful CLI and MCP records preserve complete evidence without a second write (379.1294ms)
+✔ own started claim is idempotent and cannot release or force-hide started work (502.8615ms)
+✔ missing credentials never fall back to a local operational write (115.2315ms)
+✔ status reads online despite damaged historical ledger and exposes absent WIP configuration (164.1508ms)
+✔ picker resumes only current user, does not select foreign work or backlog, and counts blocked WIP (179.3722ms)
+✔ rejects missing owners at start and unfinished dependencies, but permits honest unassigned backlog (7.4698ms)
+✔ completion requires scope, reviewer and existing evidence, and does not promote milestones (4.0707ms)
+✔ rejects duplicate IDs, unknown references and dependency cycles (3.9579ms)
+✔ blocked work needs an unblock action; already-started blocked work counts toward WIP (3.675ms)
+✔ rejects evidence outside repository, invalid scope and malformed dates (3.7377ms)
+✔ deterministic generated views reject stale output and preserve surrounding narrative (21.5086ms)
+✔ flow summary keeps empty live evidence distinct from completion counts (2.0433ms)
+✔ milestone acceptance and task scope cannot be asserted without their review metadata (4.4062ms)
+✔ claim writes a lease and enters doing, and blocks a second harness until the lease expires (8.5075ms)
+✔ claim refuses cards that are not ready and refuses to exceed the WIP limit (3.7847ms)
+✔ claim requires a real actor and refuses unknown cards (2.7651ms)
+✔ release only gives back an unstarted claim and clears the lease (4.2502ms)
+✔ done needs scope, reviewer, note and real evidence; completion clears the lease (6.5839ms)
+✔ a non-holder cannot move a card, and force cannot smuggle a foreign lease silently (3.3561ms)
+✔ blocked needs a reason and an unblock action, and started work cannot hide back in ready (3.951ms)
+✔ board view exposes columns, the ready queue and lease state (17.9553ms)
+✔ serializeLedger keeps the ledger byte format (4 spaces, CRLF, trailing newline) (3.2672ms)
+✔ the ledger lock refuses a second writer, then recovers after the holder finishes (138.2163ms)
+✔ mutateLedger writes the ledger and rebuilds both generated views in one locked step (12.3074ms)
+✔ a rejected mutation leaves the ledger untouched (22.6747ms)
+✔ a doing card with no live lease can be claimed, but a live lease still blocks it (3.0551ms)
+✔ a view failure cannot leave a half-written ledger behind (6.2608ms)
+✔ a forced transition must record why and keeps the reason in the task history (3.6234ms)
+✔ a failed view write keeps the ledger unchanged, so the state stays recoverable (7.3064ms)
+✔ the MCP server refuses local operational writes even with force (150.1346ms)
+ℹ tests 37
+ℹ suites 0
+ℹ pass 37
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3308.009
+
+> union@0.0.0 check:plan
+> node scripts/check-plan.mjs
+
+{"baseline":"UNION-B1","tasks":82,"dependencies":181,"cycles":0,"missingDependencies":0,"baselineFiles":5,"githubTasks":8}
+
+> union@0.0.0 test
+> node --test tests/*.test.ts
+
+✔ retry uses the same reservation; changed request is rejected (267.4899ms)
+✔ unauthorized model actions and tenant/currency changes leave budget untouched (146.5517ms)
+✔ only positive safe integer amounts and bounded keys are accepted (116.711ms)
+✔ eight competing processes cannot exceed a 100-minor-unit hard budget (706.1275ms)
+✔ process crash after external success recovers by lookup without repeating the effect (441.0061ms)
+✔ crash before external call retains reservation when lookup is inconclusive (332.6575ms)
+✔ definitive failure releases reservation exactly once (144.2553ms)
+✔ settling below maximum releases the difference and invalid receipt rolls back (146.7773ms)
+✔ same key across test tenants remains independent (289.6171ms)
+✔ cancel evidence records the per-route HTTP outcome for attribution (5.0028ms)
+✔ a rejected read preserves every completed route outcome on the error (1.282ms)
+✔ a transport failure keeps a structured reason and no invented outcome (0.6434ms)
+✔ a malformed response is recorded as unknown status, not as success (0.644ms)
+✔ a rejected session read names the route, status and Core error code (0.6301ms)
+✔ a mismatched cancel receipt still fails the durable-fact comparison (2.9888ms)
+✔ a session principal mismatch keeps the four-route map and rejects strictly (1.4739ms)
+✔ a current principal mismatch keeps the four-route map and rejects strictly (0.7781ms)
+✔ an original receipt id mismatch keeps the four-route map and rejects strictly (0.8451ms)
+✔ changed original receipt facts keep the four-route map and reject strictly (1.157ms)
+✔ control: a clean read still returns the evidence together with its route map (0.6471ms)
+✔ control: a clean read with a newer work version still passes (0.4609ms)
+✔ the driver writes cancel-facts.json with the three separate facts (11.209ms)
+✔ the wiring keeps its guard so a partial review context cannot throw (1.4242ms)
+✔ a local unknown step (work_step_wait_expired) never claims a modeld interruption (2.7158ms)
+✔ a local unknown step (work_step_failed) never claims a modeld interruption (0.3531ms)
+✔ a local unknown step (transport connection lost) never claims a modeld interruption (0.2453ms)
+✔ a local unknown step (null) never claims a modeld interruption (0.2466ms)
+✔ a local unknown step (undefined) never claims a modeld interruption (0.3354ms)
+✔ an explicit validated modeld interruption receipt is the only way to claim interrupted (0.3742ms)
+✔ a used step reports a completed call without claiming interruption and keeps usage (0.9744ms)
+✔ an absent step stays unobserved and never invents a modeld state (0.3671ms)
+✔ the remote fact is never upgraded by local acceptance or a local settlement (0.7333ms)
+✔ original delivered cancel GET succeeds without any new command (16.1124ms)
+▶ cancel GET must validate HTTP status even when its body looks successful
+  ✔ 401 (12.8614ms)
+  ✔ 403 (6.1427ms)
+  ✔ 404 (9.0715ms)
+  ✔ 409 (6.7355ms)
+  ✔ 500 (5.3852ms)
+✔ cancel GET must validate HTTP status even when its body looks successful (42.5276ms)
+▶ cancel GET must bind the complete original receipt
+  ✔ another AU (8.0622ms)
+  ✔ another actor (6.0969ms)
+  ✔ another kind (4.104ms)
+  ✔ rejected command (4.8032ms)
+  ✔ another step (6.0217ms)
+  ✔ another step request (11.5813ms)
+  ✔ wrong original connection (6.2244ms)
+  ✔ missing delivery (3.1197ms)
+  ✔ different delivery (8.5036ms)
+  ✔ invalid version (8.8039ms)
+  ✔ changed persisted receipt (18.736ms)
+✔ cancel GET must bind the complete original receipt (91.0596ms)
+▶ receipt step must resolve to the original Work and attempt
+  ✔ missing Work (5.3081ms)
+  ✔ wrong Work (4.924ms)
+  ✔ missing step (3.7739ms)
+  ✔ duplicate step (7.73ms)
+  ✔ wrong attempt (6.1155ms)
+  ✔ wrong step command (7.1184ms)
+  ✔ wrong current principal (3.8336ms)
+✔ receipt step must resolve to the original Work and attempt (40.869ms)
+▶ current session and service are checked around the receipt read
+  ✔ another principal (3.9435ms)
+  ✔ principal changes (7.8213ms)
+  ✔ service changes (3.5087ms)
+✔ current session and service are checked around the receipt read (16.0156ms)
+✔ restart re-queries the same cancel and preserves its receipt when service changes (10.7536ms)
+✔ restart cannot pass if the original cancel receipt disappears (5.4451ms)
+✔ restart cannot pass if the original receipt is replaced (15.603ms)
+✔ the failure record keeps every completed route outcome (3.785ms)
+✔ a failed cancel-evidence read is written to its own failure record (0.658ms)
+✔ the failure record never claims a receipt or a zero dispatch count (0.3414ms)
+✔ the wrapper records a failure and rethrows the original error (1.1787ms)
+✔ the wrapper returns the loader result untouched on success (0.4022ms)
+✔ final download read preserves the original result and unknown usage after a stable restart (56.5018ms)
+✔ final download GET rejects in-flight principal before saving success (11.7633ms)
+✔ final download GET rejects in-flight service before saving success (12.5004ms)
+✔ final download GET rejects in-flight expired before saving success (17.8978ms)
+✔ original Unicode material receipt cited by the original candidate passes (7.7769ms)
+✔ pre-delivery driver rejects no material read (4.3232ms)
+✔ pre-delivery driver rejects listing only (1.8712ms)
+✔ pre-delivery driver rejects another material path (3.2634ms)
+✔ pre-delivery driver rejects another material digest (2.3313ms)
+✔ pre-delivery driver rejects character count instead of UTF-8 bytes (2.1869ms)
+✔ pre-delivery driver rejects read not cited by candidate (1.7035ms)
+✔ pre-delivery driver rejects duplicate receipt identity (1.7598ms)
+✔ pre-delivery driver rejects receipt from another attempt (1.7444ms)
+✔ pre-delivery driver rejects unknown model outcome (2.2578ms)
+✔ pre-delivery driver rejects manual step without original request (2.3311ms)
+✔ observed interrupt: unknown keeps the original reservation and null usage (37.8302ms)
+✔ observed interrupt: completed call keeps used occupancy with unreported usage (17.129ms)
+✔ observed interrupt: released original call is rejected even when both snapshots agree (12.9609ms)
+✔ observed interrupt: retaining a budget does not legitimize a released original call (13.6915ms)
+✔ observed interrupt: unknown still requires its reservation (10.7186ms)
+✔ observed interrupt: reopened original call cannot become released (16.5377ms)
+✔ observed interrupt: a different unexecuted released step does not invalidate the original call (43.8181ms)
+✔ observed interrupt: absent original output cannot reach settlement acceptance (17.1802ms)
+✔ actual observed reader survives original cancel GET and service restart without new POST (29.3807ms)
+✔ reader change after output cannot replace the original principal for cancel recovery (13.7663ms)
+✔ service change during the downstream read is still rejected (12.3448ms)
+✔ composed restart still rejects a substituted original receipt (12.8677ms)
+✔ original page command and delivered original receipt are accepted (2.6517ms)
+✔ page cancellation refuses empty ID (2.0619ms)
+✔ page cancellation refuses wrong kind (1.2913ms)
+✔ page cancellation refuses wrong AU (1.8475ms)
+✔ page cancellation refuses wrong Work (0.4997ms)
+✔ page cancellation refuses wrong step (0.3733ms)
+✔ page cancellation refuses old version (0.3199ms)
+✔ page cancellation refuses missing version (0.5081ms)
+✔ original cancel lookup refuses replacement ID (0.6795ms)
+✔ original cancel lookup refuses wrong kind (1.0151ms)
+✔ original cancel lookup refuses wrong AU (0.3736ms)
+✔ original cancel lookup refuses wrong reader (0.2603ms)
+✔ original cancel lookup refuses rejection (0.5277ms)
+✔ original cancel lookup refuses unknown (0.3055ms)
+✔ original cancel lookup refuses not adopted (0.4569ms)
+✔ original cancel lookup refuses different base (0.3072ms)
+✔ original cancel lookup refuses old version (0.2278ms)
+✔ original cancel lookup refuses wrong step (2.6964ms)
+✔ original cancel lookup refuses different model request (0.3998ms)
+✔ original cancel lookup refuses delivery missing (0.3343ms)
+✔ original cancel lookup refuses delivery refused (0.3046ms)
+✔ HTTP 401 cannot certify cancellation (0.3295ms)
+✔ HTTP 403 cannot certify cancellation (0.2323ms)
+✔ HTTP 404 cannot certify cancellation (0.2025ms)
+✔ HTTP 500 cannot certify cancellation (0.2566ms)
+✔ changed principal refuses before any page cancel (1.6755ms)
+✔ changed service refuses before any page cancel (0.3903ms)
+✔ changed attempt refuses before any page cancel (0.4361ms)
+✔ changed model refuses before any page cancel (0.3267ms)
+✔ changed connection refuses before any page cancel (2.5427ms)
+✔ changed settled refuses before any page cancel (0.4976ms)
+✔ download acceptance uses both original Core result controls and records only their command IDs (14.7911ms)
+✔ missing adoption control cannot be bypassed with a successful direct API command (2.1101ms)
+✔ running attempt cannot be closed manually to make delivery acceptance pass (3.8128ms)
+✔ adopted is insufficient without delivery (2.5559ms)
+✔ another delivered result is rejected (2.7649ms)
+✔ changed principal is rejected (2.3625ms)
+✔ changed original sources are rejected (2.2027ms)
+✔ original registered Work and receipt remain verifiable without starting any model (4.6686ms)
+✔ registration cannot accept a substituted receipt: id (2.3671ms)
+✔ registration cannot accept a substituted receipt: kind (0.6057ms)
+✔ registration cannot accept a substituted receipt: organization_id (0.4929ms)
+✔ registration cannot accept a substituted receipt: base_version (1.826ms)
+✔ registration cannot accept a substituted receipt: actor_principal_id (0.4431ms)
+✔ registration cannot accept a substituted receipt: status (0.4062ms)
+✔ registration cannot accept a substituted receipt: version (0.3827ms)
+✔ registration cannot accept a substituted receipt: work_id (0.5175ms)
+✔ unreadable original receipt stops at HTTP 401 (2.0544ms)
+✔ unreadable original receipt stops at HTTP 403 (0.7065ms)
+✔ unreadable original receipt stops at HTTP 404 (0.3738ms)
+✔ unreadable original receipt stops at HTTP 500 (0.2622ms)
+✔ persisted registration rejects substituted Work (0.4301ms)
+✔ persisted registration rejects wrong responsibility (0.3379ms)
+✔ persisted registration rejects wrong binding (0.3561ms)
+✔ persisted registration rejects wrong definition (0.3252ms)
+✔ persisted registration rejects wrong mandate (0.3091ms)
+✔ persisted registration rejects withdrawn mandate (0.3275ms)
+✔ persisted registration rejects wrong goal (0.4058ms)
+✔ persisted registration rejects changed budget (0.4688ms)
+✔ persisted registration rejects preexisting use (0.4411ms)
+✔ persisted registration rejects unknown reservation (0.4706ms)
+✔ persisted registration rejects another Work (0.5083ms)
+✔ persisted registration rejects wrong reader (0.3982ms)
+✔ persisted registration rejects missing read_document (1.2568ms)
+✔ persisted registration rejects different connection (0.4066ms)
+✔ persisted registration rejects changed adopted revision (0.2843ms)
+✔ original Unicode result and unchanged snapshots survive a service restart (15.637ms)
+✔ reopened download rejects missing body (5.4136ms)
+✔ reopened download rejects corrupted body with unchanged metadata (4.0338ms)
+✔ reopened download rejects HTTP 403 with an otherwise matching body (4.2803ms)
+✔ reopened download rejects HTTP 500 with an otherwise matching body (4.0308ms)
+✔ reopened download rejects another AU (3.7501ms)
+✔ reopened download rejects another Work (5.2132ms)
+✔ reopened download rejects another result (4.7668ms)
+✔ reopened download rejects another protocol (4.1484ms)
+✔ reopened download rejects changed sources (4.4797ms)
+✔ reopened download rejects changed title (8.2487ms)
+✔ reopened download rejects character count instead of UTF-8 bytes (3.4522ms)
+✔ session revoked after body GET (3.9162ms)
+✔ principal changed during body GET (4.9926ms)
+✔ service changed during body GET (3.8948ms)
+✔ an unchanged restart reports unchanged state without claiming zero dispatches (3.931ms)
+✔ a new attempt after restart is rejected as a new dispatch (0.949ms)
+✔ a new model request after restart is rejected as a new dispatch (0.4212ms)
+✔ an increased used counter is rejected as a new dispatch (0.4225ms)
+✔ a missing before side is reported unavailable instead of guessed (0.5752ms)
+✔ an unchanged reopen records unchanged state and claims no passing check (2.181ms)
+✔ a missing before side is recorded as unavailable without claiming zero (0.544ms)
+✔ a new dispatch after reopen writes a failed record and a failing check (0.5529ms)
+✔ a rejected strict comparison replaces an unchanged record with the failure (0.6413ms)
+✔ every written replay record states whether dispatch counting was available (0.6801ms)
+✔ a successful read returns the original Core work body (4.8471ms)
+✔ a rejected session read names the route, status and Core error code (2.436ms)
+✔ a rejected work read names the work route and its status (0.8755ms)
+✔ exit22b_page.cjs: same-run Core snapshots preserve two requests and unknown usage (59.1069ms)
+▶ exit22b_page.cjs: reject bad HTTP, scope and session before saving a snapshot
+  ✔ 403 (14.4238ms)
+  ✔ legacy error (5.5896ms)
+  ✔ wrong AU (4.6359ms)
+  ✔ wrong protocol (9.8481ms)
+  ✔ wrong principal (20.8252ms)
+  ✔ missing Work (7.3417ms)
+  ✔ not Core session (10.0851ms)
+  ✔ principal changes during read (3.7619ms)
+  ✔ service changes during read (5.4517ms)
+✔ exit22b_page.cjs: reject bad HTTP, scope and session before saving a snapshot (85.6805ms)
+▶ exit22b_page.cjs: malformed original requests cannot establish a baseline
+  ✔ zero requests (3.8467ms)
+  ✔ missing request identity (8.729ms)
+  ✔ duplicate request identity (16.004ms)
+  ✔ unsettled request (6.7ms)
+  ✔ duplicate original Work (8.6934ms)
+✔ exit22b_page.cjs: malformed original requests cannot establish a baseline (45.5357ms)
+▶ exit22b_page.cjs: reject changed persisted facts and new request identities
+  ✔ extra request (7.583ms)
+  ✔ missing original request (26.2864ms)
+  ✔ substituted request (18.2293ms)
+  ✔ changed original loop (17.1325ms)
+  ✔ lost usage (11.286ms)
+  ✔ unknown usage fabricated as zero (11.7025ms)
+  ✔ lost reservation (6.8013ms)
+  ✔ unknown released (7.1115ms)
+  ✔ changed connection (19.1288ms)
+✔ exit22b_page.cjs: reject changed persisted facts and new request identities (127.8269ms)
+▶ exit22b_page.cjs: consistent snapshots must still conserve every step occupancy
+  ✔ lost used call (18.1396ms)
+  ✔ invented used call (7.5521ms)
+  ✔ lost unknown reservation (11.2364ms)
+  ✔ invented reservation (8.2841ms)
+  ✔ missing counts (9.0264ms)
+  ✔ boolean count (11.659ms)
+  ✔ fractional limit (14.1491ms)
+  ✔ negative count (8.3603ms)
+  ✔ occupancy exceeds limit (15.0657ms)
+✔ exit22b_page.cjs: consistent snapshots must still conserve every step occupancy (114.5543ms)
+✔ exit22b_page.cjs: multiple completed calls and released steps preserve exact occupancy (5.6553ms)
+▶ exit22b_page.cjs: restart preserves complete original result provenance
+  ✔ changed source (5.6314ms)
+  ✔ lost source (3.7193ms)
+  ✔ changed title (4.1324ms)
+  ✔ changed result bytes (5.37ms)
+  ✔ extra result (4.8677ms)
+  ✔ duplicate original result (4.2347ms)
+✔ exit22b_page.cjs: restart preserves complete original result provenance (29.5535ms)
+▶ exit22b_page.cjs: malformed result lists cannot establish restart evidence
+  ✔ missing list (4.0936ms)
+  ✔ empty identity (3.2229ms)
+  ✔ duplicate identity (2.5443ms)
+✔ exit22b_page.cjs: malformed result lists cannot establish restart evidence (10.6851ms)
+✔ exit22b_page.cjs: result order and JSON key order do not change provenance (4.1971ms)
+✔ exit22b_page.cjs: normal restart permits reordered steps and JSON keys (4.5587ms)
+✔ exit22b_page.cjs: completed request with unreported usage remains explicitly unknown (5.1784ms)
+✔ exit22c_download.cjs: same-run Core snapshots preserve two requests and unknown usage (9.814ms)
+▶ exit22c_download.cjs: reject bad HTTP, scope and session before saving a snapshot
+  ✔ 403 (2.4399ms)
+  ✔ legacy error (2.0456ms)
+  ✔ wrong AU (2.7644ms)
+  ✔ wrong protocol (2.4742ms)
+  ✔ wrong principal (3.0269ms)
+  ✔ missing Work (1.7535ms)
+  ✔ not Core session (1.7024ms)
+  ✔ principal changes during read (2.2197ms)
+  ✔ service changes during read (1.9608ms)
+✔ exit22c_download.cjs: reject bad HTTP, scope and session before saving a snapshot (21.7937ms)
+▶ exit22c_download.cjs: malformed original requests cannot establish a baseline
+  ✔ zero requests (1.7472ms)
+  ✔ missing request identity (1.7618ms)
+  ✔ duplicate request identity (1.9226ms)
+  ✔ unsettled request (1.9795ms)
+  ✔ duplicate original Work (2.0065ms)
+✔ exit22c_download.cjs: malformed original requests cannot establish a baseline (10.1632ms)
+▶ exit22c_download.cjs: reject changed persisted facts and new request identities
+  ✔ extra request (2.9242ms)
+  ✔ missing original request (3.7333ms)
+  ✔ substituted request (4.5869ms)
+  ✔ changed original loop (4.0625ms)
+  ✔ lost usage (3.9957ms)
+  ✔ unknown usage fabricated as zero (4.4746ms)
+  ✔ lost reservation (5.302ms)
+  ✔ unknown released (2.7908ms)
+  ✔ changed connection (3.9308ms)
+✔ exit22c_download.cjs: reject changed persisted facts and new request identities (37.3698ms)
+▶ exit22c_download.cjs: consistent snapshots must still conserve every step occupancy
+  ✔ lost used call (4.0513ms)
+  ✔ invented used call (4.7644ms)
+  ✔ lost unknown reservation (4.7003ms)
+  ✔ invented reservation (4.3818ms)
+  ✔ missing counts (4.0255ms)
+  ✔ boolean count (3.9027ms)
+  ✔ fractional limit (3.6979ms)
+  ✔ negative count (3.6986ms)
+  ✔ occupancy exceeds limit (3.5698ms)
+✔ exit22c_download.cjs: consistent snapshots must still conserve every step occupancy (38.1842ms)
+✔ exit22c_download.cjs: multiple completed calls and released steps preserve exact occupancy (4.4922ms)
+▶ exit22c_download.cjs: restart preserves complete original result provenance
+  ✔ changed source (4.0944ms)
+  ✔ lost source (4.1295ms)
+  ✔ changed title (4.0427ms)
+  ✔ changed result bytes (3.94ms)
+  ✔ extra result (3.7341ms)
+  ✔ duplicate original result (2.8809ms)
+✔ exit22c_download.cjs: restart preserves complete original result provenance (23.7174ms)
+▶ exit22c_download.cjs: malformed result lists cannot establish restart evidence
+  ✔ missing list (2.1461ms)
+  ✔ empty identity (3.1065ms)
+  ✔ duplicate identity (2.0047ms)
+✔ exit22c_download.cjs: malformed result lists cannot establish restart evidence (8.1821ms)
+✔ exit22c_download.cjs: result order and JSON key order do not change provenance (4.8056ms)
+✔ exit22c_download.cjs: normal restart permits reordered steps and JSON keys (6.9737ms)
+✔ exit22c_download.cjs: completed request with unreported usage remains explicitly unknown (6.6572ms)
+✔ empty interrupt results survive a read-only restart (0.4238ms)
+✔ the comparison summary states that dispatch counting is unknown (0.3921ms)
+✔ exit22b_page.cjs: navigation preserves the sole created AU instead of leaving an untracked second AU (18.8974ms)
+✔ exit22b_page.cjs: refresh does not mint a second grant or replace the adopted grant reference (11.2144ms)
+✔ exit22b_page.cjs: unknown creation stops without a new AU or grant (3.5661ms)
+✔ exit22b_page.cjs: failed prepare stops without a second grant or connection adoption (3.8929ms)
+✔ exit22c_download.cjs: navigation preserves the sole created AU instead of leaving an untracked second AU (11.8688ms)
+✔ exit22c_download.cjs: refresh does not mint a second grant or replace the adopted grant reference (8.7207ms)
+✔ exit22c_download.cjs: unknown creation stops without a new AU or grant (3.2077ms)
+✔ exit22c_download.cjs: failed prepare stops without a second grant or connection adoption (7.8474ms)
+✔ interrupt accepts public original text without inventing per-event request_id (10.7446ms)
+✔ interrupt follows the original cursor past filtered and tool-only pages (8.4139ms)
+▶ interrupt rejects unavailable, wrong-origin, non-output and malformed observations
+  ✔ HTTP 403 (8.0791ms)
+  ✔ missing U108 (13.4646ms)
+  ✔ unavailable server (9.1812ms)
+  ✔ wrong protocol (9.6578ms)
+  ✔ wrong source (13.0076ms)
+  ✔ other organization_id (6.4007ms)
+  ✔ other work_id (15.0423ms)
+  ✔ other attempt_id (13.8815ms)
+  ✔ other step_ref (11.3743ms)
+  ✔ other command_id (11.3436ms)
+  ✔ other model_request_id (6.6836ms)
+  ✔ other principal (9.9379ms)
+  ✔ other service (9.7997ms)
+  ✔ changed original connection (16.1339ms)
+  ✔ only tool activity (17.794ms)
+  ✔ only lifecycle activity (10.9851ms)
+  ✔ empty text (11.6316ms)
+  ✔ whitespace only (10.4003ms)
+  ✔ wrong text type (9.7009ms)
+  ✔ metadata only (5.111ms)
+  ✔ invalid cursor (13.4609ms)
+  ✔ invalid sequence (13.8372ms)
+  ✔ event beyond cursor (8.9654ms)
+  ✔ duplicate sequence (3.6981ms)
+  ✔ principal changed in flight (3.109ms)
+  ✔ service changed in flight (3.6621ms)
+✔ interrupt rejects unavailable, wrong-origin, non-output and malformed observations (279.0015ms)
+✔ interrupt rejects cursor regression after a filtered page (3.3955ms)
+✔ interrupt records original identity and UTF-8 text digest without raw text (3.301ms)
+✔ download reopen keeps the original result even beside another adopted result (10.0842ms)
+▶ download reopen rejects substituted identity, digest, status, scope and HTTP failures
+  ✔ another result (13.622ms)
+  ✔ changed digest (3.1524ms)
+  ✔ another delivered result (9.8711ms)
+  ✔ not adopted (8.6711ms)
+  ✔ not delivered (11.7749ms)
+  ✔ missing original work (16.1459ms)
+  ✔ another AU (10.908ms)
+  ✔ wrong protocol (5.1863ms)
+  ✔ HTTP 403 with a matching body (7.1158ms)
+✔ download reopen rejects substituted identity, digest, status, scope and HTTP failures (97.5182ms)
+✔ recorded patch remains valid with Git core.abbrev=12 (1746.4968ms)
+✔ recorded patch remains valid with Git core.abbrev=40 (1532.6198ms)
+✔ the complete comparison still rejects additional tracked source changes (1102.2253ms)
+✔ normalizes recorded line endings while retaining index and hunk validation (1076.219ms)
+✔ waits through the pre-reservation snapshot and returns the same original step (14.3854ms)
+✔ does not accept a different work, command, settled step or missing occupied budget (61.3881ms)
+✔ an already committed original reservation succeeds with one read (0.6622ms)
+✔ a reservation that never appears fails within the bounded polling window (45.9542ms)
+✔ rejects changed read scope: protocol (1.5027ms)
+✔ rejects changed read scope: organization_id (0.2637ms)
+✔ read failure stops immediately without polling or replacing the command (0.234ms)
+ℹ tests 359
+ℹ suites 0
+ℹ pass 359
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6603.0361
+
+> union@0.0.0 check:console
+> npm run typecheck --workspace @union/console && npm run test --workspace @union/console && npm run build:console
+
+
+> @union/console@0.1.0 typecheck
+> tsc --noEmit
+
+
+> @union/console@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 <checkout>/web/console
+
+ ✓ src/pages/Identity.test.tsx (14 tests) 1347ms
+ ✓ src/features/work/page-execution.test.tsx (20 tests) 3217ms
+   ✓ an unknown step has no page cancel button  1046ms
+ ✓ src/features/work/cancel-recovery.test.tsx (26 tests) 4005ms
+   ✓ can cancel while the original page run POST is still pending and retain both lookups  300ms
+ ✓ src/features/work/registration.test.tsx (33 tests) 4532ms
+   ✓ Core empty state registers one bounded responsible Work, persisting original identity before POST  315ms
+ ✓ src/features/models/ModelsIdentity.test.tsx (11 tests) 4865ms
+   ✓ model identity, scope and input lifetime > keeps draft fields and keyboard focus through refresh and same-principal renewal  875ms
+   ✓ model identity, scope and input lifetime > retains draft while offline and never queues a command for reconnection  609ms
+   ✓ model identity, scope and input lifetime > clears a draft after permissions change and does not reopen it when access returns  379ms
+   ✓ model identity, scope and input lifetime > erases credentials immediately when preflight learns that read access was denied  422ms
+   ✓ model identity, scope and input lifetime > ignores an earlier successful read arriving after a newer permission denial  565ms
+   ✓ model identity, scope and input lifetime > rejects a changed cookie identity before any command is posted  426ms
+   ✓ model identity, scope and input lifetime > does not expose a late command result to a different principal  434ms
+   ✓ model identity, scope and input lifetime > clears form on AU switch and never displays an old AU response as the new one  527ms
+ ✓ src/features/models/ModelsRecovery.test.tsx (10 tests) 7033ms
+   ✓ model original-request recovery > never replays a lost save and only queries the original receipt  1617ms
+   ✓ model original-request recovery > treats a concrete validation error as rejected input instead of unknown  841ms
+   ✓ model original-request recovery > keeps an unmatched response unknown without displaying another AU receipt  595ms
+   ✓ model original-request recovery > reconciles a saved unknown operation explicitly without resubmitting credentials  510ms
+   ✓ model original-request recovery > keeps other connections usable when one verification is unknown  839ms
+   ✓ model original-request recovery > allows the current governor to request local stop while governance is unavailable  826ms
+   ✓ model original-request recovery > lets an unavailable current governor disable a connection while enable and default stay unavailable  760ms
+   ✓ model original-request recovery > does not submit if the dialog is cancelled while checking current identity  546ms
+ ✓ src/pages/SubscriptionConnections.test.tsx (8 tests) 1200ms
+   ✓ subscription configuration > clears the key and blocks duplicate writes while original result is unknown  351ms
+ ✓ src/features/models/ModelsDiagnostics.test.tsx (17 tests) 8594ms
+   ✓ model check eligibility after version changes or local stop > keeps an unstopped unknown check on the same revision blocking another check  902ms
+   ✓ model check eligibility after version changes or local stop > rechecks an unfinished current-version check that appears before preview  672ms
+   ✓ model check eligibility after version changes or local stop > allows an explicit new bounded check after an updated connection version  1079ms
+   ✓ model check eligibility after version changes or local stop > allows an explicit new bounded check after a requested local stop  824ms
+   ✓ model diagnostics and observed usage > keeps worker_start_failed on explicit original-check reconciliation  764ms
+   ✓ model diagnostics and observed usage > keeps original_request_missing on explicit original-check reconciliation  804ms
+   ✓ model diagnostics and observed usage > keeps provider_result_unconfirmed on explicit original-check reconciliation  703ms
+   ✓ model diagnostics and observed usage > preserves partial event usage when the check is cancel_requested  324ms
+   ✓ model diagnostics and observed usage > preserves partial event usage when the check is unknown  374ms
+   ✓ model diagnostics and observed usage > describes a cancelled attempt as local stop without implying a remote cancellation or refund  365ms
+   ✓ model diagnostics and observed usage > replaces event usage with the received result fields without adding snapshots or attempts  382ms
+stderr | src/features/work/WorkPanel.test.tsx > V1 work panel > reports an unknown execution and the last tool receipt instead of success
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: ["core-models","au-1"]
+
+stderr | src/features/work/WorkPanel.test.tsx > V1 work panel > explains the empty state when no V1 work exists
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: ["core-models","au-1"]
+
+stderr | src/features/work/WorkPanel.test.tsx > V1 work panel > shows an adopted result with its digest and source count
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: ["core-models","au-1"]
+
+stderr | src/features/work/WorkPanel.test.tsx > V1 work panel > starts an execution and adopts a candidate result through the API
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: ["core-models","au-1"]
+
+ ✓ src/features/models/Models.test.tsx (15 tests) 9422ms
+   ✓ core model access user journey > selects Responses explicitly, previews its protocol and clears the submitted key  1621ms
+   ✓ core model access user journey > opens the core models route and navigation for a normal core governor  368ms
+   ✓ core model access user journey > states each profile capability scope without generalizing one profile  330ms
+   ✓ core model access user journey > saves without inference or adoption, clears the key and keeps only request identities  814ms
+   ✓ core model access user journey > grants bounded resources, reads a selected document twice and adopts independently  2072ms
+   ✓ core model access user journey > can adopt an enabled untested connection without purchasing a check  641ms
+   ✓ core model access user journey > requires a fresh API key when editing an endpoint and does not reuse an old check  385ms
+   ✓ core model access user journey > uses only an explicitly supplied modeld grant, without listing host accounts  505ms
+   ✓ core model access user journey > rejects a credential containing 空白 before preview or POST  397ms
+   ✓ core model access user journey > rejects a credential containing 非 ASCII 字符 before preview or POST  448ms
+   ✓ core model access user journey > rejects a credential containing 超过 4096 字符 before preview or POST  463ms
+   ✓ core model access user journey > keeps normal inputs after a persisted domain rejection and allows a new preview  624ms
+   ✓ core model access user journey > lets the V1 governor explicitly enable read_document while preserving other tools  347ms
+stderr | src/features/work/WorkPanel.test.tsx > V1 work panel > submits a candidate result with the selected sources
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: ["core-models","au-1"]
+
+ ✓ src/features/models/ModelsStream.test.tsx (21 tests) 9727ms
+   ✓ V1 original-request observation > renders partial text as text and original tool names without posting a command  992ms
+   ✓ V1 original-request observation > deduplicates repeat pages and retains the original cursor across a failed read  771ms
+   ✓ V1 original-request observation > clears content on mismatched organization_id  581ms
+   ✓ V1 original-request observation > clears content on mismatched attempt_id  419ms
+   ✓ V1 original-request observation > clears content on mismatched check_id  388ms
+   ✓ V1 original-request observation > clears content on mismatched protocol  392ms
+   ✓ V1 original-request observation > clears content when the stream grant is revoked despite a still readable model list  346ms
+   ✓ V1 original-request observation > ignores a delayed result after a principal switch and does not persist text  340ms
+   ✓ V1 original-request observation > rejects a changed cookie identity even before workspace refresh  394ms
+   ✓ V1 original-request observation > rejects conflicting same-sequence text and discards its old output  399ms
+   ✓ V1 original-request observation > clears malformed observation responses  440ms
+   ✓ V1 original-request observation > clears malformed observation responses  417ms
+   ✓ V1 original-request observation > clears a response for another principal_id  434ms
+   ✓ V1 original-request observation > clears a response for another service_instance  419ms
+   ✓ V1 original-request observation > keeps the selected original attempt when the check creates its next attempt  334ms
+   ✓ V1 original-request observation > clears stopped output when its connection is disabled in the current projection  501ms
+   ✓ V1 original-request observation > clears stopped output when its connection is revised in the current projection  386ms
+   ✓ V1 original-request observation > clears stopped output when its connection is removed in the current projection  471ms
+   ✓ V1 original-request observation > discards a delayed observation after current connection access is removed  413ms
+   ✓ V1 original-request observation > does not replace a removed selected request with a different available attempt  510ms
+   ✓ V1 original-request observation > keeps stopped output for unchanged authority when unrelated connection metadata changes  377ms
+stderr | src/features/work/WorkPanel.test.tsx > V1 work panel > closes a running attempt with an explicit outcome
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: ["core-models","au-1"]
+
+stderr | src/features/work/WorkPanel.test.tsx > V1 work panel > completes a work with its adopted result
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: ["core-models","au-1"]
+
+stderr | src/features/work/WorkPanel.test.tsx > V1 work panel > hides the completion button while an execution is still running
+Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: ["core-models","au-1"]
+
+ ✓ src/features/work/WorkPanel.test.tsx (10 tests) 1145ms
+ ✓ src/features/work/result-delivery.test.tsx (21 tests) 3086ms
+   ✓ adopts with disabled model connection, persists scoped identity before a single POST  369ms
+ ✓ src/app/organization-entry.test.tsx (32 tests) 3966ms
+   ✓ V1 organization entry > preserves unscoped historical create references without automatic lookup  672ms
+ ✓ src/features/commands/fields.test.tsx (9 tests) 1254ms
+   ✓ operation form interactions > keeps edited content and focus across snapshot refreshes  317ms
+ ✓ src/features/commands/core-boundaries.test.tsx (10 tests) 3595ms
+   ✓ lets a core participant prepare its own AU while withholding legacy operations and showing its stable identity  758ms
+   ✓ core creation identity and receipt boundaries > rejects a POST receipt with the wrong id and retains the original V1 request  365ms
+   ✓ core creation identity and receipt boundaries > rejects a POST receipt with the wrong kind and retains the original V1 request  310ms
+   ✓ core creation identity and receipt boundaries > adopts a delayed creation result only for its original principal (changed=false)  460ms
+   ✓ core creation identity and receipt boundaries > adopts a delayed creation result only for its original principal (changed=true)  353ms
+   ✓ core creation identity and receipt boundaries > shows a lookup failure beside an unknown receipt while retaining its original ID  423ms
+ ✓ src/app/governance-workspace.test.tsx (16 tests) 1740ms
+   ✓ current governance access projection > keeps the authorized AU readable after dispatch advances its schema  590ms
+ ✓ src/app/workspace.test.tsx (4 tests) 1302ms
+   ✓ workspace organization transitions > keeps the session and draft mounted while withholding old organization data and writes  485ms
+   ✓ workspace organization transitions > rechecks identity when principal_id changes  504ms
+ ✓ src/features/work/work-panel-boundaries.test.tsx (8 tests) 1252ms
+   ✓ Work feature boundaries retained independently of the retired manual route > preserves explicit execution preparation without manual reservation controls  591ms
+   ✓ Work feature boundaries retained independently of the retired manual route > shows persisted AI work and downloads without opening manual write controls  302ms
+ ✓ src/pages/Gateways.test.tsx (3 tests) 919ms
+   ✓ gateway platform boundary and operations > does not fetch or show operations without explicit platform permission  332ms
+   ✓ gateway platform boundary and operations > separates unavailable health from unknown deployment, hides unsupported controls and opens isolated links  324ms
+ ✓ src/features/commands/core-creation.test.tsx (7 tests) 2874ms
+   ✓ core creation through the workspace > keeps prepared organizations on the new entry without legacy creation controls  588ms
+   ✓ core creation through the workspace > resolves an unscoped model link to the organization list without promising configuration  325ms
+   ✓ core creation through the workspace > opens the saved prepared AU through V1 and shows bound governance without legacy snapshot calls  989ms
+   ✓ core creation through the workspace > retains an unknown V1 request for lookup after the result dialog closes  389ms
+   ✓ core creation through the workspace > keeps input editable after a pre-allocation V1 validation rejection  301ms
+ ✓ src/features/governance/Governance.test.tsx (55 tests) 19936ms
+   ✓ governance user journey > keeps account-level AU creation reachable from /au/core-au without governing commands  744ms
+   ✓ governance user journey > previews and adopts a single-principal exit procedure without activating business  469ms
+   ✓ governance user journey > configures an explicit successor principal without treating its name as authority  423ms
+   ✓ governance user journey > nominates another core identity and offers explicit cancellation of an existing nomination  331ms
+   ✓ governance user journey > revises only the displayed charter fields while preserving other stored fields  365ms
+   ✓ governance user journey > retains a new goal draft and focus across same-principal renewal and polling  418ms
+   ✓ retained controlled responsibility feature contract > appoints a human member with separate generated member and responsibility IDs  380ms
+   ✓ governance command recovery boundaries > keeps an editable draft after a command endpoint 401 with code undefined  447ms
+   ✓ governance command recovery boundaries > keeps an editable draft after a command endpoint 401 with code not_authenticated  491ms
+   ✓ governance command recovery boundaries > retains the original request when identity verification fails with 401/'not_authenticated' after a successful POST  439ms
+   ✓ governance command recovery boundaries > retains the original request when identity verification fails with 401/undefined after a successful POST  481ms
+   ✓ governance command recovery boundaries > retains the original request when identity verification fails with 409/'incompatible_state' after a successful POST  440ms
+   ✓ governance command recovery boundaries > recognizes a rejected original receipt even when the server version is lower than its requested base  346ms
+   ✓ governance command recovery boundaries > preserves rejected input and requires a new preview after a server version rejection  446ms
+   ✓ governance command recovery boundaries > keeps an unknown original ID and only queries it without persisting or replaying its content  481ms
+   ✓ governance command recovery boundaries > keeps query errors next to the original request and never offers a replay  457ms
+   ✓ governance command recovery boundaries > does not create a second request for the same action after closing an unknown result  657ms
+   ✓ governance command recovery boundaries > keeps an unknown action local and lets a different work proceed with its own request  836ms
+   ✓ governance command recovery boundaries > recovers an original request after reload onto a new service instance with the same principal  575ms
+   ✓ governance command recovery boundaries > refreshes evidence-only rejection while retaining the unadopted content and its original request  330ms
+   ✓ governance command recovery boundaries > does not send when browser request-identity storage is unavailable  385ms
+   ✓ governance command recovery boundaries > stops before POST when the current AU version changed after preview  348ms
+   ✓ governance command recovery boundaries > stops a preflight when principal_id changes before the workspace poll  409ms
+   ✓ governance command recovery boundaries > stops a preflight when service_instance changes before the workspace poll  421ms
+   ✓ governance command recovery boundaries > does not send a command when the user cancels a pending identity preflight  394ms
+   ✓ governance command recovery boundaries > rejects an unrelated receipt with a mismatched id  353ms
+   ✓ governance command recovery boundaries > rejects an unrelated receipt with a mismatched kind  382ms
+   ✓ governance command recovery boundaries > rejects an unrelated receipt with a mismatched organization_id  389ms
+   ✓ governance command recovery boundaries > rejects an unrelated receipt with a mismatched actor_principal_id  362ms
+   ✓ governance command recovery boundaries > rejects an unrelated receipt with a mismatched base_version  434ms
+   ✓ governance command recovery boundaries > does not apply a late POST response after the current principal_id changed  497ms
+   ✓ governance command recovery boundaries > does not apply a late POST response after the current service_instance changed  401ms
+   ✓ governance command recovery boundaries > lets the original issuer query its own receipt after losing current AU access  584ms
+   ✓ governance command recovery boundaries > retains the same-AU governance draft read-only during a transient network failure  315ms
+ ✓ src/pages/RuntimeObservation.test.tsx (11 tests) 561ms
+ ✓ src/app/url-state.test.tsx (1 test) 358ms
+   ✓ URL filter state > composes rapid edits without restoring a cleared search and preserves organization scope  355ms
+ ✓ src/pages/ModelServiceConnections.test.tsx (2 tests) 608ms
+   ✓ binds adoption to selected account, model and AU; lost reply blocks a second write  483ms
+ ✓ src/features/work/WorkStream.test.tsx (20 tests) 25182ms
+   ✓ continues checking read permission after terminal output  3068ms
+   ✓ rechecks authority after the browser aggregate text cap  3511ms
+   ✓ rechecks authority after the browser aggregate events cap  7948ms
+   ✓ keeps truncated body loading stopped through a temporary metadata read failure and recovery  3162ms
+   ✓ clears truncated output after a later 401 instead of retaining it forever  3105ms
+   ✓ clears truncated output after a later 403 instead of retaining it forever  3051ms
+ ✓ src/features/work/ResultList.test.tsx (2 tests) 242ms
+ ✓ src/pages/Tasks.test.tsx (1 test) 216ms
+ ✓ src/features/commands/receipts.test.ts (5 tests) 19ms
+ ✓ src/api/client.test.ts (3 tests) 17ms
+ ✓ src/api/work-command.test.ts (1 test) 16ms
+
+ Test Files  30 passed (30)
+      Tests  396 passed (396)
+   Start at  09:06:18
+   Duration  35.79s (transform 4.06s, setup 44.32s, collect 29.36s, tests 122.23s, environment 141.03s, prepare 14.88s)
+
+
+> union@0.0.0 build:console
+> npm run build --workspace @union/console
+
+
+> @union/console@0.1.0 build
+> tsc --noEmit && vite build
+
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 2029 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.74 kB │ gzip:   0.51 kB
+dist/assets/index-CUQUSYu-.css   52.73 kB │ gzip:  11.45 kB
+dist/assets/index-DXGNcWbC.js   454.70 kB │ gzip: 141.60 kB
+✓ built in 5.98s

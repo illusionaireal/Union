@@ -34,7 +34,7 @@ async function main() {
       if (url.pathname === '/api/v1/models/events') queries.push(url.searchParams.get('after'));
     });
     const visit = async () => {
-      await page.goto(`${ready.origin}/models?organization=${encodeURIComponent(ready.organization_id)}`);
+      await page.goto(`${ready.origin}/au/${encodeURIComponent(ready.organization_id)}/resources`);
       await page.getByRole('button', { name: '查看生成过程', exact: true }).click();
     };
     await visit();
@@ -61,11 +61,11 @@ async function main() {
     await page.getByText('正在生成的片段一，片段二', { exact: true }).waitFor();
     assert.equal(ready.inference_posts, 1);
     checks.push('normal host reopen reads original persisted attempt with no dispatch');
-    for (const width of [1440, 390, 320]) {
+    for (const width of [1440, 1024, 768, 390]) {
       await page.setViewportSize({ width, height: 900 });
       assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `overflow at ${width}px`);
     }
-    checks.push('1440/390/320 layout');
+    checks.push('1440/1024/768/390 layout');
     if (process.env.UNION_U097_CONNECTION_REVOKE === '1') {
       await region.getByText(/原调用已停止或结束/).waitFor();
       const readsBeforeDisable = queries.length;

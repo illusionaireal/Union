@@ -47,6 +47,10 @@ export function GovernanceProvider({ children }: { children: ReactNode }) {
   const [receipts, setReceipts] = useState<Record<string, GovernanceReceipt>>({});
   const receiptsRef = useRef(receipts);
   const [draft, setDraft] = useState<GovernanceDraft>();
+  useEffect(() => {
+    if (draft && (!sameScope(draft.scope, workspace.session, workspace.orgId) ||
+        (!workspace.loading && !workspace.core))) setDraft(undefined);
+  }, [draft, workspace.session, workspace.orgId, workspace.core, workspace.loading]);
   const [inspection, setInspection] = useState<{
     reference: GovernanceReference;
     scope: GovernanceScope;
@@ -159,7 +163,7 @@ export function GovernanceProvider({ children }: { children: ReactNode }) {
       value={{ open, references, receipts, remember, forget, record, lookup, inspect }}
     >
       {children}
-      {draft && sameScope(draft.scope, workspace.session, workspace.orgId) && (
+      {draft && workspace.core && sameScope(draft.scope, workspace.session, workspace.orgId) && (
         <Dialog
           key={draft.key}
           id="governance-dialog"

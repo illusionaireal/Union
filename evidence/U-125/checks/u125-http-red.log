@@ -1,0 +1,435 @@
+test_commands_and_receipts_survive_reconnect_and_gets_are_readonly (tests.test_http.HTTPTests.test_commands_and_receipts_survive_reconnect_and_gets_are_readonly) ... ok
+test_host_origin_cookie_and_observer_cannot_bypass (tests.test_http.HTTPTests.test_host_origin_cookie_and_observer_cannot_bypass) ... ok
+test_one_time_ticket_http_only_cookie_and_expired_session (tests.test_http.HTTPTests.test_one_time_ticket_http_only_cookie_and_expired_session) ... ok
+test_spa_routes_and_assets_are_public_same_origin_only (tests.test_http.HTTPTests.test_spa_routes_and_assets_are_public_same_origin_only) ... ok
+test_static_missing_traversal_and_private_files_never_fall_back_to_html (tests.test_http.HTTPTests.test_static_missing_traversal_and_private_files_never_fall_back_to_html) ... ok
+test_static_path_encoding_cannot_resolve_ambiguous_asset_names (tests.test_http.HTTPTests.test_static_path_encoding_cannot_resolve_ambiguous_asset_names) ... 
+  test_static_path_encoding_cannot_resolve_ambiguous_asset_names (tests.test_http.HTTPTests.test_static_path_encoding_cannot_resolve_ambiguous_asset_names) (path='/assets%2fapp-test.js') ... FAIL
+  test_static_path_encoding_cannot_resolve_ambiguous_asset_names (tests.test_http.HTTPTests.test_static_path_encoding_cannot_resolve_ambiguous_asset_names) (path='/assets%2Fapp-test.js') ... FAIL
+  test_static_path_encoding_cannot_resolve_ambiguous_asset_names (tests.test_http.HTTPTests.test_static_path_encoding_cannot_resolve_ambiguous_asset_names) (path='/assets/./app-test.js') ... FAIL
+  test_static_path_encoding_cannot_resolve_ambiguous_asset_names (tests.test_http.HTTPTests.test_static_path_encoding_cannot_resolve_ambiguous_asset_names) (path='/assets/%2e/app-test.js') ... FAIL
+  test_static_path_encoding_cannot_resolve_ambiguous_asset_names (tests.test_http.HTTPTests.test_static_path_encoding_cannot_resolve_ambiguous_asset_names) (path='/assets/bad%.js') ... FAIL
+  test_static_path_encoding_cannot_resolve_ambiguous_asset_names (tests.test_http.HTTPTests.test_static_path_encoding_cannot_resolve_ambiguous_asset_names) (path='/assets/bad%25.js') ... FAIL
+  test_static_path_encoding_cannot_resolve_ambiguous_asset_names (tests.test_http.HTTPTests.test_static_path_encoding_cannot_resolve_ambiguous_asset_names) (path='/assets/app%252Ftest.js') ... FAIL
+  test_static_path_encoding_cannot_resolve_ambiguous_asset_names (tests.test_http.HTTPTests.test_static_path_encoding_cannot_resolve_ambiguous_asset_names) (path='/assets/bad%FF.js') ... FAIL
+  test_static_path_encoding_cannot_resolve_ambiguous_asset_names (tests.test_http.HTTPTests.test_static_path_encoding_cannot_resolve_ambiguous_asset_names) (path='/assets/bad%C3.js') ... FAIL
+test_v1_spa_invalid_identifiers_and_undeclared_paths_never_return_html (tests.test_http.HTTPTests.test_v1_spa_invalid_identifiers_and_undeclared_paths_never_return_html) ... ok
+test_v1_spa_routes_keep_same_origin_boundary (tests.test_http.HTTPTests.test_v1_spa_routes_keep_same_origin_boundary) ... ok
+test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) ... 
+  test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) (path='/au/a') ... FAIL
+  test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) (path='/au/au-test/work/a') ... FAIL
+  test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) (path='/au/au-test/work/work-test/results/a') ... FAIL
+  test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) (path='/au/Z09_-.version') ... FAIL
+  test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) (path='/au/au-test/work/Z09_-.version') ... FAIL
+  test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) (path='/au/au-test/work/work-test/results/Z09_-.version') ... FAIL
+  test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) (path='/au/au..core') ... FAIL
+  test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) (path='/au/au-test/work/au..core') ... FAIL
+  test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) (path='/au/au-test/work/work-test/results/au..core') ... FAIL
+  test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) (path='/au/a...............................................................................') ... FAIL
+  test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) (path='/au/au-test/work/a...............................................................................') ... FAIL
+  test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) (path='/au/au-test/work/work-test/results/a...............................................................................') ... FAIL
+  test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) (path='/au/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa') ... FAIL
+  test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) (path='/au/au-test/work/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa') ... FAIL
+  test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) (path='/au/au-test/work/work-test/results/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa') ... FAIL
+  test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) (path='/au/au%2Ecore') ... FAIL
+  test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) (path='/au/au-test/work/au%2Ecore') ... FAIL
+  test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) (path='/au/au-test/work/work-test/results/au%2Ecore') ... FAIL
+  test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) (path='/au/%61u-test') ... FAIL
+  test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) (path='/au/au-test/work/%61u-test') ... FAIL
+  test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) (path='/au/au-test/work/work-test/results/%61u-test') ... FAIL
+test_v1_spa_routes_serve_public_html_without_reading_au_data (tests.test_http.HTTPTests.test_v1_spa_routes_serve_public_html_without_reading_au_data) ... 
+  test_v1_spa_routes_serve_public_html_without_reading_au_data (tests.test_http.HTTPTests.test_v1_spa_routes_serve_public_html_without_reading_au_data) (path='/organizations') ... FAIL
+  test_v1_spa_routes_serve_public_html_without_reading_au_data (tests.test_http.HTTPTests.test_v1_spa_routes_serve_public_html_without_reading_au_data) (path='/au/au-test') ... FAIL
+  test_v1_spa_routes_serve_public_html_without_reading_au_data (tests.test_http.HTTPTests.test_v1_spa_routes_serve_public_html_without_reading_au_data) (path='/au/au-test/work') ... FAIL
+  test_v1_spa_routes_serve_public_html_without_reading_au_data (tests.test_http.HTTPTests.test_v1_spa_routes_serve_public_html_without_reading_au_data) (path='/au/au-test/work/work-test') ... FAIL
+  test_v1_spa_routes_serve_public_html_without_reading_au_data (tests.test_http.HTTPTests.test_v1_spa_routes_serve_public_html_without_reading_au_data) (path='/au/au-test/results') ... FAIL
+  test_v1_spa_routes_serve_public_html_without_reading_au_data (tests.test_http.HTTPTests.test_v1_spa_routes_serve_public_html_without_reading_au_data) (path='/au/au-test/work/work-test/results/result-test') ... FAIL
+  test_v1_spa_routes_serve_public_html_without_reading_au_data (tests.test_http.HTTPTests.test_v1_spa_routes_serve_public_html_without_reading_au_data) (path='/au/au-test/attention') ... FAIL
+  test_v1_spa_routes_serve_public_html_without_reading_au_data (tests.test_http.HTTPTests.test_v1_spa_routes_serve_public_html_without_reading_au_data) (path='/au/au-test/resources') ... FAIL
+  test_v1_spa_routes_serve_public_html_without_reading_au_data (tests.test_http.HTTPTests.test_v1_spa_routes_serve_public_html_without_reading_au_data) (path='/au/au-test/governance') ... FAIL
+  test_v1_spa_routes_serve_public_html_without_reading_au_data (tests.test_http.HTTPTests.test_v1_spa_routes_serve_public_html_without_reading_au_data) (path='/au/au-test/improvement') ... FAIL
+  test_v1_spa_routes_serve_public_html_without_reading_au_data (tests.test_http.HTTPTests.test_v1_spa_routes_serve_public_html_without_reading_au_data) (path='/au/au-test/collaboration') ... FAIL
+  test_v1_spa_routes_serve_public_html_without_reading_au_data (tests.test_http.HTTPTests.test_v1_spa_routes_serve_public_html_without_reading_au_data) (path='/au/au-test/work/work-test/results/result-test?organization=other') ... FAIL
+
+======================================================================
+FAIL: test_static_path_encoding_cannot_resolve_ambiguous_asset_names (tests.test_http.HTTPTests.test_static_path_encoding_cannot_resolve_ambiguous_asset_names) (path='/assets%2fapp-test.js')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 225, in test_static_path_encoding_cannot_resolve_ambiguous_asset_names
+    self.assertEqual(status, 404)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 200 != 404
+
+======================================================================
+FAIL: test_static_path_encoding_cannot_resolve_ambiguous_asset_names (tests.test_http.HTTPTests.test_static_path_encoding_cannot_resolve_ambiguous_asset_names) (path='/assets%2Fapp-test.js')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 225, in test_static_path_encoding_cannot_resolve_ambiguous_asset_names
+    self.assertEqual(status, 404)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 200 != 404
+
+======================================================================
+FAIL: test_static_path_encoding_cannot_resolve_ambiguous_asset_names (tests.test_http.HTTPTests.test_static_path_encoding_cannot_resolve_ambiguous_asset_names) (path='/assets/./app-test.js')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 225, in test_static_path_encoding_cannot_resolve_ambiguous_asset_names
+    self.assertEqual(status, 404)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 200 != 404
+
+======================================================================
+FAIL: test_static_path_encoding_cannot_resolve_ambiguous_asset_names (tests.test_http.HTTPTests.test_static_path_encoding_cannot_resolve_ambiguous_asset_names) (path='/assets/%2e/app-test.js')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 225, in test_static_path_encoding_cannot_resolve_ambiguous_asset_names
+    self.assertEqual(status, 404)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 200 != 404
+
+======================================================================
+FAIL: test_static_path_encoding_cannot_resolve_ambiguous_asset_names (tests.test_http.HTTPTests.test_static_path_encoding_cannot_resolve_ambiguous_asset_names) (path='/assets/bad%.js')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 225, in test_static_path_encoding_cannot_resolve_ambiguous_asset_names
+    self.assertEqual(status, 404)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 200 != 404
+
+======================================================================
+FAIL: test_static_path_encoding_cannot_resolve_ambiguous_asset_names (tests.test_http.HTTPTests.test_static_path_encoding_cannot_resolve_ambiguous_asset_names) (path='/assets/bad%25.js')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 225, in test_static_path_encoding_cannot_resolve_ambiguous_asset_names
+    self.assertEqual(status, 404)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 200 != 404
+
+======================================================================
+FAIL: test_static_path_encoding_cannot_resolve_ambiguous_asset_names (tests.test_http.HTTPTests.test_static_path_encoding_cannot_resolve_ambiguous_asset_names) (path='/assets/app%252Ftest.js')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 225, in test_static_path_encoding_cannot_resolve_ambiguous_asset_names
+    self.assertEqual(status, 404)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 200 != 404
+
+======================================================================
+FAIL: test_static_path_encoding_cannot_resolve_ambiguous_asset_names (tests.test_http.HTTPTests.test_static_path_encoding_cannot_resolve_ambiguous_asset_names) (path='/assets/bad%FF.js')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 225, in test_static_path_encoding_cannot_resolve_ambiguous_asset_names
+    self.assertEqual(status, 404)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 200 != 404
+
+======================================================================
+FAIL: test_static_path_encoding_cannot_resolve_ambiguous_asset_names (tests.test_http.HTTPTests.test_static_path_encoding_cannot_resolve_ambiguous_asset_names) (path='/assets/bad%C3.js')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 225, in test_static_path_encoding_cannot_resolve_ambiguous_asset_names
+    self.assertEqual(status, 404)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 200 != 404
+
+======================================================================
+FAIL: test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) (path='/au/a')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 172, in test_v1_spa_routes_preserve_public_identifier_boundaries
+    self.assertEqual(status, 200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 404 != 200
+
+======================================================================
+FAIL: test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) (path='/au/au-test/work/a')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 172, in test_v1_spa_routes_preserve_public_identifier_boundaries
+    self.assertEqual(status, 200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 404 != 200
+
+======================================================================
+FAIL: test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) (path='/au/au-test/work/work-test/results/a')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 172, in test_v1_spa_routes_preserve_public_identifier_boundaries
+    self.assertEqual(status, 200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 404 != 200
+
+======================================================================
+FAIL: test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) (path='/au/Z09_-.version')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 172, in test_v1_spa_routes_preserve_public_identifier_boundaries
+    self.assertEqual(status, 200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 404 != 200
+
+======================================================================
+FAIL: test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) (path='/au/au-test/work/Z09_-.version')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 172, in test_v1_spa_routes_preserve_public_identifier_boundaries
+    self.assertEqual(status, 200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 404 != 200
+
+======================================================================
+FAIL: test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) (path='/au/au-test/work/work-test/results/Z09_-.version')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 172, in test_v1_spa_routes_preserve_public_identifier_boundaries
+    self.assertEqual(status, 200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 404 != 200
+
+======================================================================
+FAIL: test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) (path='/au/au..core')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 172, in test_v1_spa_routes_preserve_public_identifier_boundaries
+    self.assertEqual(status, 200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 404 != 200
+
+======================================================================
+FAIL: test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) (path='/au/au-test/work/au..core')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 172, in test_v1_spa_routes_preserve_public_identifier_boundaries
+    self.assertEqual(status, 200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 404 != 200
+
+======================================================================
+FAIL: test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) (path='/au/au-test/work/work-test/results/au..core')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 172, in test_v1_spa_routes_preserve_public_identifier_boundaries
+    self.assertEqual(status, 200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 404 != 200
+
+======================================================================
+FAIL: test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) (path='/au/a...............................................................................')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 172, in test_v1_spa_routes_preserve_public_identifier_boundaries
+    self.assertEqual(status, 200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 404 != 200
+
+======================================================================
+FAIL: test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) (path='/au/au-test/work/a...............................................................................')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 172, in test_v1_spa_routes_preserve_public_identifier_boundaries
+    self.assertEqual(status, 200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 404 != 200
+
+======================================================================
+FAIL: test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) (path='/au/au-test/work/work-test/results/a...............................................................................')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 172, in test_v1_spa_routes_preserve_public_identifier_boundaries
+    self.assertEqual(status, 200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 404 != 200
+
+======================================================================
+FAIL: test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) (path='/au/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 172, in test_v1_spa_routes_preserve_public_identifier_boundaries
+    self.assertEqual(status, 200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 404 != 200
+
+======================================================================
+FAIL: test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) (path='/au/au-test/work/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 172, in test_v1_spa_routes_preserve_public_identifier_boundaries
+    self.assertEqual(status, 200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 404 != 200
+
+======================================================================
+FAIL: test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) (path='/au/au-test/work/work-test/results/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 172, in test_v1_spa_routes_preserve_public_identifier_boundaries
+    self.assertEqual(status, 200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 404 != 200
+
+======================================================================
+FAIL: test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) (path='/au/au%2Ecore')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 172, in test_v1_spa_routes_preserve_public_identifier_boundaries
+    self.assertEqual(status, 200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 404 != 200
+
+======================================================================
+FAIL: test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) (path='/au/au-test/work/au%2Ecore')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 172, in test_v1_spa_routes_preserve_public_identifier_boundaries
+    self.assertEqual(status, 200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 404 != 200
+
+======================================================================
+FAIL: test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) (path='/au/au-test/work/work-test/results/au%2Ecore')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 172, in test_v1_spa_routes_preserve_public_identifier_boundaries
+    self.assertEqual(status, 200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 404 != 200
+
+======================================================================
+FAIL: test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) (path='/au/%61u-test')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 172, in test_v1_spa_routes_preserve_public_identifier_boundaries
+    self.assertEqual(status, 200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 404 != 200
+
+======================================================================
+FAIL: test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) (path='/au/au-test/work/%61u-test')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 172, in test_v1_spa_routes_preserve_public_identifier_boundaries
+    self.assertEqual(status, 200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 404 != 200
+
+======================================================================
+FAIL: test_v1_spa_routes_preserve_public_identifier_boundaries (tests.test_http.HTTPTests.test_v1_spa_routes_preserve_public_identifier_boundaries) (path='/au/au-test/work/work-test/results/%61u-test')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 172, in test_v1_spa_routes_preserve_public_identifier_boundaries
+    self.assertEqual(status, 200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 404 != 200
+
+======================================================================
+FAIL: test_v1_spa_routes_serve_public_html_without_reading_au_data (tests.test_http.HTTPTests.test_v1_spa_routes_serve_public_html_without_reading_au_data) (path='/organizations')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 154, in test_v1_spa_routes_serve_public_html_without_reading_au_data
+    self.assertEqual(status, 200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 404 != 200
+
+======================================================================
+FAIL: test_v1_spa_routes_serve_public_html_without_reading_au_data (tests.test_http.HTTPTests.test_v1_spa_routes_serve_public_html_without_reading_au_data) (path='/au/au-test')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 154, in test_v1_spa_routes_serve_public_html_without_reading_au_data
+    self.assertEqual(status, 200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 404 != 200
+
+======================================================================
+FAIL: test_v1_spa_routes_serve_public_html_without_reading_au_data (tests.test_http.HTTPTests.test_v1_spa_routes_serve_public_html_without_reading_au_data) (path='/au/au-test/work')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 154, in test_v1_spa_routes_serve_public_html_without_reading_au_data
+    self.assertEqual(status, 200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 404 != 200
+
+======================================================================
+FAIL: test_v1_spa_routes_serve_public_html_without_reading_au_data (tests.test_http.HTTPTests.test_v1_spa_routes_serve_public_html_without_reading_au_data) (path='/au/au-test/work/work-test')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 154, in test_v1_spa_routes_serve_public_html_without_reading_au_data
+    self.assertEqual(status, 200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 404 != 200
+
+======================================================================
+FAIL: test_v1_spa_routes_serve_public_html_without_reading_au_data (tests.test_http.HTTPTests.test_v1_spa_routes_serve_public_html_without_reading_au_data) (path='/au/au-test/results')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 154, in test_v1_spa_routes_serve_public_html_without_reading_au_data
+    self.assertEqual(status, 200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 404 != 200
+
+======================================================================
+FAIL: test_v1_spa_routes_serve_public_html_without_reading_au_data (tests.test_http.HTTPTests.test_v1_spa_routes_serve_public_html_without_reading_au_data) (path='/au/au-test/work/work-test/results/result-test')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 154, in test_v1_spa_routes_serve_public_html_without_reading_au_data
+    self.assertEqual(status, 200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 404 != 200
+
+======================================================================
+FAIL: test_v1_spa_routes_serve_public_html_without_reading_au_data (tests.test_http.HTTPTests.test_v1_spa_routes_serve_public_html_without_reading_au_data) (path='/au/au-test/attention')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 154, in test_v1_spa_routes_serve_public_html_without_reading_au_data
+    self.assertEqual(status, 200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 404 != 200
+
+======================================================================
+FAIL: test_v1_spa_routes_serve_public_html_without_reading_au_data (tests.test_http.HTTPTests.test_v1_spa_routes_serve_public_html_without_reading_au_data) (path='/au/au-test/resources')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 154, in test_v1_spa_routes_serve_public_html_without_reading_au_data
+    self.assertEqual(status, 200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 404 != 200
+
+======================================================================
+FAIL: test_v1_spa_routes_serve_public_html_without_reading_au_data (tests.test_http.HTTPTests.test_v1_spa_routes_serve_public_html_without_reading_au_data) (path='/au/au-test/governance')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 154, in test_v1_spa_routes_serve_public_html_without_reading_au_data
+    self.assertEqual(status, 200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 404 != 200
+
+======================================================================
+FAIL: test_v1_spa_routes_serve_public_html_without_reading_au_data (tests.test_http.HTTPTests.test_v1_spa_routes_serve_public_html_without_reading_au_data) (path='/au/au-test/improvement')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 154, in test_v1_spa_routes_serve_public_html_without_reading_au_data
+    self.assertEqual(status, 200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 404 != 200
+
+======================================================================
+FAIL: test_v1_spa_routes_serve_public_html_without_reading_au_data (tests.test_http.HTTPTests.test_v1_spa_routes_serve_public_html_without_reading_au_data) (path='/au/au-test/collaboration')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 154, in test_v1_spa_routes_serve_public_html_without_reading_au_data
+    self.assertEqual(status, 200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 404 != 200
+
+======================================================================
+FAIL: test_v1_spa_routes_serve_public_html_without_reading_au_data (tests.test_http.HTTPTests.test_v1_spa_routes_serve_public_html_without_reading_au_data) (path='/au/au-test/work/work-test/results/result-test?organization=other')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>\tests\test_http.py", line 154, in test_v1_spa_routes_serve_public_html_without_reading_au_data
+    self.assertEqual(status, 200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 404 != 200
+
+----------------------------------------------------------------------
+Ran 10 tests in 7.594s
+
+FAILED (failures=42)
