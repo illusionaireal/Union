@@ -2,15 +2,37 @@
 
 ## Current Checkpoint
 
-- Current todo: U125共享验收修复的独立复核、最终远端SHA与PR，随后U126和U111贯通
+- Current todo: 恢复PR写能力和Kanban访问，交付已验证U125，再按在线依赖推进U126/U111
 - Active slice: U-125
 - Completed todos:
 - U110/U118已合并；U125独立身份复核、396前端、116浏览器、863 Python/12跳过通过
 - 5个保留HTTP/SQLite探针41项结果、Node辅助2项、实际启动5项通过
+- 最终候选aec2159已推送，7项远端CI全部成功，本次重新实读确认
 - Evidence refs:
 - evidence/U-125/README.md
-- Blocked on: GitHub创建PR的凭据权限不足（已明确403，已询问用户配置；尚无答复）
-- Next step: 提交推送已验证修复，读回最终SHA的远端检查；权限恢复后创建PR并交付U125，再认领U126
+- evidence/U-125/delivery-readback.json
+- Blocked on: GitHub两种现有凭据创建PR均403；Kanban被Cloudflare1010拒绝，不能确认当前运行态
+- Next step: 恢复PR写能力和服务管理员允许的Kanban访问；先读回PR及当前user/owner/version，再交付U125与认领U126
+
+## 2026-11-18 会话续接的最终候选读回
+
+原会话01a1e3a9-7582-7f10-bd4b-03188cdc1c34的待办范围仍是U111，顺序U125→U126。
+任务checkout续接时clean，HEAD/upstream/远端任务分支均为aec2159；集成分支仍2b3d281。
+实读最终候选7项远端检查全部completed/success。此前“尚需推送/最终CI”待办已完成，
+下面早期记录保留为历史，不再当本轮待办。原工程收据及独立复核已读回，未重跑业务测试。
+
+环境凭据与移除进程内覆盖后的本机gh保存凭据分别创建PR，均明确HTTP403；
+各次后续列表读回为空，没有未知创建结果。PR正文与payload已经具体可审阅。
+在线adapter初读失败；原会话配置的API经现有代理返回Cloudflare1010
+browser_signature_banned、retryable=false、owner_action_required=true。
+不能将这个服务访问限制解释为账号失效，也不能从旧快照推断当前owner/version/status。
+本轮无在线写入、无新卡认领，U126不开工；不动D盘既有改动，不更改服务访问规则。
+
+本次仅补齐evidence/U-125/delivery-readback.json、索引及同一过程记录。
+37项management测试、plan一致性、JSON/证据引用、bundle/过程结构及diff检查通过。
+续接记录作本地文档提交保存；远端已验证候选仍aec2159，新的本地记录提交没有独立远端CI。
+恢复条件：实际可写PR凭据、服务管理员恢复允许的Kanban访问，再按在线实时依赖交付。
+Drift decision: blocked；代码方向及顺序不变，候选与父卡都未宣称完成。
 
 ## 2026-11-18 全量收据与共享验收收尾
 

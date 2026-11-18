@@ -2,9 +2,10 @@
   "schemaVersion": "aegis.schema.v0",
   "taskId": "2026-11-13-v1-correction-execution",
   "lastCheckpointRef": "docs/aegis/work/2026-11-13-v1-correction-execution/todo-checkpoint-draft.json",
-  "resumeInstruction": "复用任务checkout，核对codex/u111-v1-organization-entry最终SHA及原zbook-codex线上owner/version；先收尾U125再认领U126",
+  "resumeInstruction": "复用任务checkout；aec2159已推送且7项远端CI实读全部成功。先恢复实际PR写能力和管理员允许的Kanban访问，核对PR与当前user/owner/version；交付U125后按在线依赖认领U126",
   "knownPartialWork": [
-    "U110/U118已合并；U125独立身份复核、396前端、116浏览器、863 Python/12跳过通过；PR尚未创建"
+    "U110/U118已合并；U125本机工程/浏览器/独立复核及最终aec2159的7项远端CI通过；PR两种凭据均403，读回为空，未交付",
+    "Kanban返回Cloudflare1010 browser_signature_banned；本次未写在线卡，当前owner/version/status尚未核实"
   ],
   "mustReadBeforeContinuing": [
     "docs/aegis/work/2026-11-13-v1-correction-execution/10-intent.md",
@@ -13,6 +14,7 @@
   ],
   "unsafeToAssume": [
     "旧Python中断日志无完整退出收据；11月18日新完整收据已退出0，不能混淆",
-    "U111与U126尚未完成，PR权限不足不能当已交付；D盘已有改动不属于本卡"
+    "U111与U126尚未完成，PR权限不足不能当已交付；D盘已有改动不属于本卡",
+    "Cloudflare1010不是账号凭据失效的证据；旧运行态快照不能代替在线读取"
   ]
 }

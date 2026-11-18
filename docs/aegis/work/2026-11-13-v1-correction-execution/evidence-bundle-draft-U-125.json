@@ -3,7 +3,7 @@
   "artifactKey": "u125-engineering-20261118",
   "type": "controlled",
   "source": "evidence/U-125/README.md",
-  "summary": "396前端/构建、863Python/12跳过、116入口浏览器、保留41项探针和独立身份/共享验收复核通过；PR写权限不足，最终SHA/CI与交付待读回，U126/U111未完成。",
+  "summary": "既有本机工程、浏览器及独立复核通过；本次实读最终候选aec2159的7项远端CI全部成功。环境与本机gh保存凭据创建PR均403且读回为空，Kanban访问受Cloudflare1010限制；交付阻塞，U126/U111未完成。读回见evidence/U-125/delivery-readback.json。",
   "verifier": "Codex协调者实测；review_u125与review_u125_restart独立工程复核",
   "sliceId": "U-125",
   "evidenceStatus": "blocked",

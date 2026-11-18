@@ -1,18 +1,20 @@
 {
   "schemaVersion": "aegis.schema.v0",
   "taskId": "2026-11-13-v1-correction-execution",
-  "currentTodo": "U125共享验收修复的独立复核、最终远端SHA与PR，随后U126和U111贯通",
+  "currentTodo": "恢复PR写能力和Kanban访问，交付已验证U125，再按在线依赖推进U126/U111",
   "completedTodos": [
     "U110/U118已合并；U125独立身份复核、396前端、116浏览器、863 Python/12跳过通过",
-    "5个保留HTTP/SQLite探针41项结果、Node辅助2项、实际启动5项通过"
+    "5个保留HTTP/SQLite探针41项结果、Node辅助2项、实际启动5项通过",
+    "最终候选aec2159已推送，7项远端CI全部成功，本次重新实读确认"
   ],
   "activeSlice": "U-125",
   "evidenceRefs": [
     "evidence/U-125/README.md",
     "evidence/U-125/engineering-verification.json",
-    "evidence/U-125/ci-consumer-repair.md"
+    "evidence/U-125/ci-consumer-repair.md",
+    "evidence/U-125/delivery-readback.json"
   ],
-  "blockedOn": "GitHub创建PR的凭据权限不足；已询问用户配置，尚无答复",
-  "nextStep": "提交推送已验证修复，核对最终远端SHA；恢复PR权限交付U125后认领U126",
+  "blockedOn": "环境与本机gh保存凭据创建PR均HTTP403；Kanban访问受Cloudflare1010限制，当前owner/version/status未能核实",
+  "nextStep": "恢复PR写能力和服务管理员允许的Kanban访问；读回PR与当前user/owner/version后交付U125，再按依赖认领U126",
   "updatedAt": "2026-11-18"
 }

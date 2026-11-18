@@ -17,6 +17,6 @@ ADR采用项目原有owner：ADR-0003细化React与界面责任，ADR-0004补当
 - Slice ID: U-125
 - Type: controlled
 - Source: evidence/U-125/README.md
-- Summary: 396前端/构建、863Python/12跳过、116入口浏览器、保留41项探针和独立身份/共享验收复核通过；PR写权限不足，最终SHA/CI与交付待读回，U126/U111未完成。
+- Summary: 396前端/构建、863Python/12跳过、116入口浏览器、保留41项探针和独立复核通过；最终候选aec2159的7项远端CI已实读全部成功。PR两种凭据均403且读回为空，Kanban访问受Cloudflare1010限制；交付阻塞，U126/U111未完成。最终读回见evidence/U-125/delivery-readback.json。
 - Verifier: Codex协调者实测；review_u125与review_u125_restart独立工程复核
 - Evidence status: blocked
