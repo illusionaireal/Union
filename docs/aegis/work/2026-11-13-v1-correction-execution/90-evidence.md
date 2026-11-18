@@ -10,3 +10,13 @@ ADR采用项目原有owner：ADR-0003细化React与界面责任，ADR-0004补当
 这是已检查候选的证据，不替代PR/Git交付读回，不宣称U-111或整个V1产品完成。机器路径仅在公开日志中标准化，原始日志字节保存在宿主本地；摘要见evidence/U-118/log-redaction.json。
 
 候选记录已通过 `aegis-workspace.py bundle` 与 `check`；新工作区先执行 helper init 恢复过程目录并补齐本次索引。该结果只证明过程结构。显式 mutateLedger 增加两条 review 交付记录后，management render/check 与37项管理测试通过；既有任务历史、owner和模块成熟度保持。提交前64份任务文件的凭据/私有机器路径检查通过。
+
+## EvidenceBundleDraft: U-125
+
+- Artifact key: u125-engineering-20261118
+- Slice ID: U-125
+- Type: controlled
+- Source: evidence/U-125/README.md
+- Summary: 396前端/构建、863Python/12跳过、116入口浏览器、保留41项探针和独立身份/共享验收复核通过；PR写权限不足，最终SHA/CI与交付待读回，U126/U111未完成。
+- Verifier: Codex协调者实测；review_u125与review_u125_restart独立工程复核
+- Evidence status: blocked

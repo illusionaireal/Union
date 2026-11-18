@@ -2,14 +2,36 @@
 
 ## Current Checkpoint
 
-- Current todo: U125完整Python及PR，随后U126创建恢复和U111贯通
+- Current todo: U125共享验收修复的独立复核、最终远端SHA与PR，随后U126和U111贯通
 - Active slice: U-125
 - Completed todos:
-- U110/U118已合并；U125独立反例修复、396前端及116浏览器通过
+- U110/U118已合并；U125独立身份复核、396前端、116浏览器、863 Python/12跳过通过
+- 5个保留HTTP/SQLite探针41项结果、Node辅助2项、实际启动5项通过
 - Evidence refs:
 - evidence/U-125/README.md
-- Blocked on: none
-- Next step: 核对完整Python收据；交付U125后认领U126
+- Blocked on: GitHub创建PR的凭据权限不足（已明确403，已询问用户配置；尚无答复）
+- Next step: 提交推送已验证修复，读回最终SHA的远端检查；权限恢复后创建PR并交付U125，再认领U126
+
+## 2026-11-18 全量收据与共享验收收尾
+
+核对任务checkout `codex/u111-v1-organization-entry@348c828`，此前候选已推送且
+与远端一致；集成基线仍 `2b3d281`。只续做原owner的U-111/U-125；revision1219
+再次读回#65 v5/#79 v4 progress，#80 v1 backlog依#79，未认领或实施U-126。
+
+Python一次性有界验证跨续接结束：863项、12跳过、741.052秒、退出0。
+已禁用的一次性验证Scheduled Task精确注销；原业务定时任务未改。
+中断日志与首次失败保留，此完整退出收据不重写旧历史。
+
+候选CI `44231413637` 的offline checks通过，但console-browser在U086共享重启
+片段等待已退役的界面文字。仅将该片段重绑到当前同源Core session/principal；
+全局URL在VM缺失的首次失败保留，改用node:url后五探针41项结果通过。
+原snapshot/结算/预约/原步骤/成果断言保留，未恢复旧UI或更改产品authority。
+完整npm再次退出0（396前端及构建）。详见evidence/U-125/ci-consumer-repair.md。
+
+PatchShape：共享验收消费者重绑；CanonicalOwner：Core session提供身份事实，
+共享driver只负责验收读取；UpwardDrillSignal：旧页面断言已失去当前产品责任。
+Decision：保留有效合同验证、不扩旧壳。原首页恢复并发失败原因仍未知。
+Drift decision：continue，收尾已授权U125；PR写权限是外部交付阻塞，不把候选当done。
 
 ## 2026-11-16 历史续接（恢复保留）
 

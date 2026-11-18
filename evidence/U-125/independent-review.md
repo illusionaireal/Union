@@ -22,3 +22,18 @@ partial 引用仅显式读取，已知 principal/origin 不匹配仍拒绝；完
 
 最终 advisory readiness：无剩余阻断发现，可交付 PR。
 最终 npm/Python 与修复后实际浏览器由协调者另行汇总；U-126 完整表单仍属下一项。
+
+## 2026-11-18：共享重启验收的独立复核
+
+独立工程 reviewer `review_u125_restart` 只读复核 `348c828 → WORKTREE`
+的 `scripts/exit22b_page.cjs` 与 `browser-migration.md`，未发现阻断或其他问题。
+重启片段读取同源 Core session 的协议/实例/原 principal，VM 的 `createRequire`
+支持 `node:url`；原 snapshot、结算、预约、execution/result 和原回执断言保留。
+只有 observed-settlement 消费此次改动区，其余四项保留原共享 helper 或 exit22c。
+该验收代码重绑无需新增 ADR 或改变产品权限基线。
+
+独立执行 observed-settlement 3 项、shutdown helper 2 项，以及临时 VM 中的
+principal/协议/401/实例反例和路径检查 5 项，全部通过、退出 0；diff check 通过。
+独立读回五份探针 JSON 共 41 项通过、Python 原日志与最终收据 863 项/12跳过/退出0。
+完整 npm 与启动由协调者执行，reviewer 未重跑；最终远端 SHA/CI、PR/合入和
+完整用户旅程仍须单独确认。首次 reviewer 请求因服务限流未执行，续跑后得到上述证据。

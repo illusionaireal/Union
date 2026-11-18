@@ -2,9 +2,9 @@
   "schemaVersion": "aegis.schema.v0",
   "taskId": "2026-11-13-v1-correction-execution",
   "lastCheckpointRef": "docs/aegis/work/2026-11-13-v1-correction-execution/todo-checkpoint-draft.json",
-  "resumeInstruction": "当前任务分支codex/u111-v1-organization-entry，原zbook-codex线上owner/version",
+  "resumeInstruction": "复用任务checkout，核对codex/u111-v1-organization-entry最终SHA及原zbook-codex线上owner/version；先收尾U125再认领U126",
   "knownPartialWork": [
-    "U110/U118已合并；U125独立反例修复、396前端及116浏览器通过"
+    "U110/U118已合并；U125独立身份复核、396前端、116浏览器、863 Python/12跳过通过；PR尚未创建"
   ],
   "mustReadBeforeContinuing": [
     "docs/aegis/work/2026-11-13-v1-correction-execution/10-intent.md",
@@ -12,6 +12,7 @@
     "docs/aegis/work/2026-11-13-v1-correction-execution/todo-checkpoint-draft.json"
   ],
   "unsafeToAssume": [
-    "旧Python无完整退出收据；U111与U126尚未完成，D盘已有改动不属于本卡"
+    "旧Python中断日志无完整退出收据；11月18日新完整收据已退出0，不能混淆",
+    "U111与U126尚未完成，PR权限不足不能当已交付；D盘已有改动不属于本卡"
   ]
 }

@@ -420,8 +420,16 @@ function startHost() {
   await new Promise(r => running.child.once('exit', r));
   running = await startHost();
   host = running.child;
-  await page.goto(running.origin);
-  await page.getByText('已连接本机服务', { exact: true }).waitFor();
+  // Restart evidence is authenticated HTTP evidence, independent of the shell's labels.
+  await page.goto(new (require('node:url').URL)('/api/session', running.origin).href);
+  const reopenedSession = await page.evaluate(async () => {
+    const response = await fetch('/api/session');
+    return { status: response.status, body: await response.json() };
+  });
+  check('rebuild authenticates the original Core principal', reopenedSession.status === 200
+    && reopenedSession.body.core_protocol === 'core.au.v1'
+    && Boolean(reopenedSession.body.service_instance)
+    && reopenedSession.body.principal_id === before.access.principal_id);
   const after = await snapshot();
   const entry = (after.works || []).find(w => w.id === workId);
   const adoptedAfter = (entry.results || []).find(r => r.status === 'adopted');

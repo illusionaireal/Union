@@ -20,6 +20,7 @@ This proof bundle is an advisory Aegis Method Pack record. It does not determine
 ## Terminal Evidence Refs
 
 - docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-correction-candidate.json
+- docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-U-125.json
 
 ## Formal Evidence
 
@@ -27,7 +28,7 @@ This proof bundle is an advisory Aegis Method Pack record. It does not determine
 
 ## Terminal Non-Passed Evidence
 
-- none
+- docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-U-125.json
 
 ## Legacy Unclassified Evidence
 

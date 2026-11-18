@@ -53,3 +53,4 @@ Entries are workspace records, not authoritative runtime decisions.
 | 2026-11-13 | artifact | docs/aegis/work/2026-11-13-v1-correction-execution/drift-check-draft.json | V1纠偏 drift-check-draft.json |
 | 2026-11-13 | artifact | docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-correction-candidate.json | V1纠偏 evidence-bundle-draft-correction-candidate.json |
 | 2026-11-18 | artifact | docs/aegis/work/2026-11-13-v1-correction-execution/resume-state-hint.json | 2026-11-13-v1-correction-execution resume state hint |
+| 2026-11-18 | artifact | docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-U-125.json | 2026-11-13-v1-correction-execution evidence U-125 |

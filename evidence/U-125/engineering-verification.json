@@ -1,0 +1,29 @@
+{
+  "date": "2026-11-18",
+  "scope": "controlled",
+  "candidate_source": "348c82894000361510681bd95c1e2ba0040584f8",
+  "additional_source_change": "scripts/exit22b_page.cjs shared restart evidence only",
+  "npm": { "node_version": "24.19.0", "command": "npm run check", "frontend_tests": 396, "frontend_test_files": 30, "build_passed": true, "exit_code": 0 },
+  "python": {
+    "version": "3.13.14",
+    "command": "python -m unittest discover -v",
+    "started_utc": "2026-11-18T03:32:03.8997279Z",
+    "finished_utc": "2026-11-18T03:44:27.5989332Z",
+    "tests": 863,
+    "skipped": 12,
+    "duration_seconds": 741.052,
+    "exit_code": 0,
+    "source_scope": "Python source/tests unchanged during verification"
+  },
+  "retained_http_sqlite_probes": [
+    { "name": "observed-settlement", "recorded_results": 3, "all_passed": true },
+    { "name": "budget-conservation", "recorded_results": 7, "all_passed": true },
+    { "name": "result-provenance", "recorded_results": 10, "all_passed": true },
+    { "name": "reopened-download", "recorded_results": 11, "all_passed": true },
+    { "name": "material-read", "recorded_results": 10, "all_passed": true }
+  ],
+  "shutdown_helper": { "tests": 2, "exit_code": 0 },
+  "documented_startup": { "checks": 5, "exit_code": 0 },
+  "real_model_calls": 0,
+  "uncovered": ["U-126 creation form and complete recovery journey", "U-111 parent acceptance", "final remote SHA and PR integration", "real provider and sustained operation"]
+}

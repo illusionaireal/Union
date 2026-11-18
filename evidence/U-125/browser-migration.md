@@ -13,7 +13,7 @@ in for a missing new-page journey. U-113/U-114/U-115 retain those integration ga
 | `u081-work-read-browser.cjs` | Work feature read/download/identity checks remain, including the migrated `work-panel-boundaries.test.tsx`. New scoped Work/result browser reading belongs to U-113/U-114. The U-125 page explicitly states this gap. |
 | U-084/U-086/U-105/U-106/U-108 manual-page runners | `test_core_work.py`, `test_page_execution_http.py`, `test_work_dispatch.py` and Work registration/execution/cancellation/result/stream feature tests retain command, storage, scope, reservation, original-request and result-integrity assertions. These are not full new-page browser acceptance. |
 | U-086 `page-cancel-action`, `cancel-response-body`, `registration-response-body` | Historical files unchanged; their old page scenarios leave active CI. Corresponding cancellation/registration and false-response protections remain in HTTP and rendered feature tests. |
-| U-086 `observed-settlement`, `budget-conservation`, `result-provenance`, `reopened-download`, `material-read` | All five authenticated HTTP/SQLite probes remain active unchanged. |
+| U-086 `observed-settlement`, `budget-conservation`, `result-provenance`, `reopened-download`, `material-read` | All five authenticated HTTP/SQLite probes remain active. The shared restart fragment now verifies the real Core session/principal instead of a retired shell status label; settlement, reservation and result checks remain. |
 
 `scripts/exit22b_page.cjs`, `exit22c_download.cjs` and exported U-108 helpers remain
 because active contract tests/probes consume them. Their presence does not mount
