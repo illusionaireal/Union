@@ -2,15 +2,17 @@
   "schemaVersion": "aegis.schema.v0",
   "taskId": "2026-11-13-v1-correction-execution",
   "lastCheckpointRef": "docs/aegis/work/2026-11-13-v1-correction-execution/todo-checkpoint-draft.json",
-  "resumeInstruction": "不要混淆e791失败CI与修复候选；先读准确HEAD/远端CI。原网页登录能力已消失，不沿用旧handle/登录假设；核验新GitHub页面与实际授权。工程产品代码未变，复用现有受控证据。",
+  "resumeInstruction": "先核对真实HEAD和准确CI。原GitHub窗口67146已恢复且规则页有效，不沿用近期误判的关闭/未登录阻塞。当前产品工程完整通过，原CI失败保留，最终采用仅读真实远端/在线卡。",
   "knownPartialWork": [
-    "U125已实际快进采用7756920；原保护恢复，在线done",
-    "本机npm404/Python863含9跳过/创建44/入口116/独立25和四宽通过；e791已推送，远端旧焦点驱动即时断言失败，产品不改，新增真实焦点条件等待后116复验通过"
+    "本机npm404/Python863含9跳过/创建44/入口116/独立25及四宽通过；消费者焦点等待修复后116复验通过，产品源码未变",
+    "窗口核对纠正：原67146窗口仍在且最小化，原GitHub规则标签页及登录均有效；Get-Process.MainWindowHandle只显示另一窗口，不能据此判断关闭；无需用户重新登录"
   ],
   "mustReadBeforeContinuing": [
     "docs/aegis/work/2026-11-13-v1-correction-execution/10-intent.md",
     "docs/aegis/work/2026-11-13-v1-correction-execution/20-checkpoint.md",
     "docs/aegis/work/2026-11-13-v1-correction-execution/todo-checkpoint-draft.json"
   ],
-  "unsafeToAssume": []
+  "unsafeToAssume": [
+    "Get-Process只返回一个主窗口，不能据此判断其他浏览器窗口关闭；原异步登录请求已明确撤回，无需再索取登录。"
+  ]
 }
