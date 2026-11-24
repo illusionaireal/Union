@@ -1,0 +1,4 @@
+.connection-facts.creation-preview { grid-template-columns: minmax(0, 1fr); }
+.creation-preview > div { min-width: 0; }
+.creation-preview dd { overflow-wrap: anywhere; font-size: 14px; line-height: 1.6; }
+.creation-preview .creation-preview-text { white-space: pre-wrap; }

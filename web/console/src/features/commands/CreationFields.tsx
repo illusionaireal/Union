@@ -25,16 +25,21 @@ export function CreationFields({ core }: { core: boolean }) {
           value={core ? '我的 AU' : template === 'novel' ? '我的 AI 小说公司' : '我的 AI 公司'}
           maxLength={200}
         />
-        <Area
+        {core ? <>
+          <p className="form-note">分别说明组织要做什么、怎样判断成功和需要遵守的边界；三个段落合计最多100000字符。</p>
+          <Area name="purpose" label="组织目的" describedBy="operation-error" />
+          <Area name="success_basis" label="成功依据" describedBy="operation-error" />
+          <Area name="constraints" label="约束" describedBy="operation-error" />
+        </> : <Area
           key={template + '-goal'}
           name="goal"
-          label={core ? 'AU目标' : '公司目标'}
+          label="公司目标"
           value={
             template === 'novel'
               ? '自主组织团队，创作同一本中文网络小说并连续交付三章；向模拟平台投稿，核算成本，依据反馈调整后续创作。'
               : ''
           }
-        />
+        />}
         {template === 'novel' && (
           <>
             <Field

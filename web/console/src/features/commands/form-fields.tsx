@@ -22,16 +22,18 @@ export function Area({
   label,
   value = '',
   rows = 3,
+  describedBy,
 }: {
   name: string;
   label: string;
   value?: string;
   rows?: number;
+  describedBy?: string;
 }) {
   return (
     <label className="operation-field">
       {label}
-      <textarea name={name} defaultValue={value} rows={rows} required maxLength={100000} />
+      <textarea name={name} defaultValue={value} rows={rows} required maxLength={100000} aria-describedby={describedBy} />
     </label>
   );
 }
@@ -70,6 +72,7 @@ export function Rules({ charter, prepared = false }: { charter: Charter; prepare
           label="组织操作、工具、保留事项与修章入口"
           value={JSON.stringify(rules, null, 2)}
           rows={8}
+          describedBy={prepared ? 'operation-error' : undefined}
         />
         <p className="form-note">{prepared ? '这些字段保存为初始章程内容，尚未启用为执行规则。' : '只接受已实现的规则字段；正文不隐式授予权限。'}</p>
       </details>

@@ -114,7 +114,16 @@ export function readForm(kind: CommandKind, form: HTMLFormElement): Record<strin
   const charter = () => ({ ...JSON.parse(str('charter_rules')), text: str('charter_text') });
   const reason = str('reason');
   switch (kind) {
-    case 'create_v1':
+    case 'create_v1': {
+      const goal = `目的：\n${str('purpose')}\n\n成功依据：\n${str('success_basis')}\n\n约束：\n${str('constraints')}`;
+      if (goal.length > 100000) throw new Error('目的、成功依据和约束（含段落标题）合计不能超过100000字符');
+      const rules = charter();
+      if (!['allowed_operations', 'allowed_tools', 'reserved_matters'].every(key =>
+        Array.isArray(rules[key]) && rules[key].every((item: unknown) => typeof item === 'string')) ||
+        typeof rules.board_can_amend !== 'boolean')
+        throw new Error('章程规则格式不正确；组织操作、工具、保留事项须为文本列表，修章入口须为布尔值');
+      return { name: str('name'), goal, board_name: str('board_name'), resources: resources(), charter: rules };
+    }
     case 'create':
       return {
         name: str('name'),

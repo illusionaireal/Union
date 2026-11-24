@@ -1,28 +1,17 @@
 {
   "schemaVersion": "aegis.schema.v0",
-  "taskId": "v1-correction-20261113",
+  "taskId": "2026-11-13-v1-correction-execution",
   "taskIntentRef": "docs/aegis/work/2026-11-13-v1-correction-execution/task-intent-draft.json",
   "baselineRefs": [
-    "docs/UNION_CHARTER_v1.0.md",
-    "docs/CHARTER_ADOPTION.md",
-    "docs/PRD.md",
-    "docs/ARCHITECTURE.md",
-    "docs/decisions/0003-react-console.md",
-    "docs/decisions/0004-rewrite-delivery-contract.md",
+    "specs/053-union-rewrite/s01-workspace-contract.md",
     "docs/product-design.md",
-    "docs/FRONTEND.md",
-    "management/KANBAN.md",
-    "specs/053-union-rewrite/plan.md"
+    "docs/FRONTEND.md"
   ],
-  "scopeStatus": "2026-11-24：U110/U118已合并；U111按U125→U126续接。远端0300baa的7项CI通过，Kanban正常HTTP200；仅PR写能力阻塞交付，U126未开工，父卡未完成。",
-  "compatStatus": "已有责任/原请求/预约与历史保留，固定Python847项通过含9跳过；文档历史附录字节不变。",
-  "retirementStatus": "旧Controller/Broker新派发和installer新安装实现移除，保留原job核对；宿主副本未采用核验。",
+  "scopeStatus": "U125已采用；U126和U111本机完整验收已齐，准确SHA远端CI与直接采用另读回。用户授权覆盖直接更新，不再要求恢复PR权。",
+  "compatStatus": "唯一workspace与原创建协议/身份恢复保持，零推理；npm404/Python863含9环境跳过/创建44/入口116/独立25与四宽布局通过。",
+  "retirementStatus": "旧界面消费者按V1契约迁移；旧数据与API测试保留，不恢复第二旧UI写者。",
   "newRiskSignals": [
-    "首次ModelsIdentity异步等待失败未复现，完整重跑通过，根因仍未确定",
-    "历史broker日志失败缺少独立完整度字段",
-    "完整新前端和真实/持续产品验收尚未完成",
-    "环境及本机gh保存凭据创建PR均403；后续读回PR为空",
-    "Kanban已恢复且实读原owner/version；旧看板不可用判断已从当前阻塞移除"
+    "完整工作、资源、治理及真实/持续经营仍由各后续卡验收；本卡仅准备态入口。"
   ],
-  "decision": "blocked"
+  "decision": "continue"
 }

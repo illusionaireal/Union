@@ -1,0 +1,116 @@
+{
+  "scope": "controlled",
+  "status": "controlled-engineering-verified",
+  "base_sha": "775692089fad18c626f1f0fc50c7c529216565ac",
+  "integration_target": "rewrite/charter-v1",
+  "task_branch": "codex/u111-v1-organization-entry",
+  "authorization": "User explicitly authorized development and direct integration using the logged-in desktop GitHub browser.",
+  "online_member_id": "363a9919-cc7e-4dbd-8e49-a104a4f0f5ed",
+  "implementation_actor": "Codex current continuation",
+  "independent_engineering_role": "review_u126",
+  "checks": {
+    "npm_full": {
+      "exit_code": 0,
+      "frontend_tests": 404,
+      "management_tests": 37,
+      "action_safety_tests": 359,
+      "toolchain": "Node 24.19.0",
+      "worker_limit": 1
+    },
+    "target_tests": {
+      "passed": 25,
+      "independently_repeated": true
+    },
+    "creation_browser": {
+      "passed": 44,
+      "widths": [
+        1440,
+        1024,
+        768,
+        390
+      ],
+      "HTTP_and_SQLite": "real local service",
+      "faults": "controlled storage failure, lost POST response, lookup outage, terminal rejection"
+    },
+    "entry_browser": {
+      "passed": 116,
+      "controlled_fixture_creates": 4
+    },
+    "python_full": {
+      "exit_code": 0,
+      "tests": 863,
+      "skipped": 9,
+      "seconds": 812.041,
+      "environment": "pinned project Python with UTF-8"
+    }
+  },
+  "files_sha256": {
+    "web/console/src/features/commands/CreationFields.tsx": "f00bfdda9fba45533810a2db3cd92c441853877de61fd6e8ae30abf19769b80a",
+    "web/console/src/features/commands/CreationPreview.tsx": "53ff7a344d65d0aba54e55ea2fa379854f7d01732a0389c5e357f5b1c552b8f5",
+    "web/console/src/features/commands/CreationPreview.css": "ed88b0bc72f10b84463e6b2137e9adcefc9193ef8aaad884ce4d1f9effd1d1fe",
+    "web/console/src/features/commands/CommandForm.tsx": "10cd825c3ed5926d8e476a79982709b0cbe2b96f9e6a5011a735950efd7440a3",
+    "web/console/src/features/commands/model.ts": "bc81d553f2a7440592a43a17e2cf7d5da4e10ceba34c2d894c977728bfae2799",
+    "web/console/src/features/commands/form-fields.tsx": "0aae77c7bd34afa12356900191bebf01d01b166cb043ebc3d65a947c954e4bb7",
+    "web/console/src/features/commands/core-creation.test.tsx": "0d0e5afab771d533f39a19b632ad21409dd318ee25ba0d7729e356ef1cfc30a7",
+    "web/console/src/features/commands/core-boundaries.test.tsx": "116024804e8772368dd344aeb87f17405d68b038bf8af20728013685485c166a",
+    "scripts/check_core_creation.cjs": "c222ef3dd0e534b738444f13ac5bca2fda09cb38126cda2154a68083f67d3a23",
+    "package.json": "e5766e3fff9ec177a01d86a15acecd4f2be4dee6ed5677db458ef0cce456d29f",
+    ".github/workflows/ci.yml": "aa32943c0e2be907a604e9d9f8604da358b5795a5123d682ec40a2b4fc7658e9"
+  },
+  "real_model_calls": 0,
+  "deployments": 0,
+  "migrations": 0,
+  "adoption_authority": "Online Kanban evidence and exact remote ref readback, separate from the local engineering evidence.",
+  "retained_failure_history": [
+    {
+      "log": "u126-red.log",
+      "sha256": "f2b3ccce580623d31f5191772346634fa6da67c7a77fcd0c4d8c1e23096f584b",
+      "result": "Three intended behavior REDs: missing fields, aggregate limit and hidden terminal rejection",
+      "raw_location": "host-local only"
+    },
+    {
+      "log": "u126-console.log",
+      "sha256": "5c051f0fd767968ecd2ecb231ade49572efa143569f5684f505186774f26fa48",
+      "result": "Four unrelated model-page wait failures; same 63 tests passed with one worker; final full npm passes",
+      "raw_location": "host-local only"
+    },
+    {
+      "log": "u126-rules-red.log",
+      "sha256": "d2bda383fc0d2658e7025ccff0a0ba0718f270cbd9050e4b7fe51a81a5f7c34e",
+      "result": "Four intended advanced rule shape crashes independently reproduced",
+      "raw_location": "host-local only"
+    },
+    {
+      "log": "u126-browser-layout-red.log",
+      "sha256": "4699f28d4b17353e5ce976841e9513d6e6a0590a3a08755cdab7e35c58295d76",
+      "result": "Intended actual-browser long-name preview overflow",
+      "raw_location": "host-local only"
+    },
+    {
+      "log": "u126-browser.log",
+      "sha256": "fb44d5c4ca8d2f8197a3a73bbce78509ad21bd1d1d3435c52515bb09e7a4571f",
+      "result": "Initial browser used the stale build after check:console failed before build",
+      "raw_location": "host-local only"
+    },
+    {
+      "log": "u126-browser-final.log",
+      "sha256": "1fe127d4eb17008cc2623f0893e66f94def2c0261457eb9f4db5e0cadbb45a90",
+      "result": "Advanced textarea exact label consumer did not match its default JSON text; rebound to named field",
+      "raw_location": "host-local only"
+    },
+    {
+      "log": "u126-npm-full.log",
+      "sha256": "8fd039802e985121e94c5f803ae977312a5d4f25ceb1f96e8a74aff3779efb6d",
+      "result": "Intermediate full run crossed the RED/source edit; not accepted as final evidence",
+      "raw_location": "host-local only"
+    }
+  ],
+  "source_hash_normalization": "Git text normalized to LF",
+  "build_document_sha256": "c596d21dec318a3171637f11c0ebc9f1c9d216a7afdf25f8bf1548d4172dd420",
+  "final_log_hashes": {
+    "u126-python-full.log": "a3737be079db5ea0c6ef1974cebd57e5b62f1fa8b5560dac551b0b6849020d69",
+    "u126-npm-final.log": "b90775fcf09e4b0c7ad037d8f5a78118e563a775f661b01b356502bfb0743c24",
+    "u126-browser-complete.log": "6e81513e54fdc08b156be6c2b68211c5a8845b2000ea3ff7d43c150c3c66a424",
+    "u111-final-browser.log": "919bd5f6c59407dcfde68d74e1a64ec0b4856c23a2e3a15cd03fe40710dd79c0"
+  }
+}

@@ -2,8 +2,24 @@
 
 ## Current Checkpoint
 
-- Current todo: 完成U125实际PR交付，再按在线依赖推进U126/U111；Kanban访问已恢复
-- Active slice: U-125
+- Current todo: 交付已验证U126并贯通采用U111
+- Active slice: U-126
+- Completed todos:
+- U125已实际快进采用7756920；7项CI与原保护恢复，在线done
+- U126与U111本机完整受控：npm404、Python863/9跳过、创建44、入口116、独立25及四宽布局通过
+- Evidence refs:
+- evidence/U-125/direct-update-adoption.json
+- evidence/U-126/verification.json
+- evidence/U-111/README.md
+- Blocked on: none
+- Next step: 任务提交推送，准确SHA远端CI通过后，按用户授权桌面浏览器直接快进rewrite并恢复保护；在线验收记录读回
+
+## Recent Checkpoint History
+
+## Checkpoint Update
+
+- Current todo: 完成U126创建表单及原请求恢复，再贯通验收U111
+- Active slice: U-126
 - Completed todos:
 - U110/U118已合并；U125独立身份复核、396前端、116浏览器、863 Python/12跳过通过
 - 5个保留HTTP/SQLite探针41项结果、Node辅助2项、实际启动5项通过
@@ -11,114 +27,14 @@
 - Evidence refs:
 - evidence/U-125/README.md
 - evidence/U-125/delivery-readback.json
-- Blocked on: 2026-11-24本机gh保存凭据及当前环境凭据创建PR均HTTP403，读回PR仍为空
-- Next step: 恢复实际PR写能力或由用户网页创建已准备的PR；读回PR与最新在线user/owner/version，交付U125后再认领U126
+- Blocked on: 无；原PR权限失败仅为历史，本次用户授权直接更新已完成
+- Next step: 冻结goal段落序列化/可读确认/拒绝恢复，观察真实RED后最小GREEN；定向、全量、浏览器及独立身份复核
 
-## 2026-11-24 当前续接核对
+## DriftCheckDraft
 
-任务checkout clean，HEAD/远端任务分支为0300baa，集成分支仍2b3d281。
-0300baa的7项CI实读全部completed/success。Kanban已恢复：沿用用户提供的
-宿主私有接入配置，以Node --use-env-proxy调用仓库adapter；HTTP200、revision1235，
-实际账号仍zbook-codex。U111/#65 progress v5、U125/#79 blocked v7归原owner；
-U126/#80 backlog v1且依赖#79，未开工。下面11月18日早期“看板不可用”只属历史。
-
-本次分别核对本机gh保存凭据与当前环境凭据，账号都是illusionaireal，
-创建已准备PR均返回HTTP403，后续PR列表均为空。外部能力缺口仍是PR写权，
-不能跳过在线依赖或直接推集成分支。准备的PR目标仍rewrite/charter-v1，
-head为codex/u111-v1-organization-entry；用户可在网页创建或恢复gh写能力。
-U126的现有创建/恢复所有者已只读核对，未修改行为代码或写未来卡。
-Drift decision: blocked，仅PR交付阻塞；Kanban、已推送代码及验证不再列为阻塞。
-
-## 2026-11-18 会话续接的最终候选读回
-
-原会话01a1e3a9-7582-7f10-bd4b-03188cdc1c34的待办范围仍是U111，顺序U125→U126。
-任务checkout续接时clean，HEAD/upstream/远端任务分支均为aec2159；集成分支仍2b3d281。
-实读最终候选7项远端检查全部completed/success。此前“尚需推送/最终CI”待办已完成，
-下面早期记录保留为历史，不再当本轮待办。原工程收据及独立复核已读回，未重跑业务测试。
-
-环境凭据与移除进程内覆盖后的本机gh保存凭据分别创建PR，均明确HTTP403；
-各次后续列表读回为空，没有未知创建结果。PR正文与payload已经具体可审阅。
-在线adapter初读失败；原会话配置的API经现有代理返回Cloudflare1010
-browser_signature_banned、retryable=false、owner_action_required=true。
-不能将这个服务访问限制解释为账号失效，也不能从旧快照推断当前owner/version/status。
-本轮无在线写入、无新卡认领，U126不开工；不动D盘既有改动，不更改服务访问规则。
-
-本次仅补齐evidence/U-125/delivery-readback.json、索引及同一过程记录。
-37项management测试、plan一致性、JSON/证据引用、bundle/过程结构及diff检查通过。
-续接记录作本地文档提交保存；远端已验证候选仍aec2159，新的本地记录提交没有独立远端CI。
-恢复条件：实际可写PR凭据、服务管理员恢复允许的Kanban访问，再按在线实时依赖交付。
-Drift decision: blocked；代码方向及顺序不变，候选与父卡都未宣称完成。
-
-## 2026-11-18 全量收据与共享验收收尾
-
-核对任务checkout `codex/u111-v1-organization-entry@348c828`，此前候选已推送且
-与远端一致；集成基线仍 `2b3d281`。只续做原owner的U-111/U-125；revision1219
-再次读回#65 v5/#79 v4 progress，#80 v1 backlog依#79，未认领或实施U-126。
-
-Python一次性有界验证跨续接结束：863项、12跳过、741.052秒、退出0。
-已禁用的一次性验证Scheduled Task精确注销；原业务定时任务未改。
-中断日志与首次失败保留，此完整退出收据不重写旧历史。
-
-候选CI `44231413637` 的offline checks通过，但console-browser在U086共享重启
-片段等待已退役的界面文字。仅将该片段重绑到当前同源Core session/principal；
-全局URL在VM缺失的首次失败保留，改用node:url后五探针41项结果通过。
-原snapshot/结算/预约/原步骤/成果断言保留，未恢复旧UI或更改产品authority。
-完整npm再次退出0（396前端及构建）。详见evidence/U-125/ci-consumer-repair.md。
-
-PatchShape：共享验收消费者重绑；CanonicalOwner：Core session提供身份事实，
-共享driver只负责验收读取；UpwardDrillSignal：旧页面断言已失去当前产品责任。
-Decision：保留有效合同验证、不扩旧壳。原首页恢复并发失败原因仍未知。
-Drift decision：continue，收尾已授权U125；PR写权限是外部交付阻塞，不把候选当done。
-
-## 2026-11-16 历史续接（恢复保留）
-
-已现场核对：原 PR #90 于11月13日合入 `f87d610`，head `1400d4f` 的14项CI通过，
-在线U-110/U-118均done；下方旧“候选/PR待交付”描述仅保留为原时点历史。
-当前集成 `2b3d281`，在原干净工作区切到 `codex/u111-v1-organization-entry`。
-TaskStartSnapshot：原任务worktree的`756dc81`无dirty/index/untracked；fetch后旧分支
-落后自身remote一个测试修正；新分支从当前rewrite建立，初始clean、无Git冲突。
-用户 D盘原目录的已有修改及旧分支完全保留。
-
-在线revision1218读回U-125/#79 progress v3，原user.id/owner保持；U-111父卡在制，
-U-126/#80 backlog依U-125。HTTP200已写续接范围和实际分支；本机默认凭据属于另一成员，
-本轮使用原用户给出的已授权凭据，仅在进程内使用、不保存值。连接使用本机现有代理。
-
-当前todo：冻结U-111精确路由/异步/创建恢复合同；U-125真实RED/GREEN及HTTP/浏览器；
-独立复核、全量、PR和子卡交付；随后U-126创建恢复及父卡贯通。过程记录复用本目录。
-scope/owner以线上为准；合同 `s01-workspace-contract.md`，TDD strict。不得把U-111
-入口完成当完整V1产品。当前无新增模型/部署/真实数据操作。Drift decision: continue。
-
-### U-125 实施中（2026-11-16）
-
-新App/Layout及组织列表/概况/八个范围明确入口已替换旧profile分流；workspace仍是
-唯一身份/服务/AU选择owner。先观察入口14项失败；新增历史恢复隔离/协议拒绝5项失败，
-路由2项、独立评审4项及跨入口拒绝后缓存复活1项均先RED再修复。
-当前入口/工作区定向47项通过；治理53项、模型身份11项通过。旧手工Work/责任的正确
-测试改为feature边界，未恢复旧壳。完整npm/浏览器仍待收口。
-
-HTTP明确模板及原请求路径检查两轮独立评审通过，18项相关HTTP回归通过。
-真实浏览器已发现支持的200字名称溢出，修复换行及移动菜单选择器后重建复测。
-独立SPEC评审发现跨路由AU403缓存可在断网后复活；统一清除同AU各入口投影，
-原回执不受此清除影响。未完成评审重验前不声称U-125完成。
-
-必要共享接缝：新壳中的原CommandProvider补账户/同源服务恢复引用、停止legacy和
-无归属后台查询、后台结果不改当前导航；完整目的/成功依据/约束与创建恢复由U-126
-继续。在线#79已注明此边界，父/子原owner和在制状态保留。无业务/模型/部署扩权。
-
-下一步：当前源码实际浏览器、npm全量、进行中的Python全量、SPEC重验和质量复核；
-U-125证据/提交/在线交付后认领U-126。Drift decision: continue。
-
-## 2026-11-13 历史检查点
-
-2026-11-13，基线 `d27d543`，分支 `codex/v1-correction-execution-20261113`。
-
-- U-110/#64：完整体验、VJ/PRD映射与40条追踪，独立复核和结构检查通过；线上review，实际owner为zbook-codex。
-- U-118/#72：Controller/Broker新派发、自动采用和新安装退役；42项定向含1跳过，规格和质量独立复核通过；线上review。
-- 完整检查：npm重跑通过（363前端及构建）；Python847项含9跳过通过。首次ModelsIdentity等待失败、单文件11项通过和重跑原记录全部保留，未宣称根因修复。
-- 已先写入Kanban：U-119/#73、U-120/#74、U-121/#76、U-122/#75、U-123/#77、U-124/#78。U-112/113/114完整父验收保留，依赖无环；原4张在制owner/WIP保留。
-- 当时：候选提交/PR与交付记录收口；完成U-110前置后实际认领并派发U-111。U-111只读准备已完成，未开始代码。
-- 保留：原用户工作区dirty及落后状态、历史数据/请求/预约；无真实支出、部署或已安装配方改变。
-- 宿主副本、实际Unix socket/Docker、全部新前端及真实/持续产品出口未验。
-
-2026-11-18 helper 更新当前检查点时覆盖了未标记的历史段；上述原阶段内容已恢复保留。
-历史状态仍只对应当时，不据此认领或确认完成。当前证据入口为90-evidence.md。
+- Scope status: U125已采用；U126和U111本机完整验收已齐，准确SHA远端CI与直接采用另读回。用户授权覆盖直接更新，不再要求恢复PR权。
+- Compatibility status: 唯一workspace与原创建协议/身份恢复保持，零推理；npm404/Python863含9环境跳过/创建44/入口116/独立25与四宽布局通过。
+- Retirement status: 旧界面消费者按V1契约迁移；旧数据与API测试保留，不恢复第二旧UI写者。
+- New risk signals:
+- 完整工作、资源、治理及真实/持续经营仍由各后续卡验收；本卡仅准备态入口。
+- Advisory decision: continue

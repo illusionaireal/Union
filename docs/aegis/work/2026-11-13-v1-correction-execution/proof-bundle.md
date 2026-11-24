@@ -21,14 +21,17 @@ This proof bundle is an advisory Aegis Method Pack record. It does not determine
 
 - docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-correction-candidate.json
 - docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-U-125.json
+- docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-U-126.json
 
 ## Formal Evidence
 
 - docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-correction-candidate.json
+- docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-U-125.json
+- docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-U-126.json
 
 ## Terminal Non-Passed Evidence
 
-- docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-U-125.json
+- none
 
 ## Legacy Unclassified Evidence
 
@@ -40,7 +43,7 @@ This proof bundle is an advisory Aegis Method Pack record. It does not determine
 
 ## Drift Check
 
-- Scope status: 2026-11-24：U110/U118已合并；U111按U125→U126续接。远端0300baa的7项CI通过，Kanban正常HTTP200；仅PR写能力阻塞交付，U126未开工，父卡未完成。
-- Compatibility status: 已有责任/原请求/预约与历史保留，固定Python847项通过含9跳过；文档历史附录字节不变。
-- Retirement status: 旧Controller/Broker新派发和installer新安装实现移除，保留原job核对；宿主副本未采用核验。
-- Advisory decision: blocked
+- Scope status: U125已采用；U126和U111本机完整验收已齐，准确SHA远端CI与直接采用另读回。用户授权覆盖直接更新，不再要求恢复PR权。
+- Compatibility status: 唯一workspace与原创建协议/身份恢复保持，零推理；npm404/Python863含9环境跳过/创建44/入口116/独立25与四宽布局通过。
+- Retirement status: 旧界面消费者按V1契约迁移；旧数据与API测试保留，不恢复第二旧UI写者。
+- Advisory decision: continue

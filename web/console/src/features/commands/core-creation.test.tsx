@@ -26,7 +26,9 @@ const prepared: CoreAURead = {
 async function fillAndSubmit() {
   await waitFor(() => expect(screen.getByRole('button', { name: /创建组织/ })).toBeEnabled());
   fireEvent.click(screen.getByRole('button', { name: /创建组织/ }));
-  fireEvent.change(screen.getByLabelText('AU目标'), { target: { value: 'Keep the original goal' } });
+  fireEvent.change(screen.getByLabelText('组织目的'), { target: { value: 'Keep the original goal' } });
+  fireEvent.change(screen.getByLabelText('成功依据'), { target: { value: '交付可核验的结果' } });
+  fireEvent.change(screen.getByLabelText('约束'), { target: { value: '仅授权内本地保存' } });
   fireEvent.click(screen.getByRole('button', { name: '预览影响' }));
   fireEvent.click(await screen.findByRole('button', { name: '确认提交' }));
 }
@@ -48,6 +50,103 @@ beforeEach(() => {
 });
 
 describe('core creation through the workspace', () => {
+  it('confirms purpose, success evidence and constraints as readable text in the existing five-field protocol', async () => {
+    const post = vi.spyOn(api, 'command').mockImplementation(async request => ({ receipt: {
+      ...request, actor: 'account:owner', created_at: 'controlled', status: 'rejected', message: '受控拒绝',
+    } }));
+    mountCore();
+    fireEvent.click(await screen.findByRole('button', { name: '创建组织' }));
+    await waitFor(() => expect(screen.getByLabelText('组织目的')).toBeEnabled());
+    fireEvent.change(screen.getByLabelText('组织目的'), { target: { value: '  整理授权资料  ' } });
+    fireEvent.change(screen.getByLabelText('成功依据'), { target: { value: '交付有来源的研究结果' } });
+    fireEvent.change(screen.getByLabelText('约束'), { target: { value: '仅本地保存，不对外发布' } });
+    fireEvent.click(screen.getByRole('button', { name: '预览影响' }));
+    const preview = document.getElementById('operation-preview')!;
+    expect(preview.querySelector('pre')).toBeNull();
+    expect(preview).toHaveTextContent('当前登录账户');
+    expect(preview).toHaveTextContent('仅本地保存，不对外发布');
+    expect(preview).toHaveTextContent('尚未启用');
+    expect(post).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole('button', { name: '确认提交' }));
+    await waitFor(() => expect(post).toHaveBeenCalledTimes(1));
+    const request = post.mock.calls[0][0];
+    expect(Object.keys(request).sort()).toEqual(['base_version', 'data', 'id', 'kind', 'organization_id']);
+    expect(request.kind).toBe('create_v1');
+    expect(Object.keys(request.data).sort()).toEqual(['board_name', 'charter', 'goal', 'name', 'resources']);
+    expect(request.data.goal).toBe('目的：\n整理授权资料\n\n成功依据：\n交付有来源的研究结果\n\n约束：\n仅本地保存，不对外发布');
+    expect(request.data).not.toHaveProperty('principal_id');
+  });
+
+  it('rejects the aggregate goal limit before preview without truncating editable input', async () => {
+    const post = vi.spyOn(api, 'command');
+    mountCore();
+    fireEvent.click(await screen.findByRole('button', { name: '创建组织' }));
+    const purpose = await screen.findByLabelText('组织目的');
+    fireEvent.change(purpose, { target: { value: '目'.repeat(99990) } });
+    fireEvent.change(screen.getByLabelText('成功依据'), { target: { value: '完整结果' } });
+    fireEvent.change(screen.getByLabelText('约束'), { target: { value: '授权内' } });
+    fireEvent.click(screen.getByRole('button', { name: '预览影响' }));
+    expect(await screen.findByText(/合计不能超过100000/)).toBeVisible();
+    expect(purpose).toHaveValue('目'.repeat(99990));
+    expect(purpose).toHaveAttribute('aria-describedby', 'operation-error');
+    expect(screen.queryByRole('button', { name: '确认提交' })).not.toBeInTheDocument();
+    expect(post).not.toHaveBeenCalled();
+  });
+
+  it('retains a terminal V1 rejection and editable inputs until an explicit new preview', async () => {
+    const post = vi.spyOn(api, 'command').mockImplementation(async request => ({ receipt: {
+      ...request, actor: 'account:owner', created_at: 'controlled', status: 'rejected', message: '创建被拒绝',
+    } }));
+    mountCore();
+    await fillAndSubmit();
+    await screen.findByRole('heading', { name: '创建被拒绝' });
+    expect(screen.getByLabelText('组织目的')).toBeVisible();
+    expect(screen.getByLabelText('组织目的')).toBeEnabled();
+    expect(screen.queryByRole('button', { name: '确认提交' })).not.toBeInTheDocument();
+    expect(sessionStorage.getItem('union-pending')).not.toContain(post.mock.calls[0][0].id);
+    fireEvent.change(screen.getByLabelText('组织目的'), { target: { value: '修正目的' } });
+    expect(post).toHaveBeenCalledTimes(1);
+    fireEvent.click(screen.getByRole('button', { name: '预览影响' }));
+    fireEvent.click(screen.getByRole('button', { name: '确认提交' }));
+    await waitFor(() => expect(post).toHaveBeenCalledTimes(2));
+    expect(post.mock.calls[1][0].id).not.toBe(post.mock.calls[0][0].id);
+  });
+
+  it('preserves the exact supported goal boundary without truncation or premature POST', async () => {
+    const post = vi.spyOn(api, 'command');
+    mountCore();
+    fireEvent.click(await screen.findByRole('button', { name: '创建组织' }));
+    fireEvent.change(await screen.findByLabelText('组织目的'), { target: { value: '目'.repeat(99980) } });
+    fireEvent.change(screen.getByLabelText('成功依据'), { target: { value: '好' } });
+    fireEvent.change(screen.getByLabelText('约束'), { target: { value: '内' } });
+    fireEvent.click(screen.getByRole('button', { name: '预览影响' }));
+    expect(screen.getByRole('button', { name: '确认提交' })).toBeEnabled();
+    expect(document.querySelector('#operation-preview .creation-preview-text')?.textContent).toHaveLength(100000);
+    expect(post).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    {},
+    { ...defaultCharter, allowed_operations: null },
+    { ...defaultCharter, allowed_tools: 'produce_artifact' },
+    { ...defaultCharter, reserved_matters: { goal: true } },
+  ])('retains editable advanced rules after shape rejection instead of crashing: %j', async rules => {
+    const post = vi.spyOn(api, 'command');
+    mountCore();
+    fireEvent.click(await screen.findByRole('button', { name: '创建组织' }));
+    fireEvent.change(await screen.findByLabelText('组织目的'), { target: { value: '保留私有目的' } });
+    fireEvent.change(screen.getByLabelText('成功依据'), { target: { value: '可核验' } });
+    fireEvent.change(screen.getByLabelText('约束'), { target: { value: '授权内' } });
+    fireEvent.click(screen.getByText('受支持的规则字段'));
+    const field = screen.getByLabelText('组织操作、工具、保留事项与修章入口');
+    fireEvent.change(field, { target: { value: JSON.stringify(rules) } });
+    fireEvent.click(screen.getByRole('button', { name: '预览影响' }));
+    expect(await screen.findByText(/章程规则格式不正确/)).toBeVisible();
+    expect(field).toHaveValue(JSON.stringify(rules));
+    expect(screen.getByLabelText('组织目的')).toHaveValue('保留私有目的');
+    expect(post).not.toHaveBeenCalled();
+    expect(screen.queryByText('工作台暂时无法显示')).not.toBeInTheDocument();
+  });
   it('keeps prepared organizations on the new entry without legacy creation controls', async () => {
     vi.mocked(api.session).mockResolvedValue({ ...session, organizations: [{ id: prepared.au.id, name: prepared.au.name, profile: 'core_v1' }] });
     vi.spyOn(api, 'coreAU').mockResolvedValue(prepared);
@@ -106,8 +205,8 @@ describe('core creation through the workspace', () => {
     mountCore();
     await fillAndSubmit();
     await screen.findByText(/不支持的章程字段/);
-    expect(screen.getByLabelText('AU目标')).toHaveValue('Keep the original goal');
-    expect(screen.getByLabelText('AU目标')).toBeEnabled();
+    expect(screen.getByLabelText('组织目的')).toHaveValue('Keep the original goal');
+    expect(screen.getByLabelText('组织目的')).toBeEnabled();
     expect(screen.getByRole('button', { name: '预览影响' })).toBeEnabled();
     expect(JSON.parse(sessionStorage.getItem('union-pending') || '[]')).toEqual([]);
   });
@@ -126,7 +225,9 @@ describe('core creation through the workspace', () => {
     mountCore();
     await waitFor(() => expect(screen.getByRole('button', { name: /创建组织/ })).toBeEnabled());
     fireEvent.click(screen.getByRole('button', { name: /创建组织/ }));
-    fireEvent.change(screen.getByLabelText(/AU目标/), { target: { value: 'Keep the original goal' } });
+    fireEvent.change(screen.getByLabelText(/组织目的/), { target: { value: 'Keep the original goal' } });
+    fireEvent.change(screen.getByLabelText('成功依据'), { target: { value: '交付可核验的结果' } });
+    fireEvent.change(screen.getByLabelText('约束'), { target: { value: '仅授权内本地保存' } });
     fireEvent.click(screen.getByRole('button', { name: '预览影响' }));
     fireEvent.click(await screen.findByRole('button', { name: '确认提交' }));
     await waitFor(() => expect(submit).toHaveBeenCalledOnce());

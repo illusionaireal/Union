@@ -1,0 +1,20 @@
+{
+  "at_utc": "2026-11-24T03:02:24.7389960Z",
+  "branch": "rewrite/charter-v1",
+  "before_sha": "2b3d281f7bfb6dc3fdb8e00f432cc4f76756a8fc",
+  "candidate_sha": "775692089fad18c626f1f0fc50c7c529216565ac",
+  "remote_sha": "775692089fad18c626f1f0fc50c7c529216565ac",
+  "push_exit": 0,
+  "original_rule_restored": true,
+  "error": null,
+  "task_checkout_clean": true,
+  "scope": "controlled",
+  "authorization": "User explicitly requested direct update of rewrite/charter-v1 and authorized use of the opened desktop GitHub browser.",
+  "protection": "Original UI checkbox states and seven required status checks restored and read back; force pushes and deletions remain disallowed.",
+  "independent_review_refs": [
+    "evidence/U-125/independent-review.md",
+    "evidence/U-125/engineering-verification.json"
+  ],
+  "real_model_calls": 0,
+  "deployment_or_migration": false
+}

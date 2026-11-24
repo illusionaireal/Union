@@ -1,6 +1,6 @@
 {
     "schema_version": 1,
-    "updated_at": "2026-11-13",
+    "updated_at": "2026-11-24",
     "wip_limit": 8,
     "modules": [
         {
@@ -105,7 +105,9 @@
                 "evidence/038-activity-boundaries/README.md",
                 "evidence/039-wal-observation/README.md",
                 "evidence/040-checkpoint-metadata/README.md",
-                "evidence/U-109/README.md"
+                "evidence/U-109/README.md",
+                "evidence/U-111/README.md",
+                "evidence/U-126/verification.json"
             ]
         },
         {
@@ -1836,6 +1838,13 @@
                     "from": "done",
                     "to": "done",
                     "note": "按用户“每张卡看不懂、内容太抽象”的反馈，改为具体功能、操作和完成演示。原技术验收完整保留在 specs/053-union-rewrite/tasks.md#u-066-development；范围、状态、owner、依赖、claim和既有验收记录不变，不执行未来卡。"
+                },
+                {
+                    "at": "2026-11-24T03:33:10.375Z",
+                    "actor": "codex/current continuation",
+                    "from": "done",
+                    "to": "done",
+                    "note": "显式同步U125/U126/U111本机受控交付里程碑：新入口、目的/成功依据/约束与可读确认、原创建恢复；npm404/Python863(9环境跳过)/创建浏览器44/入口116/独立工程复核通过。U125已采用7756920。新候选远端CI、采用及日常状态仍以在线卡evidence读回；不修改历史owner/status/WIP。证据：evidence/U-111/README.md；evidence/U-126/verification.json；evidence/U-126/independent-review.md。"
                 }
             ]
         },

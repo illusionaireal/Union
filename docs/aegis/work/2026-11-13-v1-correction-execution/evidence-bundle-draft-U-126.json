@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "aegis.schema.v0",
+  "artifactKey": "u126-engineering-20261124",
+  "type": "controlled",
+  "source": "evidence/U-126/verification.json",
+  "summary": "分开目标段落/可读确认/原请求恢复；三个及四规则RED，长名称浏览器RED后GREEN；npm404、Python863/9跳过、44创建、116入口、独立25与布局通过；远端采用另读在线看板。",
+  "verifier": "Codex协调者本机验收；review_u126独立工程复核",
+  "sliceId": "U-126",
+  "evidenceStatus": "evidence-finalized",
+  "updatedAt": "2026-11-24"
+}

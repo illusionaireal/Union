@@ -42,6 +42,9 @@ jobs:
       - run: npm run test:browser
         env:
           UNION_PYTHON: python3
+      - run: npm run test:creation
+        env:
+          UNION_PYTHON: python3
       - run: node scripts/u097-model-events-browser.cjs
         env:
           UNION_PYTHON: python3
@@ -72,5 +75,6 @@ jobs:
           name: console-browser-evidence
           path: |
             .union/u125-organization-entry
+            .union/core-creation-browser
             .union/u097-model-events-browser
             .union/u097-connection-access-browser

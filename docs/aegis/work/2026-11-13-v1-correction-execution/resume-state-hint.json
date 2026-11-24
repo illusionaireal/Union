@@ -2,10 +2,10 @@
   "schemaVersion": "aegis.schema.v0",
   "taskId": "2026-11-13-v1-correction-execution",
   "lastCheckpointRef": "docs/aegis/work/2026-11-13-v1-correction-execution/todo-checkpoint-draft.json",
-  "resumeInstruction": "复用任务checkout；远端0300baa已推送且7项CI实读全部成功。Kanban已恢复，沿用宿主用户接入配置及Node --use-env-proxy。当前只差实际PR写能力或用户网页创建PR；核对PR与最新在线user/owner/version，交付U125后再认领U126",
+  "resumeInstruction": "核对实际HEAD、远端和在线user/owner/version。工程已验，采用与CI另读回；若实际已采用不要重复推送或重开卡。复用原checkout。",
   "knownPartialWork": [
-    "U110/U118已合并；U125本机工程/浏览器/独立复核及远端0300baa的7项CI通过；2026-11-24 PR两种凭据均403且读回为空，未交付",
-    "Kanban已HTTP200恢复；2026-11-24 revision1235、U111 progress v5及U125 blocked v7归原zbook-codex，U126 backlog v1依#79"
+    "U125已实际快进采用7756920；7项CI与原保护恢复，在线done",
+    "U126与U111本机完整受控：npm404、Python863/9跳过、创建44、入口116、独立25及四宽布局通过"
   ],
   "mustReadBeforeContinuing": [
     "docs/aegis/work/2026-11-13-v1-correction-execution/10-intent.md",
@@ -13,8 +13,6 @@
     "docs/aegis/work/2026-11-13-v1-correction-execution/todo-checkpoint-draft.json"
   ],
   "unsafeToAssume": [
-    "旧Python中断日志无完整退出收据；11月18日新完整收据已退出0，不能混淆",
-    "U111与U126尚未完成，PR权限不足不能当已交付；D盘已有改动不属于本卡",
-    "早期Cloudflare1010只属历史，当前正常在线adapter可用；每次写前仍须读取最新在线user/version"
+    "本机工程通过不等于远端CI或已采用；最新状态仅读在线Kanban；不动D盘既有改动。"
   ]
 }

@@ -44,13 +44,15 @@ it('lets a core participant prepare its own AU while withholding legacy operatio
   expect(ownIdentity).toHaveAttribute('readonly');
   fireEvent.click(screen.getByRole('button', { name: '关闭' }));
   fireEvent.click(screen.getByRole('button', { name: /^(创建 AU|创建组织)$/ }));
-  expect(await screen.findByLabelText('AU目标')).toBeVisible();
+  expect(await screen.findByLabelText('组织目的')).toBeVisible();
 });
 
 async function preview() {
   await waitFor(() => expect(screen.getByRole('button', { name: /^(创建 AU|创建组织)$/ })).toBeEnabled());
   fireEvent.click(screen.getByRole('button', { name: /^(创建 AU|创建组织)$/ }));
-  fireEvent.change(screen.getByLabelText('AU目标'), { target: { value: 'Retain this private goal' } });
+  fireEvent.change(screen.getByLabelText('组织目的'), { target: { value: 'Retain this private goal' } });
+  fireEvent.change(screen.getByLabelText('成功依据'), { target: { value: '交付可核验的结果' } });
+  fireEvent.change(screen.getByLabelText('约束'), { target: { value: '仅授权内本地保存' } });
   fireEvent.click(screen.getByRole('button', { name: '预览影响' }));
   return screen.findByRole('button', { name: '确认提交' });
 }
@@ -77,16 +79,16 @@ describe('core creation identity and receipt boundaries', () => {
     const submit = vi.spyOn(api, 'command');
     const client = mountApp();
     await preview();
-    screen.getByLabelText('AU目标').focus();
+    screen.getByLabelText('组织目的').focus();
     const resolveStatuses: Array<(value: typeof auth) => void> = [];
     vi.mocked(api.authStatus).mockImplementation(() => new Promise(resolve => resolveStatuses.push(resolve)));
     vi.mocked(api.session).mockResolvedValue({ ...session, session_scope: 'renewed-session' });
     await act(async () => client.invalidateQueries({ queryKey: ['workspace'] }));
     await waitFor(() => expect(api.session).toHaveBeenCalledTimes(2));
-    expect(screen.getByLabelText('AU目标')).toHaveValue('Retain this private goal');
-    expect(screen.getByLabelText('AU目标')).toHaveFocus();
+    expect(screen.getByLabelText('组织目的')).toHaveValue('Retain this private goal');
+    expect(screen.getByLabelText('组织目的')).toHaveFocus();
     await act(async () => resolveStatuses.forEach(resolve => resolve(auth)));
-    expect(screen.getByLabelText('AU目标')).toHaveValue('Retain this private goal');
+    expect(screen.getByLabelText('组织目的')).toHaveValue('Retain this private goal');
     expect(submit).not.toHaveBeenCalled();
   });
 
@@ -175,9 +177,9 @@ describe('core creation identity and receipt boundaries', () => {
     vi.mocked(api.session).mockImplementation(() => new Promise(resolve => { finish = resolve; }));
     await act(async () => fireEvent.click(button));
     await waitFor(() => expect(finish).toBeTypeOf('function'));
-    const fieldsLocked = screen.getByLabelText('AU目标').matches(':disabled');
+    const fieldsLocked = screen.getByLabelText('组织目的').matches(':disabled');
     fireEvent.click(screen.getByRole('button', { name: '取消' }));
-    expect(screen.queryByLabelText('AU目标')).not.toBeInTheDocument();
+    expect(screen.queryByLabelText('组织目的')).not.toBeInTheDocument();
     await act(async () => finish(session));
     expect(submit).not.toHaveBeenCalled();
     expect(fieldsLocked).toBe(true);

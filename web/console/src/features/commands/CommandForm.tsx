@@ -6,6 +6,7 @@ import { useWorkspace } from '../../app/workspace';
 import { Badge, Json } from '../../components/ui';
 import { FailureNotice } from '../../components/FailureNotice';
 import { CommandFields } from './fields';
+import { CreationPreview } from './CreationPreview';
 import { blocked, readForm, titles, publicPreview, isCreation, sameCoreIdentity } from './model';
 import { useCommands, type Draft } from './CommandProvider';
 export function ReceiptView({
@@ -62,10 +63,10 @@ export function CommandForm({ draft, onClose }: { draft: Draft; onClose: () => v
     ? '核心登录身份或服务已变化；请用原身份重新确认创建'
     : blocked(draft.kind, workspace.connected, workspace.session, workspace.data);
   useEffect(() => {
-    if (receipt?.status === 'rejected' && draft.kind !== 'create_v1') {
+    if (receipt?.status === 'rejected') {
       submitting.current = false;
       setPreview(null);
-      setError(receipt.message + '；输入已保留，请刷新后重新预览。');
+      setError(receipt.message + '；输入已保留，请核对后重新预览。');
     }
   }, [receipt, draft.kind]);
   async function makePreview(event: FormEvent) {
@@ -165,7 +166,7 @@ export function CommandForm({ draft, onClose }: { draft: Draft; onClose: () => v
     }
   }
   const hasResult = !!receipt || unknown;
-  const hideForm = !!receipt && (receipt.status !== 'rejected' || draft.kind === 'create_v1');
+  const hideForm = !!receipt && receipt.status !== 'rejected';
   const previous =
     draft.kind === 'resources'
       ? workspace.data?.organization.resources
@@ -202,10 +203,10 @@ export function CommandForm({ draft, onClose }: { draft: Draft; onClose: () => v
         {preview && (
           <section id="operation-preview" className="preview-panel">
             <h3>{titles[draft.kind]} · 提交预览</h3>
-            <p>
+            {draft.kind !== 'create_v1' && <p>
               目标：{preview.organization_id || '新组织'} · 基准版本{' '}
               {preview.base_version ?? '新建'}
-            </p>
+            </p>}
             {previous && (
               <>
                 <p>当前采用</p>
@@ -213,7 +214,7 @@ export function CommandForm({ draft, onClose }: { draft: Draft; onClose: () => v
                 <p>拟采用</p>
               </>
             )}
-            {draft.kind==='api_connection' ? <dl className="connection-facts">
+            {draft.kind==='create_v1' ? <CreationPreview data={preview.data} /> : draft.kind==='api_connection' ? <dl className="connection-facts">
               {Object.entries(preview.data.config as Record<string,unknown>).filter(([key])=>['name','base_url','model','protocol'].includes(key)).map(([key,value])=><div key={key}><dt>{{name:'连接名称',base_url:'API地址',model:'模型',protocol:'协议'}[key]}</dt><dd>{String(value)}</dd></div>)}
               <div><dt>采用方式</dt><dd>{preview.data.bind_default?'保存并设为默认':'仅保存连接'}</dd></div>
               <div><dt>模型调用</dt><dd>本次保存不调用模型</dd></div>
