@@ -1,18 +1,18 @@
 {
   "schemaVersion": "aegis.schema.v0",
   "taskId": "2026-11-13-v1-correction-execution",
-  "currentTodo": "交付已验证U126并贯通采用U111",
+  "currentTodo": "交付已验证U126/U111；复验修复候选CI并恢复GitHub网页登录能力",
   "completedTodos": [
-    "U125已实际快进采用7756920；7项CI与原保护恢复，在线done",
-    "U126与U111本机完整受控：npm404、Python863/9跳过、创建44、入口116、独立25及四宽布局通过"
+    "U125已实际快进采用7756920；原保护恢复，在线done",
+    "本机npm404/Python863含9跳过/创建44/入口116/独立25和四宽通过；e791已推送，远端旧焦点驱动即时断言失败，产品不改，新增真实焦点条件等待后116复验通过"
   ],
   "activeSlice": "U-126",
   "evidenceRefs": [
-    "evidence/U-125/direct-update-adoption.json",
+    "evidence/U-126/ci-consumer-repair.md",
     "evidence/U-126/verification.json",
     "evidence/U-111/README.md"
   ],
-  "blockedOn": null,
-  "nextStep": "任务提交推送，准确SHA远端CI通过后，按用户授权桌面浏览器直接快进rewrite并恢复保护；在线验收记录读回",
+  "blockedOn": "原GitHub窗口关闭；新GitHub标签页未登录。已异步请求用户登录有仓库管理权的账户。CI修复可继续独立推进。",
+  "nextStep": "推送消费者修复及准确SHA CI；用户登录后实读账户/仓库规则再直接采用并恢复保护，按最新在线看板记录验收。",
   "updatedAt": "2026-11-24"
 }

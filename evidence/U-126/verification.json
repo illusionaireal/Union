@@ -34,7 +34,8 @@
     },
     "entry_browser": {
       "passed": 116,
-      "controlled_fixture_creates": 4
+      "controlled_fixture_creates": 4,
+      "consumer_focus_recheck": 116
     },
     "python_full": {
       "exit_code": 0,
@@ -55,7 +56,8 @@
     "web/console/src/features/commands/core-boundaries.test.tsx": "116024804e8772368dd344aeb87f17405d68b038bf8af20728013685485c166a",
     "scripts/check_core_creation.cjs": "c222ef3dd0e534b738444f13ac5bca2fda09cb38126cda2154a68083f67d3a23",
     "package.json": "e5766e3fff9ec177a01d86a15acecd4f2be4dee6ed5677db458ef0cce456d29f",
-    ".github/workflows/ci.yml": "aa32943c0e2be907a604e9d9f8604da358b5795a5123d682ec40a2b4fc7658e9"
+    ".github/workflows/ci.yml": "aa32943c0e2be907a604e9d9f8604da358b5795a5123d682ec40a2b4fc7658e9",
+    "scripts/u125-organization-entry-browser.cjs": "55f90a14d7dd59665094bc7d5f1153cc508c12dad7ab304233bb765f0adf6329"
   },
   "real_model_calls": 0,
   "deployments": 0,
@@ -102,6 +104,13 @@
       "log": "u126-npm-full.log",
       "sha256": "8fd039802e985121e94c5f803ae977312a5d4f25ceb1f96e8a74aff3779efb6d",
       "result": "Intermediate full run crossed the RED/source edit; not accepted as final evidence",
+      "raw_location": "host-local only"
+    },
+    {
+      "candidate_sha": "e7914735f9f2f6fa507247b462ba179bb8c315ae",
+      "log": "u126-ci-failure.json",
+      "sha256": "f5ef26dca0d64c08c1ae6d8db086823bfbb2b8e6a9631b4f308772244b8b6abf",
+      "result": "Remote U125 immediate keyboard focus assertion failed; product unchanged, condition wait preserves same assertion; local 116 recheck passes, final remote CI readback required.",
       "raw_location": "host-local only"
     }
   ],

@@ -2,17 +2,15 @@
   "schemaVersion": "aegis.schema.v0",
   "taskId": "2026-11-13-v1-correction-execution",
   "lastCheckpointRef": "docs/aegis/work/2026-11-13-v1-correction-execution/todo-checkpoint-draft.json",
-  "resumeInstruction": "核对实际HEAD、远端和在线user/owner/version。工程已验，采用与CI另读回；若实际已采用不要重复推送或重开卡。复用原checkout。",
+  "resumeInstruction": "不要混淆e791失败CI与修复候选；先读准确HEAD/远端CI。原网页登录能力已消失，不沿用旧handle/登录假设；核验新GitHub页面与实际授权。工程产品代码未变，复用现有受控证据。",
   "knownPartialWork": [
-    "U125已实际快进采用7756920；7项CI与原保护恢复，在线done",
-    "U126与U111本机完整受控：npm404、Python863/9跳过、创建44、入口116、独立25及四宽布局通过"
+    "U125已实际快进采用7756920；原保护恢复，在线done",
+    "本机npm404/Python863含9跳过/创建44/入口116/独立25和四宽通过；e791已推送，远端旧焦点驱动即时断言失败，产品不改，新增真实焦点条件等待后116复验通过"
   ],
   "mustReadBeforeContinuing": [
     "docs/aegis/work/2026-11-13-v1-correction-execution/10-intent.md",
     "docs/aegis/work/2026-11-13-v1-correction-execution/20-checkpoint.md",
     "docs/aegis/work/2026-11-13-v1-correction-execution/todo-checkpoint-draft.json"
   ],
-  "unsafeToAssume": [
-    "本机工程通过不等于远端CI或已采用；最新状态仅读在线Kanban；不动D盘既有改动。"
-  ]
+  "unsafeToAssume": []
 }

@@ -284,6 +284,10 @@ async function delayRead(page, auId) {
   await page.getByRole('navigation', { name: '组织页面' }).getByRole('link', { name: '工作', exact: true }).focus();
   await page.keyboard.press('Enter');
   await opened(page, a.id, a.name, 'work', '工作');
+  // Heading visibility precedes Layout's post-commit focus effect on a fast VM.
+  // Wait on the actual required focus; a permanently unfocused heading still fails.
+  await until(() => mainHeading(page, '工作').evaluate(element => document.activeElement === element),
+    'E08: keyboard navigation did not move focus to the new page heading');
   check('E08: keyboard navigation moves focus to the new page heading',
     await mainHeading(page, '工作').evaluate(element => document.activeElement === element));
   const sections = [['work', '工作'], ['results', '成果'], ['attention', '关注事项'], ['resources', '能力与资源'],
