@@ -1,11 +1,12 @@
 {
   "schemaVersion": "aegis.schema.v0",
   "taskId": "2026-11-13-v1-correction-execution",
-  "currentTodo": "恢复PR写能力和Kanban访问，交付已验证U125，再按在线依赖推进U126/U111",
+  "currentTodo": "完成U125实际PR交付，再按在线依赖推进U126/U111；Kanban访问已恢复",
   "completedTodos": [
     "U110/U118已合并；U125独立身份复核、396前端、116浏览器、863 Python/12跳过通过",
     "5个保留HTTP/SQLite探针41项结果、Node辅助2项、实际启动5项通过",
-    "最终候选aec2159已推送，7项远端CI全部成功，本次重新实读确认"
+    "远端候选0300baa已推送，7项远端CI全部成功，2026-11-24重新实读确认",
+    "Kanban HTTP200恢复，2026-11-24实读revision1235及原user/owner/version"
   ],
   "activeSlice": "U-125",
   "evidenceRefs": [
@@ -14,7 +15,7 @@
     "evidence/U-125/ci-consumer-repair.md",
     "evidence/U-125/delivery-readback.json"
   ],
-  "blockedOn": "环境与本机gh保存凭据创建PR均HTTP403；Kanban访问受Cloudflare1010限制，当前owner/version/status未能核实",
-  "nextStep": "恢复PR写能力和服务管理员允许的Kanban访问；读回PR与当前user/owner/version后交付U125，再按依赖认领U126",
-  "updatedAt": "2026-11-18"
+  "blockedOn": "2026-11-24本机gh保存凭据及当前环境凭据创建PR均HTTP403，读回PR仍为空",
+  "nextStep": "恢复实际PR写能力或由用户网页创建已准备的PR；读回PR与最新在线user/owner/version，交付U125后再认领U126",
+  "updatedAt": "2026-11-24"
 }

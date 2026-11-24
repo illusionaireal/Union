@@ -14,7 +14,7 @@
     "management/KANBAN.md",
     "specs/053-union-rewrite/plan.md"
   ],
-  "scopeStatus": "U110/U118已合并；U111按U125→U126续接。U125候选aec2159的7项远端CI通过，PR与在线访问阻塞交付；U126未开工，父卡未完成。",
+  "scopeStatus": "2026-11-24：U110/U118已合并；U111按U125→U126续接。远端0300baa的7项CI通过，Kanban正常HTTP200；仅PR写能力阻塞交付，U126未开工，父卡未完成。",
   "compatStatus": "已有责任/原请求/预约与历史保留，固定Python847项通过含9跳过；文档历史附录字节不变。",
   "retirementStatus": "旧Controller/Broker新派发和installer新安装实现移除，保留原job核对；宿主副本未采用核验。",
   "newRiskSignals": [
@@ -22,7 +22,7 @@
     "历史broker日志失败缺少独立完整度字段",
     "完整新前端和真实/持续产品验收尚未完成",
     "环境及本机gh保存凭据创建PR均403；后续读回PR为空",
-    "Kanban被Cloudflare1010 browser_signature_banned限制，当前owner/version/status不能核实"
+    "Kanban已恢复且实读原owner/version；旧看板不可用判断已从当前阻塞移除"
   ],
   "decision": "blocked"
 }

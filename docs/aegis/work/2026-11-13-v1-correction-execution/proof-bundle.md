@@ -40,7 +40,7 @@ This proof bundle is an advisory Aegis Method Pack record. It does not determine
 
 ## Drift Check
 
-- Scope status: U110/U118已合并；U111按U125→U126续接。U125候选aec2159的7项远端CI通过，PR与在线访问阻塞交付；U126未开工，父卡未完成。
+- Scope status: 2026-11-24：U110/U118已合并；U111按U125→U126续接。远端0300baa的7项CI通过，Kanban正常HTTP200；仅PR写能力阻塞交付，U126未开工，父卡未完成。
 - Compatibility status: 已有责任/原请求/预约与历史保留，固定Python847项通过含9跳过；文档历史附录字节不变。
 - Retirement status: 旧Controller/Broker新派发和installer新安装实现移除，保留原job核对；宿主副本未采用核验。
 - Advisory decision: blocked

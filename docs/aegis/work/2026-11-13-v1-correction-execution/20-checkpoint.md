@@ -2,17 +2,32 @@
 
 ## Current Checkpoint
 
-- Current todo: 恢复PR写能力和Kanban访问，交付已验证U125，再按在线依赖推进U126/U111
+- Current todo: 完成U125实际PR交付，再按在线依赖推进U126/U111；Kanban访问已恢复
 - Active slice: U-125
 - Completed todos:
 - U110/U118已合并；U125独立身份复核、396前端、116浏览器、863 Python/12跳过通过
 - 5个保留HTTP/SQLite探针41项结果、Node辅助2项、实际启动5项通过
-- 最终候选aec2159已推送，7项远端CI全部成功，本次重新实读确认
+- 远端候选0300baa已推送，7项远端CI全部成功，2026-11-24重新实读确认
 - Evidence refs:
 - evidence/U-125/README.md
 - evidence/U-125/delivery-readback.json
-- Blocked on: GitHub两种现有凭据创建PR均403；Kanban被Cloudflare1010拒绝，不能确认当前运行态
-- Next step: 恢复PR写能力和服务管理员允许的Kanban访问；先读回PR及当前user/owner/version，再交付U125与认领U126
+- Blocked on: 2026-11-24本机gh保存凭据及当前环境凭据创建PR均HTTP403，读回PR仍为空
+- Next step: 恢复实际PR写能力或由用户网页创建已准备的PR；读回PR与最新在线user/owner/version，交付U125后再认领U126
+
+## 2026-11-24 当前续接核对
+
+任务checkout clean，HEAD/远端任务分支为0300baa，集成分支仍2b3d281。
+0300baa的7项CI实读全部completed/success。Kanban已恢复：沿用用户提供的
+宿主私有接入配置，以Node --use-env-proxy调用仓库adapter；HTTP200、revision1235，
+实际账号仍zbook-codex。U111/#65 progress v5、U125/#79 blocked v7归原owner；
+U126/#80 backlog v1且依赖#79，未开工。下面11月18日早期“看板不可用”只属历史。
+
+本次分别核对本机gh保存凭据与当前环境凭据，账号都是illusionaireal，
+创建已准备PR均返回HTTP403，后续PR列表均为空。外部能力缺口仍是PR写权，
+不能跳过在线依赖或直接推集成分支。准备的PR目标仍rewrite/charter-v1，
+head为codex/u111-v1-organization-entry；用户可在网页创建或恢复gh写能力。
+U126的现有创建/恢复所有者已只读核对，未修改行为代码或写未来卡。
+Drift decision: blocked，仅PR交付阻塞；Kanban、已推送代码及验证不再列为阻塞。
 
 ## 2026-11-18 会话续接的最终候选读回
 
