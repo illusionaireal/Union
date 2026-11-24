@@ -50,9 +50,10 @@ const session = async page => (await get(page, '/api/session')).value;
 const auRead = async (page, id) => (await get(page, '/api/v1/aus/' + id)).value;
 const modelRead = async (page, id) => (await get(page, '/api/v1/models?' + new URLSearchParams({ organization_id: id }))).value;
 const stats = async () => { const response = await fetch(modeldReady.stats_url); assert.equal(response.status, 200); return response.json(); };
-const connected = page => page.getByText('已连接本机服务', { exact: true }).waitFor();
+const connected = page => page.locator('.organization-shell').waitFor();
 async function navigate(page, id, section) {
-  await page.goto(`${origin}/${section}?organization=${encodeURIComponent(id)}`);
+  const target = { models: 'resources', settings: 'governance', overview: '' }[section] ?? section;
+  await page.goto(`${origin}/au/${encodeURIComponent(id)}${target ? '/' + target : ''}`);
   await connected(page);
   if (section === 'models') await page.getByRole('heading', { name: '接入模型，核对实际工具能力', exact: true }).waitFor();
 }
@@ -97,12 +98,12 @@ async function governance(page, id, kind, fields) {
   const receipt = (await (await response).json()).receipt;
   assert.equal(receipt.status, 'succeeded', sanitize(receipt.message));
   await dialog.getByRole('button', { name: '完成，返回工作台', exact: true }).click();
-  await page.locator('#refresh').click();
-  await until(async () => (await page.locator('#snapshot-meta').textContent()).includes(`状态 v${receipt.version} ·`), 'Governance projection did not refresh');
+  await page.getByRole('button', { name: '刷新', exact: true }).click();
+  await until(async () => (await auRead(page, id)).au.version === receipt.version, 'Governance projection did not refresh');
   return auRead(page, id);
 }
 async function register(page, account, setup = false) {
-  await page.goto(origin + '/overview');
+  await page.goto(origin + '/organizations');
   if (!setup) await page.getByRole('button', { name: '登记核心参与者', exact: true }).click();
   await page.locator('[name="username"]').fill(account.username);
   await page.locator('[name="password"]').fill(account.password);
@@ -114,16 +115,20 @@ async function register(page, account, setup = false) {
   account.principal = (await session(page)).principal_id;
 }
 async function createAU(page, name) {
+  await page.goto(origin + '/organizations');
+  await connected(page);
   await page.locator('[data-command="create_v1"]').first().click();
   await page.getByLabel('AU名称', { exact: true }).fill(name);
-  await page.getByLabel('AU目标', { exact: true }).fill('核对明确选择的文本资料和有限模型工具往返。');
+  await page.getByLabel('组织目的', { exact: true }).fill('核对明确选择的文本资料和有限模型工具往返。');
+  await page.getByLabel('成功依据', { exact: true }).fill('工具返回所选文本及原用量，并独立核对默认采用。');
+  await page.getByLabel('约束', { exact: true }).fill('只用本机受控替身，保存不推理，保留原请求。');
   await page.locator('#preview-operation').click(); await page.locator('#commit-operation').click();
   await page.getByRole('button', { name: '完成，返回工作台', exact: true }).click();
-  await page.getByRole('region', { name: 'AU准备记录', exact: true }).waitFor();
+  await page.locator('.organization-purpose').waitFor();
   return (await session(page)).organizations.find(au => au.name === name).id;
 }
 async function screenshots(page, name) {
-  for (const width of [1440, 1024, 390, 320]) {
+  for (const width of [1440, 1024, 768, 390, 320]) {
     await page.setViewportSize({ width, height: 900 });
     check(`${name} has no page overflow at ${width}px`, await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
     const values = await page.locator('.core-models .quiet-pill, .core-models .security-note').evaluateAll(elements => {
@@ -198,6 +203,9 @@ async function stop(child, message) {
   const identity = await session(page);
   check('The model journey starts as an ordinary core account without platform administration', identity.role === 'core' && !identity.platform_admin);
   const auId = await createAU(page, 'S02 所选资料验证');
+  await page.getByRole('link', { name: '准备资源', exact: true }).click();
+  await page.getByRole('region', { name: '资源准备进度', exact: true }).waitFor();
+  check('Preparation gap enters the same AU resource journey', new URL(page.url()).pathname === `/au/${auId}/resources`);
   await governance(page, auId, 'adopt_governance', { timeout_seconds: 3600, reason: '明确采用有限验证的失能退出程序' });
   await governance(page, auId, 'activate_governance', { reason: '启用本轮有限的模型接入验证' });
   await navigate(page, auId, 'models');
@@ -206,17 +214,21 @@ async function stop(child, message) {
   const keyboardDialog = page.locator('#model-command-dialog'); await keyboardDialog.waitFor();
   await page.keyboard.press('Escape'); await keyboardDialog.waitFor({ state: 'hidden' });
   check('Keyboard opens and closes the model dialog and restores the invoking control', await page.getByRole('button', { name: '添加模型连接', exact: true }).evaluate(el => el === document.activeElement));
-  const saved = await modelCommand(page, '添加模型连接', { name: '所选文本模型', profile: 'openai_compatible',
+  const saved = await modelCommand(page, '填写模型连接', { name: '所选文本模型', profile: 'openai_compatible',
     base_url: modeldReady.provider_base_url, api_key: apiKey, model: modeldReady.model_id, max_output_tokens: 256 });
   await until(async () => (await modelRead(page, auId)).operations.some(op => op.id === saved.receipt.operation_id && op.status === 'succeeded'), 'Connection registration did not finish');
   await refreshModels(page); await page.getByRole('heading', { name: '所选文本模型', exact: true }).waitFor();
   const connection = page.locator('.model-connections li').filter({ has: page.getByRole('heading', { name: '所选文本模型', exact: true }) });
   check('Saving performs zero inference and does not silently adopt a default', (await stats()).inference_posts === 0 && !(await modelRead(page, auId)).connections[0].is_default);
   check('Validation remains unavailable without explicit resource and document authority', await connection.getByRole('button', { name: '验证工具往返', exact: true }).isDisabled());
-  await modelCommand(page, '授予有限调用', { max_calls: 2, allow_unknown_cost: true, reason: '只允许两次受控回环推理，费用未知明确保留' });
-  await navigate(page, auId, 'settings');
-  await governance(page, auId, 'amend_charter', { charter_text: '只读本次主动提交的资料，保留内部记录。', read_document: true, reason: '启用接入验证的受限只读工具' });
-  await navigate(page, auId, 'models');
+  await modelCommand(page, '设置有限调用', { max_calls: 2, allow_unknown_cost: true, reason: '只允许两次受控回环推理，费用未知明确保留' });
+  const priorCharter = (await auRead(page, auId)).au.charter;
+  await governance(page, auId, 'amend_charter', { reason: '启用接入验证的受限只读工具' });
+  const permittedCharter = (await auRead(page, auId)).au.charter;
+  assert.deepEqual(permittedCharter, { ...priorCharter, allowed_tools: [...priorCharter.allowed_tools, 'read_document'] });
+  check('Resource tool decision preserves every other charter field without visiting generic governance forms',
+    new URL(page.url()).pathname === `/au/${auId}/resources` && (await stats()).inference_posts === 0);
+  await refreshModels(page);
   await connection.getByRole('button', { name: '验证工具往返', exact: true }).click();
   const dialog = page.locator('#model-command-dialog');
   const documentText = '本次只读资料：交付方案包括创建 AU、明确授权、记录每次推理和可核对的工具结果。';
@@ -236,8 +248,14 @@ async function stop(child, message) {
   check('Two actual SDK HTTP calls return the selected material and tool-generated challenge', observed.inference_posts === 2 && observed.real_model_calls === 0 && result.output.includes(documentText) && result.output.includes(tool.challenge));
   check('The first inference has no copy of the selected private body or challenge', !JSON.stringify(observed.calls[0].body).includes(documentText) && !JSON.stringify(observed.calls[0].body).includes(tool.challenge));
   check('Each inference retains its own tokens and unknown cost', result.attempts.length === 2 && result.attempts.every(attempt => attempt.usage.input_tokens === 18 && attempt.usage.cost_minor === null));
-  await modelCommand(page, '设为默认', {}, connection);
+  await modelCommand(page, '采用所选默认连接', {}, page.getByRole('region', { name: '资源准备进度', exact: true }));
   check('Default adoption is explicit and adds no inference', (await modelRead(page, auId)).connections[0].is_default && (await stats()).inference_posts === 2);
+  await page.getByRole('region', { name: '资源准备进度', exact: true }).getByRole('link', { name: '返回组织概况', exact: true }).click();
+  await page.locator('.organization-purpose').waitFor();
+  check('Resource preparation returns to the same organization without recreating or dispatching',
+    new URL(page.url()).pathname === `/au/${auId}` && (await stats()).inference_posts === 2);
+  await page.getByRole('link', { name: '准备资源', exact: true }).click();
+  await page.getByRole('region', { name: '资源准备进度', exact: true }).waitFor();
   await screenshots(page, 'completed-model-check');
 
   progress('lost save response, original receipt and restart');
@@ -327,7 +345,9 @@ async function stop(child, message) {
     const response = await route.fetch(); captured(); await late; await route.fulfill({ response }).catch(() => {});
   }, { times: 1 });
   await page.getByRole('button', { name: '刷新模型记录', exact: true }).click(); await intercepted;
-  await page.getByLabel('当前组织', { exact: true }).selectOption(otherAU);
+  await page.getByRole('link', { name: '我的组织', exact: true }).click();
+  await page.getByRole('link', { name: 'S02 身份隔离对照 打开后核对当前状态与准备条件', exact: true }).click();
+  await page.getByRole('link', { name: '准备资源', exact: true }).click();
   releaseLate(); await page.locator('.core-models').getByText('还没有保存的连接', { exact: true }).waitFor();
   check('A late original-AU response cannot populate the newly selected AU', !(await page.locator('.core-models').innerText()).includes(documentText) && !(await page.locator('.core-models').innerText()).includes('所选文本模型'));
   await context.clearCookies(); await page.reload();

@@ -2,6 +2,31 @@
 
 ## Current Checkpoint
 
+- Current todo: 提交并远端验收U119资源准备
+- Active slice: U-119
+- Completed todos:
+- U119严格RED/GREEN、npm412/Python863含9跳过/80浏览器/独立8+76通过，证据归集；生成vendor补丁精确核对后仅逆向本轮生成差异
+- Evidence refs:
+- evidence/U-119/verification.json
+- evidence/U-119/browser-checks.json
+- evidence/U-119/independent-review.md
+- Blocked on: none
+- Next step: 任务提交推送，准确SHA七项CI成功后按用户授权直接采用rewrite并恢复原保护；在线U119完整验收读回，U112不done
+
+## Recent Checkpoint History
+
+## Checkpoint Update
+
+- Current todo: 实施U119同一组织模型与有限资源准备
+- Active slice: U-119
+- Completed todos:
+- U125/U126/U111采用d48a121；原保护恢复，在线全部done
+- Evidence refs:
+- evidence/U-119/README.md
+- Blocked on: none
+- Next step: 渲染行为RED后最小GREEN；受影响真实浏览器、全量及独立权限复核
+## Checkpoint Update
+
 - Current todo: 准确最终候选CI通过后直接采用U126/U111
 - Active slice: U-126
 - Completed todos:
@@ -13,9 +38,6 @@
 - evidence/U-111/README.md
 - Blocked on: none
 - Next step: 推送当前续接事实纠正；准确最终SHA7项CI通过后，私有u126直接更新脚本使用原67146窗口快进rewrite并恢复全部原规则，在线验收读回。
-
-## Recent Checkpoint History
-
 ## Checkpoint Update
 
 - Current todo: 交付已验证U126/U111；复验修复候选CI并恢复GitHub网页登录能力
@@ -55,6 +77,24 @@
 - evidence/U-125/delivery-readback.json
 - Blocked on: 无；原PR权限失败仅为历史，本次用户授权直接更新已完成
 - Next step: 冻结goal段落序列化/可读确认/拒绝恢复，观察真实RED后最小GREEN；定向、全量、浏览器及独立身份复核
+
+## DriftCheckDraft
+
+- Scope status: U119本机受控已验；准确SHA CI与采用待读回，U112不关闭
+- Compatibility status: 原S02/S05公开协议、事实写者、当前权限/修订/unknown恢复保留
+- Retirement status: 旧浏览器入口消费者迁移到V1；无新fallback/双写/调度
+- New risk signals:
+- 新增资源浏览器CI需固定Bun/submodule准备；七项必须通过后采用
+- Advisory decision: continue
+
+## DriftCheckDraft
+
+- Scope status: U125已采用；U126和U111本机完整验收已齐，准确SHA远端CI与直接采用另读回。用户授权覆盖直接更新，不再要求恢复PR权。
+- Compatibility status: 唯一workspace与原创建协议/身份恢复保持，零推理；npm404/Python863含9环境跳过/创建44/入口116/独立25与四宽布局通过。
+- Retirement status: 旧界面消费者按V1契约迁移；旧数据与API测试保留，不恢复第二旧UI写者。
+- New risk signals:
+- 完整工作、资源、治理及真实/持续经营仍由各后续卡验收；本卡仅准备态入口。
+- Advisory decision: continue
 
 ## DriftCheckDraft
 

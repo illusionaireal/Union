@@ -30,3 +30,13 @@ ADR采用项目原有owner：ADR-0003细化React与界面责任，ADR-0004补当
 - Summary: 分开目标段落/可读确认/原请求恢复；三个及四规则RED，长名称浏览器RED后GREEN；npm404、Python863/9跳过、44创建、116入口、独立25与布局通过；远端采用另读在线看板。
 - Verifier: Codex协调者本机验收；review_u126独立工程复核
 - Evidence status: evidence-finalized
+
+## EvidenceBundleDraft: U-119
+
+- Artifact key: u119-controlled
+- Slice ID: U-119
+- Type: controlled-engineering
+- Source: evidence/U-119/verification.json
+- Summary: 严格RED/GREEN、npm412/Python863含9跳过/80五宽浏览器/独立8+76；真实模型0；远端采用另验
+- Verifier: coordinator; review_u119 independent engineering
+- Evidence status: evidence-finalized

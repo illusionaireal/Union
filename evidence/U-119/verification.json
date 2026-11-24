@@ -1,0 +1,148 @@
+{
+  "scope": "controlled",
+  "status": "controlled-engineering-verified; remote adoption pending",
+  "base_sha": "d48a1219cbb44f1809193d3b70f3bda4b46c1a7e",
+  "task_branch": "codex/u119-capability-resources",
+  "integration_target": "rewrite/charter-v1",
+  "online_member_id": "363a9919-cc7e-4dbd-8e49-a104a4f0f5ed",
+  "implementation_actor": "Codex current continuation",
+  "independent_engineering_role": "review_u119",
+  "checks": {
+    "npm_full": {
+      "exit_code": 0,
+      "frontend_tests": 412,
+      "management_tests": 37,
+      "action_safety_tests": 359
+    },
+    "python_full": {
+      "exit_code": 0,
+      "tests": 863,
+      "skipped": 9,
+      "seconds": 786.809
+    },
+    "target_final": {
+      "exit_code": 0,
+      "passed": 8,
+      "independently_repeated": true
+    },
+    "independent_regressions": {
+      "exit_code": 0,
+      "passed": 76,
+      "governance": 55,
+      "recovery": 10,
+      "identity": 11
+    },
+    "resource_browser": {
+      "exit_code": 0,
+      "passed": 80,
+      "widths": [
+        1440,
+        1024,
+        768,
+        390,
+        320
+      ],
+      "inference_posts": 7,
+      "real_model_calls": 0,
+      "scope": "real local authentication/HTTP/SQLite/modeld/pinned SDK; controlled loopback inference"
+    }
+  },
+  "toolchain": {
+    "node": "24.19.0",
+    "python": "3.13.14",
+    "bun": "1.4.2",
+    "chromium": "157.0.8103.79"
+  },
+  "files_sha256": {
+    "web/console/src/features/models/ModelPreparation.tsx": "76f94b1647a2bb2577b08d89fddf2e0956d7ae148b974393857fe5d2f24d0122",
+    "web/console/src/features/models/ModelPreparation.test.tsx": "6fb0202b725c776228d4cb5ce0d1ca14f6eb77cf3f1bc7b3432b409fe4c42ca8",
+    "web/console/src/features/models/CoreModels.tsx": "569e70a3085c3de88586f9f3638bc71684f4e7e6ba5518061ca4b0607588bf96",
+    "web/console/src/features/models/models.css": "53e84c1ffe8ea6a107bef36b5ff832df11c52d473a79a910a61a9c9f10ecd81e",
+    "web/console/src/features/governance/ResourceToolFields.tsx": "097e9878363d48c77263fcd8cf169dc7cdf247bf3f25f1c078f3c64570414cdd",
+    "web/console/src/features/governance/GovernanceFields.tsx": "d9a225814672916b3bc068b1b8f10a3c8b0d89bdeab8f1bb60de9cc66a0f568f",
+    "web/console/src/features/governance/GovernanceForm.tsx": "52b163c05f2a62b6e18b7a5c5251e2e826ecc9299b8911423381d46666bd87bd",
+    "web/console/src/features/governance/GovernancePreview.tsx": "062d6a368639ccb30d505f7b044dce45bb7a9f7bac6b510e074de645dd0b6896",
+    "web/console/src/features/governance/model.ts": "39b03cb901794b5d18123bdc5aa598612e3ae82039ce49e280f9d2d0db3ab2ba",
+    "scripts/s02-models-browser.cjs": "b5a9ddb93d8a9e9fc53f261c600cf2404cef80a8f8ff82f43c8b86a3fdc105d8",
+    "package.json": "720cdfc5a062f3b84edf54382a0f55e826449ff52acd766c2b248eb3f1856b96",
+    ".github/workflows/ci.yml": "0aaa3ae7fbdb0b096ed567d9c7c8ef00e801c0ae72a7541bc17a328ffb7b6053"
+  },
+  "source_hash_normalization": "Git text normalized to LF",
+  "browser_checks_sha256": "e37c6adb4f27eb559631dcd985a02b763dac03a9cb4d0424b0fcb44d31093de5",
+  "final_log_hashes": {
+    "u119-npm-full.log": "ce6a56ba0bcec99aa55080e282d0517969b319ec7b5c432d7d7ed4bd4e9ebb27",
+    "u119-python-full.log": "b9e2288b112e7a843f26b7e1b005a22800541705f21a37e0a845a69fb9b30ff2",
+    "u119-review-green.log": "e31ec6646412ff6a1c33b3b347b59eb56e126bcf2737918d615c622659bfd9d6",
+    "u119-related-green.log": "9f7c27e50605ccb7a9cebe4283961d0fc20afb9a1d27e634bd1a6217b3c7fbc2",
+    "u119-browser-final.log": "aeda1cdc0260e3dbaf89e726b70dcbb9f42037373ae40890ac65933ae6edf7d7",
+    "u119-resume-target-green.log": "95b35a2811a1d3bdb6a6e75328a9950358011af51b29edd0aff89efa146d2d26"
+  },
+  "retained_failure_history": [
+    {
+      "log": "u119-red.log",
+      "sha256": "5005384537e591aaaab9b028684e01b966486b98cca126dbfa315b9dd13a87d0",
+      "result": "Initial meaningful resource journey behavior RED",
+      "raw_location": "host-local only"
+    },
+    {
+      "log": "u119-stale-preview-red.log",
+      "sha256": "1cb96382ae2a30fbd1f901a0cdde6cbed9b32f2f1385c552645fb074b1f35521",
+      "result": "Stale charter preview RED",
+      "raw_location": "host-local only"
+    },
+    {
+      "log": "u119-adopt-red.log",
+      "sha256": "85e2fb794028e051bfd70abd65955b7a00ff8a5835aaa8fa58b51869cceed83a",
+      "result": "Independent default adoption RED",
+      "raw_location": "host-local only"
+    },
+    {
+      "log": "u119-review-red.log",
+      "sha256": "34f603e88677a9669af9e183978f83c9acad748b7358e09211bfc7b51141b16e",
+      "result": "Disabled connection action and preservation of legal duplicate tools RED",
+      "raw_location": "host-local only"
+    },
+    {
+      "log": "u119-browser.log",
+      "sha256": "54c23b5c106785e4a1b6785431f82ee82caefebea7e4c6ed0c226df196d4aa8a",
+      "result": "Missing host UNION_BUN configuration",
+      "raw_location": "host-local only"
+    },
+    {
+      "log": "u119-browser2.log",
+      "sha256": "e5cb7d467f670be6540b8a35d3fdd850c546f740a2a9064f0d6570f18b4674f3",
+      "result": "Unprepared model-service dependency effect",
+      "raw_location": "host-local only"
+    },
+    {
+      "log": "u119-browser3.log",
+      "sha256": "e3e742420847fb390ca2a7190b06607617381a6e56f8f58e72502e16fa9b071d",
+      "result": "Retained consumer used old creation entry",
+      "raw_location": "host-local only"
+    },
+    {
+      "log": "u119-browser4.log",
+      "sha256": "a4c5700a816aa3e248cbd9218e943e614e3fef38cb30aafc8ef4dd737db6aee1",
+      "result": "Retained consumer used old current-AU selector",
+      "raw_location": "host-local only"
+    },
+    {
+      "log": "u119-browser5.log",
+      "sha256": "2608574f13bdca510e779f3f9f4b871096958d830705431762b6fd4c957f245e",
+      "result": "79 checks passed; final same-AU return action subsequently added and passed",
+      "raw_location": "host-local only"
+    },
+    {
+      "log": "u119-resume-target.log",
+      "sha256": "633a88c10d3fe2037dac5609f6235c03a555eb48e90f35dd3d22c8905425c749",
+      "result": "Resume invocation ran at repo root without frontend Vitest configuration; correct frontend cwd passed all 8 unchanged tests",
+      "raw_location": "host-local only"
+    }
+  ],
+  "real_model_calls": 0,
+  "deployments": 0,
+  "migrations": 0,
+  "boundary": "U-119 only; U-112 full readiness and U-120 business material acceptance remain separate.",
+  "complexity_control": "Existing command/store/recovery owners retained; dedicated scoped preparation view; no new API, persistence writer, fallback or dispatcher.",
+  "adoption": "Exact candidate CI, remote ref and restored protection require separate readback."
+}

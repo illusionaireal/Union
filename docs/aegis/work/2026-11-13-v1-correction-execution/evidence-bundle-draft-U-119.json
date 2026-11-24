@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "aegis.schema.v0",
+  "artifactKey": "u119-controlled",
+  "type": "controlled-engineering",
+  "source": "evidence/U-119/verification.json",
+  "summary": "严格RED/GREEN、npm412/Python863含9跳过/80五宽浏览器/独立8+76；真实模型0；远端采用另验",
+  "verifier": "coordinator; review_u119 independent engineering",
+  "sliceId": "U-119",
+  "evidenceStatus": "evidence-finalized",
+  "updatedAt": "2026-11-24"
+}

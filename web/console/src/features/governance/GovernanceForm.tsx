@@ -104,6 +104,9 @@ export function GovernanceForm({
       }
       const current = await readCurrent();
       assertCurrent();
+      if (draft.kind === 'amend_charter' && draft.defaults.resource_tool === 'read_document' &&
+          current.au.version !== draft.read.au.version)
+        throw new Error('章程已变化，请关闭后核对当前规则；输入暂时保留，尚未提交');
       setReference(undefined);
       setPreview({
         current,

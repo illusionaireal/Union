@@ -21,6 +21,7 @@
     "test:browser": "node scripts/u125-organization-entry-browser.cjs",
     "test:workspace": "node scripts/u125-organization-entry-browser.cjs",
     "test:creation": "node scripts/check_core_creation.cjs",
+    "test:resources": "node scripts/s02-models-browser.cjs",
     "start": "node scripts/start-console.mjs",
     "dev": "node scripts/start-console.mjs --watch",
     "management:render": "node scripts/project-management.mjs render",

@@ -12,6 +12,7 @@ import { ModelCommandForm } from './ModelCommandForm';
 import { ModelRecovery } from './ModelReceiptView';
 import { ProfileScope } from './ProfileScope';
 import { ModelStream } from './ModelStream';
+import { ModelPreparation } from './ModelPreparation';
 import {
   CheckRecords,
   ConnectionRecords,
@@ -76,6 +77,7 @@ function ModelWorkspace({ scope }: { scope: GovernanceScope }) {
           </button>
         )}
       </section>
+      <ModelPreparation controller={controller} open={open} />
       <ModelRecovery controller={controller} />
       <div className="model-refresh">
         <button

@@ -2,10 +2,9 @@
   "schemaVersion": "aegis.schema.v0",
   "taskId": "2026-11-13-v1-correction-execution",
   "lastCheckpointRef": "docs/aegis/work/2026-11-13-v1-correction-execution/todo-checkpoint-draft.json",
-  "resumeInstruction": "先核对真实HEAD和准确CI。原GitHub窗口67146已恢复且规则页有效，不沿用近期误判的关闭/未登录阻塞。当前产品工程完整通过，原CI失败保留，最终采用仅读真实远端/在线卡。",
+  "resumeInstruction": "核对任务分支/HEAD、在线U119实际owner/version及候选CI；保留D盘现场，原67146 GitHub窗口实读再采用",
   "knownPartialWork": [
-    "本机npm404/Python863含9跳过/创建44/入口116/独立25及四宽通过；消费者焦点等待修复后116复验通过，产品源码未变",
-    "窗口核对纠正：原67146窗口仍在且最小化，原GitHub规则标签页及登录均有效；Get-Process.MainWindowHandle只显示另一窗口，不能据此判断关闭；无需用户重新登录"
+    "U119严格RED/GREEN、npm412/Python863含9跳过/80浏览器/独立8+76通过，证据归集；生成vendor补丁精确核对后仅逆向本轮生成差异"
   ],
   "mustReadBeforeContinuing": [
     "docs/aegis/work/2026-11-13-v1-correction-execution/10-intent.md",
@@ -13,6 +12,6 @@
     "docs/aegis/work/2026-11-13-v1-correction-execution/todo-checkpoint-draft.json"
   ],
   "unsafeToAssume": [
-    "Get-Process只返回一个主窗口，不能据此判断其他浏览器窗口关闭；原异步登录请求已明确撤回，无需再索取登录。"
+    "受控资源准备不等于业务资料、真实支出或整体持续可用"
   ]
 }

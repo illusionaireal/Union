@@ -1,18 +1,17 @@
 {
   "schemaVersion": "aegis.schema.v0",
   "taskId": "2026-11-13-v1-correction-execution",
-  "currentTodo": "准确最终候选CI通过后直接采用U126/U111",
+  "currentTodo": "提交并远端验收U119资源准备",
   "completedTodos": [
-    "本机npm404/Python863含9跳过/创建44/入口116/独立25及四宽通过；消费者焦点等待修复后116复验通过，产品源码未变",
-    "窗口核对纠正：原67146窗口仍在且最小化，原GitHub规则标签页及登录均有效；Get-Process.MainWindowHandle只显示另一窗口，不能据此判断关闭；无需用户重新登录"
+    "U119严格RED/GREEN、npm412/Python863含9跳过/80浏览器/独立8+76通过，证据归集；生成vendor补丁精确核对后仅逆向本轮生成差异"
   ],
-  "activeSlice": "U-126",
+  "activeSlice": "U-119",
   "evidenceRefs": [
-    "evidence/U-126/verification.json",
-    "evidence/U-126/ci-consumer-repair.md",
-    "evidence/U-111/README.md"
+    "evidence/U-119/verification.json",
+    "evidence/U-119/browser-checks.json",
+    "evidence/U-119/independent-review.md"
   ],
   "blockedOn": null,
-  "nextStep": "推送当前续接事实纠正；准确最终SHA7项CI通过后，私有u126直接更新脚本使用原67146窗口快进rewrite并恢复全部原规则，在线验收读回。",
+  "nextStep": "任务提交推送，准确SHA七项CI成功后按用户授权直接采用rewrite并恢复原保护；在线U119完整验收读回，U112不done",
   "updatedAt": "2026-11-24"
 }

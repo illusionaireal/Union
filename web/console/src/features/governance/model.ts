@@ -139,6 +139,12 @@ export function readGovernanceForm(
     case 'set_goal':
       return { goal: str('goal'), reason };
     case 'amend_charter':
+      if (draft.defaults.resource_tool === 'read_document') return {
+        reason,
+        charter: { ...structuredClone(draft.read.au.charter),
+          allowed_tools: draft.read.au.charter.allowed_tools.includes('read_document')
+            ? [...draft.read.au.charter.allowed_tools] : [...draft.read.au.charter.allowed_tools, 'read_document'] },
+      };
       return {
         reason,
         charter: {

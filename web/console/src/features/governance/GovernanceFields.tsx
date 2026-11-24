@@ -4,11 +4,14 @@ import { Area, Field } from '../commands/form-fields';
 import type { GovernanceDraft } from './model';
 import { ResponsibilityFields } from './ResponsibilityFields';
 import { DecisionReason, PrincipalField } from './fields';
+import { ResourceToolFields } from './ResourceToolFields';
 
 export function GovernanceFields({ draft }: { draft: GovernanceDraft }) {
   const governance = isGovernedAU(draft.read) ? draft.read.au.governance : undefined;
   const [mode, setMode] = useState(governance?.unavailability.mode ?? 'exit_after_timeout');
   const [cancelNomination, setCancelNomination] = useState(false);
+  if (draft.kind === 'amend_charter' && draft.defaults.resource_tool === 'read_document')
+    return <ResourceToolFields />;
   switch (draft.kind) {
     case 'adopt_governance':
     case 'configure_governance':

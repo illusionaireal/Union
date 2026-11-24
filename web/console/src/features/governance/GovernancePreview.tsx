@@ -86,6 +86,7 @@ export function GovernancePreview({
       )}
       {charter && (
         <>
+          <p>{charter.allowed_tools.includes('read_document') ? '验证资料工具：允许只读所选文本。' : '验证资料工具：尚未允许只读所选文本。'}</p>
           <p>当前章程</p>
           <p className="au-text">{current.au.charter.text}</p>
           <p>拟采用章程</p>

@@ -49,7 +49,9 @@
                 "docs/API_MODELS.md",
                 "evidence/011-openrouter-smoke/README.md",
                 "evidence/027-gateway-management/README.md",
-                "evidence/043-usable-model-access/README.md"
+                "evidence/043-usable-model-access/README.md",
+                "evidence/U-119/README.md",
+                "evidence/U-119/verification.json"
             ]
         },
         {
@@ -107,7 +109,9 @@
                 "evidence/040-checkpoint-metadata/README.md",
                 "evidence/U-109/README.md",
                 "evidence/U-111/README.md",
-                "evidence/U-126/verification.json"
+                "evidence/U-126/verification.json",
+                "evidence/U-119/README.md",
+                "evidence/U-119/verification.json"
             ]
         },
         {
@@ -2401,6 +2405,13 @@
                     "from": "done",
                     "to": "done",
                     "note": "完成本卡限定真实验收，卡片正文与主账real记录一致；成功新profile与原失败、未知费用分开保留。"
+                },
+                {
+                    "at": "2026-11-24T07:25:22.791Z",
+                    "actor": "Codex/current-session coordinator delivery",
+                    "from": "done",
+                    "to": "done",
+                    "note": "U-119同一组织模型/工具/有限资源准备受控交付：明确连接、独立保存/授权/默认采用/可选验证、原版本修章和unknown恢复；npm前端412/management37/action-safety359、Python863含9跳过、80项五宽实际本地浏览器和独立8+76复核通过，真实模型调用0。证据evidence/U-119/README.md与verification.json；远端CI及采用另读回。原U072真实历史/状态/owner和在线U112完整验收保留，不镜像在线运行态。"
                 }
             ],
             "claim": null

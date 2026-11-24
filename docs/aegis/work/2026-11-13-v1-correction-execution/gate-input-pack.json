@@ -1,15 +1,14 @@
 {
   "schemaVersion": "aegis.schema.v0",
   "baselineRefs": [
-    "specs/053-union-rewrite/s01-workspace-contract.md",
-    "docs/product-design.md",
-    "docs/FRONTEND.md"
+    "specs/053-union-rewrite/u119-resource-preparation-contract.md"
   ],
   "impactStatement": "docs/aegis/work/2026-11-13-v1-correction-execution/impact-statement-draft.json",
   "compatPlan": "保留正确核心身份/授权/恢复和历史作业查询；旧新派单/安装及MVP交互无保留义务。",
-  "retirementPlan": "旧界面消费者按V1契约迁移；旧数据与API测试保留，不恢复第二旧UI写者。",
+  "retirementPlan": "旧浏览器入口消费者迁移到V1；无新fallback/双写/调度",
   "evidenceBundle": [
     "docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-correction-candidate.json",
+    "docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-U-119.json",
     "docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-U-125.json",
     "docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-U-126.json"
   ]

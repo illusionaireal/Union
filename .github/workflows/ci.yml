@@ -24,9 +24,14 @@ jobs:
       - run: npm run check
   console-browser:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.2
       - uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
@@ -45,6 +50,13 @@ jobs:
       - run: npm run test:creation
         env:
           UNION_PYTHON: python3
+      - run: node services/modeld/prepare.mjs
+        env:
+          UNION_BUN: bun
+      - run: npm run test:resources
+        env:
+          UNION_PYTHON: python3
+          UNION_BUN: bun
       - run: node scripts/u097-model-events-browser.cjs
         env:
           UNION_PYTHON: python3
@@ -76,5 +88,6 @@ jobs:
           path: |
             .union/u125-organization-entry
             .union/core-creation-browser
+            .union/s02-ui-browser
             .union/u097-model-events-browser
             .union/u097-connection-access-browser

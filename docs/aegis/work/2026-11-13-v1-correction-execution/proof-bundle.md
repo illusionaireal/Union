@@ -7,7 +7,7 @@ This proof bundle is an advisory Aegis Method Pack record. It does not determine
 ## Task Intent
 
 - Requested outcome: 重新审查偏离 Chapter V1 的开发，先在 Kanban 提出修正，再派单执行。
-- Scope: U-110设计/协调，U-118仓库退役；U-111按前置和独立合同接续。
+- Scope: U-110/U-118/U-111 历史交付保留；当前 U-119 沿原 S02/S05 准备合同执行，不提前关闭 U-112 或实施 U-120。
 
 ## Impact
 
@@ -20,12 +20,14 @@ This proof bundle is an advisory Aegis Method Pack record. It does not determine
 ## Terminal Evidence Refs
 
 - docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-correction-candidate.json
+- docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-U-119.json
 - docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-U-125.json
 - docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-U-126.json
 
 ## Formal Evidence
 
 - docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-correction-candidate.json
+- docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-U-119.json
 - docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-U-125.json
 - docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-U-126.json
 
@@ -43,7 +45,7 @@ This proof bundle is an advisory Aegis Method Pack record. It does not determine
 
 ## Drift Check
 
-- Scope status: U125已采用；U126和U111本机完整验收已齐，准确SHA远端CI与直接采用另读回。用户授权覆盖直接更新，不再要求恢复PR权。
-- Compatibility status: 唯一workspace与原创建协议/身份恢复保持，零推理；npm404/Python863含9环境跳过/创建44/入口116/独立25与四宽布局通过。
-- Retirement status: 旧界面消费者按V1契约迁移；旧数据与API测试保留，不恢复第二旧UI写者。
+- Scope status: U119本机受控已验；准确SHA CI与采用待读回，U112不关闭
+- Compatibility status: 原S02/S05公开协议、事实写者、当前权限/修订/unknown恢复保留
+- Retirement status: 旧浏览器入口消费者迁移到V1；无新fallback/双写/调度
 - Advisory decision: continue
