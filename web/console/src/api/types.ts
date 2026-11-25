@@ -436,6 +436,27 @@ export interface CoreWork {
   capabilities: { work_registration: boolean; execution: string; autonomous_business: boolean };
 }
 
+export interface BusinessMaterial {
+  id: string;
+  name: string;
+  source: 'file' | 'paste';
+  scope: 'au_read_only';
+  version: number;
+  sha256: string;
+  bytes: number;
+  read_allowed: boolean;
+  created_at: string;
+  reason: string;
+}
+export interface CoreMaterials {
+  protocol: 'core.materials.v1';
+  organization_id: string;
+  version: number;
+  access: { principal_id: string; can_manage: boolean };
+  limits: { bytes_per_material: number; materials: number; total_bytes: number };
+  materials: BusinessMaterial[];
+}
+
 export interface CoreModelConnection {
   id: string;
   name: string;

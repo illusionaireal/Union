@@ -1,17 +1,18 @@
 {
   "schemaVersion": "aegis.schema.v0",
   "taskId": "2026-11-13-v1-correction-execution",
-  "currentTodo": "提交并远端验收U119资源准备",
+  "currentTodo": "U120最终验收、任务提交与远端采用",
   "completedTodos": [
-    "U119严格RED/GREEN、npm412/Python863含9跳过/80浏览器/独立8+76通过，证据归集；生成vendor补丁精确核对后仅逆向本轮生成差异"
+    "U119已采用b4371d8；U120实际在线revision1258认领",
+    "U120严格RED/GREEN；npm425、Python873含7跳过、104五宽浏览器及独立权限/事务/恢复复核通过"
   ],
-  "activeSlice": "U-119",
+  "activeSlice": "U-120",
   "evidenceRefs": [
-    "evidence/U-119/verification.json",
-    "evidence/U-119/browser-checks.json",
-    "evidence/U-119/independent-review.md"
+    "evidence/U-120/README.md",
+    "evidence/U-120/verification.json",
+    "evidence/U-120/independent-review.md"
   ],
   "blockedOn": null,
-  "nextStep": "任务提交推送，准确SHA七项CI成功后按用户授权直接采用rewrite并恢复原保护；在线U119完整验收读回，U112不done",
-  "updatedAt": "2026-11-24"
+  "nextStep": "本机完整受控通过；仅任务文件提交/推送/准确SHA七项CI后按授权合入rewrite，在线完整验收读回。",
+  "updatedAt": "2026-11-25"
 }

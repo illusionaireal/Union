@@ -11,6 +11,7 @@ vi.mock('../../api/client', async (original) => ({
     session: vi.fn(),
     coreWork: vi.fn(),
     coreModels: vi.fn(),
+    coreMaterials: vi.fn(),
     coreWorkCommand: vi.fn(),
     coreWorkReceipt: vi.fn(),
   },
@@ -53,7 +54,8 @@ async function fill() {
   fireEvent.change(screen.getByLabelText('工作标题'), { target: { value: '项目概览' } });
   fireEvent.change(screen.getByLabelText('目标'), { target: { value: '私有目标正文' } });
   fireEvent.change(screen.getByLabelText('负责 AI 成员名称'), { target: { value: '研究助手' } });
-  fireEvent.change(screen.getByLabelText('资料目录引用'), { target: { value: 'private-docs' } });
+  await screen.findByRole('option', {name: '授权资料.md · 版本 1'});
+  fireEvent.change(screen.getByLabelText('选择业务资料'), { target: { value: `material-${'a'.repeat(32)}:1` } });
   fireEvent.change(screen.getByLabelText('调用上限'), { target: { value: '2' } });
   const button = screen.getByRole('button', { name: '登记 AI 工作' });
   await waitFor(() => expect(button).toBeEnabled());
@@ -93,6 +95,11 @@ beforeEach(() => {
   vi.mocked(api.session).mockResolvedValue(session);
   vi.mocked(api.coreWork).mockImplementation(async () => structuredClone(work));
   vi.mocked(api.coreModels).mockImplementation(async () => structuredClone(models));
+  vi.mocked(api.coreMaterials).mockImplementation(async () => ({protocol: 'core.materials.v1',
+    organization_id: work.organization_id, version: work.version, access: {principal_id: work.access.principal_id, can_manage: true},
+    limits: {bytes_per_material: 65536, materials: 16, total_bytes: 1048576},
+    materials: [{id: 'material-' + 'a'.repeat(32), name: '授权资料.md', source: 'paste', scope: 'au_read_only',
+      version: 1, sha256: 'b'.repeat(64), bytes: 5, read_allowed: true, created_at: '', reason: '明确只读'}]}));
   vi.mocked(api.coreWorkCommand).mockImplementation(async (r) => ({ receipt: receipt(r) }));
 });
 afterEach(() => {
@@ -124,7 +131,7 @@ it('Core empty state registers one bounded responsible Work, persisting original
       member_name: '研究助手',
       connection_id: 'c1',
       expected_revision: 2,
-      materials_root: 'private-docs',
+      materials_root: 'material-' + 'a'.repeat(32), material_version: 1,
       max_calls: 2,
       tools: ['read_document'],
     },

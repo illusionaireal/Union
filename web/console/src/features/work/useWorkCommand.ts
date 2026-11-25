@@ -10,10 +10,19 @@ export type ResultCommandTarget = {
   resultId: string;
   sha256: string;
 };
+export type MaterialCommandTarget =
+  | { kind: 'import_material'; sha256?: string }
+  | { kind: 'revoke_material'; materialId: string; version: number; sha256: string };
+type CommandTarget = ResultCommandTarget | MaterialCommandTarget;
+const materialTarget = (target?: CommandTarget): target is MaterialCommandTarget =>
+  target?.kind === 'import_material' || target?.kind === 'revoke_material';
 type Reference = WorkScope & {
+  originServiceInstance?: string;
   id: string;
-  kind: 'start_work' | ResultCommandTarget['kind'];
-  workId: string;
+  kind: 'start_work' | CommandTarget['kind'];
+  workId?: string;
+  materialId?: string;
+  materialVersion?: number;
   resultId?: string;
   sha256?: string;
   base_version: number;
@@ -21,31 +30,38 @@ type Reference = WorkScope & {
   outcome?: string;
 };
 export class WorkScopeLost extends Error {}
-const accessLost = (error: unknown) =>
+export const accessLost = (error: unknown) =>
   error instanceof WorkScopeLost ||
   [401, 403].includes(Number((error as { status?: number })?.status));
-const storageKey = (scope: WorkScope, target?: ResultCommandTarget) =>
+const storageKey = (scope: WorkScope, target?: CommandTarget) =>
   'union-work-command:' +
-  JSON.stringify(scope) +
-  (target ? ':' + JSON.stringify([target.kind, target.workId, target.resultId]) : '');
-function load(scope: WorkScope, target?: ResultCommandTarget): Reference[] {
+  JSON.stringify(materialTarget(target) ? {principalId: scope.principalId, organizationId: scope.organizationId} : scope) +
+  (target ? ':' + JSON.stringify(materialTarget(target)
+    ? [target.kind, target.kind === 'revoke_material' ? target.materialId : 'imports']
+    : [target.kind, target.workId, target.resultId]) : '');
+function load(scope: WorkScope, target?: CommandTarget): Reference[] {
   const value: unknown = JSON.parse(sessionStorage.getItem(storageKey(scope, target)) || '[]');
   if (
     !Array.isArray(value) ||
     !value.every(
       (r) =>
         r &&
-        Object.entries(scope).every(([k, v]) => r[k] === v) &&
+        Object.entries(scope).every(([k, v]) => (materialTarget(target) && k === 'serviceInstance') || r[k] === v) &&
+        typeof r.serviceInstance === 'string' && !!r.serviceInstance &&
+        (r.originServiceInstance === undefined || typeof r.originServiceInstance === 'string') &&
         typeof r.id === 'string' &&
         r.id &&
-        typeof r.workId === 'string' &&
-        r.workId &&
         r.kind === (target?.kind ?? 'start_work') &&
-        (!target ||
+        (materialTarget(target) ?
+          typeof r.materialId === 'string' && /^material-[a-f0-9]{32}$/.test(r.materialId) &&
+          Number.isInteger(r.materialVersion) && r.materialVersion >= 0 &&
+          typeof r.sha256 === 'string' && /^[a-f0-9]{64}$/.test(r.sha256) &&
+          (target.kind === 'import_material' || r.materialId === target.materialId)
+          : typeof r.workId === 'string' && r.workId && (!target ||
           (r.workId === target.workId &&
             r.resultId === target.resultId &&
             typeof r.sha256 === 'string' &&
-            /^[a-f0-9]{64}$/.test(r.sha256))) &&
+            /^[a-f0-9]{64}$/.test(r.sha256)))) &&
         Number.isInteger(r.base_version) &&
         r.base_version >= 0 &&
         typeof r.resolved === 'boolean',
@@ -55,10 +71,11 @@ function load(scope: WorkScope, target?: ResultCommandTarget): Reference[] {
   }
   return value.map((r) => ({
     ...scope,
+    ...(materialTarget(target) ? {originServiceInstance: r.originServiceInstance ?? r.serviceInstance} : {}),
     id: r.id,
     kind: r.kind,
-    workId: r.workId,
-    ...(target ? { resultId: r.resultId, sha256: r.sha256 } : {}),
+    ...(materialTarget(target) ? { materialId: r.materialId, materialVersion: r.materialVersion, sha256: r.sha256 }
+      : { workId: r.workId, ...(target ? { resultId: r.resultId, sha256: r.sha256 } : {}) }),
     base_version: r.base_version,
     // Persisted completion is a recovery hint; verify the receipt again this mount.
     resolved: false,
@@ -69,7 +86,7 @@ function load(scope: WorkScope, target?: ResultCommandTarget): Reference[] {
 export function useWorkCommand(
   scope: WorkScope,
   onAccessLost: () => void,
-  target?: ResultCommandTarget,
+  target?: CommandTarget,
 ) {
   const client = useQueryClient();
   const [initial] = useState(() => {
@@ -126,7 +143,10 @@ export function useWorkCommand(
       throw new WorkScopeLost();
     return read;
   };
-  const refresh = () => client.invalidateQueries({ queryKey: ['core-work', scope.organizationId] });
+  const refresh = async () => {
+    await client.invalidateQueries({ queryKey: ['core-work', scope.organizationId] });
+    if (materialTarget(target)) await client.invalidateQueries({ queryKey: ['core-materials', scope.organizationId] });
+  };
   const failure = (error: unknown) => {
     if (!current()) return;
     if (accessLost(error)) onAccessLost();
@@ -137,8 +157,13 @@ export function useWorkCommand(
     const r = value as Record<string, unknown> | null;
     const result = r?.result as Record<string, unknown> | undefined;
     const work = r?.work as Record<string, unknown> | undefined;
+    const material = r?.material as Record<string, unknown> | undefined;
     const successMatches =
-      original.kind === 'start_work'
+      original.kind === 'import_material' || original.kind === 'revoke_material'
+        ? material?.id === original.materialId && material?.sha256 === original.sha256 &&
+          material?.version === (original.kind === 'import_material' ? 1 : Number(original.materialVersion) + 1) &&
+          material?.read_allowed === (original.kind === 'import_material')
+        : original.kind === 'start_work'
         ? r?.work_id === original.workId
         : original.kind === 'adopt_result'
           ? result?.id === original.resultId &&
@@ -210,8 +235,10 @@ export function useWorkCommand(
         ...scope,
         id: crypto.randomUUID(),
         kind: target?.kind ?? 'start_work',
-        workId: String(data.work_id),
-        ...(target ? { resultId: target.resultId, sha256: target.sha256 } : {}),
+        ...(materialTarget(target) ? {
+          materialId: String(data.material_id), materialVersion: target.kind === 'import_material' ? 0 : target.version,
+          sha256: target.sha256,
+        } : { workId: String(data.work_id), ...(target ? { resultId: target.resultId, sha256: target.sha256 } : {}) }),
         base_version: read.version,
         resolved: false,
       };
@@ -282,5 +309,5 @@ export function useWorkCommand(
     setReference(undefined);
     setNote('');
   }
-  return { reference, note, sending, checking, blocked: !!initial.error, send, lookup, another };
+  return { reference, note, sending, checking, blocked: !!initial.error, send, lookup, another, verifyScope: liveSession };
 }

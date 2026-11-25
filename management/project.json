@@ -51,7 +51,9 @@
                 "evidence/027-gateway-management/README.md",
                 "evidence/043-usable-model-access/README.md",
                 "evidence/U-119/README.md",
-                "evidence/U-119/verification.json"
+                "evidence/U-119/verification.json",
+                "evidence/U-120/README.md",
+                "evidence/U-120/verification.json"
             ]
         },
         {
@@ -72,7 +74,9 @@
             "gap": "长任务上下文管理、知识检索与经验复用闭环；不能等同成熟学习系统",
             "evidence": [
                 "docs/ORGANIZATION_HARNESS.md",
-                "evidence/014-real-loop/README.md"
+                "evidence/014-real-loop/README.md",
+                "evidence/U-120/README.md",
+                "evidence/U-120/verification.json"
             ]
         },
         {
@@ -111,7 +115,9 @@
                 "evidence/U-111/README.md",
                 "evidence/U-126/verification.json",
                 "evidence/U-119/README.md",
-                "evidence/U-119/verification.json"
+                "evidence/U-119/verification.json",
+                "evidence/U-120/README.md",
+                "evidence/U-120/verification.json"
             ]
         },
         {
@@ -2123,6 +2129,13 @@
                     "from": "doing",
                     "to": "doing",
                     "note": "u086-observed-settlement-ci-20261115：续评论455的窄测试修复，现有单步Chrome夹具截取不再误含新严格快照比较；原unknown/两released控制、原GET及实际steps/budget重启对等保持。证据evidence/U-086/observed-settlement-ci-scope-20261115/README.md与validation.json。产品严格校验、未知用量、owner/WIP与真实出口保持。仅交付历史，不改变在线状态；当前head CI及非实施复核另验。"
+                },
+                {
+                    "at": "2026-11-25T03:04:24.600Z",
+                    "actor": "Codex current continuation coordinator delivery",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "U-120业务资料受控交付：有权用户选择/导入UTF8有界资料，同一Work绑定id/version/digest并实际读取，正文仅私有存储/受权自动工具上下文；metadata原请求恢复、撤权、事务和跨主体/AU边界验证。npm前端425/management37/action-safety359，Python873含7环境跳过、104项五宽真实本地浏览器及独立权限复核通过，真实模型调用0。证据evidence/U-120/README.md与verification.json；准确SHA CI和远端采用另读回。原U067历史状态/owner及在线U112完整父验收保留，不镜像运行态。"
                 }
             ],
             "claim": {

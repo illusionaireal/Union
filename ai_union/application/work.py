@@ -39,7 +39,7 @@ class WorkService:
         works = rules.projection(state, instance=self.app.instance)
         from .work_events import readable_connection
         for item in works:
-            item["materials"] = self.materials(item["materials_root"])
+            item["materials"] = self.materials(item["materials_root"], state, rules.records(state)['works'][item['id']])
             for step in item['steps']:
                 step['can_observe'] = (governance.reader_role(state, principal) == 'governor'
                                        and readable_connection(state, step))
@@ -58,17 +58,21 @@ class WorkService:
         from .work_events import read_events
         return read_events(self, token, au_id, work_id, step_ref, after, authorization_only)
 
-    def materials(self, reference):
+    def materials(self, reference, state=None, work=None):
         """Report host availability of the referenced read-only root; never reads content."""
         if reference is None:
             return {"reference": None, "available": False, "documents": 0}
         try:
-            listed = documents.list_documents(documents.root_for(self.app.root, reference))
+            source = documents.WorkDocuments(self.app.root, state, work or {'materials_root': reference})
+            listed = source.list()
         except (Rejected, CoreError, OSError):
             return {"reference": reference, "available": False, "documents": 0}
         return {"reference": reference, "available": True, "documents": len(listed)}
 
     def command(self, token, incoming):
+        if isinstance(incoming, dict) and incoming.get('kind') in ('import_material', 'revoke_material'):
+            from .materials import command
+            return command(self, token, incoming)
         if isinstance(incoming, dict) and incoming.get("kind") == "run_step":
             return self.run_step(token, incoming)
         if isinstance(incoming, dict) and incoming.get("kind") == "run_loop":
@@ -119,7 +123,7 @@ class WorkService:
                     rules.effective(state, principals)
                     local = copy.deepcopy(state)
                     if request["kind"] == "invoke_tool":
-                        receipt.update(self.invoke(local, request["data"]))
+                        receipt.update(self.invoke(local, request["data"], cx))
                         receipt["message"] = "已按该工作的有效授权调用只读资料工具并留存回执；未调用模型"
                     elif request["kind"] == "submit_result":
                         receipt["result"] = rules.submit_result(local, request["data"], principal)
@@ -233,17 +237,20 @@ class WorkService:
                     "outcome": "stopped", "reason": "原自动循环 " + loop["command_id"] + " 已完成并采用成果；工作待交付"})
                 return
 
-    def invoke(self, state, data):
+    def invoke(self, state, data, cx=None):
         """Run one authorized read-only tool through the host adapter; no model call."""
         work, _mandate, attempt = rules.tool_target(state, data, instance=self.app.instance)
-        root = documents.root_for(self.app.root, work["materials_root"])
+        source = documents.WorkDocuments(self.app.root, state, work, cx)
         if data["tool"] == "list_documents":
-            listed = documents.list_documents(root)
+            listed = source.list()
             result, detail = {"documents": listed}, {"count": len(listed)}
         else:
-            text_value, digest, size = documents.read_text(root, data["arguments"]["path"])
-            result, detail = {"text": text_value, "sha256": digest, "bytes": size}, {"sha256": digest, "bytes": size}
-        entry = rules.record_tool_call(work, data["tool"], data["arguments"], detail, attempt["id"])
+            text_value, digest, size = source.read(data["arguments"]["path"])
+            detail = {"sha256": digest, "bytes": size}
+            # Imported business text stays in its private content owner. A
+            # durable issuer receipt proves the read without redisclosing it.
+            result = detail if source.item is not None else {"text": text_value, **detail}
+        entry = rules.record_tool_call(work, data["tool"], data["arguments"], detail | source.provenance(), attempt["id"])
         return {"tool_call": entry, "result": result}
 
     def result_content(self, token, au_id, result_id, work_id=None):
@@ -324,13 +331,15 @@ class WorkService:
                     plan["materials_binding"] = None
                     if plan["materials_root"] is not None:
                         try:
-                            root = documents.root_for(self.app.root, plan["materials_root"])
-                            plan["materials_binding"] = hashlib.sha256(str(root).encode("utf-8")).hexdigest()
+                            source = documents.WorkDocuments(self.app.root, state, work, cx)
+                            plan["materials_binding"] = source.binding
                         except Rejected:
+                            if 'material_version' in work:
+                                raise
                             pass  # A first turn with no material history has nothing to redisclose.
                     if any(item["role"] == "tool" for item in history):
-                        root = documents.root_for(self.app.root, plan["materials_root"])
-                        binding = hashlib.sha256(str(root).encode("utf-8")).hexdigest()
+                        source = documents.WorkDocuments(self.app.root, state, work, cx)
+                        binding = source.binding
                         require(bindings and all(item == binding for item in bindings),
                                 "宿主资料目录绑定已变化；原上下文不可继续派发")
                     plan["messages"].extend(history)
@@ -404,7 +413,7 @@ class WorkService:
                 changed = False
                 cx.execute("SAVEPOINT work_step")
                 try:
-                    self.verify_material_binding(plan)
+                    self.verify_material_binding(plan, state)
                     require(self.app.identity.principal_in(accounts, token) == principal, "登录主体已变化")
                     rules.authorize(state, principal)
                     principals = {row[0] for row in accounts.execute("SELECT principal_id FROM owner_account")}
@@ -428,16 +437,16 @@ class WorkService:
                         name = call["function"]["name"]
                         rules.tool_target(local, {"work_id": work["id"], "tool": name}, self.app.instance)
                         if name == "list_documents":
-                            root = documents.root_for(self.app.root, work["materials_root"])
-                            listed = documents.list_documents(root)
+                            source = documents.WorkDocuments(self.app.root, local, work, cx)
+                            listed = source.list()
                             executed.append({"tool": name, "arguments": {},
-                                             "count": len(listed)})
+                                             "count": len(listed)} | source.provenance())
                             outputs.append({"documents": listed, "count": len(listed)})
                         elif name == "read_document":
-                            root = documents.root_for(self.app.root, work["materials_root"])
-                            text, digest, size = documents.read_text(root, arguments.get("path"))
+                            source = documents.WorkDocuments(self.app.root, local, work, cx)
+                            text, digest, size = source.read(arguments.get("path"))
                             executed.append({"tool": name, "arguments": {"path": arguments.get("path")},
-                                             "sha256": digest, "bytes": size})
+                                             "sha256": digest, "bytes": size} | source.provenance())
                             outputs.append({"path": arguments["path"], "content": text, "sha256": digest, "bytes": size})
                         else:
                             raise Rejected("模型请求了本核心不支持的只读工具")
@@ -456,7 +465,7 @@ class WorkService:
                     original = dispatch.find(local, request, principal)
                     WorkContextStore.save(cx, original, current_plan["context_scope"], turn_messages,
                                           [item["step_ref"] for item in new_receipts],
-                                          hashlib.sha256(str(root).encode("utf-8")).hexdigest() if outputs else None)
+                                          source.binding if outputs else None)
                     state = local
                     changed = True
                 except (Rejected, CoreError) as error:
@@ -475,10 +484,15 @@ class WorkService:
                 self.store.save(cx, state, charter, request, receipt, state["policy_version"], changed=False)
         return receipt
 
-    def verify_material_binding(self, plan):
+    def verify_material_binding(self, plan, state=None):
         if plan.get("materials_binding") is not None:
-            root = documents.root_for(self.app.root, plan["materials_root"])
-            require(hashlib.sha256(str(root).encode("utf-8")).hexdigest() == plan["materials_binding"],
+            if state is None:
+                au_id = plan['context_scope']['au_id']
+                directory, intent = self.app.governance.locate(au_id)
+                state = CoreAUStore().read(directory, au_id, creation=intent)['au']
+            work = rules.records(state)['works'][plan['work_id']]
+            source = documents.WorkDocuments(self.app.root, state, work)
+            require(source.binding == plan["materials_binding"],
                     "宿主资料目录绑定已变化；原上下文不能继续派发或采用")
 
     @staticmethod

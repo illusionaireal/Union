@@ -1,14 +1,16 @@
 {
   "schemaVersion": "aegis.schema.v0",
   "baselineRefs": [
-    "specs/053-union-rewrite/u119-resource-preparation-contract.md"
+    "specs/053-union-rewrite/u120-business-materials-contract.md",
+    "docs/decisions/0007-au-business-materials.md"
   ],
   "impactStatement": "docs/aegis/work/2026-11-13-v1-correction-execution/impact-statement-draft.json",
   "compatPlan": "保留正确核心身份/授权/恢复和历史作业查询；旧新派单/安装及MVP交互无保留义务。",
-  "retirementPlan": "旧浏览器入口消费者迁移到V1；无新fallback/双写/调度",
+  "retirementPlan": "没有双写/双派发/读取迁移；导入资料失败不回退宿主；正文不再进入导入invoke回执。",
   "evidenceBundle": [
     "docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-correction-candidate.json",
     "docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-U-119.json",
+    "docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-U-120.json",
     "docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-U-125.json",
     "docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-U-126.json"
   ]

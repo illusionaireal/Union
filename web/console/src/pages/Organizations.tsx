@@ -6,6 +6,8 @@ import { isGovernedAU } from '../api/core-boundary';
 import { Card } from '../components/ui';
 import { CommandButton } from '../features/commands/CommandProvider';
 import CoreModels from '../features/models/CoreModels';
+import { CoreMaterials } from '../features/materials/CoreMaterials';
+import { MaterialWorkPreparation } from '../features/materials/MaterialWorkPreparation';
 import { GovernanceButton } from '../features/governance/GovernanceProvider';
 import { OrganizationGovernance, governanceStatus } from './OrganizationGovernance';
 
@@ -83,7 +85,8 @@ export function OrganizationSectionPage({ section }: { section: OrganizationSect
   const { core } = useWorkspace();
   const { workId, resultId } = useParams();
   if (!core) return null;
-  if (section === 'resources') return <CoreModels />;
+  if (section === 'resources') return <><CoreModels /><CoreMaterials /></>;
+  if (section === 'work') return <MaterialWorkPreparation workId={workId} />;
   if (section === 'governance') return <>{isGovernedAU(core)
     ? <OrganizationGovernance read={core} />
     : <><Card title="初始治理与章程"><p>初始治理主体已绑定创建账户。显示名称不授予权限。</p><p>治理显示名称：{core.au.board_name}</p><p className="au-text">{core.au.charter.text}</p><p>章程内容已保存，尚未采用为有效治理规则。</p><GovernanceButton kind="adopt_governance" primary /></Card><PreparationGaps /></>}</>;

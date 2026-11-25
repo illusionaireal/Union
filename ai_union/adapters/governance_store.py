@@ -63,6 +63,8 @@ def read_in(cx, state, origin):
     rules.validate_state(state, origin, charter)
     responsibility.validate_state(state)
     work_rules.validate_state(state)
+    from .material_store import MaterialStore
+    MaterialStore.validate(cx, state)
     if state["schema_version"] in (3, 4):
         from .model_access_store import ModelAccessStore
         ModelAccessStore.validate(cx, state)
@@ -189,6 +191,8 @@ class GovernanceStore:
             rules.validate_state(state, origin_in(cx)[0], charter)
             responsibility.validate_state(state)
             work_rules.validate_state(state)
+            from .material_store import MaterialStore
+            MaterialStore.validate(cx, state)
             require(json.loads(encoded(state)) == state, "状态序列化不能改变对象身份或事实")
         command = {"id": request["id"], "principal_id": receipt["actor_principal_id"], "payload": encoded(request), "receipt": encoded(receipt)}
         command["hash"] = digest(command)

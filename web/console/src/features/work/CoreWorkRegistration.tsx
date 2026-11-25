@@ -2,6 +2,9 @@ import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { api } from '../../api/client';
 import { useWorkCommand, WorkScopeLost, type WorkScope } from './useWorkCommand';
+import { MaterialPicker } from '../materials/MaterialPicker';
+import { checkMaterials, useMaterials } from '../materials/useMaterials';
+import type { BusinessMaterial } from '../../api/types';
 
 export function CoreWorkRegistration({
   scope,
@@ -21,7 +24,10 @@ export function CoreWorkRegistration({
   const [title, setTitle] = useState(''),
     [goal, setGoal] = useState('');
   const [member, setMember] = useState('AI 助手'),
-    [materials, setMaterials] = useState('');
+    [materials, setMaterials] = useState<BusinessMaterial | null>(null);
+  const materialRead = useMaterials(scope);
+  const selectedMaterial = !materialRead.error ? materialRead.data?.materials.find(item =>
+    item.id === materials?.id && item.version === materials.version && item.sha256 === materials.sha256 && item.read_allowed) : undefined;
   const [maxCalls, setMaxCalls] = useState('2');
   const [tools, setTools] = useState(['read_document']);
   const modelRead = models.data;
@@ -38,13 +44,13 @@ export function CoreWorkRegistration({
     title.trim() &&
     goal.trim() &&
     member.trim() &&
-    /^[\p{L}\p{N}][\p{L}\p{N}_-]{0,63}$/u.test(materials) &&
+    selectedMaterial &&
     tools.length &&
     Number.isInteger(calls) &&
     calls > 0 &&
     calls <= Math.min(10000, modelRead.resources.plan_max_calls);
   async function submit() {
-    if (!ready || !modelRead || !connection || !canStart) return;
+    if (!ready || !modelRead || !connection || !canStart || !selectedMaterial) return;
     const workId = 'work-' + crypto.randomUUID();
     const data = {
       work_id: workId,
@@ -57,12 +63,18 @@ export function CoreWorkRegistration({
       definition_id: workId + '-definition',
       connection_id: connection.id,
       expected_revision: connection.revision,
-      materials_root: materials,
+      materials_root: selectedMaterial.id,
+      material_version: selectedMaterial.version,
       max_calls: calls,
       tools: [...tools],
       reason: '用户在核心任务页登记目标、责任与有限预算',
     };
     await command.send(data, modelRead.version, async (read) => {
+      const freshMaterials = checkMaterials(await api.coreMaterials(scope.organizationId), scope);
+      const currentMaterial = freshMaterials.materials.find(item => item.id === selectedMaterial.id);
+      if (freshMaterials.version !== read.version || !currentMaterial?.read_allowed ||
+          currentMaterial.version !== selectedMaterial.version || currentMaterial.sha256 !== selectedMaterial.sha256)
+        throw new Error('资料许可或版本已变化，请重新选择后提交');
       const fresh = await api.coreModels(scope.organizationId);
       const selected = fresh.connections.find((c) => c.id === connection.id);
       if (
@@ -104,7 +116,7 @@ export function CoreWorkRegistration({
                 command.another();
                 setTitle('');
                 setGoal('');
-                setMaterials('');
+                setMaterials(null);
                 void models.refetch();
               }}
             >
@@ -136,14 +148,7 @@ export function CoreWorkRegistration({
               负责 AI 成员名称
               <input maxLength={200} value={member} onChange={(e) => setMember(e.target.value)} />
             </label>
-            <label>
-              资料目录引用
-              <input
-                value={materials}
-                onChange={(e) => setMaterials(e.target.value)}
-                placeholder="宿主已登记的资料引用"
-              />
-            </label>
+            <MaterialPicker scope={scope} value={materials} onChange={setMaterials} />
             <label>
               调用上限
               <input

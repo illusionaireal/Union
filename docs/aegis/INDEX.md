@@ -56,3 +56,4 @@ Entries are workspace records, not authoritative runtime decisions.
 | 2026-11-18 | artifact | docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-U-125.json | 2026-11-13-v1-correction-execution evidence U-125 |
 | 2026-11-24 | artifact | docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-U-126.json | 2026-11-13-v1-correction-execution evidence U-126 |
 | 2026-11-24 | artifact | docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-U-119.json | 2026-11-13-v1-correction-execution evidence U-119 |
+| 2026-11-25 | artifact | docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-U-120.json | 2026-11-13-v1-correction-execution evidence U-120 |

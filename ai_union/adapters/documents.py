@@ -110,3 +110,33 @@ def read_text(root, value):
     except UnicodeDecodeError as error:
         raise Rejected("只能读取 UTF-8 文本资料") from error
     return text, hashlib.sha256(raw).hexdigest(), len(raw)
+
+
+class WorkDocuments:
+    """One explicit scoped source; imported material failure never falls back."""
+    def __init__(self, console_root, state, work, cx=None):
+        self.cx = cx
+        self.item = None
+        if 'material_version' in work:
+            from ..domain.materials import selected
+            self.item = selected(state, work['materials_root'], work['material_version'])
+            require(self.item['sha256'] == work['material_sha256'], '工作绑定的资料摘要已变化')
+            self.binding = hashlib.sha256(json.dumps([state['id'], self.item['id'], self.item['version'],
+                                                      self.item['sha256']]).encode('utf-8')).hexdigest()
+        else:
+            self.root = root_for(console_root, work['materials_root'])
+            self.binding = hashlib.sha256(str(self.root).encode('utf-8')).hexdigest()
+
+    def list(self):
+        return [self.item['name']] if self.item is not None else list_documents(self.root)
+
+    def read(self, path):
+        if self.item is None:
+            return read_text(self.root, path)
+        _relative(path)
+        require(path == self.item['name'], '只允许读取该工作明确绑定的业务资料')
+        from .material_store import MaterialStore
+        return MaterialStore.read(self.cx, self.item), self.item['sha256'], self.item['bytes']
+
+    def provenance(self):
+        return {} if self.item is None else {'material_id': self.item['id'], 'material_version': self.item['version']}

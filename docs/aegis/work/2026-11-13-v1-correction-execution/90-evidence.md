@@ -40,3 +40,13 @@ ADR采用项目原有owner：ADR-0003细化React与界面责任，ADR-0004补当
 - Summary: 严格RED/GREEN、npm412/Python863含9跳过/80五宽浏览器/独立8+76；真实模型0；远端采用另验
 - Verifier: coordinator; review_u119 independent engineering
 - Evidence status: evidence-finalized
+
+## EvidenceBundleDraft: U-120
+
+- Artifact key: u120-controlled
+- Slice ID: U-120
+- Type: controlled-engineering
+- Source: evidence/U-120/verification.json
+- Summary: 严格RED/GREEN；npm425/Python873含7跳过/104五宽浏览器及独立权限复核；真实模型零，远端采用另验
+- Verifier: coordinator; review_u120 independent permission engineering
+- Evidence status: evidence-finalized

@@ -59,3 +59,9 @@
   content/tool adoption; it does not erase executed calls. Unknown remains
   reserved and used cannot be reconciled as released. Verify the scoped
   contract and `tests/test_work_observation.py` with existing work regressions.
+
+- U-120 `materials.py` owns pure bounded text metadata and permission rules;
+  private content has a separate adapter in the same AU transaction. Work
+  bindings retain material ID/version/digest and never adopt a newer version
+  silently. Revocation preserves obligations, original receipts and used calls.
+  Follow `u120-business-materials-contract.md` and `test_business_materials`.

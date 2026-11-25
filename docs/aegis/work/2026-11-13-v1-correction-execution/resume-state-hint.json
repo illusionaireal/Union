@@ -2,9 +2,9 @@
   "schemaVersion": "aegis.schema.v0",
   "taskId": "2026-11-13-v1-correction-execution",
   "lastCheckpointRef": "docs/aegis/work/2026-11-13-v1-correction-execution/todo-checkpoint-draft.json",
-  "resumeInstruction": "核对任务分支/HEAD、在线U119实际owner/version及候选CI；保留D盘现场，原67146 GitHub窗口实读再采用",
+  "resumeInstruction": "继续codex/u120-business-materials；基线b4371d8，核对实际HEAD、在线owner/version及已有改动。",
   "knownPartialWork": [
-    "U119严格RED/GREEN、npm412/Python863含9跳过/80浏览器/独立8+76通过，证据归集；生成vendor补丁精确核对后仅逆向本轮生成差异"
+    "U120本机完整受控已通过；准确SHA CI、远端采用和在线done待读回。原失败历史保留。"
   ],
   "mustReadBeforeContinuing": [
     "docs/aegis/work/2026-11-13-v1-correction-execution/10-intent.md",
@@ -12,6 +12,6 @@
     "docs/aegis/work/2026-11-13-v1-correction-execution/todo-checkpoint-draft.json"
   ],
   "unsafeToAssume": [
-    "受控资源准备不等于业务资料、真实支出或整体持续可用"
+    "没有真实模型授权或部署/迁移；U112整体及U121/U124不自动完成或执行。"
   ]
 }

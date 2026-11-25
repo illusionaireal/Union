@@ -1,0 +1,651 @@
+{
+  "controlled": true,
+  "evidence_scope": "React/core HTTP/SQLite/modeld/pinned SDK/loopback; no real account",
+  "observed_at": "2026-11-25T02:59:53.031Z",
+  "node": "v24.19.0",
+  "browser": "158.0.8127.37",
+  "console_assets": {
+    "index-B4ctWF54.css": "6b6ce1a6be0d888fde57d580b45dd16ab58a266ff10f6ffadc7f26dd7d46dfaa",
+    "index-DTNOqEl0.js": "43a6e06e5e8ac9ac62a7e646a67dc919ace1886b19c5b7f5b8d30cee5624d856"
+  },
+  "inference_posts": 9,
+  "successful_roundtrip_posts": 2,
+  "business_material_roundtrip_posts": 2,
+  "real_model_calls": 0,
+  "model_commands": 23,
+  "command_kinds": [
+    "cancel_model_check",
+    "grant_model_resources",
+    "save_connection",
+    "set_connection",
+    "start_model_check"
+  ],
+  "checks": [
+    "The model journey starts as an ordinary core account without platform administration",
+    "Preparation gap enters the same AU resource journey",
+    "The models route is available in core mode",
+    "Keyboard opens and closes the model dialog and restores the invoking control",
+    "Saving performs zero inference and does not silently adopt a default",
+    "Validation remains unavailable without explicit resource and document authority",
+    "Resource tool decision preserves every other charter field without visiting generic governance forms",
+    "Background model/session refresh preserves selected material and editing focus",
+    "Two actual SDK HTTP calls return the selected material and tool-generated challenge",
+    "The first inference has no copy of the selected private body or challenge",
+    "Each inference retains its own tokens and unknown cost",
+    "Default adoption is explicit and adds no inference",
+    "Resource preparation returns to the same organization without recreating or dispatching",
+    "completed-model-check has no page overflow at 1440px",
+    "completed-model-check status text is legible at 1440px",
+    "completed-model-check dialog preview and keyboard work at 1440px",
+    "completed-model-check dialog restores keyboard focus at 1440px",
+    "completed-model-check has no page overflow at 1024px",
+    "completed-model-check status text is legible at 1024px",
+    "completed-model-check dialog preview and keyboard work at 1024px",
+    "completed-model-check dialog restores keyboard focus at 1024px",
+    "completed-model-check has no page overflow at 768px",
+    "completed-model-check status text is legible at 768px",
+    "completed-model-check dialog preview and keyboard work at 768px",
+    "completed-model-check dialog restores keyboard focus at 768px",
+    "completed-model-check has no page overflow at 390px",
+    "completed-model-check status text is legible at 390px",
+    "completed-model-check dialog preview and keyboard work at 390px",
+    "completed-model-check dialog restores keyboard focus at 390px",
+    "completed-model-check has no page overflow at 320px",
+    "completed-model-check status text is legible at 320px",
+    "completed-model-check dialog preview and keyboard work at 320px",
+    "completed-model-check dialog restores keyboard focus at 320px",
+    "Lost save response clears the secret and offers lookup instead of resubmission",
+    "An unresolved save does not disable another connection management path",
+    "Recovery cache holds identifiers only, without key or selected document",
+    "Reload and core restart recover the same save without POST replay or extra inference",
+    "The same account, default and accepted output survive restart",
+    "Platform administration alone cannot read this core AU model configuration",
+    "Public model projection and original command receipts do not contain credentials",
+    "Old engine model endpoints cannot accept a V1 AU",
+    "auth shows a safe specific diagnosis and next step",
+    "auth cannot block management of an unrelated connection",
+    "missing shows a safe specific diagnosis and next step",
+    "missing cannot block management of an unrelated connection",
+    "limit shows a safe specific diagnosis and next step",
+    "limit cannot block management of an unrelated connection",
+    "unavailable shows a safe specific diagnosis and next step",
+    "unavailable cannot block management of an unrelated connection",
+    "interrupt shows a safe specific diagnosis and next step",
+    "Interrupted original-event usage remains visible with unknown cost",
+    "interrupt cannot block management of an unrelated connection",
+    "model-diagnostics has no page overflow at 1440px",
+    "model-diagnostics status text is legible at 1440px",
+    "model-diagnostics dialog preview and keyboard work at 1440px",
+    "model-diagnostics dialog restores keyboard focus at 1440px",
+    "model-diagnostics has no page overflow at 1024px",
+    "model-diagnostics status text is legible at 1024px",
+    "model-diagnostics dialog preview and keyboard work at 1024px",
+    "model-diagnostics dialog restores keyboard focus at 1024px",
+    "model-diagnostics has no page overflow at 768px",
+    "model-diagnostics status text is legible at 768px",
+    "model-diagnostics dialog preview and keyboard work at 768px",
+    "model-diagnostics dialog restores keyboard focus at 768px",
+    "model-diagnostics has no page overflow at 390px",
+    "model-diagnostics status text is legible at 390px",
+    "model-diagnostics dialog preview and keyboard work at 390px",
+    "model-diagnostics dialog restores keyboard focus at 390px",
+    "model-diagnostics has no page overflow at 320px",
+    "model-diagnostics status text is legible at 320px",
+    "model-diagnostics dialog preview and keyboard work at 320px",
+    "model-diagnostics dialog restores keyboard focus at 320px",
+    "Offline recovery retains non-secret input and does not auto-submit",
+    "Responses profile is explicitly saved by the actual core and modeld",
+    "Saving Responses neither infers nor replaces the current default",
+    "Editing keeps the native protocol but never refills its key",
+    "U120 preview, scope and keyboard fit 1440px",
+    "U120 closing clears draft and restores keyboard focus 1440px",
+    "U120 preview, scope and keyboard fit 1024px",
+    "U120 closing clears draft and restores keyboard focus 1024px",
+    "U120 preview, scope and keyboard fit 768px",
+    "U120 closing clears draft and restores keyboard focus 768px",
+    "U120 preview, scope and keyboard fit 390px",
+    "U120 closing clears draft and restores keyboard focus 390px",
+    "U120 preview, scope and keyboard fit 320px",
+    "U120 closing clears draft and restores keyboard focus 320px",
+    "U120 preview performs zero inference and zero work commands",
+    "U120 unknown import stores only identity and digest, never body or filename",
+    "U120 restart reopens the original import without replay or inference",
+    "U120 work registration binds the chosen ID/version without inference",
+    "U120 explicit read proves digest and source without returning private body",
+    "U120 actual core/modeld/SDK sends imported body only after the authorized tool read",
+    "U120 model result retains original tool provenance",
+    "U120 saved work and provenance fit 1440px",
+    "U120 saved work and provenance fit 1024px",
+    "U120 saved work and provenance fit 768px",
+    "U120 saved work and provenance fit 390px",
+    "U120 saved work and provenance fit 320px",
+    "U120 revoked original receipt retains the read fact without body disclosure",
+    "U120 revoked binding remains on the original Work with no replacement or inference",
+    "A late original-AU response cannot populate the newly selected AU",
+    "A different core account cannot read the old model records",
+    "Identity and offline checks do not dispatch additional inference",
+    "No browser or core service exception occurred"
+  ],
+  "readability": [
+    {
+      "name": "completed-model-check",
+      "width": 1440,
+      "values": [
+        {
+          "size": 12.25,
+          "contrast": 7.8744441875232
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.8744441875232
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.8744441875232
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.8744441875232
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        }
+      ]
+    },
+    {
+      "name": "completed-model-check",
+      "width": 1024,
+      "values": [
+        {
+          "size": 12.25,
+          "contrast": 7.8744441875232
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.8744441875232
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.8744441875232
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.8744441875232
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        }
+      ]
+    },
+    {
+      "name": "completed-model-check",
+      "width": 768,
+      "values": [
+        {
+          "size": 12.25,
+          "contrast": 7.8744441875232
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.8744441875232
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.8744441875232
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.8744441875232
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        }
+      ]
+    },
+    {
+      "name": "completed-model-check",
+      "width": 390,
+      "values": [
+        {
+          "size": 12.25,
+          "contrast": 7.8744441875232
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.8744441875232
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.8744441875232
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.8744441875232
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        }
+      ]
+    },
+    {
+      "name": "completed-model-check",
+      "width": 320,
+      "values": [
+        {
+          "size": 12.25,
+          "contrast": 7.8744441875232
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.8744441875232
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.8744441875232
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.8744441875232
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        }
+      ]
+    },
+    {
+      "name": "model-diagnostics",
+      "width": 1440,
+      "values": [
+        {
+          "size": 12.25,
+          "contrast": 7.8744441875232
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.8744441875232
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.8744441875232
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.8744441875232
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        }
+      ]
+    },
+    {
+      "name": "model-diagnostics",
+      "width": 1024,
+      "values": [
+        {
+          "size": 12.25,
+          "contrast": 7.8744441875232
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.8744441875232
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.8744441875232
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.8744441875232
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        }
+      ]
+    },
+    {
+      "name": "model-diagnostics",
+      "width": 768,
+      "values": [
+        {
+          "size": 12.25,
+          "contrast": 7.8744441875232
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.8744441875232
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.8744441875232
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.8744441875232
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        }
+      ]
+    },
+    {
+      "name": "model-diagnostics",
+      "width": 390,
+      "values": [
+        {
+          "size": 12.25,
+          "contrast": 7.8744441875232
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.8744441875232
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.8744441875232
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.8744441875232
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        }
+      ]
+    },
+    {
+      "name": "model-diagnostics",
+      "width": 320,
+      "values": [
+        {
+          "size": 12.25,
+          "contrast": 7.8744441875232
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.8744441875232
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.8744441875232
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.8744441875232
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        },
+        {
+          "size": 12.25,
+          "contrast": 7.127038938065507
+        }
+      ]
+    }
+  ]
+}

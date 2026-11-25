@@ -2,6 +2,20 @@
 
 ## Current Checkpoint
 
+- Current todo: U120最终验收、任务提交与远端采用
+- Active slice: U-120
+- Completed todos:
+- U119已采用b4371d8，7项CI及原保护恢复实读，在线revision1255 done；U120已在revision1258认领
+- U120 HTTP/SQLite与渲染严格RED/GREEN；独立复核发现并修复工具回执正文、直接/编辑后迟到拒读、服务重启原请求入口缺口；受影响58 Python/54 UI通过
+- Evidence refs:
+- specs/053-union-rewrite/u120-business-materials-contract.md
+- Blocked on: none
+- Next step: 完成最终浏览器/全量与独立复核读回；初次Python873唯一错误为临时console.lock清理WinError32，原用例单独通过、全量复跑中。最终候选通过后提交/推送/7CI/采用，在线完整验收才done。
+
+## Recent Checkpoint History
+
+## Checkpoint Update
+
 - Current todo: 提交并远端验收U119资源准备
 - Active slice: U-119
 - Completed todos:
@@ -12,9 +26,6 @@
 - evidence/U-119/independent-review.md
 - Blocked on: none
 - Next step: 任务提交推送，准确SHA七项CI成功后按用户授权直接采用rewrite并恢复原保护；在线U119完整验收读回，U112不done
-
-## Recent Checkpoint History
-
 ## Checkpoint Update
 
 - Current todo: 实施U119同一组织模型与有限资源准备
@@ -64,61 +75,12 @@
 - evidence/U-111/README.md
 - Blocked on: none
 - Next step: 任务提交推送，准确SHA远端CI通过后，按用户授权桌面浏览器直接快进rewrite并恢复保护；在线验收记录读回
-## Checkpoint Update
-
-- Current todo: 完成U126创建表单及原请求恢复，再贯通验收U111
-- Active slice: U-126
-- Completed todos:
-- U110/U118已合并；U125独立身份复核、396前端、116浏览器、863 Python/12跳过通过
-- 5个保留HTTP/SQLite探针41项结果、Node辅助2项、实际启动5项通过
-- 远端候选0300baa已推送，7项远端CI全部成功，2026-11-24重新实读确认
-- Evidence refs:
-- evidence/U-125/README.md
-- evidence/U-125/delivery-readback.json
-- Blocked on: 无；原PR权限失败仅为历史，本次用户授权直接更新已完成
-- Next step: 冻结goal段落序列化/可读确认/拒绝恢复，观察真实RED后最小GREEN；定向、全量、浏览器及独立身份复核
 
 ## DriftCheckDraft
 
-- Scope status: U119本机受控已验；准确SHA CI与采用待读回，U112不关闭
+- Scope status: U120候选实现、最终验收进行中；U119已采用，U112不关闭
 - Compatibility status: 原S02/S05公开协议、事实写者、当前权限/修订/unknown恢复保留
-- Retirement status: 旧浏览器入口消费者迁移到V1；无新fallback/双写/调度
+- Retirement status: 新导入资料不回退宿主路径；原宿主和S02验证资料保留原用途，无双写/双派发/读取迁移
 - New risk signals:
-- 新增资源浏览器CI需固定Bun/submodule准备；七项必须通过后采用
-- Advisory decision: continue
-
-## DriftCheckDraft
-
-- Scope status: U125已采用；U126和U111本机完整验收已齐，准确SHA远端CI与直接采用另读回。用户授权覆盖直接更新，不再要求恢复PR权。
-- Compatibility status: 唯一workspace与原创建协议/身份恢复保持，零推理；npm404/Python863含9环境跳过/创建44/入口116/独立25与四宽布局通过。
-- Retirement status: 旧界面消费者按V1契约迁移；旧数据与API测试保留，不恢复第二旧UI写者。
-- New risk signals:
-- 完整工作、资源、治理及真实/持续经营仍由各后续卡验收；本卡仅准备态入口。
-- Advisory decision: continue
-
-## DriftCheckDraft
-
-- Scope status: U125已采用；U126和U111本机完整验收已齐，准确SHA远端CI与直接采用另读回。用户授权覆盖直接更新，不再要求恢复PR权。
-- Compatibility status: 唯一workspace与原创建协议/身份恢复保持，零推理；npm404/Python863含9环境跳过/创建44/入口116/独立25与四宽布局通过。
-- Retirement status: 旧界面消费者按V1契约迁移；旧数据与API测试保留，不恢复第二旧UI写者。
-- New risk signals:
-- 完整工作、资源、治理及真实/持续经营仍由各后续卡验收；本卡仅准备态入口。
-- Advisory decision: continue
-
-## DriftCheckDraft
-
-- Scope status: U125已采用；U126和U111本机完整验收已齐，准确SHA远端CI与直接采用另读回。用户授权覆盖直接更新，不再要求恢复PR权。
-- Compatibility status: 唯一workspace与原创建协议/身份恢复保持，零推理；npm404/Python863含9环境跳过/创建44/入口116/独立25与四宽布局通过。
-- Retirement status: 旧界面消费者按V1契约迁移；旧数据与API测试保留，不恢复第二旧UI写者。
-- New risk signals:
-- 完整工作、资源、治理及真实/持续经营仍由各后续卡验收；本卡仅准备态入口。
-- Advisory decision: continue
-
-## DriftCheckDraft
-
-- Scope status: U125已采用；U126和U111本机完整验收已齐，准确SHA远端CI与直接采用另读回。用户授权覆盖直接更新，不再要求恢复PR权。
-- Compatibility status: 唯一workspace与原创建协议/身份恢复保持，零推理；npm404/Python863含9环境跳过/创建44/入口116/独立25与四宽布局通过。
-- Retirement status: 旧界面消费者按V1契约迁移；旧数据与API测试保留，不恢复第二旧UI写者。
-- New risk signals:
-- 完整工作、资源、治理及真实/持续经营仍由各后续卡验收；本卡仅准备态入口。
+- 原资料命令只按principal/AU保留元数据候选，进程变化不恢复attempt；准确SHA七项CI必须全部通过后采用
 - Advisory decision: continue

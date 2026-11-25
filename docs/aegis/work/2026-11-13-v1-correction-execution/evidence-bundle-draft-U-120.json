@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "aegis.schema.v0",
+  "artifactKey": "u120-controlled",
+  "type": "controlled-engineering",
+  "source": "evidence/U-120/verification.json",
+  "summary": "严格RED/GREEN；npm425/Python873含7跳过/104五宽浏览器及独立权限复核；真实模型零，远端采用另验",
+  "verifier": "coordinator; review_u120 independent permission engineering",
+  "sliceId": "U-120",
+  "evidenceStatus": "evidence-finalized",
+  "updatedAt": "2026-11-25"
+}

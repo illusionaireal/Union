@@ -228,6 +228,11 @@ export function fixture() {
     account: 'participant',
   });
   vi.spyOn(api, 'coreAU').mockImplementation(async () => structuredClone(state.core));
+  vi.spyOn(api, 'coreMaterials').mockImplementation(async () => ({
+    protocol: 'core.materials.v1', organization_id: state.read.organization_id, version: state.read.version,
+    access: { principal_id: state.read.access.principal_id, can_manage: state.read.access.can_configure },
+    limits: { bytes_per_material: 65536, materials: 16, total_bytes: 1048576 }, materials: [],
+  }));
   const fetchMock = vi.fn<typeof fetch>(async (path, init) => {
     const url = String(path);
     if (url.startsWith('/api/v1/models?'))

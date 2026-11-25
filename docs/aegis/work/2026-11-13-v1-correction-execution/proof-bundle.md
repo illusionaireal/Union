@@ -7,7 +7,7 @@ This proof bundle is an advisory Aegis Method Pack record. It does not determine
 ## Task Intent
 
 - Requested outcome: 重新审查偏离 Chapter V1 的开发，先在 Kanban 提出修正，再派单执行。
-- Scope: U-110/U-118/U-111 历史交付保留；当前 U-119 沿原 S02/S05 准备合同执行，不提前关闭 U-112 或实施 U-120。
+- Scope: U120沿冻结合同接入资料/工作公开边界；U112整体和U121/U124保留另行验收。历史交付及原D盘现场保留。
 
 ## Impact
 
@@ -21,6 +21,7 @@ This proof bundle is an advisory Aegis Method Pack record. It does not determine
 
 - docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-correction-candidate.json
 - docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-U-119.json
+- docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-U-120.json
 - docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-U-125.json
 - docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-U-126.json
 
@@ -28,6 +29,7 @@ This proof bundle is an advisory Aegis Method Pack record. It does not determine
 
 - docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-correction-candidate.json
 - docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-U-119.json
+- docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-U-120.json
 - docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-U-125.json
 - docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-U-126.json
 
@@ -45,7 +47,7 @@ This proof bundle is an advisory Aegis Method Pack record. It does not determine
 
 ## Drift Check
 
-- Scope status: U119本机受控已验；准确SHA CI与采用待读回，U112不关闭
-- Compatibility status: 原S02/S05公开协议、事实写者、当前权限/修订/unknown恢复保留
-- Retirement status: 旧浏览器入口消费者迁移到V1；无新fallback/双写/调度
+- Scope status: U120本机完整受控已验；准确SHA CI与远端采用待读回，U112不关闭
+- Compatibility status: 原宿主/S02验证用途、治理/Work/计量和进程attempt边界保持。新资料原ID仅显式lookup。
+- Retirement status: 没有双写/双派发/读取迁移；导入资料失败不回退宿主；正文不再进入导入invoke回执。
 - Advisory decision: continue

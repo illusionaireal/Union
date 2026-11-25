@@ -1,0 +1,9 @@
+.business-materials { margin: 1.5rem 0; padding: 1.25rem 0; border-top: 1px solid var(--line, #d8dde3); }
+.business-materials > .button, .material-list .button { margin: .4rem .5rem .4rem 0; }
+.material-list { list-style: none; padding: 0; }
+.material-list li { padding: 1rem 0; border-bottom: 1px solid var(--line, #d8dde3); }
+.business-materials p, .business-materials h3, .material-picker p, .material-preview p { overflow-wrap: anywhere; }
+.material-preview pre { white-space: pre-wrap; overflow-wrap: anywhere; max-height: 18rem; overflow-y: auto; }
+.material-picker { margin: 1rem 0; min-width: 0; }
+.material-picker select, #material-dialog input, #material-dialog textarea { max-width: 100%; width: 100%; box-sizing: border-box; }
+#material-dialog .button { margin: .4rem .5rem .4rem 0; }

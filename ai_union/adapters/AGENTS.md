@@ -59,3 +59,11 @@
   never migrate schema-3 history. Release selection checks durable dispatch
   semantics even for earlier schema-3 intents. Follow the dispatch compatibility
   contract and `tests/test_work_dispatch_compatibility.py`.
+
+- U-120 `material_store.py` owns bounded private business text in the caller's
+  existing AU transaction; GovernanceStore owns its metadata/authorization,
+  receipt and audit commit. Reads never create tables or grant permission.
+  `documents.WorkDocuments` selects imported text only by explicit Work
+  material version and digest, with no host fallback. Imported invoke receipts
+  contain only read metadata; private model contexts revalidate current scope.
+  Follow `u120-business-materials-contract.md` and `test_business_materials`.

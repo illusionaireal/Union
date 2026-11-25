@@ -79,3 +79,10 @@
   around network reads, and keep those reads outside account/AU locks. No
   grant creation, reconciliation, reservation writes or dispatch. Follow
   `evidence/U-108/contract.md` and `tests/test_core_work_events.py`.
+
+- U-120 `materials.py` composes import/revoke and read-only metadata discovery
+  through the existing GovernanceStore and MaterialStore. Normalize import
+  payloads to a content digest before durable receipts; preserve original IDs.
+  `work.py` consumes the versioned source at dispatch, tool and acceptance
+  boundaries. Imported invoke reads return metadata without copying private
+  text into issuer receipts. No second writer, dispatch loop or read migration.

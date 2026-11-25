@@ -1,7 +1,7 @@
 {
   "schemaVersion": "aegis.schema.v0",
   "requestedOutcome": "重新审查偏离 Chapter V1 的开发，先在 Kanban 提出修正，再派单执行。",
-  "goal": "续接 U-109 修正执行；U-110/U-118/U-111 已交付，当前交付 U-119 同一组织模型、工具与有限资源准备。",
+  "goal": "用户在U119采用后批准U120；当前交付有界业务资料导入授权与同一Work实际读取。",
   "successEvidence": [
     "40条与完整旅程、API/共享事实责任经独立复核",
     "实际Kanban创建/版本化修改读回，父卡验收和原在制责任保留",
@@ -15,11 +15,11 @@
     "部署和在线数据迁移",
     "删除原工作区修改"
   ],
-  "scope": "U-110/U-118/U-111 历史交付保留；当前 U-119 沿原 S02/S05 准备合同执行，不提前关闭 U-112 或实施 U-120。",
+  "scope": "U120沿冻结合同接入资料/工作公开边界；U112整体和U121/U124保留另行验收。历史交付及原D盘现场保留。",
   "changeKinds": [
-    "documentation",
-    "code-retirement",
-    "frontend-entry"
+    "bounded-material-import",
+    "work-document-binding",
+    "frontend-recovery"
   ],
   "riskHints": [
     "身份/原请求/历史证据保护",

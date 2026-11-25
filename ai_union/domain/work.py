@@ -56,7 +56,10 @@ def records(state):
 
 def validate_input(kind, data):
     require(kind in FIELDS, "不支持的核心工作命令")
-    governance.exact(data, FIELDS[kind])
+    fields = FIELDS[kind] | ({'material_version'} if kind == 'start_work' and 'material_version' in data else set())
+    governance.exact(data, fields)
+    if 'material_version' in data:
+        require(type(data['material_version']) is int and data['material_version'] >= 1, '须提供业务资料版本')
     if kind == "submit_result":
         require(reference(data["work_id"]) and reference(data["result_id"]), "工作与成果标识必须是 bounded 引用标识")
         text(data["title"], "成果标题", 200)
@@ -174,6 +177,13 @@ def apply(state, charter, kind, data, principal, request_id, clock=None):
     require(data["materials_root"] is not None or "read_document" not in data["tools"],
             "使用只读资料工具必须先指定宿主已登记的资料目录引用")
     model = connection(state, data["connection_id"], data["expected_revision"])
+    from . import materials
+    material = None
+    if 'material_version' in data:
+        material = materials.selected(state, data['materials_root'], data['material_version'])
+    else:
+        require(not (isinstance(data['materials_root'], str) and materials.ID.fullmatch(data['materials_root'])),
+                '业务资料必须明确绑定当前版本，不能降级为宿主引用')
     for table in TABLES:
         require(data[{"members": "member_id", "definitions": "definition_id", "bindings": "binding_id",
                       "works": "work_id", "mandates": "mandate_id"}[table]] not in records_value[table],
@@ -203,6 +213,8 @@ def apply(state, charter, kind, data, principal, request_id, clock=None):
         "binding_id": data["binding_id"], "definition_id": data["definition_id"], "definition_version": 1,
         "actions": list(data["tools"]), "version": 1, "active": True,
         "issuer_principal_id": principal, "created_at": created_at}
+    if material is not None:
+        records_value['works'][data['work_id']].update(material_version=material['version'], material_sha256=material['sha256'])
     return {"work_id": data["work_id"], "member_id": data["member_id"], "binding_id": data["binding_id"],
             "mandate_id": data["mandate_id"], "definition_id": data["definition_id"]}
 
@@ -488,7 +500,7 @@ def apply_step(state, charter, data, principal, instance, clock=None):
     recorded = []
     for call in data["tool_calls"]:
         require(isinstance(call.get("tool"), str) and call["tool"] in TOOL_SPECS, "模型请求了不支持的只读工具")
-        detail = {key: call[key] for key in ("sha256", "bytes", "count") if key in call}
+        detail = {key: call[key] for key in ("sha256", "bytes", "count", "material_id", "material_version") if key in call}
         recorded.append(record_tool_call(work, call["tool"], call.get("arguments") or {}, detail, attempt["id"], clock))
     if data["content"]:
         submit_result(state, {"work_id": data["work_id"], "result_id": data["result_id"],

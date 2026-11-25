@@ -1,0 +1,176 @@
+{
+  "scope": "controlled",
+  "status": "controlled-engineering-verified; exact-SHA CI and adoption pending",
+  "base_sha": "b4371d8ec6fec5ab7a1fb3965decc9d4a84e9b0c",
+  "branch": "codex/u120-business-materials",
+  "integration_target": "rewrite/charter-v1",
+  "implementation_actor": "Codex current continuation",
+  "online_member_id": "363a9919-cc7e-4dbd-8e49-a104a4f0f5ed",
+  "independent_role": "review_u120",
+  "checks": {
+    "npm": {
+      "exit_code": 0,
+      "frontend_tests": 425,
+      "management_tests": 37,
+      "action_safety_tests": 359,
+      "node": "24.19.0",
+      "local_test_workers": 2
+    },
+    "python": {
+      "exit_code": 0,
+      "tests": 873,
+      "seconds": 906.471,
+      "skipped": 7,
+      "python": "3.13.14"
+    },
+    "browser": {
+      "exit_code": 0,
+      "checks": 104,
+      "widths": [
+        1440,
+        1024,
+        768,
+        390,
+        320
+      ],
+      "bounded_material_inference_posts": 2,
+      "total_fixture_inference_posts": 9,
+      "real_model_calls": 0,
+      "bun": "1.4.2"
+    },
+    "independent": {
+      "business_materials": 10,
+      "host_compatibility": 4,
+      "registration": 33,
+      "material_journey": 13,
+      "additional_ui_probes": 7
+    }
+  },
+  "source_hash_normalization": "Git text LF",
+  "source_hashes": {
+    "ai_union/domain/materials.py": "c554b0112e9b4606c1ce93869e3325be19aee2818f6624fe65381f632f28868c",
+    "ai_union/adapters/material_store.py": "f7fdf0e03e0db86ed086d04ae52ccb91e572a285c0b74bfdf597908fd89f2299",
+    "ai_union/adapters/documents.py": "98bf8f42b839a1d34100ae1ec849fef1007f1a0da38a85db6a81ad08cb3c08c6",
+    "ai_union/application/materials.py": "bc8b7d078ce456b0e3c23e61cf421aa2d75ea600beb08905cd2aabf6f6ff2ebd",
+    "ai_union/application/work.py": "c8364b18b429c2797715fd5b0c027b1f3fbad8c5624a3cf14260bf95b0fb4401",
+    "ai_union/domain/work.py": "ca30ee1a9855deea757c3bc12c93c384c7896ed3f18e40a743ad5c4bc6a87072",
+    "ai_union/adapters/governance_store.py": "6edf4d0f56b98824ba6719c8c5495389768fc5ef574035c215746dfa71937ff5",
+    "ai_union/server.py": "0b1c5bb5f936a4c3e3684cfdaab866e1beb8e942eed95dcf103c7849aa0c5b49",
+    "tests/test_business_materials.py": "4813af9dd439865215e48232ccc8ca493d0b54d4e6ae80dda933c5273a689944",
+    "web/console/src/features/materials/CoreMaterials.tsx": "fbc43f9e64cb18f62f15927c0d5460f17b2f21fc90717f491a639618b3e327a4",
+    "web/console/src/features/materials/MaterialPicker.tsx": "aa4cbebb1bf1c1bffc8fb6f26a9ed70080b8629c23da8466ae3cbb9f4549b01a",
+    "web/console/src/features/materials/MaterialWorkPreparation.tsx": "9720dfe642db5db0b83f2c01aa5afdfacdb4fc4d540c611fc52d31dcf4cc9f30",
+    "web/console/src/features/work/useWorkCommand.ts": "3271800fea0d97a106fe2dcb5a72e99f3fcc72ff18e973a97f325ee45996ff3b",
+    "web/console/src/features/work/CoreWorkRegistration.tsx": "a1066a6d49146bd073249389c01b2e541c2f2ddeb1c210bd48c70c7c3c692d8a",
+    "web/console/src/features/models/MaterialJourney.test.tsx": "e97872f59332f47c9b244d819c1be55e8c1c55b20c0511bdcca39faf501da827",
+    "scripts/s02-models-browser.cjs": "e2593e86976b4daa45358f197309ab1285b56bd4dddd8824fbc6695a4c3dec00",
+    "scripts/u120-business-materials-browser.cjs": "324cadec7baf0537833aa41a573578b08a0b433b177730102cf838258ca81c4d",
+    "services/modeld/test/fixtures/core-modeld-host.ts": "2148c0d807a438828424f91c9ad1f6d1919cab33419432a53b6307431a36e311"
+  },
+  "final_logs": {
+    "u120-python-final.log": "5fa7ef9fe531c0468c78988d637905e7e04328130d417824e8cdd9e0a03aa719",
+    "u120-npm-final2.log": "86ac394bfbfb8cf45364db509e5e7bd25653a878aee1618f698c2d7763f7bc81",
+    "u120-browser7.log": "b3e9d5b843fd8e4663209a64ac21ad7b80c1b6e21ff3973aa8adfbb5ec754890",
+    "u120-receipt-green.log": "3c1671faf1a3f51d47f58c02eecd0cd4de267ed1936d89b23f31a881a8afd9bf",
+    "u120-restart-and-late-denial-green2.log": "cd46c89d204b0fffc28c1633a389ac60d2b9d11ee6151fd45173e083102fb672"
+  },
+  "retained_failed_attempts": [
+    {
+      "log": "u120-binding-red.log",
+      "sha256": "932ee18a547b6342287b790a0ddb935d094959195e29ab9ed6b2396ff8106a80",
+      "location": "host-local only"
+    },
+    {
+      "log": "u120-browser.log",
+      "sha256": "e5cb7d467f670be6540b8a35d3fdd850c546f740a2a9064f0d6570f18b4674f3",
+      "location": "host-local only"
+    },
+    {
+      "log": "u120-browser2.log",
+      "sha256": "6edf0d0e604d89be19174818822e61ac2f7dc194a5236a5645b49693d5f5967c",
+      "location": "host-local only"
+    },
+    {
+      "log": "u120-browser3.log",
+      "sha256": "016deb79e1938b2206580b8b4b9f9f2f928b7f062ebac238e54644a556a334b7",
+      "location": "host-local only"
+    },
+    {
+      "log": "u120-browser4.log",
+      "sha256": "6062efbe3422675c2d775c84d7c55341524cca1ae287919df5836f6aa94464ae",
+      "location": "host-local only"
+    },
+    {
+      "log": "u120-browser5.log",
+      "sha256": "5927a351638730e81bfb5143dd11cd90b9d4202179d8461ecd6ce2cb6776a817",
+      "location": "host-local only"
+    },
+    {
+      "log": "u120-browser6.log",
+      "sha256": "a2bedd76b641c845a2f162326771b05b557de31f45376ca769dc934b8aacc00c",
+      "location": "host-local only"
+    },
+    {
+      "log": "u120-http-red.log",
+      "sha256": "51b334585c5afd525d22496e12cd09d8313d9bb1835f4186dfcfe90413f13a0d",
+      "location": "host-local only"
+    },
+    {
+      "log": "u120-import-red.log",
+      "sha256": "e6e25538cf28a64527ebff8464f8ca9b853d1fb27f1138b9e1b4ed6ac4ba4ffb",
+      "location": "host-local only"
+    },
+    {
+      "log": "u120-npm-full.log",
+      "sha256": "cdc04b60b03cddcafa2755e155ef38c0fe2fda059a5d57290cc2ae7917c184e5",
+      "location": "host-local only"
+    },
+    {
+      "log": "u120-preview-access-red.log",
+      "sha256": "0f70438573aa36609235d372e784ccc766904e52aad57cedb2decea542d28f5e",
+      "location": "host-local only"
+    },
+    {
+      "log": "u120-python-full-failure-isolated.log",
+      "sha256": "59cd4e41809e4cf120ee40c27322158afce6022335e4c768c4a1371e83266a1d",
+      "location": "host-local only"
+    },
+    {
+      "log": "u120-python-full.log",
+      "sha256": "25ac66a712006cdca19349d9b493a73d2a1ec6de19b5bd5678d3e39001cdc256",
+      "location": "host-local only"
+    },
+    {
+      "log": "u120-receipt-red.log",
+      "sha256": "2c30b5e39224ed601f7a234d406d22420b84e50cfb4720c86b5abe587347574c",
+      "location": "host-local only"
+    },
+    {
+      "log": "u120-restart-and-late-denial-red.log",
+      "sha256": "81b5637a495b38f414f059f76fabe4dec9a40096a4816d047c220ffb8ece8cd4",
+      "location": "host-local only"
+    },
+    {
+      "log": "u120-roundtrip-red.log",
+      "sha256": "134047958da4965dd4ed5779e940885ed145c8d28446f8c6c5887589d86dafc2",
+      "location": "host-local only"
+    },
+    {
+      "log": "u120-ui-controls-red.log",
+      "sha256": "d7d96e87456f90d04b1e8026281890c5fa94fe5f200a858676e489e19b52917c",
+      "location": "host-local only"
+    },
+    {
+      "log": "u120-ui-race-red.log",
+      "sha256": "cea159eb9e6e69662cac7ba755a20793538b74cfa41c41c7b51414d208eabf6c",
+      "location": "host-local only"
+    },
+    {
+      "log": "u120-ui-red.log",
+      "sha256": "67cfa7e0f9d3fd75210d71e9b160f20e1a870ce1560d7d1f6a40dd5a1e39e9d1",
+      "location": "host-local only"
+    }
+  ],
+  "complexity": "Existing sole AU transaction and recovery owner retained. Two bounded material owners; explicit source selection; no fallback, dual dispatch or new runtime identity.",
+  "boundary": "U120 controlled material preparation only; U112 complete journey and U121/U124 remain separate. No real model spending, deployment or data migration."
+}

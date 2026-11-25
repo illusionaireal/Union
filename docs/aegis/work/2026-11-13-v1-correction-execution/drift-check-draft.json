@@ -3,13 +3,14 @@
   "taskId": "2026-11-13-v1-correction-execution",
   "taskIntentRef": "docs/aegis/work/2026-11-13-v1-correction-execution/task-intent-draft.json",
   "baselineRefs": [
-    "specs/053-union-rewrite/u119-resource-preparation-contract.md"
+    "specs/053-union-rewrite/u120-business-materials-contract.md",
+    "docs/decisions/0007-au-business-materials.md"
   ],
-  "scopeStatus": "U119本机受控已验；准确SHA CI与采用待读回，U112不关闭",
-  "compatStatus": "原S02/S05公开协议、事实写者、当前权限/修订/unknown恢复保留",
-  "retirementStatus": "旧浏览器入口消费者迁移到V1；无新fallback/双写/调度",
+  "scopeStatus": "U120本机完整受控已验；准确SHA CI与远端采用待读回，U112不关闭",
+  "compatStatus": "原宿主/S02验证用途、治理/Work/计量和进程attempt边界保持。新资料原ID仅显式lookup。",
+  "retirementStatus": "没有双写/双派发/读取迁移；导入资料失败不回退宿主；正文不再进入导入invoke回执。",
   "newRiskSignals": [
-    "新增资源浏览器CI需固定Bun/submodule准备；七项必须通过后采用"
+    "准确SHA七项CI和远端ref须真实成功读回；本机全量及浏览器已通过。"
   ],
   "decision": "continue"
 }

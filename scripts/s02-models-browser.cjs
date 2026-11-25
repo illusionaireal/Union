@@ -122,6 +122,7 @@ async function createAU(page, name) {
   await page.getByLabel('组织目的', { exact: true }).fill('核对明确选择的文本资料和有限模型工具往返。');
   await page.getByLabel('成功依据', { exact: true }).fill('工具返回所选文本及原用量，并独立核对默认采用。');
   await page.getByLabel('约束', { exact: true }).fill('只用本机受控替身，保存不推理，保留原请求。');
+  await page.getByLabel('计划调用上限', { exact: true }).fill('12');
   await page.locator('#preview-operation').click(); await page.locator('#commit-operation').click();
   await page.getByRole('button', { name: '完成，返回工作台', exact: true }).click();
   await page.locator('.organization-purpose').waitFor();
@@ -181,7 +182,7 @@ async function stop(child, message) {
   // SDK diagnostics stay private; only explicit browser errors enter public evidence.
   const sdkLog = fs.createWriteStream(path.join(dataRoot, 'sdk.log')); modeld.stderr.pipe(sdkLog);
   const ready = jsonLines(modeld);
-  modeld.stdin.end(JSON.stringify({ directory: dataRoot, admin_token_file: 'admin.token', worker_token_file: 'worker.token', api_key_file: 'api.token' }));
+  modeld.stdin.end(JSON.stringify({ directory: dataRoot, admin_token_file: 'admin.token', worker_token_file: 'worker.token', api_key_file: 'api.token', work_document_name: '业务测试.md' }));
   modeldReady = await ready(); assert.equal(modeldReady.ready, true);
   const clientConfig = path.join(dataRoot, 'client.json');
   fs.writeFileSync(clientConfig, JSON.stringify({ origin: modeldReady.modeld_url, admin_token_file: 'admin.token', worker_token_file: 'worker.token' }), { mode: 0o600 });
@@ -334,6 +335,10 @@ async function stop(child, message) {
   const responsesDialog = page.locator('#model-command-dialog');
   check('Editing keeps the native protocol but never refills its key', await responsesDialog.locator('[name="profile"]').inputValue() === 'openai_responses' && await responsesDialog.locator('[name="api_key"]').inputValue() === '');
   await page.keyboard.press('Escape');
+  progress('U120 business material import, same Work read and revocation');
+  await modelCommand(page, '调整有限调用', {max_calls: 10, allow_unknown_cost: true, reason: '受控回环增加两轮同一工作资料读取，真实模型调用零'});
+  await require('./u120-business-materials-browser.cjs')({page, auId, origin, get, stats, check, until, host, hostLines, output});
+  const postsAfterMaterials = (await stats()).inference_posts;
   await navigate(page, auId, 'overview');
   const otherAU = await createAU(page, 'S02 身份隔离对照');
   await navigate(page, auId, 'models');
@@ -353,13 +358,13 @@ async function stop(child, message) {
   await context.clearCookies(); await page.reload();
   await register(page, { username: 's02-other-core', password: credential() });
   check('A different core account cannot read the old model records', (await get(page, '/api/v1/models?' + new URLSearchParams({ organization_id: auId }))).status === 403 && !(await page.locator('body').innerText()).includes(documentText));
-  check('Identity and offline checks do not dispatch additional inference', (await stats()).inference_posts === postsBeforeIsolation);
+  check('Identity and offline checks do not dispatch additional inference', (await stats()).inference_posts === postsAfterMaterials);
   check('No browser or core service exception occurred', errors.length === 0);
   const assets = path.join(root, 'web/console/dist/assets');
   const record = { controlled: true, evidence_scope: 'React/core HTTP/SQLite/modeld/pinned SDK/loopback; no real account',
     observed_at: new Date().toISOString(), node: process.version, browser: browser.version(),
     console_assets: Object.fromEntries(fs.readdirSync(assets).filter(name => /\.(js|css)$/.test(name)).sort().map(name => [name, crypto.createHash('sha256').update(fs.readFileSync(path.join(assets, name))).digest('hex')])),
-    inference_posts: (await stats()).inference_posts, successful_roundtrip_posts: 2, real_model_calls: 0, model_commands: requests.length,
+    inference_posts: (await stats()).inference_posts, successful_roundtrip_posts: 2, business_material_roundtrip_posts: 2, real_model_calls: 0, model_commands: requests.length,
     command_kinds: [...new Set(requests.map(request => request.kind))].sort(), checks, readability };
   fs.writeFileSync(path.join(output, 'checks.json'), JSON.stringify(record, null, 2) + '\n');
   process.stdout.write(JSON.stringify({ passed: checks.length, inference_posts: record.inference_posts, real_model_calls: 0 }) + '\n');

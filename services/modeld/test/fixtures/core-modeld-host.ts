@@ -9,7 +9,7 @@ import { startService } from '../../src/server';
 console.log = (...args: unknown[]) => console.error(...args);
 console.info = (...args: unknown[]) => console.error(...args);
 const config = JSON.parse(await Bun.stdin.text()) as {
-  directory: string; admin_token_file: string; worker_token_file: string; api_key_file: string; model_id?: string;
+  directory: string; admin_token_file: string; worker_token_file: string; api_key_file: string; model_id?: string; work_document_name?: string;
 };
 const directory = realpathSync(resolve(config.directory));
 function credential(file: string) {
@@ -48,17 +48,19 @@ const provider = Bun.serve({ hostname: '127.0.0.1', port: 0, async fetch(request
   if (toolResult) {
     let material: any;
     try { material = JSON.parse(toolResult.content); } catch { return new Response('controlled_tool_result_not_json', { status: 400 }); }
-    if (typeof material.content !== 'string' || typeof material.challenge !== 'string')
+    const workMaterial = config.work_document_name && material.path === config.work_document_name && typeof material.sha256 === 'string';
+    if (typeof material.content !== 'string' || (!workMaterial && typeof material.challenge !== 'string'))
       return new Response('controlled_tool_material_missing', { status: 400 });
     chunks = [
-      { ...common, choices: [{ index: 0, delta: { role: 'assistant', content: '资料概要：' + material.content + '；校验码：' + material.challenge } }] },
+      { ...common, choices: [{ index: 0, delta: { role: 'assistant', content: '资料概要：' + material.content + (workMaterial ? '；来源：' + material.sha256 : '；校验码：' + material.challenge) } }] },
       { ...common, choices: [{ index: 0, delta: {}, finish_reason: 'stop' }] },
     ];
   } else {
     const tool = body.tools?.find((t: any) => t.type === 'function' && t.function.name === 'read_document');
     const documentID = tool?.function.parameters?.properties?.document_id?.enum?.[0];
-    if (typeof documentID !== 'string') return new Response('controlled_document_schema_missing', { status: 400 });
-    const args = JSON.stringify({ document_id: documentID }), split = Math.floor(args.length / 2);
+    const workPath = tool?.function.parameters?.properties?.path?.type === 'string' && config.work_document_name;
+    if (typeof documentID !== 'string' && !workPath) return new Response('controlled_document_schema_missing', { status: 400 });
+    const args = JSON.stringify(workPath ? {path: workPath} : { document_id: documentID }), split = Math.floor(args.length / 2);
     chunks = [
       { ...common, choices: [{ index: 0, delta: { role: 'assistant', reasoning_content: '读取已明确选择的资料。' } }] },
       { ...common, choices: [{ index: 0, delta: { tool_calls: [{ index: 0, id: 'core-read-call', type: 'function',
