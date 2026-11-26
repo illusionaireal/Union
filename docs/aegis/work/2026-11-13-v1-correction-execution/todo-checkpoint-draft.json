@@ -4,15 +4,18 @@
   "currentTodo": "74/75和66已完整done；继续46恢复、47输入、76持久业务意图自动交付",
   "completedTodos": [
     "#74/U120done；#75/U122与#66/U112以382fce1七CI成功普通Git采用，online done和全部checklist读回，437前端/873Python含7skip/124业务浏览器/116入口保持",
-    "46独立kernel已23恢复+3HTTP+11兼容及原相关63通过；stage1独立复核发现POST全局锁、旧异常释放新预约、最终host/epoch fence三问题，正RED/GREEN修复，未采用未整卡done"
+    "46独立kernel已23恢复+3HTTP+11兼容及原相关63通过；stage1独立复核发现POST全局锁、旧异常释放新预约、最终host/epoch fence三问题，正RED/GREEN修复，未采用未整卡done",
+    "46独立kernel4d339e1顺序整合68ad090及UI，完整Python916/7skip、npm445、Chrome135、兼容11和独立复审全部通过，旧失败保留；远端采用另验"
   ],
   "activeSlice": "U-092",
   "evidenceRefs": [
     "evidence/U-122/adoption.json",
     "evidence/U-112/README.md",
-    "specs/053-union-rewrite/u092-work-recovery-contract.md"
+    "specs/053-union-rewrite/u092-work-recovery-contract.md",
+    "evidence/U-092/verification-20261126.json",
+    "evidence/U-092/browser-20261126.json"
   ],
   "blockedOn": null,
-  "nextStep": "记录75/66采用收口后固定root当前状态；kernel全部稳定后独立规格复审再工程质量/权限复核，顺序整合和原Work恢复UI/组合全量。46done才能47，最终76一次意图后台持续推进交付，原目标不省略",
+  "nextStep": "本任务提交/推送、准确7CI、普通Git采用/readback/online46done；再47新输入再76完整后台交付",
   "updatedAt": "2026-11-26"
 }

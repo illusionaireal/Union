@@ -6,9 +6,9 @@
     "specs/053-union-rewrite/u122-result-reader-contract.md",
     "specs/053-union-rewrite/u092-work-recovery-contract.md"
   ],
-  "scopeStatus": "用户74/75/76及46/47/66授权保持；74done，75工程/浏览器完整通过，66贯通通过，采用与在线done待准确候选；46独立kernel仍实施",
-  "compatStatus": "75只消费原Work/result_content/SQLite；437前端、873Python含7跳过、124真实本地浏览器及独立复核，旧有效兼容通过；SDK仅本轮已记录生成补丁逆向恢复原状态",
-  "retirementStatus": "旧ResultList JSON读取消费改绑同一正文实现，未新增正文数据库/循环/fallback；46仅冻结设计未称运行采用；用户关闭分支保护决定保持",
+  "scopeStatus": "74/75/66已done；46本地完整受控验证通过、准确CI/采用/online另验，47/76完整目标保持",
+  "compatStatus": "916Python/7skip、445前端、135Chrome、builtcompat11通过；仅升级到schema5识别恢复字段，旧schema保留；vendor仅逆向本轮生成patch",
+  "retirementStatus": "正常和恢复复用唯一adopt_turn/原loop及唯一AU写者，无新引擎/账本/重放；历史/私有观察保留，用户关闭保护不恢复",
   "newRiskSignals": [
     "只按本卡完整出口关闭75/66，不将准备/阅读工程升级76自动或真实/持续业务"
   ],

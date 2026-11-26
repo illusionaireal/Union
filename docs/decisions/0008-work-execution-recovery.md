@@ -1,6 +1,6 @@
 # ADR-0008：在原AU事务中恢复同一次Work执行
 
-2026-11-26，设计采用，尚未实现/运行采用。依据用户明确授权接续#46/#47/#66以完成#76、Main Chapter V1 R-01–R-08/K-02/P-04、FRONTEND§4.2、ADR-0005及[恢复契约](../../specs/053-union-rewrite/u092-work-recovery-contract.md)。原候选ADR-0009未在基线找到，不覆盖其可能存在的历史。
+2026-11-26，设计采用；恢复内核与原Work UI已实现为受控候选，[协调验证](../../evidence/U-092/coordinator-20261126.md)记录实际结果和未通过的交付门槛，运行/远端采用须另读回。依据用户明确授权接续#46/#47/#66以完成#76、Main Chapter V1 R-01–R-08/K-02/P-04、FRONTEND§4.2、ADR-0005及[恢复契约](../../specs/053-union-rewrite/u092-work-recovery-contract.md)。原候选ADR-0009未在基线找到，不覆盖其可能存在的历史。
 
 选择GovernanceStore原事务内的owner/epoch、完整请求快照和原模型观察事实；WorkService复用现有step/loop及唯一采用路径。旧host_instance/原Work/attempt/request/预约和已发生计量保留。准备/派发边界明确持久；只有可证明prepared未发送的请求可原ID发送，unknown与dispatching只lookup原ID/摘要。旧worker在调用/工具/采用边界失权，不把关闭当远端取消。
 

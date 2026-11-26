@@ -68,7 +68,7 @@ beforeEach(() => {
 });
 
 describe('current governance access projection', () => {
-  it('keeps the authorized AU readable after dispatch advances its schema', async () => {
+  it.each([4,5])('keeps the authorized AU readable after dispatch advances its schema to %s', async (schema) => {
     const read = vi.spyOn(api, 'coreAU').mockResolvedValue({
       ...governed,
       au: { ...governed.au, schema_version: 3 },
@@ -79,7 +79,7 @@ describe('current governance access projection', () => {
     );
     read.mockResolvedValue({
       ...governed,
-      au: { ...governed.au, schema_version: 4, name: '执行后的同一 AU' },
+      au: { ...governed.au, schema_version: schema, name: '执行后的同一 AU' },
     } as unknown as CoreAURead);
     fireEvent.click(screen.getByRole('button', { name: '刷新当前权限' }));
     await waitFor(() =>

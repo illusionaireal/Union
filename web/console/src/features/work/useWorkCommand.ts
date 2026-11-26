@@ -13,14 +13,18 @@ export type ResultCommandTarget = {
 export type MaterialCommandTarget =
   | { kind: 'import_material'; sha256?: string }
   | { kind: 'revoke_material'; materialId: string; version: number; sha256: string };
-type CommandTarget = ResultCommandTarget | MaterialCommandTarget;
+export type RecoveryCommandTarget = {kind: 'recover_work'; workId: string; attemptId: string};
+type CommandTarget = ResultCommandTarget | MaterialCommandTarget | RecoveryCommandTarget;
 const materialTarget = (target?: CommandTarget): target is MaterialCommandTarget =>
   target?.kind === 'import_material' || target?.kind === 'revoke_material';
+const recoveryTarget = (target?: CommandTarget): target is RecoveryCommandTarget => target?.kind === 'recover_work';
+const survivesRestart = (target?: CommandTarget) => materialTarget(target) || recoveryTarget(target);
 type Reference = WorkScope & {
   originServiceInstance?: string;
   id: string;
   kind: 'start_work' | CommandTarget['kind'];
   workId?: string;
+  attemptId?: string;
   materialId?: string;
   materialVersion?: number;
   resultId?: string;
@@ -28,6 +32,7 @@ type Reference = WorkScope & {
   base_version: number;
   resolved: boolean;
   outcome?: string;
+  refusedBeforeAcceptance?: boolean;
 };
 export class WorkScopeLost extends Error {}
 export const accessLost = (error: unknown) =>
@@ -35,9 +40,10 @@ export const accessLost = (error: unknown) =>
   [401, 403].includes(Number((error as { status?: number })?.status));
 const storageKey = (scope: WorkScope, target?: CommandTarget) =>
   'union-work-command:' +
-  JSON.stringify(materialTarget(target) ? {principalId: scope.principalId, organizationId: scope.organizationId} : scope) +
+  JSON.stringify(survivesRestart(target) ? {principalId: scope.principalId, organizationId: scope.organizationId} : scope) +
   (target ? ':' + JSON.stringify(materialTarget(target)
     ? [target.kind, target.kind === 'revoke_material' ? target.materialId : 'imports']
+    : recoveryTarget(target) ? [target.kind, target.workId, target.attemptId]
     : [target.kind, target.workId, target.resultId]) : '');
 function load(scope: WorkScope, target?: CommandTarget): Reference[] {
   const value: unknown = JSON.parse(sessionStorage.getItem(storageKey(scope, target)) || '[]');
@@ -46,7 +52,7 @@ function load(scope: WorkScope, target?: CommandTarget): Reference[] {
     !value.every(
       (r) =>
         r &&
-        Object.entries(scope).every(([k, v]) => (materialTarget(target) && k === 'serviceInstance') || r[k] === v) &&
+        Object.entries(scope).every(([k, v]) => (survivesRestart(target) && k === 'serviceInstance') || r[k] === v) &&
         typeof r.serviceInstance === 'string' && !!r.serviceInstance &&
         (r.originServiceInstance === undefined || typeof r.originServiceInstance === 'string') &&
         typeof r.id === 'string' &&
@@ -58,7 +64,7 @@ function load(scope: WorkScope, target?: CommandTarget): Reference[] {
           typeof r.sha256 === 'string' && /^[a-f0-9]{64}$/.test(r.sha256) &&
           (target.kind === 'import_material' || r.materialId === target.materialId)
           : typeof r.workId === 'string' && r.workId && (!target ||
-          (r.workId === target.workId &&
+          (recoveryTarget(target) ? r.workId === target.workId && r.attemptId === target.attemptId : r.workId === target.workId &&
             r.resultId === target.resultId &&
             typeof r.sha256 === 'string' &&
             /^[a-f0-9]{64}$/.test(r.sha256)))) &&
@@ -71,14 +77,16 @@ function load(scope: WorkScope, target?: CommandTarget): Reference[] {
   }
   return value.map((r) => ({
     ...scope,
-    ...(materialTarget(target) ? {originServiceInstance: r.originServiceInstance ?? r.serviceInstance} : {}),
+    ...(survivesRestart(target) ? {originServiceInstance: r.originServiceInstance ?? r.serviceInstance} : {}),
     id: r.id,
     kind: r.kind,
     ...(materialTarget(target) ? { materialId: r.materialId, materialVersion: r.materialVersion, sha256: r.sha256 }
+      : recoveryTarget(target) ? {workId: r.workId, attemptId: r.attemptId}
       : { workId: r.workId, ...(target ? { resultId: r.resultId, sha256: r.sha256 } : {}) }),
     base_version: r.base_version,
     // Persisted completion is a recovery hint; verify the receipt again this mount.
-    resolved: false,
+    ...(recoveryTarget(target) && r.refusedBeforeAcceptance === true ? {refusedBeforeAcceptance: true, outcome: 'rejected'} : {}),
+    resolved: recoveryTarget(target) && r.refusedBeforeAcceptance === true,
   }));
 }
 
@@ -158,11 +166,16 @@ export function useWorkCommand(
     const result = r?.result as Record<string, unknown> | undefined;
     const work = r?.work as Record<string, unknown> | undefined;
     const material = r?.material as Record<string, unknown> | undefined;
+    const owner = r?.execution_owner as {instance?: unknown; epoch?: unknown} | undefined;
     const successMatches =
       original.kind === 'import_material' || original.kind === 'revoke_material'
         ? material?.id === original.materialId && material?.sha256 === original.sha256 &&
           material?.version === (original.kind === 'import_material' ? 1 : Number(original.materialVersion) + 1) &&
           material?.read_allowed === (original.kind === 'import_material')
+        : original.kind === 'recover_work'
+        ? r?.work_id === original.workId && r?.attempt_id === original.attemptId &&
+          owner?.instance === (original.originServiceInstance ?? original.serviceInstance) &&
+          Number.isInteger(owner?.epoch) && Number(owner?.epoch) >= 1
         : original.kind === 'start_work'
         ? r?.work_id === original.workId
         : original.kind === 'adopt_result'
@@ -215,6 +228,7 @@ export function useWorkCommand(
     setSending(true);
     setNote('');
     let dispatchedId: string | undefined;
+    let acceptedResponse = false;
     try {
       await liveSession();
       const read = await liveRead();
@@ -238,7 +252,8 @@ export function useWorkCommand(
         ...(materialTarget(target) ? {
           materialId: String(data.material_id), materialVersion: target.kind === 'import_material' ? 0 : target.version,
           sha256: target.sha256,
-        } : { workId: String(data.work_id), ...(target ? { resultId: target.resultId, sha256: target.sha256 } : {}) }),
+        } : recoveryTarget(target) ? {workId: String(data.work_id), attemptId: target.attemptId}
+          : { workId: String(data.work_id), ...(target ? { resultId: target.resultId, sha256: target.sha256 } : {}) }),
         base_version: read.version,
         resolved: false,
       };
@@ -259,8 +274,17 @@ export function useWorkCommand(
         base_version: original.base_version,
         data,
       });
+      acceptedResponse = true;
       if (current()) await accept(original, response.receipt);
     } catch (error) {
+      // Only a direct auth refusal from this recovery POST proves it was not
+      // accepted. Later read loss or an unknown/404 lookup never clears intent.
+      if (current() && recoveryTarget(target) && dispatchedId && !acceptedResponse &&
+          [401,403].includes(Number((error as {status?:number})?.status))) {
+        refs.current = refs.current.map(r=>r.id===dispatchedId ? {...r,resolved:true,outcome:'rejected',refusedBeforeAcceptance:true} : r);
+        setReference(refs.current.at(-1));
+        try { sessionStorage.setItem(key,JSON.stringify(refs.current)); } catch { /* The original ID remains queryable. */ }
+      }
       // A confirmed receipt preserves execution history, not ongoing read access.
       if (
         accessLost(error) ||

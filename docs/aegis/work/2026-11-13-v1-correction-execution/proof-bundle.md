@@ -6,6 +6,8 @@ This proof bundle is an advisory Aegis Method Pack record. It does not determine
 
 ## Task Intent
 
+- Current requested result: 完成在线74/75/76及已授权46/47/66必需前置；74/75/66已采用并在线done，46本地完整受控验证通过、远端采用另验，47/76未实施。
+
 - Requested outcome: 重新审查偏离 Chapter V1 的开发，先在 Kanban 提出修正，再派单执行。
 - Scope: #74已done；#75同Work成果阅读下载、#66完整资源贯通、#46原执行恢复、#47新输入、#76持久工作意图自动交付。保留原D盘现场和旧失败，Git/board/ledger由协调者负责。
 
@@ -18,6 +20,8 @@ This proof bundle is an advisory Aegis Method Pack record. It does not determine
 - 旧AU自动迁移
 
 ## Terminal Evidence Refs
+
+- docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-U-092.json
 
 - docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-correction-candidate.json
 - docs/aegis/work/2026-11-13-v1-correction-execution/evidence-bundle-draft-U-119.json

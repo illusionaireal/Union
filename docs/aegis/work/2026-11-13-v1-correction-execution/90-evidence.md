@@ -50,3 +50,11 @@ ADR采用项目原有owner：ADR-0003细化React与界面责任，ADR-0004补当
 - Summary: 严格RED/GREEN；npm425/Python873含7跳过/104五宽浏览器及独立权限复核；真实模型零，远端采用另验
 - Verifier: coordinator; review_u120 independent permission engineering
 - Evidence status: evidence-finalized
+# EvidenceBundleDraft: U-092 controlled engineering
+
+- Source: evidence/U-092/verification-20261126.json
+- Scope: current original-Work recovery, owner/fencing/private snapshots/context, actual UI and controlled modeld/SDK
+- Checks: Python916/7 environment skips, frontend445, actual browser135, built compatibility11, independent kernel36/Node7/UI49+12/consumer4
+- Status: evidence-finalized for local controlled engineering only; accurate CI, remote adoption and online card completion separately pending
+- Failed attempts: preserved host-local hashes; real model calls0; deployment/migration/sustained business not executed
+- Next authorized delivery: U093 after U092 actual adoption, then U121; this bundle never closes the entire74/75/76 request

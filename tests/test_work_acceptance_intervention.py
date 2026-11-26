@@ -183,11 +183,14 @@ class AcceptanceInterventionTests(unittest.TestCase):
     def test_bounded_driver_exercises_actual_http_document_and_candidate_download(self):
         from tests.model_access_support import ModelAccessCase
         from ai_union.work_transport import ModeldWorkTransport
-        original_transport = ModeldWorkTransport.chat
+        original_transport = ModeldWorkTransport.chat_body
         case = bounded.RealBoundedAcceptanceTests()
         count = 0
-        def model(channel, package, messages, tools):
+        def model(channel, body, *, post_guard):
             nonlocal count
+            with post_guard():
+                pass
+            messages = body['messages']
             count += 1
             if count == 1:
                 return {"content": None, "tool_calls": [{"id": "read-1", "type": "function", "function": {
@@ -199,14 +202,15 @@ class AcceptanceInterventionTests(unittest.TestCase):
             with patch.object(case, "grant", return_value=("grant-a", 1)), \
                     patch.object(bounded, "MODEL", "model-a"), \
                     patch.object(bounded, "modeld_factory", return_value=lambda au, c: ModeldWorkTransport(None, au, c)), \
-                    patch.object(ModeldWorkTransport, "chat", model), redirect_stdout(io.StringIO()):
+                    patch.object(ModeldWorkTransport, "chat_body", model), \
+                    patch.object(ModeldWorkTransport, "current_authorized", return_value=True), redirect_stdout(io.StringIO()):
                 try:
                     case.test_one_work_uses_at_most_two_calls_and_reports_usage_without_cost()
                 finally:
                     # Undo the driver's observer before its outer fake is restored.
                     case.doCleanups()
             self.assertEqual(count, 2)
-            self.assertIs(ModeldWorkTransport.chat, original_transport)
+            self.assertIs(ModeldWorkTransport.chat_body, original_transport)
         finally:
             case.doCleanups()
 

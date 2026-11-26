@@ -198,17 +198,17 @@ class RealBoundedAcceptanceTests(RealChannelCase):
         self.assertEqual(started["receipt"]["status"], "succeeded", started)
 
         observed = []
-        original_chat = ModeldWorkTransport.chat
+        original_chat = ModeldWorkTransport.chat_body
 
-        def observe_chat(channel, package, messages, tools):
-            item = {"run_id": package["run_id"], "messages": copy.deepcopy(messages)}
+        def observe_chat(channel, body, *, post_guard):
+            item = {"run_id": body["id"], "messages": copy.deepcopy(body["messages"])}
             observed.append(item)
-            answer, usage = original_chat(channel, package, messages, tools)
+            answer, usage = original_chat(channel, body, post_guard=post_guard)
             item["usage"] = copy.deepcopy(usage)
             return answer, usage
 
         self.app.work.transport_factory = modeld_factory(CONFIG)
-        self.enterContext(patch.object(ModeldWorkTransport, "chat", observe_chat))
+        self.enterContext(patch.object(ModeldWorkTransport, "chat_body", observe_chat))
         status, looped, _ = self.request("/api/v1/work/commands",
                                          {"id": str(uuid.uuid4()), "organization_id": au_id,
                                           "base_version": self.read()["au"]["version"],

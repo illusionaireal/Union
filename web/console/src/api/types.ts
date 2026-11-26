@@ -55,7 +55,7 @@ export interface PreparedAURead {
 }
 export interface GovernedAURead extends GovernanceReadFields {
   protocol: 'core.au.v1';
-  au: CoreAUBase & Omit<GovernanceAUFields, 'schema_version'> & { schema_version: 2 | 3 | 4 };
+  au: CoreAUBase & Omit<GovernanceAUFields, 'schema_version'> & { schema_version: 2 | 3 | 4 | 5 };
 }
 export type CoreAURead = PreparedAURead | GovernedAURead;
 export interface ModelConnection {
@@ -343,6 +343,8 @@ export interface CoreWorkBudget {
 
 export interface CoreWorkAttempt {
   stale?: boolean;
+  execution_owner?: {instance: string | null; epoch: number};
+  recovery?: {eligible: boolean; reason: string};
   id: string;
   seq: number;
   status: 'running' | 'unknown' | 'closed';

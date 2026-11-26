@@ -342,6 +342,12 @@ async function stop(child, message) {
     progress('U122 same-Work result reading, download and scope isolation');
     await require('./u122-result-reading-browser.cjs')({page, auId, origin, get, stats, check, until, output});
   }
+  if (process.env.UNION_U092_BROWSER === '1') {
+    progress('U092 original Work recovery across service restart');
+    await navigate(page, auId, 'models');
+    await modelCommand(page, '调整有限调用', {max_calls: 12, allow_unknown_cost: true, reason: '受控恢复验收仅增加两轮，真实模型调用零'});
+    await require('./u092-work-recovery-browser.cjs')({page, auId, origin, get, stats, check, until, host, hostLines, output});
+  }
   const postsAfterMaterials = (await stats()).inference_posts;
   await navigate(page, auId, 'overview');
   const otherAU = await createAU(page, 'S02 身份隔离对照');

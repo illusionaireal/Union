@@ -1,0 +1,109 @@
+{
+  "observed_at": "2026-11-26T04:55:40.902Z",
+  "scope": "controlled",
+  "actor": "Codex continuation coordinator and implement_u092_kernel",
+  "online_member_id": "363a9919-cc7e-4dbd-8e49-a104a4f0f5ed",
+  "kernel_commit": "4d339e13538839d2aaf627cbaee1653686682477",
+  "integration_base": "68ad090ef2174ad814aeb2fc11744c83c0d1497e",
+  "checks": {
+    "python": {
+      "exit_code": 0,
+      "tests": 916,
+      "seconds": 812.105,
+      "skipped": 7,
+      "version": "3.13.14"
+    },
+    "npm": {
+      "exit_code": 0,
+      "frontend_tests": 445,
+      "management_tests": 37,
+      "action_safety_tests": 359,
+      "node": "24.19.0",
+      "host_vitest_workers": 2
+    },
+    "browser": {
+      "exit_code": 0,
+      "checks": 135,
+      "fixture_inference_posts": 11,
+      "recovery_inference_posts": 2,
+      "real_model_calls": 0,
+      "bun": "1.4.2",
+      "browser": "158.0.8127.37"
+    },
+    "built_compatibility": {
+      "tests": 11,
+      "skipped": 0
+    },
+    "consumer_regression": {
+      "tests": 23
+    },
+    "independent": {
+      "kernel_recovery": 36,
+      "actual_node_oracle": 7,
+      "numeric_differential_cases": 104354,
+      "ui_project": 49,
+      "ui_additional": 12,
+      "consumer_corrections": 4,
+      "remaining_critical_or_important": 0
+    }
+  },
+  "source_files_sha256": {
+    "ai_union/adapters/work_execution_store.py": "16761a80863e8797479eabac10dc65f9824a8c1823aa33600b5f7c7594cdd2d2",
+    "ai_union/adapters/governance_store.py": "fff9131fcf1eb2dee3424ea8f492a214e5ccc6c583c3ed719c188e3a4ecf546a",
+    "ai_union/application/work.py": "e9d344707330f8becb87353b1a5bf7768e3e6f55207d1ae51ed7c699faf4a268",
+    "ai_union/application/work_dispatch.py": "83a60b1e6442fa1941948630f007130a20d7937dcc9f9a0d0cdca8f52f92aff4",
+    "ai_union/application/work_recovery.py": "1bcd0e9fc3bd3d06dfa944fca8aadfbf86252740a14d2285a8a3244b27853d98",
+    "ai_union/application/model_access.py": "885ae58fadfa96166cf9fd0e5edca931bebb8a2f6fcca4d3258c2c9c390f06ba",
+    "ai_union/domain/work.py": "1f17f455a09aee43fcae7f278bc2c8d3b67fd11d38967048ed114b6c1245dd25",
+    "ai_union/domain/work_recovery.py": "f892ed10df859c351173a73a5810e51baf3ada6c403cb2d65856b7040005114a",
+    "ai_union/domain/governance.py": "1ca1e13d3cc78b5a237af274cba07af9ace962c53c0fac41fd3cefc848953f6f",
+    "ai_union/console.py": "c7e4606fb4b3be61729587062228c2269707cbfa00b63fd5b28a3b46699975f2",
+    "ai_union/work_transport.py": "939c1cc25e054e2ddb0babe40ce72c0c238e43a0a0f3cf4809efa8036f38a193",
+    "scripts/release_package.py": "5330bf71dcc94c866c4e41bc773cc617ae801742b94b9b0f028604d966aa9de6",
+    "web/console/src/api/core-boundary.ts": "080bc79bf7d3dce20e43e1fed9ff967bde420f4698e148b757319b3890633de5",
+    "web/console/src/api/types.ts": "50df398213384f640c0adcbdbb141d70ae3aee08b83d0007d83b2aaacd0a6328",
+    "web/console/src/features/work/WorkRecovery.tsx": "2ff55f7fd232e9da01ce3260f30553551bb22fa5caf942f83ea8aee8aebb3a50",
+    "web/console/src/features/work/useWorkCommand.ts": "81ce8f3bd3c60412c92a95fc35ff4b46ce907ddb9dcb81360d160a0140a15d44",
+    "web/console/src/features/materials/MaterialWorkPreparation.tsx": "f2e11da5794dcbad8668772412cbe9c6fd5e217adacf9a00b0ca2cf9f7a97223",
+    "tests/test_core_work_real.py": "af974542b912f6d7bf47a6bc4a97080c34a34f76a1982237c0c1628a9c8f03da",
+    "tests/test_work_acceptance_intervention.py": "ececb6b788cd08acd44c9153bc10516648917e944e00613ff3b35ca7bf8886d5",
+    "tests/test_core_work_events.py": "623b1f3b82f9a4ac42cfd165f0956a1dd0a3b0e265493ca07ad52aac4520c948",
+    "web/console/src/features/work/WorkRecoveryJourney.test.tsx": "722099d97480fa27533ac169e2226431220ae62ecec7285dd09a2e1ac4c83ae4",
+    "web/console/src/app/governance-workspace.test.tsx": "a2b4e96fd8ebb88f007547db079efad4a36d1c9cd6d49608a3a556657900887e",
+    "scripts/s02-models-browser.cjs": "f91ce47727b39038ed35c99f9809421fe2d256ec2e0721aab6c865f0dbf19d3e",
+    "scripts/u092-work-recovery-browser.cjs": "fc4d62f69e5b104c4aef6909eccd28195dfe1614d2f824111942c9f48250f4f8",
+    ".github/workflows/ci.yml": "6c95f68012eb95c68b71beda5c596c09ba7e696f2b3a984f975f9106ae54b94a"
+  },
+  "host_log_sha256": {
+    "u092-python-final.log": "27727f9fbd69da0bc3b83fc09a51aee16292baa3acca6184288c6faea59160cb",
+    "u092-npm-final3.log": "a404ccdd99edb2265d2d0baad20939239ab57ca8b3f9f875de606aa0f3d388f2",
+    "u092-browser6.log": "d4d94ca328b189397abc51d3503cc9c5ccfd99d32bc2c4040406813125b3c616",
+    "u092-regression-seams-green.log": "a9af8291a1e4ce6e04c2f13fc6751ac91857fc7e86a721d8e528abed80c40388",
+    "u092-compatibility-built.log": "9504290302923892f2ac80632a3c67818ca9ea6444ae2bb7a8380446ba631fc1",
+    "u092-quality-existing-after-canonical.txt": "193ff5259f9122ed8a526bf54eed583c4c70184c7edb1cad26dd148e3062e01a",
+    "u092-quality-wire-oracle-tests.txt": "a35a9809539881770f7127c4bad37b6cd7378c76dc90d306634289537e7d6861",
+    "u092-quality-ui-final-existing.log": "0a63206bc97299fb65becfda3dcc6802274348961d78b946d12f2bffab0bb668",
+    "u092-quality-ui-final-schema.log": "d5a867006d2601a350873cd105d02326b24c88545f5004b970a0c0ca710291a4",
+    "u092-quality-test-seams.log": "49ae92bc7a5af5426bb29ba4c987fc3150613e1c20e0bb4e1f5287bbfade437b",
+    "u092-python-full.log": "7ac20492a9ec1b5c320ab376ed114930f63c2dbf0cdbe8b2ce748fe86158d434",
+    "u092-regression-seams-before.log": "ef0e5385187e5eeaa583d35114c47cf54d6f265e23dc460462306aeb01614cda",
+    "u092-ui-red.log": "1c344550c31ce171b4acf7ac497139e25ac7e07bc1672e3d7d68676c28127a74",
+    "u092-ui-owner-red.log": "f0e6ea8eabb4631fa157455eaaac142700cf738a5a13e1d374ef992e149e2760",
+    "u092-ui-direct-refusal-red.log": "5c8e38f3f12b7bb474942b67fdea3ed7b6814bb4dd727785505de16fc93afb58",
+    "u092-schema-consumer-red.log": "336afae8164f577b3e154a514eaef2720e78673b07a4f48252210bc0d7667959",
+    "u092-browser.log": "54c23b5c106785e4a1b6785431f82ee82caefebea7e4c6ed0c226df196d4aa8a",
+    "u092-browser2.log": "e5cb7d467f670be6540b8a35d3fdd850c546f740a2a9064f0d6570f18b4674f3",
+    "u092-browser3.log": "e5cb7d467f670be6540b8a35d3fdd850c546f740a2a9064f0d6570f18b4674f3",
+    "u092-browser4.log": "fd1cb8ab6cb57c123b784d649037d704c9d7e1d56cc6fea0ef4327bff621e3d2",
+    "u092-browser5.log": "109aa38ede329391c3e9942172d7861a4683aa99607b933cbaebe89083c4ff02",
+    "u092-npm-final2.log": "68fb08da59adc460b3491b5c6e51c9e9b1e1674d125dcf4888031de312f3e2e1"
+  },
+  "limitations": [
+    "Controlled fixture does not prove real models or sustained business",
+    "Accurate final candidate CI, remote adoption and online completion still require readback",
+    "U093 inputs and U121 persistent work intent remain separate downstream delivery",
+    "No deployment, migration or real model spending"
+  ],
+  "failed_history_retained": true,
+  "raw_logs": "host-local only"
+}

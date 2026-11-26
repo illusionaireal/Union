@@ -159,7 +159,11 @@ class WorkEventsTests(WorkHttpChainTests):
         try:
             for _ in range(150):
                 card = self.request('/api/v1/work?organization_id=' + self.au_id)[1]['works'][0]
-                if card['steps']:
+                # The reservation now has a durable prepared phase before POST.
+                # Wait for final dispatch admission and the actual POST so that
+                # the read-only snapshot does not race a legitimate worker write.
+                if (card['steps'] and card['steps'][0].get('dispatch_phase') == 'dispatching'
+                        and len(self.model_posts()) == 1):
                     break
                 time.sleep(.02)
             self.step = card['steps'][0]

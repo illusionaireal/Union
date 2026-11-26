@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "aegis.schema.v0",
+  "artifactKey": "u092-controlled",
+  "type": "controlled-engineering",
+  "source": "evidence/U-092/verification-20261126.json",
+  "summary": "Strict behavior RED/GREEN, Python916/7 skips, frontend445, Chrome135, built compatibility11, independent kernel/UI/consumer reviews; no real models. Remote adoption separately pending.",
+  "verifier": "Codex coordinator; review_recovery_baseline and review_u092_quality",
+  "sliceId": "U-092",
+  "evidenceStatus": "evidence-finalized",
+  "updatedAt": "2026-11-26"
+}

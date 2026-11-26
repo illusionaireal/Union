@@ -2,6 +2,24 @@
 
 ## Current Checkpoint
 
+最终本地门槛2026-11-26：Python916/7skip/812.105秒exit0（u092-python-final.log、session10576已完成），npm445、实际Chrome135/11受控回环/真实0、构建兼容11与独立内核/UI/测试接缝均通过。25份准确源码与旧失败日志hash已归档verification-20261126.json/browser-20261126.json。当前只差本任务提交→准确七CI→普通Git快进采用与online46done；47/76目标保留。宿主SDK已录六行生成补丁经差分核对后仅逆向该patch，vendor恢复clean，不重置他人现场。后续测试若需SDK须再次prepare；构建产物仍为原验证字节。
+
+#47只读预编码复核（尚未开工/采用，不是新产品事实）：沿原Work保存input ID/seq/hash/actor/责任版本，正文用同AU事务private store；必须复用U120 normalized command，避免不可变commands/audit复制正文。prepared附入原sealed请求与预约可靠关联；observed仅表示原模型收到，正式consumed须与当前owner成功adopt_turn/context同AU事务，采用/保存失败或false授权不消费。未知不再派、旧owner不能采用；长等待与重启仍能接受input。新schema6若有必要则只显式成功采用升级，现行work.py/work_dispatch/work_recovery三处写5要保持高版本，installer按input特征拒绝<=5，read不升级。#41反馈同源身份但正式反馈另由原owner；原profile原生long_job_new_input未验仍unsupported。待46实际done、最新board准入与源核对后再冻结完整合同和代码责任。
+
+最新 2026-11-26 12:41：npm最终445前端/37管理/359行动安全、类型/build通过（u092-npm-final3.log，VITEST_MAX/MIN_THREADS=2/1与FORKS=2/1，仅宿主env未改仓库）；准确browser6最终135检查/11回环模型POST/真实0通过，包含U122与U092完整两次重启/原ID查询/同attempt与原工具正文。初次Python916/7skip失败2：读事件零写断言在prepared→dispatching合法worker写期间抽样竞争、真实驱动仍拦截旧chat不是新chat_body。只修tests观察/同步接缝，23受影响组合+独立4（含3次race）通过，所有production hash仍quality冻结值。第二次Python全量现运行session10576，日志u092-python-final.log；只有它通过才能最终完成，首轮失败保留u092-python-full.log和seams-before.log。此前paragraph的旧session与“运行中”说明均为上一时点。
+
+剩余：finalPython读回→归集证据/过程与本地长期U070交付历史（不改变父卡状态）→严格仅本任务路径commit/push→准确SHA七CI→普通Git快进采用rewrite并读回（保护不得恢复）→online46全验done→47准入/合同/实现/同等级验收→76持久身份与自动交付。当前不可停止为74/75部分完成。vendor生成补丁仅opencode.ts已录six-line patch，CI需要prepare；采用前核对仅逆向此次生成差异。
+
+2026-11-26 续接：目标仍是完成74/75/76及用户已明确授权的46/47/66；74/75/66已七CI采用并在线看板done，76不能省略。当前root是5be7 `codex/u092-integration-20261126@68ad090`；94bd kernel `4d339e1`已由协调者提交并cherry-pick。两份合同add/add仅保留获授权的复审补充，没有backend源码冲突。kernel全部冻结，stage1及独立质量/身份/计量复审通过；hash原CRLF变LF仅行尾，quality核对文本相同。
+
+原Work恢复UI已接入；5→6→7正式行为测试，陌生实例回执与direct POST401/403重登录死端分别真实RED/GREEN。新成功owner只匹配原请求service/originServiceInstance；仅直接恢复POST已知认证拒绝保存refusedBeforeAcceptance，已返回response后权限失效或unknown+GET404不释放。49项恢复/治理schema5/资料/成果组合通过，schema5入口漏识别由实际browser和17项1RED查出后窄修，backend未变。最终build已过；最终npm/Python/browser仍运行，不能据旧npm称准确最终候选通过。
+
+宿主日志：`C:/Users/曾驳/.codex/tmp/union-v1-resume-20261116/`。Python全量session76378从12:22开始，日志u092-python-full.log；当前browser5 session59945，npmfinal2 session61021，准确built兼容11项无skip已过session16861。browser前几轮失败分别missing UNION_BUN、错误Bun/未prepare的oauth导出、schema5前端入口；原失败全部保留。当前Node24.19.0在该tmp/node-v24.19.0-win-x64，Python D:/Project/Union/.venv/Scripts/python.exe 3.13.14，Bun D:/nvm4w/nodejs/node_modules/bun/bin/bun.exe 1.4.2。已用npm build:model-service准备固定SDK，vendor仅本轮opencode.ts六行已录补丁生成差异，任务采用前核对仅逆向此生成补丁；不能reset/clean/stash。
+
+下一步：读回正在跑的检查与quality对UI最终复审；browser5带U122和恢复模块，验证两次重启、丢响应原ID、同attempt/工具文本连续与两轮真实本地modeld/SDK（真实模型0）。如失败先查真实证据、strict修复；全量/browser/独立复核/准确七CI及普通Git采用后，在线46完整done。然后在线准备/认领47冻结合同并实施，再76持久身份/自动交付。不因内核完成结束整体任务，保护按用户关闭不得恢复。
+
+下方条目为上一时点记录，保留历史。
+
 - Current todo: 74/75和66已完整done；继续46恢复、47输入、76持久业务意图自动交付
 - Active slice: U-092
 - Completed todos:

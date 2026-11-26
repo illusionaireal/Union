@@ -5,6 +5,7 @@ import { api, errorText } from '../../api/client';
 import { useWorkspace } from '../../app/workspace';
 import { organizationPath } from '../../app/organization-routes';
 import { CoreWorkRegistration } from '../work/CoreWorkRegistration';
+import { WorkRecovery } from '../work/WorkRecovery';
 import type { WorkScope } from '../work/useWorkCommand';
 import './materials.css';
 
@@ -34,6 +35,7 @@ function Preparation({ scope, workId }: { scope: WorkScope; workId?: string }) {
           实际读取依据：{String(call.arguments.path)} · {call.bytes} 字节 · SHA-256 {call.sha256} · 原工具回执 {call.step_ref}
         </p>)}
         {!work.tool_calls.some(call => call.tool === 'read_document') && <p>尚无实际资料读取依据；保存绑定不等于已读取。</p>}
+        <WorkRecovery scope={scope} work={work} version={value.version} canManage={value.access.can_manage_results===true} onAccessLost={()=>setLost(true)} />
       </li>)}</ul>
     </>}
     <button className="button secondary" disabled={read.isFetching} onClick={() => void read.refetch()}>刷新工作资料依据</button>
