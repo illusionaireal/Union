@@ -45,6 +45,11 @@
       "rendered_tests": 14,
       "producer_http_sqlite": 3,
       "negative_scope_digest_probes": 9
+    },
+    "entry_browser": {
+      "exit_code": 0,
+      "tests": 116,
+      "real_provider_calls": 0
     }
   },
   "source_hashes": {
@@ -59,7 +64,8 @@
     "web/console/src/pages/Artifacts.tsx": "7e7eccd3af5d61ad70d9b75e50ac345180b723274645e1ffc8a1bc3d379634a0",
     "web/console/src/features/work/ResultJourney.test.tsx": "c8eb609f5b1239da817d19d659d8ffcbe46326043ebc25a52eaf34009622d206",
     "scripts/u122-result-reading-browser.cjs": "87f70da9f70cbabf0d811270392d1eee407034f786ee4548def2fc16d9495ab3",
-    "scripts/s02-models-browser.cjs": "1b1a3a3ae91153c80bf0d614b8e26c2f820286c435df60bc8e4c23174c98522e"
+    "scripts/s02-models-browser.cjs": "1b1a3a3ae91153c80bf0d614b8e26c2f820286c435df60bc8e4c23174c98522e",
+    "scripts/u125-organization-entry-browser.cjs": "b35d004d6f70e1c5b2f4967ab9a457169aeb77505c252ac4f3d70cd115778ed8"
   },
   "retained_failed_logs": {
     "u122-browser.log": "e5cb7d467f670be6540b8a35d3fdd850c546f740a2a9064f0d6570f18b4674f3",
@@ -69,7 +75,8 @@
     "u122-projection-loss-red.log": "5eeb63a8cb18bc1da602009bddc090c7af493db9e796eb641fba6f900f787a23",
     "u122-refresh-session-red.log": "9de95a46106ddf55026cfd2e68ad9bbfb1fb536cd8e390abd25b2922530cf3f9",
     "u122-route-green.log": "ed454add9c28efe838013e70bf3501b834d9d4f1fc77fb1278380f4437cffae6",
-    "u122-route-red.log": "dd312562b14c5da465871697011d4a69265a4def93b869b3e9b93a066ed23a19"
+    "u122-route-red.log": "dd312562b14c5da465871697011d4a69265a4def93b869b3e9b93a066ed23a19",
+    "u122-ci-failure.log": "c519a224ca28794034fdbc1b2356e068e04ac4a4fd173d7a768ad64c110363a1"
   },
   "final_log_hashes": {
     "u122-npm-full.log": "30f4195299f6e44da7c59283e38ccc93f291593e876dfcae837b5d7a2130aecb",

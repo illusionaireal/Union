@@ -316,8 +316,9 @@ async function delayRead(page, auId) {
   await opened(page, b.id, b.name, 'work/work.beta/results/result.beta', '成果');
   check('E02: AU/Work/result deep link wins over a conflicting organization query without reading the other AU',
     coreReads(beforeConflict).length > 0 && coreReads(beforeConflict).every(item => item.path === '/api/v1/aus/' + b.id));
-  check('E02: a result deep link preserves all scope components and explains the unavailable body',
-    (await page.locator('main').innerText()).includes('此页面尚未读取对应正文') &&
+  await page.getByRole('alert').filter({hasText:'指定工作或成果不存在'}).waitFor();
+  check('E02: a missing result deep link preserves all scope components and explicitly rejects body fallback',
+    (await page.locator('main').innerText()).includes('指定工作或成果不存在') &&
     !requests.slice(beforeConflict).some(item => item.path === '/api/v1/work/results'));
   for (const target of ['/overview', '/tasks', '/artifacts', '/models', '/members', '/resources', '/activity', '/settings']) {
     const before = requests.length;
@@ -529,7 +530,7 @@ async function delayRead(page, auId) {
     injectedFaults: ['browser offline', 'AU 403', 'delayed AU read', 'session principal/service/401',
       'directory removal', 'preference storage unavailable'],
     limits: ['Prepared AU entry only; U-126 creation form and original-request uncertainty are separate.',
-      'Work/results are scope-preserving capability-gap pages; no business body or autonomy acceptance.',
+      'Work automatic intent remains a separate gate; missing result links reject fallback. U122 valid result reading is verified separately.',
       'No real provider, real resource grant, deployment, screen-reader or physical-device testing.'],
   }, null, 2));
   process.stdout.write(JSON.stringify({ passed: checks.length, fixtureCreates: commands().length, realProviderCalls: 0,
