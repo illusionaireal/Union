@@ -2,6 +2,34 @@
 
 ## Current Checkpoint
 
+- Current todo: 完整完成用户74/75/76及已授权46/47/66前置；75最终浏览器，46独立kernel并行
+- Active slice: U-122
+- Completed todos:
+- #74/U120已采用dc9431e并done，e29fb49关闭保护决定保留
+- #75已认领；14定向/437前端npm全量/873Python含7跳过及独立复核通过；无未解决Important，浏览器准备consumer错误修复后重验中
+- 用户已明确授权46责任交接和47/66前置；46v6及66v5 progress原历史保留，kernel在94bd任务checkout按冻结合同严格TDD实施；根5be7保留75未提交变更
+- Evidence refs:
+- specs/053-union-rewrite/u122-result-reader-contract.md
+- specs/053-union-rewrite/u092-work-recovery-contract.md
+- evidence/U-122/independent-review.md
+- Blocked on: none
+- Next step: 完成75实际浏览器五宽/下载/原Work隔离，提交/CI/普通Git采用与在线done；46kernel完成后独立规格再工程审查并顺序集成，协调者补恢复UI；再47及66完整验收，最终76不省略
+
+## Recent Checkpoint History
+
+## Checkpoint Update
+
+- Current todo: 用户要求完成在线74/75/76；先实现U122成果阅读下载
+- Active slice: U-122
+- Completed todos:
+- #74/U120已采用dc9431e，收口e29fb49；在线done，保护按用户关闭
+- #75前置均done，当前user363a9919已认领progress；codex/u122-result-reader从e29fb49干净基线建立
+- Evidence refs:
+- specs/053-union-rewrite/u122-result-reader-contract.md
+- Blocked on: #76仍需#46/#47/#66等；#46由codex-home持有，已异步请求明确交接授权，不能自行接管
+- Next step: 按U122冻结合同观察新组织成果路由真实RED，最小接通正文与下载，再完整验收；等待#76前置交接答复期间独立推进#75
+## Checkpoint Update
+
 - Current todo: U120受控交付已完成；记录用户关闭分支保护决定并提交收口证据
 - Active slice: U-120
 - Completed todos:
@@ -14,9 +42,6 @@
 - evidence/U-120/verification.json
 - Blocked on: none
 - Next step: 仅提交本轮交接/采用证据并读回远端；本卡完成，不自行扩展其他卡。原保护不得自动恢复。
-
-## Recent Checkpoint History
-
 ## Checkpoint Update
 
 - Current todo: U120远端PR合入与完整在线验收
@@ -53,35 +78,12 @@
 - evidence/U-119/independent-review.md
 - Blocked on: none
 - Next step: 任务提交推送，准确SHA七项CI成功后按用户授权直接采用rewrite并恢复原保护；在线U119完整验收读回，U112不done
-## Checkpoint Update
-
-- Current todo: 实施U119同一组织模型与有限资源准备
-- Active slice: U-119
-- Completed todos:
-- U125/U126/U111采用d48a121；原保护恢复，在线全部done
-- Evidence refs:
-- evidence/U-119/README.md
-- Blocked on: none
-- Next step: 渲染行为RED后最小GREEN；受影响真实浏览器、全量及独立权限复核
-## Checkpoint Update
-
-- Current todo: 准确最终候选CI通过后直接采用U126/U111
-- Active slice: U-126
-- Completed todos:
-- 本机npm404/Python863含9跳过/创建44/入口116/独立25及四宽通过；消费者焦点等待修复后116复验通过，产品源码未变
-- 窗口核对纠正：原67146窗口仍在且最小化，原GitHub规则标签页及登录均有效；Get-Process.MainWindowHandle只显示另一窗口，不能据此判断关闭；无需用户重新登录
-- Evidence refs:
-- evidence/U-126/verification.json
-- evidence/U-126/ci-consumer-repair.md
-- evidence/U-111/README.md
-- Blocked on: none
-- Next step: 推送当前续接事实纠正；准确最终SHA7项CI通过后，私有u126直接更新脚本使用原67146窗口快进rewrite并恢复全部原规则，在线验收读回。
 
 ## DriftCheckDraft
 
-- Scope status: U120受控工程、七项候选CI、远端采用和在线看板done已确认；用户关闭rewrite保护，后续不自动恢复；U112保持完整父验收
-- Compatibility status: 本轮无产品行为源码变更；18份候选源码摘要一致；原治理/Work/计量与模型授权边界保持
-- Retirement status: 已按用户明确指令删除rewrite分支保护并验证；不删除历史数据/任务/分支，不恢复旧保护脚本；旧403/GH006属历史
+- Scope status: 用户74/75/76及46/47/66授权保持；74done，75工程/浏览器完整通过，66贯通通过，采用与在线done待准确候选；46独立kernel仍实施
+- Compatibility status: 75只消费原Work/result_content/SQLite；437前端、873Python含7跳过、124真实本地浏览器及独立复核，旧有效兼容通过；SDK仅本轮已记录生成补丁逆向恢复原状态
+- Retirement status: 旧ResultList JSON读取消费改绑同一正文实现，未新增正文数据库/循环/fallback；46仅冻结设计未称运行采用；用户关闭分支保护决定保持
 - New risk signals:
-- 当前提交仅记录采用与用户流程决定；同一候选集成推送重触发CI，原成功证据保留；无新增业务执行
+- 只按本卡完整出口关闭75/66，不将准备/阅读工程升级76自动或真实/持续业务
 - Advisory decision: continue

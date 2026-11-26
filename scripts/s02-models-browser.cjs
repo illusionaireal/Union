@@ -338,6 +338,10 @@ async function stop(child, message) {
   progress('U120 business material import, same Work read and revocation');
   await modelCommand(page, '调整有限调用', {max_calls: 10, allow_unknown_cost: true, reason: '受控回环增加两轮同一工作资料读取，真实模型调用零'});
   await require('./u120-business-materials-browser.cjs')({page, auId, origin, get, stats, check, until, host, hostLines, output});
+  if (process.env.UNION_U122_BROWSER === '1') {
+    progress('U122 same-Work result reading, download and scope isolation');
+    await require('./u122-result-reading-browser.cjs')({page, auId, origin, get, stats, check, until, output});
+  }
   const postsAfterMaterials = (await stats()).inference_posts;
   await navigate(page, auId, 'overview');
   const otherAU = await createAU(page, 'S02 身份隔离对照');

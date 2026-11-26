@@ -1,0 +1,10 @@
+.core-result-list {list-style:none; padding:0; margin:24px 0;}
+.core-result-list li {display:flex; align-items:center; justify-content:space-between; gap:24px; padding:22px 0; border-bottom:1px solid var(--border, #ddd);}
+.core-result-list h2 {margin:0 0 8px; font-size:1.15rem;}
+.core-result-list p {margin:6px 0;}
+.result-provenance {display:grid; gap:14px; margin:24px 0;}
+.result-provenance dt {font-weight:600;}
+.result-provenance dd {margin:5px 0 0; overflow-wrap:anywhere;}
+.result-body {white-space:pre-wrap; overflow-wrap:anywhere; font-size:1rem; line-height:1.8; padding:24px 0; border-block:1px solid var(--border, #ddd); margin:24px 0;}
+.result-reader-actions {display:flex; flex-wrap:wrap; gap:12px; margin:24px 0;}
+@media(max-width:600px){.core-result-list li{align-items:flex-start; flex-direction:column; gap:12px;}.core-result-reader h1{overflow-wrap:anywhere;}}

@@ -3,14 +3,14 @@
   "taskId": "2026-11-13-v1-correction-execution",
   "taskIntentRef": "docs/aegis/work/2026-11-13-v1-correction-execution/task-intent-draft.json",
   "baselineRefs": [
-    "specs/053-union-rewrite/u120-business-materials-contract.md",
-    "docs/reviews/2026-11-08-review-disposition.md"
+    "specs/053-union-rewrite/u122-result-reader-contract.md",
+    "specs/053-union-rewrite/u092-work-recovery-contract.md"
   ],
-  "scopeStatus": "U120受控工程、七项候选CI、远端采用和在线看板done已确认；用户关闭rewrite保护，后续不自动恢复；U112保持完整父验收",
-  "compatStatus": "本轮无产品行为源码变更；18份候选源码摘要一致；原治理/Work/计量与模型授权边界保持",
-  "retirementStatus": "已按用户明确指令删除rewrite分支保护并验证；不删除历史数据/任务/分支，不恢复旧保护脚本；旧403/GH006属历史",
+  "scopeStatus": "用户74/75/76及46/47/66授权保持；74done，75工程/浏览器完整通过，66贯通通过，采用与在线done待准确候选；46独立kernel仍实施",
+  "compatStatus": "75只消费原Work/result_content/SQLite；437前端、873Python含7跳过、124真实本地浏览器及独立复核，旧有效兼容通过；SDK仅本轮已记录生成补丁逆向恢复原状态",
+  "retirementStatus": "旧ResultList JSON读取消费改绑同一正文实现，未新增正文数据库/循环/fallback；46仅冻结设计未称运行采用；用户关闭分支保护决定保持",
   "newRiskSignals": [
-    "当前提交仅记录采用与用户流程决定；同一候选集成推送重触发CI，原成功证据保留；无新增业务执行"
+    "只按本卡完整出口关闭75/66，不将准备/阅读工程升级76自动或真实/持续业务"
   ],
   "decision": "continue"
 }

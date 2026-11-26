@@ -54,7 +54,10 @@
                 "evidence/U-119/verification.json",
                 "evidence/U-120/README.md",
                 "evidence/U-120/verification.json",
-                "evidence/U-120/adoption.json"
+                "evidence/U-120/adoption.json",
+                "evidence/U-122/README.md",
+                "evidence/U-122/verification.json",
+                "evidence/U-112/README.md"
             ]
         },
         {
@@ -78,7 +81,10 @@
                 "evidence/014-real-loop/README.md",
                 "evidence/U-120/README.md",
                 "evidence/U-120/verification.json",
-                "evidence/U-120/adoption.json"
+                "evidence/U-120/adoption.json",
+                "evidence/U-122/README.md",
+                "evidence/U-122/verification.json",
+                "evidence/U-112/README.md"
             ]
         },
         {
@@ -120,7 +126,10 @@
                 "evidence/U-119/verification.json",
                 "evidence/U-120/README.md",
                 "evidence/U-120/verification.json",
-                "evidence/U-120/adoption.json"
+                "evidence/U-120/adoption.json",
+                "evidence/U-122/README.md",
+                "evidence/U-122/verification.json",
+                "evidence/U-112/README.md"
             ]
         },
         {
@@ -2146,6 +2155,13 @@
                     "from": "doing",
                     "to": "doing",
                     "note": "2026-11-26 U120受控交付收口：候选dc9431eb2520b589f1dba2324896fb6bcc4f5d48已有七项CI成功，普通Git快进采用至rewrite/charter-v1并读回；在线#74 v10 revision1265 done及原owner保留。用户明确关闭该分支保护，DELETE204/GET404/protected=false已读回，不自动恢复。证据evidence/U-120/adoption.json；原源码、全量、104浏览器与独立权限复核记录保留。仅镜像交付历史，不改变本地运行态、U067父验收或U112/U121/U124。"
+                },
+                {
+                    "at": "2026-11-26T03:27:02.190Z",
+                    "actor": "Codex continuation coordinator delivery",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "2026-11-26 U122受控候选与U112完整准备贯通：正常新组织成果正文/版本/来源/同Work文本下载，437前端/873Python含7跳过/124实际浏览器和独立权限复核通过；真实模型0。U112两个子卡与同一普通核心用户资源旅程完整核对，默认/有限grant/独立业务资料许可/can_start可核对但自主业务false。候选与远端采用/在线完成分别留证，父U113/#76与U092/U093仍未完成。evidence/U-122/README.md、evidence/U-122/verification.json、evidence/U-112/README.md。"
                 }
             ],
             "claim": {

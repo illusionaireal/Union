@@ -7,7 +7,7 @@ This proof bundle is an advisory Aegis Method Pack record. It does not determine
 ## Task Intent
 
 - Requested outcome: 重新审查偏离 Chapter V1 的开发，先在 Kanban 提出修正，再派单执行。
-- Scope: U120沿冻结合同接入资料/工作公开边界；U112整体和U121/U124保留另行验收。历史交付及原D盘现场保留。
+- Scope: #74已done；#75同Work成果阅读下载、#66完整资源贯通、#46原执行恢复、#47新输入、#76持久工作意图自动交付。保留原D盘现场和旧失败，Git/board/ledger由协调者负责。
 
 ## Impact
 
@@ -47,7 +47,7 @@ This proof bundle is an advisory Aegis Method Pack record. It does not determine
 
 ## Drift Check
 
-- Scope status: U120受控工程、七项候选CI、远端采用和在线看板done已确认；用户关闭rewrite保护，后续不自动恢复；U112保持完整父验收
-- Compatibility status: 本轮无产品行为源码变更；18份候选源码摘要一致；原治理/Work/计量与模型授权边界保持
-- Retirement status: 已按用户明确指令删除rewrite分支保护并验证；不删除历史数据/任务/分支，不恢复旧保护脚本；旧403/GH006属历史
+- Scope status: 用户74/75/76及46/47/66授权保持；74done，75工程/浏览器完整通过，66贯通通过，采用与在线done待准确候选；46独立kernel仍实施
+- Compatibility status: 75只消费原Work/result_content/SQLite；437前端、873Python含7跳过、124真实本地浏览器及独立复核，旧有效兼容通过；SDK仅本轮已记录生成补丁逆向恢复原状态
+- Retirement status: 旧ResultList JSON读取消费改绑同一正文实现，未新增正文数据库/循环/fallback；46仅冻结设计未称运行采用；用户关闭分支保护决定保持
 - Advisory decision: continue

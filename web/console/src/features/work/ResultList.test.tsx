@@ -1,23 +1,18 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { MemoryRouter } from 'react-router-dom';
 import { cleanup, render, screen, waitFor } from '@testing-library/react';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it } from 'vitest';
 import { ResultList } from './ResultList';
 
 afterEach(cleanup);
 
-const work = vi.hoisted(() => ({ coreWork: vi.fn() }));
-vi.mock('../../api/client', () => ({ api: work, errorText: (error: unknown) => String(error) }));
-
-function read(value: unknown) {
-  work.coreWork.mockResolvedValue(value);
-  const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
-  return render(<QueryClientProvider client={client}><ResultList organizationId="au-1" /></QueryClientProvider>);
+function read(value: {works: unknown[]}) {
+  return render(<MemoryRouter><ResultList organizationId="au-1" works={value.works as import('../../api/types').CoreWorkItem[]} /></MemoryRouter>);
 }
 
 const base = { protocol: 'core.work.v1', organization_id: 'au-1', version: 5, access: { principal_id: 'p1', can_start: true } };
 
 describe('V1 results list', () => {
-  it('lists adopted and candidate results with a download link per result', async () => {
+  it('lists adopted and candidate results with a Work-scoped reading and download route per result', async () => {
     read({
       ...base,
       works: [
@@ -33,9 +28,8 @@ describe('V1 results list', () => {
     expect(screen.getByText('项目概览（候选）')).toBeTruthy();
     expect(screen.getByText('已采用')).toBeTruthy();
     expect(screen.getByText('候选')).toBeTruthy();
-    const links = screen.getAllByText('下载').map((node) => node.getAttribute('href') ?? '');
-    expect(links[0]).toContain('/api/v1/work/results?organization_id=au-1');
-    expect(links[0]).toContain('id=result-a');
+    const links = screen.getAllByText('阅读与下载').map((node) => node.getAttribute('href') ?? '');
+    expect(links[0]).toBe('/au/au-1/work/work-overview/results/result-a');
   });
 
   it('explains when no V1 result exists yet', async () => {

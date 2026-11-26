@@ -1,0 +1,81 @@
+{
+  "scope": "controlled",
+  "base_sha": "e29fb49941f76209feb44c35511b1570e40c09d6",
+  "branch": "codex/u122-result-reader",
+  "status": "engineering and real local browser verified; remote adoption pending",
+  "actor": "Codex continuation coordinator",
+  "online_member_id": "363a9919-cc7e-4dbd-8e49-a104a4f0f5ed",
+  "checks": {
+    "npm": {
+      "exit_code": 0,
+      "frontend_tests": 437,
+      "management_tests": 37,
+      "action_safety_tests": 359,
+      "node": "24.19.0"
+    },
+    "python": {
+      "exit_code": 0,
+      "tests": 873,
+      "skipped": 7,
+      "seconds": 778.624,
+      "python": "3.13.14"
+    },
+    "target": {
+      "tests": 14,
+      "exit_code": 0
+    },
+    "browser": {
+      "exit_code": 0,
+      "checks": 124,
+      "widths": [
+        1440,
+        1024,
+        768,
+        390,
+        320
+      ],
+      "new_inference_posts": 0,
+      "total_fixture_inference_posts": 9,
+      "real_model_calls": 0,
+      "bun": "1.4.2"
+    },
+    "independent": {
+      "role": "review_u122",
+      "no_unresolved_critical_or_important": true,
+      "rendered_tests": 14,
+      "producer_http_sqlite": 3,
+      "negative_scope_digest_probes": 9
+    }
+  },
+  "source_hashes": {
+    "web/console/src/api/client.ts": "f94ef619e47fd71514255bd7642064e3d6b998ec3ef6713597b05c4f38cbef13",
+    "web/console/src/api/types.ts": "3fb28660da32888d7be588246aacfbdd02c91e76bd805ba5993f1fb04b92af62",
+    "web/console/src/features/work/CoreResults.tsx": "32b1dd57e8129fdab2619b5f7e2023650c8396c5b2930dbf4962768973ee6db7",
+    "web/console/src/features/work/ResultList.tsx": "d7e199759afeb66f12a7f46ee9a2d20ac02e514cd606a85afb9e27639e6e0449",
+    "web/console/src/features/work/ResultReader.tsx": "8f7aea95419509d315e35e46a3afd9fa7de329da962c7201ac617caff3920bd4",
+    "web/console/src/features/work/result-reading.ts": "f792dcf373b0e13f2fb03394deae1f227db146ab1dab6893d804f83adc7fc1f7",
+    "web/console/src/features/work/result-reading.css": "c1298d9d325d20919a5f6166b2daf6ade226019d63f5bc170b70ddd02f5ff420",
+    "web/console/src/pages/Organizations.tsx": "485bf67fc55f4e8161ae6a6532fff6a9bc6972d6615b6c207a7bcc1a3705ba69",
+    "web/console/src/pages/Artifacts.tsx": "7e7eccd3af5d61ad70d9b75e50ac345180b723274645e1ffc8a1bc3d379634a0",
+    "web/console/src/features/work/ResultJourney.test.tsx": "c8eb609f5b1239da817d19d659d8ffcbe46326043ebc25a52eaf34009622d206",
+    "scripts/u122-result-reading-browser.cjs": "87f70da9f70cbabf0d811270392d1eee407034f786ee4548def2fc16d9495ab3",
+    "scripts/s02-models-browser.cjs": "1b1a3a3ae91153c80bf0d614b8e26c2f820286c435df60bc8e4c23174c98522e"
+  },
+  "retained_failed_logs": {
+    "u122-browser.log": "e5cb7d467f670be6540b8a35d3fdd850c546f740a2a9064f0d6570f18b4674f3",
+    "u122-browser2.log": "59dc77bf5ca0a5c3bfd1697fb029cbc0a7eb084ba30fb1908642e4d90e284233",
+    "u122-browser3.log": "7b63524573aa02d9a89ceb160ba3cf2c5cb2e94a2762c0e08d53870a7cb24bd8",
+    "u122-list-identity-red.log": "7bb9b37c0b213c86eb0b3e699c0878eb424e97b6e5185f394c4f04d0b83f445b",
+    "u122-projection-loss-red.log": "5eeb63a8cb18bc1da602009bddc090c7af493db9e796eb641fba6f900f787a23",
+    "u122-refresh-session-red.log": "9de95a46106ddf55026cfd2e68ad9bbfb1fb536cd8e390abd25b2922530cf3f9",
+    "u122-route-green.log": "ed454add9c28efe838013e70bf3501b834d9d4f1fc77fb1278380f4437cffae6",
+    "u122-route-red.log": "dd312562b14c5da465871697011d4a69265a4def93b869b3e9b93a066ed23a19"
+  },
+  "final_log_hashes": {
+    "u122-npm-full.log": "30f4195299f6e44da7c59283e38ccc93f291593e876dfcae837b5d7a2130aecb",
+    "u122-python-full.log": "00935b57c7648f250f881198ba2a0075aa8c2f0a139fb5a9a3e2572515b527c9",
+    "u122-browser4.log": "0989aa22ec2c7c494c0435be09a3f6f749b5d71e79b47e09d15a9c9c7f9fa0ba",
+    "u122-projection-loss-green.log": "b0ff8c72bf3b9b416c02032321ffb9f38dfb36352ca786ba034c41b63da783b7"
+  },
+  "boundary": "Read-only U122 consumes existing WorkService/SQLite, no new body persistence, authority, inference, deployment or migration. U121 and its prerequisites remain separate."
+}

@@ -2,11 +2,11 @@
   "schemaVersion": "aegis.schema.v0",
   "taskId": "2026-11-13-v1-correction-execution",
   "lastCheckpointRef": "docs/aegis/work/2026-11-13-v1-correction-execution/todo-checkpoint-draft.json",
-  "resumeInstruction": "继续5be7/Union任务checkout核对实际HEAD和在线状态。U120候选dc9431e已采用，本轮过程记录与证据属于协调者；保留D盘原现场。Git凭据与gh令牌不同，后者403不代表Git不可用；用户关闭保护决定持续有效。",
+  "resumeInstruction": "主任务checkout5be7 codex/u122-result-reader，基线e29fb49；独立46 checkout94bd codex/u092-recovery-20261126同基线。root仅Git/board/ledger写者，implement_u092_kernel只改约定backend/测试无Git；所有未提交路径属于本轮任务，勿reset/stash。本轮目标74/75/76仍未全完成，继续到真实受控完整出口。",
   "knownPartialWork": [
-    "候选dc9431e七项CI成功，18份源码与5份最终日志摘要一致，原873Python/425前端/104浏览器及独立复核保留",
-    "用户明确关闭rewrite保护；Git实际凭据执行DELETE204，随后GET404/分支200/protected=false；普通Git快进采用dc9431e并读回，无需网页登录",
-    "在线看板revision1265 #74 v10 done，原owner、完整三检查项及受控证据已读回；U112/U121/U124保持"
+    "#74/U120已采用dc9431e并done，e29fb49关闭保护决定保留",
+    "#75已认领；14定向/437前端npm全量/873Python含7跳过及独立复核通过；无未解决Important，浏览器准备consumer错误修复后重验中",
+    "用户已明确授权46责任交接和47/66前置；46v6及66v5 progress原历史保留，kernel在94bd任务checkout按冻结合同严格TDD实施；根5be7保留75未提交变更"
   ],
   "mustReadBeforeContinuing": [
     "docs/aegis/work/2026-11-13-v1-correction-execution/10-intent.md",
@@ -14,6 +14,6 @@
     "docs/aegis/work/2026-11-13-v1-correction-execution/todo-checkpoint-draft.json"
   ],
   "unsafeToAssume": [
-    "关闭保护不免除工程验证，不授权强推/删除历史、真实花费、部署或迁移；U112整体与U121/U124不自动完成。"
+    "75通过不关闭76/父113；46旧候选未找到不算产品RED；用户已交接授权，不再重复询问；无真实花费/部署/迁移，保护不得恢复"
   ]
 }

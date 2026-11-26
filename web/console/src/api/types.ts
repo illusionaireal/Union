@@ -403,6 +403,15 @@ export interface CoreWorkResult {
   status: 'candidate' | 'adopted';
   created_at: string;
   adopted_at: string | null;
+  adopted_by_principal_id?: string | null;
+}
+
+export interface CoreWorkResultContent {
+  protocol: 'core.work.v1';
+  organization_id: string;
+  work_id: string;
+  result: CoreWorkResult;
+  content: string;
 }
 
 export interface CoreWorkItem {
@@ -425,6 +434,8 @@ export interface CoreWorkItem {
   budget: CoreWorkBudget;
   materials: { reference: string | null; available: boolean; documents: number };
   results: CoreWorkResult[];
+  delivered_at?: string | null;
+  delivered_result_id?: string | null;
 }
 
 export interface CoreWork {
