@@ -2,6 +2,37 @@
 
 ## Current Checkpoint
 
+- Current todo: 74/75和66已完整done；继续46恢复、47输入、76持久业务意图自动交付
+- Active slice: U-092
+- Completed todos:
+- #74/U120done；#75/U122与#66/U112以382fce1七CI成功普通Git采用，online done和全部checklist读回，437前端/873Python含7skip/124业务浏览器/116入口保持
+- 46独立kernel已23恢复+3HTTP+11兼容及原相关63通过；stage1独立复核发现POST全局锁、旧异常释放新预约、最终host/epoch fence三问题，正RED/GREEN修复，未采用未整卡done
+- Evidence refs:
+- evidence/U-122/adoption.json
+- evidence/U-112/README.md
+- specs/053-union-rewrite/u092-work-recovery-contract.md
+- Blocked on: none
+- Next step: 记录75/66采用收口后固定root当前状态；kernel全部稳定后独立规格复审再工程质量/权限复核，顺序整合和原Work恢复UI/组合全量。46done才能47，最终76一次意图后台持续推进交付，原目标不省略
+
+## Recent Checkpoint History
+
+## Checkpoint Update
+
+- Current todo: 完整完成74/75/76及46/47/66前置；75准确382fce1等待最后WindowsPythonCI，46kernel继续
+- Active slice: U-122
+- Completed todos:
+- #74/U120done；用户关闭保护真实生效，e29fb49记录；root75代码0228b3b和消费者修复382fce1已推送，root无业务未提交变更
+- #75完整437前端/873Python含7跳过/124资源资料成果浏览器/116入口复验/14定向和独立复核通过；准确382fce1已6CI成功，WindowsPython未结束；75在线review v5，66review v7，未冒称done
+- 用户明确授权46交接及47/66必要前置；46v6 progress owner363，kernel在94bd codex/u092-recovery-20261126严格TDD实施，新增17+2HTTP+11兼容及原63相关通过；宽回归与审查仍待完成，不算整卡done
+- Evidence refs:
+- evidence/U-122/README.md
+- evidence/U-122/verification.json
+- evidence/U-112/README.md
+- specs/053-union-rewrite/u092-work-recovery-contract.md
+- Blocked on: none
+- Next step: 382fce1七CI全过后普通Git采用并在线75/66完整done；kernel DONE后独立规格再工程审查，协调者提交/顺序整合并补原Work恢复UI与组合全量，46done后47持久输入，最终76完整后台意图交付
+## Checkpoint Update
+
 - Current todo: 完整完成用户74/75/76及已授权46/47/66前置；75最终浏览器，46独立kernel并行
 - Active slice: U-122
 - Completed todos:
@@ -14,9 +45,6 @@
 - evidence/U-122/independent-review.md
 - Blocked on: none
 - Next step: 完成75实际浏览器五宽/下载/原Work隔离，提交/CI/普通Git采用与在线done；46kernel完成后独立规格再工程审查并顺序集成，协调者补恢复UI；再47及66完整验收，最终76不省略
-
-## Recent Checkpoint History
-
 ## Checkpoint Update
 
 - Current todo: 用户要求完成在线74/75/76；先实现U122成果阅读下载
@@ -55,29 +83,6 @@
 - evidence/U-120/independent-review.md
 - Blocked on: GitHub令牌创建PR/读取保护403；桌面比较页Sign in；非强推快进被GH006拒绝，要求PR。目标rewrite仍b4371d8，保护未修改。
 - Next step: 等待仓库管理员完成已打开GitHub比较页登录；核对实际ref及最终候选CI，按已有合入授权完成PR交付/合入并读回。只在本卡完整出口通过后done。
-## Checkpoint Update
-
-- Current todo: U120最终验收、任务提交与远端采用
-- Active slice: U-120
-- Completed todos:
-- U119已采用b4371d8，7项CI及原保护恢复实读，在线revision1255 done；U120已在revision1258认领
-- U120 HTTP/SQLite与渲染严格RED/GREEN；独立复核发现并修复工具回执正文、直接/编辑后迟到拒读、服务重启原请求入口缺口；受影响58 Python/54 UI通过
-- Evidence refs:
-- specs/053-union-rewrite/u120-business-materials-contract.md
-- Blocked on: none
-- Next step: 完成最终浏览器/全量与独立复核读回；初次Python873唯一错误为临时console.lock清理WinError32，原用例单独通过、全量复跑中。最终候选通过后提交/推送/7CI/采用，在线完整验收才done。
-## Checkpoint Update
-
-- Current todo: 提交并远端验收U119资源准备
-- Active slice: U-119
-- Completed todos:
-- U119严格RED/GREEN、npm412/Python863含9跳过/80浏览器/独立8+76通过，证据归集；生成vendor补丁精确核对后仅逆向本轮生成差异
-- Evidence refs:
-- evidence/U-119/verification.json
-- evidence/U-119/browser-checks.json
-- evidence/U-119/independent-review.md
-- Blocked on: none
-- Next step: 任务提交推送，准确SHA七项CI成功后按用户授权直接采用rewrite并恢复原保护；在线U119完整验收读回，U112不done
 
 ## DriftCheckDraft
 

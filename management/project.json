@@ -57,7 +57,8 @@
                 "evidence/U-120/adoption.json",
                 "evidence/U-122/README.md",
                 "evidence/U-122/verification.json",
-                "evidence/U-112/README.md"
+                "evidence/U-112/README.md",
+                "evidence/U-122/adoption.json"
             ]
         },
         {
@@ -84,7 +85,8 @@
                 "evidence/U-120/adoption.json",
                 "evidence/U-122/README.md",
                 "evidence/U-122/verification.json",
-                "evidence/U-112/README.md"
+                "evidence/U-112/README.md",
+                "evidence/U-122/adoption.json"
             ]
         },
         {
@@ -129,7 +131,8 @@
                 "evidence/U-120/adoption.json",
                 "evidence/U-122/README.md",
                 "evidence/U-122/verification.json",
-                "evidence/U-112/README.md"
+                "evidence/U-112/README.md",
+                "evidence/U-122/adoption.json"
             ]
         },
         {
@@ -2162,6 +2165,13 @@
                     "from": "doing",
                     "to": "doing",
                     "note": "2026-11-26 U122受控候选与U112完整准备贯通：正常新组织成果正文/版本/来源/同Work文本下载，437前端/873Python含7跳过/124实际浏览器和独立权限复核通过；真实模型0。U112两个子卡与同一普通核心用户资源旅程完整核对，默认/有限grant/独立业务资料许可/can_start可核对但自主业务false。候选与远端采用/在线完成分别留证，父U113/#76与U092/U093仍未完成。evidence/U-122/README.md、evidence/U-122/verification.json、evidence/U-112/README.md。"
+                },
+                {
+                    "at": "2026-11-26T03:56:53.298Z",
+                    "actor": "Codex continuation coordinator delivery",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "2026-11-26 U122/U112完整受控采用收口：382fce12fa30b9d5cb6eae07c1358d3b96fd3ce9准确候选七项CI全部success，普通Git快进采用rewrite读回；在线#75 v7/#66 v9 done、原owner及完整checklist在revision1279读回。437前端/873Python含7skip/124业务浏览器/116入口及独立权限复核；真实模型0。证据evidence/U-122/adoption.json；#74保持done，#76及已授权U092/U093仍待完整验收，不镜像本地运行态。"
                 }
             ],
             "claim": {

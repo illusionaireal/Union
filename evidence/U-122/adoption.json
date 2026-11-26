@@ -1,0 +1,98 @@
+{
+  "at_utc": "2026-11-26T03:53:06.392175+00:00",
+  "candidate_sha": "382fce12fa30b9d5cb6eae07c1358d3b96fd3ce9",
+  "integration_branch": "rewrite/charter-v1",
+  "remote_sha": "382fce12fa30b9d5cb6eae07c1358d3b96fd3ce9",
+  "method": "ordinary git fast-forward",
+  "checks": [
+    {
+      "id": 139674874776,
+      "name": "offline-checks (ubuntu-latest)",
+      "head_sha": "382fce12fa30b9d5cb6eae07c1358d3b96fd3ce9",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 139674875039,
+      "name": "offline-checks (windows-latest)",
+      "head_sha": "382fce12fa30b9d5cb6eae07c1358d3b96fd3ce9",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 139674875995,
+      "name": "unittest (ubuntu-latest)",
+      "head_sha": "382fce12fa30b9d5cb6eae07c1358d3b96fd3ce9",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 139674875565,
+      "name": "unittest (windows-latest)",
+      "head_sha": "382fce12fa30b9d5cb6eae07c1358d3b96fd3ce9",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 139674875086,
+      "name": "console-browser",
+      "head_sha": "382fce12fa30b9d5cb6eae07c1358d3b96fd3ce9",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 139674875315,
+      "name": "model-service (ubuntu-latest)",
+      "head_sha": "382fce12fa30b9d5cb6eae07c1358d3b96fd3ce9",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 139674875650,
+      "name": "model-service (windows-latest)",
+      "head_sha": "382fce12fa30b9d5cb6eae07c1358d3b96fd3ce9",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "scope": "controlled U122 result reading and U112 complete preparation",
+  "online_acceptance": {
+    "at_utc": "2026-11-26T03:55:03.237Z",
+    "result": [
+      {
+        "u": "U-122",
+        "id": 75,
+        "version": 6,
+        "status": "done",
+        "owner": "363a9919-cc7e-4dbd-8e49-a104a4f0f5ed",
+        "revision": 1276
+      },
+      {
+        "u": "U-112",
+        "id": 66,
+        "version": 8,
+        "status": "done",
+        "owner": "363a9919-cc7e-4dbd-8e49-a104a4f0f5ed",
+        "revision": 1277
+      }
+    ]
+  },
+  "branch_protection": "removed per explicit user decision; never restore automatically",
+  "checklist_readback": {
+    "revision": 1279,
+    "cards": [
+      {
+        "id": 75,
+        "version": 7,
+        "status": "done",
+        "checklist_done": 3
+      },
+      {
+        "id": 66,
+        "version": 9,
+        "status": "done",
+        "checklist_done": 5
+      }
+    ]
+  }
+}

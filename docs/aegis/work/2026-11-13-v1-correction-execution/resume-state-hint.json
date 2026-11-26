@@ -2,11 +2,10 @@
   "schemaVersion": "aegis.schema.v0",
   "taskId": "2026-11-13-v1-correction-execution",
   "lastCheckpointRef": "docs/aegis/work/2026-11-13-v1-correction-execution/todo-checkpoint-draft.json",
-  "resumeInstruction": "主任务checkout5be7 codex/u122-result-reader，基线e29fb49；独立46 checkout94bd codex/u092-recovery-20261126同基线。root仅Git/board/ledger写者，implement_u092_kernel只改约定backend/测试无Git；所有未提交路径属于本轮任务，勿reset/stash。本轮目标74/75/76仍未全完成，继续到真实受控完整出口。",
+  "resumeInstruction": "root5be7 branchcodex/u122-result-readerHEAD382fce1，代码已采用remote rewrite同SHA，只有本轮采用/过程文档未提交；kernel94bd branchcodex/u092-recovery-20261126基线e29fb49，implement_u092_kernel持续修改约定backend与测试。review_recovery_baseline stage1不通过后待复审；root唯一Git/board/ledger写者，不能在子agent未停止修改时提交。用户已明确交接46授权和47/66前置，不再询问。整体74/75/76尚差76，不结束为部分完成。",
   "knownPartialWork": [
-    "#74/U120已采用dc9431e并done，e29fb49关闭保护决定保留",
-    "#75已认领；14定向/437前端npm全量/873Python含7跳过及独立复核通过；无未解决Important，浏览器准备consumer错误修复后重验中",
-    "用户已明确授权46责任交接和47/66前置；46v6及66v5 progress原历史保留，kernel在94bd任务checkout按冻结合同严格TDD实施；根5be7保留75未提交变更"
+    "#74/U120done；#75/U122与#66/U112以382fce1七CI成功普通Git采用，online done和全部checklist读回，437前端/873Python含7skip/124业务浏览器/116入口保持",
+    "46独立kernel已23恢复+3HTTP+11兼容及原相关63通过；stage1独立复核发现POST全局锁、旧异常释放新预约、最终host/epoch fence三问题，正RED/GREEN修复，未采用未整卡done"
   ],
   "mustReadBeforeContinuing": [
     "docs/aegis/work/2026-11-13-v1-correction-execution/10-intent.md",
@@ -14,6 +13,6 @@
     "docs/aegis/work/2026-11-13-v1-correction-execution/todo-checkpoint-draft.json"
   ],
   "unsafeToAssume": [
-    "75通过不关闭76/父113；46旧候选未找到不算产品RED；用户已交接授权，不再重复询问；无真实花费/部署/迁移，保护不得恢复"
+    "核对oldkernel私有模型事实留存新契约不等于允许采用；同hostpending可新命令lookup但epoch不升且replay只读；旧schema3/4 reconcile仅usage保持；真实花费/部署/迁移无授权，保护不得恢复"
   ]
 }

@@ -2,7 +2,7 @@
   "scope": "controlled",
   "base_sha": "e29fb49941f76209feb44c35511b1570e40c09d6",
   "branch": "codex/u122-result-reader",
-  "status": "engineering and real local browser verified; remote adoption pending",
+  "status": "controlled engineering/browser/candidate seven CI/remote adoption and online done verified",
   "actor": "Codex continuation coordinator",
   "online_member_id": "363a9919-cc7e-4dbd-8e49-a104a4f0f5ed",
   "checks": {
@@ -84,5 +84,6 @@
     "u122-browser4.log": "0989aa22ec2c7c494c0435be09a3f6f749b5d71e79b47e09d15a9c9c7f9fa0ba",
     "u122-projection-loss-green.log": "b0ff8c72bf3b9b416c02032321ffb9f38dfb36352ca786ba034c41b63da783b7"
   },
-  "boundary": "Read-only U122 consumes existing WorkService/SQLite, no new body persistence, authority, inference, deployment or migration. U121 and its prerequisites remain separate."
+  "boundary": "Read-only U122 consumes existing WorkService/SQLite, no new body persistence, authority, inference, deployment or migration. U121 and its prerequisites remain separate.",
+  "adoption_ref": "evidence/U-122/adoption.json"
 }
