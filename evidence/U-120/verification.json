@@ -1,6 +1,6 @@
 {
   "scope": "controlled",
-  "status": "controlled-engineering-verified; exact-SHA CI and adoption pending",
+  "status": "controlled-engineering-verified; seven candidate checks successful; remote adoption and online completion verified",
   "base_sha": "b4371d8ec6fec5ab7a1fb3965decc9d4a84e9b0c",
   "branch": "codex/u120-business-materials",
   "integration_target": "rewrite/charter-v1",
@@ -172,5 +172,6 @@
     }
   ],
   "complexity": "Existing sole AU transaction and recovery owner retained. Two bounded material owners; explicit source selection; no fallback, dual dispatch or new runtime identity.",
-  "boundary": "U120 controlled material preparation only; U112 complete journey and U121/U124 remain separate. No real model spending, deployment or data migration."
+  "boundary": "U120 controlled material preparation only; U112 complete journey and U121/U124 remain separate. No real model spending, deployment or data migration.",
+  "adoption_ref": "evidence/U-120/adoption.json"
 }

@@ -2,9 +2,11 @@
   "schemaVersion": "aegis.schema.v0",
   "taskId": "2026-11-13-v1-correction-execution",
   "lastCheckpointRef": "docs/aegis/work/2026-11-13-v1-correction-execution/todo-checkpoint-draft.json",
-  "resumeInstruction": "继续codex/u120-business-materials；基线b4371d8，核对实际HEAD、在线owner/version及已有改动。",
+  "resumeInstruction": "继续5be7/Union任务checkout核对实际HEAD和在线状态。U120候选dc9431e已采用，本轮过程记录与证据属于协调者；保留D盘原现场。Git凭据与gh令牌不同，后者403不代表Git不可用；用户关闭保护决定持续有效。",
   "knownPartialWork": [
-    "U120本机完整受控已通过；准确SHA CI、远端采用和在线done待读回。原失败历史保留。"
+    "候选dc9431e七项CI成功，18份源码与5份最终日志摘要一致，原873Python/425前端/104浏览器及独立复核保留",
+    "用户明确关闭rewrite保护；Git实际凭据执行DELETE204，随后GET404/分支200/protected=false；普通Git快进采用dc9431e并读回，无需网页登录",
+    "在线看板revision1265 #74 v10 done，原owner、完整三检查项及受控证据已读回；U112/U121/U124保持"
   ],
   "mustReadBeforeContinuing": [
     "docs/aegis/work/2026-11-13-v1-correction-execution/10-intent.md",
@@ -12,6 +14,6 @@
     "docs/aegis/work/2026-11-13-v1-correction-execution/todo-checkpoint-draft.json"
   ],
   "unsafeToAssume": [
-    "没有真实模型授权或部署/迁移；U112整体及U121/U124不自动完成或执行。"
+    "关闭保护不免除工程验证，不授权强推/删除历史、真实花费、部署或迁移；U112整体与U121/U124不自动完成。"
   ]
 }

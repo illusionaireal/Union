@@ -47,7 +47,7 @@ This proof bundle is an advisory Aegis Method Pack record. It does not determine
 
 ## Drift Check
 
-- Scope status: U120本机完整受控已验；准确SHA CI与远端采用待读回，U112不关闭
-- Compatibility status: 原宿主/S02验证用途、治理/Work/计量和进程attempt边界保持。新资料原ID仅显式lookup。
-- Retirement status: 没有双写/双派发/读取迁移；导入资料失败不回退宿主；正文不再进入导入invoke回执。
+- Scope status: U120受控工程、七项候选CI、远端采用和在线看板done已确认；用户关闭rewrite保护，后续不自动恢复；U112保持完整父验收
+- Compatibility status: 本轮无产品行为源码变更；18份候选源码摘要一致；原治理/Work/计量与模型授权边界保持
+- Retirement status: 已按用户明确指令删除rewrite分支保护并验证；不删除历史数据/任务/分支，不恢复旧保护脚本；旧403/GH006属历史
 - Advisory decision: continue

@@ -53,7 +53,8 @@
                 "evidence/U-119/README.md",
                 "evidence/U-119/verification.json",
                 "evidence/U-120/README.md",
-                "evidence/U-120/verification.json"
+                "evidence/U-120/verification.json",
+                "evidence/U-120/adoption.json"
             ]
         },
         {
@@ -76,7 +77,8 @@
                 "docs/ORGANIZATION_HARNESS.md",
                 "evidence/014-real-loop/README.md",
                 "evidence/U-120/README.md",
-                "evidence/U-120/verification.json"
+                "evidence/U-120/verification.json",
+                "evidence/U-120/adoption.json"
             ]
         },
         {
@@ -117,7 +119,8 @@
                 "evidence/U-119/README.md",
                 "evidence/U-119/verification.json",
                 "evidence/U-120/README.md",
-                "evidence/U-120/verification.json"
+                "evidence/U-120/verification.json",
+                "evidence/U-120/adoption.json"
             ]
         },
         {
@@ -2136,6 +2139,13 @@
                     "from": "doing",
                     "to": "doing",
                     "note": "U-120业务资料受控交付：有权用户选择/导入UTF8有界资料，同一Work绑定id/version/digest并实际读取，正文仅私有存储/受权自动工具上下文；metadata原请求恢复、撤权、事务和跨主体/AU边界验证。npm前端425/management37/action-safety359，Python873含7环境跳过、104项五宽真实本地浏览器及独立权限复核通过，真实模型调用0。证据evidence/U-120/README.md与verification.json；准确SHA CI和远端采用另读回。原U067历史状态/owner及在线U112完整父验收保留，不镜像运行态。"
+                },
+                {
+                    "at": "2026-11-26T02:49:28.362Z",
+                    "actor": "Codex continuation coordinator delivery",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "2026-11-26 U120受控交付收口：候选dc9431eb2520b589f1dba2324896fb6bcc4f5d48已有七项CI成功，普通Git快进采用至rewrite/charter-v1并读回；在线#74 v10 revision1265 done及原owner保留。用户明确关闭该分支保护，DELETE204/GET404/protected=false已读回，不自动恢复。证据evidence/U-120/adoption.json；原源码、全量、104浏览器与独立权限复核记录保留。仅镜像交付历史，不改变本地运行态、U067父验收或U112/U121/U124。"
                 }
             ],
             "claim": {

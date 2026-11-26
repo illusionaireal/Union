@@ -4,13 +4,13 @@
   "taskIntentRef": "docs/aegis/work/2026-11-13-v1-correction-execution/task-intent-draft.json",
   "baselineRefs": [
     "specs/053-union-rewrite/u120-business-materials-contract.md",
-    "docs/decisions/0007-au-business-materials.md"
+    "docs/reviews/2026-11-08-review-disposition.md"
   ],
-  "scopeStatus": "U120本机完整受控已验；准确SHA CI与远端采用待读回，U112不关闭",
-  "compatStatus": "原宿主/S02验证用途、治理/Work/计量和进程attempt边界保持。新资料原ID仅显式lookup。",
-  "retirementStatus": "没有双写/双派发/读取迁移；导入资料失败不回退宿主；正文不再进入导入invoke回执。",
+  "scopeStatus": "U120受控工程、七项候选CI、远端采用和在线看板done已确认；用户关闭rewrite保护，后续不自动恢复；U112保持完整父验收",
+  "compatStatus": "本轮无产品行为源码变更；18份候选源码摘要一致；原治理/Work/计量与模型授权边界保持",
+  "retirementStatus": "已按用户明确指令删除rewrite分支保护并验证；不删除历史数据/任务/分支，不恢复旧保护脚本；旧403/GH006属历史",
   "newRiskSignals": [
-    "准确SHA七项CI和远端ref须真实成功读回；本机全量及浏览器已通过。"
+    "当前提交仅记录采用与用户流程决定；同一候选集成推送重触发CI，原成功证据保留；无新增业务执行"
   ],
   "decision": "continue"
 }

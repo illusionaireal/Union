@@ -1,0 +1,127 @@
+{
+  "at_utc": "2026-11-26T02:48:22.182669+00:00",
+  "scope": "controlled",
+  "candidate_sha": "dc9431eb2520b589f1dba2324896fb6bcc4f5d48",
+  "integration_branch": "rewrite/charter-v1",
+  "remote_sha": "dc9431eb2520b589f1dba2324896fb6bcc4f5d48",
+  "integration_method": "ordinary git fast-forward push",
+  "push_exit": 0,
+  "verified_candidate_checks": [
+    {
+      "id": 139657669080,
+      "name": "offline-checks (ubuntu-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "dc9431eb2520b589f1dba2324896fb6bcc4f5d48"
+    },
+    {
+      "id": 138949176670,
+      "name": "offline-checks (windows-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "dc9431eb2520b589f1dba2324896fb6bcc4f5d48"
+    },
+    {
+      "id": 138949177140,
+      "name": "unittest (ubuntu-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "dc9431eb2520b589f1dba2324896fb6bcc4f5d48"
+    },
+    {
+      "id": 138949176643,
+      "name": "unittest (windows-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "dc9431eb2520b589f1dba2324896fb6bcc4f5d48"
+    },
+    {
+      "id": 138949177041,
+      "name": "console-browser",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "dc9431eb2520b589f1dba2324896fb6bcc4f5d48"
+    },
+    {
+      "id": 139657668935,
+      "name": "model-service (ubuntu-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "dc9431eb2520b589f1dba2324896fb6bcc4f5d48"
+    },
+    {
+      "id": 138949176846,
+      "name": "model-service (windows-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "dc9431eb2520b589f1dba2324896fb6bcc4f5d48"
+    }
+  ],
+  "post_integration_checks_pending": [
+    {
+      "id": 139657669121,
+      "name": "offline-checks (windows-latest)",
+      "status": "in_progress",
+      "head_sha": "dc9431eb2520b589f1dba2324896fb6bcc4f5d48"
+    },
+    {
+      "id": 139657669282,
+      "name": "unittest (ubuntu-latest)",
+      "status": "in_progress",
+      "head_sha": "dc9431eb2520b589f1dba2324896fb6bcc4f5d48"
+    },
+    {
+      "id": 139657669459,
+      "name": "unittest (windows-latest)",
+      "status": "in_progress",
+      "head_sha": "dc9431eb2520b589f1dba2324896fb6bcc4f5d48"
+    },
+    {
+      "id": 139657668930,
+      "name": "console-browser",
+      "status": "in_progress",
+      "head_sha": "dc9431eb2520b589f1dba2324896fb6bcc4f5d48"
+    },
+    {
+      "id": 139657669319,
+      "name": "model-service (windows-latest)",
+      "status": "in_progress",
+      "head_sha": "dc9431eb2520b589f1dba2324896fb6bcc4f5d48"
+    }
+  ],
+  "protection_removal": {
+    "at_utc": "2026-11-26T02:46:26.479498+00:00",
+    "branch": "rewrite/charter-v1",
+    "authorization": "User explicitly requested branch protection removal on 2026-11-26",
+    "before_http": 200,
+    "before": {
+      "enforce_admins": true,
+      "required_status_checks": [
+        "offline-checks (ubuntu-latest)",
+        "offline-checks (windows-latest)",
+        "unittest (ubuntu-latest)",
+        "unittest (windows-latest)",
+        "console-browser",
+        "model-service (ubuntu-latest)",
+        "model-service (windows-latest)"
+      ],
+      "requires_pull_request": true
+    },
+    "delete_http": 204,
+    "protection_readback_http": 404,
+    "branch_readback_http": 200,
+    "branch_protected": false,
+    "integration_sha": "b4371d8ec6fec5ab7a1fb3965decc9d4a84e9b0c"
+  },
+  "online_acceptance": {
+    "at_utc": "2026-11-26T02:48:43.035Z",
+    "revision": 1265,
+    "user_id": "363a9919-cc7e-4dbd-8e49-a104a4f0f5ed",
+    "task_id": 74,
+    "version": 10,
+    "status": "done",
+    "owner": "363a9919-cc7e-4dbd-8e49-a104a4f0f5ed",
+    "checklist_done": 3
+  },
+  "boundary": "U120 controlled material journey only; U112 and U121/U124 not closed; no real model spending, deployment or migration"
+}

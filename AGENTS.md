@@ -1,5 +1,10 @@
 # UNION / ai-union repository instructions
 
+## 2026-11-26 用户关闭集成分支保护
+
+- 用户明确要求关闭 `rewrite/charter-v1` 的 GitHub 分支保护；已执行删除并读回 `protected=false`。不得按下方历史记录或旧宿主脚本自行恢复保护。
+- 该分支不再强制通过 PR 合入；协调者可在既有合入授权内，核对最新远端、候选证据和并行改动后普通快进推送。工程检查、任务责任和必要独立复核继续适用；不授权强推、删除历史或扩大部署/业务范围。
+
 ## 2026-11-13 接手基线与纠偏
 
 - 当前 V1 开发从最新 `origin/rewrite/charter-v1` 建任务分支，PR 到 `rewrite/charter-v1`；不要从 dev/MVP 开新 V1 工作，也不要直接推集成分支。rewrite→dev 是另行验收后的集成决定。
