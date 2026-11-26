@@ -27,6 +27,7 @@ FIELDS = {
     "reconcile_step": {"work_id", "step_id", "status", "reason"},
     "cancel_step": {"work_id", "step_id", "reason"},
     "finish_attempt": {"work_id", "attempt_id", "outcome", "reason"},
+    "recover_work": {"work_id", "attempt_id", "reason"},
 }
 TOOLS = {"read_document", "list_documents", "produce_artifact"}
 MAX_TOOL_CALLS = 50
@@ -106,11 +107,12 @@ def validate_input(kind, data):
     if kind == "start_attempt":
         require(reference(data["work_id"]), "工作标识必须是 bounded 引用标识")
         return
-    if kind == "finish_attempt":
+    if kind in ("finish_attempt", "recover_work"):
         require(reference(data["work_id"]), "工作标识必须是 bounded 引用标识")
         require(isinstance(data["attempt_id"], str) and data["attempt_id"].startswith(data["work_id"] + "#a")
                 and len(data["attempt_id"]) <= 100, "执行尝试标识无效")
-        require(data["outcome"] in OUTCOMES, "执行结果类别必须是 delivered/failed/stopped/unknown")
+        if kind == "finish_attempt":
+            require(data["outcome"] in OUTCOMES, "执行结果类别必须是 delivered/failed/stopped/unknown")
         text(data["reason"], "结束依据", 10000)
         return
     if kind == "invoke_tool":
@@ -254,6 +256,8 @@ def validate_state(state):
         attempts_value = work.get("attempts") or []
         require(isinstance(attempts_value, list) and len(attempts_value) <= MAX_ATTEMPTS, "执行尝试记录无效")
         for attempt in attempts_value:
+            from .work_recovery import validate
+            validate(attempt)
             require(isinstance(attempt, dict) and attempt.get("id") == work["id"] + "#a" + str(attempt.get("seq"))
                     and attempt.get("status") in ("running", "unknown", "closed")
                     and (attempt.get("host_instance") is None or isinstance(attempt.get("host_instance"), str))
@@ -308,7 +312,8 @@ def active_attempt(work, instance=None):
     running = [item for item in calls if item["status"] == "running"]
     require(len(running) == 1, "该工作没有进行中的执行尝试；请先开始一次执行")
     attempt = running[0]
-    held = attempt.get("host_instance")
+    from .work_recovery import owner
+    held = owner(attempt)["instance"]
     if instance is not None and held not in (None, instance):
         raise Rejected("该次执行由已结束的服务实例持有；请先核对并结束该次执行，不能继续用旧实例执行")
     return attempt
@@ -611,6 +616,7 @@ def usage_total(work):
 
 
 def projection(state, instance=None):
+    from .work_recovery import owner
     records_value = records(state)
     result = []
     for work in records_value["works"].values():
@@ -633,7 +639,7 @@ def projection(state, instance=None):
             "tool_calls": [dict(call) for call in work.get("tool_calls") or []],
             "attempts": [dict(attempt) | {
                 "host_instance": attempt.get("host_instance"),
-                "stale": attempt["status"] == "running" and attempt.get("host_instance") not in (None, instance),
+                "stale": attempt["status"] == "running" and owner(attempt)["instance"] not in (None, instance),
                 "steps": sum(1 for step in work.get("steps") or [] if step["attempt_id"] == attempt["id"]),
                 "tool_calls": sum(1 for call in work.get("tool_calls") or [] if call["attempt_id"] == attempt["id"]),
             } for attempt in work.get("attempts") or []],

@@ -44,9 +44,15 @@
   per-call budget: one reserved call per step, capped by the work plan,
   purpose and attempt recorded, `unknown` keeps its reservation and a
   settled step can never be re-judged. An attempt also records the host
-  service instance that owns it; after a restart the attempt reads as stale
-  and cannot act until it is settled through finish_attempt. No model call,
+  initial service instance. U-092 keeps that history and separately tracks trusted
+  current execution owner/epoch; a stale attempt acts only after explicit recovery.
+  Legacy unknown/closed attempt settlement remains explicit. No model call,
   storage or dispatch; step S03.2+ extends the same owner.
+
+- `work_recovery.py` owns pure owner validation, last-owner fencing and recovery
+  eligibility. Current host/worker facts come from trusted application wiring;
+  client host/owner/epoch never supply authority. Existing-owner continuation
+  retains its epoch and requires an original unfinished sealed request or loop.
 
 - Automatic step plans carry the current scope for private context integrity;
   active bindings/Mandates constrain all advertised and executed tools. Result

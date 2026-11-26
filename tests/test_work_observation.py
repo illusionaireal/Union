@@ -59,7 +59,8 @@ class WorkObservationTests(work_support.CoreWorkTests):
         self.prepare_materials()
         self.start_attempt()
         client = revoked_client(message)
-        self.app.work.transport = ModeldWorkTransport(client, self.au_id, CONNECTION, clock=lambda: 0)
+        connection = self.read()["au"]["model_access"]["connections"]["connection-a"]
+        self.app.work.transport = ModeldWorkTransport(client, self.au_id, connection, clock=lambda: 0)
         return client
 
     def test_completed_revoked_preserves_usage_and_original_receipt_after_restart(self):
@@ -76,7 +77,18 @@ class WorkObservationTests(work_support.CoreWorkTests):
         self.assertEqual(step["model_request_id"], client.bodies[0]["id"])
         self.assertEqual(step["cost_status"], "unknown")
         self.assertEqual(card["results"], [])
-        self.assertNotIn("private-unadoptable-body", self.dump())
+        self.assertNotIn("private-unadoptable-body", json.dumps(self.works()))
+        from ai_union.adapters.work_execution_store import WorkExecutionStore
+        directory, _ = self.app.governance.locate(self.au_id)
+        with self.app.work.store.transaction(directory) as cx:
+            for table, column in (("state", "data"), ("governance_commands", "receipt"),
+                                  ("governance_events", "snapshot")):
+                for row in cx.execute("SELECT " + column + " FROM " + table):
+                    self.assertNotIn("private-unadoptable-body", row[0])
+            observed = WorkExecutionStore.load_observed(cx, step)
+            self.assertEqual(observed["message"]["content"], "private-unadoptable-body")
+            self.assertFalse(observed["action_authorized"])
+            self.assertEqual(observed["request_sha256"], step["request_sha256"])
         before = copy.deepcopy(card["steps"])
         self.stop()
         self.start()

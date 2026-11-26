@@ -18,11 +18,13 @@
 
 GovernanceStore继续唯一AU事务/审计写者。新增窄私有adapter在调用方SQLite cx内保存完整dispatch请求快照、摘要和完整模型观察事实，不新增数据库/第二账/队列。引用/owner epoch与当前步骤保存在原Work记录；私有正文不进入公开回执。旧host_instance作为初始执行历史保留，另记当前执行owner `{instance, epoch}`，严格整数epoch不得与modeld wire的generation参数对象混淆。
 
-1. 当前host持有原console.lock且非stopping/closed，接受恢复与owner变化同AU事务关联。只在原owner已不属于当前有效host且无本host活动worker时接管；同host新恢复请求不能夺回当前owner。重复原请求只读原回执。
+1. 当前host持有原console.lock且非stopping/closed，接受恢复与owner变化同AU事务关联。只在原owner已不属于当前有效host且无本host活动worker时接管。当前host已经持有owner、没有活动执行/恢复且有原sealed未决请求或未完成loop时，同一 `recover_work` 合同允许显式核对并继续原请求，保留原epoch，不重新认领。无原意图时拒绝；两个新恢复命令不能并行lookup/续loop。重复原请求只读原回执，被后续接管替代的重放不能重新取得owner。
 2. 新派发在预约事务中保存实际package/messages/tools、context_scope、connection、materials binding及原命令和摘要。若transport能给出modeld body，保存其精确body及canonical SHA-256（JSON对象按key排序、无空白、UTF-8），与modeld已公开request_digest匹配；不能用command摘要代替模型输入摘要。
+
+   canonical以实际 `services/modeld/src/journal.ts` 为准：键按UTF-16排序，数字按JSON.parse后的有限binary64与JSON.stringify最短十进制规范化，覆盖负零、指数阈值和53位整数的实际解析语义。Python核心实现不依赖运行时Node；Node仅作为开发测试的实际源oracle。wire仅支持JSON类型、文本键与可编码UTF-8，最多8 MiB/64层；孤立代理字符、非有限或超有限binary64数值、非JSON值、循环/过深输入明确在预约提交和POST前拒绝，不截断或回退摘要。原wire快照仍保存原实际body，不用规范化结果改写正文。
 3. 新请求明确 `prepared→dispatching→observed/adopted`。持久dispatching在POST之前提交并重验owner/current授权；prepared可在恢复后发送原快照一次。dispatching/unknown/旧记录无法证明未派发时只GET原request；404不证明未执行，保留原预约。既有lookup用量接口兼容，新增取得完整原结果的窄lookup能力必须核对AU/原request/digest和action_authorized。
-4. 完整模型事实（消息、usage、摘要）先持久保存，记录adoption_pending；当前有效owner按原step/attempt、连接、scope和当前资格采用，工具提议仅在该owner内调用。已经保存的tool/assistant轮次从WorkContextStore继续，不重新读取变化后的资料代替原结果。原事实可保存但资格不符则不采用、不发新调用；失败历史和发生过的用量保留。
-5. 网络、lookup和等待在AU事务之外；采用仍复用WorkService现有step/loop及规则，提取窄采用helper而非复制另一套结果/工具实现。恢复已观察但未采用事实，与正常完成路径共用同一helper。旧worker在POST前、工具执行和结果采用检查owner epoch及host关闭状态，不能覆盖新采用。
+4. 完整模型事实（消息、usage、摘要）先持久保存，记录adoption_pending；当前有效owner按原step/attempt、连接、scope和当前资格采用，工具提议仅在该owner内调用。采用前还须GET原modeld请求核对AU/id/request_digest及当前action_authorized（覆盖实际grant/连接），已经观察的正文只用私有保存事实，忽略授权GET返回的新正文。授权查询失败保留pending/预约，不能当作授权。已经保存的tool/assistant轮次从WorkContextStore继续，不重新读取变化后的资料代替原结果。完整的已完成撤权消息也作为私有观察保留，false行动授权永久不变；不进入公开投影、AU state/回执/审计正文、下一模型上下文或成果，不执行其工具。这明确取代旧“任何私有持久存储均无撤权正文”断言，不扩大行动权限。失败历史和发生过的用量保留。
+5. 网络、lookup和等待在AU事务、catalog及全局mutex之外；采用仍复用WorkService现有step/loop及规则，提取窄采用helper而非复制另一套结果/工具实现。恢复已观察但未采用事实，与正常完成路径共用同一helper。POST前的最后派发准入须检查owner epoch、当前授权及host关闭状态；已经准入的原通道调用可以跨关闭保持in-flight，关闭不撤回该调用或证明远端取消。旧worker在工具执行、上下文保存后及最终采用提交前继续检查owner/host，不能覆盖新采用；迟到异常不得结算新owner的预约，已完成原用量只作为事实保留。
 6. Console关闭先阻止新的Work接受/派发，释放console.lock之后旧worker仍不得新POST/工具/采用；原已派发结果未知保持本地预约，可由当前owner核对。不能把本地关闭当远端取消。关闭前未提交的命令不留下新意图；已提交未发送保留prepared及原预约供恢复。A未知不挡独立B。
 
 若新持久字段会被旧schema4代码忽略并绕过owner/fencing，则成功显式采用新机制才升AU schema5，read不迁移；更新现有schema支持/安装兼容声明及回归，旧安装候选不兼容必须拒绝。无真实数据库迁移。老记录无法证明输入digest时保持只读核对/不可采用，不静默兼容成可重派。

@@ -8,14 +8,16 @@ Failure contract used by the work runtime:
 
 - `Rejected` means the request was definitely **not** executed (a 4xx/422 answer or
   a rejected payload), so no step fact may be invented.
-- `UnadoptableWorkResult` carries a completed call's usage, but never its
-  response content or tool calls. Revocation prevents adoption, not accounting.
+- `UnadoptableWorkResult` carries private completed observations and counted
+  usage. Revocation prevents disclosure/adoption/tools, not evidence retention.
 - Other post-dispatch errors mean the outcome needs reconciliation; they must
   never be reported as a definite refusal or proof of no execution.
 """
 import copy
 import time
+from contextlib import nullcontext
 
+from .adapters.work_execution_store import wire_digest
 from .errors import Rejected, require
 from .model_service import ServiceError
 
@@ -25,11 +27,13 @@ DEFINITE = (400, 401, 403, 404, 405, 413, 422)
 
 class UnadoptableWorkResult(ServiceError):
     """A scoped, completed request whose result cannot authorize more actions."""
-    def __init__(self, request_id, usage):
+    def __init__(self, request_id, usage, *, observed_message=None):
         super().__init__("模型调用已完成，但当前授权已失效；仅保留执行与用量，不能采用结果")
         self.request_id = request_id
         self.usage = {key: usage[key] for key in ("input_tokens", "output_tokens")
                       if type(usage.get(key)) is int and usage[key] >= 0}
+        self.observed_message = copy.deepcopy(observed_message)
+        self.observed_usage = copy.deepcopy(usage)
 
 
 class ModeldWorkTransport:
@@ -62,10 +66,15 @@ class ModeldWorkTransport:
         return value
 
     def chat(self, package, messages, tools):
-        body = self.body(package, messages, tools)
+        return self.chat_body(self.body(package, messages, tools))
+
+    def chat_body(self, body, *, post_guard=nullcontext):
+        """Send exact saved wire input after final admission; network waits hold no lock."""
+        body = copy.deepcopy(body)
         request_id = body["id"]
         try:
-            self.client.call("POST", "/v1/requests", body)
+            with post_guard():
+                self.client.call("POST", "/v1/requests", body)
         except ServiceError as error:
             if error.status in DEFINITE:
                 raise Rejected("模型服务拒绝本次请求；本轮未执行，未产生步进事实") from None
@@ -78,6 +87,8 @@ class ModeldWorkTransport:
             remote = self.client.request(request_id, self.au_id)
             if remote.get("id") != request_id or remote.get("au_id") != self.au_id:
                 raise ServiceError("模型服务回执范围不匹配；原调用待核对")
+            if remote.get("request_digest") != wire_digest(body):
+                raise ServiceError("模型服务原输入摘要不匹配；原调用待核对")
             events = self.client.events(request_id, self.au_id, after).get("events", [])
             for event in events:
                 if (event.get("request_id") != request_id or type(event.get("seq")) is not int
@@ -93,8 +104,10 @@ class ModeldWorkTransport:
         if not isinstance(result, dict) or not isinstance(result.get("message"), dict):
             raise ServiceError("模型服务缺少完整结果；原调用待核对")
         usage = result.get("usage") if isinstance(result.get("usage"), dict) else {}
+        if type(remote.get("action_authorized")) is not bool:
+            raise ServiceError("模型服务没有明确原请求的当前行动授权；原调用待核对")
         if remote.get("action_authorized") is False:
-            raise UnadoptableWorkResult(request_id, usage)
+            raise UnadoptableWorkResult(request_id, usage, observed_message=result["message"])
         return result["message"], dict(usage)
 
     def lookup(self, request_id):
@@ -107,6 +120,32 @@ class ModeldWorkTransport:
         result = remote.get("result")
         usage = result.get("usage") if isinstance(result, dict) else None
         return dict(usage) if isinstance(usage, dict) else {}
+
+    def lookup_result(self, request_id, request_digest):
+        """Read the original full result only after exact scope and wire digest checks."""
+        remote = self.client.request(request_id, self.au_id)
+        if (remote.get("id") != request_id or remote.get("au_id") != self.au_id
+                or not isinstance(request_digest, str) or remote.get("request_digest") != request_digest):
+            raise ServiceError("原模型请求范围或输入摘要不匹配；保留预约")
+        if remote.get("state") != "completed":
+            return None
+        result = remote.get("result")
+        if not isinstance(result, dict) or not isinstance(result.get("message"), dict):
+            raise ServiceError("原模型请求缺少完整消息；保留预约")
+        if type(remote.get("action_authorized")) is not bool:
+            raise ServiceError("原模型请求未确认当前行动授权；保留预约")
+        return {"message": copy.deepcopy(result["message"]),
+                "usage": copy.deepcopy(result.get("usage") or {}),
+                "action_authorized": remote["action_authorized"]}
+
+    def current_authorized(self, request_id, request_digest):
+        """Original-request GET checks live grant/connection; discard its result body."""
+        remote = self.client.request(request_id, self.au_id)
+        if (remote.get("id") != request_id or remote.get("au_id") != self.au_id
+                or not isinstance(request_digest, str) or remote.get("request_digest") != request_digest
+                or type(remote.get("action_authorized")) is not bool):
+            raise ServiceError("原模型请求的当前授权、范围或输入摘要未确认；保留预约")
+        return remote["action_authorized"]
 
 
 def modeld_factory(config_file=None, *, timeout_seconds=60):

@@ -70,8 +70,21 @@
   transport. Replays return the original receipt or unresolved intent; never
   POST an unknown request again. Accounting survives revocation/session loss;
   content/tool adoption separately checks current authority and host material
-  binding. Recovery queries the original request without adopting its body.
+  binding. Legacy `reconcile_step` queries usage without adopting a body;
+  U-092 explicitly recovers sealed original observations through the shared adopter.
   Follow `s03-dispatch-contract.md` and `tests/test_work_dispatch.py`.
+
+- U-092 `work_recovery.py` owns same-attempt recovery, owner/epoch admission,
+  recovery-busy exclusion and original-request lookup. `work_dispatch.adopt_turn`
+  is the sole normal/recovery result, tool and context adopter. New dispatch commits
+  its complete private request and prepared boundary with the original reservation.
+  Dispatching and final current authorization/owner admission precede POST; network
+  calls hold no AU/catalog/global mutex. Close does not remotely cancel an admitted
+  in-flight call; late workers cannot act/adopt/settle a new owner's reservation.
+  Complete observations/usage survive privately before adoption. Current-owner
+  continuation never increments epoch or replays POST; command replays return
+  immutable receipts only. Verify `test_work_recovery*`, old dispatch/context/
+  observation and schema compatibility checks.
 
 - `work_events.py` owns only the current governor's read projection of the
   original Work step's modeld journal. Bind saved AU/Work/attempt/command/step/

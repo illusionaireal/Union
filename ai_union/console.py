@@ -52,6 +52,7 @@ class Console:
         self.enable_api = enable_api
         self.executor_factory = self._executor
         self.closed = False
+        self.stopping = False
         try:
             from .identity_schema import ensure_current
             ensure_current(self.db)
@@ -557,6 +558,9 @@ class Console:
 
     def close(self):
         if not self.closed:
+            with self.mutex:
+                self.stopping = True
+                self.work.stopping = True
             self.models.stopping = True
             # Graceful host shutdown stops further dispatch, retaining in-flight results.
             engines = self._legacy_engines()

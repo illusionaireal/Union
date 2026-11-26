@@ -31,14 +31,14 @@ class WorkDispatchCompatibilityTests(dispatch_support.WorkDispatchTests):
         self.app.work.transport = channel = dispatch_support.CallbackTransport(
             lambda package: observed.append(self.state()["schema_version"]))
         receipt = self.app.work.run_step(self.token, request)
-        self.assertEqual(observed, [4])
+        self.assertEqual(observed, [5])
         self.assertEqual(receipt["status"], "succeeded")
         step = copy.deepcopy(self.card()["steps"][0])
         self.success("renew_governance", {"reason": "governance remains usable after dispatch"})
         revision = self.state()["model_access"]["connections"]["connection-a"]["revision"]
         self.model_success("set_connection", {"connection_id": "connection-a", "expected_revision": revision,
                                               "enabled": False, "make_default": False})
-        self.assertEqual(self.state()["schema_version"], 4)
+        self.assertEqual(self.state()["schema_version"], 5)
         self.stop()
         self.start()
         self.app.work.transport = channel
@@ -49,7 +49,7 @@ class WorkDispatchCompatibilityTests(dispatch_support.WorkDispatchTests):
 
     def test_interrupted_reservation_blocks_old_selection_and_already_selected_old_run(self):
         self.install("old", [1, 2, 3])
-        self.install("current", [1, 2, 3, 4])
+        self.install("current", [1, 2, 3, 4, 5])
         # Only dependency probes are replaced; actual manifest and database gates run.
         with patch.object(release, "preflight", side_effect=lambda p, c: release.verify_directory(p)):
             release.activate("old", self.release_config, stopped=True)
@@ -79,7 +79,7 @@ class WorkDispatchCompatibilityTests(dispatch_support.WorkDispatchTests):
                 self.app.work.run_loop(self.token, request)
         self.assertEqual(len(self.card()["loops"]), 1)
         self.assertEqual(self.card().get("steps", []), [])
-        self.assertEqual(self.state()["schema_version"], 4)
+        self.assertEqual(self.state()["schema_version"], 5)
 
     def test_failed_prepare_rolls_back_marker_and_intent_before_transport(self):
         request = self.arrange()
@@ -119,8 +119,18 @@ class WorkDispatchCompatibilityTests(dispatch_support.WorkDispatchTests):
             # Only this fixture writer predates the marker; release checks are real.
             if request["kind"].startswith("work_dispatch_"):
                 state["schema_version"] = 3
+                for work in state["work_runtime"]["works"].values():
+                    for attempt in work.get("attempts", []): attempt.pop("execution_owner", None)
+                    for step in work.get("steps", []):
+                        for key in ("execution_sha256", "request_sha256", "dispatch_phase", "adoption_pending"):
+                            step.pop(key, None)
             return original(cx, state, charter, request, *args, **kwargs)
-        with patch.object(self.app.work.store, "save", side_effect=historical_save):
+        def historical_dispatch(service, token, directory, intent, command, principal, owner, channel):
+            # This fixture executes the old PR17 transport boundary. New code
+            # correctly refuses old snapshots, so it cannot act as an old worker.
+            return channel.chat({"run_id": "controlled-original-model-request"}, [], [])
+        with patch.object(self.app.work.store, "save", side_effect=historical_save), \
+                patch("ai_union.application.work_recovery.send_prepared", side_effect=historical_dispatch):
             self.interrupt_call(request)
         self.assertEqual(self.state()["schema_version"], 3)
         before = self.dump()
@@ -134,7 +144,7 @@ class WorkDispatchCompatibilityTests(dispatch_support.WorkDispatchTests):
         request = self.arrange()
         self.app.work.transport = dispatch_support.CallbackTransport()
         self.app.work.run_step(self.token, request)
-        self.assertEqual(self.state()["schema_version"], 4)
+        self.assertEqual(self.state()["schema_version"], 5)
         self.stop()
         with closing(sqlite3.connect(self.database())) as cx, cx:
             cx.execute("DROP TABLE model_attempts")
@@ -181,8 +191,8 @@ class WorkDispatchCompatibilityTests(dispatch_support.WorkDispatchTests):
                 patch.object(governance, "SUPPORTED_SCHEMAS", (2,), create=True):
             archive = self.root / "target-source.zip"
             manifest = release.pack(source, archive, "target-source")
-            self.assertEqual(manifest["core_au_schemas"], [1, 2, 3, 4])
-            self.assertEqual(release.verify_archive(archive)["core_au_schemas"], [1, 2, 3, 4])
+            self.assertEqual(manifest["core_au_schemas"], [1, 2, 3, 4, 5])
+            self.assertEqual(release.verify_archive(archive)["core_au_schemas"], [1, 2, 3, 4, 5])
             # A different source cannot inherit the packer's schema-4 support.
             (source / "ai_union/domain/governance.py").write_text(
                 "SUPPORTED_SCHEMAS = (2, 3)\nraise RuntimeError('source must not execute')\n", encoding="utf-8")

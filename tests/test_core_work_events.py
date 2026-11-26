@@ -8,6 +8,7 @@ from urllib.parse import parse_qs, urlencode, urlsplit
 from unittest.mock import patch
 
 from ai_union.model_service import ModelServiceClient as RealClient
+from ai_union.adapters.work_execution_store import wire_digest
 from ai_union.work_transport import ModeldWorkTransport
 from tests.test_core_work_http import WorkHttpChainTests
 from tests.test_work_transport_http import ModeldDouble
@@ -47,6 +48,8 @@ class WorkEventsTests(WorkHttpChainTests):
                 'id': 'wrong-id' if self.fault == 'id' else request_id,
                 'au_id': 'other-au' if self.fault == 'au' else au_id,
                 'state': self.remote_state, 'action_authorized': self.remote_authorized,
+                'request_digest': wire_digest(
+                    next(item[3] for item in reversed(ModeldDouble.seen) if item[0] == 'POST' and item[3]['id'] == request_id)),
                 'result': {'message': {'role': 'assistant', 'content': '结果'},
                            'usage': {'input_tokens': 5, 'output_tokens': 2}},
             })

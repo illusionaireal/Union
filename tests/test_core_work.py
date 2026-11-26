@@ -436,8 +436,9 @@ class CoreWorkTests(ModelAccessCase):
             self.cancel_response = self.request("/api/v1/work/commands", cancel_request)
 
         client.before_read = cancel_during_read
+        connection = self.read()["au"]["model_access"]["connections"]["connection-a"]
         self.app.work.transport = ModeldWorkTransport(
-            client, self.au_id, CONNECTION, sleep=lambda _: None, clock=lambda: 0)
+            client, self.au_id, connection, sleep=lambda _: None, clock=lambda: 0)
         status, value, _ = self.work_step()
         self.assertEqual(status, 200, value)
         self.assertEqual(value["receipt"]["model_outcome"], "unknown", value)

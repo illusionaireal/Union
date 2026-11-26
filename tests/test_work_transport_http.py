@@ -54,7 +54,11 @@ class ModeldDouble(BaseHTTPRequestHandler):
         au_id = parse_qs(parts.query).get("au_id", ["au-1"])[0]
         payload = type(self).result if type(self).result is not None else {"message": MESSAGE, "usage": USAGE}
         result = payload if type(self).state == "completed" else None
-        self._send(200, {"id": request_id, "au_id": au_id, "state": type(self).state, "result": result})
+        from ai_union.adapters.work_execution_store import wire_digest
+        body = next((item[3] for item in reversed(type(self).seen) if item[0] == "POST"
+                     and item[3].get("id") == request_id), None)
+        self._send(200, {"id": request_id, "au_id": au_id, "state": type(self).state, "result": result,
+                         "request_digest": wire_digest(body) if body else None, "action_authorized": True})
 
 
 class LoopbackWorkTransportTests(unittest.TestCase):

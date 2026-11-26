@@ -55,7 +55,7 @@ class WorkHttpChainTests(ModelAccessCase):
         super().tearDown()
 
     def channel(self, au_id, connection):
-        return ModeldWorkTransport(ModelServiceClient(str(self.config)), au_id, CONNECTION,
+        return ModeldWorkTransport(ModelServiceClient(str(self.config)), au_id, connection,
                                    sleep=lambda _: None, timeout_seconds=10)
 
     def adopt_default(self):

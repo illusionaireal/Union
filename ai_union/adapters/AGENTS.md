@@ -60,6 +60,15 @@
   semantics even for earlier schema-3 intents. Follow the dispatch compatibility
   contract and `tests/test_work_dispatch_compatibility.py`.
 
+- U-092 `work_execution_store.py` saves complete original commands, private wire
+  requests and immutable complete observations in the caller's GovernanceStore
+  transaction. Bind the actual wire AU/request/model/grant/messages/tools to its
+  frozen plan before reservation commit; its digest uses modeld's sorted compact
+  JSON, not the command digest. Schema 5 is adopted only by explicit successful
+  use; reads create no tables and migrate nothing. Revoked completed bodies remain
+  private evidence with false action authority, never context/result/public output.
+  Historical schemas 2/3/4 and original IDs/receipts/reservations remain supported.
+
 - U-120 `material_store.py` owns bounded private business text in the caller's
   existing AU transaction; GovernanceStore owns its metadata/authorization,
   receipt and audit commit. Reads never create tables or grant permission.

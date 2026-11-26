@@ -360,11 +360,17 @@ def check_au_schemas(database, manifest, root):
             state = CoreAUStore().read(directory, entry['id'], creation=intent)['au']
             require(state['schema_version'] in manifest.get('core_au_schemas', []),
                     'Candidate does not declare support for the persisted AU schema; keep compatible code and original history')
-            works = state.get('work_runtime', {}).get('works', {}).values()
+            works = list(state.get('work_runtime', {}).get('works', {}).values())
             has_dispatch = any(work.get('loops') or any(step.get('command_id') for step in work.get('steps', []))
                                for work in works)
             require(not has_dispatch or 4 in manifest.get('core_au_schemas', []),
                     'Candidate cannot preserve durable work dispatches; keep compatible code and original reservations')
+            has_recovery = any(any(a.get('execution_owner') for a in work.get('attempts', []))
+                               or any(s.get('execution_sha256') or s.get('dispatch_phase') for s in work.get('steps', []))
+                               or any(loop.get('execution_sha256') for loop in work.get('loops', []))
+                               for work in works)
+            require(not has_recovery or 5 in manifest.get('core_au_schemas', []),
+                    'Candidate cannot preserve original work recovery ownership and input snapshots; keep compatible code and data')
             models = state.get('model_access', {})
             used_profiles = {c['profile'] for c in models.get('connections', {}).values()}
             used_profiles.update(o['config']['profile'] for o in models.get('operations', {}).values())

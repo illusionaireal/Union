@@ -29,8 +29,13 @@ class FakeClient:
         raise AssertionError("unexpected call " + method + " " + path)
 
     def request(self, request_id, au_id):
+        import hashlib
+        import json
         state = self.states.pop(0) if len(self.states) > 1 else self.states[0]
         return {"id": request_id, "au_id": au_id, "state": state,
+                "action_authorized": True,
+                "request_digest": (hashlib.sha256(json.dumps(self.bodies[-1], ensure_ascii=False,
+                    sort_keys=True, separators=(",", ":")).encode("utf-8")).hexdigest() if self.bodies else None),
                 "result": self.result if state == "completed" else None}
 
     def events(self, request_id, au_id, after=0):

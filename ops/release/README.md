@@ -34,6 +34,10 @@ python3 scripts/release_package.py install candidate-001.zip --config /path/to/p
 
 S05 候选声明 `core_schemas: {auth: 2, catalog: 1}` 与 `core_au_schemas: [1, 2]`。安装只写新的代码目录；采用、回滚及启动额外检查实际身份/catalog 与所有已登记 V1 AU 的 schema/完整性。缺少声明或不兼容的旧候选在切换指针/启动服务前拒绝，不将旧代码强行用于已采用治理的数据。
 
+U-092 恢复候选支持 AU schemas `[1, 2, 3, 4, 5]`。第一次成功采用完整执行快照/owner fencing
+或显式恢复才在原事务标记 schema 5；读取不迁移。选择/回滚/启动同时检查真实 marker 和
+执行 owner/私有快照语义，旧 schema-4 候选在切换前拒绝，不改变原代码指针、AU 或预约。
+
 S09.2 候选另外声明 `core_model_profiles`（由核心注册表生成）。选择、回退与启动会检查
 已保存连接及原保存意图的 profile；缺声明的历史候选仅支持 `openai_compatible` 和
 `modeld_grant`。有 Responses 记录或待核对意图时，旧候选在切换前拒绝，原指针、回执和数据保持。
