@@ -1,0 +1,81 @@
+{
+  "at_utc": "2026-11-26T05:16:41.421Z",
+  "scope": "controlled",
+  "candidate_sha": "5513cf62e5a71fabbe886feb3ecddc9ac7df5c3b",
+  "remote_sha": "5513cf62e5a71fabbe886feb3ecddc9ac7df5c3b",
+  "integration_branch": "rewrite/charter-v1",
+  "method": "ordinary Git fast-forward",
+  "remote_before": "055f5354724d820df9a43808df22ca4ae391d0ee",
+  "checks": [
+    {
+      "id": 45758852518,
+      "head_sha": "5513cf62e5a71fabbe886feb3ecddc9ac7df5c3b",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "console-browser",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "offline-checks (windows-latest)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "offline-checks (ubuntu-latest)",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 45758852723,
+      "head_sha": "5513cf62e5a71fabbe886feb3ecddc9ac7df5c3b",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "model-service (ubuntu-latest)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "model-service (windows-latest)",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 45758852568,
+      "head_sha": "5513cf62e5a71fabbe886feb3ecddc9ac7df5c3b",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "unittest (windows-latest)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "unittest (ubuntu-latest)",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "source_files_verified": 25,
+  "branch_protected": false,
+  "user_protection_removal_preserved": true,
+  "real_model_calls": 0,
+  "online_done": {
+    "id": 46,
+    "version": 12,
+    "status": "done",
+    "owner": "363a9919-cc7e-4dbd-8e49-a104a4f0f5ed",
+    "revision": 1284
+  }
+}

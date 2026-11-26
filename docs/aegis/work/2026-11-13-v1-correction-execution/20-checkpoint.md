@@ -2,6 +2,8 @@
 
 ## Current Checkpoint
 
+2026-11-26 13:18当前：准确5513cf6七CI全部success，普通Git快进采用rewrite并读回protected=false；online46 v12/revision1284、三checklist和owner363 done已确认。online47所有真实依赖done，从backlog准备ready后以实际user363认领v5/progress/revision1286（receipt host-private u092-complete-u093-claim.json）。47尚未写行为代码，下一步冻结完整输入合同/责任后strict TDD，随后76；74/75/66done保持。47设计报告host-private u093-precode-readback-20261126.md有重要接收/附入/观察/消费分离及内循环version/schema/私有正文审查。先提交本轮46采用文档并普通Git采用（仅过程，25份业务源码与已验5513一致），复用两个既有checkout；不重开原D盘dirty、恢复保护、丢原历史。
+
 最终本地门槛2026-11-26：Python916/7skip/812.105秒exit0（u092-python-final.log、session10576已完成），npm445、实际Chrome135/11受控回环/真实0、构建兼容11与独立内核/UI/测试接缝均通过。25份准确源码与旧失败日志hash已归档verification-20261126.json/browser-20261126.json。当前只差本任务提交→准确七CI→普通Git快进采用与online46done；47/76目标保留。宿主SDK已录六行生成补丁经差分核对后仅逆向该patch，vendor恢复clean，不重置他人现场。后续测试若需SDK须再次prepare；构建产物仍为原验证字节。
 
 #47只读预编码复核（尚未开工/采用，不是新产品事实）：沿原Work保存input ID/seq/hash/actor/责任版本，正文用同AU事务private store；必须复用U120 normalized command，避免不可变commands/audit复制正文。prepared附入原sealed请求与预约可靠关联；observed仅表示原模型收到，正式consumed须与当前owner成功adopt_turn/context同AU事务，采用/保存失败或false授权不消费。未知不再派、旧owner不能采用；长等待与重启仍能接受input。新schema6若有必要则只显式成功采用升级，现行work.py/work_dispatch/work_recovery三处写5要保持高版本，installer按input特征拒绝<=5，read不升级。#41反馈同源身份但正式反馈另由原owner；原profile原生long_job_new_input未验仍unsupported。待46实际done、最新board准入与源核对后再冻结完整合同和代码责任。

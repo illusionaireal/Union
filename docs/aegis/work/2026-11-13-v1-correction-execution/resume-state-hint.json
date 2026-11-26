@@ -2,10 +2,10 @@
   "schemaVersion": "aegis.schema.v0",
   "taskId": "2026-11-13-v1-correction-execution",
   "lastCheckpointRef": "docs/aegis/work/2026-11-13-v1-correction-execution/todo-checkpoint-draft.json",
-  "resumeInstruction": "当前root5be7 codex/u092-integration-20261126 HEAD68ad090；本任务UI/tests/evidence/process/ledger未提交，生产冻结。Python最终916/7skip812.105s exit0已读回，npm445/browser135(11controlled posts/real0)/builtcompat11/独立全部通过。verification-20261126.json生成；SDK six-line已录patch仅逆向本轮生成差异，vendorclean。下一步仅stage本任务→commit/push→准确SHA7CI→普通Git快进采用rewrite/readback→online46done→47认领/合同/实现→76。74/75/66已done，保护不得恢复，不能结束为部分完成。U093只读设计报告host-private u093-precode-readback-20261126.md可用，不是已开工。",
+  "resumeInstruction": "ROOT5be7 codex/u092-integration-20261126 HEAD5513cf6已七CI通过，ordinaryGit采用remote rewrite5513并读回protected=false。在线46donev12/rev1284，47已依实际前置ready+claim v5/progress owner363 rev1286；74/75/66done保持。当前仅46采用文档/过程未提交，源码25hash与5513一致。下一步只commit/push并普通Git采用该过程记录，再准备root/94bd两个既有checkout任务分支，冻结U093输入合同后严格TDD实施47，之后76。47未写行为代码；只读报告host-private u093-precode-readback-20261126.md。不得结束为部分完成，不再问46交接/47前置授权或恢复保护。",
   "knownPartialWork": [
-    "46本地全门槛通过，准确CI/远端采用/在线done待完成",
-    "47与76必须继续，不扩大真实模型/部署/迁移；原D盘dirty保留"
+    "U092完整controlled验收/七CI/Git采用/在线done全部读回，原失败保留",
+    "U093已真正认领progress但未实施；U121仍backlog，整74/75/76目标未完成"
   ],
   "mustReadBeforeContinuing": [
     "docs/aegis/work/2026-11-13-v1-correction-execution/10-intent.md",

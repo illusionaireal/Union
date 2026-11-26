@@ -12,6 +12,8 @@
 
 首轮Python916项、7环境跳过、2失败，完整失败保留。事件只读测试在prepared→dispatching合法worker写期间抽样，改为等待持久dispatching及真实POST后仍严格比较数据库不变；真实有界驱动改为观察实际chat_body并转交原post_guard，原ID/messages/usage、nonce、两轮工具/正文和下载证据断言不变。controlled double的current_authorized=True只在原有测试patch范围。修正后23回归及另一工程角色4复验通过，未改产品权限或采用代码。
 
-最终Python全量916项、7环境跳过、812.105秒、exit0已读回。准确源码和失败日志hash见[最终验证](verification-20261126.json)，[135项浏览器检查](browser-20261126.json)覆盖实际受控回环。早期missing Bun、错版本/未prepare的SDK导出、schema5入口、验收脚本误用Work receipt路径、前端加载竞争以及首轮Python失败均留宿主；Git只存摘要/hash和明确的检查清单，不存数据库、凭据或私有原始dump。准确候选七CI、远端采用及在线done尚待读回，不能据本地通过关闭本卡。
+最终Python全量916项、7环境跳过、812.105秒、exit0已读回。准确源码和失败日志hash见[最终验证](verification-20261126.json)，[135项浏览器检查](browser-20261126.json)覆盖实际受控回环。早期missing Bun、错版本/未prepare的SDK导出、schema5入口、验收脚本误用Work receipt路径、前端加载竞争以及首轮Python失败均留宿主；Git只存摘要/hash和明确的检查清单，不存数据库、凭据或私有原始dump。
+
+准确候选5513cf62e5a71fabbe886feb3ecddc9ac7df5c3b的七项CI全部success，普通Git快进采用rewrite/charter-v1并读回相同SHA、protected=false；没有恢复用户关闭的保护。在线#46 version12、revision1284、原接续owner及三项checklist全部done已读回。[采用与在线验收](adoption-20261126.json)保存准确证据。kernel作者交接中的“未提交/未采用”为当时状态，本次完整受控交付已完成；#47随后按实际依赖认领，不把本卡工程通过外推为持续业务。
 
 真实模型、部署、迁移和持续业务未执行；#47新输入、#76持久业务意图另按同一事实所有者顺序实施。原U-070/#25等完整父验收不因本卡受控工程通过而关闭。

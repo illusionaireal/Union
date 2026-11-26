@@ -99,11 +99,22 @@
     "u092-npm-final2.log": "68fb08da59adc460b3491b5c6e51c9e9b1e1674d125dcf4888031de312f3e2e1"
   },
   "limitations": [
-    "Controlled fixture does not prove real models or sustained business",
-    "Accurate final candidate CI, remote adoption and online completion still require readback",
-    "U093 inputs and U121 persistent work intent remain separate downstream delivery",
-    "No deployment, migration or real model spending"
+    "Controlled engineering/actual browser proves this bounded mechanism; no real models or sustained business",
+    "U093 new inputs and U121 persistent work intent remain separate downstream deliveries",
+    "No deployment, live migration or real model spending"
   ],
   "failed_history_retained": true,
-  "raw_logs": "host-local only"
+  "raw_logs": "host-local only",
+  "adoption": {
+    "remote_sha": "5513cf62e5a71fabbe886feb3ecddc9ac7df5c3b",
+    "online": {
+      "id": 46,
+      "version": 12,
+      "status": "done",
+      "owner": "363a9919-cc7e-4dbd-8e49-a104a4f0f5ed",
+      "revision": 1284
+    },
+    "candidate_sha": "5513cf62e5a71fabbe886feb3ecddc9ac7df5c3b",
+    "checks": 7
+  }
 }

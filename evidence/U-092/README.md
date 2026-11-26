@@ -20,4 +20,4 @@ requires an exact published candidate, current-head CI and independent review;
 no real model request or business acceptance is added by these records.
 # 2026-11-26 当前受控恢复候选
 
-用户授权保留原历史后交接在线#46并完成#47/#66必要前置。[当前协调验收](coordinator-20261126.md)记录新内核、原Work UI、严格RED/GREEN和独立复审；[内核证据](kernel-20261126.md)与[冻结契约](../../specs/053-union-rewrite/u092-work-recovery-contract.md)说明原ID、未知不重放、私有观察与行动资格。最终Python/七CI/采用/在线验收仍需各自读回，下方旧失败和输入缺失全部保留，不据旧记录关闭新产品出口。
+用户授权保留原历史后交接在线#46并完成#47/#66必要前置。[当前协调验收](coordinator-20261126.md)记录新内核、原Work UI、严格RED/GREEN和独立复审；[内核证据](kernel-20261126.md)与[冻结契约](../../specs/053-union-rewrite/u092-work-recovery-contract.md)说明原ID、未知不重放、私有观察与行动资格。最终Python916/7跳过、前端445、Chrome135、准确5513cf6七CI及普通Git采用、在线#46 version12 done均已读回，见[采用记录](adoption-20261126.json)。原失败和输入缺失全部保留，不将controlled工程升级为真实/持续业务或#47/#76完成。
