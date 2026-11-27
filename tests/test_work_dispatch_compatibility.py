@@ -191,8 +191,8 @@ class WorkDispatchCompatibilityTests(dispatch_support.WorkDispatchTests):
                 patch.object(governance, "SUPPORTED_SCHEMAS", (2,), create=True):
             archive = self.root / "target-source.zip"
             manifest = release.pack(source, archive, "target-source")
-            self.assertEqual(manifest["core_au_schemas"], [1, 2, 3, 4, 5, 6])
-            self.assertEqual(release.verify_archive(archive)["core_au_schemas"], [1, 2, 3, 4, 5, 6])
+            self.assertEqual(manifest["core_au_schemas"], [1, 2, 3, 4, 5, 6, 7])
+            self.assertEqual(release.verify_archive(archive)["core_au_schemas"], [1, 2, 3, 4, 5, 6, 7])
             # A different source cannot inherit the packer's schema-4 support.
             (source / "ai_union/domain/governance.py").write_text(
                 "SUPPORTED_SCHEMAS = (2, 3)\nraise RuntimeError('source must not execute')\n", encoding="utf-8")

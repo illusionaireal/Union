@@ -7,6 +7,9 @@ const path = require('node:path');
 
 module.exports = async function inputJourney({page, auId, origin, get, stats, check, until, host, hostLines, output}) {
   const before = (await stats()).inference_posts;
+  const originalAU = await get(page, '/api/v1/aus/' + auId);
+  assert.equal(originalAU.status, 200);
+  const originalSchema = originalAU.value.au.schema_version;
   const commands = [];
   const observe = request => {
     if (request.method() === 'POST' && new URL(request.url()).pathname === '/api/v1/work/commands') commands.push(request.postDataJSON());
@@ -106,7 +109,8 @@ module.exports = async function inputJourney({page, auId, origin, get, stats, ch
   check('U093 budget exhaustion still accepts input without new Work, extra inference or false consumption', work.inputs[2].status === 'received'
     && work.input_summary.pending === 1 && work.input_cursor === 2 && work.budget.used === 2 && (await stats()).inference_posts === before + 2);
   const au = await get(page, '/api/v1/aus/' + auId);
-  check('U093 explicit schema 6 remains readable after input and original execution', au.status === 200 && au.value.au.schema_version === 6);
+  check('U093 adopts schema 6 for input and preserves a newer original AU schema',
+    au.status === 200 && au.value.au.schema_version === Math.max(6, originalSchema));
   await page.getByRole('button', {name: '刷新工作资料依据', exact: true}).click();
   await region.getByText(/仍待采用 1 项/).waitFor();
   for (const width of [1440, 1024, 768, 390, 320]) {

@@ -194,7 +194,7 @@ describe('current governance access projection', () => {
     expect(screen.getByRole('button', { name: '操作' })).toBeEnabled();
   });
 
-  it.each([2, 3, 4].flatMap(schema =>
+  it.each([2, 3, 4, 7].flatMap(schema =>
     ['principal_id', 'service_instance'].map(field => [schema, field] as const),
   ))(
     'withholds a schema %i projection bound to another %s',

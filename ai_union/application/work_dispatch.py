@@ -53,9 +53,17 @@ def event(store, cx, state, charter, original, principal, phase):
     # required semantics in the same commit as the first dispatch/loop intent.
     state["schema_version"] = max(state["schema_version"], 4)
     state["version"] += 1
+    related = {"command_id": original["id"], "command_sha256": request_digest(original)}
+    work_id = original['data'].get('work_id')
+    work = rules.records(state)['works'].get(work_id, {})
+    if work.get('intent'):
+        related['work_id'] = work_id
+        if original['kind'] == 'run_step':
+            from .work_intent import track_dispatch
+            track_dispatch(cx, state, work, before)
     request = {"id": "dispatch-" + str(uuid.uuid4()), "organization_id": state["id"],
                "base_version": before, "kind": "work_dispatch_" + phase,
-               "data": {"command_id": original["id"], "command_sha256": request_digest(original)}}
+               "data": related}
     store.ensure_commands(cx)
     store.save(cx, state, charter, request, receipt(request, principal, state["version"]),
                state["policy_version"], changed=True)
@@ -114,15 +122,27 @@ def next_request(service, cx, state, request, principal, loop):
         raise LoopChildConflict('原循环子命令标识已被其他请求占用')
     attempt = rules.active_attempt(work, service.app.instance)
     require(attempt['id'] == loop.get('attempt_id'), '原循环执行归属已变化')
-    for row in cx.execute('SELECT command_id,kind FROM governance_events WHERE version>? ORDER BY version',
-                          (request['base_version'],)):
-        command = commands.get(row[0])
-        require(row[1] == 'append_work_input' and command is not None
-                and command['request']['kind'] == 'append_work_input' and command['value']['status'] == 'succeeded',
-                'AU 版本已变化；原循环仅能接续低影响输入收存，须核对其他变化')
+    require(compatible_since(cx, state, request['base_version'], commands=commands),
+            'AU 版本已变化；原循环仅能接续低影响输入收存，须核对其他变化')
     result = copy.deepcopy(request)
     result['base_version'] = state['version']
     return result
+
+
+
+def compatible_since(cx, state, version, *, commands=None, allow_additional=None):
+    if version == state['version']:
+        return True
+    if commands is None:
+        commands = commands_in(cx, state['id'])
+    for command_id, kind in cx.execute(
+            'SELECT command_id,kind FROM governance_events WHERE version>? ORDER BY version', (version,)):
+        command = commands.get(command_id)
+        if command is None or command['request']['kind'] != kind or command['value']['status'] != 'succeeded':
+            return False
+        if kind != 'append_work_input' and not (allow_additional and allow_additional(command['request'])):
+            return False
+    return version <= state['version']
 
 
 class LoopChildConflict(Rejected):

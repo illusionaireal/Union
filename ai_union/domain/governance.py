@@ -5,7 +5,7 @@ from .creation import text, valid_principal, validate_charter
 from ..errors import CoreError, require
 
 PROFILE = "local_governance.v1"
-SUPPORTED_SCHEMAS = (2, 3, 4, 5, 6)
+SUPPORTED_SCHEMAS = (2, 3, 4, 5, 6, 7)
 RESERVED = {"charter", "goal", "resources", "appointments", "mandates", "dissolution"}
 FIELDS = {
     "adopt_governance": {"config", "reason"},
@@ -231,6 +231,6 @@ def validate_state(state, origin, charter):
         require(type(governance["valid_until"]) in (int, float) and governance["valid_until"] > 0, "缺少治理有效期")
     for name in ("members", "bindings", "work", "mandates", "attempts", "results"):
         require(isinstance(state.get(name), dict), "责任记录不完整")
-    if state["schema_version"] in (3, 4, 5, 6):
+    if state["schema_version"] in (3, 4, 5, 6, 7):
         from .model_access import validate_state as validate_models
         validate_models(state)

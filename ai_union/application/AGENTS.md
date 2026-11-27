@@ -111,3 +111,11 @@
   Public base versions and saved requests stay strict and immutable.
   Pending input blocks automatic result-attempt closure and delivery. Verify
   `test_work_inputs` plus work dispatch/recovery/context/loop/compatibility tests.
+
+- U-121 `work_intent.py` accepts one versioned Work approval with its original
+  attempt and receipt through GovernanceStore. Background actions validate the
+  original approval, live account, current rules and execution owner through
+  the existing dispatch/recovery paths. Recovery only scans durable intents.
+  Keep ordinary browser sessions separate from this execution authority and
+  preserve the same candidate, input coverage, bounds and recovery evidence.
+  Verify `test_work_intent` and related Work recovery/input/compatibility paths.

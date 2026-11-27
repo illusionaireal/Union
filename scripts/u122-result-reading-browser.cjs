@@ -16,7 +16,7 @@ module.exports = async function resultReading({page, auId, origin, get, stats, c
     assert.equal(response.status,200,response.value.error || kind); assert.equal(response.value.receipt.status,'succeeded',response.value.receipt.message);
     return response.value.receipt;
   };
-  const first = (await read()).works.find(w => w.results.length);
+  const first = (await read()).works.find(w => w.id === 'u120-original-work' && w.results.length);
   assert(first, 'Controlled model fixture must have a real persisted candidate result');
   const result = first.results[0];
   const original = await get(page, '/api/v1/work/results?' + new URLSearchParams({organization_id:auId,work_id:first.id,id:result.id}));

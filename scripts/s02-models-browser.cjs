@@ -335,8 +335,17 @@ async function stop(child, message) {
   const responsesDialog = page.locator('#model-command-dialog');
   check('Editing keeps the native protocol but never refills its key', await responsesDialog.locator('[name="profile"]').inputValue() === 'openai_responses' && await responsesDialog.locator('[name="api_key"]').inputValue() === '');
   await page.keyboard.press('Escape');
-  progress('U120 business material import, same Work read and revocation');
   await modelCommand(page, '调整有限调用', {max_calls: 10, allow_unknown_cost: true, reason: '受控回环增加两轮同一工作资料读取，真实模型调用零'});
+  if (process.env.UNION_U121_BROWSER === '1') {
+    progress('U121 one accepted work intent keeps running after the browser session ends');
+    const fixtureControl = async action => {
+      const response = await fetch(new URL('/__probe/' + action, modeldReady.stats_url), {method: 'POST'});
+      assert.equal(response.status, 200, `controlled provider ${action} failed`);
+    };
+    await require('./u121-durable-work-intent-browser.cjs')({page, auId, origin, get, stats, check, until, host, hostLines, output,
+      account: accounts.core, fixtureControl});
+  }
+  progress('U120 business material import, same Work read and revocation');
   await require('./u120-business-materials-browser.cjs')({page, auId, origin, get, stats, check, until, host, hostLines, output});
   if (process.env.UNION_U122_BROWSER === '1') {
     progress('U122 same-Work result reading, download and scope isolation');

@@ -60,6 +60,7 @@ jobs:
           UNION_U122_BROWSER: '1'
           UNION_U092_BROWSER: '1'
           UNION_U093_BROWSER: '1'
+          UNION_U121_BROWSER: '1'
       - run: node scripts/u097-model-events-browser.cjs
         env:
           UNION_PYTHON: python3

@@ -1,6 +1,10 @@
 # AU creation, governance and responsibility rules
 
 - Follow the root AGENTS, Main V1, ADR-0005/0006 and S01 contract.
+- `work_intent.py` owns U-121 approval and public projection invariants under
+  [ADR-0011](../../docs/decisions/0011-durable-work-intent.md). It uses the
+  existing Work and attempt; account lookup, storage and execution stay in
+  the application and adapter layers.
 - `creation.py` owns pure charter/resource/input validation and prepared-state
   construction. No Console, Engine, SQLite, HTTP, Harness or filesystem imports.
 - A caller supplies an already trusted principal and allocated AU ID; a display

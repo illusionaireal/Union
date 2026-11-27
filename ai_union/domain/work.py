@@ -243,9 +243,11 @@ def validate_state(state):
     for appointment in records_value["bindings"].values():
         require(appointment.get("member_id") in records_value["members"] and type(appointment.get("active")) is bool
                 and type(appointment.get("version")) is int, "工作责任绑定无效")
+    from .work_inputs import validate_state as validate_inputs
+    from .work_intent import validate_state as validate_intent
     for work in records_value["works"].values():
-        from .work_inputs import validate_state as validate_inputs
         validate_inputs(work)
+        validate_intent(work)
         require(work.get("status") in OPEN + CLOSED and type(work.get("version")) is int
                 and work.get("responsible_binding_id") in records_value["bindings"]
                 and work.get("definition_id") in records_value["definitions"]
@@ -476,6 +478,9 @@ def step_plan(state, charter, work_id, instance=None, reserved_step=None):
     messages = [{"role": "system", "content": definition["instruction"]},
                 {"role": "user", "content": "目标：" + work["goal"]
                  + "\n请先用电只读工具查看授权资料，再给出可直接交付的成果正文（Markdown）。"}]
+    constraints = (work.get("intent") or {}).get("constraints")
+    if constraints:
+        messages[-1]["content"] += "\n工作约束：" + constraints
     models = state.get("model_access") or {}
     connection = (models.get("connections") or {}).get(definition["connection_id"])
     require(isinstance(connection, dict), "该工作引用的模型连接不存在；请重新配置")
@@ -620,6 +625,8 @@ def usage_total(work):
 
 
 def projection(state, instance=None):
+    from .work_inputs import projection as input_projection
+    from .work_intent import projection as intent_projection
     from .work_recovery import owner
     records_value = records(state)
     result = []
@@ -628,8 +635,8 @@ def projection(state, instance=None):
         member = records_value["members"][appointment["member_id"]]
         definition = records_value["definitions"][work["definition_id"]]
         mandate = records_value["mandates"][work["mandate_id"]]
-        from .work_inputs import projection as input_projection
-        result.append(input_projection(work) | {
+        intent = {"intent": intent_projection(work["intent"])} if work.get("intent") else {}
+        result.append(input_projection(work) | intent | {
             "id": work["id"], "title": work["title"], "goal": work["goal"], "status": work["status"],
             "version": work["version"], "max_calls": work["max_calls"], "materials_root": work["materials_root"],
             "created_at": work["created_at"],

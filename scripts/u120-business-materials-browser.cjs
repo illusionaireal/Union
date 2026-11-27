@@ -56,7 +56,7 @@ module.exports = async function materialsJourney({ page, auId, origin, get, stat
   check('U120 preview performs zero inference and zero work commands', commands.length === 0 && (await stats()).inference_posts === before);
   await page.route('**/api/v1/work/commands', async route => {await route.fetch(); await route.abort('connectionreset');}, {times: 1});
   await confirm.click(); await dialog.getByRole('button', {name: '查询导入原请求', exact: true}).waitFor();
-  await until(async () => commands.length === 1 && (await catalog()).materials.length === 1, 'Unknown import was not persisted');
+  await until(async () => commands.length === 1 && (await catalog()).materials.some(item => item.id === commands[0].data.material_id), 'Unknown import was not persisted');
   const imported = commands[0];
   const cached = await page.evaluate(() => JSON.stringify(sessionStorage));
   check('U120 unknown import stores only identity and digest, never body or filename', cached.includes(imported.id) && !cached.includes(body) && !cached.includes(name));
@@ -66,19 +66,29 @@ module.exports = async function materialsJourney({ page, auId, origin, get, stat
   await page.locator('#material-dialog').getByRole('button', {name: '查询导入原请求', exact: true}).click();
   await page.getByText('资料已导入并授权本组织只读；未调用模型', {exact: true}).waitFor();
   await page.locator('#material-dialog').getByRole('button', {name: '返回资料列表', exact: true}).click();
-  const material = (await catalog()).materials[0];
+  const material = (await catalog()).materials.find(item => item.id === imported.data.material_id);
   check('U120 restart reopens the original import without replay or inference', commands.length === 1 && material.sha256 === digest
     && material.id === imported.data.material_id && material.source === 'file' && (await stats()).inference_posts === before);
   await page.getByRole('link', {name: '在工作中选择资料', exact: true}).click();
-  await page.getByText('登记新的 AI 工作', {exact: true}).click();
-  await page.getByLabel('工作标题', {exact: true}).fill('U120 同一工作读取资料');
-  await page.getByLabel('目标', {exact: true}).fill('读取业务测试.md，归纳模块数。');
+  const workForm = page.getByText('提出工作目标', {exact: true});
+  const previousIntent = page.getByRole('button', {name: '查询开始工作的原请求',exact:true});
+  await workForm.or(previousIntent).waitFor();
+  if (await previousIntent.isVisible()) {
+    await previousIntent.click();
+    await page.getByRole('button',{name:'提出另一项工作',exact:true}).click();
+  }
+  await workForm.click();
   await page.getByLabel('选择业务资料', {exact: true}).selectOption(`${material.id}:1`);
-  const registration = page.getByRole('button', {name: '登记 AI 工作', exact: true}); await registration.click();
-  await page.getByText('已登记有责任成员的工作；执行尚未开始', {exact: true}).waitFor();
-  const workId = commands.at(-1).data.work_id;
-  check('U120 work registration binds the chosen ID/version without inference', commands.at(-1).data.materials_root === material.id
-    && commands.at(-1).data.material_version === 1 && (await stats()).inference_posts === before);
+  const connection = (await get(page, '/api/v1/models?organization_id=' + auId)).value.connections.find(item => item.is_default);
+  const workId = 'u120-original-work';
+  const registration = await workCommand('start_work', {work_id:workId,title:'U120 同一工作读取资料',goal:'读取业务测试.md，归纳模块数。',
+    member_name:'受控材料研究成员',member_id:'u120-member',binding_id:'u120-binding',mandate_id:'u120-mandate',definition_id:'u120-definition',
+    connection_id:connection.id,expected_revision:connection.revision,materials_root:material.id,material_version:1,max_calls:2,
+    tools:['read_document'],reason:'受控兼容 API 保留手工模式，零登记推理'});
+  check('U120 material chooser and compatible Work receipt retain the exact ID/version without inference',
+    await page.getByLabel('选择业务资料', {exact: true}).inputValue() === `${material.id}:1`
+    && registration.command.data.materials_root === material.id && registration.command.data.material_version === 1
+    && (await stats()).inference_posts === before);
   await workCommand('start_attempt', {work_id: workId});
   const read = await workCommand('invoke_tool', {work_id: workId, tool: 'read_document', arguments: {path: name}});
   check('U120 explicit read proves digest and source without returning private body', read.receipt.result.sha256 === digest
@@ -100,17 +110,17 @@ module.exports = async function materialsJourney({ page, auId, origin, get, stat
     await page.screenshot({path: path.join(output, `business-material-work-${width}.png`), fullPage: true});
   }
   await page.goto(`${origin}/au/${auId}/resources`); await opener.waitFor();
-  const card = page.locator('.material-list li').filter({has: page.getByRole('heading', {name, exact: true})});
+  const card = page.locator('.material-list li').filter({has: page.getByRole('heading', {name, exact: true}),hasText:digest});
   await card.getByText('撤销这份资料的只读许可', {exact: true}).click();
   await card.getByLabel('撤销依据', {exact: true}).fill('受控验收结束，拒绝后续读取');
   await card.getByRole('button', {name: '确认撤销只读许可', exact: true}).click();
-  await until(async () => !(await catalog()).materials[0].read_allowed, 'Material revocation was not persisted');
+  await until(async () => !(await catalog()).materials.find(item => item.id === material.id).read_allowed, 'Material revocation was not persisted');
   const original = await get(page, '/api/v1/governance/receipts?' + new URLSearchParams({organization_id: auId, id: read.command.id}));
   check('U120 revoked original receipt retains the read fact without body disclosure', original.status === 200
     && original.value.receipt.tool_call.step_ref === read.receipt.tool_call.step_ref && !('text' in original.value.receipt.result));
   await page.goto(`${origin}/au/${auId}/work/${workId}`);
   await page.getByText('资料许可或准备条件需核对 · 0 份', {exact: true}).waitFor();
-  check('U120 revoked binding remains on the original Work with no replacement or inference', (await workRead()).works[0].id === workId
+  check('U120 revoked binding remains on the original Work with no replacement or inference', (await workRead()).works.some(item => item.id === workId && item.materials.reference === material.id)
     && (await stats()).inference_posts === before + 2);
   page.off('request', observe);
   fs.writeFileSync(path.join(output, 'business-materials.json'), JSON.stringify({scope: 'controlled browser/core HTTP/SQLite/modeld/SDK loopback',

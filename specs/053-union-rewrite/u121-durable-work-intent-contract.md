@@ -6,11 +6,11 @@
 
 正常 Core Work 页面使用 `/api/v1/work/commands` 五字段 envelope。`start_work_intent.data` 为现有 `start_work` 字段和版本（业务资料须有效 `material_version`），增加 `constraints`（可为空，最多 4,096 字符）和 `delivery_mode`（`automatic_text` 或 `governor_review`）。工作目标和约束只作工作输入；任何文字都不能变更治理、工具、资料、模型或用量授权。`automatic_text` 仅在这项工作批准的同 AU 文本结果范围内采用交付，宪章/组织目标/资源/任职/Mandate/退出等保留事项沿原治理。表单说明批准边界和资料/模型版本；无可用准备应保留目标未采用并提示当前缺口。
 
-成功回执用现有 `succeeded` 仅指意图已持久接受，含 `work_id`, `intent_id`, `attempt_id` 和 `delivery_mode`。不声称模型已调用或成果已交付。原 `id` 是 intent ID，由浏览器在发送前保留的原查询元数据恢复；工作资料、目标、约束和主体令牌不进入浏览器持久存储。完全相同的原请求返回原持久回执且不再启动；变参、跨账户/组织或旧版本拒绝。未知只查原回执；即使 Core 重启也可查，不发新命令。
+成功回执用现有 `succeeded` 仅指意图已持久接受，含 `work_id`, `intent_id`, `attempt_id` 和 `delivery_mode`。不声称模型已调用或成果已交付。原 `id` 是 intent ID，形如 `intent-<AU 摘要>-<随机引用>`，使用 AU UTF-8 SHA-256 的前 24 个小写十六进制字符和 32 个随机十六进制字符。它绑定原组织，原请求核对仅访问该 AU。浏览器在保存引用并提交前核对完整请求不超过 HTTP 的 200,000 UTF-8 字节；工作资料、目标、约束和主体令牌不进入浏览器持久存储。完全相同的原请求返回原持久回执且不再启动；变参、跨账户/组织或旧版本拒绝。未知只查原回执；即使 Core 重启也可查，不发新命令。
 
-可查询 Work 上新增 `intent` 投影，保留 `id`, `status`, `delivery_mode`, `authorized_principal_id`, `attempt_id`, `reason`（当前可行动原因）及存在时的 `decision`。可见状态为 `accepted`, `running`, `waiting_unknown`, `awaiting_decision`, `blocked`, `delivered`, `stopped`，由持久事实驱动。`decision` 仅对应同一候选，至少包含 `result_id`, `result_seq`, `sha256`, `input_cursor` 和合法决定主体。工作输入与原执行读取、原回执查询保持各自资格。成果正文和下载仍由原 U-122 分作用域入口提供。
+可查询 Work 上新增 `intent` 投影，保留 `id`, `status`, `delivery_mode`, `authorized_principal_id`, `attempt_id`, `reason`（当前可行动原因）及存在时的 `decision`。可见状态为 `accepted`, `running`, `waiting_unknown`, `awaiting_decision`, `blocked`, `delivered`, `stopped`，由持久事实驱动。`decision` 仅对应同一候选，至少包含 `result_id`, `result_seq`, `sha256`, `input_cursor` 和合法决定主体 `authorized_principal_id`。工作输入与原执行读取、原回执查询保持各自资格。成果正文和下载仍由原 U-122 分作用域入口提供。
 
-`decide_work_intent` 可对 `governor_review` 的原候选提交一次明确采用交付，data `{work_id,intent_id,result_id,result_seq,sha256,input_cursor,reason}`。须查当前 effective governance、资料/模型/Mandate、原候选及原输入覆盖；提交先前有效原命令可查询，不能改写既有决定。`stop_work_intent` data `{work_id,intent_id,reason}` 在当前有效治理授权内停止后续动作，先持久关闭批准，再判断现有执行事实；不释放 unknown、重派或宣称远端已取消。旧手工开始/步骤/结果/结算不能改变托管 Work 的已批准流程，仍用于无意图的历史工作。读取、U-093 追加与必要原请求观察保留。
+`decide_work_intent` 可对 `governor_review` 的原候选提交一次明确采用交付，data `{work_id,intent_id,result_id,result_seq,sha256,input_cursor,reason}`。须查当前 effective governance、资料/模型/Mandate、原候选及原输入覆盖。成功回执带同一组原引用，省略 `reason`；提交先前有效原命令可查询，不能改写既有决定。`stop_work_intent` data `{work_id,intent_id,reason}` 在当前有效治理授权内停止后续动作，先持久关闭批准，再判断现有执行事实；成功回执带 `work_id,intent_id`，不释放 unknown、重派或宣称远端已取消。旧手工开始/步骤/结果/结算不能改变托管 Work 的已批准流程，仍用于无意图的历史工作。读取、U-093 追加与必要原请求观察保留。
 
 ## 原事务、原执行与恢复
 

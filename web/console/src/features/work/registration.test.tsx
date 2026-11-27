@@ -1,9 +1,15 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { createHash, webcrypto } from 'node:crypto';
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
+import { MemoryRouter } from 'react-router-dom';
 import { api, ApiError } from '../../api/client';
-import type { CoreModels, CoreWork, Session } from '../../api/types';
+import type { CoreModels, CoreWork, CoreWorkItem, CoreWorkResult, Session, WorkDeliveryMode, WorkIntentStatus } from '../../api/types';
 import { WorkPanel } from './WorkPanel';
+import { MaterialWorkPreparation } from '../materials/MaterialWorkPreparation';
+
+const workspace = vi.hoisted(() => ({ current: {} as Record<string, unknown> }));
+vi.mock('../../app/workspace', () => ({ useWorkspace: () => workspace.current }));
 
 vi.mock('../../api/client', async (original) => ({
   ...(await original<typeof import('../../api/client')>()),
@@ -31,7 +37,11 @@ const receipt = (r: Record<string, unknown>) => ({
   status: 'succeeded',
   version: 5,
   work_id: (r.data as Record<string, unknown>).work_id,
-  message: '登记完成',
+  message: r.kind === 'start_work_intent' ? '意图已接受' : r.kind === 'decide_work_intent' ? '已记录治理决定' :
+    r.kind === 'stop_work_intent' ? '已记录停止' : '登记完成',
+  ...(r.kind === 'start_work_intent' ? { intent_id: r.id, attempt_id: 'a1', delivery_mode: (r.data as Record<string, unknown>).delivery_mode } : {}),
+  ...(['decide_work_intent', 'stop_work_intent'].includes(String(r.kind)) ? Object.fromEntries(
+    Object.entries(r.data as Record<string, unknown>).filter(([k]) => k !== 'reason')) : {}),
 });
 function mount(principalId = 'p1', organizationId = 'au-1') {
   return render(
@@ -49,21 +59,30 @@ function mount(principalId = 'p1', organizationId = 'au-1') {
     </QueryClientProvider>,
   );
 }
-async function fill() {
-  fireEvent.click(await screen.findByText('登记新的 AI 工作'));
+function mountNormal() {
+  return render(
+    <QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false, gcTime: 0 } } })}>
+      <MemoryRouter><MaterialWorkPreparation /></MemoryRouter>
+    </QueryClientProvider>,
+  );
+}
+async function fill(normal = false) {
+  fireEvent.click(await screen.findByText(normal ? '提出工作目标' : '登记新的 AI 工作'));
   fireEvent.change(screen.getByLabelText('工作标题'), { target: { value: '项目概览' } });
   fireEvent.change(screen.getByLabelText('目标'), { target: { value: '私有目标正文' } });
   fireEvent.change(screen.getByLabelText('负责 AI 成员名称'), { target: { value: '研究助手' } });
   await screen.findByRole('option', {name: '授权资料.md · 版本 1'});
   fireEvent.change(screen.getByLabelText('选择业务资料'), { target: { value: `material-${'a'.repeat(32)}:1` } });
   fireEvent.change(screen.getByLabelText('调用上限'), { target: { value: '2' } });
-  const button = screen.getByRole('button', { name: '登记 AI 工作' });
+  const button = screen.getByRole('button', { name: normal ? '开始工作' : '登记 AI 工作' });
   await waitFor(() => expect(button).toBeEnabled());
   return button;
 }
 beforeEach(() => {
   vi.resetAllMocks();
+  vi.stubGlobal('crypto', webcrypto);
   sessionStorage.clear();
+  workspace.current = { core: { au: { id: 'au-1' } }, session };
   work = {
     protocol: 'core.work.v1',
     organization_id: 'au-1',
@@ -100,11 +119,277 @@ beforeEach(() => {
     limits: {bytes_per_material: 65536, materials: 16, total_bytes: 1048576},
     materials: [{id: 'material-' + 'a'.repeat(32), name: '授权资料.md', source: 'paste', scope: 'au_read_only',
       version: 1, sha256: 'b'.repeat(64), bytes: 5, read_allowed: true, created_at: '', reason: '明确只读'}]}));
-  vi.mocked(api.coreWorkCommand).mockImplementation(async (r) => ({ receipt: receipt(r) }));
+  vi.mocked(api.coreWorkCommand).mockImplementation(async r => {
+    if (r.kind === 'start_work_intent') persistStart(r);
+    return { receipt: receipt(r) };
+  });
 });
 afterEach(() => {
   cleanup();
+  vi.unstubAllGlobals();
   vi.restoreAllMocks();
+});
+
+it('starts a durable intent with one submission from the normal Work route', async () => {
+  mountNormal();
+  const button = await fill(true);
+  fireEvent.click(button);
+  fireEvent.click(button);
+  await screen.findByText('意图已接受');
+  expect(api.coreWorkCommand).toHaveBeenCalledTimes(1);
+  expect(vi.mocked(api.coreWorkCommand).mock.calls[0][0]).toMatchObject({
+    id: expect.stringMatching(new RegExp(`^intent-${createHash('sha256').update('au-1').digest('hex').slice(0, 24)}-[a-f0-9]{32}$`)),
+    kind: 'start_work_intent',
+    data: { constraints: '', delivery_mode: 'automatic_text', material_version: 1 },
+  });
+});
+
+it('blocks an oversized UTF-8 start envelope before saving an original ID and keeps the goal', async () => {
+  mountNormal();
+  const start = await fill(true);
+  const oversizedGoal = '研'.repeat(67000);
+  fireEvent.change(screen.getByLabelText('目标'), {target: {value: oversizedGoal}});
+  fireEvent.click(start);
+  await screen.findByText(/请求超过 200000 UTF-8 字节/);
+  expect(screen.getByLabelText('目标')).toHaveValue(oversizedGoal);
+  expect(api.coreWorkCommand).not.toHaveBeenCalled();
+  expect(sessionStorage.length).toBe(0);
+});
+
+it('recovers an uncertain start across service restart by original intent ID without posting again', async () => {
+  vi.mocked(api.coreWorkCommand).mockRejectedValue(new Error('连接中断'));
+  const view = mountNormal();
+  const button = await fill(true);
+  fireEvent.change(screen.getByLabelText('约束（选填）'), { target: { value: '只用这份资料' } });
+  fireEvent.change(screen.getByRole('combobox', { name: '交付方式' }), { target: { value: 'governor_review' } });
+  fireEvent.click(button);
+  await screen.findByText('连接中断');
+  const original = vi.mocked(api.coreWorkCommand).mock.calls[0][0];
+  expect(original.data).toMatchObject({ constraints: '只用这份资料', delivery_mode: 'governor_review' });
+  expect(JSON.stringify(sessionStorage)).toContain(String(original.id));
+  expect(JSON.stringify(sessionStorage)).not.toMatch(/只用这份资料|私有目标正文/);
+  view.unmount();
+  persistStart(original, 'running');
+  work.access.can_start = false;
+  const restarted = { ...session, service_instance: 's2' };
+  workspace.current = { core: { au: { id: 'au-1' } }, session: restarted };
+  vi.mocked(api.session).mockResolvedValue(restarted);
+  vi.mocked(api.coreWorkReceipt).mockResolvedValue({ receipt: receipt(original) });
+  mountNormal();
+  fireEvent.click(await screen.findByRole('button', { name: '查询开始工作的原请求' }));
+  await screen.findByText('意图已接受');
+  expect(api.coreWorkReceipt).toHaveBeenCalledWith('au-1', original.id);
+  expect(api.coreWorkCommand).toHaveBeenCalledTimes(1);
+});
+
+it.each([
+  [400, 'invalid_request'],
+  [403, 'not_authorized'],
+] as const)('preserves the start draft after direct HTTP %i refusal and requires a new explicit ID', async (status, code) => {
+  vi.mocked(api.coreWorkCommand).mockRejectedValueOnce(new ApiError('服务器明确拒绝请求', status, code));
+  mountNormal();
+  const start = await fill(true);
+  fireEvent.change(screen.getByLabelText('约束（选填）'), { target: { value: '保留原约束' } });
+  fireEvent.click(start);
+  await screen.findByText('服务器明确拒绝请求');
+  expect(screen.getByRole('button', {name: '查询开始工作的原请求'})).toBeEnabled();
+  fireEvent.click(screen.getByRole('button', {name: '返回工作目标'}));
+  expect(screen.getByLabelText('目标')).toHaveValue('私有目标正文');
+  expect(screen.getByLabelText('约束（选填）')).toHaveValue('保留原约束');
+  fireEvent.click(screen.getByText('提出工作目标'));
+  const retry = screen.getByRole('button', {name: '开始工作'});
+  await waitFor(() => expect(retry).toBeEnabled());
+  fireEvent.click(retry);
+  await screen.findByText('意图已接受');
+  const requests = vi.mocked(api.coreWorkCommand).mock.calls.map(([r]) => r);
+  expect(requests).toHaveLength(2);
+  expect(requests[1].id).not.toBe(requests[0].id);
+  expect(JSON.stringify(sessionStorage)).toContain(String(requests[0].id));
+});
+
+it('keeps the original start unresolved when only its later Work read is invalid', async () => {
+  vi.mocked(api.coreWorkCommand).mockImplementationOnce(async r => {
+    persistStart(r);
+    vi.mocked(api.coreWork).mockRejectedValueOnce(new ApiError('提交后的读取失败', 400, 'invalid_request'));
+    return { receipt: receipt(r) };
+  });
+  mountNormal();
+  fireEvent.click(await fill(true));
+  await screen.findByText('提交后的读取失败');
+  expect(screen.getByRole('button', {name: '查询开始工作的原请求'})).toBeEnabled();
+  expect(screen.queryByRole('button', {name: '返回工作目标'})).toBeNull();
+  expect(api.coreWorkCommand).toHaveBeenCalledTimes(1);
+});
+
+it.each([401, 403])('keeps a direct HTTP %i without a Core code unresolved', async status => {
+  vi.mocked(api.coreWorkCommand).mockRejectedValueOnce(new ApiError('中间服务返回错误', status));
+  mountNormal();
+  fireEvent.click(await fill(true));
+  await screen.findByText('中间服务返回错误');
+  expect(screen.getByRole('button', {name: '查询开始工作的原请求'})).toBeEnabled();
+  expect(screen.queryByRole('button', {name: '返回工作目标'})).toBeNull();
+  expect(api.coreWorkCommand).toHaveBeenCalledTimes(1);
+});
+
+it.each([
+  [400, 'invalid_request'],
+  [401, 'not_authenticated'],
+  [403, 'not_authorized'],
+] as const)('retains a verified original start after a late HTTP %i refusal', async (status, code) => {
+  let fail!: (reason: Error) => void;
+  vi.mocked(api.coreWorkCommand).mockImplementationOnce(() => new Promise((_resolve, reject) => {fail = reject;}));
+  mountNormal();
+  fireEvent.click(await fill(true));
+  await waitFor(() => expect(api.coreWorkCommand).toHaveBeenCalledTimes(1));
+  const original = vi.mocked(api.coreWorkCommand).mock.calls[0][0];
+  persistStart(original);
+  vi.mocked(api.coreWorkReceipt).mockResolvedValue({receipt: receipt(original)});
+  fireEvent.click(await screen.findByRole('button', {name: '查询开始工作的原请求'}));
+  await screen.findByText('意图已接受');
+  fail(new ApiError('迟到的命令拒绝', status, code));
+  await waitFor(() => expect(screen.getByRole('button', {name: '提出另一项工作'})).toBeEnabled());
+  expect(screen.queryByText('迟到的命令拒绝')).toBeNull();
+  expect(JSON.stringify(sessionStorage)).not.toContain('refusedBeforeAcceptance');
+});
+
+const candidate: CoreWorkResult = { id: 'result-1', seq: 1, title: '可读候选', sha256: 'c'.repeat(64), bytes: 4,
+  status: 'candidate', sources: ['work-1#1'], created_at: '', adopted_at: null };
+const decision = { result_id: candidate.id, result_seq: candidate.seq, sha256: candidate.sha256,
+  input_cursor: 2, authorized_principal_id: 'p1' };
+function workItem(overrides: Partial<CoreWorkItem> = {}): CoreWorkItem {
+  return {
+    id: 'work-1', title: '原工作', goal: '说明资料', status: 'pending', version: 1, max_calls: 2,
+    materials_root: null, created_at: '', responsible: { member_id: 'm1', name: '研究成员', binding_id: 'b1', duty: '研究' },
+    definition: { id: 'd1', version: 1, connection_id: 'c1', model: 'model', tools: [] },
+    mandate: { id: 'ma1', version: 1, actions: [], active: true }, attempt_ids: ['a1'], result_ids: [],
+    tool_calls: [], attempts: [{ id: 'a1', seq: 1, status: 'running', outcome: null, started_at: '', ended_at: null }],
+    steps: [], budget: { max_calls: 2, reserved: 0, used: 1 },
+    materials: { reference: null, available: false, documents: 0 }, results: [], input_seq: 0,
+    ...overrides,
+  };
+}
+function persistStart(request: Record<string, unknown>, status: WorkIntentStatus = 'accepted') {
+  const data = request.data as Record<string, string>;
+  work.works.push(workItem({
+    id: data.work_id,
+    intent: { id: String(request.id), status, delivery_mode: data.delivery_mode as WorkDeliveryMode,
+      authorized_principal_id: 'p1', attempt_id: 'a1', reason: '原执行待推进' },
+  }));
+  work.version++;
+}
+function managedWork(status: WorkIntentStatus = 'awaiting_decision') {
+  work.access.can_manage_results = true;
+  work.works = [workItem({
+    attempts: [], result_ids: [candidate.id], results: [candidate], input_seq: 2,
+    intent: { id: 'intent-1', status, delivery_mode: 'governor_review', authorized_principal_id: 'p1',
+      attempt_id: 'a1', reason: '等待核对候选覆盖的输入', decision },
+  })];
+}
+
+it('keeps the original start unresolved when the accepted receipt names a different attempt', async () => {
+  vi.mocked(api.coreWorkCommand).mockImplementationOnce(async r => {
+    persistStart(r, 'running');
+    return { receipt: { ...receipt(r), attempt_id: 'different-attempt' } };
+  });
+  mountNormal();
+  fireEvent.click(await fill(true));
+  await screen.findByText(/回执与原工作不匹配/);
+  expect(screen.getByRole('button', {name: '查询开始工作的原请求'})).toBeEnabled();
+  expect(screen.queryByRole('button', {name: '提出另一项工作'})).toBeNull();
+  expect(api.coreWorkCommand).toHaveBeenCalledTimes(1);
+});
+
+it('uses the projected candidate for one explicit decision and links to the scoped reader', async () => {
+  managedWork();
+  vi.mocked(api.coreWorkCommand).mockImplementation(async r => {
+    const item = work.works[0];
+    item.intent!.status = 'delivered';
+    item.status = 'delivered';
+    item.delivered_result_id = candidate.id;
+    item.results = [{ ...candidate, status: 'adopted' }];
+    work.version++;
+    return { receipt: receipt(r) };
+  });
+  mountNormal();
+  await screen.findByText('等待治理决定');
+  expect(screen.getByRole('link', {name: '阅读与下载'})).toHaveAttribute('href', '/au/au-1/work/work-1/results/result-1');
+  expect(screen.queryByText('已交付')).toBeNull();
+  expect(screen.queryByRole('button', {name: '开始执行'})).toBeNull();
+  fireEvent.click(screen.getByRole('button', {name: '批准并交付此成果'}));
+  await waitFor(() => expect(api.coreWorkCommand).toHaveBeenCalledWith(expect.objectContaining({
+    kind: 'decide_work_intent', base_version: 4,
+    data: { work_id: 'work-1', intent_id: 'intent-1', result_id: candidate.id, result_seq: candidate.seq,
+      sha256: candidate.sha256, input_cursor: 2, reason: expect.any(String) },
+  })));
+  expect(api.coreWorkCommand).toHaveBeenCalledTimes(1);
+  await screen.findByText('已记录治理决定');
+  expect(await screen.findByText('已交付')).toBeVisible();
+  expect(screen.queryByRole('button', {name: '批准并交付此成果'})).toBeNull();
+});
+
+it('stops the original intent without a manual finish or remote cancellation claim', async () => {
+  managedWork('waiting_unknown');
+  work.works[0].budget.reserved = 1;
+  vi.mocked(api.coreWorkCommand).mockImplementation(async r => {
+    work.works[0].intent!.status = 'stopped';
+    work.works[0].intent!.reason = '未决原请求和预算仍须核对';
+    work.version++;
+    return { receipt: receipt(r) };
+  });
+  mountNormal();
+  fireEvent.click(await screen.findByRole('button', {name: '停止工作'}));
+  await waitFor(() => expect(api.coreWorkCommand).toHaveBeenCalledWith(expect.objectContaining({
+    kind: 'stop_work_intent', base_version: 4,
+    data: { work_id: 'work-1', intent_id: 'intent-1', reason: expect.any(String) },
+  })));
+  expect(api.coreWorkCommand).toHaveBeenCalledTimes(1);
+  await screen.findByText('已记录停止');
+  expect(await screen.findByText('已停止后续推进')).toBeVisible();
+  expect(screen.getByText(/1 已预约/)).toBeVisible();
+  expect(screen.queryByText('已交付')).toBeNull();
+});
+
+it('withholds candidate approval when the projection reports newer input', async () => {
+  managedWork();
+  work.works[0].input_seq = 3;
+  mountNormal();
+  await screen.findByText('等待治理决定');
+  expect(screen.queryByRole('button', {name: '批准并交付此成果'})).toBeNull();
+  expect(screen.getByRole('link', {name: '阅读与下载'})).toBeVisible();
+  expect(api.coreWorkCommand).not.toHaveBeenCalled();
+});
+
+it('explains when the current viewer cannot approve and preserves the candidate link', async () => {
+  managedWork();
+  work.works[0].intent!.decision = { ...decision, authorized_principal_id: 'another-principal' };
+  mountNormal();
+  await screen.findByText('当前身份不能批准此候选，等待有权治理者处理。');
+  expect(screen.queryByRole('button', {name: '批准并交付此成果'})).toBeNull();
+  expect(screen.getByRole('link', {name: '阅读与下载'})).toBeVisible();
+});
+
+it('keeps legacy manual commands unavailable for managed Work', async () => {
+  managedWork('accepted');
+  work.works[0].results = [];
+  work.works[0].result_ids = [];
+  mount();
+  await screen.findByText('原工作');
+  expect(screen.queryByRole('button', {name: '准备本轮执行'})).toBeNull();
+});
+
+it.each([
+  ['批准并交付此成果', '批准交付', 400, 'invalid_request'],
+  ['停止工作', '停止工作', 403, 'not_authorized'],
+] as const)('restores the %s action only after a definite refusal', async (action, label, status, code) => {
+  managedWork();
+  vi.mocked(api.coreWorkCommand).mockRejectedValueOnce(new ApiError('操作明确被拒绝', status, code));
+  mountNormal();
+  fireEvent.click(await screen.findByRole('button', {name: action}));
+  await screen.findByText('操作明确被拒绝');
+  expect(screen.getByRole('button', {name: `查询${label}的原请求`})).toBeEnabled();
+  fireEvent.click(screen.getByRole('button', {name: `重新核对${label}`}));
+  expect(screen.getByRole('button', {name: action})).toBeEnabled();
+  expect(api.coreWorkCommand).toHaveBeenCalledTimes(1);
 });
 
 it('Core empty state registers one bounded responsible Work, persisting original identity before POST', async () => {

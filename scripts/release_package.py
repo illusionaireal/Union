@@ -361,6 +361,8 @@ def check_au_schemas(database, manifest, root):
             require(state['schema_version'] in manifest.get('core_au_schemas', []),
                     'Candidate does not declare support for the persisted AU schema; keep compatible code and original history')
             works = list(state.get('work_runtime', {}).get('works', {}).values())
+            require(not any('intent' in work for work in works) or 7 in manifest.get('core_au_schemas', []),
+                    'Candidate cannot preserve durable work intent and original approval; keep compatible code and history')
             has_dispatch = any(work.get('loops') or any(step.get('command_id') for step in work.get('steps', []))
                                for work in works)
             require(not has_dispatch or 4 in manifest.get('core_au_schemas', []),

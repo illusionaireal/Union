@@ -133,9 +133,14 @@ def _fence(service, state, work_id, expected_owner):
         raise WorkExecutionFenced(str(error)) from error
 
 
-def _authorize(service, cx, accounts, token, state, snapshot, step, expected_owner):
+def _authorize(service, cx, accounts, token, state, snapshot, step, expected_owner, *, approval=None):
     _fence(service, state, snapshot["request"]["data"]["work_id"], expected_owner)
-    principal = service.app.identity.principal_in(accounts, token)
+    work_id = snapshot['request']['data']['work_id']
+    if approval is not None:
+        from . import work_intent
+        principal = work_intent.authorize(service, cx, accounts, state, work_id, approval)
+    else:
+        principal = service.app.identity.principal_in(accounts, token)
     rules.authorize(state, principal)
     rules.effective(state, {r[0] for r in accounts.execute("SELECT principal_id FROM owner_account")})
     plan = snapshot["plan"]
@@ -154,7 +159,7 @@ def _authorize(service, cx, accounts, token, state, snapshot, step, expected_own
 
 
 @contextmanager
-def post_guard(service, token, directory, intent, request, principal, expected_owner):
+def post_guard(service, token, directory, intent, request, principal, expected_owner, *, approval=None):
     """Last dispatch admission; an admitted network operation holds no shared lock."""
     with service.app.mutex, service.app.catalog() as accounts:
         with service.store.transaction(directory) as cx:
@@ -162,21 +167,21 @@ def post_guard(service, token, directory, intent, request, principal, expected_o
             step = dispatch.find(state, request, principal)
             snapshot = WorkExecutionStore.load_request(cx, step)
             try:
-                _authorize(service, cx, accounts, token, state, snapshot, step, expected_owner)
+                _authorize(service, cx, accounts, token, state, snapshot, step, expected_owner, approval=approval)
             except Rejected as error:
                 raise WorkExecutionFenced(str(error)) from error
             require(step["dispatch_phase"] == "dispatching", "原调用尚未持久提交派发边界")
     yield
 
 
-def send_prepared(service, token, directory, intent, request, principal, expected_owner, transport):
+def send_prepared(service, token, directory, intent, request, principal, expected_owner, transport, *, approval=None):
     """Only a proven prepared snapshot may make its original first POST."""
     with service.app.mutex, service.app.catalog() as accounts:
         with service.store.transaction(directory) as cx:
             state = _state(service, cx, request, intent)
             step = dispatch.find(state, request, principal)
             snapshot = WorkExecutionStore.load_request(cx, step)
-            _authorize(service, cx, accounts, token, state, snapshot, step, expected_owner)
+            _authorize(service, cx, accounts, token, state, snapshot, step, expected_owner, approval=approval)
             require(step["dispatch_phase"] == "prepared", "原调用可能已经派发；只能查询原请求")
             state = copy.deepcopy(state)
             charter = state.pop("charter")
@@ -187,10 +192,10 @@ def send_prepared(service, token, directory, intent, request, principal, expecte
     if snapshot["wire_body"] is not None:
         require(hasattr(transport, "chat_body"), "宿主通道不能发送原 wire 快照")
         return transport.chat_body(snapshot["wire_body"], post_guard=lambda: post_guard(
-            service, token, directory, intent, request, principal, expected_owner))
+            service, token, directory, intent, request, principal, expected_owner, approval=approval))
     # Legacy/custom channels retain their original chat contract. Modeld always
     # uses chat_body, with the exact saved body and a fence around the actual POST.
-    with post_guard(service, token, directory, intent, request, principal, expected_owner):
+    with post_guard(service, token, directory, intent, request, principal, expected_owner, approval=approval):
         pass
     return transport.chat(copy.deepcopy(plan["package"]), copy.deepcopy(plan["messages"]),
                           copy.deepcopy(plan["tools"]))
@@ -218,7 +223,7 @@ def observe(service, directory, intent, request, principal, message, usage, *, a
         dispatch.event(service.store, cx, state, charter, request, principal, "observed_complete")
 
 
-def adopt_observed(service, token, directory, intent, request, principal, expected_owner):
+def adopt_observed(service, token, directory, intent, request, principal, expected_owner, *, approval=None):
     with service.app.mutex, service.store.transaction(directory) as cx:
         initial = _state(service, cx, request, intent)
         original = dispatch.find(initial, request, principal)
@@ -264,7 +269,7 @@ def adopt_observed(service, token, directory, intent, request, principal, expect
             cx.execute("SAVEPOINT work_step")
             try:
                 actor = _authorize(service, cx, accounts, token, state | {"charter": charter},
-                                   snapshot, step, expected_owner)
+                                   snapshot, step, expected_owner, approval=approval)
                 require(observed["action_authorized"] is True and remote_authorized,
                         "原模型调用已完成，但当前模型授权失效")
                 local = copy.deepcopy(state)
@@ -273,6 +278,9 @@ def adopt_observed(service, token, directory, intent, request, principal, expect
                 receipt.update(adopt_turn(service, cx, local, charter, request, actor, snapshot["plan"],
                                           original, observed["message"], observed["usage"], expected_owner))
                 original.update(dispatch_phase="adopted", adoption_pending=False)
+                if approval is not None and receipt['result']:
+                    from .work_intent import candidate_produced
+                    candidate_produced(local, request['data']['work_id'], actor)
                 state = local
             except (Rejected, CoreError) as error:
                 cx.execute("ROLLBACK TO work_step")
@@ -296,7 +304,7 @@ def adopt_observed(service, token, directory, intent, request, principal, expect
             return receipt
 
 
-def resume(service, token, directory, intent, work_id, attempt_id, expected_owner):
+def resume(service, token, directory, intent, work_id, attempt_id, expected_owner, *, approval=None):
     """Resume an original reserved request, never create a replacement attempt."""
     with service.app.mutex, service.store.transaction(directory) as cx:
         state = CoreAUStore.read_in(cx, intent["allocated_au_id"], creation=intent)["au"]
@@ -311,20 +319,24 @@ def resume(service, token, directory, intent, work_id, attempt_id, expected_owne
             step = copy.deepcopy(pending[0])
             snapshot = WorkExecutionStore.load_request(cx, step)
     if step is None:
-        return resume_loop(service, token, directory, intent, work_id, attempt_id, expected_owner)
+        return (resume_loop(service, token, directory, intent, work_id, attempt_id, expected_owner)
+                if approval is None else None)
     request = snapshot["request"]
     principal = step["principal_id"]
     if step.get("observed_sha256"):
-        adopt_observed(service, token, directory, intent, request, principal, expected_owner)
+        adopted = adopt_observed(service, token, directory, intent, request, principal, expected_owner, approval=approval)
+        if approval is not None:
+            return adopted
         return resume_loop(service, token, directory, intent, work_id, attempt_id, expected_owner)
-    channel = service.transport
-    if channel is None and service.transport_factory is not None:
-        channel = service.transport_factory(request["organization_id"], step["connection"])
     try:
+        channel = service.transport
+        if channel is None and service.transport_factory is not None:
+            channel = service.transport_factory(request["organization_id"], step["connection"])
         require(channel is not None, "宿主尚未配置原模型通道；保留原请求预约")
         if step.get("dispatch_phase") == "prepared" and step["status"] == "reserved":
             require(snapshot["wire_body"] is not None, "原调用缺少精确 wire 快照；不能重派")
-            message, usage = send_prepared(service, token, directory, intent, request, principal, expected_owner, channel)
+            message, usage = send_prepared(service, token, directory, intent, request, principal, expected_owner,
+                                           channel, approval=approval)
             result = {"message": message, "usage": usage, "action_authorized": True}
         else:
             require(step.get("request_sha256") and hasattr(channel, "lookup_result"),
@@ -334,13 +346,15 @@ def resume(service, token, directory, intent, work_id, attempt_id, expected_owne
             return
         observe(service, directory, intent, request, principal, result["message"], result["usage"],
                 action_authorized=result["action_authorized"])
-        adopt_observed(service, token, directory, intent, request, principal, expected_owner)
+        adopted = adopt_observed(service, token, directory, intent, request, principal, expected_owner, approval=approval)
+        if approval is not None:
+            return adopted
         return resume_loop(service, token, directory, intent, work_id, attempt_id, expected_owner)
     except UnadoptableWorkResult as error:
         if error.observed_message is not None:
             observe(service, directory, intent, request, principal, error.observed_message, error.observed_usage,
                     action_authorized=False)
-            return adopt_observed(service, token, directory, intent, request, principal, expected_owner)
+            return adopt_observed(service, token, directory, intent, request, principal, expected_owner, approval=approval)
         return service.record_channel_outcome(directory, intent, request, principal, str(error), completed=error,
                                               expected_owner=expected_owner)
     except Exception:

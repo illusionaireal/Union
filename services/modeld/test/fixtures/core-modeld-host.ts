@@ -22,12 +22,26 @@ function credential(file: string) {
 const adminToken = credential(config.admin_token_file), workerToken = credential(config.worker_token_file);
 const apiKey = credential(config.api_key_file), modelID = config.model_id ?? 'controlled-core-model';
 const calls: { body: any; session: string | null }[] = [];
+let barrier: { wait: Promise<void>; release: () => void } | undefined;
 const frame = (value: unknown) => 'data: ' + JSON.stringify(value) + '\n\n';
 const signature = 'controlled-core-native-signature';
 const provider = Bun.serve({ hostname: '127.0.0.1', port: 0, async fetch(request) {
   const path = new URL(request.url).pathname;
   if (request.method === 'GET' && path === '/__probe/status')
     return Response.json({ inference_posts: calls.length, calls, real_model_calls: 0 });
+  if (request.method === 'POST' && path === '/__probe/hold') {
+    if (barrier) return new Response('already_held', { status: 409 });
+    let release!: () => void;
+    const wait = new Promise<void>(resolve => { release = resolve; });
+    const timer = setTimeout(() => barrier?.release(), 45000);
+    barrier = { wait, release: () => { clearTimeout(timer); barrier = undefined; release(); } };
+    return Response.json({ held: true });
+  }
+  if (request.method === 'POST' && path === '/__probe/release') {
+    if (!barrier) return new Response('not_held', { status: 409 });
+    barrier.release();
+    return Response.json({ held: false });
+  }
   if (request.method !== 'POST' || path !== '/v1/chat/completions') return new Response('not_found', { status: 404 });
   if (request.headers.get('authorization') !== 'Bearer ' + apiKey)
     return Response.json({ error: { message: 'controlled_authentication_failed' } }, { status: 401 });
@@ -36,6 +50,7 @@ const provider = Bun.serve({ hostname: '127.0.0.1', port: 0, async fetch(request
   if ((body.model !== modelID && !['auth','missing','limit','unavailable','interrupt'].includes(fault)) || body.stream !== true)
     return Response.json({ error: { message: 'controlled_model_or_stream_mismatch' } }, { status: 400 });
   calls.push({ body, session: request.headers.get('x-opencode-session') });
+  if (barrier) await barrier.wait;
   const faultStatus = ({ auth: 401, missing: 404, limit: 429, unavailable: 503 } as Record<string, number>)[fault];
   if (faultStatus) return Response.json({ error: { message: 'private provider detail ' + apiKey } }, { status: faultStatus });
   const common = { id: 'controlled-core-' + calls.length, model: modelID, object: 'chat.completion.chunk', created: 1 };

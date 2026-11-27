@@ -42,11 +42,17 @@ def command(service, token, incoming):
                 'actor_principal_id': principal, 'created_at': now(), 'status': 'succeeded', 'effect': 'applied',
                 'work_id': request['data']['work_id']}
             changed = False
+            managed = False
             cx.execute('SAVEPOINT input_command')
             try:
                 require(request['base_version'] == local['version'], 'AU 版本已变化；请核对原输入')
                 item, changed = rules.append(local, request['data'], principal)
                 if changed:
+                    target = work.records(local)['works'][request['data']['work_id']]
+                    managed = 'intent' in target
+                    if managed:
+                        from .work_intent import note_input
+                        note_input(target)
                     WorkInputStore.save(cx, local['id'], request['data']['work_id'], item, content)
                     local['version'] += 1
                 else:
@@ -64,7 +70,10 @@ def command(service, token, incoming):
             cx.execute('RELEASE input_command')
             receipt['version'] = local['version']
             service.store.save(cx, local, charter, stored, receipt, local['policy_version'], changed=changed)
-            return receipt
+    if changed and managed:
+        from .work_intent import wake
+        wake(service, request['organization_id'], request['data']['work_id'])
+    return receipt
 
 
 def read(service, token, au_id, work_id, input_id):

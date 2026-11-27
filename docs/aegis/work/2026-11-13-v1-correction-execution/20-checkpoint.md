@@ -2,6 +2,10 @@
 
 ## Current Checkpoint
 
+2026-11-27 U121 组合候选复审：两个独立工程角色确认 scoped start ID、版本化资料、原执行恢复、迟到明确拒绝与未知及原回执的关联。前端全量 496、相关 Python 66、独立复核 Python 6 通过。原浏览器场景已观察实际受控注销、继续、重启读回、最终交付下载、保留决定；最新组合浏览器与固定本地 Python 全量仍在验证。在线 #76 v3 progress。证据见 [U-121 索引](../../../../evidence/U-121/README.md)。下一步通过后发布准确候选验证七项 CI，随后普通 Git 快进、看板验收及交付记录。
+
+U121 开发现场：`6cd6954` 冻结合同和 ADR，编码前实际后端 HTTP RED 为 400 `invalid_request`（原 Work 命令不支持意图），前端 RED 为正常页只发送 `start_work`。正常页面端第一轮定向通过 37 项，后端原 Work/当前授权/原执行接续还在实施。受控浏览器驱动准备从无 Work 一次提交、丢响应、首次模型调用保持时注销、原作用域续做与重启查询、下载已交付结果和保留决定。隔离 provider 的测试保持/释放已实测，组合链尚待。在线 #76 仍 v3 progress。协调员完成前仍需要合成、两阶段复核、完整验收、准确 CI、远端和在线读回。
+
 U121 TaskStartSnapshot 2026-11-27：真实 #76 v3 progress/rev1291，由相同实际在线用户持有，所有前置已完成。独立集成 checkout 以 clean `b0d0043` 创建 `codex/u121-intent-20261127`。冻结 [U-121 契约](../../../../specs/053-union-rewrite/u121-durable-work-intent-contract.md) 和 [ADR-0011](../../../decisions/0011-durable-work-intent.md) 后才写行为代码。后端与前端按不相交的代码路径实施，协调者独占 Git、看板、账本、浏览器与流程证据；受控整体验收仍待验证。
 
 2026-11-27 U093 完整受控采用：`0e03e92` 的准确七项 CI 全绿，普通 Git 快进采用 `rewrite/charter-v1`，远端读回 `protected=false`。本地 957 Python（7 跳过）、475 前端、89 modeld、155 Chrome（13 次受控推理，真实 0）及两工程角色独立复核通过。在线 #47 v8 done/rev1289，三项检查完成；#76 用实际账号认领 v3 progress/rev1291，所有真实前置满足。见 [U-093 采用记录](../../../../evidence/U-093/adoption-20261127.json)。剩余整体验收为 U121 一次合法有界意图、原执行接续和按有效规则交付，先冻结事务、运行身份及文件责任。

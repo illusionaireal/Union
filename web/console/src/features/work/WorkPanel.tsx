@@ -275,19 +275,19 @@ export function WorkPanel({ organizationId, readOnly = false, principalId, servi
                 </dd>
               </div>
             </dl>
-            {readOnly && allowResultDelivery && principalId && serviceInstance &&
+            {!item.intent && readOnly && allowResultDelivery && principalId && serviceInstance &&
               <CoreResultDelivery key={`${serviceInstance}:${principalId}:${organizationId}:${item.id}:results`}
                 scope={{principalId, serviceInstance, organizationId}} item={item} version={data.version}
                 canManage={data.access.can_manage_results === true} onAccessLost={() => setAccessLost(true)} />}
             {readOnly && allowExecution && principalId && serviceInstance &&
               <WorkStream key={`${serviceInstance}:${principalId}:${organizationId}:${item.id}:output`}
                 item={item} scope={{principalId, serviceInstance, organizationId, workId: item.id}} />}
-            {readOnly && allowExecution && principalId && serviceInstance &&
+            {!item.intent && readOnly && allowExecution && principalId && serviceInstance &&
               <WorkExecution key={`${serviceInstance}:${principalId}:${organizationId}:${item.id}`}
                 item={item} scope={{principalId,serviceInstance,organizationId,workId:item.id}}
                 canExecute={data.access.can_start}
                 onAccessLost={() => setAccessLost(true)} />}
-            {!readOnly && <div className="work-actions">
+            {!item.intent && !readOnly && <div className="work-actions">
               <button type="button" disabled={busy} onClick={() => send('start_attempt', { work_id: item.id })}>
                 开始执行
               </button>
@@ -322,7 +322,7 @@ export function WorkPanel({ organizationId, readOnly = false, principalId, servi
                   </button>
                 ))}
             </div>}
-            {!readOnly && <ResultForm item={item} send={send} busy={busy} />}
+            {!item.intent && !readOnly && <ResultForm item={item} send={send} busy={busy} />}
           </li>
         ))}
       </ul>}

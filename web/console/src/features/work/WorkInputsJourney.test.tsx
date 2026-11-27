@@ -259,9 +259,11 @@ it('keeps a successful append unresolved when only later Work reading returns 40
   expect(screen.queryByRole('button', {name: '继续补充输入'})).toBeNull(); expect(screen.getByRole('button', {name: '查询输入原请求'})).toBeEnabled();
 });
 
-it('accepts explicit schema 6 while refusing unsupported schema 7', async () => {
+it('reopens the same Work across the explicit schema 6 to 7 upgrade and refuses schema 8', async () => {
   Object.assign(state.core.au, {schema_version: 6}); const opened = mount('/au/core-au/work/work-original');
   await screen.findByLabelText('补充输入正文'); opened.view.unmount(); Object.assign(state.core.au, {schema_version: 7});
+  const upgraded = mount('/au/core-au/work/work-original');
+  await screen.findByLabelText('补充输入正文'); upgraded.view.unmount(); Object.assign(state.core.au, {schema_version: 8});
   mount('/au/core-au/work/work-original'); await screen.findByRole('alert');
   expect(screen.queryByLabelText('补充输入正文')).toBeNull();
 });

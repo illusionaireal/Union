@@ -7,6 +7,9 @@ import { organizationPath } from '../../app/organization-routes';
 import { CoreWorkRegistration } from '../work/CoreWorkRegistration';
 import { WorkRecovery } from '../work/WorkRecovery';
 import { WorkInputs } from '../work/WorkInputs';
+import { WorkIntentProgress } from '../work/WorkIntentProgress';
+import { WorkStream } from '../work/WorkStream';
+import { ResultList } from '../work/ResultList';
 import { accessLost, type WorkScope } from '../work/useWorkCommand';
 import './materials.css';
 
@@ -23,24 +26,32 @@ function Preparation({ scope, workId }: { scope: WorkScope; workId?: string }) {
   const works = matches ? value!.works.filter(work => !workId || work.id === workId) : [];
   if (lost) return <p role="alert">工作读取权限已变化，请刷新组织后重开。</p>;
   return <section className="business-materials" aria-label="工作资料准备">
-    <h1>工作资料准备</h1>
-    <p>选择已授权资料，保存这项工作的目标、责任与有限调用边界。登记不调用模型；完整自动推进与交付入口尚待接通。</p>
+    <h1>{workId ? '工作详情' : '工作'}</h1>
     {read.isPending ? <p role="status">正在核对原工作与资料绑定…</p> : !matches || !value ?
       <p role="alert">工作暂不可读取；{errorText(read.error)}，请刷新核对当前身份。</p> : <>
       {read.error && <p role="status">暂时无法刷新工作。{errorText(read.error)}</p>}
-      {!workId && <CoreWorkRegistration scope={scope} canStart={value.access.can_start} onAccessLost={() => setLost(true)} />}
-      {!works.length && <p>{workId ? '指定工作不存在或不属于当前组织，未读取其他工作内容。' : '尚无已登记工作。'}</p>}
+      {!workId && <CoreWorkRegistration durableIntent scope={scope} canStart={value.access.can_start} onAccessLost={() => setLost(true)} />}
+      {!works.length && <p>{workId ? '指定工作不存在或不属于当前组织，未读取其他工作内容。' : '尚无工作。'}</p>}
       <ul className="material-list">{works.map(work => {
-        const canAppend = value.access.can_append_input === true && ['pending', 'running', 'waiting'].includes(work.status);
+        const canManage = value.access.can_manage_results === true;
+        const canAppend = value.access.can_append_input === true && ['pending', 'running', 'waiting'].includes(work.status) &&
+          work.intent?.status !== 'stopped' && work.intent?.status !== 'delivered';
         return <li key={work.id}>
-        <h2>{work.title}</h2><p>{work.goal}</p>
-        <p>责任：{work.responsible.name} · {work.status} · 调用上限 {work.max_calls}</p>
+        <h2>{workId ? work.title : <Link to={`${organizationPath(scope.organizationId, 'work')}/${encodeURIComponent(work.id)}`}>{work.title}</Link>}</h2>
+        <p>{work.goal}</p>
+        <p>责任：{work.responsible.name} · 调用上限 {work.max_calls}</p>
+        {work.intent ? <WorkIntentProgress scope={scope} work={work} intent={work.intent} version={value.version}
+          canManage={canManage} onAccessLost={() => setLost(true)} /> : <>
+          <p>执行状态：{work.status}</p>
+          {!!work.results.length && <ResultList organizationId={scope.organizationId} works={[work]} />}
+        </>}
         <p>{work.materials.available ? '资料绑定当前可读' : '资料许可或准备条件需核对'} · {work.materials.documents} 份</p>
         {work.tool_calls.filter(call => call.tool === 'read_document').map(call => <p key={call.step_ref}>
           实际读取依据：{String(call.arguments.path)} · {call.bytes} 字节 · SHA-256 {call.sha256} · 原工具回执 {call.step_ref}
         </p>)}
         {!work.tool_calls.some(call => call.tool === 'read_document') && <p>尚无实际资料读取依据；保存绑定不等于已读取。</p>}
-        <WorkRecovery scope={scope} work={work} version={value.version} canManage={value.access.can_manage_results===true} onAccessLost={()=>setLost(true)} />
+        {work.intent ? <WorkStream item={work} scope={{...scope, workId: work.id}} /> :
+          <WorkRecovery scope={scope} work={work} version={value.version} canManage={canManage} onAccessLost={() => setLost(true)} />}
         <WorkInputs
           scope={scope} work={work} version={value.version} canAppend={canAppend}
           canRead={value.access.can_read_inputs === true} onAccessLost={()=>setLost(true)} />

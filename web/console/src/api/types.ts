@@ -55,7 +55,7 @@ export interface PreparedAURead {
 }
 export interface GovernedAURead extends GovernanceReadFields {
   protocol: 'core.au.v1';
-  au: CoreAUBase & Omit<GovernanceAUFields, 'schema_version'> & { schema_version: 2 | 3 | 4 | 5 | 6 };
+  au: CoreAUBase & Omit<GovernanceAUFields, 'schema_version'> & { schema_version: 2 | 3 | 4 | 5 | 6 | 7 };
 }
 export type CoreAURead = PreparedAURead | GovernedAURead;
 export interface ModelConnection {
@@ -453,7 +453,26 @@ export interface CoreWorkInputContent {
   content: string;
 }
 
+export type WorkDeliveryMode = 'automatic_text' | 'governor_review';
+export type WorkIntentStatus = 'accepted' | 'running' | 'waiting_unknown' | 'awaiting_decision' | 'blocked' | 'delivered' | 'stopped';
+export interface WorkIntentCandidate {
+  result_id: string;
+  result_seq: number;
+  sha256: string;
+  input_cursor: number;
+}
+export interface WorkIntent {
+  id: string;
+  status: WorkIntentStatus;
+  delivery_mode: WorkDeliveryMode;
+  authorized_principal_id: string;
+  attempt_id: string;
+  reason: string;
+  decision?: (WorkIntentCandidate & { authorized_principal_id: string }) | null;
+}
+
 export interface CoreWorkItem {
+  intent?: WorkIntent | null;
   input_seq?: number;
   input_cursor?: number;
   inputs?: CoreWorkInput[];

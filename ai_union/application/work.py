@@ -12,7 +12,8 @@ from ..domain import governance, work as rules, work_inputs as input_rules
 from ..engine import identifier, now
 from ..errors import CoreError, Rejected, require
 from ..work_transport import UnadoptableWorkResult
-from . import work_dispatch as dispatch
+from . import work_dispatch as dispatch, work_intent
+from ..domain import work_intent as intent_rules
 
 
 class WorkService:
@@ -25,6 +26,7 @@ class WorkService:
         self.active_loops = set()
         self.stopping = False
         self.active_recoveries = {}
+        self.intent_workers = {}
 
     def require_host(self):
         require(not self.stopping and not self.app.stopping and not self.app.closed,
@@ -110,6 +112,13 @@ class WorkService:
                     and len(encoded(request)) <= 200000, "命令格式无效或过大")
         except (Rejected, TypeError, ValueError) as error:
             raise CoreError("invalid_request", str(error)) from error
+        if request['kind'] == 'start_work_intent':
+            intent_rules.validate_start_id(request['organization_id'], request['id'])
+        grant = None
+        if request['kind'] in ('start_work_intent', 'decide_work_intent'):
+            previous, grant = work_intent.command_grant(self, token, request, principal)
+            if previous is not None:
+                return previous
         if request["kind"] == "reconcile_step":
             try:
                 rules.validate_input(request["kind"], request["data"])
@@ -128,7 +137,10 @@ class WorkService:
                     return previous
                 rules.authorize(state, principal)
                 try:
-                    rules.validate_input(request["kind"], request["data"])
+                    if request["kind"] in intent_rules.KINDS:
+                        intent_rules.validate_input(request["kind"], request["data"])
+                    else:
+                        rules.validate_input(request["kind"], request["data"])
                 except (Rejected, TypeError, ValueError) as error:
                     raise CoreError("invalid_request", str(error)) from error
                 self.store.ensure_commands(cx)
@@ -145,7 +157,16 @@ class WorkService:
                     principals = {row[0] for row in accounts.execute("SELECT principal_id FROM owner_account")}
                     rules.effective(state, principals)
                     local = copy.deepcopy(state)
-                    if request["kind"] == "invoke_tool":
+                    kind, data = request['kind'], request['data']
+                    if kind not in intent_rules.KINDS:
+                        work_intent.require_unmanaged(rules.records(local)['works'].get(data.get('work_id'), {}))
+                    if kind == 'start_work_intent':
+                        receipt.update(work_intent.accept(self, cx, local, charter, request, principal, grant))
+                    elif kind == 'decide_work_intent':
+                        receipt.update(work_intent.decide(self, cx, local, data, principal, grant))
+                    elif kind == 'stop_work_intent':
+                        receipt.update(work_intent.stop(local, data))
+                    elif request["kind"] == "invoke_tool":
                         receipt.update(self.invoke(local, request["data"], cx))
                         receipt["message"] = "已按该工作的有效授权调用只读资料工具并留存回执；未调用模型"
                     elif request["kind"] == "submit_result":
@@ -233,6 +254,8 @@ class WorkService:
             observation = {"cancel_accepted": accepted, "message": note}
             directory, intent = self.app.governance.locate(request["organization_id"])
             receipt = self.store.record_delivery(directory, request["id"], principal, observation)
+        if request['kind'] in ('start_work_intent', 'stop_work_intent') and receipt['status'] == 'succeeded':
+            work_intent.wake(self, request['organization_id'], receipt['work_id'])
         return receipt
 
     def close_completed_result_attempt(self, cx, state, data):
@@ -314,23 +337,24 @@ class WorkService:
             raise CoreError("invalid_request", "成果标识有多个工作匹配；请提供原工作标识")
         raise CoreError("invalid_request", "此 AU 中没有该成果标识")
 
-    def run_step(self, token, incoming, *, internal_loop=None):
+    def run_step(self, token, incoming, *, internal_loop=None, approval=None):
         if not isinstance(incoming, dict) or not all(isinstance(incoming.get(k), str) for k in ("id", "organization_id")):
-            return self._run_step(token, incoming, internal_loop=internal_loop)
+            return self._run_step(token, incoming, internal_loop=internal_loop, approval=approval)
         key = (incoming["organization_id"], incoming["id"])
         with self.app.mutex:
             self.active_steps[key] = self.active_steps.get(key, 0) + 1
         try:
-            return self._run_step(token, incoming, internal_loop=internal_loop)
+            return self._run_step(token, incoming, internal_loop=internal_loop, approval=approval)
         finally:
             with self.app.mutex:
                 self.active_steps[key] -= 1
                 if not self.active_steps[key]:
                     del self.active_steps[key]
 
-    def _run_step(self, token, incoming, *, internal_loop=None):
+    def _run_step(self, token, incoming, *, internal_loop=None, approval=None):
         """One automatic model turn: decide outside the lock, apply inside one transaction."""
-        principal = self.app.creation.principal(self.app.session(token))
+        principal = (approval.principal if approval is not None
+                     else self.app.creation.principal(self.app.session(token)))
         request = copy.deepcopy(incoming)
         try:
             governance.exact(request, {"id", "organization_id", "base_version", "kind", "data"})
@@ -341,10 +365,19 @@ class WorkService:
         except (Rejected, TypeError, ValueError) as error:
             raise CoreError("invalid_request", str(error)) from error
         with self.app.mutex, self.app.catalog() as accounts:
-            require(self.app.identity.principal_in(accounts, token) == principal, "登录主体已变化")
+            if approval is None:
+                require(self.app.identity.principal_in(accounts, token) == principal, "登录主体已变化")
             directory, intent = self.app.governance.locate(request["organization_id"])
             with self.store.transaction(directory) as cx:
                 state = CoreAUStore.read_in(cx, request["organization_id"], creation=intent)["au"]
+                work = rules.records(state)['works'].get(request['data']['work_id'], {})
+                if approval is None:
+                    if 'intent' in work:
+                        rules.authorize(state, principal)
+                        work_intent.require_unmanaged(work)
+                else:
+                    work_intent.authorize(self, cx, accounts, state, request['data']['work_id'], approval)
+                    request['base_version'] = state['version']
                 if internal_loop is not None:
                     request = dispatch.next_request(self, cx, state, request, principal, internal_loop)
                 previous = self.store.existing(cx, request, principal)
@@ -385,9 +418,18 @@ class WorkService:
             return self.reject_step(directory, intent, request, principal, str(error))
         # Building a channel does not dispatch. Commit intent before its first POST.
         with self.app.mutex, self.app.catalog() as accounts:
-            require(self.app.identity.principal_in(accounts, token) == principal, "登录主体已变化")
+            if approval is None:
+                require(self.app.identity.principal_in(accounts, token) == principal, "登录主体已变化")
             with self.store.transaction(directory) as cx:
                 state = CoreAUStore.read_in(cx, request["organization_id"], creation=intent)["au"]
+                work = rules.records(state)['works'].get(request['data']['work_id'], {})
+                if approval is None:
+                    if 'intent' in work:
+                        rules.authorize(state, principal)
+                        work_intent.require_unmanaged(work)
+                else:
+                    work_intent.authorize(self, cx, accounts, state, request['data']['work_id'], approval)
+                    request['base_version'] = state['version']
                 if internal_loop is not None:
                     request = dispatch.next_request(self, cx, state, request, principal, internal_loop)
                 previous = self.store.existing(cx, request, principal)
@@ -412,9 +454,10 @@ class WorkService:
             return self.record_channel_outcome(directory, intent, request, principal,
                                                "派发前资料授权变化；未调用模型：" + str(error), refused=True)
         from . import work_recovery as recovery
+        approval_arg = {} if approval is None else {'approval': approval}
         try:
             message, usage = recovery.send_prepared(self, token, directory, intent, request, principal,
-                                                    plan["execution_owner"], transport)
+                                                    plan["execution_owner"], transport, **approval_arg)
         except recovery.WorkExecutionFenced:
             with self.store.transaction(directory) as cx:
                 state = CoreAUStore.read_in(cx, request["organization_id"], creation=intent)["au"]
@@ -424,7 +467,7 @@ class WorkService:
                 recovery.observe(self, directory, intent, request, principal, error.observed_message, error.observed_usage,
                                  action_authorized=False)
                 return recovery.adopt_observed(self, token, directory, intent, request, principal,
-                                               plan["execution_owner"])
+                                               plan["execution_owner"], **approval_arg)
             return self.record_channel_outcome(directory, intent, request, principal, str(error), completed=error)
         except Rejected as error:
             return self.record_channel_outcome(directory, intent, request, principal,
@@ -434,7 +477,7 @@ class WorkService:
                                      "模型通道结果未知；已保留该次调用预约等待核对，不自动重放：" + str(error)[:280])
         recovery.observe(self, directory, intent, request, principal, message, usage)
         return recovery.adopt_observed(self, token, directory, intent, request, principal,
-                                      plan["execution_owner"])
+                                      plan["execution_owner"], **approval_arg)
 
     def verify_material_binding(self, plan, state=None):
         if plan.get("materials_binding") is not None:
@@ -508,6 +551,7 @@ class WorkService:
                 rules.authorize(current, principal)
                 work = rules.records(current)["works"].get(request["data"]["work_id"])
                 require(work is not None, "工作不存在或不属于此 AU")
+                work_intent.require_unmanaged(work)
                 loop = next((item for item in work.get("loops", []) if item["command_id"] == request["id"]), None)
                 if loop is None:
                     self.require_host()
@@ -630,6 +674,7 @@ class WorkService:
                     return previous
                 rules.authorize(state, principal)
                 work = rules.records(state)["works"].get(request["data"]["work_id"], {})
+                work_intent.require_unmanaged(work)
                 step = next((s for s in work.get("steps", []) if s["step_ref"] == request["data"]["step_id"]), None)
                 if step is None or not step.get("command_id"):
                     return None
