@@ -2,10 +2,10 @@
   "schemaVersion": "aegis.schema.v0",
   "taskId": "2026-11-13-v1-correction-execution",
   "lastCheckpointRef": "docs/aegis/work/2026-11-13-v1-correction-execution/todo-checkpoint-draft.json",
-  "resumeInstruction": "ROOT5be7 已采用精确候选 0e03e92，七项 CI、957 Python/7 跳过、475 前端、89 modeld、155 Chrome 和独立边界复核通过。在线 #47 v8 done/rev1289，#76 v3 progress/rev1291 且 owner 保持实际用户；先验实际基线与看板。推进 U-121 的持久意图、独立于登录寿命的原执行及按授权交付；用同 Work、原预约、U-092 恢复和 U-093 输入。冻结合同、严格 TDD、独立复核与最终验收。不得把 #47 留为用户目标的终点。",
+  "resumeInstruction": "用户接续范围已完成。U-121 准确候选 4aa5f96 的七项 CI、固定本机 973 Python（7 跳过）、496 前端、89 modeld、168 本机及 CI 浏览器检查通过；普通 Git 快进采用，#76 v6/rev1294 完成。重新接续须从实际分支与在线卡读取新范围。",
   "knownPartialWork": [
     "U092完整controlled验收/七CI/Git采用/在线done全部读回，原失败保留",
-    "U093 已远端采用并在线完成；U121 已认领，整 74/75/76 目标仍待最后一张"
+    "U093 和 U121 已远端采用并在线完成；原 74/75/76 范围收口"
   ],
   "mustReadBeforeContinuing": [
     "docs/aegis/work/2026-11-13-v1-correction-execution/10-intent.md",

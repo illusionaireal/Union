@@ -2172,6 +2172,13 @@
                     "from": "doing",
                     "to": "doing",
                     "note": "2026-11-26 U122/U112完整受控采用收口：382fce12fa30b9d5cb6eae07c1358d3b96fd3ce9准确候选七项CI全部success，普通Git快进采用rewrite读回；在线#75 v7/#66 v9 done、原owner及完整checklist在revision1279读回。437前端/873Python含7skip/124业务浏览器/116入口及独立权限复核；真实模型0。证据evidence/U-122/adoption.json；#74保持done，#76及已授权U092/U093仍待完整验收，不镜像本地运行态。"
+                },
+                {
+                    "at": "2026-11-27T07:18:17.073Z",
+                    "actor": "Codex continuation coordinator; online user363",
+                    "from": "doing",
+                    "to": "doing",
+                    "note": "u121-adoption-20261127: U-121 durable Work intent, original attempt and bounded delivery accepted in controlled scope; exact 4aa5f96 seven CI passed, ordinary Git integration and online #76 v6 done/rev1294 read back. 496 frontend, Python 973/7 skipped, modeld 89 and 168 Chrome; see evidence/U-121/adoption-20261127.json. Broader parent status and historical ownership unchanged."
                 }
             ],
             "claim": {

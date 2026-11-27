@@ -1,0 +1,20 @@
+{
+  "candidate_sha": "4aa5f96e3effa777f771a95c91ed3934876781ef",
+  "source_ci_run": 45955540159,
+  "browser": "156.0.8078.4",
+  "node": "v24.19.0",
+  "scope": "controlled real browser, Core HTTP, SQLite, modeld and pinned SDK",
+  "checks_passed": 168,
+  "u121_checks_passed": 13,
+  "controlled_inference_posts": 17,
+  "u121_loopback_inferences": 4,
+  "real_model_calls": 0,
+  "original_attempt_retained": true,
+  "auto_delivery_after_logout": true,
+  "original_receipt_recovered": true,
+  "explicit_reserved_candidate_delivery": true,
+  "asset_sha256": {
+    "index-DEldg6wa.css": "caffad220e072b8c740f0d132019306419d973917536aa4f1e1a9f20ff133507",
+    "index-Dg9CQ7xV.js": "452e4768df290f38d34b715dad26bd206a87601dc87d59360f80fb18b2146cd9"
+  }
+}
