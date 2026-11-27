@@ -98,7 +98,8 @@ class WorkExecutionStore:
         return request
 
     @staticmethod
-    def save_request(cx, step, request, plan, wire_body=None):
+    def request_snapshot(step, request, plan, wire_body=None):
+        """Pure actual encoding for both prefix admission and the original save."""
         if wire_body is not None:
             connection = plan["connection"]
             require(isinstance(wire_body, dict) and wire_body.get("au_id") == request["organization_id"]
@@ -112,12 +113,19 @@ class WorkExecutionStore:
                     and wire_body.get("messages") == plan["messages"] and wire_body.get("tools") == plan["tools"]
                     and wire_body.get("generation") == {"maxOutputTokens": connection["max_output_tokens"]},
                     "宿主模型 wire 输入与原 AU、请求、模型授权或消息快照不匹配；未派发")
-        request_sha256 = wire_digest(wire_body) if wire_body is not None else None
+        wire_payload = _canonical_wire(wire_body).encode('utf-8') if wire_body is not None else None
+        request_sha256 = hashlib.sha256(wire_payload).hexdigest() if wire_payload is not None else None
         value = {"request": copy.deepcopy(request), "plan": copy.deepcopy(plan),
                  "model_request_id": step["model_request_id"], "step_ref": step["step_ref"],
                  "attempt_id": step["attempt_id"], "wire_body": copy.deepcopy(wire_body)}
         payload = encoded(value)
-        require(len(payload.encode("utf-8")) <= MAX_EXECUTION_BYTES, "原执行快照超过有界存储上限")
+        return payload, request_sha256, len(wire_payload or b''), len(payload.encode('utf-8'))
+
+    @classmethod
+    def save_request(cls, cx, step, request, plan, wire_body=None):
+        payload, request_sha256, wire_bytes, snapshot_bytes = cls.request_snapshot(step, request, plan, wire_body)
+        require(wire_bytes <= MAX_EXECUTION_BYTES, '模型 wire 超过有界存储上限；未派发')
+        require(snapshot_bytes <= MAX_EXECUTION_BYTES, "原执行快照超过有界存储上限")
         cx.execute("CREATE TABLE IF NOT EXISTS work_execution_requests(step_ref TEXT PRIMARY KEY, payload TEXT NOT NULL)")
         cx.execute("INSERT INTO work_execution_requests VALUES(?,?)", (step["step_ref"], payload))
         step["execution_sha256"] = hashlib.sha256(payload.encode("utf-8")).hexdigest()

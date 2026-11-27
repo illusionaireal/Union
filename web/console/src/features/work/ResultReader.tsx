@@ -71,6 +71,10 @@ export function ResultReader({scope, work, result, onRefresh}: {scope: WorkScope
       <div><dt>采用主体与时间</dt><dd>{result.adopted_by_principal_id ? `${result.adopted_by_principal_id} · ${result.adopted_at}` : '尚未采用'}</dd></div>
       {work.delivered_result_id === result.id && <div><dt>交付依据</dt><dd>此版本已被原工作采用并交付 · {work.delivered_at}</dd></div>}
       <div><dt>来源依据</dt><dd>{result.sources.length ? result.sources.join('、') : '未记录来源'}</dd></div>
+      {result.input_cursor !== undefined && <div><dt>补充输入依据</dt><dd>
+        <span>{result.input_cursor ? `采用至输入 ${result.input_cursor}` : '生成此成果时尚无已采用的补充输入'}</span>
+        {result.input_step_ref && <p>原步骤 {result.input_step_ref}{result.input_refs?.length ? ` · 本步附入 ${result.input_refs.join('、')}` : ''}</p>}
+      </dd></div>}
       <div><dt>正文校验</dt><dd>UTF-8 {result.bytes} 字节 · SHA-256 {result.sha256}</dd></div>
     </dl>
     {loading && <p role="status">正在读取并校验成果正文…</p>}

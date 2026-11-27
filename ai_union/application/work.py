@@ -8,7 +8,7 @@ from ..adapters import documents
 from ..adapters.core_au_store import CoreAUStore, encoded
 from ..adapters.governance_store import commands_in
 from ..adapters.work_context_store import WorkContextStore
-from ..domain import governance, work as rules
+from ..domain import governance, work as rules, work_inputs as input_rules
 from ..engine import identifier, now
 from ..errors import CoreError, Rejected, require
 from ..work_transport import UnadoptableWorkResult
@@ -57,6 +57,8 @@ class WorkService:
                 usage[key] += item["usage"][key]
         return {"protocol": rules.PROTOCOL, "organization_id": au_id, "version": state["version"],
                 "access": {"principal_id": principal, "can_start": can_start,
+                           "can_append_input": input_rules.can_append(state, principal),
+                           "can_read_inputs": input_rules.can_read(state, principal),
                            "can_manage_results": can_manage_results},
                 "works": works, "usage": usage, "cost_status": "unknown",
                 "capabilities": {"work_registration": True, "execution": "not_started",
@@ -87,6 +89,9 @@ class WorkService:
                     del self.active_recoveries[key]
 
     def _command(self, token, incoming, *, recovery_marker=None):
+        if isinstance(incoming, dict) and incoming.get('kind') == 'append_work_input':
+            from .work_inputs import command
+            return command(self, token, incoming)
         if isinstance(incoming, dict) and incoming.get('kind') in ('import_material', 'revoke_material'):
             from .materials import command
             return command(self, token, incoming)
@@ -237,6 +242,8 @@ class WorkService:
         transaction. It neither completes the Work nor releases any reservation.
         """
         work = rules.records(state)["works"][data["work_id"]]
+        if any(item['status'] != 'consumed' for item in work.get('inputs', [])):
+            return
         result = next(r for r in work["results"] if r["id"] == data["result_id"])
         attempt = next((a for a in work.get("attempts", []) if a["id"] == result["attempt_id"]), None)
         steps = [s for s in work.get("steps", []) if s["attempt_id"] == result["attempt_id"]]
@@ -307,21 +314,21 @@ class WorkService:
             raise CoreError("invalid_request", "成果标识有多个工作匹配；请提供原工作标识")
         raise CoreError("invalid_request", "此 AU 中没有该成果标识")
 
-    def run_step(self, token, incoming):
+    def run_step(self, token, incoming, *, internal_loop=None):
         if not isinstance(incoming, dict) or not all(isinstance(incoming.get(k), str) for k in ("id", "organization_id")):
-            return self._run_step(token, incoming)
+            return self._run_step(token, incoming, internal_loop=internal_loop)
         key = (incoming["organization_id"], incoming["id"])
         with self.app.mutex:
             self.active_steps[key] = self.active_steps.get(key, 0) + 1
         try:
-            return self._run_step(token, incoming)
+            return self._run_step(token, incoming, internal_loop=internal_loop)
         finally:
             with self.app.mutex:
                 self.active_steps[key] -= 1
                 if not self.active_steps[key]:
                     del self.active_steps[key]
 
-    def _run_step(self, token, incoming):
+    def _run_step(self, token, incoming, *, internal_loop=None):
         """One automatic model turn: decide outside the lock, apply inside one transaction."""
         principal = self.app.creation.principal(self.app.session(token))
         request = copy.deepcopy(incoming)
@@ -338,6 +345,8 @@ class WorkService:
             directory, intent = self.app.governance.locate(request["organization_id"])
             with self.store.transaction(directory) as cx:
                 state = CoreAUStore.read_in(cx, request["organization_id"], creation=intent)["au"]
+                if internal_loop is not None:
+                    request = dispatch.next_request(self, cx, state, request, principal, internal_loop)
                 previous = self.store.existing(cx, request, principal)
                 if previous is not None:
                     return previous
@@ -350,25 +359,7 @@ class WorkService:
                 try:
                     principals = {row[0] for row in accounts.execute("SELECT principal_id FROM owner_account")}
                     rules.effective(state, principals)
-                    plan = rules.step_plan(state, state["charter"], request["data"]["work_id"],
-                                           instance=self.app.instance)
-                    work = rules.records(state)["works"][plan["work_id"]]
-                    history, plan["sources"], bindings = WorkContextStore.load(cx, work, plan["context_scope"])
-                    plan["materials_binding"] = None
-                    if plan["materials_root"] is not None:
-                        try:
-                            source = documents.WorkDocuments(self.app.root, state, work, cx)
-                            plan["materials_binding"] = source.binding
-                        except Rejected:
-                            if 'material_version' in work:
-                                raise
-                            pass  # A first turn with no material history has nothing to redisclose.
-                    if any(item["role"] == "tool" for item in history):
-                        source = documents.WorkDocuments(self.app.root, state, work, cx)
-                        binding = source.binding
-                        require(bindings and all(item == binding for item in bindings),
-                                "宿主资料目录绑定已变化；原上下文不可继续派发")
-                    plan["messages"].extend(history)
+                    plan = dispatch.complete_plan(self, cx, state, request)
                 except Rejected as error:
                     plan = None
                     refusal = str(error)
@@ -397,6 +388,8 @@ class WorkService:
             require(self.app.identity.principal_in(accounts, token) == principal, "登录主体已变化")
             with self.store.transaction(directory) as cx:
                 state = CoreAUStore.read_in(cx, request["organization_id"], creation=intent)["au"]
+                if internal_loop is not None:
+                    request = dispatch.next_request(self, cx, state, request, principal, internal_loop)
                 previous = self.store.existing(cx, request, principal)
                 if previous is not None:
                     return previous
@@ -407,7 +400,11 @@ class WorkService:
                 require(state["version"] == request["base_version"], "AU 版本已变化；请读取最新状态检查原输入")
                 rules.effective(state, {row[0] for row in accounts.execute("SELECT principal_id FROM owner_account")})
                 self.require_host()
-                reservation = dispatch.prepare(self.store, cx, state, request, principal, plan, self.app.instance, transport)
+                current_plan = dispatch.complete_plan(self, cx, state, request)
+                require(current_plan['connection'] == plan['connection'], '模型连接在建立通道后变化；未派发')
+                plan = current_plan
+                reservation = dispatch.prepare(self.store, cx, state, request, principal, plan, self.app.instance, transport,
+                                               loop=internal_loop)
         plan["package"]["run_id"] = reservation["model_request_id"]
         try:
             self.verify_material_binding(plan)
@@ -520,7 +517,7 @@ class WorkService:
                     require(remaining > 0, "该工作的调用上限已用尽")
                     loop = {"command_id": request["id"], "command_sha256": dispatch.request_digest(request),
                             "principal_id": principal, "turn_cap": min(3, remaining),
-                            "first_version": current["version"] + 1}
+                            "first_version": current["version"] + 1, "bind_children": True}
                     running = [a for a in work.get("attempts", []) if a["status"] == "running"]
                     if len(running) == 1:
                         rules.active_attempt(work, self.app.instance)
@@ -530,7 +527,7 @@ class WorkService:
                     from ..adapters.work_execution_store import WorkExecutionStore
                     WorkExecutionStore.save_loop(cx, loop, request)
                     work.setdefault("loops", []).append(loop)
-                    current["schema_version"] = 5
+                    current["schema_version"] = max(current["schema_version"], 5)
                     charter = current.pop("charter")
                     dispatch.event(self.store, cx, current, charter, request, principal, "loop_prepared")
                 key = (request["organization_id"], request["id"])
@@ -560,12 +557,15 @@ class WorkService:
                             "kind": "run_step", "data": dict(request["data"])}
             try:
                 from .work_recovery import recovered_turn
-                recovered = (recovered_turn(self, directory, intent, step_request, recovery_owner)
+                recovered = (recovered_turn(self, directory, intent, step_request, recovery_owner, loop)
                              if recovery_owner is not None else None)
                 if recovered is None:
-                    step = self.run_step(token, step_request)
+                    step = self.run_step(token, step_request, internal_loop=loop)
                 else:
                     step = recovered
+            except dispatch.LoopChildConflict as error:
+                status, message = 'rejected', str(error)
+                break
             except Rejected as error:
                 if isinstance(error, CoreError) and error.code not in (
                         "not_authenticated", "not_authorized", "unsupported_capability"):
@@ -639,6 +639,8 @@ class WorkService:
                     refusal = "AU 版本已变化；请读取最新状态检查原输入"
                 elif step["status"] not in ("reserved", "unknown"):
                     refusal = "原模型调用已经结算，不能更改执行事实"
+                elif step.get('input_refs'):
+                    refusal = '原请求附有待采用输入；请恢复原执行以核对正文、用量和采用资格'
                 elif self.active_steps.get((request["organization_id"], step["command_id"]), 0):
                     refusal = "原调用仍在执行；不能把本地核对当作远端取消"
             if refusal:

@@ -12,7 +12,7 @@ MAX_CONTEXT_BYTES = 4 * 1024 * 1024
 
 class WorkContextStore:
     @staticmethod
-    def load(cx, work, scope):
+    def load(cx, work, scope, *, prefix=()):
         messages, sources, bindings = [], [], []
         has_table = cx.execute("SELECT 1 FROM sqlite_master WHERE name='work_model_turns' AND type='table'").fetchone()
         for step in work.get("steps") or []:
@@ -35,7 +35,7 @@ class WorkContextStore:
             sources.extend(value["sources"])
             if value.get("materials_binding") is not None:
                 bindings.append(value["materials_binding"])
-        require(len(encoded(messages).encode("utf-8")) <= MAX_CONTEXT_BYTES,
+        require(len(encoded([*prefix, *messages]).encode("utf-8")) <= MAX_CONTEXT_BYTES,
                 "原模型上下文超过本核心允许的大小；请保留原记录并缩小后续工作范围")
         return copy.deepcopy(messages), list(dict.fromkeys(sources)), bindings
 

@@ -244,6 +244,8 @@ def validate_state(state):
         require(appointment.get("member_id") in records_value["members"] and type(appointment.get("active")) is bool
                 and type(appointment.get("version")) is int, "工作责任绑定无效")
     for work in records_value["works"].values():
+        from .work_inputs import validate_state as validate_inputs
+        validate_inputs(work)
         require(work.get("status") in OPEN + CLOSED and type(work.get("version")) is int
                 and work.get("responsible_binding_id") in records_value["bindings"]
                 and work.get("definition_id") in records_value["definitions"]
@@ -432,6 +434,8 @@ def deliver_work(state, data, principal, clock=None):
     result = next((item for item in work.get("results") or [] if item["id"] == data["result_id"]), None)
     require(result is not None, "该工作没有此成果")
     require(result["status"] == "adopted", "须先采用该成果，才能把工作记为完成")
+    require(not any(item['status'] != 'consumed' for item in work.get('inputs', [])),
+            '该工作仍有未处理输入；不能以当前成果吞掉原要求')
     require(not [item for item in work.get("attempts") or [] if item["status"] == "running"],
             "该工作还有进行中的执行；请先结束该次执行")
     work.update(status="delivered", delivered_at=_stamp(clock), delivered_by_principal_id=principal,
@@ -624,7 +628,8 @@ def projection(state, instance=None):
         member = records_value["members"][appointment["member_id"]]
         definition = records_value["definitions"][work["definition_id"]]
         mandate = records_value["mandates"][work["mandate_id"]]
-        result.append({
+        from .work_inputs import projection as input_projection
+        result.append(input_projection(work) | {
             "id": work["id"], "title": work["title"], "goal": work["goal"], "status": work["status"],
             "version": work["version"], "max_calls": work["max_calls"], "materials_root": work["materials_root"],
             "created_at": work["created_at"],

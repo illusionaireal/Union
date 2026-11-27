@@ -1,0 +1,25 @@
+{
+  "scope": "controlled React, Core HTTP, SQLite, modeld and pinned SDK on loopback",
+  "browser": "Chrome 158.0.8127.37",
+  "node": "24.19.0",
+  "driver": "scripts/s02-models-browser.cjs with U-122, U-092 and U-093 enabled",
+  "checks_passed": 155,
+  "u093_checks_passed": 20,
+  "viewport_widths": [1440, 1024, 768, 390, 320],
+  "controlled_inference_posts": 13,
+  "u093_inference_posts": 2,
+  "real_model_calls": 0,
+  "scope_facts": {
+    "original_attempt_retained": true,
+    "accepted_inputs": 3,
+    "consumed_inputs": 2,
+    "pending_inputs": 1,
+    "original_receipt_recovered_without_repost": true,
+    "input_body_checked_and_rendered_as_text": true,
+    "result_input_provenance_matches_original_step": true
+  },
+  "asset_sha256": {
+    "index-BrjbPwu7.css": "af92dce6c25f89c1c6c1f272f9363f8070260fe04eb405c8d108b8d2b9108728",
+    "index-eiyjo91y.js": "ed193399a9e9e9d89c8ec787e11716651f7e0813dcfeb5b41d19407284b6ed3f"
+  }
+}

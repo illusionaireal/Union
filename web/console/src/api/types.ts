@@ -55,7 +55,7 @@ export interface PreparedAURead {
 }
 export interface GovernedAURead extends GovernanceReadFields {
   protocol: 'core.au.v1';
-  au: CoreAUBase & Omit<GovernanceAUFields, 'schema_version'> & { schema_version: 2 | 3 | 4 | 5 };
+  au: CoreAUBase & Omit<GovernanceAUFields, 'schema_version'> & { schema_version: 2 | 3 | 4 | 5 | 6 };
 }
 export type CoreAURead = PreparedAURead | GovernedAURead;
 export interface ModelConnection {
@@ -406,6 +406,9 @@ export interface CoreWorkResult {
   created_at: string;
   adopted_at: string | null;
   adopted_by_principal_id?: string | null;
+  input_cursor?: number;
+  input_refs?: string[];
+  input_step_ref?: string;
 }
 
 export interface CoreWorkResultContent {
@@ -416,7 +419,45 @@ export interface CoreWorkResultContent {
   content: string;
 }
 
+export interface CoreWorkInputScope {
+  member_id: string;
+  binding_id: string;
+  binding_version: number;
+  definition_id: string;
+  definition_version: number;
+  mandate_id: string;
+  mandate_version: number;
+  charter_version: number;
+  policy_version: number;
+}
+export interface CoreWorkInput {
+  id: string;
+  seq: number;
+  sha256: string;
+  bytes: number;
+  source_kind: 'requirement';
+  actor_principal_id: string;
+  received_at: string;
+  reason: string;
+  source_scope: CoreWorkInputScope;
+  status: 'received' | 'attached' | 'observed' | 'consumed';
+  attachments: Array<{step_ref: string; model_request_id: string; request_sha256: string;
+    execution_owner: {instance: string | null; epoch: number}; attached_at: string;
+    observed_at: string | null; consumed_at: string | null}>;
+}
+export interface CoreWorkInputContent {
+  protocol: 'core.work-input.v1';
+  organization_id: string;
+  work_id: string;
+  input: CoreWorkInput;
+  content: string;
+}
+
 export interface CoreWorkItem {
+  input_seq?: number;
+  input_cursor?: number;
+  inputs?: CoreWorkInput[];
+  input_summary?: {received: number; attached: number; observed: number; consumed: number; pending: number};
   id: string;
   title: string;
   goal: string;
@@ -444,7 +485,7 @@ export interface CoreWork {
   protocol: string;
   organization_id: string;
   version: number;
-  access: { principal_id: string; can_start: boolean; can_manage_results?: boolean };
+  access: { principal_id: string; can_start: boolean; can_manage_results?: boolean; can_append_input?: boolean; can_read_inputs?: boolean };
   works: CoreWorkItem[];
   capabilities: { work_registration: boolean; execution: string; autonomous_business: boolean };
 }

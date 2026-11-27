@@ -12,7 +12,7 @@
 
 - 原五字段POST `/api/v1/work/commands`，kind=`append_work_input`，data严格为`{work_id,input_id,content,reason}`。input_id为有界引用，前端生成`input-<32hex>`；身份来自当前Core session，客户端不得提供actor/source/owner/epoch。content非空UTF-8文本，拒绝NUL/孤立代理字符，最多65536 UTF-8字节；reason沿已有10000字符边界。最多100个输入/Work、累计8MiB私有正文；合成上下文不超过现有4MiB，wire不超过8MiB，超限明确拒绝，保留原记录、不截断正文。
 - 输入身份为`(au_id,work_id,input_id)`；正文、初始actor/source不变。同主体同ID同正文返回原事实，不增加seq/消费；异文/冒用主体冲突。重复原command先返回原回执，异参仍冲突。新command复用已存在input时保留原reason/source，不暗改来源。正文经U120模式归一为content_sha256后写commands/audit；回执只含标准身份/版本、work_id和input元数据，不含正文。
-- `GET /api/v1/work`增加`access.can_append_input`；它仅表示当前合法governor的低影响收存资格，不依赖can_start、模型/预算或执行恢复资格。每个Work投影`input_seq`/`input_cursor`/`inputs`/`input_summary`。旧无输入Work投影空数组/0，读取零建表、零升级。
+- `GET /api/v1/work`增加`access.can_append_input`；它仅表示当前合法governor的低影响收存资格，不依赖can_start、模型/预算或执行恢复资格。`access.can_read_inputs`独立表示现有正文GET的当前governor只读资格，不能以收存不可用/已退出/预算不足推断历史正文不可读。每个Work投影`input_seq`/`input_cursor`/`inputs`/`input_summary`。旧无输入Work投影空数组/0，读取零建表、零升级。
 - input元数据包含`id,seq,sha256,bytes,source_kind:'requirement',actor_principal_id,received_at,reason,source_scope,status`。source_scope记录当时Member/Binding/Definition/Mandate及其版本/章程政策版本，不隐式改成新来源。status严格为`received|attached|observed|consumed`；保留attachments历史与关联step_ref/model_request_id/request_sha256、observed/consumed的原step依据。input_summary分别计数四状态和pending；pending为未consumed。input_cursor仅证明按序成功采用的连续前缀，不能跨过未处理输入。
 - `GET /api/v1/work/inputs?organization_id=...&work_id=...&id=...`只读同一AU/Work/input正文，返回`{protocol:'core.work-input.v1',organization_id,work_id,input,content}`。只有当前合法governor可读，正文须与元数据UTF-8 SHA一致；missing/跨Work/跨AU不回退查别的input。原回执查询沿governance receipts，查询不执行/消费/修复输入。
 
@@ -28,7 +28,7 @@ GovernanceStore继续唯一AU事务/回执/审计写者。WorkInputStore只在�
 
 ## schema与兼容
 
-首次成功append显式采用schema6，因为旧schema5代码会忽略输入采用约束。保留2/3/4/5已有行为与旧记录；所有后续dispatch/loop/recover保持较高schema，不能现行三处写5把6降回去。同步Governance/ModelAccess/公有读取与发行支持，旧<=5安装候选按input/attachment/context特征拒绝，即使marker被错误写低；读取不升级、不双写/迁移真实数据。
+首次成功append显式采用schema6，因为旧schema5代码会忽略输入采用约束。保留2/3/4/5已有行为与旧记录；后续dispatch/loop/recover保持较高schema。新循环的子步进绑定到原父命令，旧循环继续按原严格版本工作。发行预检按私有正文、附件、上下文及父子绑定等实际特征拒绝不支持schema6的候选，即使当前没有输入、父循环仍保留schema5。读取不升级、不双写或迁移真实数据。
 
 ## 两个独立实现任务和顺序集成
 

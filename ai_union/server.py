@@ -182,6 +182,10 @@ class Handler(BaseHTTPRequestHandler):
             if path.path == '/api/v1/work/materials':
                 from .application.materials import read
                 return self.send(200, read(app.work, token, query.get('organization_id', [None])[0]))
+            if path.path == '/api/v1/work/inputs':
+                from .application.work_inputs import read
+                return self.send(200, read(app.work, token, query.get('organization_id', [None])[0],
+                    query.get('work_id', [None])[0], query.get('id', [None])[0]))
             if path.path == '/api/v1/work/events':
                 return self.send(200, app.work.events(token, query.get('organization_id', [None])[0],
                     query.get('work_id', [None])[0], query.get('step_ref', [None])[0], query.get('after', ['0'])[0],

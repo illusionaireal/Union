@@ -2,6 +2,10 @@
 
 ## Current Checkpoint
 
+2026-11-27 U093 接续：远端实读 `d04767f`；在线 revision 1286，#47 v5 progress、原 owner 与依赖一致，#76 尚待 #47。在 5be7 集成 checkout 组合 94bd 后端与原前端，本地 D 盘工作区保持原现场。独立内核和前端复核反例已经落入定向行为测试；目前本地 npm 全量（475 前端）通过，Python 最终全量、实际 Chrome 组合及准确提交七项 CI 待完成。当前证据见 [U-093 证据索引](../../../../evidence/U-093/README.md)。按 #47 全验收 → 任务分支及 CI → 普通 Git 采用与在线读回 → #76 准入的顺序继续。
+
+U093 TaskStartSnapshot/readback：在线47v5 progress owner363、依赖全done；13:28前捕获两个checkout为clean、共同代码d04767f（前46所有业务源码与七CI5513相同）。root5be7创建codex/u093-input-integration-20261126，kernel94bd创建codex/u093-input-kernel-20261126；原46分支/历史保留。行为代码前冻结完整spec u093-work-input-contract和ADR0010，文档提交b638dbc已在两分支相同HEAD。新的两个工程实现任务按spec固定文件责任并并行；协调者独占Git/board/ledger/共享文档与最后顺序整合，独立规格→质量复审后完整#47验收，下一#76目标不能省略。
+
 2026-11-26 13:18当前：准确5513cf6七CI全部success，普通Git快进采用rewrite并读回protected=false；online46 v12/revision1284、三checklist和owner363 done已确认。online47所有真实依赖done，从backlog准备ready后以实际user363认领v5/progress/revision1286（receipt host-private u092-complete-u093-claim.json）。47尚未写行为代码，下一步冻结完整输入合同/责任后strict TDD，随后76；74/75/66done保持。47设计报告host-private u093-precode-readback-20261126.md有重要接收/附入/观察/消费分离及内循环version/schema/私有正文审查。先提交本轮46采用文档并普通Git采用（仅过程，25份业务源码与已验5513一致），复用两个既有checkout；不重开原D盘dirty、恢复保护、丢原历史。
 
 最终本地门槛2026-11-26：Python916/7skip/812.105秒exit0（u092-python-final.log、session10576已完成），npm445、实际Chrome135/11受控回环/真实0、构建兼容11与独立内核/UI/测试接缝均通过。25份准确源码与旧失败日志hash已归档verification-20261126.json/browser-20261126.json。当前只差本任务提交→准确七CI→普通Git快进采用与online46done；47/76目标保留。宿主SDK已录六行生成补丁经差分核对后仅逆向该patch，vendor恢复clean，不重置他人现场。后续测试若需SDK须再次prepare；构建产物仍为原验证字节。

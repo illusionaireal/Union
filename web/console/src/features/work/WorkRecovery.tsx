@@ -28,7 +28,8 @@ function Recovery({scope,work,attempt,version,canManage,onAccessLost}: {
     {command.reference&&<>
       <button className="button secondary" disabled={command.checking} onClick={()=>void command.lookup()}>查询恢复原请求</button>
       <details><summary>恢复请求记录</summary><p>{command.reference.id}</p></details>
-      {eligible&&command.reference.resolved&&<button className="button secondary" onClick={()=>{command.another();setReason('');setEditing(true);}}>继续核对原请求</button>}
+      {eligible&&command.reference.resolved&&<button className="button secondary" disabled={command.checking||command.sending}
+        onClick={()=>{command.another();setReason('');setEditing(true);}}>继续核对原请求</button>}
     </>}
     {command.note&&<p role="status">{command.note}</p>}
   </section>;

@@ -77,6 +77,15 @@ it('opens the other Work directly without reading the first Work body',async()=>
   expect(reads.every(([p])=>String(p).includes('work_id=work-b'))).toBe(true);
 });
 
+it('displays the input coverage of the saved result rather than the newer Work cursor',async()=>{
+  Object.assign(read.works[0],{input_cursor:3});
+  Object.assign(read.works[0].results[0],{input_cursor:1,input_refs:['input-original'],input_step_ref:'step-1'});
+  mount('/au/core-au/work/work-a/results/same-result');
+  await screen.findByLabelText('成果正文');
+  expect(screen.getByText('采用至输入 1')).toBeVisible();
+  expect(screen.getByText(/原步骤 step-1 · 本步附入 input-original/)).toBeVisible();
+});
+
 it('distinguishes adopted and this delivered version without marking unrelated versions delivered',async()=>{
   const w=read.works[0];w.status='delivered';
   Object.assign(w,{delivered_result_id:'same-result',delivered_at:'2026-11-26T01:00:00Z'});

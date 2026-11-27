@@ -71,3 +71,10 @@
   bindings retain material ID/version/digest and never adopt a newer version
   silently. Revocation preserves obligations, original receipts and used calls.
   Follow `u120-business-materials-contract.md` and `test_business_materials`.
+
+- U-093 `work_inputs.py` owns immutable requirement identity/source, bounded
+  ordered metadata and continuous consumed-prefix validation. Acceptance never
+  creates action/model/budget authority; source changes remain explicit pending
+  facts. Consumed metadata must reference the original adopted step/context and
+  observed attachment, with current adopted scope/owner retained separately.
+  It has no database, dispatch queue, runtime loop or host dependencies.

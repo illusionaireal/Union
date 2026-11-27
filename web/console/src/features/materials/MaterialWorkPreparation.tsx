@@ -6,7 +6,8 @@ import { useWorkspace } from '../../app/workspace';
 import { organizationPath } from '../../app/organization-routes';
 import { CoreWorkRegistration } from '../work/CoreWorkRegistration';
 import { WorkRecovery } from '../work/WorkRecovery';
-import type { WorkScope } from '../work/useWorkCommand';
+import { WorkInputs } from '../work/WorkInputs';
+import { accessLost, type WorkScope } from '../work/useWorkCommand';
 import './materials.css';
 
 function Preparation({ scope, workId }: { scope: WorkScope; workId?: string }) {
@@ -14,8 +15,9 @@ function Preparation({ scope, workId }: { scope: WorkScope; workId?: string }) {
   const read = useQuery({
     queryKey: ['core-work', scope.organizationId, scope.principalId, scope.serviceInstance],
     queryFn: ({ signal }) => api.coreWork(scope.organizationId, signal), retry: false,
+    refetchInterval: query => query.state.data && !accessLost(query.state.error) ? 4000 : false,
   });
-  const value = !read.error ? read.data : undefined;
+  const value = accessLost(read.error) ? undefined : read.data;
   const matches = value?.protocol === 'core.work.v1' && value.organization_id === scope.organizationId &&
     value.access.principal_id === scope.principalId;
   const works = matches ? value!.works.filter(work => !workId || work.id === workId) : [];
@@ -25,9 +27,12 @@ function Preparation({ scope, workId }: { scope: WorkScope; workId?: string }) {
     <p>选择已授权资料，保存这项工作的目标、责任与有限调用边界。登记不调用模型；完整自动推进与交付入口尚待接通。</p>
     {read.isPending ? <p role="status">正在核对原工作与资料绑定…</p> : !matches || !value ?
       <p role="alert">工作暂不可读取；{errorText(read.error)}，请刷新核对当前身份。</p> : <>
+      {read.error && <p role="status">暂时无法刷新工作。{errorText(read.error)}</p>}
       {!workId && <CoreWorkRegistration scope={scope} canStart={value.access.can_start} onAccessLost={() => setLost(true)} />}
       {!works.length && <p>{workId ? '指定工作不存在或不属于当前组织，未读取其他工作内容。' : '尚无已登记工作。'}</p>}
-      <ul className="material-list">{works.map(work => <li key={work.id}>
+      <ul className="material-list">{works.map(work => {
+        const canAppend = value.access.can_append_input === true && ['pending', 'running', 'waiting'].includes(work.status);
+        return <li key={work.id}>
         <h2>{work.title}</h2><p>{work.goal}</p>
         <p>责任：{work.responsible.name} · {work.status} · 调用上限 {work.max_calls}</p>
         <p>{work.materials.available ? '资料绑定当前可读' : '资料许可或准备条件需核对'} · {work.materials.documents} 份</p>
@@ -36,7 +41,10 @@ function Preparation({ scope, workId }: { scope: WorkScope; workId?: string }) {
         </p>)}
         {!work.tool_calls.some(call => call.tool === 'read_document') && <p>尚无实际资料读取依据；保存绑定不等于已读取。</p>}
         <WorkRecovery scope={scope} work={work} version={value.version} canManage={value.access.can_manage_results===true} onAccessLost={()=>setLost(true)} />
-      </li>)}</ul>
+        <WorkInputs
+          scope={scope} work={work} version={value.version} canAppend={canAppend}
+          canRead={value.access.can_read_inputs === true} onAccessLost={()=>setLost(true)} />
+      </li>})}</ul>
     </>}
     <button className="button secondary" disabled={read.isFetching} onClick={() => void read.refetch()}>刷新工作资料依据</button>
     <Link className="button secondary" to={organizationPath(scope.organizationId, 'resources')}>返回能力与资源</Link>

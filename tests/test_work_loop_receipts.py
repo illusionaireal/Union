@@ -25,8 +25,8 @@ class WorkLoopReceiptTests(WorkDispatchTests):
     def after_first_turn(self, request, change):
         run_step = self.app.work.run_step
 
-        def run_then_change(token, incoming):
-            receipt = run_step(token, incoming)
+        def run_then_change(token, incoming, **options):
+            receipt = run_step(token, incoming, **options)
             if incoming["id"] == request["id"] + "-t1":
                 change()
             return receipt
@@ -95,9 +95,9 @@ class WorkLoopReceiptTests(WorkDispatchTests):
         request = self.loop_request()
         run_step = self.app.work.run_step
 
-        def change_then_run(token, incoming):
+        def change_then_run(token, incoming, **options):
             self.other_work()
-            return run_step(token, incoming)
+            return run_step(token, incoming, **options)
 
         with patch.object(self.app.work, "run_step", side_effect=change_then_run):
             status, value, _ = self.request("/api/v1/work/commands", request)

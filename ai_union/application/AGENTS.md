@@ -99,3 +99,15 @@
   `work.py` consumes the versioned source at dispatch, tool and acceptance
   boundaries. Imported invoke reads return metadata without copying private
   text into issuer receipts. No second writer, dispatch loop or read migration.
+
+- U-093 `work_inputs.py` accepts bounded private requirements through the same
+  GovernanceStore transaction, with immutable actor/source/seq and digest-only
+  commands. Receipt acceptance is independent of model/budget/attempt readiness.
+  Original dispatch preparation freezes ordered input refs/messages/attachments;
+  observation is separate from same-transaction `adopt_turn` context/consumption.
+  Current authorization/source and owner are rechecked; unknown never rePOSTs.
+  Trusted original loop children may absorb only audited low impact append
+  version changes in the same AU, and select inputs only from their own Work.
+  Public base versions and saved requests stay strict and immutable.
+  Pending input blocks automatic result-attempt closure and delivery. Verify
+  `test_work_inputs` plus work dispatch/recovery/context/loop/compatibility tests.

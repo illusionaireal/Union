@@ -60,6 +60,9 @@ export const api = {
     request<CoreAURead>('/api/v1/aus/' + encodeURIComponent(id), { signal }),
   coreWork: (id: string, signal?: AbortSignal) =>
     request<CoreWork>('/api/v1/work?organization_id=' + encodeURIComponent(id), { signal }),
+  coreWorkInput: (organizationId: string, workId: string, inputId: string, signal?: AbortSignal) =>
+    request<import('./types').CoreWorkInputContent>('/api/v1/work/inputs?' +
+      new URLSearchParams({organization_id: organizationId, work_id: workId, id: inputId}).toString(), {signal}),
   coreWorkResult: (organizationId: string, workId: string, resultId: string, signal?: AbortSignal) =>
     request<import('./types').CoreWorkResultContent>('/api/v1/work/results?' +
       new URLSearchParams({organization_id: organizationId, work_id: workId, id: resultId}).toString(), {signal}),

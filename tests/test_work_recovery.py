@@ -265,9 +265,9 @@ class WorkRecoveryTests(WorkDispatchTests):
                    "function": {"name": "read_document", "arguments": '{"path":"nested/a.md"}'}}]}
         self.app.work.transport = CallbackTransport(message=message)
         run_step = self.app.work.run_step
-        def interrupt_next(token, command):
+        def interrupt_next(token, command, **options):
             if command["id"].endswith("-t2"): raise KeyboardInterrupt("after first committed tool turn")
-            return run_step(token, command)
+            return run_step(token, command, **options)
         with patch.object(self.app.work, "run_step", side_effect=interrupt_next):
             with self.assertRaises(KeyboardInterrupt): self.app.work.run_loop(self.token, request)
         first_step = copy.deepcopy(self.card()["steps"][0])

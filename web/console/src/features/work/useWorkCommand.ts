@@ -14,17 +14,21 @@ export type MaterialCommandTarget =
   | { kind: 'import_material'; sha256?: string }
   | { kind: 'revoke_material'; materialId: string; version: number; sha256: string };
 export type RecoveryCommandTarget = {kind: 'recover_work'; workId: string; attemptId: string};
-type CommandTarget = ResultCommandTarget | MaterialCommandTarget | RecoveryCommandTarget;
+export type InputCommandTarget = {kind: 'append_work_input'; workId: string};
+type CommandTarget = ResultCommandTarget | MaterialCommandTarget | RecoveryCommandTarget | InputCommandTarget;
 const materialTarget = (target?: CommandTarget): target is MaterialCommandTarget =>
   target?.kind === 'import_material' || target?.kind === 'revoke_material';
 const recoveryTarget = (target?: CommandTarget): target is RecoveryCommandTarget => target?.kind === 'recover_work';
-const survivesRestart = (target?: CommandTarget) => materialTarget(target) || recoveryTarget(target);
+const inputTarget = (target?: CommandTarget): target is InputCommandTarget => target?.kind === 'append_work_input';
+const survivesRestart = (target?: CommandTarget) => materialTarget(target) || recoveryTarget(target) || inputTarget(target);
+const directRefusalTarget = (target?: CommandTarget) => recoveryTarget(target) || inputTarget(target);
 type Reference = WorkScope & {
   originServiceInstance?: string;
   id: string;
   kind: 'start_work' | CommandTarget['kind'];
   workId?: string;
   attemptId?: string;
+  inputId?: string;
   materialId?: string;
   materialVersion?: number;
   resultId?: string;
@@ -44,6 +48,7 @@ const storageKey = (scope: WorkScope, target?: CommandTarget) =>
   (target ? ':' + JSON.stringify(materialTarget(target)
     ? [target.kind, target.kind === 'revoke_material' ? target.materialId : 'imports']
     : recoveryTarget(target) ? [target.kind, target.workId, target.attemptId]
+    : inputTarget(target) ? [target.kind, target.workId]
     : [target.kind, target.workId, target.resultId]) : '');
 function load(scope: WorkScope, target?: CommandTarget): Reference[] {
   const value: unknown = JSON.parse(sessionStorage.getItem(storageKey(scope, target)) || '[]');
@@ -64,7 +69,9 @@ function load(scope: WorkScope, target?: CommandTarget): Reference[] {
           typeof r.sha256 === 'string' && /^[a-f0-9]{64}$/.test(r.sha256) &&
           (target.kind === 'import_material' || r.materialId === target.materialId)
           : typeof r.workId === 'string' && r.workId && (!target ||
-          (recoveryTarget(target) ? r.workId === target.workId && r.attemptId === target.attemptId : r.workId === target.workId &&
+          (inputTarget(target) ? r.workId === target.workId && /^input-[a-f0-9]{32}$/.test(r.inputId) &&
+            typeof r.sha256 === 'string' && /^[a-f0-9]{64}$/.test(r.sha256)
+          : recoveryTarget(target) ? r.workId === target.workId && r.attemptId === target.attemptId : r.workId === target.workId &&
             r.resultId === target.resultId &&
             typeof r.sha256 === 'string' &&
             /^[a-f0-9]{64}$/.test(r.sha256)))) &&
@@ -82,11 +89,12 @@ function load(scope: WorkScope, target?: CommandTarget): Reference[] {
     kind: r.kind,
     ...(materialTarget(target) ? { materialId: r.materialId, materialVersion: r.materialVersion, sha256: r.sha256 }
       : recoveryTarget(target) ? {workId: r.workId, attemptId: r.attemptId}
+      : inputTarget(target) ? {workId: r.workId, inputId: r.inputId, sha256: r.sha256}
       : { workId: r.workId, ...(target ? { resultId: r.resultId, sha256: r.sha256 } : {}) }),
     base_version: r.base_version,
     // Persisted completion is a recovery hint; verify the receipt again this mount.
-    ...(recoveryTarget(target) && r.refusedBeforeAcceptance === true ? {refusedBeforeAcceptance: true, outcome: 'rejected'} : {}),
-    resolved: recoveryTarget(target) && r.refusedBeforeAcceptance === true,
+    ...(directRefusalTarget(target) && r.refusedBeforeAcceptance === true ? {refusedBeforeAcceptance: true, outcome: 'rejected'} : {}),
+    resolved: directRefusalTarget(target) && r.refusedBeforeAcceptance === true,
   }));
 }
 
@@ -166,12 +174,19 @@ export function useWorkCommand(
     const result = r?.result as Record<string, unknown> | undefined;
     const work = r?.work as Record<string, unknown> | undefined;
     const material = r?.material as Record<string, unknown> | undefined;
+    const input = r?.input as Record<string, unknown> | undefined;
     const owner = r?.execution_owner as {instance?: unknown; epoch?: unknown} | undefined;
     const successMatches =
       original.kind === 'import_material' || original.kind === 'revoke_material'
         ? material?.id === original.materialId && material?.sha256 === original.sha256 &&
           material?.version === (original.kind === 'import_material' ? 1 : Number(original.materialVersion) + 1) &&
           material?.read_allowed === (original.kind === 'import_material')
+        : original.kind === 'append_work_input'
+        ? r?.work_id === original.workId && input?.id === original.inputId && input?.sha256 === original.sha256 &&
+          input?.actor_principal_id === scope.principalId && input?.source_kind === 'requirement' &&
+          Number.isInteger(input?.seq) && Number(input?.seq) > 0 &&
+          Number.isInteger(input?.bytes) && Number(input?.bytes) > 0 && Number(input?.bytes) <= 65536 &&
+          ['received', 'attached', 'observed', 'consumed'].includes(String(input?.status))
         : original.kind === 'recover_work'
         ? r?.work_id === original.workId && r?.attempt_id === original.attemptId &&
           owner?.instance === (original.originServiceInstance ?? original.serviceInstance) &&
@@ -229,14 +244,17 @@ export function useWorkCommand(
     setNote('');
     let dispatchedId: string | undefined;
     let acceptedResponse = false;
+    let awaitingPostResponse = false;
     try {
       await liveSession();
       const read = await liveRead();
-      if (!(target ? read.access.can_manage_results : read.access.can_start)) {
+      if (!(inputTarget(target) ? read.access.can_append_input === true : target ? read.access.can_manage_results : read.access.can_start)) {
         await liveSession();
         await refresh();
         throw new Error(
-          target
+          inputTarget(target)
+            ? '当前不能收存补充输入；原工作和原请求仍可查询，请核对当前治理授权。'
+            : target
             ? '当前不能采用或交付成果；已有成果和原请求仍可查询，请核对当前治理授权。'
             : '当前不能登记新工作；已有工作和原请求仍可查询，请核对模型连接及当前授权。',
         );
@@ -245,6 +263,9 @@ export function useWorkCommand(
       await preflight(read);
       requireCurrent();
       await liveSession();
+      const inputSha = inputTarget(target) ? Array.from(new Uint8Array(await crypto.subtle.digest(
+        'SHA-256', new TextEncoder().encode(String(data.content)))), x => x.toString(16).padStart(2, '0')).join('') : undefined;
+      requireCurrent();
       const original: Reference = {
         ...scope,
         id: crypto.randomUUID(),
@@ -253,6 +274,7 @@ export function useWorkCommand(
           materialId: String(data.material_id), materialVersion: target.kind === 'import_material' ? 0 : target.version,
           sha256: target.sha256,
         } : recoveryTarget(target) ? {workId: String(data.work_id), attemptId: target.attemptId}
+          : inputTarget(target) ? {workId: String(data.work_id), inputId: String(data.input_id), sha256: inputSha}
           : { workId: String(data.work_id), ...(target ? { resultId: target.resultId, sha256: target.sha256 } : {}) }),
         base_version: read.version,
         resolved: false,
@@ -267,6 +289,7 @@ export function useWorkCommand(
       setReference(original);
       requireCurrent();
       dispatchedId = original.id;
+      awaitingPostResponse = true;
       const response = await api.coreWorkCommand({
         id: original.id,
         organization_id: scope.organizationId,
@@ -275,19 +298,35 @@ export function useWorkCommand(
         data,
       });
       acceptedResponse = true;
+      awaitingPostResponse = false;
       if (current()) await accept(original, response.receipt);
     } catch (error) {
-      // Only a direct auth refusal from this recovery POST proves it was not
-      // accepted. Later read loss or an unknown/404 lookup never clears intent.
-      if (current() && recoveryTarget(target) && dispatchedId && !acceptedResponse &&
-          [401,403].includes(Number((error as {status?:number})?.status))) {
+      // Only the append entry's explicit pre-transaction format refusal or a
+      // direct auth refusal is known. Later reads and other 4xx remain unknown.
+      const detail = error as {status?: number; code?: string};
+      const formatRefusal = inputTarget(target) && awaitingPostResponse && !acceptedResponse &&
+        detail?.status === 400 && detail?.code === 'invalid_request';
+      if (current() && directRefusalTarget(target) && dispatchedId && awaitingPostResponse && !acceptedResponse &&
+          (formatRefusal || [401,403].includes(Number(detail?.status)))) {
         refs.current = refs.current.map(r=>r.id===dispatchedId ? {...r,resolved:true,outcome:'rejected',refusedBeforeAcceptance:true} : r);
         setReference(refs.current.at(-1));
         try { sessionStorage.setItem(key,JSON.stringify(refs.current)); } catch { /* The original ID remains queryable. */ }
       }
+      if (current() && inputTarget(target) && dispatchedId && awaitingPostResponse && !acceptedResponse && detail?.status === 403) {
+        try {
+          await liveSession();
+          await liveRead();
+          await liveSession();
+          setNote(errorText(error));
+          await refresh();
+        } catch (readError) {
+          failure(readError);
+        }
+        return;
+      }
       // A confirmed receipt preserves execution history, not ongoing read access.
       if (
-        accessLost(error) ||
+        accessLost(error) || formatRefusal ||
         !dispatchedId ||
         !refs.current.some((r) => r.id === dispatchedId && r.resolved)
       )

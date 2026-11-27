@@ -371,6 +371,29 @@ def check_au_schemas(database, manifest, root):
                                for work in works)
             require(not has_recovery or 5 in manifest.get('core_au_schemas', []),
                     'Candidate cannot preserve original work recovery ownership and input snapshots; keep compatible code and data')
+            has_inputs = any(work.get('inputs') or work.get('input_seq') or work.get('input_cursor')
+                             or any(loop.get('bind_children') for loop in work.get('loops', []))
+                             or any(step.get('input_refs') or step.get('input_cursor') for step in work.get('steps', []))
+                             or any(result.get('input_refs') or result.get('input_cursor') for result in work.get('results', []))
+                             for work in works)
+            with closing(sqlite3.connect((directory / 'state.sqlite3').as_uri() + '?mode=ro', uri=True)) as au_cx:
+                au_cx.execute('PRAGMA query_only=ON')
+                au_cx.execute('BEGIN')
+                tables = {row[0] for row in au_cx.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+                if 'work_input_bodies' in tables:
+                    has_inputs = has_inputs or au_cx.execute('SELECT 1 FROM work_input_bodies LIMIT 1').fetchone() is not None
+                for table in ('work_execution_requests', 'work_model_turns'):
+                    if table not in tables:
+                        continue
+                    for row in au_cx.execute('SELECT payload FROM ' + table):
+                        snapshot = json.loads(row[0])
+                        plan = snapshot.get('plan') or snapshot
+                        if table == 'work_model_turns':
+                            has_inputs = has_inputs or any(message.get('role') == 'user' for message in plan['messages'])
+                        else:
+                            has_inputs = has_inputs or bool(plan.get('input_refs') or plan.get('input_messages'))
+            require(not has_inputs or 6 in manifest.get('core_au_schemas', []),
+                    'Candidate cannot preserve original work inputs and adoption; keep compatible code and private history')
             models = state.get('model_access', {})
             used_profiles = {c['profile'] for c in models.get('connections', {}).values()}
             used_profiles.update(o['config']['profile'] for o in models.get('operations', {}).values())

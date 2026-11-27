@@ -1,0 +1,8 @@
+.work-inputs { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--line, #d8dde3); min-width: 0; }
+.work-inputs label { display: block; margin-top: .75rem; }
+.work-inputs textarea { display: block; width: 100%; max-width: 100%; min-height: 5rem; box-sizing: border-box; }
+.work-inputs p, .work-inputs summary { overflow-wrap: anywhere; }
+.work-inputs pre { white-space: pre-wrap; overflow-wrap: anywhere; max-height: 24rem; overflow-y: auto; }
+.work-input-list { padding-left: 1.25rem; }
+.material-list .work-input-list li { padding: .75rem 0; }
+.work-inputs .button { max-width: 100%; white-space: normal; }

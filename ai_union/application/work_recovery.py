@@ -87,7 +87,7 @@ def prepare_recovery(service, cx, state, charter, data, marker):
     owner = copy.deepcopy(ownership.owner(attempt)) if current else ownership.claim(
         work, attempt["id"], service.app.instance, host_live=True)
     validate_recovery_inputs(service, cx, state, charter, work, attempt["id"])
-    state["schema_version"] = 5
+    state["schema_version"] = max(state["schema_version"], 5)
     service.active_recoveries[key] = marker
     return {"execution_owner": owner, "attempt_id": attempt["id"], "work_id": work["id"],
             "message": result["reason"]}
@@ -148,6 +148,8 @@ def _authorize(service, cx, accounts, token, state, snapshot, step, expected_own
     # Verify retained assistant/tool snapshots; never reread changed document content.
     work = rules.records(state)["works"][plan["work_id"]]
     WorkContextStore.load(cx, work, plan["context_scope"])
+    from .work_inputs import validate_attachment
+    validate_attachment(cx, state, work, step, plan)
     return principal
 
 
@@ -208,6 +210,8 @@ def observe(service, directory, intent, request, principal, message, usage, *, a
         charter = state.pop("charter")
         step = dispatch.find(state, request, principal)
         WorkExecutionStore.save_observed(cx, step, message, usage, action_authorized=action_authorized)
+        from .work_inputs import observe as observe_inputs
+        observe_inputs(state, step)
         step.update(dispatch_phase="observed", adoption_pending=step["status"] in ("reserved", "unknown"),
                     usage={k: usage[k] for k in ("input_tokens", "output_tokens")
                            if isinstance(usage, dict) and type(usage.get(k)) is int and usage[k] >= 0})
@@ -345,7 +349,7 @@ def resume(service, token, directory, intent, work_id, attempt_id, expected_owne
         return None
 
 
-def recovered_turn(service, directory, intent, request, expected_owner):
+def recovered_turn(service, directory, intent, request, expected_owner, loop):
     """Current adopted facts advance an original loop; issuer receipts stay immutable."""
     with service.app.mutex, service.store.transaction(directory) as cx:
         state = _state(service, cx, request, intent)
@@ -355,7 +359,7 @@ def recovered_turn(service, directory, intent, request, expected_owner):
         if step is None:
             request["base_version"] = state["version"]
             return None
-        snapshot = WorkExecutionStore.load_request(cx, step)
+        snapshot = dispatch.child_snapshot(cx, step, request, loop)
         request.clear()
         request.update(snapshot["request"])
         if step["status"] != "used" or step.get("dispatch_phase") != "adopted":
@@ -363,10 +367,11 @@ def recovered_turn(service, directory, intent, request, expected_owner):
         WorkContextStore.load(cx, work, step["context_scope"])
         result_id = "result-" + request["id"].replace("-", "")[:12]
         private = WorkExecutionStore.load_observed(cx, step)
-        _, calls = service.model_turn(private["message"], snapshot["plan"])
+        assistant, calls = service.model_turn(private["message"], snapshot["plan"])
         return dispatch.receipt(request, step["principal_id"], state["version"],
             step=step["step_ref"], tool_calls=len(calls),
-            result=any(r["id"] == result_id for r in work.get("results", [])), usage=step.get("usage", {}),
+            result=bool(assistant['content'] and not calls and any(r['id'] == result_id for r in work.get('results', []))),
+            usage=step.get("usage", {}),
             message="原循环已采用的原步进事实", cost_status="unknown")
 
 

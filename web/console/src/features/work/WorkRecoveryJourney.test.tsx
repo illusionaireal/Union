@@ -1,4 +1,4 @@
-import {fireEvent,screen} from '@testing-library/react';
+import {fireEvent,screen,waitFor} from '@testing-library/react';
 import {beforeEach,expect,it,vi} from 'vitest';
 import {fixture,mount} from '../models/test-fixtures';
 import {api} from '../../api/client';
@@ -55,6 +55,25 @@ it('keeps unknown recovery as an original-ID query rather than resending after r
   fireEvent.click(screen.getByRole('button',{name:'查询恢复原请求'}));
   await screen.findByText('原恢复意图已采用，实际执行仍按原请求核对');
   expect(api.coreWorkReceipt).toHaveBeenCalledWith('core-au',original);expect(requests).toHaveLength(1);
+});
+
+it('keeps continue unavailable until the original receipt lookup finishes refreshing the Work',async()=>{
+  const send=vi.mocked(api.coreWorkCommand).getMockImplementation()!;
+  vi.mocked(api.coreWorkCommand).mockImplementation(async r=>{await send(r);throw new Error('lost recovery response');});
+  const {client}=mount('/au/core-au/work/work-original');
+  let release!: () => void;
+  vi.spyOn(client,'invalidateQueries').mockImplementation(()=>new Promise(resolve=>{release=resolve;}));
+  fireEvent.click(await screen.findByRole('button',{name:'恢复原执行'}));
+  fireEvent.change(screen.getByLabelText('恢复依据'),{target:{value:'接回同一工作'}});
+  fireEvent.click(screen.getByRole('button',{name:'确认恢复原执行'}));
+  await screen.findByText('lost recovery response');
+  fireEvent.click(screen.getByRole('button',{name:'查询恢复原请求'}));
+  const next=await screen.findByRole('button',{name:'继续核对原请求'});
+  expect(next).toBeDisabled();
+  release();
+  await waitFor(()=>expect(next).toBeEnabled());
+  fireEvent.click(next);
+  expect(screen.getByLabelText('恢复依据')).toBeVisible();
 });
 
 it('loads only original recovery metadata after service restart and explicitly queries the original ID',async()=>{

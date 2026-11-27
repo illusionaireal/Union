@@ -76,3 +76,10 @@
   material version and digest, with no host fallback. Imported invoke receipts
   contain only read metadata; private model contexts revalidate current scope.
   Follow `u120-business-materials-contract.md` and `test_business_materials`.
+
+- U-093 `work_input_store.py` stores immutable AU/Work/input private UTF-8 bodies
+  only in the caller's existing GovernanceStore transaction; scoped reads verify
+  bytes/SHA and create nothing. The first successful append adopts schema 6;
+  dispatch/loop/recovery preserve higher markers. Old installation candidates
+  must reject actual input/body/snapshot features even under an incorrect lower
+  marker. No real-data migration, dual writer or automatic read repair.
