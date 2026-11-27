@@ -2,6 +2,8 @@
 
 ## Current Checkpoint
 
+U121 TaskStartSnapshot 2026-11-27：真实 #76 v3 progress/rev1291，由相同实际在线用户持有，所有前置已完成。独立集成 checkout 以 clean `b0d0043` 创建 `codex/u121-intent-20261127`。冻结 [U-121 契约](../../../../specs/053-union-rewrite/u121-durable-work-intent-contract.md) 和 [ADR-0011](../../../decisions/0011-durable-work-intent.md) 后才写行为代码。后端与前端按不相交的代码路径实施，协调者独占 Git、看板、账本、浏览器与流程证据；受控整体验收仍待验证。
+
 2026-11-27 U093 完整受控采用：`0e03e92` 的准确七项 CI 全绿，普通 Git 快进采用 `rewrite/charter-v1`，远端读回 `protected=false`。本地 957 Python（7 跳过）、475 前端、89 modeld、155 Chrome（13 次受控推理，真实 0）及两工程角色独立复核通过。在线 #47 v8 done/rev1289，三项检查完成；#76 用实际账号认领 v3 progress/rev1291，所有真实前置满足。见 [U-093 采用记录](../../../../evidence/U-093/adoption-20261127.json)。剩余整体验收为 U121 一次合法有界意图、原执行接续和按有效规则交付，先冻结事务、运行身份及文件责任。
 
 2026-11-27 U093 接续：远端实读 `d04767f`；在线 revision 1286，#47 v5 progress、原 owner 与依赖一致，#76 尚待 #47。在 5be7 集成 checkout 组合 94bd 后端与原前端，本地 D 盘工作区保持原现场。独立内核和前端复核反例已经落入定向行为测试；目前本地 npm 全量（475 前端）通过，Python 最终全量、实际 Chrome 组合及准确提交七项 CI 待完成。当前证据见 [U-093 证据索引](../../../../evidence/U-093/README.md)。按 #47 全验收 → 任务分支及 CI → 普通 Git 采用与在线读回 → #76 准入的顺序继续。
