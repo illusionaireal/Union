@@ -1,0 +1,102 @@
+{
+  "at_utc": "2026-11-27T03:52:06.1019752Z",
+  "scope": "controlled",
+  "candidate_sha": "0e03e92d9daaa4837c0b8d69239db6e8dc89690d",
+  "remote_sha": "0e03e92d9daaa4837c0b8d69239db6e8dc89690d",
+  "integration_branch": "rewrite/charter-v1",
+  "method": "ordinary Git fast-forward",
+  "remote_before": "d04767f0b2669ac8d5d071e866c4e7cda2c95781",
+  "protected": false,
+  "exact_local_python": [
+    "Ran 957 tests in 935.312s",
+    "OK (skipped=7)"
+  ],
+  "checks": [
+    {
+      "id": 45934959095,
+      "name": "frontend and historical checks",
+      "head_sha": "0e03e92d9daaa4837c0b8d69239db6e8dc89690d",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/illusionaireal/Union/actions/runs/45934959095",
+      "jobs": [
+        {
+          "name": "console-browser",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "offline-checks (ubuntu-latest)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "offline-checks (windows-latest)",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 45934958970,
+      "name": "fixed model service",
+      "head_sha": "0e03e92d9daaa4837c0b8d69239db6e8dc89690d",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/illusionaireal/Union/actions/runs/45934958970",
+      "jobs": [
+        {
+          "name": "model-service (ubuntu-latest)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "model-service (windows-latest)",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 45934959110,
+      "name": "mechanism-tests",
+      "head_sha": "0e03e92d9daaa4837c0b8d69239db6e8dc89690d",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/illusionaireal/Union/actions/runs/45934959110",
+      "jobs": [
+        {
+          "name": "unittest (ubuntu-latest)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "unittest (windows-latest)",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "real_model_calls": 0,
+  "online_done": {
+    "id": 47,
+    "version": 8,
+    "status": "done",
+    "owner": "363a9919-cc7e-4dbd-8e49-a104a4f0f5ed",
+    "revision": 1289,
+    "checklist": [
+      true,
+      true,
+      true
+    ]
+  },
+  "next_admitted": {
+    "id": 76,
+    "u": "U-121",
+    "version": 3,
+    "status": "progress",
+    "owner": "363a9919-cc7e-4dbd-8e49-a104a4f0f5ed",
+    "revision": 1291
+  }
+}

@@ -2,10 +2,10 @@
   "schemaVersion": "aegis.schema.v0",
   "taskId": "2026-11-13-v1-correction-execution",
   "lastCheckpointRef": "docs/aegis/work/2026-11-13-v1-correction-execution/todo-checkpoint-draft.json",
-  "resumeInstruction": "ROOT5be7 codex/u092-integration-20261126 HEAD5513cf6已七CI通过，ordinaryGit采用remote rewrite5513并读回protected=false。在线46donev12/rev1284，47已依实际前置ready+claim v5/progress owner363 rev1286；74/75/66done保持。当前仅46采用文档/过程未提交，源码25hash与5513一致。下一步只commit/push并普通Git采用该过程记录，再准备root/94bd两个既有checkout任务分支，冻结U093输入合同后严格TDD实施47，之后76。47未写行为代码；只读报告host-private u093-precode-readback-20261126.md。不得结束为部分完成，不再问46交接/47前置授权或恢复保护。",
+  "resumeInstruction": "ROOT5be7 已采用精确候选 0e03e92，七项 CI、957 Python/7 跳过、475 前端、89 modeld、155 Chrome 和独立边界复核通过。在线 #47 v8 done/rev1289，#76 v3 progress/rev1291 且 owner 保持实际用户；先验实际基线与看板。推进 U-121 的持久意图、独立于登录寿命的原执行及按授权交付；用同 Work、原预约、U-092 恢复和 U-093 输入。冻结合同、严格 TDD、独立复核与最终验收。不得把 #47 留为用户目标的终点。",
   "knownPartialWork": [
     "U092完整controlled验收/七CI/Git采用/在线done全部读回，原失败保留",
-    "U093已真正认领progress但未实施；U121仍backlog，整74/75/76目标未完成"
+    "U093 已远端采用并在线完成；U121 已认领，整 74/75/76 目标仍待最后一张"
   ],
   "mustReadBeforeContinuing": [
     "docs/aegis/work/2026-11-13-v1-correction-execution/10-intent.md",

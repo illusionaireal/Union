@@ -1,23 +1,25 @@
 {
   "schemaVersion": "aegis.schema.v0",
   "taskId": "2026-11-13-v1-correction-execution",
-  "currentTodo": "74/75和66已完整done；继续46恢复、47输入、76持久业务意图自动交付",
+  "currentTodo": "74、75、66、46、47 已完成；继续 76 持久业务意图自动交付",
   "completedTodos": [
     "#74/U120done；#75/U122与#66/U112以382fce1七CI成功普通Git采用，online done和全部checklist读回，437前端/873Python含7skip/124业务浏览器/116入口保持",
     "46独立kernel已23恢复+3HTTP+11兼容及原相关63通过；stage1独立复核发现POST全局锁、旧异常释放新预约、最终host/epoch fence三问题，正RED/GREEN修复，未采用未整卡done",
     "46独立kernel4d339e1顺序整合68ad090及UI，完整Python916/7skip、npm445、Chrome135、兼容11和独立复审全部通过，旧失败保留；远端采用另验",
-    "U0925513七CI普通Git采用protected=false；online46v12 done/rev1284；47实际依赖均done、v5 progress已认领/rev1286"
+    "U0925513七CI普通Git采用protected=false；online46v12 done/rev1284；47实际依赖均done、v5 progress已认领/rev1286",
+    "U093 准确 0e03e92 七项 CI、普通 Git 采用和在线 #47 v8 done/rev1289；#76 v3 progress/rev1291 已认领"
   ],
-  "activeSlice": "U-093",
+  "activeSlice": "U-121",
   "evidenceRefs": [
     "evidence/U-122/adoption.json",
     "evidence/U-112/README.md",
     "specs/053-union-rewrite/u092-work-recovery-contract.md",
     "evidence/U-092/verification-20261126.json",
     "evidence/U-092/browser-20261126.json",
-    "evidence/U-092/adoption-20261126.json"
+    "evidence/U-092/adoption-20261126.json",
+    "evidence/U-093/adoption-20261127.json"
   ],
   "blockedOn": null,
-  "nextStep": "收口46采用文档，然后冻结47完整输入合同/文件责任并严格TDD；全验后76持久业务意图",
-  "updatedAt": "2026-11-26"
+  "nextStep": "冻结 76 的持久工作意图、运行身份、文件责任和验收，严格 TDD 并用同一受控工作旅程验收",
+  "updatedAt": "2026-11-27"
 }
