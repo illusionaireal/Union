@@ -25,6 +25,33 @@ const calls: { body: any; session: string | null }[] = [];
 let barrier: { wait: Promise<void>; release: () => void } | undefined;
 const frame = (value: unknown) => 'data: ' + JSON.stringify(value) + '\n\n';
 const signature = 'controlled-core-native-signature';
+const responsesModel = 'gpt-6-astra';
+const encryptedReasoning = 'controlled-work-encrypted-reasoning';
+const responseCall = 'controlled-work-call';
+
+function responses(body: any) {
+  const tool = body.input.find((item: any) => item.type === 'function_call_output');
+  const input = body.input.filter((item: any) => item.role === 'user').at(-1);
+  const userText = input?.content?.find((part: any) => part.type === 'input_text')?.text;
+  const id = 'resp_controlled_work_' + calls.length;
+  const output = tool ? [{ id: 'msg_controlled_work', type: 'message', role: 'assistant', status: 'completed',
+    content: [{ type: 'output_text', text: '续接成果：' + tool.output + '；' + userText, annotations: [] }] }] : [
+    { id: 'rs_controlled_work', type: 'reasoning', encrypted_content: encryptedReasoning, summary: [] },
+    { id: 'fc_controlled_work', type: 'function_call', call_id: responseCall, name: 'read_document',
+      arguments: '{"path":"overview.md"}', status: 'completed' },
+  ];
+  const frames: unknown[] = [{ type: 'response.created', response: { id, status: 'in_progress' } }];
+  for (const [index, item] of output.entries()) {
+    frames.push({ type: 'response.output_item.added', output_index: index, item });
+    frames.push({ type: 'response.output_item.done', output_index: index, item });
+  }
+  frames.push({ type: 'response.completed', response: { id, status: 'completed', output, usage: {
+    input_tokens: tool ? 41 : 17, output_tokens: tool ? 13 : 8, total_tokens: tool ? 54 : 25,
+    input_tokens_details: { cached_tokens: 0 }, output_tokens_details: { reasoning_tokens: 2 },
+  } } });
+  const stream = frames.map(value => 'event: ' + (value as {type: string}).type + '\n' + frame(value)).join('');
+  return new Response(stream, { headers: { 'content-type': 'text/event-stream' } });
+}
 const provider = Bun.serve({ hostname: '127.0.0.1', port: 0, async fetch(request) {
   const path = new URL(request.url).pathname;
   if (request.method === 'GET' && path === '/__probe/status')
@@ -42,10 +69,17 @@ const provider = Bun.serve({ hostname: '127.0.0.1', port: 0, async fetch(request
     barrier.release();
     return Response.json({ held: false });
   }
-  if (request.method !== 'POST' || path !== '/v1/chat/completions') return new Response('not_found', { status: 404 });
+  if (request.method !== 'POST' || !['/v1/chat/completions', '/v1/responses'].includes(path)) return new Response('not_found', { status: 404 });
   if (request.headers.get('authorization') !== 'Bearer ' + apiKey)
     return Response.json({ error: { message: 'controlled_authentication_failed' } }, { status: 401 });
   const body = await request.json() as any;
+  if (path === '/v1/responses') {
+    if (body.model !== responsesModel || !Array.isArray(body.input) || body.stream !== true || body.store !== false)
+      return new Response('controlled_responses_input_mismatch', { status: 400 });
+    calls.push({ body, session: request.headers.get('x-opencode-session') });
+    if (barrier) await barrier.wait;
+    return responses(body);
+  }
   const fault = typeof body.model === 'string' && body.model.startsWith(modelID + ':') ? body.model.slice(modelID.length + 1) : null;
   if ((body.model !== modelID && !['auth','missing','limit','unavailable','interrupt'].includes(fault)) || body.stream !== true)
     return Response.json({ error: { message: 'controlled_model_or_stream_mismatch' } }, { status: 400 });
