@@ -16,6 +16,7 @@ EVENT_EVIDENCE = "tests/test_core_model_events.py"
 GO_EVIDENCE = "evidence/U-075/go-deepseek-2026-11-10/README.md"
 RESPONSES_EVIDENCE = "evidence/U-099/README.md"
 RESPONSES_RECOVERY_EVIDENCE = "evidence/U-100/README.md"
+RESPONSES_INPUT_EVIDENCE = "evidence/U-098/README.md"
 
 
 def _claim(status, note, evidence=None):
@@ -62,7 +63,10 @@ PROFILES = {
             "tool_roundtrip": _claim("verified_real", "Go GPT-6 Luna 真实读取所选资料，原生工具调用及工具回执完整传入第二轮，回答含校验码。", RESPONSES_EVIDENCE),
             "usage_reporting": _claim("verified_real", "Go GPT-6 Luna 每次真实 Responses 请求分别记录输入/输出 token；未报告的金额和币种仍未知。", RESPONSES_EVIDENCE),
             "streaming": _claim("verified_real", "Go GPT-6 Luna 已验证真实 Responses 生成中的原文本及重启后页面读取；其他模型/服务分别验收。", RESPONSES_RECOVERY_EVIDENCE),
-            "long_job_new_input": _claim("unsupported", "尚未实现执行期间追加输入。"),
+            "long_job_new_input": _claim("controlled",
+                "运行中可向原工作补充要求，下一合法 Responses 步骤携带新输入与原工具结果；"
+                "不支持向已发送的请求中途注入。本项使用回环服务验证。",
+                RESPONSES_INPUT_EVIDENCE),
             "cancel_and_query": _claim("verified_real", "Go GPT-6 Luna 已验证本地停止、原请求核对及重启；未确认提供方已取消，中断用量/费用仍未知，占用保留。", RESPONSES_RECOVERY_EVIDENCE),
         },
     },

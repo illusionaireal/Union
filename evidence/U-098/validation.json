@@ -1,0 +1,84 @@
+{
+  "scope": "controlled candidate",
+  "base_commit": "4d1c94611c233c3fe6b5fd80657bf2221f815ed7",
+  "base_tree": "94795a532740aeb8ddb9a7809e0d36a4b54bf2fc",
+  "upstream": "805a42ffaa56b29a88baef87c7567f1ab9a40a8f",
+  "interpreter": {
+    "python": "3.12.10",
+    "node": "24.19.0",
+    "bun": "1.4.2",
+    "browser": "157.0.8103.78"
+  },
+  "actor": "Codex deployment/integration 01a221e1-ff34-74d1-bb62-de68db1fb448",
+  "kanban": {
+    "member": "codex-home-coordinator",
+    "member_id": "89f4c1c1-329a-4b54-ad37-235cf061e9a8",
+    "card": 52,
+    "claim_version": 4,
+    "read_revision": 1328,
+    "patch_http": 200
+  },
+  "source_sha256_normalized_lf": {
+    ".github/workflows/ci.yml": "8077689b048bad2865cb770c2c626ad364e9a4ae25375895f80796a64aece80f",
+    "ai_union/domain/model_profiles.py": "703b4b0e309b84631f1a987d931378c7552dfd667d93a2c858f0ffd32a8e0a7e",
+    "scripts/s02-models-browser.cjs": "fadae3e0c40889ae274d2fc45f50c85a2671c2e4ffd94f9f0c4edcf71262017d",
+    "services/modeld/test/fixtures/core-modeld-host.ts": "5d12d361f824843f215dc0f74aef3bc33fd8188ab5b9d71fcad7419daaa7f7d8",
+    "tests/test_core_model_http.py": "745e2a4adce7ed1553809673deec053a1d597aa88d9cc66a068afc8ebb65352f",
+    "tests/test_core_responses_profile.py": "19af5bf847f9eb4bf860f944dfb72cc3ae599b4b497a9d066cae9c9a58209754"
+  },
+  "cases": {
+    "recovery_and_next_input": {
+      "original_vendor_posts": 1,
+      "additional_posts_during_recovery": 0,
+      "next_step_posts": 1,
+      "retained_input_tokens": [
+        17,
+        41
+      ]
+    },
+    "automatic_work_delivery": {
+      "vendor_posts": 2,
+      "attempts": 1,
+      "input_attachments": 1,
+      "final_input_cursor": 1
+    },
+    "browser": {
+      "checks": 125,
+      "loopback_posts": 11,
+      "real_model_calls": 0,
+      "runs_original_work_input_regression": true
+    },
+    "modeld": {
+      "tests": 89,
+      "failures": 0,
+      "install_checks": 4
+    },
+    "http": {
+      "tests": 3,
+      "failures": 0
+    },
+    "profile_and_http_before_automatic_control": {
+      "tests": 15,
+      "failures": 0
+    },
+    "management": {
+      "tests": 37,
+      "failures": 0
+    },
+    "npm_check": "passed before delivery evidence was indexed"
+  },
+  "real_model_calls": 0,
+  "log_sha256": {
+    "behavior-red.log": "2151af68ada38834784cf7fa92ad5a432a7acd967c8aa0090c3b01eebfe6924b",
+    "corrected-red.log": "a8eebdaf2e49deba64344d3062e9110a763f4c33dbc16cf80f74d4dd7efec39e",
+    "controlled-final.log": "2266dc0277f64e376a8fc18641b71be4ff14432233b8b02a142deab84063d52a",
+    "controlled-second.log": "6ce46c7c18ed9394bb37cdbf924367c8448d9b4492e30e19ecd51a96049f98dc",
+    "green-final.log": "915910f3555155448e0b0fea73fc8542fadda436a1bfbd7aecf8ef2d618151e2",
+    "npm.log": "f7aa32e4190d015ba3ac53a35d71f261216b4045a9461bfc1c6932b220ac90d2",
+    "management.log": "3be5a87e538b306341b7b4449220d98557b845a014b4ddd50797035697c0b9da",
+    "modeld.log": "7e583b589d921959101969a5988a1aacd85fff1417a82cc9ab8e15be4dd5f149",
+    "modeld-build.log": "90b203e7425e78e75c982c957423167460189e05d1ac50279c65361ebb0d4430",
+    "modeld-install.log": "0a3e587de466ecf68ddea493f1d0746becc2f63ec4105a28a2a5ab7c96d14b9e",
+    "browser.log": "c485133111fe0707f7c04027702853c900dbe4664eb8f4e30f5c81c5ac6b91a2"
+  }
+}

@@ -211,6 +211,15 @@ async function stop(child, message) {
   await governance(page, auId, 'activate_governance', { reason: '启用本轮有限的模型接入验证' });
   await navigate(page, auId, 'models');
   check('The models route is available in core mode', await page.getByRole('button', { name: '添加模型连接', exact: true }).isEnabled());
+  const responsesScope = page.locator('.profile-scope').filter({
+    has: page.getByRole('heading', { name: 'OpenAI Responses API（自填密钥）', exact: true }),
+  });
+  const responsesInput = responsesScope.locator('dl > div').filter({
+    has: page.getByText('长任务期间接收新输入', { exact: true }),
+  });
+  await responsesInput.getByText('仅受控验证').waitFor();
+  check('Responses UI discloses next-step input and the limit on injection into a running request',
+    await responsesInput.getByText(/下一合法 Responses 步骤.*不支持向已发送的请求中途注入/).isVisible());
   await page.getByRole('button', { name: '添加模型连接', exact: true }).focus(); await page.keyboard.press('Enter');
   const keyboardDialog = page.locator('#model-command-dialog'); await keyboardDialog.waitFor();
   await page.keyboard.press('Escape'); await keyboardDialog.waitFor({ state: 'hidden' });

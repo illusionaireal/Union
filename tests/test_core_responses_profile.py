@@ -90,7 +90,8 @@ class ResponsesProfileTests(ModelAccessCase):
             self.assertEqual(claims[capability]["evidence"], "evidence/U-100/README.md")
             self.assertIn("Go GPT-6 Luna", claims[capability]["note"])
         self.assertIn("未确认提供方已取消", claims["cancel_and_query"]["note"])
-        self.assertEqual(claims["long_job_new_input"]["status"], "unsupported")
+        self.assertEqual(claims["long_job_new_input"]["status"], "controlled")
+        self.assertEqual(claims["long_job_new_input"]["evidence"], "evidence/U-098/README.md")
 
     def test_legacy_chat_registration_retains_its_original_request_shape(self):
         receipt, _ = self.saved(profile="openai_compatible")
