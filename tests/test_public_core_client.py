@@ -1,4 +1,4 @@
-"""U-101: a standard-library HTTP client against a separate, unmodified Core process.
+"""U-101/U-102: a standard-library client against a separate, unmodified Core process.
 
 No Core/test helper imports, launch tickets, SQLite access or model requests.
 Run: python -m unittest tests.test_public_core_client -v
@@ -6,6 +6,7 @@ Run: python -m unittest tests.test_public_core_client -v
 import copy
 import http.client
 from http.cookies import SimpleCookie
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
 import os
 from pathlib import Path
@@ -14,7 +15,9 @@ import subprocess
 import sys
 import tempfile
 import time
+import threading
 import unittest
+from urllib.parse import urlencode
 
 
 REPO = Path(__file__).resolve().parents[1]
@@ -70,7 +73,7 @@ class HttpClient:
             conn.close()
 
 
-class PublicCoreClientTests(unittest.TestCase):
+class PublicCoreHost(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory(prefix="union-u101-")
         self.addCleanup(self.temp.cleanup)
@@ -82,10 +85,14 @@ class PublicCoreClientTests(unittest.TestCase):
         self.owner = HttpClient(self.port)
         self.owner_session = self.authenticate(self.owner, "setup", "owner")
 
+    def host_environment(self):
+        return {}
+
     def start(self):
         # Do not pass a real host model/service configuration into the temporary Core.
         env = {key: value for key, value in os.environ.items() if not key.startswith("UNION_")}
         env.update(PYTHONPATH=str(REPO), PYTHONUTF8="1", PYTHONIOENCODING="utf-8")
+        env.update(self.host_environment())
         log = self.root / "startup.log"
         self.output = log.open("wb")
         self.process = subprocess.Popen(
@@ -142,6 +149,8 @@ class PublicCoreClientTests(unittest.TestCase):
         self.assertEqual(result[1]["code"], code)
         self.assertEqual(set(result[1]), {"error", "code"})
 
+
+class PublicCoreClientTests(PublicCoreHost):
     def test_prepared_creation_protocol_versions_and_public_audit_link(self):
         request = creation("public-create")
         receipt = self.create(self.owner, request)
@@ -276,6 +285,260 @@ class PublicCoreClientTests(unittest.TestCase):
         self.assertEqual(self.listed(reopened), listed)
         self.assertEqual(self.create(reopened, request), receipt)
         self.assertEqual(self.listed(reopened), listed)
+
+
+class PublicWorkClientTests(PublicCoreHost):
+    """U-102: public work commands; modeld is an explicit grant-only HTTP double."""
+
+    def setUp(self):
+        self.grants = {}
+        self.model_requests = []
+        case = self
+
+        class GrantOnly(BaseHTTPRequestHandler):
+            def log_message(self, *_):
+                pass
+
+            def answer(self, code, body):
+                raw = json.dumps(body).encode()
+                self.send_response(code)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Content-Length", str(len(raw)))
+                self.end_headers()
+                self.wfile.write(raw)
+
+            def do_GET(self):
+                case.model_requests.append(("GET", self.path))
+                if self.headers.get("Authorization") != "Bearer " + "a" * 40:
+                    return self.answer(403, {"error": "not_authorized"})
+                grant = case.grants.get(self.path)
+                return self.answer(200, grant) if grant else self.answer(404, {"error": "not_found"})
+
+            def do_POST(self):
+                # No inference is implemented. Unexpected dispatch must fail the test.
+                case.model_requests.append(("POST", self.path))
+                self.answer(403, {"error": "inference_disabled"})
+
+        self.modeld = ThreadingHTTPServer(("127.0.0.1", 0), GrantOnly)
+        self.model_thread = threading.Thread(target=self.modeld.serve_forever, daemon=True)
+        self.model_thread.start()
+        self.addCleanup(self.stop_modeld)
+        super().setUp()
+        self.client = HttpClient(self.port)
+        self.session = self.authenticate(self.client, "register", "governor")
+        self.assertFalse(self.session["platform_admin"])
+        self.assertTrue(self.owner_session["platform_admin"])
+        self.prepare_work_au()
+
+    def stop_modeld(self):
+        self.modeld.shutdown()
+        self.model_thread.join(timeout=5)
+        self.modeld.server_close()
+        self.assertFalse(self.model_thread.is_alive())
+        self.assertTrue(self.model_requests, "The real Core must have verified the configured grant")
+        self.assertTrue(all(method == "GET" and path.startswith("/v1/grants/")
+                            for method, path in self.model_requests), self.model_requests)
+
+    def host_environment(self):
+        config = self.root / "synthetic-modeld.json"
+        config.write_text(json.dumps({
+            "origin": "http://127.0.0.1:%d" % self.modeld.server_port,
+            "admin_token_file": "synthetic-admin.token", "worker_token_file": "synthetic-worker.token",
+        }), encoding="utf-8")
+        config.chmod(0o600)
+        for role, char in (("admin", "a"), ("worker", "w")):
+            path = self.root / ("synthetic-" + role + ".token")
+            path.write_text(char * 40, encoding="ascii")
+            path.chmod(0o600)
+        return {"UNION_MODELD_CONFIG": str(config), "UNION_FIRST_CLAIM_PLATFORM_ADMIN": "1"}
+
+    def view(self):
+        return self.get(self.client, "/api/v1/aus/" + self.au_id)
+
+    def works(self):
+        return self.get(self.client, "/api/v1/work?" + urlencode({"organization_id": self.au_id}))
+
+    def receipt_path(self, request_id):
+        return "/api/v1/governance/receipts?" + urlencode({"organization_id": self.au_id, "id": request_id})
+
+    def command(self, family, kind, data, request_id):
+        request = {"id": request_id, "organization_id": self.au_id,
+                   "base_version": self.view()["au"]["version"], "kind": kind, "data": data}
+        status, value = self.client.request("/api/v1/" + family + "/commands", request)
+        self.assertEqual(status, 200, value)
+        self.assertEqual(value["receipt"]["status"], "succeeded", value)
+        return value["receipt"]
+
+    def prepare_work_au(self):
+        request = creation("work-au")
+        request["data"]["charter"].update(allowed_operations=["create_work"], allowed_tools=["produce_artifact"])
+        request["data"]["resources"]["max_calls"] = 4
+        self.au_id = self.create(self.client, request)["organization_id"]
+        self.command("governance", "adopt_governance", {"config": {
+            "profile": "local_governance.v1", "final_decision_principal_id": self.session["principal_id"],
+            "reserved_matters": ["charter", "goal", "resources", "appointments", "mandates", "dissolution"],
+            "unavailability": {"mode": "exit_after_timeout", "timeout_seconds": 3600},
+        }, "reason": "Synthetic public command acceptance only"}, "governance-adopt")
+        self.command("governance", "activate_governance", {"reason": "Internal controlled records only"}, "governance-activate")
+        self.grants["/v1/grants/grant-public"] = {
+            "id": "grant-public", "au_id": self.au_id, "revision": 1,
+            "revoked_at": None, "model_ids": ["synthetic-model"],
+        }
+        saved = self.command("models", "save_connection", {
+            "connection_id": "connection-public", "expected_revision": 0, "name": "Grant-only double",
+            "profile": "modeld_grant", "model": "synthetic-model", "max_output_tokens": 128,
+            "grant_ref": "grant-public", "grant_revision": 1,
+        }, "connection-save")
+        deadline = time.monotonic() + 15
+        while time.monotonic() < deadline:
+            models = self.get(self.client, "/api/v1/models?organization_id=" + self.au_id)
+            op = next(item for item in models["operations"] if item["id"] == saved["operation_id"])
+            if op["status"] not in ("queued", "running", "saving"):
+                self.assertEqual(op["status"], "succeeded", op)
+                break
+            time.sleep(0.01)
+        else:
+            self.fail("Synthetic grant preparation did not finish within 15 seconds")
+        self.command("models", "set_connection", {"connection_id": "connection-public", "expected_revision": 1,
+                     "enabled": True, "make_default": True}, "connection-adopt")
+
+    def work_request(self, request_id="register-work", suffix="one"):
+        return {"id": request_id, "organization_id": self.au_id,
+                "base_version": self.view()["au"]["version"], "kind": "start_work", "data": {
+                    "work_id": "work-" + suffix, "title": "Public command work", "goal": "Prepare a bounded result",
+                    "member_name": "Synthetic responsible AI", "member_id": "member-" + suffix,
+                    "binding_id": "binding-" + suffix, "mandate_id": "mandate-" + suffix,
+                    "definition_id": "definition-" + suffix, "connection_id": "connection-public",
+                    "expected_revision": 1, "materials_root": None, "max_calls": 1,
+                    "tools": ["produce_artifact"], "reason": "Explicit controlled work registration",
+                }}
+
+    def submit(self, request, expected="succeeded", client=None):
+        status, value = (client or self.client).request("/api/v1/work/commands", request)
+        self.assertEqual(status, 200, value)
+        receipt = value["receipt"]
+        self.assertEqual(receipt["status"], expected, receipt)
+        for key in ("id", "organization_id", "base_version", "kind"):
+            self.assertEqual(receipt[key], request[key])
+        self.assertEqual(receipt["actor_principal_id"], self.session["principal_id"])
+        self.assertTrue(receipt["created_at"])
+        self.assertEqual(self.get(client or self.client, self.receipt_path(request["id"]))["receipt"], receipt)
+        return receipt
+
+    def test_public_work_registration_binds_responsibility_without_dispatch(self):
+        request = self.work_request()
+        receipt = self.submit(request)
+        view = self.works()
+        self.assertEqual(view["protocol"], "core.work.v1")
+        self.assertEqual(view["version"], request["base_version"] + 1)
+        self.assertEqual(receipt["version"], view["version"])
+        self.assertEqual(receipt["work_id"], "work-one")
+        self.assertEqual(len(view["works"]), 1)
+        work = view["works"][0]
+        self.assertEqual((work["id"], work["status"], work["max_calls"]), ("work-one", "pending", 1))
+        self.assertEqual(work["responsible"], {"member_id": "member-one", "name": "Synthetic responsible AI",
+                         "binding_id": "binding-one", "duty": "Public command work"})
+        self.assertEqual(work["definition"], {"id": "definition-one", "version": 1,
+                         "connection_id": "connection-public", "model": "synthetic-model", "tools": ["produce_artifact"]})
+        self.assertEqual(work["mandate"], {"id": "mandate-one", "version": 1, "actions": ["produce_artifact"], "active": True})
+        for key in ("attempts", "steps", "results"):
+            self.assertEqual(work[key], [])
+        self.assertEqual(view["cost_status"], "unknown")
+        self.assertFalse(view["capabilities"]["autonomous_business"])
+        public = json.dumps({"receipt": receipt, "view": view})
+        for private in (PASSWORD, self.client.cookie.split("=", 1)[1], "a" * 40, "w" * 40,
+                        json.dumps(str(self.root))[1:-1]):
+            self.assertNotIn(private, public)
+
+    def test_platform_admin_cannot_read_submit_or_replay_another_au(self):
+        request = self.work_request()
+        original = self.submit(request)
+        before = self.works()
+        paths = ["/api/v1/work?organization_id=" + self.au_id,
+                 self.receipt_path(request["id"]), self.receipt_path("unknown-request")]
+        for path in paths:
+            self.assert_error(self.owner.request(path), 403, "not_authorized")
+        for data in (request, self.work_request("admin-attempt", "two")):
+            self.assert_error(self.owner.request("/api/v1/work/commands", data), 403, "not_authorized")
+        self.assertEqual(self.works(), before)
+        self.assertEqual(self.get(self.client, self.receipt_path(request["id"]))["receipt"], original)
+
+    def test_new_session_replay_is_idempotent_and_changed_payload_conflicts(self):
+        request = self.work_request()
+        original = self.submit(request)
+        before = self.works()
+        second = HttpClient(self.port)
+        self.assertEqual(self.authenticate(second, "login", "governor")["principal_id"], self.session["principal_id"])
+        self.assertEqual(self.submit(request, client=second), original)
+        changed = copy.deepcopy(request)
+        changed["data"]["goal"] = "Different intent under the same ID"
+        self.assert_error(second.request("/api/v1/work/commands", changed), 409, "id_conflict")
+        self.assertEqual(self.works(), before)
+
+    def test_stale_versions_return_queryable_rejections_without_work_mutation(self):
+        before = self.works()
+        for key in ("au", "connection"):
+            request = self.work_request("stale-" + key)
+            if key == "au":
+                request["base_version"] -= 1
+            else:
+                request["data"]["expected_revision"] = 2
+            receipt = self.submit(request, "rejected")
+            self.assertEqual(receipt["effect"], "none")
+            self.assertEqual(receipt["version"], before["version"])
+            self.assertEqual(self.works(), before)
+        self.submit(self.work_request("current-versions"))
+
+    def test_disabled_connection_and_exited_governance_refuse_new_work(self):
+        self.command("models", "set_connection", {"connection_id": "connection-public", "expected_revision": 1,
+                     "enabled": False, "make_default": False}, "connection-disable")
+        before = self.works()
+        models = self.get(self.client, "/api/v1/models?organization_id=" + self.au_id)
+        revision = models["connections"][0]["revision"]
+        disabled = self.work_request("disabled-connection")
+        disabled["data"]["expected_revision"] = revision
+        self.submit(disabled, "rejected")
+        self.assertEqual(self.works(), before)
+        self.command("models", "set_connection", {"connection_id": "connection-public", "expected_revision": revision,
+                     "enabled": True, "make_default": True}, "connection-enable")
+        request = self.work_request("enabled-connection")
+        request["data"]["expected_revision"] = self.get(self.client, "/api/v1/models?organization_id=" + self.au_id)["connections"][0]["revision"]
+        self.submit(request)
+        self.command("governance", "exit_governance", {"reason": "End synthetic governance authority"}, "governance-exit")
+        before = self.works()
+        exited = self.work_request("exited-governance", "two")
+        exited["data"]["expected_revision"] = request["data"]["expected_revision"]
+        self.submit(exited, "rejected")
+        self.assertEqual(self.works(), before)
+
+    def test_discarded_work_response_recovers_by_get_and_survives_restart(self):
+        request = self.work_request()
+        posts = self.client.requests.count(("POST", "/api/v1/work/commands"))
+        self.assertIsNone(self.client.request("/api/v1/work/commands", request, discard_response=True))
+        receipt = self.get(self.client, self.receipt_path(request["id"]))["receipt"]
+        self.assertEqual((receipt["id"], receipt["status"], receipt["work_id"]), (request["id"], "succeeded", "work-one"))
+        before = self.works()
+        self.assertEqual(len(before["works"]), 1)
+        self.assertEqual(self.client.requests.count(("POST", "/api/v1/work/commands")), posts + 1)
+        self.stop()
+        self.start()
+        self.client = HttpClient(self.port)
+        self.assertEqual(self.authenticate(self.client, "login", "governor")["principal_id"], self.session["principal_id"])
+        self.assertEqual(self.get(self.client, self.receipt_path(request["id"]))["receipt"], receipt)
+        self.assertEqual(self.works(), before)
+        self.assertFalse(any(method == "POST" and path == "/api/v1/work/commands" for method, path in self.client.requests))
+
+    def test_invalid_and_cross_origin_commands_do_not_consume_the_request_id(self):
+        request = self.work_request()
+        self.assert_error(HttpClient(self.port).request("/api/v1/work/commands", request), 401, "not_authenticated")
+        self.assertEqual(self.client.request("/api/v1/work/commands", request, headers={"Origin": "https://untrusted.invalid"})[0], 403)
+        for change in ({"max_calls": True}, {"actor_principal_id": self.owner_session["principal_id"]}):
+            invalid = copy.deepcopy(request)
+            invalid["data"].update(change)
+            self.assert_error(self.client.request("/api/v1/work/commands", invalid), 400, "invalid_request")
+        self.assertEqual(self.works()["works"], [])
+        self.assert_error(self.client.request(self.receipt_path(request["id"])), 403, "not_authorized")
+        self.submit(request)
 
 
 if __name__ == "__main__":
