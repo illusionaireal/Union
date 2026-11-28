@@ -88,9 +88,12 @@ class PublicCoreHost(unittest.TestCase):
     def host_environment(self):
         return {}
 
-    def start(self):
+    def process_environment(self):
         # Do not pass a real host model/service configuration into the temporary Core.
-        env = {key: value for key, value in os.environ.items() if not key.startswith("UNION_")}
+        return {key: value for key, value in os.environ.items() if not key.startswith("UNION_")}
+
+    def start(self):
+        env = self.process_environment()
         env.update(PYTHONPATH=str(REPO), PYTHONUTF8="1", PYTHONIOENCODING="utf-8")
         env.update(self.host_environment())
         log = self.root / "startup.log"
@@ -287,8 +290,10 @@ class PublicCoreClientTests(PublicCoreHost):
         self.assertEqual(self.listed(reopened), listed)
 
 
-class PublicWorkClientTests(PublicCoreHost):
+class PublicWorkClientHost(PublicCoreHost):
     """U-102: public work commands; modeld is an explicit grant-only HTTP double."""
+
+    first_claim_platform_admin = True
 
     def setUp(self):
         self.grants = {}
@@ -327,7 +332,7 @@ class PublicWorkClientTests(PublicCoreHost):
         self.client = HttpClient(self.port)
         self.session = self.authenticate(self.client, "register", "governor")
         self.assertFalse(self.session["platform_admin"])
-        self.assertTrue(self.owner_session["platform_admin"])
+        self.assertIs(self.owner_session["platform_admin"], self.first_claim_platform_admin)
         self.prepare_work_au()
 
     def stop_modeld(self):
@@ -350,7 +355,10 @@ class PublicWorkClientTests(PublicCoreHost):
             path = self.root / ("synthetic-" + role + ".token")
             path.write_text(char * 40, encoding="ascii")
             path.chmod(0o600)
-        return {"UNION_MODELD_CONFIG": str(config), "UNION_FIRST_CLAIM_PLATFORM_ADMIN": "1"}
+        env = {"UNION_MODELD_CONFIG": str(config)}
+        if self.first_claim_platform_admin:
+            env["UNION_FIRST_CLAIM_PLATFORM_ADMIN"] = "1"
+        return env
 
     def view(self):
         return self.get(self.client, "/api/v1/aus/" + self.au_id)
@@ -373,7 +381,8 @@ class PublicWorkClientTests(PublicCoreHost):
         request = creation("work-au")
         request["data"]["charter"].update(allowed_operations=["create_work"], allowed_tools=["produce_artifact"])
         request["data"]["resources"]["max_calls"] = 4
-        self.au_id = self.create(self.client, request)["organization_id"]
+        self.creation_receipt = self.create(self.client, request)
+        self.au_id = self.creation_receipt["organization_id"]
         self.command("governance", "adopt_governance", {"config": {
             "profile": "local_governance.v1", "final_decision_principal_id": self.session["principal_id"],
             "reserved_matters": ["charter", "goal", "resources", "appointments", "mandates", "dissolution"],
@@ -425,6 +434,7 @@ class PublicWorkClientTests(PublicCoreHost):
         self.assertEqual(self.get(client or self.client, self.receipt_path(request["id"]))["receipt"], receipt)
         return receipt
 
+class PublicWorkClientTests(PublicWorkClientHost):
     def test_public_work_registration_binds_responsibility_without_dispatch(self):
         request = self.work_request()
         receipt = self.submit(request)
@@ -539,6 +549,82 @@ class PublicWorkClientTests(PublicCoreHost):
         self.assertEqual(self.works()["works"], [])
         self.assert_error(self.client.request(self.receipt_path(request["id"])), 403, "not_authorized")
         self.submit(request)
+
+
+class StandaloneCoreTests(PublicWorkClientHost):
+    """U-104: one public workflow under a fresh host and Core account boundary."""
+
+    first_claim_platform_admin = False
+
+    def process_environment(self):
+        env = {name: os.environ[name] for name in ("SYSTEMROOT", "WINDIR") if name in os.environ}
+        home = self.root / "profile"
+        home.mkdir(exist_ok=True)
+        env.update({name: str(home) for name in (
+            "HOME", "USERPROFILE", "APPDATA", "LOCALAPPDATA", "XDG_CONFIG_HOME",
+            "XDG_DATA_HOME", "XDG_CACHE_HOME", "TEMP", "TMP", "TMPDIR",
+        )})
+        return env
+
+    def test_core_account_creates_reads_and_registers_work_without_private_platform(self):
+        before = self.view()
+        self.assertEqual(self.listed(self.client), [
+            {"id": self.au_id, "name": before["au"]["name"], "profile": "core_v1"},
+        ])
+        self.assertEqual(before["protocol"], "core.au.v1")
+        self.assertEqual(before["au"]["schema_version"], 3)
+        self.assertEqual(before["au"]["governance_root"]["creator_principal_id"], self.session["principal_id"])
+        creation_path = "/api/v1/receipts?id=" + self.creation_receipt["id"]
+        self.assertEqual(self.get(self.client, creation_path)["receipt"], self.creation_receipt)
+
+        stale = self.work_request("stale-state")
+        stale["base_version"] -= 1
+        rejection = self.submit(stale, "rejected")
+        self.assertEqual(rejection["effect"], "none")
+        self.assertEqual(self.works()["works"], [])
+
+        request = self.work_request()
+        self.assertIsNone(self.client.request("/api/v1/work/commands", request, discard_response=True))
+        path = self.receipt_path(request["id"])
+        receipt = self.get(self.client, path)["receipt"]
+        self.assertEqual((receipt["id"], receipt["organization_id"], receipt["status"]),
+                         (request["id"], self.au_id, "succeeded"))
+        self.assertEqual(receipt["actor_principal_id"], self.session["principal_id"])
+        work_view = self.works()
+        self.assertEqual(work_view["protocol"], "core.work.v1")
+        self.assertEqual(work_view["organization_id"], self.au_id)
+        self.assertEqual(receipt["version"], before["au"]["version"] + 1)
+        self.assertEqual(work_view["version"], receipt["version"])
+        self.assertEqual(len(work_view["works"]), 1)
+        work = work_view["works"][0]
+        self.assertEqual((work["id"], work["status"]), (receipt["work_id"], "pending"))
+        self.assertEqual(work["responsible"]["binding_id"], request["data"]["binding_id"])
+        self.assertEqual((work["definition"]["id"], work["definition"]["version"]),
+                         (request["data"]["definition_id"], 1))
+        for key in ("attempts", "steps", "results"):
+            self.assertEqual(work[key], [])
+        self.assertEqual(self.client.requests.count(("POST", "/api/v1/work/commands")), 2)
+
+        other = HttpClient(self.port)
+        other_session = self.authenticate(other, "register", "other")
+        self.assertFalse(other_session["platform_admin"])
+        for endpoint in ("/api/v1/aus/" + self.au_id, creation_path,
+                         "/api/v1/work?organization_id=" + self.au_id, path):
+            self.assert_error(other.request(endpoint), 403, "not_authorized")
+
+        self.stop()
+        self.start()
+        self.client = HttpClient(self.port)
+        reopened = self.authenticate(self.client, "login", "governor")
+        self.assertFalse(reopened["platform_admin"])
+        self.assertEqual(reopened["principal_id"], self.session["principal_id"])
+        self.assertEqual(self.get(self.client, creation_path)["receipt"], self.creation_receipt)
+        self.assertEqual(self.get(self.client, path)["receipt"], receipt)
+        self.assertEqual(self.get(self.client, self.receipt_path(stale["id"]))["receipt"], rejection)
+        self.assertEqual(self.view()["au"]["schema_version"], before["au"]["schema_version"])
+        self.assertEqual(self.view()["au"]["version"], receipt["version"])
+        self.assertEqual(self.works(), work_view)
+        self.assertNotIn(("POST", "/api/v1/work/commands"), self.client.requests)
 
 
 if __name__ == "__main__":
