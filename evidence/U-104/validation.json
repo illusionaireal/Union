@@ -1,0 +1,55 @@
+{
+  "checked_at": "2026-11-28T08:18:20.154933+00:00",
+  "scope": "controlled candidate",
+  "actor": "Codex deployment and integration duty session 01a2212f-7198-7f03-a5e1-218fa70eaef3",
+  "online_member_id": "89f4c1c1-329a-4b54-ad37-235cf061e9a8",
+  "run_id": "20261128T080446836170Z",
+  "base": "d829a9d6b65236e93bda111459d1e96725f05a39",
+  "base_tree": "2506ef277bdfd3eebd101c496444dde03afdbf8d",
+  "inputs": {
+    "tests/test_public_core_client.py": "bdf2678491c0c1ee03c4f286d4993c6c0830f921",
+    "evidence/U-104/contract.md": "f47ed15d393ccbe1b71b1f388deba73c4f0ea6c9"
+  },
+  "toolchain": {
+    "python": "3.12.10",
+    "node": "24.19.0",
+    "bun": "1.4.2",
+    "opencode_pin": "805a42ffaa56b29a88baef87c7567f1ab9a40a8f"
+  },
+  "http": {
+    "passed": 15,
+    "elapsed_seconds": 42.793,
+    "new_standalone_cases": 1,
+    "inference_calls": 0
+  },
+  "npm_check": {
+    "management": 37,
+    "node": 359,
+    "frontend": 496,
+    "exit": 0,
+    "scope": "before adding the delivery index; final views checked separately"
+  },
+  "sdk_prepare": [
+    {
+      "layout": "long checkout path",
+      "exit": 1,
+      "cause": "ENAMETOOLONG",
+      "log_sha256": "55e38adb7732b8dd9c7c2f3f1ec4f07cd0d33e74eb38ecfa2281fbf2980bbc78"
+    },
+    {
+      "layout": "junction to long checkout path",
+      "exit": 1,
+      "cause": "ENAMETOOLONG",
+      "log_sha256": "0f40a666626e59a43454efc1303da13e8abeec62d694b80f54b9d0f4dff6be3f"
+    },
+    {
+      "layout": "separate checkout at a short direct path",
+      "exit": 0,
+      "log_sha256": "d2afd6eec42e1e0e44484bfa6ea4cac5075b12de6d0156c4b7d8d5c274eeade7"
+    }
+  ],
+  "log_sha256": {
+    "focused_http": "1e5eb1eb79f5dc9609a17d871537181b20535ce9cfeb0421e4aa5b53b93806de",
+    "npm_check": "11da089930cc9b5d0488d868f8cdbf5e163e3154bc57daa9d35589340e81aad9"
+  }
+}
